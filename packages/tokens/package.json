@@ -1,0 +1,30 @@
+{
+  "name": "@ds/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens (primitive, semantic, component) for the Design System Library.",
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./base.css": "./dist/base.css",
+    "./theme-default-light.css": "./dist/theme-default-light.css",
+    "./theme-default-dark.css": "./dist/theme-default-dark.css",
+    "./theme-default.css": "./dist/theme-default.css"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node dist/build.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.5"
+  }
+}
