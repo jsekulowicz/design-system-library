@@ -1,4 +1,5 @@
 import type { LitElement } from 'lit';
+import { property } from 'lit/decorators.js';
 
 type Constructor<T = object> = new (...args: any[]) => T;
 
@@ -15,6 +16,8 @@ export interface FormControlHost {
   checkValidity(): boolean;
   reportValidity(): boolean;
   setCustomValidity(message: string): void;
+  setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
+  setFormValue(value: FormDataEntryValue | null, state?: FormDataEntryValue): void;
 }
 
 type LitCtor = Constructor<LitElement> & { formAssociated?: boolean };
@@ -27,9 +30,10 @@ export function FormControlMixin<TBase extends LitCtor>(
 
     readonly #internals: ElementInternals;
     #value: FormDataEntryValue | null = null;
-    name = '';
-    disabled = false;
-    required = false;
+
+    @property({ reflect: true }) name = '';
+    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean, reflect: true }) required = false;
 
     constructor(...args: any[]) {
       super(...args);
@@ -42,7 +46,9 @@ export function FormControlMixin<TBase extends LitCtor>(
 
     set value(next: FormDataEntryValue | null) {
       this.#value = next;
-      this.#internals.setFormValue(next);
+      if (typeof this.#internals.setFormValue === 'function') {
+        this.#internals.setFormValue(next);
+      }
     }
 
     get form(): HTMLFormElement | null {
@@ -77,16 +83,18 @@ export function FormControlMixin<TBase extends LitCtor>(
       this.#internals.setValidity(message ? { customError: true } : {}, message);
     }
 
-    protected setValidity(
-      flags: ValidityStateFlags,
-      message?: string,
-      anchor?: HTMLElement,
-    ): void {
+    setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void {
+      if (typeof this.#internals.setValidity !== 'function') {
+        return;
+      }
       this.#internals.setValidity(flags, message, anchor);
     }
 
-    protected setFormValue(value: FormDataEntryValue | null, state?: FormDataEntryValue): void {
+    setFormValue(value: FormDataEntryValue | null, state?: FormDataEntryValue): void {
       this.#value = value;
+      if (typeof this.#internals.setFormValue !== 'function') {
+        return;
+      }
       this.#internals.setFormValue(value, state);
     }
 
