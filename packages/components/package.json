@@ -1,0 +1,98 @@
+{
+  "name": "@ds/components",
+  "version": "0.1.0",
+  "description": "Lit web components for the Design System Library (atoms, molecules, organisms, templates, pages).",
+  "type": "module",
+  "sideEffects": ["./dist/**/define.js", "./src/**/define.ts"],
+  "files": ["dist", "custom-elements.json"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "customElements": "custom-elements.json",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./define": { "types": "./dist/define.d.ts", "import": "./dist/define.js" },
+    "./button": {
+      "types": "./dist/atoms/button/index.d.ts",
+      "import": "./dist/atoms/button/index.js"
+    },
+    "./button/define": { "import": "./dist/atoms/button/define.js" },
+    "./icon": { "types": "./dist/atoms/icon/index.d.ts", "import": "./dist/atoms/icon/index.js" },
+    "./icon/define": { "import": "./dist/atoms/icon/define.js" },
+    "./text-field": {
+      "types": "./dist/atoms/text-field/index.d.ts",
+      "import": "./dist/atoms/text-field/index.js"
+    },
+    "./text-field/define": { "import": "./dist/atoms/text-field/define.js" },
+    "./checkbox": {
+      "types": "./dist/atoms/checkbox/index.d.ts",
+      "import": "./dist/atoms/checkbox/index.js"
+    },
+    "./checkbox/define": { "import": "./dist/atoms/checkbox/define.js" },
+    "./radio": {
+      "types": "./dist/atoms/radio/index.d.ts",
+      "import": "./dist/atoms/radio/index.js"
+    },
+    "./radio/define": { "import": "./dist/atoms/radio/define.js" },
+    "./select": {
+      "types": "./dist/atoms/select/index.d.ts",
+      "import": "./dist/atoms/select/index.js"
+    },
+    "./select/define": { "import": "./dist/atoms/select/define.js" },
+    "./badge": {
+      "types": "./dist/atoms/badge/index.d.ts",
+      "import": "./dist/atoms/badge/index.js"
+    },
+    "./badge/define": { "import": "./dist/atoms/badge/define.js" },
+    "./link": { "types": "./dist/atoms/link/index.d.ts", "import": "./dist/atoms/link/index.js" },
+    "./link/define": { "import": "./dist/atoms/link/define.js" },
+    "./field": {
+      "types": "./dist/molecules/field/index.d.ts",
+      "import": "./dist/molecules/field/index.js"
+    },
+    "./field/define": { "import": "./dist/molecules/field/define.js" },
+    "./card": {
+      "types": "./dist/molecules/card/index.d.ts",
+      "import": "./dist/molecules/card/index.js"
+    },
+    "./card/define": { "import": "./dist/molecules/card/define.js" },
+    "./alert": {
+      "types": "./dist/molecules/alert/index.d.ts",
+      "import": "./dist/molecules/alert/index.js"
+    },
+    "./alert/define": { "import": "./dist/molecules/alert/define.js" },
+    "./form": {
+      "types": "./dist/organisms/form/index.d.ts",
+      "import": "./dist/organisms/form/index.js"
+    },
+    "./form/define": { "import": "./dist/organisms/form/define.js" },
+    "./page-shell": {
+      "types": "./dist/templates/page-shell/index.d.ts",
+      "import": "./dist/templates/page-shell/index.js"
+    },
+    "./page-shell/define": { "import": "./dist/templates/page-shell/define.js" },
+    "./settings-page": {
+      "types": "./dist/pages/settings-page/index.d.ts",
+      "import": "./dist/pages/settings-page/index.js"
+    },
+    "./settings-page/define": { "import": "./dist/pages/settings-page/define.js" }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run",
+    "analyze": "cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir ."
+  },
+  "dependencies": {
+    "@ds/core": "workspace:*",
+    "@ds/tokens": "workspace:*",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.4",
+    "@open-wc/testing": "^4.0.0",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.5"
+  }
+}
