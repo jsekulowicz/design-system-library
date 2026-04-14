@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [["@ds/tokens", "@ds/core", "@ds/components", "@ds/icons", "@ds/react"]],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@ds/storybook", "vue-demo", "angular-demo", "ssr-demo", "tests"]
+}

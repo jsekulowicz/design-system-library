@@ -1,0 +1,33 @@
+{
+  "name": "design-system-library",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-agnostic design system built on Lit web components, atomic design, token-based theming.",
+  "packageManager": "pnpm@10.18.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter \"./packages/*\" build",
+    "build:tokens": "pnpm --filter @ds/tokens build",
+    "dev": "pnpm --filter @ds/storybook dev",
+    "typecheck": "pnpm -r --parallel typecheck",
+    "lint": "pnpm -r --parallel lint",
+    "test": "pnpm -r --parallel test",
+    "test:e2e": "pnpm --filter tests test:e2e",
+    "test:a11y": "pnpm --filter tests test:a11y",
+    "size": "pnpm -r --parallel size",
+    "analyze": "pnpm --filter @ds/components analyze",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.9",
+    "@types/node": "^22.10.0",
+    "eslint": "^9.15.0",
+    "prettier": "^3.4.1",
+    "typescript": "^5.7.2"
+  }
+}
