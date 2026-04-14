@@ -1,0 +1,35 @@
+{
+  "name": "@ds/core",
+  "version": "0.1.0",
+  "description": "Lit base class, form-control mixin, controllers, and utilities for Design System components.",
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./base-element": { "types": "./dist/base-element.d.ts", "import": "./dist/base-element.js" },
+    "./form-control": { "types": "./dist/form-control.d.ts", "import": "./dist/form-control.js" },
+    "./theme-controller": {
+      "types": "./dist/theme-controller.d.ts",
+      "import": "./dist/theme-controller.js"
+    },
+    "./responsive": { "types": "./dist/responsive.d.ts", "import": "./dist/responsive.js" },
+    "./utils": { "types": "./dist/utils/index.d.ts", "import": "./dist/utils/index.js" }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.5"
+  }
+}
