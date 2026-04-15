@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: var(--ds-font-body, 'General Sans', system-ui, sans-serif);
+  background: var(--ds-color-bg);
+  color: var(--ds-color-fg);
+}
+
+.sb-show-main.sb-main-padded {
+  padding: var(--ds-space-6, 1.5rem);
+}

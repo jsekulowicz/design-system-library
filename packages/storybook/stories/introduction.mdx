@@ -1,0 +1,32 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# Editorial Modernist
+
+A framework-agnostic design system built on Lit web components. Typography-forward, high contrast, restrained color, hairline borders, purposeful motion.
+
+Every component is form-native (ElementInternals), responsive by container, themeable by token, tree-shakable, and accessible.
+
+## Quick start
+
+```ts
+import '@ds/tokens/dist/theme-default.css';
+import '@ds/components/button/define';
+```
+
+```html
+<ds-button variant="primary">Ship it</ds-button>
+```
+
+## Principles
+
+- **Tokens are the contract.** Components never hardcode values. Consumers restyle by overriding semantic tokens.
+- **Container-first responsiveness.** An atom reshapes to its slot, not the viewport. Templates own viewport logic.
+- **Native platform, augmented.** Form controls implement `ElementInternals` — they submit, validate, and reset like native inputs.
+- **Tree-shake by default.** Subpath imports (`@ds/components/button`) bring only what you use. CSS rides with JS via Constructable Stylesheets.
+- **A11y is not a toggle.** Every interactive atom ships with role, ARIA state, keyboard interaction, and focus-visible styling verified by axe-core.
+
+## Atomic hierarchy
+
+Atoms → Molecules → Organisms → Templates → Pages. Each layer composes the ones below without leaking implementation.

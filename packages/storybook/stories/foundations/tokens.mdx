@@ -1,0 +1,27 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Tokens" />
+
+# Tokens
+
+Three tiers:
+
+1. **Primitive** — raw values (`--ds-color-ink-900`, `--ds-font-size-md`).
+2. **Semantic** — role-based, consumed by components (`--ds-color-fg`, `--ds-color-accent`, `--ds-space-4`).
+3. **Component** — fine-grained overrides (`--ds-button-bg`).
+
+CSS cascade layers guarantee consumer overrides win without `!important`:
+
+```css
+@layer ds.base, ds.theme, ds.components, ds.utilities;
+```
+
+## Theming
+
+Theming is data-attribute driven:
+
+```html
+<html data-ds-theme="dark">
+```
+
+Custom themes override only what they need. A `--ds-color-accent: #32d583` in your app stylesheet retints every component.
