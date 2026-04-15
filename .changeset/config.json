@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@ds/storybook", "vue-demo", "angular-demo", "ssr-demo", "tests"]
+  "ignore": ["@ds/storybook", "vue-demo", "ssr-demo", "tests"]
 }

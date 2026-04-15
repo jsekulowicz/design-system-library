@@ -1,7 +1,0 @@
-import 'zone.js';
-import '@ds/tokens/theme-default.css';
-import '@ds/components/define';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-
-bootstrapApplication(AppComponent).catch((error) => console.error(error));
