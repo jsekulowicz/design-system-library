@@ -1,4 +1,4 @@
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { selectStyles } from './select.styles.js';
@@ -19,6 +19,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
 
   @property({ type: Array }) options: SelectOption[] = [];
   @property() placeholder = '';
+  @property() label?: string;
+  @property() description?: string;
   @property({ type: Boolean, reflect: true }) invalid = false;
 
   #onChange = (event: Event): void => {
@@ -42,6 +44,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
         ?required=${this.required}
         ?disabled=${this.disabled}
         aria-invalid=${this.invalid ? 'true' : 'false'}
+        aria-label=${this.label ?? nothing}
+        aria-description=${this.description ?? nothing}
         @change=${this.#onChange}
       >
         ${this.placeholder

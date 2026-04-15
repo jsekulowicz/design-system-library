@@ -21,6 +21,7 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: () => html`
     <ds-select
+      label="Discipline"
       placeholder="Pick a discipline"
       .options=${options}
     ></ds-select>

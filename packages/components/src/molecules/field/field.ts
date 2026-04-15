@@ -38,14 +38,14 @@ export class DsField extends DsElement {
     if (!control) {
       return;
     }
-    control.setAttribute('aria-labelledby', this.#labelId);
-    const describers = [this.help ? this.#helpId : '', this.error ? this.#errorId : '']
-      .filter(Boolean)
-      .join(' ');
-    if (describers) {
-      control.setAttribute('aria-describedby', describers);
+    if (this.label) {
+      control.setAttribute('label', this.label);
+    }
+    const description = [this.help, this.error].filter(Boolean).join(' ');
+    if (description) {
+      control.setAttribute('description', description);
     } else {
-      control.removeAttribute('aria-describedby');
+      control.removeAttribute('description');
     }
   }
 

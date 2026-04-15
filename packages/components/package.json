@@ -81,8 +81,26 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run",
+    "size": "size-limit",
     "analyze": "cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir ."
   },
+  "size-limit": [
+    {
+      "name": "ds-button (subpath + define, gzip)",
+      "path": ["dist/atoms/button/index.js", "dist/atoms/button/define.js"],
+      "limit": "16 kB"
+    },
+    {
+      "name": "ds-text-field (subpath + define, gzip)",
+      "path": ["dist/atoms/text-field/index.js", "dist/atoms/text-field/define.js"],
+      "limit": "18 kB"
+    },
+    {
+      "name": "full barrel (define, gzip)",
+      "path": "dist/define.js",
+      "limit": "30 kB"
+    }
+  ],
   "dependencies": {
     "@ds/core": "workspace:*",
     "@ds/tokens": "workspace:*",
@@ -91,7 +109,10 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.4",
     "@open-wc/testing": "^4.0.0",
+    "@size-limit/esbuild": "^11.1.6",
+    "@size-limit/file": "^11.1.6",
     "jsdom": "^25.0.1",
+    "size-limit": "^11.1.6",
     "typescript": "^5.7.2",
     "vitest": "^2.1.5"
   }

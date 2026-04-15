@@ -41,7 +41,7 @@ export class DsButton extends DsElement {
   };
 
   #submitHostForm(): void {
-    const form = this.closest('form');
+    const form = this.closest('form') ?? this.#findShadowForm();
     if (!form) {
       return;
     }
@@ -50,6 +50,11 @@ export class DsButton extends DsElement {
     } else {
       form.reset();
     }
+  }
+
+  #findShadowForm(): HTMLFormElement | null {
+    const host = this.closest('ds-form');
+    return host?.shadowRoot?.querySelector('form') ?? null;
   }
 
   override render(): TemplateResult {

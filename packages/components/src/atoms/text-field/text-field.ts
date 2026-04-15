@@ -26,6 +26,8 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property({ attribute: 'max-length', type: Number }) maxLength?: number;
   @property() pattern?: string;
   @property() autocomplete?: string;
+  @property() label?: string;
+  @property() description?: string;
   @property({ type: Boolean, reflect: true }) invalid = false;
 
   @query('input') private input!: HTMLInputElement;
@@ -74,6 +76,8 @@ export class DsTextField extends FormControlMixin(DsElement) {
         pattern=${this.pattern ?? nothing}
         autocomplete=${this.autocomplete ?? nothing}
         aria-invalid=${this.invalid ? 'true' : 'false'}
+        aria-label=${this.label ?? nothing}
+        aria-description=${this.description ?? nothing}
         @input=${this.#onInput}
         @change=${this.#onChange}
       />

@@ -22,18 +22,34 @@ export class DsForm extends DsElement {
   #form?: HTMLFormElement;
 
   #onSubmit = (event: SubmitEvent): void => {
-    if (!this.#form) {
-      return;
-    }
-    const valid = this.noValidate || this.#form.checkValidity();
-    if (!valid) {
-      event.preventDefault();
+    event.preventDefault();
+    const controls = this.#collectControls();
+    const invalid = controls.some((control) => !control.checkValidity?.());
+    if (!this.noValidate && invalid) {
       this.emit('ds-invalid', { detail: null });
       return;
     }
-    const data = new FormData(this.#form);
-    this.emit('ds-submit', { detail: { data } });
+    this.emit('ds-submit', { detail: { data: this.#buildFormData(controls) } });
   };
+
+  #collectControls(): ReadonlyArray<{ name?: string; value?: unknown; checkValidity?: () => boolean }> {
+    return Array.from(this.querySelectorAll<HTMLElement>('[name]')) as never;
+  }
+
+  #buildFormData(controls: ReadonlyArray<{ name?: string; value?: unknown }>): FormData {
+    const data = new FormData();
+    for (const control of controls) {
+      if (!control.name) {
+        continue;
+      }
+      const value = control.value;
+      if (value == null || value === '') {
+        continue;
+      }
+      data.append(control.name, value instanceof File ? value : String(value));
+    }
+    return data;
+  }
 
   override firstUpdated(): void {
     this.#form = this.shadowRoot!.querySelector('form') ?? undefined;
