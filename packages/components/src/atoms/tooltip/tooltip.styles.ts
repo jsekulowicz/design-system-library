@@ -19,7 +19,7 @@ export const tooltipStyles = css`
     line-height: 1.4;
     padding: var(--ds-space-1) var(--ds-space-3);
     border-radius: var(--ds-radius-xs);
-    white-space: nowrap;
+    max-width: 16rem;
     pointer-events: none;
     opacity: 0;
     visibility: hidden;

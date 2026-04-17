@@ -8,14 +8,13 @@ const meta: Meta = {
   component: 'ds-tooltip',
   tags: ['autodocs'],
   argTypes: {
-    content: { control: 'text' },
     placement: {
       control: { type: 'inline-radio' },
       options: ['top', 'right', 'bottom', 'left'],
     },
     open: { control: 'boolean' },
   },
-  args: { content: 'Helpful context', placement: 'top', open: false },
+  args: { placement: 'top', open: false },
 };
 
 export default meta;
@@ -24,8 +23,22 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <div style="padding: 3rem; display: flex; justify-content: center;">
-      <ds-tooltip content=${args.content} placement=${args.placement} ?open=${args.open}>
+      <ds-tooltip placement=${args.placement} ?open=${args.open}>
         <ds-button variant="secondary">Hover me</ds-button>
+        <span slot="tip">Helpful context</span>
+      </ds-tooltip>
+    </div>
+  `,
+};
+
+export const RichContent: Story = {
+  render: () => html`
+    <div style="padding: 3rem; display: flex; justify-content: center;">
+      <ds-tooltip placement="top">
+        <ds-button variant="ghost" size="sm">What's this?</ds-button>
+        <span slot="tip">
+          <strong>Keyboard shortcut:</strong> ⌘K to open the command palette.
+        </span>
       </ds-tooltip>
     </div>
   `,
@@ -34,31 +47,21 @@ export const Playground: Story = {
 export const Placements: Story = {
   render: () => html`
     <div style="padding: 4rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-      <ds-tooltip content="Appears above" placement="top">
+      <ds-tooltip placement="top">
         <ds-button variant="ghost" size="sm">Top</ds-button>
+        <span slot="tip">Appears above</span>
       </ds-tooltip>
-      <ds-tooltip content="Appears below" placement="bottom">
+      <ds-tooltip placement="bottom">
         <ds-button variant="ghost" size="sm">Bottom</ds-button>
+        <span slot="tip">Appears below</span>
       </ds-tooltip>
-      <ds-tooltip content="Appears left" placement="left">
+      <ds-tooltip placement="left">
         <ds-button variant="ghost" size="sm">Left</ds-button>
+        <span slot="tip">Appears left</span>
       </ds-tooltip>
-      <ds-tooltip content="Appears right" placement="right">
+      <ds-tooltip placement="right">
         <ds-button variant="ghost" size="sm">Right</ds-button>
-      </ds-tooltip>
-    </div>
-  `,
-};
-
-export const OnIcon: Story = {
-  name: 'On icon-like trigger',
-  render: () => html`
-    <div style="padding: 3rem; display: flex; gap: 2rem; justify-content: center;">
-      <ds-tooltip content="Delete permanently" placement="top">
-        <ds-button variant="ghost" size="sm" aria-label="Delete">✕</ds-button>
-      </ds-tooltip>
-      <ds-tooltip content="Copy to clipboard" placement="top">
-        <ds-button variant="ghost" size="sm" aria-label="Copy">⎘</ds-button>
+        <span slot="tip">Appears right</span>
       </ds-tooltip>
     </div>
   `,
