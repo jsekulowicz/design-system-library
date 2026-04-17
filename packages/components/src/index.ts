@@ -1,4 +1,5 @@
 export { DsButton, type ButtonVariant, type ButtonSize, type ButtonType } from './atoms/button/index.js';
+export { DsTooltip, type TooltipPlacement } from './atoms/tooltip/index.js';
 export { DsBadge, type BadgeTone } from './atoms/badge/index.js';
 export { DsIcon, registerIcon, getIcon, type IconSize } from './atoms/icon/index.js';
 export { DsLink, type LinkVariant } from './atoms/link/index.js';

@@ -34,10 +34,10 @@ export const buttonStyles = css`
     outline: 2px solid transparent;
     box-shadow: var(--ds-shadow-focus);
   }
-  .btn:active:not(:disabled) {
+  .btn:active:not([aria-disabled='true']) {
     transform: translateY(1px);
   }
-  .btn:disabled {
+  .btn[aria-disabled='true'] {
     opacity: 0.45;
     cursor: not-allowed;
   }
@@ -45,10 +45,10 @@ export const buttonStyles = css`
     background: var(--ds-color-accent);
     color: var(--ds-color-accent-fg);
   }
-  :host([variant='primary']) .btn:hover:not(:disabled) {
+  :host([variant='primary']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-accent-hover);
   }
-  :host([variant='primary']) .btn:active:not(:disabled) {
+  :host([variant='primary']) .btn:active:not([aria-disabled='true']) {
     background: var(--ds-color-accent-active);
   }
   :host([variant='secondary']) .btn {
@@ -56,14 +56,14 @@ export const buttonStyles = css`
     color: var(--ds-color-fg);
     border-color: var(--ds-color-border-strong);
   }
-  :host([variant='secondary']) .btn:hover:not(:disabled) {
+  :host([variant='secondary']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-bg-subtle);
   }
   :host([variant='ghost']) .btn {
     background: transparent;
     color: var(--ds-color-fg);
   }
-  :host([variant='ghost']) .btn:hover:not(:disabled) {
+  :host([variant='ghost']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-bg-subtle);
   }
   :host([variant='danger']) .btn {

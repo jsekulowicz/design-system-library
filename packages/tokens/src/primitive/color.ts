@@ -21,9 +21,11 @@ export const color = {
     700: '#9A1B0C',
   },
   cobalt: {
-    100: '#E4EBF8',
-    500: '#1F4FD3',
-    700: '#0F2E87',
+    100: '#E8EEF9',
+    300: '#95AEDD',
+    500: '#4A72CC',
+    600: '#3860B8',
+    700: '#2750A2',
   },
   success: {
     100: '#E4F1EA',
@@ -42,7 +44,7 @@ export const color = {
     inkSubtle: 'rgba(11, 11, 12, 0.06)',
     paperHairline: 'rgba(242, 239, 234, 0.14)',
     paperSubtle: 'rgba(242, 239, 234, 0.06)',
-    focusRing: 'rgba(226, 52, 29, 0.35)',
+    focusRing: 'rgba(74, 114, 204, 0.35)',
   },
 } as const;
 

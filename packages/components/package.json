@@ -16,6 +16,11 @@
       "import": "./dist/atoms/button/index.js"
     },
     "./button/define": { "import": "./dist/atoms/button/define.js" },
+    "./tooltip": {
+      "types": "./dist/atoms/tooltip/index.d.ts",
+      "import": "./dist/atoms/tooltip/index.js"
+    },
+    "./tooltip/define": { "import": "./dist/atoms/tooltip/define.js" },
     "./icon": { "types": "./dist/atoms/icon/index.d.ts", "import": "./dist/atoms/icon/index.js" },
     "./icon/define": { "import": "./dist/atoms/icon/define.js" },
     "./text-field": {

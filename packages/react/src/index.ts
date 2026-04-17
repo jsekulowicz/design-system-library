@@ -12,3 +12,4 @@ export { Radio } from './ds-radio.js';
 export { Select } from './ds-select.js';
 export { SettingsPage } from './ds-settings-page.js';
 export { TextField } from './ds-text-field.js';
+export { Tooltip } from './ds-tooltip.js';

@@ -58,14 +58,13 @@ export class DsButton extends DsElement {
   }
 
   override render(): TemplateResult {
-    const busy = this.loading ? 'true' : 'false';
     return html`
       <button
         part="button"
         class="btn ds-focus-ring"
         type=${this.type}
-        ?disabled=${this.disabled || this.loading}
-        aria-busy=${busy}
+        aria-disabled=${this.disabled || this.loading ? 'true' : 'false'}
+        aria-busy=${this.loading ? 'true' : 'false'}
         aria-label=${this.label ?? ''}
         @click=${this.#handleClick}
       >

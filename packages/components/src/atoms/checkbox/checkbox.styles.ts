@@ -3,9 +3,7 @@ import { css } from 'lit';
 export const checkboxStyles = css`
   :host {
     display: inline-flex;
-    align-items: center;
     cursor: pointer;
-    gap: var(--ds-space-2);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-sm);
     color: var(--ds-color-fg);
@@ -13,6 +11,12 @@ export const checkboxStyles = css`
   :host([disabled]) {
     cursor: not-allowed;
     opacity: 0.5;
+  }
+  label {
+    cursor: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
   }
   .box {
     width: 1rem;
@@ -23,33 +27,33 @@ export const checkboxStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     transition: background var(--ds-duration-fast) var(--ds-easing-standard),
       border-color var(--ds-duration-fast) var(--ds-easing-standard);
-    flex-shrink: 0;
   }
   :host(:focus-within) .box {
     box-shadow: var(--ds-shadow-focus);
   }
-  :host([checked]) .box {
-    background: var(--ds-color-accent);
+  :host([checked]) .box,
+  :host([indeterminate]) .box {
+    background: var(--ds-color-accent-subtle);
     border-color: var(--ds-color-accent);
   }
-  :host([indeterminate]) .box {
-    background: var(--ds-color-accent);
-    border-color: var(--ds-color-accent);
+  :host([invalid]) .box {
+    border-color: var(--ds-color-danger);
   }
   .check {
     width: 0.7rem;
     height: 0.7rem;
-    color: var(--ds-color-accent-fg);
-    display: none;
+    color: var(--ds-color-accent);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity var(--ds-duration-fast) var(--ds-easing-standard);
   }
   :host([checked]) .check,
   :host([indeterminate]) .check {
-    display: block;
-  }
-  :host([invalid]) .box {
-    border-color: var(--ds-color-danger);
+    visibility: visible;
+    opacity: 1;
   }
   input {
     position: absolute;
@@ -61,8 +65,5 @@ export const checkboxStyles = css`
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
-  }
-  label {
-    cursor: inherit;
   }
 `;
