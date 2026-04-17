@@ -1,6 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
+import { LitElement } from 'lit';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { textFieldStyles } from './text-field.styles.js';
 
@@ -17,6 +18,10 @@ export type TextFieldSize = 'sm' | 'md' | 'lg';
  */
 export class DsTextField extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, textFieldStyles];
+  static override shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
 
   @property() type: TextFieldType = 'text';
   @property({ reflect: true }) size: TextFieldSize = 'md';

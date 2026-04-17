@@ -1,4 +1,5 @@
 import { html, nothing, type TemplateResult } from 'lit';
+import { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { selectStyles } from './select.styles.js';
@@ -16,6 +17,10 @@ export interface SelectOption {
  */
 export class DsSelect extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, selectStyles];
+  static override shadowRootOptions: ShadowRootInit = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  };
 
   @property({ type: Array }) options: SelectOption[] = [];
   @property() placeholder = '';

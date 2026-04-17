@@ -33,6 +33,10 @@ export class DsField extends DsElement {
     this.#wireControl();
   }
 
+  #focusControl = (): void => {
+    this.slotted[0]?.focus();
+  };
+
   #wireControl(): void {
     const control = this.slotted[0];
     if (!control) {
@@ -52,7 +56,7 @@ export class DsField extends DsElement {
   override render(): TemplateResult {
     const hasError = Boolean(this.error);
     return html`<div class="row">
-        <label id=${this.#labelId} part="label">
+        <label id=${this.#labelId} part="label" @click=${this.#focusControl}>
           ${this.label}
           ${this.optional ? html`<span class="optional">optional</span>` : nothing}
         </label>
