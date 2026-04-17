@@ -90,6 +90,7 @@
     "./settings-page/define": { "import": "./dist/pages/settings-page/define.js" }
   },
   "scripts": {
+    "dev": "tsc -p tsconfig.json --watch",
     "build": "tsc -p tsconfig.json && cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
