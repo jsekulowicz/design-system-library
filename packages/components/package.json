@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Lit web components for the Design System Library (atoms, molecules, organisms, templates, pages).",
   "type": "module",
-  "sideEffects": ["./dist/**/define.js", "./src/**/define.ts"],
+  "sideEffects": ["./dist/**/define.js", "./src/**/define.ts", "./dist/**/icons/*.js", "./src/**/icons/*.ts"],
   "files": ["dist", "custom-elements.json"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -23,6 +23,14 @@
     "./tooltip/define": { "import": "./dist/atoms/tooltip/define.js" },
     "./icon": { "types": "./dist/atoms/icon/index.d.ts", "import": "./dist/atoms/icon/index.js" },
     "./icon/define": { "import": "./dist/atoms/icon/define.js" },
+    "./icon/check": {
+      "types": "./dist/atoms/icon/icons/check.d.ts",
+      "import": "./dist/atoms/icon/icons/check.js"
+    },
+    "./icon/minus": {
+      "types": "./dist/atoms/icon/icons/minus.d.ts",
+      "import": "./dist/atoms/icon/icons/minus.js"
+    },
     "./text-field": {
       "types": "./dist/atoms/text-field/index.d.ts",
       "import": "./dist/atoms/text-field/index.js"

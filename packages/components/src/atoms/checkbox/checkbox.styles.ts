@@ -36,7 +36,7 @@ export const checkboxStyles = css`
   }
   :host([checked]) .box,
   :host([indeterminate]) .box {
-    background: var(--ds-color-accent-subtle);
+    background: var(--ds-color-accent);
     border-color: var(--ds-color-accent);
   }
   :host([invalid]) .box {
@@ -45,7 +45,7 @@ export const checkboxStyles = css`
   .check {
     width: 0.7rem;
     height: 0.7rem;
-    color: var(--ds-color-accent);
+    color: var(--ds-color-bg);
     visibility: hidden;
     opacity: 0;
     transition: opacity var(--ds-duration-fast) var(--ds-easing-standard);
