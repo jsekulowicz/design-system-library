@@ -18,6 +18,8 @@ export interface FormControlHost {
   setCustomValidity(message: string): void;
   setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
   setFormValue(value: FormDataEntryValue | null, state?: FormDataEntryValue): void;
+  setAriaLabel(label: string | null): void;
+  setAriaDescription(description: string | null): void;
 }
 
 type LitCtor = Constructor<LitElement> & { formAssociated?: boolean };
@@ -96,6 +98,14 @@ export function FormControlMixin<TBase extends LitCtor>(
         return;
       }
       this.#internals.setFormValue(value, state);
+    }
+
+    setAriaLabel(label: string | null): void {
+      this.#internals.ariaLabel = label;
+    }
+
+    setAriaDescription(description: string | null): void {
+      this.#internals.ariaDescription = description;
     }
 
     formResetCallback(): void {

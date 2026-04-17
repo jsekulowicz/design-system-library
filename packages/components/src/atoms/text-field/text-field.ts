@@ -1,7 +1,6 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
-import { LitElement } from 'lit';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { textFieldStyles } from './text-field.styles.js';
 
@@ -59,6 +58,15 @@ export class DsTextField extends FormControlMixin(DsElement) {
     this.invalid = !this.input.validity.valid;
   }
 
+  override updated(changed: Map<string, unknown>): void {
+    if (changed.has('label')) {
+      this.setAriaLabel(this.label ?? null);
+    }
+    if (changed.has('description')) {
+      this.setAriaDescription(this.description ?? null);
+    }
+  }
+
   override firstUpdated(): void {
     this.#syncValidity();
   }
@@ -81,8 +89,6 @@ export class DsTextField extends FormControlMixin(DsElement) {
         pattern=${this.pattern ?? nothing}
         autocomplete=${this.autocomplete ?? nothing}
         aria-invalid=${this.invalid ? 'true' : 'false'}
-        aria-label=${this.label ?? nothing}
-        aria-description=${this.description ?? nothing}
         @input=${this.#onInput}
         @change=${this.#onChange}
       />

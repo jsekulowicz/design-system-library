@@ -56,7 +56,7 @@ export class DsField extends DsElement {
   override render(): TemplateResult {
     const hasError = Boolean(this.error);
     return html`<div class="row">
-        <label id=${this.#labelId} part="label" @click=${this.#focusControl}>
+        <label id=${this.#labelId} part="label" aria-hidden="true" @click=${this.#focusControl}>
           ${this.label}
           ${this.optional ? html`<span class="optional">optional</span>` : nothing}
         </label>

@@ -1,5 +1,4 @@
-import { html, nothing, type TemplateResult } from 'lit';
-import { LitElement } from 'lit';
+import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { selectStyles } from './select.styles.js';
@@ -28,6 +27,15 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @property() description?: string;
   @property({ type: Boolean, reflect: true }) invalid = false;
 
+  override updated(changed: Map<string, unknown>): void {
+    if (changed.has('label')) {
+      this.setAriaLabel(this.label ?? null);
+    }
+    if (changed.has('description')) {
+      this.setAriaDescription(this.description ?? null);
+    }
+  }
+
   #onChange = (event: Event): void => {
     const target = event.target as HTMLSelectElement;
     this.value = target.value;
@@ -49,8 +57,6 @@ export class DsSelect extends FormControlMixin(DsElement) {
         ?required=${this.required}
         ?disabled=${this.disabled}
         aria-invalid=${this.invalid ? 'true' : 'false'}
-        aria-label=${this.label ?? nothing}
-        aria-description=${this.description ?? nothing}
         @change=${this.#onChange}
       >
         ${this.placeholder
