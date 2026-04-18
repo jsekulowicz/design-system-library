@@ -4,7 +4,8 @@
     "noEmit": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx"
   },
-  "include": [".storybook/**/*.ts", "stories/**/*.ts", "stories/**/*.tsx"]
+  "include": [".storybook/**/*.ts", ".storybook/**/*.tsx", "stories/**/*.ts", "stories/**/*.tsx"]
 }

@@ -19,9 +19,12 @@
     "@storybook/addon-a11y": "^8.4.7",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-themes": "^8.4.7",
+    "@storybook/blocks": "^8.6.14",
     "@storybook/web-components": "^8.4.7",
     "@storybook/web-components-vite": "^8.4.7",
+    "@types/react": "^18.3.28",
     "http-server": "^14.1.1",
+    "react": "^18.3.1",
     "storybook": "^8.4.7",
     "typescript": "^5.7.2",
     "vite": "^5.4.11"

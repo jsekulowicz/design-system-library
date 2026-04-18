@@ -13,6 +13,40 @@ body {
   padding: var(--ds-space-6, 1.5rem);
 }
 
+/* API reference tables (Slots / Events / CSS Parts / CSS Variables) */
+.ds-api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ds-font-size-sm, 0.875rem);
+  margin-bottom: var(--ds-space-8, 2rem);
+}
+.ds-api-table th {
+  text-align: left;
+  padding: var(--ds-space-2, 0.5rem) var(--ds-space-3, 0.75rem);
+  border-bottom: 2px solid var(--ds-color-border-strong, #d0cec9);
+  font-weight: var(--ds-font-weight-semibold, 600);
+  color: var(--ds-color-fg, #0b0b0c);
+  white-space: nowrap;
+}
+.ds-api-table td {
+  padding: var(--ds-space-2, 0.5rem) var(--ds-space-3, 0.75rem);
+  border-bottom: 1px solid var(--ds-color-border, rgba(11, 11, 12, 0.08));
+  color: var(--ds-color-fg-muted, #6b6968);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.ds-api-table td:first-child {
+  white-space: nowrap;
+}
+.ds-api-table code {
+  font-family: var(--ds-font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.875em;
+  background: var(--ds-color-bg-subtle, #f0eee9);
+  color: var(--ds-color-fg, #0b0b0c);
+  padding: 0.15em 0.4em;
+  border-radius: var(--ds-radius-xs, 2px);
+}
+
 /* Docs mode: story preview cards inherit the active DS theme background */
 #storybook-docs,
 .docs-story,
