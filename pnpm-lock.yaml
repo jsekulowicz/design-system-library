@@ -101,6 +101,9 @@ importers:
       '@size-limit/file':
         specifier: ^11.1.6
         version: 11.2.0(size-limit@11.2.0)
+      heroicons:
+        specifier: 2.2.0
+        version: 2.2.0
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1
@@ -2257,6 +2260,9 @@ packages:
   he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+
+  heroicons@2.2.0:
+    resolution: {integrity: sha512-yOwvztmNiBWqR946t+JdgZmyzEmnRMC2nxvHFC90bF1SUttwB6yJKYeme1JeEcBfobdOs827nCyiWBS2z/brog==}
 
   html-encoding-sniffer@3.0.0:
     resolution: {integrity: sha512-oWv4T4yJ52iKrufjnyZPkrN0CH3QnrUqdB6In1g5Fe1mia8GmF36gnfNySxoZtxD5+NmYw1EElVXiBk93UeskA==}
@@ -5503,6 +5509,8 @@ snapshots:
       function-bind: 1.1.2
 
   he@1.2.0: {}
+
+  heroicons@2.2.0: {}
 
   html-encoding-sniffer@3.0.0:
     dependencies:

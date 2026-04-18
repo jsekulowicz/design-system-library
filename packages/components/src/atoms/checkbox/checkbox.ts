@@ -58,6 +58,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
         @change=${this.#onInput}
       />
       <span class="box" part="box" aria-hidden="true">
+        <!-- Heroicons 2.2.0 — 16/solid: minus (indeterminate), check (checked) -->
         <svg class="check" viewBox="0 0 16 16" fill="currentColor">
           ${this.indeterminate
             ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`

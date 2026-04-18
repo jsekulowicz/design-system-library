@@ -184,6 +184,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
             ${triggerLabel}
           </span>
+          <!-- Heroicons 2.2.0 — 16/solid: chevron-down -->
           <svg class="caret" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
           </svg>
@@ -197,6 +198,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       ${this.description && !this.invalid ? html`<p class="description">${this.description}</p>` : nothing}
       ${this.invalid && this.error ? html`
         <p class="error" role="alert">
+          <!-- Heroicons 2.2.0 — 16/solid: exclamation-circle -->
           <svg class="error-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
           </svg>

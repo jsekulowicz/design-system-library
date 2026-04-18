@@ -121,6 +121,7 @@
     "lit": "^3.2.1"
   },
   "devDependencies": {
+    "heroicons": "2.2.0",
     "@custom-elements-manifest/analyzer": "^0.10.4",
     "@open-wc/testing": "^4.0.0",
     "@size-limit/esbuild": "^11.1.6",
