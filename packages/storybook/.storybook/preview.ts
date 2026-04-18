@@ -28,6 +28,7 @@ const preview: Preview = {
       themes: { light: 'light', dark: 'dark' },
       defaultTheme: 'light',
       attributeName: 'data-ds-theme',
+      parentSelector: 'html',
     }),
   ],
 };

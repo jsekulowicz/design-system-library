@@ -12,3 +12,11 @@ body {
 .sb-show-main.sb-main-padded {
   padding: var(--ds-space-6, 1.5rem);
 }
+
+/* Docs mode: story preview cards inherit the active DS theme background */
+#storybook-docs,
+.docs-story,
+.sb-story {
+  background: var(--ds-color-bg);
+  color: var(--ds-color-fg);
+}
