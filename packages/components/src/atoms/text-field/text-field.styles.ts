@@ -28,6 +28,7 @@ export const textFieldStyles = css`
   }
   :host([invalid]) .wrap {
     border-color: var(--ds-color-danger);
+    background: var(--ds-color-danger-subtle);
   }
   :host([invalid]) .wrap:focus-within {
     box-shadow: 0 0 0 3px rgba(178, 26, 10, 0.3);

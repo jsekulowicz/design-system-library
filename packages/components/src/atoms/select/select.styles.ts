@@ -14,9 +14,6 @@ export const selectStyles = css`
     line-height: 1.4;
     cursor: default;
   }
-  :host([invalid]) .label {
-    color: var(--ds-color-danger);
-  }
   .required {
     color: var(--ds-color-danger);
   }
@@ -56,6 +53,7 @@ export const selectStyles = css`
   }
   :host([invalid]) .trigger {
     border-color: var(--ds-color-danger);
+    background: var(--ds-color-danger-subtle);
   }
   :host([invalid]) .trigger:focus-visible {
     box-shadow: 0 0 0 3px rgba(178, 26, 10, 0.3);
@@ -83,9 +81,6 @@ export const selectStyles = css`
     color: var(--ds-color-fg-muted);
     flex-shrink: 0;
     transition: transform var(--ds-duration-fast) var(--ds-easing-standard);
-  }
-  :host([invalid]) .caret {
-    color: var(--ds-color-danger);
   }
   .trigger[aria-expanded='true'] .caret {
     transform: rotate(180deg);
@@ -144,8 +139,17 @@ export const selectStyles = css`
   }
   .error {
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-1);
     font-size: var(--ds-font-size-xs);
-    color: var(--ds-color-danger);
+    color: var(--ds-color-fg-muted);
     line-height: 1.4;
+  }
+  .error-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    color: var(--ds-color-danger);
   }
 `;
