@@ -5,6 +5,39 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Atoms/Button',
   component: 'ds-button',
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: `
+Primary, unambiguous action trigger. One per surface for the default path; everything else is secondary or ghost.
+
+## Anatomy
+
+A native \`<button>\` in shadow DOM, styled via \`::part(button)\`. Slots for \`leading\` / \`trailing\` adornments. \`type="submit"\` walks up to the closest \`<form>\` via \`requestSubmit()\` so it participates in native validation.
+
+## Do
+
+- Use one \`primary\` per surface — the clearest next step for the user.
+- Use \`ghost\` for low-emphasis actions that live among other content.
+- Pair \`loading\` with optimistic copy ("Saving…") so the label still communicates progress.
+
+## Don't
+
+- Don't stack two \`primary\` buttons in the same action row.
+- Don't use \`danger\` for destructive-but-recoverable actions — reserve it for irreversible ones.
+- Don't disable without explanation. Prefer keeping it enabled and surfacing the error.
+
+## Accessibility
+
+- \`aria-busy\` reflects \`loading\`.
+- Disabled + loading prevent \`ds-click\` from firing.
+- Focus ring uses \`:focus-visible\`; never suppressed.
+- Keyboard: \`Enter\` and \`Space\` activate via native \`<button>\` semantics.
+        `.trim(),
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: { type: 'select' },
