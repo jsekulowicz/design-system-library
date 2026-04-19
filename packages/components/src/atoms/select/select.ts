@@ -152,6 +152,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
 
   #onKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) return;
+    if ((event.target as Element).classList.contains('clear-btn')) return;
     const visibleCount = this.values.length - this._overflowCount;
 
     if (this.multiple && visibleCount > 0) {
