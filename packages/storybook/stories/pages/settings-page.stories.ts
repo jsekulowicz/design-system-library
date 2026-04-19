@@ -43,7 +43,7 @@ export const Composition: Story = {
           <ds-text-field value="Jan"></ds-text-field>
         </ds-field>
         <ds-field label="Timezone">
-          <ds-select .options=${timezones} value="waw"></ds-select>
+          <ds-select .options=${timezones} .value=${'waw'}></ds-select>
         </ds-field>
       </section>
       <section id="notifications" style="display:grid;gap:var(--ds-space-4)">

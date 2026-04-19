@@ -66,7 +66,7 @@ export const Preselected: Story = {
     <ds-select
       label="Discipline"
       .options=${options}
-      value="engineering"
+      .value=${'engineering'}
     ></ds-select>
   `,
 };
@@ -115,7 +115,7 @@ export const Required: Story = {
       placeholder="Pick a discipline"
       description="This field is required."
       ?required=${true}
-      value="engineering"
+      .value=${'engineering'}
       .options=${options}
     ></ds-select>
   `,
