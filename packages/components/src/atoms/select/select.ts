@@ -45,11 +45,16 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @state() private _scrollTop = 0;
   @state() private _focusedTileIndex = -1;
   @state() private _overflowCount = 0;
+  @state() private _hasLeading = false;
 
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
 
   private _docClickHandler?: (e: MouseEvent) => void;
+
+  #onLeadingChange = (e: Event): void => {
+    this._hasLeading = (e.target as HTMLSlotElement).assignedElements().length > 0;
+  };
 
   override updated(changed: PropertyValues): void {
     if (changed.has('label')) this.setAriaLabel(this.label || null);
@@ -251,6 +256,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
           aria-expanded=${this._open ? 'true' : 'false'} aria-controls="listbox"
           aria-activedescendant=${ifDefined(activeDesc)} aria-disabled=${this.disabled ? 'true' : 'false'}
           @click=${this.#toggle} @keydown=${this.#onTriggerKeydown}>
+          <span class="leading" ?hidden=${!this._hasLeading}>
+            <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
+          </span>
           ${hasTiles ? this.#renderTiles() : html`
             <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
               ${selectedOption?.label ?? this.placeholder}

@@ -60,6 +60,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @state() private _scrollTop = 0;
   @state() private _focusedTileIndex = -1;
   @state() private _overflowCount = 0;
+  @state() private _hasLeading = false;
 
   private _labelMap = new Map<string, string>();
 
@@ -68,6 +69,10 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @query('.search-input') private _inputEl?: HTMLInputElement;
 
   private _docClickHandler?: (e: MouseEvent) => void;
+
+  #onLeadingChange = (e: Event): void => {
+    this._hasLeading = (e.target as HTMLSlotElement).assignedElements().length > 0;
+  };
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('options')) {
@@ -302,6 +307,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       <div class="control-wrap">
         <div class="trigger${this.multiple ? ' trigger-multiple' : ''} ${this._open ? 'open' : ''}" part="trigger"
           @click=${() => { if (!this.disabled) this.#openDropdown(); }}>
+          <span class="leading" ?hidden=${!this._hasLeading}>
+            <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
+          </span>
           ${hasTiles ? this.#renderTiles() : nothing}
           <input
             id="search-input"

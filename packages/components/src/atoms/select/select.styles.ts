@@ -121,6 +121,16 @@ export const selectStyles = css`
     width: 10px;
     height: 10px;
   }
+  .leading {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ds-color-fg-muted);
+    margin-right: var(--ds-space-2);
+    flex-shrink: 0;
+  }
+  .leading[hidden] {
+    display: none;
+  }
   .trigger-label {
     flex: 1;
     overflow: hidden;

@@ -31,6 +31,10 @@
       "types": "./dist/atoms/icon/icons/minus.d.ts",
       "import": "./dist/atoms/icon/icons/minus.js"
     },
+    "./icon/magnifying-glass": {
+      "types": "./dist/atoms/icon/icons/magnifying-glass.d.ts",
+      "import": "./dist/atoms/icon/icons/magnifying-glass.js"
+    },
     "./text-field": {
       "types": "./dist/atoms/text-field/index.d.ts",
       "import": "./dist/atoms/text-field/index.js"

@@ -3,6 +3,8 @@ import { property, state } from 'lit/decorators.js';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import type { SelectOption } from '@ds/components/select';
 import '@ds/components/searchable-select/define';
+import '@ds/components/icon/define';
+import '@ds/components/icon/magnifying-glass';
 
 const COUNTRIES: SelectOption[] = [
   { value: 'af', label: '🇦🇫 Afghanistan' },
@@ -185,7 +187,9 @@ class SbCountrySearch extends LitElement {
         .value=${this._value}
         @ds-search=${this.#onSearch}
         @ds-change=${this.#onChange}
-      ></ds-searchable-select>
+      >
+        <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+      </ds-searchable-select>
     `;
   }
 }
@@ -263,7 +267,9 @@ class SbCountryMultiSearch extends LitElement {
         .values=${this._values}
         @ds-search=${this.#onSearch}
         @ds-change=${this.#onChange}
-      ></ds-searchable-select>
+      >
+        <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+      </ds-searchable-select>
     `;
   }
 }
@@ -305,7 +311,9 @@ class SbRequiredFrameworkSearch extends LitElement {
         .value=${this._value}
         @ds-search=${this.#onSearch}
         @ds-change=${this.#onChange}
-      ></ds-searchable-select>
+      >
+        <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+      </ds-searchable-select>
     `;
   }
 }
