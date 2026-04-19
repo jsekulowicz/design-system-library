@@ -207,6 +207,12 @@ const meta: Meta = {
   title: 'Atoms/SearchableSelect',
   component: 'ds-searchable-select',
   tags: ['autodocs'],
+  decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
+  parameters: {
+    docs: {
+      story: { height: '260px' },
+    },
+  },
   argTypes: {
     label: { control: 'text' },
     description: { control: 'text' },
