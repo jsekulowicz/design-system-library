@@ -134,8 +134,8 @@ export const searchableSelectStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1rem;
-    height: 1rem;
+    width: 1.2rem;
+    height: 1.2rem;
     padding: 0;
     border: none;
     background: none;
@@ -147,9 +147,13 @@ export const searchableSelectStyles = css`
   .clear-btn:hover {
     color: var(--ds-color-fg);
   }
+  .clear-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--ds-shadow-focus);
+  }
   .clear-btn svg {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: 1rem;
+    height: 1rem;
   }
   .caret {
     pointer-events: none;
