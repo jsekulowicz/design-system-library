@@ -61,6 +61,11 @@
       "import": "./dist/atoms/select/index.js"
     },
     "./select/define": { "import": "./dist/atoms/select/define.js" },
+    "./searchable-select": {
+      "types": "./dist/atoms/searchable-select/index.d.ts",
+      "import": "./dist/atoms/searchable-select/index.js"
+    },
+    "./searchable-select/define": { "import": "./dist/atoms/searchable-select/define.js" },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"

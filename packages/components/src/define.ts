@@ -9,6 +9,7 @@ import './atoms/checkbox-group/define.js';
 import './atoms/radio/define.js';
 import './atoms/radio-group/define.js';
 import './atoms/select/define.js';
+import './atoms/searchable-select/define.js';
 import './molecules/field/define.js';
 import './molecules/card/define.js';
 import './molecules/alert/define.js';

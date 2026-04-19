@@ -1,6 +1,6 @@
 import { css } from 'lit';
 
-export const selectStyles = css`
+export const searchableSelectStyles = css`
   :host {
     display: inline-flex;
     flex-direction: column;
@@ -20,11 +20,6 @@ export const selectStyles = css`
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-sm);
     padding: 0 var(--ds-space-3);
-    cursor: pointer;
-    text-align: left;
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
-    color: var(--ds-color-fg);
     transition:
       border-color var(--ds-duration-fast) var(--ds-easing-standard),
       box-shadow var(--ds-duration-fast) var(--ds-easing-standard);
@@ -32,12 +27,12 @@ export const selectStyles = css`
   .trigger:hover {
     border-color: var(--ds-color-fg-subtle);
   }
-  .trigger:focus-visible {
+  .trigger:focus-within {
     border-color: var(--ds-color-accent);
     box-shadow: var(--ds-shadow-focus);
     outline: none;
   }
-  .trigger[aria-expanded='true'] {
+  .trigger.open {
     border-color: var(--ds-color-accent);
     box-shadow: var(--ds-shadow-focus);
   }
@@ -45,7 +40,7 @@ export const selectStyles = css`
     border-color: var(--ds-color-danger);
     background: var(--ds-color-danger-subtle);
   }
-  :host([invalid]) .trigger:focus-visible {
+  :host([invalid]) .trigger:focus-within {
     box-shadow: 0 0 0 3px rgba(178, 26, 10, 0.3);
   }
   :host([disabled]) .trigger {
@@ -54,14 +49,22 @@ export const selectStyles = css`
     cursor: not-allowed;
     pointer-events: none;
   }
-  .trigger-label {
+  .search-input {
     flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--ds-color-fg);
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-font-size-sm);
+    min-width: 0;
+    cursor: pointer;
   }
-  .trigger-label.placeholder {
+  .search-input::placeholder {
     color: var(--ds-color-fg-muted);
+  }
+  .trigger.open .search-input {
+    cursor: text;
   }
   .caret {
     pointer-events: none;
@@ -72,7 +75,7 @@ export const selectStyles = css`
     flex-shrink: 0;
     transition: transform var(--ds-duration-fast) var(--ds-easing-standard);
   }
-  .trigger[aria-expanded='true'] .caret {
+  .trigger.open .caret {
     transform: rotate(180deg);
   }
   .listbox {
@@ -122,5 +125,12 @@ export const selectStyles = css`
     height: 1rem;
     flex-shrink: 0;
     color: var(--ds-color-accent);
+  }
+  .empty {
+    margin: 0;
+    padding: var(--ds-space-3);
+    font-size: var(--ds-font-size-sm);
+    color: var(--ds-color-fg-muted);
+    text-align: center;
   }
 `;
