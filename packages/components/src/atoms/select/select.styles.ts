@@ -57,10 +57,11 @@ export const selectStyles = css`
   .trigger-multiple {
     height: auto;
     min-height: var(--ds-size-md);
-    padding: var(--ds-space-1) var(--ds-space-3);
+    padding: 6px var(--ds-space-3);
     flex-wrap: wrap;
     align-items: center;
     gap: var(--ds-space-1);
+    overflow: visible;
   }
   .tiles {
     display: flex;

@@ -53,7 +53,7 @@ export const searchableSelectStyles = css`
   .trigger-multiple {
     height: auto;
     min-height: var(--ds-size-md);
-    padding: var(--ds-space-1) var(--ds-space-3);
+    padding: 6px var(--ds-space-3);
     gap: var(--ds-space-1);
   }
   .tiles {

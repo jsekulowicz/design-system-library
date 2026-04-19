@@ -60,6 +60,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @state() private _focusedTileIndex = -1;
   @state() private _overflowCount = 0;
 
+  private _labelMap = new Map<string, string>();
+
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
   @query('.search-input') private _inputEl?: HTMLInputElement;
@@ -71,6 +73,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     if (changed.has('description')) this.setAriaDescription(this.description || null);
     if (changed.has('_scrollTop') && this._listboxEl) {
       this._listboxEl.scrollTop = this._scrollTop;
+    }
+    if (changed.has('options')) {
+      for (const o of this.options) this._labelMap.set(o.value, o.label);
     }
     if ((changed.has('values') || changed.has('maxLines')) && this.multiple) this.#checkOverflow();
   }
@@ -105,6 +110,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     this._search = '';
     this._focusedIndex = -1;
     this._scrollTop = 0;
+    this.emit('ds-search', { detail: { query: '' } });
     if (this._docClickHandler) {
       document.removeEventListener('click', this._docClickHandler);
       this._docClickHandler = undefined;
@@ -222,7 +228,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
           +${this._overflowCount}
         </span>` : nothing}
       ${this.values.map((v, i) => {
-        const label = this.options.find(o => o.value === v)?.label ?? v;
+        const label = this._labelMap.get(v) ?? v;
         return html`
           <span class="tile${this._focusedTileIndex === i ? ' tile-focused' : ''}" data-value=${v}>
             <span class="tile-label">${label}</span>
@@ -261,9 +267,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
-    const selectedOption = this.options.find(o => o.value === current);
     const hasTiles = this.multiple && this.values.length > 0;
-    const displayValue = this._open ? this._search : (!this.multiple ? (selectedOption?.label ?? '') : '');
+    const displayValue = this._open ? this._search : (!this.multiple ? (this._labelMap.get(current) ?? '') : '');
     const activeDesc = this._open && this._focusedIndex >= 0 ? `option-${this._focusedIndex}` : undefined;
     return html`
       ${renderFieldLabel(this.label, this.required, 'search-input')}
