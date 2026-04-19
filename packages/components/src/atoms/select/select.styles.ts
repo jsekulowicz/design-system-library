@@ -130,6 +130,27 @@ export const selectStyles = css`
   .trigger-label.placeholder {
     color: var(--ds-color-fg-muted);
   }
+  .clear-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ds-color-fg-muted);
+    cursor: pointer;
+    border-radius: var(--ds-radius-xs);
+    flex-shrink: 0;
+  }
+  .clear-btn:hover {
+    color: var(--ds-color-fg);
+  }
+  .clear-btn svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
   .caret {
     pointer-events: none;
     width: 1.2rem;

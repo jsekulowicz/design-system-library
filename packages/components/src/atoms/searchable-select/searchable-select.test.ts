@@ -235,6 +235,59 @@ describe('<ds-searchable-select>', () => {
     });
   });
 
+  describe('clearable', () => {
+    it('does not show clear button when clearable is false', async () => {
+      const el = await mount({ value: 'react' });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
+
+    it('does not show clear button when there is nothing to clear', async () => {
+      const el = await mount({ clearable: true });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
+
+    it('shows clear button when a value is selected', async () => {
+      const el = await mount({ clearable: true, value: 'react' });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).not.toBeNull();
+    });
+
+    it('clears single value, resets search, emits ds-search and ds-change on click', async () => {
+      const el = await mount({ clearable: true, value: 'react' });
+      const changeEvents: CustomEvent[] = [];
+      const searchEvents: CustomEvent[] = [];
+      el.addEventListener('ds-change', (e) => changeEvents.push(e as CustomEvent));
+      el.addEventListener('ds-search', (e) => searchEvents.push(e as CustomEvent));
+      el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
+      await el.updateComplete;
+      expect(el.value).toBe('');
+      expect(changeEvents[0]?.detail).toEqual({ value: '' });
+      expect(searchEvents.at(-1)?.detail).toEqual({ query: '' });
+    });
+
+    it('shows clear button in multiple mode when values are selected', async () => {
+      const el = await mount({ clearable: true, multiple: true, values: ['react', 'vue'] });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).not.toBeNull();
+    });
+
+    it('clears all values in multiple mode and emits ds-change on click', async () => {
+      const el = await mount({ clearable: true, multiple: true, values: ['react', 'vue'] });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
+      await el.updateComplete;
+      expect(el.values).toEqual([]);
+      expect(el.value).toBe('');
+      expect(events[0]?.detail).toEqual({ values: [] });
+    });
+
+    it('does not open the dropdown when clear button is clicked', async () => {
+      const el = await mount({ clearable: true, value: 'react' });
+      el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
+    });
+  });
+
   describe('disabled', () => {
     it('does not open when disabled', async () => {
       const el = await mount({ disabled: true });
