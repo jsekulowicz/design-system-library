@@ -13,7 +13,7 @@ export const textFieldStyles = css`
     align-items: center;
     width: 100%;
     height: var(--ds-size-md);
-    padding: 0 var(--ds-space-2);
+    padding: 0 var(--ds-space-3);
     gap: var(--ds-space-2);
     background: var(--ds-color-bg);
     border: 1px solid var(--ds-color-border-strong);

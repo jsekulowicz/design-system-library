@@ -1,5 +1,5 @@
 import { html, nothing, LitElement, type TemplateResult } from 'lit';
-import { property, query } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
@@ -36,7 +36,18 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
 
+  @state() private _hasLeading = false;
+  @state() private _hasTrailing = false;
+
   @query('input') private input!: HTMLInputElement;
+
+  #onLeadingChange = (e: Event): void => {
+    this._hasLeading = (e.target as HTMLSlotElement).assignedElements().length > 0;
+  };
+
+  #onTrailingChange = (e: Event): void => {
+    this._hasTrailing = (e.target as HTMLSlotElement).assignedElements().length > 0;
+  };
 
   #onInput = (event: Event): void => {
     if (this.disabled) return;
@@ -71,7 +82,9 @@ export class DsTextField extends FormControlMixin(DsElement) {
     return html`
       ${this.label ? renderFieldLabel(this.label, this.required, 'input') : nothing}
       <span class="wrap" part="wrap">
-        <span class="adornment"><slot name="leading"></slot></span>
+        <span class="adornment" ?hidden=${!this._hasLeading}>
+          <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
+        </span>
         <input
           id="input"
           part="input"
@@ -89,7 +102,9 @@ export class DsTextField extends FormControlMixin(DsElement) {
           @input=${this.#onInput}
           @change=${this.#onChange}
         />
-        <span class="adornment"><slot name="trailing"></slot></span>
+        <span class="adornment" ?hidden=${!this._hasTrailing}>
+          <slot name="trailing" @slotchange=${this.#onTrailingChange}></slot>
+        </span>
       </span>
       ${renderSubtext(this.description, this.error, this.invalid)}
     `;
