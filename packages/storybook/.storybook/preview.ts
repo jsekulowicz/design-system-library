@@ -4,6 +4,7 @@ import { DocsPage } from './docs-page.js';
 import '@ds/tokens/theme-default.css';
 import '@ds/components/define';
 import './fonts.css';
+import './docs-theme.css';
 
 const preview: Preview = {
   parameters: {

@@ -1,0 +1,53 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as ButtonStories from './button.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+Primary, unambiguous action trigger. One per surface for the default path; everything else is secondary or ghost.
+
+## Anatomy
+
+A native `<button>` lives in shadow DOM, styled via `::part(button)`. Slots for `leading` / `trailing` adornments. `type="submit"` walks up to the closest `<form>` via `requestSubmit()` so it participates in native validation.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={ButtonStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={ButtonStories.Playground} />
+      <ComponentApi tag="ds-button" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use one <code>primary</code> per surface — the clearest next step for the user.</li>
+        <li>Use <code>ghost</code> for low-emphasis actions that live among other content.</li>
+        <li>Pair <code>loading</code> with optimistic copy ("Saving…") so the label still communicates progress.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't stack two <code>primary</code> buttons in the same action row.</li>
+        <li>Don't use <code>danger</code> for destructive-but-recoverable actions — reserve it for irreversible ones.</li>
+        <li>Don't disable without explanation. Prefer keeping it enabled and surfacing the error.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li><code>aria-busy</code> reflects <code>loading</code>.</li>
+        <li>Disabled + loading prevent <code>ds-click</code> from firing.</li>
+        <li>Focus ring uses <code>:focus-visible</code>; never suppressed.</li>
+        <li>Keyboard: <code>Enter</code> and <code>Space</code> activate via native <code>&lt;button&gt;</code> semantics.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

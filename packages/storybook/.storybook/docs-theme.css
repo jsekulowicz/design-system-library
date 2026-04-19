@@ -1,0 +1,195 @@
+/* Align Storybook docs chrome with @ds design tokens so docs respect theme.
+   Storybook's docs blocks inject emotion styles AFTER our CSS, so the
+   cascade loses without !important on the critical rules. */
+
+.sbdocs.sbdocs-wrapper,
+.sbdocs-wrapper {
+  background: var(--ds-color-bg) !important;
+  color: var(--ds-color-fg);
+}
+
+.sbdocs.sbdocs-content,
+.sbdocs-content {
+  color: var(--ds-color-fg);
+}
+
+.sbdocs h1,
+.sbdocs h2,
+.sbdocs h3,
+.sbdocs h4,
+.sbdocs h5,
+.sbdocs h6 {
+  color: var(--ds-color-fg) !important;
+  font-family: var(--ds-font-display);
+  letter-spacing: var(--ds-letter-spacing-display);
+}
+
+.sbdocs p,
+.sbdocs li {
+  color: var(--ds-color-fg);
+  font-family: var(--ds-font-body);
+}
+
+.sbdocs a {
+  color: var(--ds-color-accent);
+}
+
+.sbdocs code,
+.sbdocs pre {
+  font-family: var(--ds-font-mono);
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+  border-color: var(--ds-color-border);
+}
+
+.sbdocs hr {
+  border-color: var(--ds-color-border);
+}
+
+/* Story canvas — overflow:hidden clips inner chrome to the rounded corners,
+   preventing the quarter-circle gap at the edges. */
+.sbdocs .sbdocs-preview,
+.sbdocs .docs-story {
+  background: var(--ds-color-bg) !important;
+  border: 1px solid var(--ds-color-border) !important;
+  border-radius: var(--ds-radius-md) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.sbdocs .docs-story,
+.sbdocs .docs-story > div {
+  background: var(--ds-color-bg) !important;
+}
+
+/* Source toolbar (Show code + copy) — kill default white bg that shows as
+   a dot behind the rounded button. */
+.sbdocs .sb-bar,
+.sbdocs .sbdocs-preview .os-host,
+.sbdocs .docblock-code-toggle,
+.sbdocs .sbdocs-preview button {
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+  border-color: var(--ds-color-border) !important;
+  box-shadow: none !important;
+}
+
+/* ===== Storybook ArgsTable (Props) ===== */
+/* Emotion applies hash classes on thead/tbody/tr with hard-coded colors.
+   The stable parent is .docblock-argstable so we cascade broadly from it. */
+.sbdocs .docblock-argstable,
+.sbdocs .docblock-argstable-head,
+.sbdocs .docblock-argstable-body,
+.sbdocs .docblock-argstable tr,
+.sbdocs .docblock-argstable td,
+.sbdocs .docblock-argstable th {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--ds-color-fg) !important;
+  border-color: var(--ds-color-border-subtle) !important;
+  box-shadow: none !important;
+}
+
+.sbdocs .docblock-argstable-head th {
+  background: var(--ds-color-bg-subtle) !important;
+  background-color: var(--ds-color-bg-subtle) !important;
+  border-bottom: 1px solid var(--ds-color-border) !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable td *,
+.sbdocs .docblock-argstable th * {
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable code,
+.sbdocs .docblock-argstable pre {
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+  border-color: var(--ds-color-border) !important;
+}
+
+/* Type pill — scoped to Description (col 2) + Default (col 3) so the Name
+   span (col 1) and radio labels inside the Control cell (col 4) stay plain. */
+.sbdocs .docblock-argstable tbody td:nth-of-type(2) span[class],
+.sbdocs .docblock-argstable tbody td:nth-of-type(3) span[class] {
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+  border-color: var(--ds-color-border) !important;
+}
+
+/* Boolean toggle (Control cell). :has(> input[type="checkbox"]) selects the
+   boolean <label> without matching radio-group <label>s (which contain
+   input[type="radio"]). Active span uses the same :checked/:not(:checked)
+   sibling selector Storybook uses internally. */
+.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) {
+  background: var(--ds-color-bg-muted) !important;
+  border: 1px solid var(--ds-color-border) !important;
+}
+
+.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) span {
+  color: var(--ds-color-fg-muted) !important;
+  background: transparent !important;
+}
+
+.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) input:checked ~ span:last-of-type,
+.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) input:not(:checked) ~ span:first-of-type {
+  background: var(--ds-color-accent) !important;
+  color: var(--ds-color-accent-fg) !important;
+  box-shadow: none !important;
+}
+
+.sbdocs .docblock-argstable input:not([type="checkbox"]):not([type="radio"]),
+.sbdocs .docblock-argstable select,
+.sbdocs .docblock-argstable textarea {
+  background: var(--ds-color-bg) !important;
+  color: var(--ds-color-fg) !important;
+  border: 1px solid var(--ds-color-border) !important;
+}
+
+/* The boolean toggle uses an absolute, full-size checkbox as an invisible
+   click surface — keep it transparent so the True/False spans remain visible. */
+.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) > input[type="checkbox"] {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+/* ===== API tables rendered by ComponentApi ===== */
+.ds-api-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: var(--ds-space-3) 0 var(--ds-space-6);
+  background: transparent !important;
+  color: var(--ds-color-fg);
+}
+
+.ds-api-table thead th {
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+  border-bottom: 1px solid var(--ds-color-border) !important;
+}
+
+.ds-api-table tbody tr,
+.ds-api-table tbody td {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--ds-color-fg) !important;
+  border-bottom: 1px solid var(--ds-color-border-subtle) !important;
+}
+
+.ds-api-table th,
+.ds-api-table td {
+  padding: var(--ds-space-2) var(--ds-space-3);
+  text-align: left;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+.ds-api-table col.ds-api-col-name {
+  width: 30%;
+}
+
+.ds-api-table col.ds-api-col-description {
+  width: 70%;
+}

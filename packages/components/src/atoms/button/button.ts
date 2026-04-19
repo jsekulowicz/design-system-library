@@ -25,7 +25,6 @@ export class DsButton extends DsElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Boolean, reflect: true, attribute: 'full-width' }) fullWidth = false;
-  @property({ type: Boolean, reflect: true }) responsive = false;
   @property() label?: string;
 
   #handleClick = (event: MouseEvent): void => {
@@ -68,7 +67,20 @@ export class DsButton extends DsElement {
         aria-label=${this.label ?? ''}
         @click=${this.#handleClick}
       >
-        <slot name="leading"></slot>
+        ${this.loading
+          ? html`<svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-dasharray="56.55"
+                stroke-dashoffset="14.14"
+              />
+            </svg>`
+          : html`<slot name="leading"></slot>`}
         <slot></slot>
         <slot name="trailing"></slot>
       </button>

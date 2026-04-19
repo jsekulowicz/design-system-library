@@ -9,7 +9,7 @@ export const buttonStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--ds-space-2);
+    gap: var(--ds-space-1);
     padding: 0 var(--ds-space-5);
     height: var(--ds-size-md);
     min-width: var(--ds-size-md);
@@ -23,7 +23,8 @@ export const buttonStyles = css`
     cursor: pointer;
     background: transparent;
     color: var(--ds-color-fg);
-    transition: background var(--ds-duration-fast) var(--ds-easing-standard),
+    transition:
+      background var(--ds-duration-fast) var(--ds-easing-standard),
       color var(--ds-duration-fast) var(--ds-easing-standard),
       border-color var(--ds-duration-fast) var(--ds-easing-standard),
       transform var(--ds-duration-fast) var(--ds-easing-standard);
@@ -37,9 +38,23 @@ export const buttonStyles = css`
   .btn:active:not([aria-disabled='true']) {
     transform: translateY(1px);
   }
-  .btn[aria-disabled='true'] {
+  :host([disabled]) .btn {
     opacity: 0.45;
     cursor: not-allowed;
+  }
+  :host([loading]) .btn {
+    cursor: wait;
+  }
+  .spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    animation: ds-btn-spin 0.75s linear infinite;
+  }
+  @keyframes ds-btn-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
   :host([variant='primary']) .btn {
     background: var(--ds-color-accent);
@@ -86,10 +101,5 @@ export const buttonStyles = css`
   }
   :host([full-width]) .btn {
     width: 100%;
-  }
-  @container (max-width: 360px) {
-    :host([responsive]) .btn {
-      padding: 0 var(--ds-space-3);
-    }
   }
 `;
