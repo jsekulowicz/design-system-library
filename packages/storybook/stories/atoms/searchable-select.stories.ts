@@ -210,7 +210,7 @@ const meta: Meta = {
   decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
   parameters: {
     docs: {
-      story: { height: '260px' },
+      story: { height: '360px' },
     },
   },
   argTypes: {
