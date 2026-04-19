@@ -91,6 +91,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   }
 
   #openDropdown = (): void => {
+    if (this._open) return;
     this._open = true;
     this._search = '';
     this._focusedTileIndex = -1;
@@ -273,7 +274,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     return html`
       ${renderFieldLabel(this.label, this.required, 'search-input')}
       <div class="control-wrap">
-        <div class="trigger${this.multiple ? ' trigger-multiple' : ''} ${this._open ? 'open' : ''}" part="trigger">
+        <div class="trigger${this.multiple ? ' trigger-multiple' : ''} ${this._open ? 'open' : ''}" part="trigger"
+          @click=${() => { if (!this.disabled) this.#openDropdown(); }}>
           ${hasTiles ? this.#renderTiles() : nothing}
           <input
             id="search-input"
