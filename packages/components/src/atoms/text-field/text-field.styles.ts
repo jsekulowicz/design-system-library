@@ -70,4 +70,7 @@ export const textFieldStyles = css`
     color: var(--ds-color-fg-muted);
     font-size: var(--ds-font-size-sm);
   }
+  .adornment[hidden] {
+    display: none;
+  }
 `;
