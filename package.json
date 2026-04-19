@@ -11,7 +11,7 @@
   "scripts": {
     "build": "pnpm -r --filter \"./packages/*\" build",
     "build:tokens": "pnpm --filter @ds/tokens build",
-    "dev": "pnpm --filter @ds/components build && pnpm --parallel --filter \"@ds/components\" --filter \"@ds/storybook\" dev",
+    "dev": "pnpm --filter @ds/core build && pnpm --filter @ds/components build && pnpm --parallel --filter \"@ds/core\" --filter \"@ds/components\" --filter \"@ds/storybook\" dev",
     "typecheck": "pnpm -r --parallel typecheck",
     "lint": "pnpm -r --parallel lint",
     "test": "pnpm -r --parallel test",
