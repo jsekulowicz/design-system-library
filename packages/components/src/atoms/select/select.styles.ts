@@ -125,7 +125,7 @@ export const selectStyles = css`
     display: inline-flex;
     align-items: center;
     color: var(--ds-color-fg-muted);
-    margin-right: var(--ds-space-2);
+    margin-right: var(--ds-space-1);
     flex-shrink: 0;
   }
   .leading[hidden] {
