@@ -123,6 +123,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
     }
   };
 
+  #onClearKeydown = (e: KeyboardEvent): void => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.stopPropagation();
+      e.preventDefault();
+      this.#clear();
+    }
+  };
+
   #removeTile = (value: string): void => {
     this.values = this.values.filter(v => v !== value);
     this.value = this.values.join(',');
@@ -234,7 +242,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const selectedOption = this.options.find(o => o.value === current);
     const activeDesc = this._open && this._focusedIndex >= 0 ? `option-${this._focusedIndex}` : undefined;
     const hasTiles = this.multiple && this.values.length > 0;
-    const hasClearBtn = this.clearable && (this.multiple ? this.values.length > 0 : current !== '');
+    const hasClearBtn = (this.clearable || this.required) && (this.multiple ? this.values.length > 0 : current !== '');
     return html`
       ${renderFieldLabel(this.label, this.required, 'trigger')}
       <div class="control-wrap">
@@ -249,7 +257,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
             </span>`}
           ${hasClearBtn ? html`
             <button class="clear-btn" type="button" aria-label="Clear selection"
-              @click=${(e: Event) => { e.stopPropagation(); this.#clear(); }}>
+              @click=${(e: Event) => { e.stopPropagation(); this.#clear(); }}
+              @keydown=${this.#onClearKeydown}>
               <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                 <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
               </svg>

@@ -108,6 +108,19 @@ export const Disabled: Story = {
   `,
 };
 
+export const Required: Story = {
+  render: () => html`
+    <ds-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      description="This field is required."
+      ?required=${true}
+      value="engineering"
+      .options=${options}
+    ></ds-select>
+  `,
+};
+
 export const Multiple: Story = {
   name: 'Multiple selection',
   parameters: { docs: { story: { height: '320px' } } },

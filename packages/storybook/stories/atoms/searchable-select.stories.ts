@@ -272,6 +272,52 @@ if (!customElements.get('sb-country-multi-search')) {
   customElements.define('sb-country-multi-search', SbCountryMultiSearch);
 }
 
+const FRAMEWORKS: SelectOption[] = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'angular', label: 'Angular' },
+  { value: 'solid', label: 'Solid' },
+];
+
+class SbRequiredFrameworkSearch extends LitElement {
+  @state() private _options = FRAMEWORKS;
+  @state() private _value = 'react';
+
+  #onSearch = (e: CustomEvent<{ query: string }>): void => {
+    const q = e.detail.query.toLowerCase();
+    this._options = q ? FRAMEWORKS.filter(f => f.label.toLowerCase().includes(q)) : FRAMEWORKS;
+  };
+
+  #onChange = (e: CustomEvent<{ value: string }>): void => {
+    this._value = e.detail.value;
+  };
+
+  override render() {
+    return html`
+      <ds-searchable-select
+        label="Framework"
+        placeholder="Select a framework"
+        search-placeholder="Search frameworks…"
+        description="This field is required."
+        ?required=${true}
+        .options=${this._options}
+        .value=${this._value}
+        @ds-search=${this.#onSearch}
+        @ds-change=${this.#onChange}
+      ></ds-searchable-select>
+    `;
+  }
+}
+
+if (!customElements.get('sb-required-framework-search')) {
+  customElements.define('sb-required-framework-search', SbRequiredFrameworkSearch);
+}
+
+export const Required: Story = {
+  render: () => html`<sb-required-framework-search></sb-required-framework-search>`,
+};
+
 export const MultipleCountries: Story = {
   name: 'Multiple — Countries (maxLines=2)',
   parameters: { docs: { story: { height: '420px' } } },

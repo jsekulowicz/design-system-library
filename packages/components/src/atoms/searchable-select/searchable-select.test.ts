@@ -286,6 +286,25 @@ describe('<ds-searchable-select>', () => {
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
+
+    it('Enter on focused clear button clears value without opening the dropdown', async () => {
+      const el = await mount({ clearable: true, value: 'react' });
+      const clearBtn = el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!;
+      clearBtn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      await el.updateComplete;
+      expect(el.value).toBe('');
+      expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
+    });
+
+    it('shows clear button when required and a value is selected', async () => {
+      const el = await mount({ required: true, value: 'react' });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).not.toBeNull();
+    });
+
+    it('does not show clear button when required but nothing is selected', async () => {
+      const el = await mount({ required: true });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
   });
 
   describe('disabled', () => {

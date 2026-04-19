@@ -248,15 +248,20 @@ describe('<ds-select>', () => {
       const clearBtn = el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!;
       clearBtn.focus();
 
-      // keydown Enter bubbles from clear button to trigger — must not open the dropdown
       clearBtn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
       await el.updateComplete;
-      expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
-
-      // browser fires a click on the focused button when Enter is pressed
-      clearBtn.click();
-      await el.updateComplete;
       expect(el.value).toBe('');
+      expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
+    });
+
+    it('shows clear button when required and a value is selected', async () => {
+      const el = await mount({ required: true, value: 'react' });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).not.toBeNull();
+    });
+
+    it('does not show clear button when required but nothing is selected', async () => {
+      const el = await mount({ required: true });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
     });
   });
 
