@@ -133,4 +133,9 @@ export const searchableSelectStyles = css`
     color: var(--ds-color-fg-muted);
     text-align: center;
   }
+  mark.match {
+    background: none;
+    color: var(--ds-color-accent);
+    font-weight: var(--ds-font-weight-medium);
+  }
 `;

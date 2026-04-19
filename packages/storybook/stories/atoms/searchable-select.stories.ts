@@ -160,15 +160,6 @@ const COUNTRIES: SelectOption[] = [
   { value: 'zw', label: '🇿🇼 Zimbabwe' },
 ];
 
-const SIMPLE_OPTIONS: SelectOption[] = [
-  { value: 'react', label: 'React' },
-  { value: 'vue', label: 'Vue' },
-  { value: 'angular', label: 'Angular' },
-  { value: 'svelte', label: 'Svelte' },
-  { value: 'solid', label: 'Solid' },
-  { value: 'lit', label: 'Lit' },
-];
-
 class SbCountrySearch extends LitElement {
   @state() private _options = COUNTRIES;
   @state() private _value = '';
@@ -237,22 +228,6 @@ const meta: Meta = {
 
 export default meta;
 type Story = StoryObj;
-
-export const Playground: Story = {
-  render: (args) => html`
-    <ds-searchable-select
-      label=${args.label}
-      description=${args.description || ''}
-      error=${args.error || ''}
-      placeholder=${args.placeholder}
-      search-placeholder=${args.searchPlaceholder}
-      .options=${SIMPLE_OPTIONS}
-      ?disabled=${args.disabled}
-      ?required=${args.required}
-      ?invalid=${args.invalid}
-    ></ds-searchable-select>
-  `,
-};
 
 export const Countries: Story = {
   name: 'Countries (virtualized, 160+ items)',

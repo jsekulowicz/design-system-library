@@ -8,6 +8,22 @@ import { renderVirtualItems, ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/vi
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import type { SelectOption } from '../select/select.js';
 
+function highlightMatch(label: string, query: string): TemplateResult {
+  if (!query) return html`${label}`;
+  const lower = label.toLowerCase();
+  const q = query.toLowerCase();
+  const parts: Array<TemplateResult | string> = [];
+  let pos = 0;
+  let idx: number;
+  while ((idx = lower.indexOf(q, pos)) !== -1) {
+    if (idx > pos) parts.push(label.slice(pos, idx));
+    parts.push(html`<mark class="match">${label.slice(idx, idx + q.length)}</mark>`);
+    pos = idx + q.length;
+  }
+  if (pos < label.length) parts.push(label.slice(pos));
+  return html`${parts}`;
+}
+
 /**
  * @tag ds-searchable-select
  * @summary Combobox with a text search input. Emits ds-search so the consumer can filter options.
@@ -153,7 +169,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
         aria-selected=${isSelected} aria-disabled=${option.disabled ?? false}
         @click=${() => this.#selectOption(option)}
         @mouseenter=${() => { this._focusedIndex = index; }}>
-        <span class="option-label">${option.label}</span>
+        <span class="option-label">${highlightMatch(option.label, this._search)}</span>
         ${isSelected ? html`
           <svg class="check-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
