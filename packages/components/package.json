@@ -35,6 +35,18 @@
       "types": "./dist/atoms/icon/icons/magnifying-glass.d.ts",
       "import": "./dist/atoms/icon/icons/magnifying-glass.js"
     },
+    "./icon/home": {
+      "types": "./dist/atoms/icon/icons/home.d.ts",
+      "import": "./dist/atoms/icon/icons/home.js"
+    },
+    "./icon/clock": {
+      "types": "./dist/atoms/icon/icons/clock.d.ts",
+      "import": "./dist/atoms/icon/icons/clock.js"
+    },
+    "./icon/cog-6-tooth": {
+      "types": "./dist/atoms/icon/icons/cog-6-tooth.d.ts",
+      "import": "./dist/atoms/icon/icons/cog-6-tooth.js"
+    },
     "./text-field": {
       "types": "./dist/atoms/text-field/index.d.ts",
       "import": "./dist/atoms/text-field/index.js"
@@ -70,6 +82,11 @@
       "import": "./dist/atoms/searchable-select/index.js"
     },
     "./searchable-select/define": { "import": "./dist/atoms/searchable-select/define.js" },
+    "./tabs": {
+      "types": "./dist/atoms/tabs/index.d.ts",
+      "import": "./dist/atoms/tabs/index.js"
+    },
+    "./tabs/define": { "import": "./dist/atoms/tabs/define.js" },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"
