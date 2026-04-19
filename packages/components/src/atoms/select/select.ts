@@ -150,7 +150,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (next >= 0 && next < this.options.length) { this._focusedIndex = next; this.#scrollToFocused(); }
   };
 
-  #onKeydown = (event: KeyboardEvent): void => {
+  #onTriggerKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) return;
     if ((event.target as Element).classList.contains('clear-btn')) return;
     const visibleCount = this.values.length - this._overflowCount;
@@ -175,8 +175,11 @@ export class DsSelect extends FormControlMixin(DsElement) {
     }
 
     if (event.key === 'Escape') { this.#close(); return; }
-    if (!this._open && (event.key === 'ArrowDown' || event.key === 'Enter')) {
-      this._focusedTileIndex = -1; this.#openDropdown(); return;
+    if (!this._open && (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      this._focusedTileIndex = -1;
+      this.#openDropdown();
+      return;
     }
     if (event.key === 'ArrowDown') { event.preventDefault(); this.#moveFocus(1); }
     else if (event.key === 'ArrowUp') { event.preventDefault(); this.#moveFocus(-1); }
@@ -235,11 +238,11 @@ export class DsSelect extends FormControlMixin(DsElement) {
     return html`
       ${renderFieldLabel(this.label, this.required, 'trigger')}
       <div class="control-wrap">
-        <button id="trigger" class="trigger${this.multiple ? ' trigger-multiple' : ''}" part="trigger"
-          type="button" role="combobox" aria-haspopup="listbox"
+        <div id="trigger" class="trigger${this.multiple ? ' trigger-multiple' : ''}" part="trigger"
+          tabindex=${this.disabled ? '-1' : '0'} role="combobox" aria-haspopup="listbox"
           aria-expanded=${this._open ? 'true' : 'false'} aria-controls="listbox"
           aria-activedescendant=${ifDefined(activeDesc)} aria-disabled=${this.disabled ? 'true' : 'false'}
-          @click=${this.#toggle} @keydown=${this.#onKeydown}>
+          @click=${this.#toggle} @keydown=${this.#onTriggerKeydown}>
           ${hasTiles ? this.#renderTiles() : html`
             <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
               ${selectedOption?.label ?? this.placeholder}
@@ -255,7 +258,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           <svg class="caret" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
           </svg>
-        </button>
+        </div>
         ${this._open ? html`
           <div id="listbox" class="listbox" part="listbox" role="listbox"
             aria-multiselectable=${this.multiple ? 'true' : 'false'} @scroll=${this.#onScroll}>

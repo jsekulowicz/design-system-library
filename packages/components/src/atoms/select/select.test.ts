@@ -238,6 +238,26 @@ describe('<ds-select>', () => {
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
+
+    it('Enter on focused clear button clears value without opening the dropdown', async () => {
+      const el = await mount({ clearable: true });
+      await openDropdown(el);
+      getOption(el, 'React').click();
+      await el.updateComplete;
+
+      const clearBtn = el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!;
+      clearBtn.focus();
+
+      // keydown Enter bubbles from clear button to trigger — must not open the dropdown
+      clearBtn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
+
+      // browser fires a click on the focused button when Enter is pressed
+      clearBtn.click();
+      await el.updateComplete;
+      expect(el.value).toBe('');
+    });
   });
 
   describe('disabled', () => {
