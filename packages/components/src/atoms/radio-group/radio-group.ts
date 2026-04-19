@@ -37,15 +37,19 @@ export class DsRadioGroup extends DsElement {
     this.removeEventListener('ds-change', this.#onRadioChange);
   }
 
-  override updated(): void {
-    this.#wireRadios();
+  override updated(changed: Map<string, unknown>): void {
+    this.#wireRadios(changed.has('value'));
   }
 
-  #wireRadios = (): void => {
+  #wireRadios = (syncChecked = false): void => {
     this._radios.forEach(radio => {
       if (this.name) radio.setAttribute('name', this.name);
       this.required ? radio.setAttribute('required', '') : radio.removeAttribute('required');
       this.disabled ? radio.setAttribute('disabled', '') : radio.removeAttribute('disabled');
+      if (syncChecked) {
+        const rv = radio.getAttribute('radiovalue') ?? '';
+        rv === this.value ? radio.setAttribute('checked', '') : radio.removeAttribute('checked');
+      }
     });
   };
 

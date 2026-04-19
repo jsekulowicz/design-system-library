@@ -37,15 +37,19 @@ export class DsCheckboxGroup extends DsElement {
     this.removeEventListener('ds-change', this.#onCheckboxChange);
   }
 
-  override updated(): void {
-    this.#wireCheckboxes();
+  override updated(changed: Map<string, unknown>): void {
+    this.#wireCheckboxes(changed.has('value'));
   }
 
-  #wireCheckboxes = (): void => {
+  #wireCheckboxes = (syncChecked = false): void => {
     this._checkboxes.forEach(el => {
       if (this.name) el.setAttribute('name', this.name);
       this.required ? el.setAttribute('required', '') : el.removeAttribute('required');
       this.disabled ? el.setAttribute('disabled', '') : el.removeAttribute('disabled');
+      if (syncChecked) {
+        const cv = el.getAttribute('checkboxvalue') ?? '';
+        this.value.includes(cv) ? el.setAttribute('checked', '') : el.removeAttribute('checked');
+      }
     });
   };
 
