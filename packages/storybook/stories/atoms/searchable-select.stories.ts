@@ -213,6 +213,7 @@ const meta: Meta = {
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
+    clearable: { control: 'boolean' },
   },
   args: {
     label: 'Framework',
@@ -223,6 +224,7 @@ const meta: Meta = {
     disabled: false,
     required: false,
     invalid: false,
+    clearable: false,
   },
 };
 

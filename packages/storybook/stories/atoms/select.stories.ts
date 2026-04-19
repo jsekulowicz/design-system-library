@@ -27,6 +27,7 @@ const meta: Meta = {
     invalid: { control: 'boolean' },
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
+    clearable: { control: 'boolean' },
     options: { control: false },
   },
   args: {
@@ -37,6 +38,7 @@ const meta: Meta = {
     invalid: false,
     disabled: false,
     required: false,
+    clearable: false,
   },
 };
 
@@ -53,6 +55,7 @@ export const Playground: Story = {
       ?invalid=${args.invalid}
       ?disabled=${args.disabled}
       ?required=${args.required}
+      ?clearable=${args.clearable}
       .options=${options}
     ></ds-select>
   `,
