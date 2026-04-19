@@ -29,8 +29,11 @@ function getInput(el: DsSearchableSelect): HTMLInputElement {
   return el.shadowRoot!.querySelector('.search-input')!;
 }
 
-function getOptions(el: DsSearchableSelect): NodeListOf<HTMLElement> {
-  return el.shadowRoot!.querySelectorAll('.option');
+function getOption(el: DsSearchableSelect, label: string): HTMLElement {
+  const options = el.shadowRoot!.querySelectorAll<HTMLElement>('.option');
+  const found = Array.from(options).find(o => o.querySelector('.option-label')?.textContent?.trim() === label);
+  if (!found) throw new Error(`Option "${label}" not found in listbox`);
+  return found;
 }
 
 function clickTrigger(el: DsSearchableSelect): void {
@@ -73,7 +76,7 @@ describe('<ds-searchable-select>', () => {
       const el = await mount();
       await openDropdown(el);
       // Select an option to close the dropdown (input stays focused)
-      getOptions(el)[0].click();
+      getOption(el, 'React').click();
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
       // Click trigger again — no focus event fires since input is still focused
@@ -89,7 +92,7 @@ describe('<ds-searchable-select>', () => {
       const events: CustomEvent[] = [];
       el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
       await openDropdown(el);
-      getOptions(el)[1].click(); // Vue
+      getOption(el, 'Vue').click();
       await el.updateComplete;
       expect(el.value).toBe('vue');
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
@@ -108,8 +111,7 @@ describe('<ds-searchable-select>', () => {
     it('does not select disabled option', async () => {
       const el = await mount();
       await openDropdown(el);
-      const angular = getOptions(el)[3];
-      angular.click();
+      getOption(el, 'Angular').click();
       await el.updateComplete;
       expect(el.value).not.toBe('angular');
     });
@@ -123,7 +125,7 @@ describe('<ds-searchable-select>', () => {
     it('preserves selected label in closed state even after options are filtered', async () => {
       const el = await mount();
       await openDropdown(el);
-      getOptions(el)[0].click(); // React
+      getOption(el, 'React').click();
       await el.updateComplete;
       // Simulate consumer filtering options (React is excluded)
       el.options = [{ value: 'vue', label: 'Vue' }, { value: 'svelte', label: 'Svelte' }];
@@ -160,7 +162,7 @@ describe('<ds-searchable-select>', () => {
       const queries: string[] = [];
       el.addEventListener('ds-search', (e) => queries.push((e as CustomEvent).detail.query));
       await openDropdown(el);
-      getOptions(el)[0].click();
+      getOption(el, 'React').click();
       await el.updateComplete;
       expect(queries.at(-1)).toBe('');
     });
@@ -172,12 +174,12 @@ describe('<ds-searchable-select>', () => {
       const events: CustomEvent[] = [];
       el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
       await openDropdown(el);
-      getOptions(el)[0].click(); // React
+      getOption(el, 'React').click();
       await el.updateComplete;
-      getOptions(el)[1].click(); // Vue
+      getOption(el, 'Vue').click();
       await el.updateComplete;
       expect(el.values).toEqual(['react', 'vue']);
-      getOptions(el)[0].click(); // deselect React
+      getOption(el, 'React').click(); // deselect
       await el.updateComplete;
       expect(el.values).toEqual(['vue']);
       expect(events.at(-1)?.detail).toEqual({ values: ['vue'] });
@@ -186,7 +188,7 @@ describe('<ds-searchable-select>', () => {
     it('keeps dropdown open after selecting in multiple mode', async () => {
       const el = await mount({ multiple: true });
       await openDropdown(el);
-      getOptions(el)[0].click();
+      getOption(el, 'React').click();
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
     });
@@ -213,7 +215,7 @@ describe('<ds-searchable-select>', () => {
     it('preserves tile labels when options are filtered', async () => {
       const el = await mount({ multiple: true });
       await openDropdown(el);
-      getOptions(el)[0].click(); // React
+      getOption(el, 'React').click();
       await el.updateComplete;
       // Consumer filters out React from the options list
       el.options = [{ value: 'vue', label: 'Vue' }, { value: 'svelte', label: 'Svelte' }];
@@ -227,7 +229,7 @@ describe('<ds-searchable-select>', () => {
       const queries: string[] = [];
       el.addEventListener('ds-search', (e) => queries.push((e as CustomEvent).detail.query));
       await openDropdown(el);
-      getOptions(el)[0].click();
+      getOption(el, 'React').click();
       await el.updateComplete;
       expect(queries.at(-1)).toBe('');
     });
