@@ -39,6 +39,7 @@ export const Playground: Story = {
       name=${args.name}
       description=${args.description || ''}
       error=${args.error || ''}
+      .value=${args.value}
       ?required=${args.required}
       ?disabled=${args.disabled}
       ?invalid=${args.invalid}

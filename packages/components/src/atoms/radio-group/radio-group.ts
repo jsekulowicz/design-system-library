@@ -4,6 +4,8 @@ import { DsElement } from '@ds/core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { radioGroupStyles } from './radio-group.styles.js';
 
+type RadioEl = HTMLElement & { checked?: boolean; radioValue?: string };
+
 /**
  * @tag ds-radio-group
  * @summary Groups ds-radio buttons with a shared label, name, and validation state.
@@ -22,7 +24,7 @@ export class DsRadioGroup extends DsElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) invalid = false;
 
-  @queryAssignedElements({ selector: 'ds-radio' }) private _radios!: HTMLElement[];
+  @queryAssignedElements({ selector: 'ds-radio' }) private _radios!: RadioEl[];
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -41,13 +43,17 @@ export class DsRadioGroup extends DsElement {
     this.#wireRadios(changed.has('value'));
   }
 
+  #onSlotChange = (): void => {
+    this.#wireRadios(this.value !== '');
+  };
+
   #wireRadios = (syncChecked = false): void => {
     this._radios.forEach(radio => {
       if (this.name) radio.setAttribute('name', this.name);
       this.required ? radio.setAttribute('required', '') : radio.removeAttribute('required');
       this.disabled ? radio.setAttribute('disabled', '') : radio.removeAttribute('disabled');
       if (syncChecked) {
-        const rv = radio.getAttribute('radiovalue') ?? '';
+        const rv = radio.radioValue ?? radio.getAttribute('radiovalue') ?? '';
         rv === this.value ? radio.setAttribute('checked', '') : radio.removeAttribute('checked');
       }
     });
@@ -69,7 +75,7 @@ export class DsRadioGroup extends DsElement {
           ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items">
-          <slot @slotchange=${this.#wireRadios}></slot>
+          <slot @slotchange=${this.#onSlotChange}></slot>
         </div>
       </fieldset>
       ${renderSubtext(this.description, this.error, this.invalid)}

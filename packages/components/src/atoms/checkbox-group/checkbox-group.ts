@@ -4,6 +4,8 @@ import { DsElement } from '@ds/core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { checkboxGroupStyles } from './checkbox-group.styles.js';
 
+type CheckboxEl = HTMLElement & { checked?: boolean; checkboxValue?: string };
+
 /**
  * @tag ds-checkbox-group
  * @summary Groups ds-checkbox elements with a shared label, name, and validation state.
@@ -22,7 +24,7 @@ export class DsCheckboxGroup extends DsElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) invalid = false;
 
-  @queryAssignedElements({ selector: 'ds-checkbox' }) private _checkboxes!: HTMLElement[];
+  @queryAssignedElements({ selector: 'ds-checkbox' }) private _checkboxes!: CheckboxEl[];
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -41,13 +43,17 @@ export class DsCheckboxGroup extends DsElement {
     this.#wireCheckboxes(changed.has('value'));
   }
 
+  #onSlotChange = (): void => {
+    this.#wireCheckboxes(this.value.length > 0);
+  };
+
   #wireCheckboxes = (syncChecked = false): void => {
     this._checkboxes.forEach(el => {
       if (this.name) el.setAttribute('name', this.name);
       this.required ? el.setAttribute('required', '') : el.removeAttribute('required');
       this.disabled ? el.setAttribute('disabled', '') : el.removeAttribute('disabled');
       if (syncChecked) {
-        const cv = el.getAttribute('checkboxvalue') ?? '';
+        const cv = el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '';
         this.value.includes(cv) ? el.setAttribute('checked', '') : el.removeAttribute('checked');
       }
     });
@@ -56,8 +62,8 @@ export class DsCheckboxGroup extends DsElement {
   #onCheckboxChange = (event: Event): void => {
     event.stopPropagation();
     const values = this._checkboxes
-      .filter(el => el.hasAttribute('checked'))
-      .map(el => el.getAttribute('checkboxvalue') ?? '')
+      .filter(el => el.checked === true)
+      .map(el => el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '')
       .filter(Boolean);
     this.value = values;
     this.invalid = false;
@@ -72,7 +78,7 @@ export class DsCheckboxGroup extends DsElement {
           ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items">
-          <slot @slotchange=${this.#wireCheckboxes}></slot>
+          <slot @slotchange=${this.#onSlotChange}></slot>
         </div>
       </fieldset>
       ${renderSubtext(this.description, this.error, this.invalid)}
