@@ -68,14 +68,17 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   private _docClickHandler?: (e: MouseEvent) => void;
 
+  override willUpdate(changed: PropertyValues): void {
+    if (changed.has('options')) {
+      for (const o of this.options) this._labelMap.set(o.value, o.label);
+    }
+  }
+
   override updated(changed: PropertyValues): void {
     if (changed.has('label')) this.setAriaLabel(this.label || null);
     if (changed.has('description')) this.setAriaDescription(this.description || null);
     if (changed.has('_scrollTop') && this._listboxEl) {
       this._listboxEl.scrollTop = this._scrollTop;
-    }
-    if (changed.has('options')) {
-      for (const o of this.options) this._labelMap.set(o.value, o.label);
     }
     if ((changed.has('values') || changed.has('maxLines')) && this.multiple) this.#checkOverflow();
   }
