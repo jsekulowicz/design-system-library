@@ -84,7 +84,7 @@ export const selectStyles = css`
     white-space: nowrap;
   }
   .tile-focused {
-    box-shadow: inset var(--ds-shadow-focus);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-color-accent) 35%, transparent);
   }
   .tile-overflow {
     background: var(--ds-color-accent-subtle);
