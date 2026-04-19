@@ -115,7 +115,6 @@ export const Required: Story = {
       placeholder="Pick a discipline"
       description="This field is required."
       ?required=${true}
-      .value=${'engineering'}
       .options=${options}
     ></ds-select>
   `,
