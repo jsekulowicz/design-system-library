@@ -216,6 +216,14 @@ describe('<ds-select>', () => {
       expect(events[0]?.detail).toEqual({ value: '' });
     });
 
+    it('re-renders after clearing — clear button disappears and placeholder shows', async () => {
+      const el = await mount({ clearable: true, value: 'react', placeholder: 'Pick one' });
+      el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.trigger-label')?.textContent?.trim()).toBe('Pick one');
+    });
+
     it('shows clear button in multiple mode when values are selected', async () => {
       const el = await mount({ clearable: true, multiple: true, values: ['react', 'vue'] });
       expect(el.shadowRoot!.querySelector('.clear-btn')).not.toBeNull();

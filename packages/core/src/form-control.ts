@@ -47,10 +47,12 @@ export function FormControlMixin<TBase extends LitCtor>(
     }
 
     set value(next: FormDataEntryValue | null) {
+      const old = this.#value;
       this.#value = next;
       if (typeof this.#internals.setFormValue === 'function') {
         this.#internals.setFormValue(next);
       }
+      this.requestUpdate('value', old);
     }
 
     get form(): HTMLFormElement | null {
