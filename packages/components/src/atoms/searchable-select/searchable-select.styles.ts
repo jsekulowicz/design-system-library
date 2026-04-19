@@ -117,7 +117,7 @@ export const searchableSelectStyles = css`
     display: inline-flex;
     align-items: center;
     color: var(--ds-color-fg-muted);
-    margin-right: var(--ds-space-2);
+    margin-right: var(--ds-space-1);
     flex-shrink: 0;
   }
   .leading[hidden] {
@@ -164,6 +164,21 @@ export const searchableSelectStyles = css`
   .clear-btn svg {
     width: 1rem;
     height: 1rem;
+  }
+  :host([loading]) .trigger {
+    cursor: default;
+    pointer-events: none;
+  }
+  .spinner {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-left: var(--ds-space-2);
+    color: var(--ds-color-fg-muted);
+    flex-shrink: 0;
+    animation: spin 0.75s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
   .caret {
     pointer-events: none;

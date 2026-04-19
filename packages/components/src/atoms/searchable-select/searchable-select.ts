@@ -51,6 +51,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) multiple = false;
   @property({ type: Boolean, reflect: true }) clearable = false;
+  @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Array }) values: string[] = [];
   @property({ type: Number }) maxLines?: number;
 
@@ -100,7 +101,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   }
 
   #openDropdown = (): void => {
-    if (this._open) return;
+    if (this._open || this.loading) return;
     this._open = true;
     this._search = '';
     this._focusedTileIndex = -1;
@@ -128,7 +129,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   };
 
   #onFocus = (): void => {
-    if (!this.disabled && !this._open) this.#openDropdown();
+    if (!this.disabled && !this.loading && !this._open) this.#openDropdown();
   };
 
   #onSearchInput = (e: Event): void => {
@@ -337,10 +338,14 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
                 <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
               </svg>
             </button>` : nothing}
-          <!-- Heroicons 2.2.0 — 16/solid: chevron-down -->
-          <svg class="caret" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-          </svg>
+          ${this.loading ? html`
+            <svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="56.55" stroke-dashoffset="14.14"/>
+            </svg>` : html`
+            <!-- Heroicons 2.2.0 — 16/solid: chevron-down -->
+            <svg class="caret" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            </svg>`}
         </div>
         ${this._open ? html`
           <div id="listbox" class="listbox" part="listbox" role="listbox"

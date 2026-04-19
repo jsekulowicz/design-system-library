@@ -218,6 +218,7 @@ const meta: Meta = {
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
     clearable: { control: 'boolean' },
+    loading: { control: 'boolean' },
   },
   args: {
     label: 'Framework',
@@ -229,6 +230,7 @@ const meta: Meta = {
     required: false,
     invalid: false,
     clearable: false,
+    loading: false,
   },
 };
 
@@ -238,6 +240,18 @@ type Story = StoryObj;
 export const Countries: Story = {
   name: 'Countries (virtualized, 160+ items)',
   render: () => html`<sb-country-search></sb-country-search>`,
+};
+
+export const Loading: Story = {
+  render: () => html`
+    <ds-searchable-select
+      label="Country"
+      placeholder="Loading options…"
+      ?loading=${true}
+    >
+      <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+    </ds-searchable-select>
+  `,
 };
 
 class SbCountryMultiSearch extends LitElement {
