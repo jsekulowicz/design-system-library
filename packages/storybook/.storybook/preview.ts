@@ -16,7 +16,7 @@ const preview: Preview = {
           'Introduction',
           'Foundations',
           ['Design intent', 'Tokens', 'Typography', 'Color', 'Theming'],
-          'Atoms',
+          ['Atoms', ['CheckboxGroup', 'Checkbox', 'RadioGroup', 'Radio']],
           'Molecules',
           'Organisms',
           'Templates',

@@ -5,7 +5,9 @@ export { DsIcon, registerIcon, getIcon, type IconSize } from './atoms/icon/index
 export { DsLink, type LinkVariant } from './atoms/link/index.js';
 export { DsTextField, type TextFieldType, type TextFieldSize } from './atoms/text-field/index.js';
 export { DsCheckbox } from './atoms/checkbox/index.js';
+export { DsCheckboxGroup } from './atoms/checkbox-group/index.js';
 export { DsRadio } from './atoms/radio/index.js';
+export { DsRadioGroup } from './atoms/radio-group/index.js';
 export { DsSelect, type SelectOption } from './atoms/select/index.js';
 export { DsField, type FieldLayout } from './molecules/field/index.js';
 export { DsCard, type CardElevation, type CardOrientation } from './molecules/card/index.js';

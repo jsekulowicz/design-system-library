@@ -7,16 +7,6 @@ export const selectStyles = css`
     gap: var(--ds-space-1);
     width: 100%;
   }
-  .label {
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-medium);
-    color: var(--ds-color-fg);
-    line-height: 1.4;
-    cursor: default;
-  }
-  .required {
-    color: var(--ds-color-danger);
-  }
   .control-wrap {
     position: relative;
     width: 100%;
@@ -130,26 +120,5 @@ export const selectStyles = css`
     height: 1rem;
     flex-shrink: 0;
     color: var(--ds-color-accent);
-  }
-  .description {
-    margin: 0;
-    font-size: var(--ds-font-size-xs);
-    color: var(--ds-color-fg-muted);
-    line-height: 1.4;
-  }
-  .error {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--ds-space-1);
-    font-size: var(--ds-font-size-xs);
-    color: var(--ds-color-fg-muted);
-    line-height: 1.4;
-  }
-  .error-icon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
-    color: var(--ds-color-danger);
   }
 `;

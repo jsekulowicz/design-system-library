@@ -15,10 +15,11 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) checked = false;
   @property({ type: Boolean, reflect: true }) indeterminate = false;
   @property({ type: Boolean, reflect: true }) invalid = false;
+  @property() checkboxValue = '';
 
   override updated(changed: Map<string, unknown>): void {
-    if (changed.has('checked') || changed.has('indeterminate')) {
-      this.value = this.checked ? 'on' : null;
+    if (changed.has('checked') || changed.has('indeterminate') || changed.has('checkboxValue')) {
+      this.value = this.checked ? (this.checkboxValue || 'on') : null;
       this.#syncValidity();
     }
   }

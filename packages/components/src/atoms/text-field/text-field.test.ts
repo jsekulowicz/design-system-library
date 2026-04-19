@@ -27,13 +27,13 @@ describe('<ds-text-field>', () => {
     expect(events[0]?.detail).toEqual({ value: 'user@example.com' });
   });
 
-  it('reflects placeholder, readonly and disabled into the inner input', async () => {
+  it('reflects placeholder and readonly into the inner input; disabled maps to readonly', async () => {
     const el = await mount(
       '<ds-text-field placeholder="Your email" readonly disabled></ds-text-field>',
     );
     const input = el.shadowRoot!.querySelector('input')!;
     expect(input.placeholder).toBe('Your email');
     expect(input.readOnly).toBe(true);
-    expect(input.disabled).toBe(true);
+    expect(input.disabled).toBe(false);
   });
 });

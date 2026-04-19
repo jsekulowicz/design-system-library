@@ -35,6 +35,12 @@ export class DsRadio extends FormControlMixin(DsElement) {
     });
   }
 
+  #onInputClick = (event: Event): void => {
+    if (this.disabled) {
+      event.preventDefault();
+    }
+  };
+
   #select = (): void => {
     if (this.disabled || this.checked) {
       return;
@@ -59,7 +65,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
         .checked=${this.checked}
         value=${this.radioValue}
         ?required=${this.required}
-        ?disabled=${this.disabled}
+        @click=${this.#onInputClick}
       />
       <span class="dot" part="dot" aria-hidden="true"></span>
       <span part="label"><slot></slot></span>

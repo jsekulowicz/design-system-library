@@ -2,6 +2,7 @@ import { html, nothing, LitElement, type PropertyValues, type TemplateResult } f
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, FormControlMixin } from '@ds/core';
+import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { selectStyles } from './select.styles.js';
 
 export interface SelectOption {
@@ -19,7 +20,7 @@ export interface SelectOption {
  * @csspart option - Each individual option item.
  */
 export class DsSelect extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, selectStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, selectStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -162,10 +163,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       : undefined;
 
     return html`
-      <label class="label" for="trigger">
-        ${this.label}
-        ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
-      </label>
+      ${renderFieldLabel(this.label, this.required, 'trigger')}
       <div class="control-wrap">
         <button
           id="trigger"
@@ -195,16 +193,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           </div>
         ` : nothing}
       </div>
-      ${this.description && !this.invalid ? html`<p class="description">${this.description}</p>` : nothing}
-      ${this.invalid && this.error ? html`
-        <p class="error" role="alert">
-          <!-- Heroicons 2.2.0 — 16/solid: exclamation-circle -->
-          <svg class="error-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
-          </svg>
-          ${this.error}
-        </p>
-      ` : nothing}
+      ${renderSubtext(this.description, this.error, this.invalid)}
     `;
   }
 }

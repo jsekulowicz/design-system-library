@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import '@ds/components/text-field/define';
-import '@ds/components/field/define';
 
 const meta: Meta = {
   title: 'Atoms/TextField',
@@ -13,15 +12,23 @@ const meta: Meta = {
       options: ['text', 'email', 'password', 'search', 'tel', 'url', 'number'],
     },
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
+    label: { control: 'text' },
+    description: { control: 'text' },
+    error: { control: 'text' },
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
+    invalid: { control: 'boolean' },
   },
   args: {
     type: 'text',
     size: 'md',
+    label: 'Full name',
+    description: '',
+    error: 'This field is required.',
     placeholder: 'Your name',
     disabled: false,
     required: false,
+    invalid: false,
   },
 };
 
@@ -33,38 +40,49 @@ export const Playground: Story = {
     <ds-text-field
       type=${args.type}
       size=${args.size}
+      label=${args.label}
+      description=${args.description || ''}
+      error=${args.error || ''}
       placeholder=${args.placeholder}
       ?disabled=${args.disabled}
       ?required=${args.required}
+      ?invalid=${args.invalid}
     ></ds-text-field>
   `,
 };
 
-export const InsideField: Story = {
+export const WithDescription: Story = {
   render: () => html`
-    <ds-field
+    <ds-text-field
       label="Email address"
-      help="We'll use this for receipts and audit logs only."
-    >
-      <ds-text-field
-        type="email"
-        name="email"
-        placeholder="you@studio.co"
-        required
-      ></ds-text-field>
-    </ds-field>
+      description="We'll use this for receipts and audit logs only."
+      type="email"
+      placeholder="you@studio.co"
+    ></ds-text-field>
   `,
 };
 
-export const Invalid: Story = {
+export const Required: Story = {
   render: () => html`
-    <ds-field label="Email" error="Must be a valid email address">
-      <ds-text-field
-        type="email"
-        name="email"
-        required
-        value="not-an-email"
-      ></ds-text-field>
-    </ds-field>
+    <ds-text-field
+      label="Email address"
+      error="Must be a valid email address."
+      type="email"
+      placeholder="you@studio.co"
+      required
+      invalid
+    ></ds-text-field>
+  `,
+};
+
+export const Disabled: Story = {
+  render: () => html`
+    <ds-text-field
+      label="Full name"
+      description="This field cannot be edited right now."
+      placeholder="Your name"
+      value="Jane Smith"
+      disabled
+    ></ds-text-field>
   `,
 };

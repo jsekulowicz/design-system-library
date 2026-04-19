@@ -2,6 +2,7 @@ import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@ds/core';
+import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { textFieldStyles } from './text-field.styles.js';
 
 export type TextFieldType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
@@ -16,7 +17,7 @@ export type TextFieldSize = 'sm' | 'md' | 'lg';
  * @event ds-change - Fired when the value is committed.
  */
 export class DsTextField extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, textFieldStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, textFieldStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -30,13 +31,15 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property({ attribute: 'max-length', type: Number }) maxLength?: number;
   @property() pattern?: string;
   @property() autocomplete?: string;
-  @property() label?: string;
-  @property() description?: string;
+  @property() label = '';
+  @property() description = '';
+  @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
 
   @query('input') private input!: HTMLInputElement;
 
   #onInput = (event: Event): void => {
+    if (this.disabled) return;
     const target = event.target as HTMLInputElement;
     this.value = target.value;
     this.#syncValidity();
@@ -44,6 +47,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   };
 
   #onChange = (event: Event): void => {
+    if (this.disabled) return;
     const target = event.target as HTMLInputElement;
     this.value = target.value;
     this.#syncValidity();
@@ -58,41 +62,36 @@ export class DsTextField extends FormControlMixin(DsElement) {
     this.invalid = !this.input.validity.valid;
   }
 
-  override updated(changed: Map<string, unknown>): void {
-    if (changed.has('label')) {
-      this.setAriaLabel(this.label ?? null);
-    }
-    if (changed.has('description')) {
-      this.setAriaDescription(this.description ?? null);
-    }
-  }
-
   override firstUpdated(): void {
     this.#syncValidity();
   }
 
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
-    return html`<span class="wrap" part="wrap">
-      <span class="adornment"><slot name="leading"></slot></span>
-      <input
-        part="input"
-        .value=${live(current)}
-        type=${this.type}
-        name=${this.name || nothing}
-        placeholder=${this.placeholder}
-        ?required=${this.required}
-        ?disabled=${this.disabled}
-        ?readonly=${this.readonly}
-        minlength=${this.minLength ?? nothing}
-        maxlength=${this.maxLength ?? nothing}
-        pattern=${this.pattern ?? nothing}
-        autocomplete=${this.autocomplete ?? nothing}
-        aria-invalid=${this.invalid ? 'true' : 'false'}
-        @input=${this.#onInput}
-        @change=${this.#onChange}
-      />
-      <span class="adornment"><slot name="trailing"></slot></span>
-    </span>`;
+    return html`
+      ${this.label ? renderFieldLabel(this.label, this.required, 'input') : nothing}
+      <span class="wrap" part="wrap">
+        <span class="adornment"><slot name="leading"></slot></span>
+        <input
+          id="input"
+          part="input"
+          .value=${live(current)}
+          type=${this.type}
+          name=${this.name || nothing}
+          placeholder=${this.placeholder}
+          ?required=${this.required}
+          ?readonly=${this.disabled || this.readonly}
+          minlength=${this.minLength ?? nothing}
+          maxlength=${this.maxLength ?? nothing}
+          pattern=${this.pattern ?? nothing}
+          autocomplete=${this.autocomplete ?? nothing}
+          aria-invalid=${this.invalid ? 'true' : 'false'}
+          @input=${this.#onInput}
+          @change=${this.#onChange}
+        />
+        <span class="adornment"><slot name="trailing"></slot></span>
+      </span>
+      ${renderSubtext(this.description, this.error, this.invalid)}
+    `;
   }
 }

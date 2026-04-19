@@ -2,7 +2,9 @@ import { css } from 'lit';
 
 export const textFieldStyles = css`
   :host {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
     width: 100%;
   }
   .wrap {
@@ -11,7 +13,7 @@ export const textFieldStyles = css`
     align-items: center;
     width: 100%;
     height: var(--ds-size-md);
-    padding: 0 var(--ds-space-3);
+    padding: 0 var(--ds-space-2);
     gap: var(--ds-space-2);
     background: var(--ds-color-bg);
     border: 1px solid var(--ds-color-border-strong);
@@ -52,9 +54,6 @@ export const textFieldStyles = css`
   }
   input::placeholder {
     color: var(--ds-color-fg-muted);
-  }
-  input:disabled {
-    cursor: not-allowed;
   }
   :host([size='sm']) .wrap {
     height: var(--ds-size-sm);

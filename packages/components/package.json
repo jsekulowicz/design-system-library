@@ -41,11 +41,21 @@
       "import": "./dist/atoms/checkbox/index.js"
     },
     "./checkbox/define": { "import": "./dist/atoms/checkbox/define.js" },
+    "./checkbox-group": {
+      "types": "./dist/atoms/checkbox-group/index.d.ts",
+      "import": "./dist/atoms/checkbox-group/index.js"
+    },
+    "./checkbox-group/define": { "import": "./dist/atoms/checkbox-group/define.js" },
     "./radio": {
       "types": "./dist/atoms/radio/index.d.ts",
       "import": "./dist/atoms/radio/index.js"
     },
     "./radio/define": { "import": "./dist/atoms/radio/define.js" },
+    "./radio-group": {
+      "types": "./dist/atoms/radio-group/index.d.ts",
+      "import": "./dist/atoms/radio-group/index.js"
+    },
+    "./radio-group/define": { "import": "./dist/atoms/radio-group/define.js" },
     "./select": {
       "types": "./dist/atoms/select/index.d.ts",
       "import": "./dist/atoms/select/index.js"
