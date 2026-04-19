@@ -104,3 +104,31 @@ export const Disabled: Story = {
     ></ds-select>
   `,
 };
+
+export const Multiple: Story = {
+  name: 'Multiple selection',
+  parameters: { docs: { story: { height: '320px' } } },
+  render: () => html`
+    <ds-select
+      label="Disciplines"
+      placeholder="Pick disciplines"
+      ?multiple=${true}
+      .options=${options}
+    ></ds-select>
+  `,
+};
+
+export const MultiplePreselected: Story = {
+  name: 'Multiple — preselected + maxLines',
+  parameters: { docs: { story: { height: '320px' } } },
+  render: () => html`
+    <ds-select
+      label="Disciplines"
+      placeholder="Pick disciplines"
+      ?multiple=${true}
+      .maxLines=${1}
+      .options=${options}
+      .values=${['design', 'engineering', 'product']}
+    ></ds-select>
+  `,
+};

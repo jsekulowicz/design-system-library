@@ -8,6 +8,8 @@ import { renderVirtualItems, ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/vi
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import type { SelectOption } from '../select/select.js';
 
+const TILE_ROW_H = 28;
+
 function highlightMatch(label: string, query: string): TemplateResult {
   if (!query) return html`${label}`;
   const lower = label.toLowerCase();
@@ -28,7 +30,7 @@ function highlightMatch(label: string, query: string): TemplateResult {
  * @tag ds-searchable-select
  * @summary Combobox with a text search input. Emits ds-search so the consumer can filter options.
  * @event ds-search - Fires on every keystroke. Detail: `{ query: string }`.
- * @event ds-change - Fires when an option is selected. Detail: `{ value: string }`.
+ * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
  * @csspart trigger - The trigger container element.
  * @csspart listbox - The dropdown listbox container.
  * @csspart option - Each individual option item.
@@ -47,13 +49,20 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property() description = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
+  @property({ type: Boolean, reflect: true }) multiple = false;
+  @property({ type: Array }) values: string[] = [];
+  @property({ type: Number }) maxLines?: number;
 
   @state() private _open = false;
   @state() private _search = '';
   @state() private _focusedIndex = -1;
   @state() private _scrollTop = 0;
+  @state() private _focusedTileIndex = -1;
+  @state() private _overflowCount = 0;
 
   @query('.listbox') private _listboxEl?: HTMLElement;
+  @query('.tiles') private _tilesEl?: HTMLElement;
+  @query('.search-input') private _inputEl?: HTMLInputElement;
 
   private _docClickHandler?: (e: MouseEvent) => void;
 
@@ -63,6 +72,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     if (changed.has('_scrollTop') && this._listboxEl) {
       this._listboxEl.scrollTop = this._scrollTop;
     }
+    if ((changed.has('values') || changed.has('maxLines')) && this.multiple) this.#checkOverflow();
   }
 
   override connectedCallback(): void {
@@ -78,7 +88,10 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   #openDropdown = (): void => {
     this._open = true;
     this._search = '';
-    const idx = this.options.findIndex(o => o.value === this.value);
+    this._focusedTileIndex = -1;
+    const idx = this.multiple
+      ? this.options.findIndex(o => this.values.includes(o.value))
+      : this.options.findIndex(o => o.value === this.value);
     this._focusedIndex = idx >= 0 ? idx : 0;
     this._scrollTop = Math.max(0, (this._focusedIndex - 2) * ITEM_HEIGHT);
     this._docClickHandler = (e: MouseEvent) => {
@@ -111,14 +124,39 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   #selectOption = (option: SelectOption): void => {
     if (option.disabled) return;
-    this.value = option.value;
-    this.invalid = this.required && !option.value;
-    this.setValidity(
-      this.invalid ? { valueMissing: true } : {},
-      this.invalid ? 'Please select an option.' : '',
-    );
-    this.emit('ds-change', { detail: { value: option.value } });
-    this.#close();
+    if (this.multiple) {
+      this.values = this.values.includes(option.value)
+        ? this.values.filter(v => v !== option.value)
+        : [...this.values, option.value];
+      this.value = this.values.join(',');
+      this._search = '';
+      this.emit('ds-search', { detail: { query: '' } });
+      this.emit('ds-change', { detail: { values: this.values } });
+    } else {
+      this.value = option.value;
+      this.invalid = this.required && !option.value;
+      this.setValidity(
+        this.invalid ? { valueMissing: true } : {},
+        this.invalid ? 'Please select an option.' : '',
+      );
+      this.emit('ds-change', { detail: { value: option.value } });
+      this.#close();
+    }
+  };
+
+  #removeTile = (value: string): void => {
+    this.values = this.values.filter(v => v !== value);
+    this.value = this.values.join(',');
+    const visibleCount = this.values.length - this._overflowCount;
+    if (this._focusedTileIndex >= visibleCount) this._focusedTileIndex = Math.max(-1, visibleCount - 1);
+    this.emit('ds-change', { detail: { values: this.values } });
+  };
+
+  #checkOverflow = (): void => {
+    if (!this.maxLines || !this._tilesEl) { if (this._overflowCount) this._overflowCount = 0; return; }
+    const tiles = Array.from(this._tilesEl.querySelectorAll<HTMLElement>('.tile[data-value]'));
+    const count = tiles.filter(t => t.offsetTop >= this.maxLines! * TILE_ROW_H).length;
+    if (count !== this._overflowCount) this._overflowCount = count;
   };
 
   #scrollToFocused = (): void => {
@@ -141,6 +179,27 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   #onKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) return;
+    const visibleCount = this.values.length - this._overflowCount;
+
+    if (this.multiple && visibleCount > 0) {
+      if (event.key === 'ArrowLeft' && this._inputEl?.selectionStart === 0) {
+        event.preventDefault();
+        this._focusedTileIndex = this._focusedTileIndex <= 0 ? visibleCount - 1 : this._focusedTileIndex - 1;
+        return;
+      }
+      if (event.key === 'ArrowRight' && this._focusedTileIndex >= 0) {
+        event.preventDefault();
+        this._focusedTileIndex = this._focusedTileIndex >= visibleCount - 1 ? -1 : this._focusedTileIndex + 1;
+        return;
+      }
+      if ((event.key === ' ' || event.key === 'Backspace') && this._focusedTileIndex >= 0) {
+        event.preventDefault();
+        const v = this.values[this._focusedTileIndex];
+        if (v !== undefined) this.#removeTile(v);
+        return;
+      }
+    }
+
     if (event.key === 'Escape') { this.#close(); return; }
     if (!this._open && event.key === 'ArrowDown') { this.#openDropdown(); return; }
     if (event.key === 'ArrowDown') { event.preventDefault(); this.#moveFocus(1); }
@@ -156,8 +215,31 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     this._scrollTop = this._listboxEl?.scrollTop ?? 0;
   };
 
+  #renderTiles = (): TemplateResult => html`
+    <div class="tiles" style=${this.maxLines ? `max-height:${this.maxLines * TILE_ROW_H - 4}px;overflow:hidden` : ''}>
+      ${this._overflowCount > 0 ? html`
+        <span class="tile tile-overflow" aria-label="${this._overflowCount} more selected">
+          +${this._overflowCount}
+        </span>` : nothing}
+      ${this.values.map((v, i) => {
+        const label = this.options.find(o => o.value === v)?.label ?? v;
+        return html`
+          <span class="tile${this._focusedTileIndex === i ? ' tile-focused' : ''}" data-value=${v}>
+            <span class="tile-label">${label}</span>
+            <button class="tile-remove" type="button" tabindex="-1" aria-label="Remove ${label}"
+              @pointerdown=${(e: Event) => e.preventDefault()}
+              @click=${(e: Event) => { e.stopPropagation(); this.#removeTile(v); }}>
+              <!-- Heroicons 2.2.0 — 16/solid: x-mark -->
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+              </svg>
+            </button>
+          </span>`;
+      })}
+    </div>`;
+
   #renderOption = (option: SelectOption, index: number, current: string): TemplateResult => {
-    const isSelected = option.value === current;
+    const isSelected = this.multiple ? this.values.includes(option.value) : option.value === current;
     const classes = [
       'option',
       isSelected && 'selected',
@@ -180,12 +262,14 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
     const selectedOption = this.options.find(o => o.value === current);
-    const displayValue = this._open ? this._search : (selectedOption?.label ?? '');
+    const hasTiles = this.multiple && this.values.length > 0;
+    const displayValue = this._open ? this._search : (!this.multiple ? (selectedOption?.label ?? '') : '');
     const activeDesc = this._open && this._focusedIndex >= 0 ? `option-${this._focusedIndex}` : undefined;
     return html`
       ${renderFieldLabel(this.label, this.required, 'search-input')}
       <div class="control-wrap">
-        <div class="trigger ${this._open ? 'open' : ''}" part="trigger">
+        <div class="trigger${this.multiple ? ' trigger-multiple' : ''} ${this._open ? 'open' : ''}" part="trigger">
+          ${hasTiles ? this.#renderTiles() : nothing}
           <input
             id="search-input"
             class="search-input"
@@ -198,7 +282,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             aria-activedescendant=${ifDefined(activeDesc)}
             aria-disabled=${this.disabled ? 'true' : 'false'}
             .value=${live(displayValue)}
-            placeholder=${this._open ? this.searchPlaceholder : this.placeholder}
+            placeholder=${this._open ? this.searchPlaceholder : (hasTiles ? '' : this.placeholder)}
             ?readonly=${this.disabled}
             @focus=${this.#onFocus}
             @input=${this.#onSearchInput}
@@ -210,7 +294,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
           </svg>
         </div>
         ${this._open ? html`
-          <div id="listbox" class="listbox" part="listbox" role="listbox" @scroll=${this.#onScroll}>
+          <div id="listbox" class="listbox" part="listbox" role="listbox"
+            aria-multiselectable=${this.multiple ? 'true' : 'false'} @scroll=${this.#onScroll}>
             ${this.options.length === 0
               ? html`<p class="empty">No results found.</p>`
               : renderVirtualItems(this.options, this._scrollTop, (o, i) => this.#renderOption(o, i, current))}

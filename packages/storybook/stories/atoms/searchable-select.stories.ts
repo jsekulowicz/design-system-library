@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import type { SelectOption } from '@ds/components/select';
 import '@ds/components/searchable-select/define';
@@ -232,4 +232,46 @@ type Story = StoryObj;
 export const Countries: Story = {
   name: 'Countries (virtualized, 160+ items)',
   render: () => html`<sb-country-search></sb-country-search>`,
+};
+
+class SbCountryMultiSearch extends LitElement {
+  @state() private _options = COUNTRIES;
+  @state() private _values: string[] = [];
+
+  #onSearch = (e: CustomEvent<{ query: string }>): void => {
+    const q = e.detail.query.toLowerCase();
+    this._options = q
+      ? COUNTRIES.filter(c => c.label.toLowerCase().includes(q))
+      : COUNTRIES;
+  };
+
+  #onChange = (e: CustomEvent<{ values: string[] }>): void => {
+    this._values = e.detail.values;
+  };
+
+  override render() {
+    return html`
+      <ds-searchable-select
+        label="Countries"
+        placeholder="Select countries"
+        search-placeholder="Search countries…"
+        ?multiple=${true}
+        .maxLines=${2}
+        .options=${this._options}
+        .values=${this._values}
+        @ds-search=${this.#onSearch}
+        @ds-change=${this.#onChange}
+      ></ds-searchable-select>
+    `;
+  }
+}
+
+if (!customElements.get('sb-country-multi-search')) {
+  customElements.define('sb-country-multi-search', SbCountryMultiSearch);
+}
+
+export const MultipleCountries: Story = {
+  name: 'Multiple — Countries (maxLines=2)',
+  parameters: { docs: { story: { height: '420px' } } },
+  render: () => html`<sb-country-multi-search></sb-country-multi-search>`,
 };

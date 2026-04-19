@@ -54,6 +54,72 @@ export const selectStyles = css`
     cursor: not-allowed;
     pointer-events: none;
   }
+  .trigger-multiple {
+    height: auto;
+    min-height: var(--ds-size-md);
+    padding: var(--ds-space-1) var(--ds-space-3);
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ds-space-1);
+  }
+  .tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ds-space-1);
+    flex: 1;
+    min-width: 0;
+  }
+  .tile {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-1);
+    height: 24px;
+    padding: 0 var(--ds-space-1) 0 var(--ds-space-2);
+    background: var(--ds-color-bg-subtle);
+    border: 1px solid var(--ds-color-border);
+    border-radius: var(--ds-radius-xs);
+    font-size: var(--ds-font-size-xs);
+    color: var(--ds-color-fg);
+    white-space: nowrap;
+  }
+  .tile-focused {
+    outline: 2px solid var(--ds-color-accent);
+    outline-offset: 1px;
+  }
+  .tile-overflow {
+    background: var(--ds-color-accent-subtle);
+    border-color: var(--ds-color-accent);
+    color: var(--ds-color-accent);
+    padding: 0 var(--ds-space-2);
+    font-weight: var(--ds-font-weight-medium);
+  }
+  .tile-label {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tile-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--ds-color-fg-muted);
+    cursor: pointer;
+    border-radius: var(--ds-radius-xs);
+    flex-shrink: 0;
+  }
+  .tile-remove:hover {
+    color: var(--ds-color-fg);
+    background: var(--ds-color-border);
+  }
+  .tile-remove svg {
+    width: 10px;
+    height: 10px;
+  }
   .trigger-label {
     flex: 1;
     overflow: hidden;
