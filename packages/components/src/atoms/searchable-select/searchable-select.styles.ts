@@ -76,6 +76,7 @@ export const searchableSelectStyles = css`
     white-space: nowrap;
   }
   .tile-focused {
+    border-color: var(--ds-color-accent);
     box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-color-accent) 35%, transparent);
   }
   .tile-overflow {
