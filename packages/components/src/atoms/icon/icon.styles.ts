@@ -21,7 +21,5 @@ export const iconStyles = css`
     width: 100%;
     height: 100%;
     display: block;
-    fill: currentColor;
-    stroke: currentColor;
   }
 `;
