@@ -15,8 +15,8 @@ function applyTheme(globals: Record<string, unknown>): void {
 }
 
 const channel = addons.getChannel();
-channel.on('GLOBALS_UPDATED', ({ globals }: { globals: Record<string, unknown> }) => applyTheme(globals));
-channel.on('SET_GLOBALS', ({ globals }: { globals: Record<string, unknown> }) => applyTheme(globals));
+channel.on('globalsUpdated', ({ globals }: { globals: Record<string, unknown> }) => applyTheme(globals));
+channel.on('setGlobals', ({ globals }: { globals: Record<string, unknown> }) => applyTheme(globals));
 
 const preview: Preview = {
   parameters: {
