@@ -1,5 +1,6 @@
 import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
 import * as RadioGroupStories from './radio-group.stories';
+import * as RadioStories from './radio.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
 import '@ds/components/tabs/define';
 
@@ -19,10 +20,23 @@ A shadow-DOM fieldset that coordinates a set of radios sharing the same `name`. 
     <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
 
     <ds-tab-panel value="api">
-      <Canvas of={RadioGroupStories.Playground} />
-      <h3>Props</h3>
-      <Controls of={RadioGroupStories.Playground} />
-      <ComponentApi tag="ds-radio-group" />
+      <ds-tabs value="ds-radio-group">
+        <ds-tab slot="tab" value="ds-radio-group">ds-radio-group</ds-tab>
+        <ds-tab slot="tab" value="ds-radio">ds-radio</ds-tab>
+
+        <ds-tab-panel value="ds-radio-group">
+          <Canvas of={RadioGroupStories.Playground} />
+          <h3>Props</h3>
+          <Controls of={RadioGroupStories.Playground} />
+          <ComponentApi tag="ds-radio-group" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-radio">
+          <Canvas of={RadioStories.Playground} />
+          <h3>Props</h3>
+          <Controls of={RadioStories.Playground} />
+          <ComponentApi tag="ds-radio" />
+        </ds-tab-panel>
+      </ds-tabs>
     </ds-tab-panel>
 
     <ds-tab-panel value="examples">

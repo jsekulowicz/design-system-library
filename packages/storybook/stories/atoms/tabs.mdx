@@ -20,11 +20,21 @@ A `ds-tabs` host with a `tab` slot for `ds-tab` triggers and a default slot for 
 
     <ds-tab-panel value="api">
       <Canvas of={TabsStories.Playground} />
-      <ComponentApi tag="ds-tabs" />
-      <h3>ds-tab</h3>
-      <ComponentApi tag="ds-tab" />
-      <h3>ds-tab-panel</h3>
-      <ComponentApi tag="ds-tab-panel" />
+      <ds-tabs value="ds-tabs">
+        <ds-tab slot="tab" value="ds-tabs">ds-tabs</ds-tab>
+        <ds-tab slot="tab" value="ds-tab">ds-tab</ds-tab>
+        <ds-tab slot="tab" value="ds-tab-panel">ds-tab-panel</ds-tab>
+
+        <ds-tab-panel value="ds-tabs">
+          <ComponentApi tag="ds-tabs" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-tab">
+          <ComponentApi tag="ds-tab" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-tab-panel">
+          <ComponentApi tag="ds-tab-panel" />
+        </ds-tab-panel>
+      </ds-tabs>
     </ds-tab-panel>
 
     <ds-tab-panel value="examples">

@@ -48,6 +48,12 @@ export const Playground: Story = {
 };
 
 export const Sizes: Story = {
+  loaders: [
+    async () => {
+      await fetchHeroicon('arrow-right');
+      return {};
+    },
+  ],
   render: () => html`
     <div style="display:flex;gap:var(--ds-space-3);align-items:center">
       <ds-icon name="arrow-right" size="sm"></ds-icon>

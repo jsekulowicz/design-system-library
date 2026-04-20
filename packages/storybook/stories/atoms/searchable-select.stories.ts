@@ -237,6 +237,32 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+const PLAYGROUND_OPTIONS: SelectOption[] = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'angular', label: 'Angular' },
+  { value: 'solid', label: 'Solid' },
+];
+
+export const Playground: Story = {
+  render: (args) => html`
+    <ds-searchable-select
+      label=${args['label']}
+      description=${args['description'] || ''}
+      error=${args['error'] || ''}
+      placeholder=${args['placeholder']}
+      search-placeholder=${args['searchPlaceholder']}
+      ?disabled=${args['disabled']}
+      ?required=${args['required']}
+      ?invalid=${args['invalid']}
+      ?clearable=${args['clearable']}
+      ?loading=${args['loading']}
+      .options=${PLAYGROUND_OPTIONS}
+    ></ds-searchable-select>
+  `,
+};
+
 export const Countries: Story = {
   name: 'Countries (virtualized, 160+ items)',
   render: () => html`<sb-country-search></sb-country-search>`,

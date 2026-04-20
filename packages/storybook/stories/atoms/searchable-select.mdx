@@ -19,7 +19,9 @@ Extends `ds-select` with a search input above the listbox. The parent owns filte
     <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
 
     <ds-tab-panel value="api">
-      <Canvas of={SearchableSelectStories.Countries} />
+      <Canvas of={SearchableSelectStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={SearchableSelectStories.Playground} />
       <ComponentApi tag="ds-searchable-select" />
     </ds-tab-panel>
 

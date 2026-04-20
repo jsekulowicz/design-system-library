@@ -1,5 +1,6 @@
 import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
 import * as CheckboxGroupStories from './checkbox-group.stories';
+import * as CheckboxStories from './checkbox.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
 import '@ds/components/tabs/define';
 
@@ -19,10 +20,23 @@ A shadow-DOM fieldset that wraps any number of `ds-checkbox` children. The group
     <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
 
     <ds-tab-panel value="api">
-      <Canvas of={CheckboxGroupStories.Playground} />
-      <h3>Props</h3>
-      <Controls of={CheckboxGroupStories.Playground} />
-      <ComponentApi tag="ds-checkbox-group" />
+      <ds-tabs value="ds-checkbox-group">
+        <ds-tab slot="tab" value="ds-checkbox-group">ds-checkbox-group</ds-tab>
+        <ds-tab slot="tab" value="ds-checkbox">ds-checkbox</ds-tab>
+
+        <ds-tab-panel value="ds-checkbox-group">
+          <Canvas of={CheckboxGroupStories.Playground} />
+          <h3>Props</h3>
+          <Controls of={CheckboxGroupStories.Playground} />
+          <ComponentApi tag="ds-checkbox-group" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-checkbox">
+          <Canvas of={CheckboxStories.Playground} />
+          <h3>Props</h3>
+          <Controls of={CheckboxStories.Playground} />
+          <ComponentApi tag="ds-checkbox" />
+        </ds-tab-panel>
+      </ds-tabs>
     </ds-tab-panel>
 
     <ds-tab-panel value="examples">
