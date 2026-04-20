@@ -5,7 +5,7 @@ import '@ds/components/radio/define';
 const meta: Meta = {
   title: 'Atoms/Radio',
   component: 'ds-radio',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     checked: { control: 'boolean' },
     disabled: { control: 'boolean' },
@@ -26,10 +26,10 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <ds-radio
-      name=${args.name}
-      radiovalue=${args.radioValue}
-      ?checked=${args.checked}
-      ?disabled=${args.disabled}
+      name=${args['name']}
+      radiovalue=${args['radioValue']}
+      ?checked=${args['checked']}
+      ?disabled=${args['disabled']}
     >Option label</ds-radio>
   `,
 };

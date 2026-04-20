@@ -5,7 +5,7 @@ import '@ds/components/checkbox/define';
 const meta: Meta = {
   title: 'Atoms/Checkbox',
   component: 'ds-checkbox',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     checked: { control: 'boolean' },
     indeterminate: { control: 'boolean' },
@@ -20,10 +20,10 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <ds-checkbox
-      ?checked=${args.checked}
-      ?indeterminate=${args.indeterminate}
-      ?disabled=${args.disabled}
-      >${args.label}</ds-checkbox
+      ?checked=${args['checked']}
+      ?indeterminate=${args['indeterminate']}
+      ?disabled=${args['disabled']}
+      >${args['label']}</ds-checkbox
     >
   `,
 };

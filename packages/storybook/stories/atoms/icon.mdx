@@ -1,0 +1,58 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as IconStories from './icon.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={IconStories} />
+
+# Icon
+
+Renders SVGs registered via `registerIcon(name, svgMarkup)`. Icons are sourced from [Heroicons](https://heroicons.com) (MIT).
+
+## Anatomy
+
+Each icon module self-registers on import, so only the ones you import end up in your bundle. The component resolves the registered SVG by `name` at render time.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={IconStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={IconStories.Playground} />
+      <ComponentApi tag="ds-icon" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Using icons in your project</h3>
+      <p>Import only what you need — each module self-registers:</p>
+      <pre><code>import '@ds/components/icon/check';{'\n'}import '@ds/components/icon/minus';</code></pre>
+      <pre><code>&lt;ds-icon name="check"&gt;&lt;/ds-icon&gt;</code></pre>
+      <p>To register a custom icon or a different Heroicons variant:</p>
+      <pre><code>import {'{'} registerIcon {'}'} from '@ds/components/icon';{'\n'}registerIcon('my-icon', '&lt;svg viewBox="0 0 16 16" fill="currentColor"&gt;...&lt;/svg&gt;');</code></pre>
+
+      <h3>Do</h3>
+      <ul>
+        <li>Pair icons with a text label when the meaning isn't universal.</li>
+        <li>Use <code>label</code> to provide an accessible name for standalone icons.</li>
+        <li>Match the icon size to the surrounding text via <code>size</code> or <code>font-size</code>.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't rely on icons alone to communicate critical status.</li>
+        <li>Don't mix outline and solid variants in the same surface.</li>
+        <li>Don't register icons inline per render — import the module once.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Decorative icons inherit <code>aria-hidden="true"</code> — screen readers skip them.</li>
+        <li>Set <code>label</code> to promote the icon to an <code>img</code> with an accessible name.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

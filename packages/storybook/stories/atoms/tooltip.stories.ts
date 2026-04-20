@@ -6,7 +6,7 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Atoms/Tooltip',
   component: 'ds-tooltip',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     placement: {
       control: { type: 'inline-radio' },
@@ -23,7 +23,7 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <div style="padding: 3rem; display: flex; justify-content: center;">
-      <ds-tooltip placement=${args.placement} ?open=${args.open}>
+      <ds-tooltip placement=${args['placement']} ?open=${args['open']}>
         <ds-button variant="secondary">Hover me</ds-button>
         <span slot="tip">Helpful context</span>
       </ds-tooltip>

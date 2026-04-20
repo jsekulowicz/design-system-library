@@ -10,7 +10,7 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Organisms/Form',
   component: 'ds-form',
-  tags: ['autodocs'],
+  tags: ['!dev'],
 };
 
 export default meta;

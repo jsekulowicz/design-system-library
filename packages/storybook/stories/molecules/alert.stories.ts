@@ -5,7 +5,7 @@ import '@ds/components/alert/define';
 const meta: Meta = {
   title: 'Molecules/Alert',
   component: 'ds-alert',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     tone: {
       control: { type: 'inline-radio' },
@@ -26,9 +26,9 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <ds-alert
-      tone=${args.tone}
-      heading=${args.heading}
-      ?dismissible=${args.dismissible}
+      tone=${args['tone']}
+      heading=${args['heading']}
+      ?dismissible=${args['dismissible']}
     >
       Expect brittle edges and forthright release notes. Production builds
       flow through the stable channel only.

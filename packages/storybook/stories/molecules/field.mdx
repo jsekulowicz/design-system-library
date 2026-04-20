@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as FieldStories from './field.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={FieldStories} />
+
+# Field
+
+Wraps any form control with a shared label, help text, and error slot. Use it to compose larger forms with consistent vertical rhythm.
+
+## Anatomy
+
+A layout-only wrapper that associates its label with the slotted control via id forwarding. Works with any `ds-*` input that follows the form-control contract.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={FieldStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={FieldStories.Playground} />
+      <ComponentApi tag="ds-field" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use <code>ds-field</code> to layout form controls that don't already own their label (e.g. a plain input).</li>
+        <li>Mark truly optional fields with <code>optional</code>; otherwise assume required and label the minority.</li>
+        <li>Put help copy in <code>help</code>, not in the label.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't double-wrap a component that already renders its own label (e.g. <code>ds-text-field</code>).</li>
+        <li>Don't replace inline errors with toast notifications — the message belongs next to the control.</li>
+        <li>Don't change <code>layout</code> mid-form to fit one odd field; normalize early.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>The label becomes the control's accessible name via <code>aria-labelledby</code>.</li>
+        <li>Help and error copy are wired to the control via <code>aria-describedby</code>.</li>
+        <li>Clicking the label focuses the control through native <code>&lt;label&gt;</code> semantics.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

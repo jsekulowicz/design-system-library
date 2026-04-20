@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as RadioGroupStories from './radio-group.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={RadioGroupStories} />
+
+# RadioGroup
+
+Fieldset for a set of `ds-radio` children with shared label, description, and error messaging.
+
+## Anatomy
+
+A shadow-DOM fieldset that coordinates a set of radios sharing the same `name`. Exposes a single `value` and emits `ds-change` when the selection changes.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={RadioGroupStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={RadioGroupStories.Playground} />
+      <ComponentApi tag="ds-radio-group" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Always provide a <code>label</code> — it becomes the fieldset legend.</li>
+        <li>Pre-select a sensible default where one exists so users aren't forced into an arbitrary choice.</li>
+        <li>Keep children to a small, scannable set — 2–5 is ideal.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for independent toggles — compose checkboxes in a <code>ds-checkbox-group</code>.</li>
+        <li>Don't use for long option lists — prefer <code>ds-select</code>.</li>
+        <li>Don't override each child's <code>name</code> — the group sets it automatically.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Rendered as a native <code>&lt;fieldset&gt;</code> with a <code>&lt;legend&gt;</code>.</li>
+        <li>Arrow keys move selection; <code>Tab</code> moves focus in and out of the group.</li>
+        <li><code>required</code> / <code>invalid</code> reflect to ARIA on the children and wire <code>aria-describedby</code> to the error.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

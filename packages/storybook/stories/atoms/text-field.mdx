@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as TextFieldStories from './text-field.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={TextFieldStories} />
+
+# TextField
+
+Single-line text input. Supports native types for email, password, search, tel, url, and number.
+
+## Anatomy
+
+A native `<input>` in shadow DOM. Label, description, and error are part of the component, so it can stand alone without wrapping it in `ds-field`.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={TextFieldStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={TextFieldStories.Playground} />
+      <ComponentApi tag="ds-text-field" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Pick the most specific <code>type</code> — it enables native keyboards on mobile and built-in validation.</li>
+        <li>Use <code>description</code> for context that's useful before typing; <code>error</code> for messages that appear after.</li>
+        <li>Prefer a default <code>required</code> indication on the label over inline asterisks in copy.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for multi-line content — compose a textarea in a future variant instead.</li>
+        <li>Don't rely on placeholder text in lieu of a label — placeholders vanish on input.</li>
+        <li>Don't disable a field when the better option is to keep it enabled and surface a clear error.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Label, description, and error are wired via <code>aria-labelledby</code> / <code>aria-describedby</code>.</li>
+        <li><code>required</code> and <code>invalid</code> reflect to ARIA on the underlying input.</li>
+        <li>Focus ring uses <code>:focus-visible</code>; never suppressed.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

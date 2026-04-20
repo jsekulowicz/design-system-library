@@ -36,12 +36,12 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <ds-button
-      variant=${args.variant}
-      size=${args.size}
-      type=${args.type}
-      ?disabled=${args.disabled}
-      ?loading=${args.loading}
-      ?full-width=${args.fullWidth}
+      variant=${args['variant']}
+      size=${args['size']}
+      type=${args['type']}
+      ?disabled=${args['disabled']}
+      ?loading=${args['loading']}
+      ?full-width=${args['fullWidth']}
       >Ship it</ds-button
     >
   `,
@@ -71,13 +71,13 @@ export const Sizes: Story = {
 export const Loading: Story = {
   args: { loading: true },
   render: (args) => html`
-    <ds-button ?loading=${args.loading}>Saving…</ds-button>
+    <ds-button ?loading=${args['loading']}>Saving…</ds-button>
   `,
 };
 
 export const Disabled: Story = {
   args: { disabled: true },
   render: (args) => html`
-    <ds-button ?disabled=${args.disabled}>Unavailable</ds-button>
+    <ds-button ?disabled=${args['disabled']}>Unavailable</ds-button>
   `,
 };

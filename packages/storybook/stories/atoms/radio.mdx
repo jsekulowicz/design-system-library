@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as RadioStories from './radio.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={RadioStories} />
+
+# Radio
+
+Single selection among mutually exclusive options. Always nest radios inside a `ds-radio-group` (or a native `<fieldset>`) so they share a label and a11y context.
+
+## Anatomy
+
+Native `<input type="radio">` in shadow DOM. `radiovalue` is the value submitted when this option is selected; `name` joins it to other radios in the same group.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={RadioStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={RadioStories.Playground} />
+      <ComponentApi tag="ds-radio" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use for short, known sets of mutually exclusive options (ideally 2–5).</li>
+        <li>Always pre-select a sensible default when there is one.</li>
+        <li>Group related radios under a single label via <code>ds-radio-group</code>.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for longer lists — reach for <code>ds-select</code> or <code>ds-searchable-select</code>.</li>
+        <li>Don't use for independent toggles — that's <code>ds-checkbox</code>.</li>
+        <li>Don't rely on order alone to communicate priority — supporting copy should.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Rendered with native <code>role="radio"</code> semantics via the underlying input.</li>
+        <li>Keyboard: arrow keys move between radios in the same <code>name</code> group.</li>
+        <li>The clickable label text is associated to the input via shadow-DOM <code>htmlFor</code>.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

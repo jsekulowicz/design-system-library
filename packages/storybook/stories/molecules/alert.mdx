@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as AlertStories from './alert.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={AlertStories} />
+
+# Alert
+
+Inline notification banner. Use for persistent status that lives with the content; reach for a toast when the message is transient.
+
+## Anatomy
+
+A block-level container with a tonal stripe, optional heading, dismiss button, and body slot. Tone maps to a semantic token (info, success, warning, danger).
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={AlertStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={AlertStories.Playground} />
+      <ComponentApi tag="ds-alert" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use <code>danger</code> only when the user must act; <code>warning</code> for reversible risks.</li>
+        <li>Keep the heading actionable; use the body for context and next steps.</li>
+        <li>Make <code>dismissible</code> explicit — only dismiss if the message doesn't need to persist.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't chain multiple alerts in the same surface — consolidate or prioritise.</li>
+        <li>Don't use for transient feedback like "Saved" — use a toast.</li>
+        <li>Don't rely on color alone — the heading and icon carry the signal too.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Uses <code>role="status"</code> for info / success and <code>role="alert"</code> for warning / danger so screen readers announce them at the right priority.</li>
+        <li>Dismiss button is a native <code>&lt;button&gt;</code> with a descriptive <code>aria-label</code>.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

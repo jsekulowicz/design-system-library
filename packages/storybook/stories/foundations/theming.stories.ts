@@ -30,12 +30,12 @@ export const LivePlayground: Story = {
   render: (args) => html`
     <div
       style="
-        --ds-color-accent:${args.accent};
-        --ds-color-accent-hover:${args.accentHover};
-        --ds-radius-sm:${args.radius}px;
-        --ds-radius-md:${args.radius * 2}px;
-        --ds-color-border:${args.hairline};
-        --ds-font-display:${args.displayFont};
+        --ds-color-accent:${args['accent']};
+        --ds-color-accent-hover:${args['accentHover']};
+        --ds-radius-sm:${args['radius']}px;
+        --ds-radius-md:${args['radius'] * 2}px;
+        --ds-color-border:${args['hairline']};
+        --ds-font-display:${args['displayFont']};
         display:grid;gap:var(--ds-space-4);max-width:520px
       "
     >

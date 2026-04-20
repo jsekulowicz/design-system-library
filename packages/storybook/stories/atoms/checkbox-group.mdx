@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as CheckboxGroupStories from './checkbox-group.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={CheckboxGroupStories} />
+
+# CheckboxGroup
+
+A fieldset of checkboxes with shared label, description, and error messaging.
+
+## Anatomy
+
+A shadow-DOM fieldset that wraps any number of `ds-checkbox` children. The group owns the collective `value` (array of selected values) and emits `ds-change` when it updates.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={CheckboxGroupStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={CheckboxGroupStories.Playground} />
+      <ComponentApi tag="ds-checkbox-group" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Always provide a <code>label</code> — it becomes the fieldset legend.</li>
+        <li>Use <code>description</code> to explain the scope of the choices, not to repeat the label.</li>
+        <li>Show <code>error</code> only when <code>invalid</code> — keep the message actionable.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for mutually exclusive options — use <code>ds-radio-group</code> instead.</li>
+        <li>Don't nest checkbox groups; flatten the choices or split into separate steps.</li>
+        <li>Don't manually toggle each child's <code>checked</code> — let the group own the value.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Rendered as a native <code>&lt;fieldset&gt;</code> with <code>&lt;legend&gt;</code> for the label.</li>
+        <li><code>description</code> and <code>error</code> are wired to each checkbox via <code>aria-describedby</code>.</li>
+        <li><code>required</code> adds <code>aria-required</code>; <code>invalid</code> adds <code>aria-invalid</code>.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

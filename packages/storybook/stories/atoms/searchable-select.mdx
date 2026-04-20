@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as SearchableSelectStories from './searchable-select.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={SearchableSelectStories} />
+
+# SearchableSelect
+
+A virtualized select with a search input. Emits `ds-search` so the parent can filter against any sync or async source. `loading` swaps the caret for a spinner and blocks opening.
+
+## Anatomy
+
+Extends `ds-select` with a search input above the listbox. The parent owns filtering — the component only reports queries via `ds-search`.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={SearchableSelectStories.Countries} />
+      <ComponentApi tag="ds-searchable-select" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use for long option lists (20+) where typing is faster than scrolling.</li>
+        <li>Debounce async queries on the parent — the component emits every keystroke.</li>
+        <li>Use <code>loading</code> while options are being fetched to signal progress and block accidental opens.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for small lists — <code>ds-select</code> is simpler and faster to scan.</li>
+        <li>Don't filter client-side if the options are paginated server-side — listen to <code>ds-search</code> and refetch.</li>
+        <li>Don't block typing while <code>loading</code> — only the open state is blocked.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Inherits combobox semantics from <code>ds-select</code>.</li>
+        <li>Virtualization preserves tab order and <code>aria-activedescendant</code>.</li>
+        <li>Clear button is tab-focusable and keyboard-operable.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as CardStories from './card.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={CardStories} />
+
+# Card
+
+Grouped content container. The interactive variant lifts on hover and is keyboard-activatable, so the entire surface can stand in for a link or button.
+
+## Anatomy
+
+Slots for `eyebrow`, `title`, default body, and `actions`. `elevation` and `orientation` control the visual layout; `interactive` promotes the whole card to a focusable affordance.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={CardStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={CardStories.Playground} />
+      <ComponentApi tag="ds-card" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use cards to group related content that benefits from a clear boundary.</li>
+        <li>Pick <code>interactive</code> when the whole card represents a single affordance.</li>
+        <li>Keep actions in the <code>actions</code> slot so spacing and alignment stay consistent.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't nest interactive cards inside another affordance — that traps keyboard users.</li>
+        <li>Don't mix many elevations on the same surface; reserve <code>md</code> for the primary focus.</li>
+        <li>Don't rely on hover alone to communicate interactivity — keyboard focus must also read as active.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Interactive cards render as a focusable element with <code>role="button"</code> (or <code>link</code> when <code>href</code> is set).</li>
+        <li><code>Enter</code> and <code>Space</code> activate the card; focus ring uses <code>:focus-visible</code>.</li>
+        <li>When nested controls exist, clicks on them stop propagation so only one action fires.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as SelectStories from './select.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={SelectStories} />
+
+# Select
+
+Native-feeling dropdown supporting single or multi-select. Options are provided declaratively via the `options` property.
+
+## Anatomy
+
+A custom trigger and a listbox popover rendered in shadow DOM. Supports `clearable`, `required`, `multiple`, and a `leading` slot for icons. Works as a form control via `ElementInternals`.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={SelectStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={SelectStories.Playground} />
+      <ComponentApi tag="ds-select" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use when options are known and modest in number (up to ~20). For longer lists, prefer <code>ds-searchable-select</code>.</li>
+        <li>Provide a clear <code>placeholder</code> that describes the action — "Pick a discipline", not just "Select…".</li>
+        <li>Show <code>error</code> messages close to the select, always below it.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for 2–3 mutually exclusive options — use <code>ds-radio-group</code> for faster scanning.</li>
+        <li>Don't hide critical options behind <code>multiple</code> mode when single selection would do.</li>
+        <li>Don't pre-select a destructive option as default.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li><code>role="combobox"</code> on the trigger, <code>role="listbox"</code> on the popover.</li>
+        <li>Keyboard: <code>Space</code> / <code>Enter</code> opens; arrow keys move the active option; <code>Esc</code> closes.</li>
+        <li>Focus is trapped inside the popover while open.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

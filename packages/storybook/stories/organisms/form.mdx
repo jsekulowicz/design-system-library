@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as FormStories from './form.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={FormStories} />
+
+# Form
+
+Wraps any set of `ds-field` / form controls, orchestrates validation across them, and emits `ds-submit` and `ds-invalid` on the host.
+
+## Anatomy
+
+A native `<form>` in shadow DOM. Child controls participate via `ElementInternals`; submission walks the DOM to collect validity state before emitting `ds-submit` with a `FormData` payload.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={FormStories.AccountDetails} />
+      <ComponentApi tag="ds-form" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Let the form own submission — listen for <code>ds-submit</code> rather than binding to each input.</li>
+        <li>Use <code>ds-field</code> to get consistent label / help / error layout across inputs.</li>
+        <li>Surface server-side errors by setting each control's <code>invalid</code> and <code>error</code> props after submission.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't disable the submit button as the only validation signal — always show an inline error.</li>
+        <li>Don't bypass native validation by validating only on submit; controls should report as the user types.</li>
+        <li>Don't nest forms; split the flow across views if it's getting that deep.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Rendered as a native <code>&lt;form&gt;</code>, so browser autofill and submission work out of the box.</li>
+        <li><code>ds-invalid</code> fires before submission blocks so you can focus the first invalid control.</li>
+        <li><code>summary</code> is exposed as the form's accessible name.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

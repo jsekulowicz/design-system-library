@@ -6,7 +6,7 @@ import '@ds/components/radio-group/define';
 const meta: Meta = {
   title: 'Atoms/RadioGroup',
   component: 'ds-radio-group',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     label: { control: 'text' },
     name: { control: 'text' },
@@ -35,14 +35,14 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <ds-radio-group
-      label=${args.label}
-      name=${args.name}
-      description=${args.description || ''}
-      error=${args.error || ''}
-      .value=${args.value}
-      ?required=${args.required}
-      ?disabled=${args.disabled}
-      ?invalid=${args.invalid}
+      label=${args['label']}
+      name=${args['name']}
+      description=${args['description'] || ''}
+      error=${args['error'] || ''}
+      .value=${args['value']}
+      ?required=${args['required']}
+      ?disabled=${args['disabled']}
+      ?invalid=${args['invalid']}
     >
       <ds-radio radiovalue="monthly">Monthly</ds-radio>
       <ds-radio radiovalue="quarterly">Quarterly</ds-radio>

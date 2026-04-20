@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as LinkStories from './link.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={LinkStories} />
+
+# Link
+
+Navigation that respects reading flow. `inline` preserves the baseline inside prose; `standalone` reads like a directed action.
+
+## Anatomy
+
+A native `<a>` in shadow DOM with three visual variants. `external` adds `rel="noopener noreferrer"` and an accompanying hint icon.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={LinkStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={LinkStories.Playground} />
+      <ComponentApi tag="ds-link" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use <code>inline</code> for hyperlinks inside running prose.</li>
+        <li>Use <code>standalone</code> when the link is the primary focus of its row or card.</li>
+        <li>Set <code>external</code> when the target opens a new origin — the icon and <code>rel</code> attrs come for free.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use a link to trigger an action — use <code>ds-button</code>.</li>
+        <li>Don't remove the underline on inline links — it's a core affordance.</li>
+        <li>Don't write "click here" — the link text should describe the destination.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Rendered as a native <code>&lt;a&gt;</code> — all browser affordances (context menu, middle-click, etc.) work.</li>
+        <li>Focus ring uses <code>:focus-visible</code>; never suppressed.</li>
+        <li>External links include an icon announced via <code>aria-label</code>.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as BadgeStories from './badge.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={BadgeStories} />
+
+# Badge
+
+Compact status or category indicator. Use sparingly so meaning doesn't dilute across a surface.
+
+## Anatomy
+
+A block-level label styled by `tone`. Non-interactive — if users need to act on it, use a `ds-button` instead.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={BadgeStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={BadgeStories.Playground} />
+      <ComponentApi tag="ds-badge" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Reserve <code>warning</code> and <code>danger</code> for exceptional states that merit a glance.</li>
+        <li>Keep labels short — ideally one or two words.</li>
+        <li>Use <code>accent</code> to highlight an editorial choice (Featured, New).</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use a badge for an action; it's a label, not a button.</li>
+        <li>Don't cluster several tones next to each other — the signal gets noisy.</li>
+        <li>Don't wrap badges in links to make them clickable — compose a proper affordance instead.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Color isn't the only signal — the label text carries the meaning.</li>
+        <li>If the badge conveys status that changes dynamically, announce it via an <code>aria-live</code> region on the page, not on the badge itself.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

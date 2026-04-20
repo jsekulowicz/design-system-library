@@ -5,7 +5,7 @@ import '@ds/components/badge/define';
 const meta: Meta = {
   title: 'Atoms/Badge',
   component: 'ds-badge',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     tone: {
       control: { type: 'select' },
@@ -19,7 +19,7 @@ export default meta;
 type Story = StoryObj;
 
 export const Playground: Story = {
-  render: (args) => html`<ds-badge tone=${args.tone}>New</ds-badge>`,
+  render: (args) => html`<ds-badge tone=${args['tone']}>New</ds-badge>`,
 };
 
 export const Tones: Story = {

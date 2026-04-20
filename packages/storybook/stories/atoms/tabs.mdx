@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as TabsStories from './tabs.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+Horizontal tablist for switching between sibling views that share context. One tab is active at a time; inactive panels are hidden from the a11y tree.
+
+## Anatomy
+
+A `ds-tabs` host with a `tab` slot for `ds-tab` triggers and a default slot for `ds-tab-panel` regions. Active state is driven by the `value` property on `ds-tabs`, matched against each tab/panel's `value`.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={TabsStories.Playground} />
+      <ComponentApi tag="ds-tabs" />
+      <h3>ds-tab</h3>
+      <ComponentApi tag="ds-tab" />
+      <h3>ds-tab-panel</h3>
+      <ComponentApi tag="ds-tab-panel" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Keep tab labels short and parallel — one or two words when possible.</li>
+        <li>Use tabs for sibling views of the same subject, not for multi-step workflows.</li>
+        <li>Let the parent control <code>value</code> if tab state needs to persist or sync with a URL.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't hide critical actions (Save, Delete) behind tabs — users may miss them.</li>
+        <li>Don't nest tabs inside tabs; find a flatter information architecture instead.</li>
+        <li>Don't use tabs when panels have very different action sets or layouts.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Uses <code>role="tablist"</code> / <code>role="tab"</code> / <code>role="tabpanel"</code> with <code>aria-selected</code>, <code>aria-controls</code>, and <code>aria-labelledby</code> wired automatically.</li>
+        <li>Keyboard: <code>←</code> / <code>→</code> move between tabs (wrap), <code>Home</code> / <code>End</code> jump to first / last.</li>
+        <li>Only the active tab is in the tab sequence; <code>Tab</code> moves focus from a tab into its panel.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

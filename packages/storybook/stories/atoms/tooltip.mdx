@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as TooltipStories from './tooltip.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={TooltipStories} />
+
+# Tooltip
+
+Short, non-interactive hint that appears on hover or focus. Tooltips supplement a trigger — they are not containers for actionable content.
+
+## Anatomy
+
+A floating bubble positioned relative to the triggering child via the `placement` property. `open` can be controlled imperatively; otherwise pointer and keyboard events drive it.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={TooltipStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={TooltipStories.Playground} />
+      <ComponentApi tag="ds-tooltip" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use for short, supplementary hints — one clear sentence is ideal.</li>
+        <li>Attach to interactive triggers so keyboard users can surface the tip via focus.</li>
+        <li>Pick a <code>placement</code> that doesn't occlude nearby controls.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't put actionable content (links, buttons) inside a tooltip — use a popover pattern instead.</li>
+        <li>Don't rely on a tooltip to carry critical info — it's supplementary by design.</li>
+        <li>Don't show a tooltip on a disabled control without keyboard access.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>The bubble uses <code>role="tooltip"</code> and is linked to its trigger via <code>aria-describedby</code>.</li>
+        <li>Opens on <code>focus-visible</code> as well as hover; dismisses on <code>Esc</code>.</li>
+        <li>Positioning respects <code>prefers-reduced-motion</code> by skipping the transition.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

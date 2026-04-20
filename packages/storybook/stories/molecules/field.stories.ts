@@ -6,7 +6,7 @@ import '@ds/components/text-field/define';
 const meta: Meta = {
   title: 'Molecules/Field',
   component: 'ds-field',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     layout: { control: { type: 'inline-radio' }, options: ['stacked', 'inline'] },
   },
@@ -22,7 +22,7 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-    <ds-field label=${args.label} help=${args.help} layout=${args.layout}>
+    <ds-field label=${args['label']} help=${args['help']} layout=${args['layout']}>
       <ds-text-field placeholder="Studio Forma"></ds-text-field>
     </ds-field>
   `,

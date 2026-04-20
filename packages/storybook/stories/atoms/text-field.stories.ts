@@ -5,7 +5,7 @@ import '@ds/components/text-field/define';
 const meta: Meta = {
   title: 'Atoms/TextField',
   component: 'ds-text-field',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     type: {
       control: { type: 'select' },
@@ -38,15 +38,15 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <ds-text-field
-      type=${args.type}
-      size=${args.size}
-      label=${args.label}
-      description=${args.description || ''}
-      error=${args.error || ''}
-      placeholder=${args.placeholder}
-      ?disabled=${args.disabled}
-      ?required=${args.required}
-      ?invalid=${args.invalid}
+      type=${args['type']}
+      size=${args['size']}
+      label=${args['label']}
+      description=${args['description'] || ''}
+      error=${args['error'] || ''}
+      placeholder=${args['placeholder']}
+      ?disabled=${args['disabled']}
+      ?required=${args['required']}
+      ?invalid=${args['invalid']}
     ></ds-text-field>
   `,
 };

@@ -9,38 +9,7 @@ import '@ds/components/icon/cog-6-tooth';
 const meta: Meta = {
   title: 'Atoms/Tabs',
   component: 'ds-tabs',
-  tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: `
-Horizontal tablist for switching between sibling views that share context. One tab is active at a time; inactive panels are hidden from the a11y tree.
-
-## Anatomy
-
-A \`ds-tabs\` host with a \`tab\` slot for \`ds-tab\` triggers and a default slot for \`ds-tab-panel\` regions. Active state is driven by the \`value\` property on \`ds-tabs\`, matched against each tab/panel's \`value\`.
-
-## Do
-
-- Keep tab labels short and parallel — one or two words when possible.
-- Use tabs for sibling views of the same subject, not for multi-step workflows.
-- Let the parent control \`value\` if tab state needs to persist or sync with a URL.
-
-## Don't
-
-- Don't hide critical actions (Save, Delete) behind tabs — users may miss them.
-- Don't nest tabs inside tabs; find a flatter information architecture instead.
-- Don't use tabs when panels have very different action sets or layouts.
-
-## Accessibility
-
-- Uses \`role="tablist"\` / \`role="tab"\` / \`role="tabpanel"\` with \`aria-selected\`, \`aria-controls\`, and \`aria-labelledby\` wired automatically.
-- Keyboard: \`←\` / \`→\` move between tabs (wrap), \`Home\` / \`End\` jump to first / last.
-- Only the active tab is in the tab sequence; \`Tab\` moves focus from a tab into its panel.
-        `.trim(),
-      },
-    },
-  },
+  tags: ['!dev'],
 };
 
 export default meta;

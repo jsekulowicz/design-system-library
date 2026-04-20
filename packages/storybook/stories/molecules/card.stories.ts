@@ -7,7 +7,7 @@ import '@ds/components/badge/define';
 const meta: Meta = {
   title: 'Molecules/Card',
   component: 'ds-card',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     elevation: { control: { type: 'inline-radio' }, options: ['none', 'sm', 'md'] },
     orientation: { control: { type: 'inline-radio' }, options: ['vertical', 'horizontal'] },
@@ -23,9 +23,9 @@ export const Playground: Story = {
   render: (args) => html`
     <div style="max-width:420px">
       <ds-card
-        elevation=${args.elevation}
-        orientation=${args.orientation}
-        ?interactive=${args.interactive}
+        elevation=${args['elevation']}
+        orientation=${args['orientation']}
+        ?interactive=${args['interactive']}
       >
         <ds-badge slot="eyebrow" tone="accent">Featured</ds-badge>
         <span slot="title">Quiet confidence</span>

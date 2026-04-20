@@ -5,7 +5,7 @@ import '@ds/components/link/define';
 const meta: Meta = {
   title: 'Atoms/Link',
   component: 'ds-link',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   argTypes: {
     variant: {
       control: { type: 'inline-radio' },
@@ -24,9 +24,9 @@ export const Playground: Story = {
     <p>
       The editorial grid is defined in
       <ds-link
-        href=${args.href}
-        variant=${args.variant}
-        ?external=${args.external}
+        href=${args['href']}
+        variant=${args['variant']}
+        ?external=${args['external']}
         >the foundations chapter</ds-link
       >.
     </p>
