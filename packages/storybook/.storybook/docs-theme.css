@@ -42,6 +42,22 @@
   border-color: var(--ds-color-border);
 }
 
+/* Syntax-highlighter injects coloured <span> tokens inside <pre>; override
+   so they stay readable in both themes instead of staying light on dark bg. */
+.sbdocs pre span {
+  color: var(--ds-color-fg) !important;
+}
+
+/* Copy button on MDX code-fence blocks (different from story Show Code). */
+.sbdocs .docblock-source,
+.sbdocs .docblock-source button,
+.sbdocs .docblock-source > div {
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+  border-color: var(--ds-color-border) !important;
+  box-shadow: none !important;
+}
+
 .sbdocs hr {
   border-color: var(--ds-color-border);
 }
