@@ -5,9 +5,9 @@ export const semanticDark = {
   ...semanticLight,
   color: {
     ...semanticLight.color,
-    bg: '#17171A',
-    'bg-subtle': '#202024',
-    'bg-muted': color.ink[100],
+    bg: '#292C2E',
+    'bg-subtle': '#323538',
+    'bg-muted': '#3D4042',
     'bg-inverse': color.ink[1000],
     fg: color.ink[900],
     'fg-muted': color.ink[600],
