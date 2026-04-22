@@ -1,0 +1,85 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as TableStories from './table.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/table/define';
+
+<Meta of={TableStories} />
+
+# Table
+
+Semantic data table driven by `rows` + `columns` props. Cell content is fully customizable via per-column render functions (the closest Lit idiom to Vue3 scoped slots). Sorting and pagination are separate presentation-only primitives — the parent owns the data state.
+
+## Anatomy
+
+A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls.
+
+### Column render as scoped-slot equivalent
+
+```ts
+const columns: TableColumn<Person>[] = [
+  { name: 'name', field: 'name', label: 'Name' },
+  {
+    name: 'status', field: 'status', label: 'Status',
+    render: row => html`<ds-badge tone=${toneFor(row.status)}>${row.status}</ds-badge>`,
+  },
+  {
+    name: 'salary', field: 'salary', label: 'Salary', align: 'right',
+    render: row => money.format(row.salary),
+  },
+];
+```
+
+The `render` function receives the full row object and index — any component, markup, or formatting can go inside the cell.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={TableStories.Basic} />
+      <ds-tabs value="ds-table">
+        <ds-tab slot="tab" value="ds-table">ds-table</ds-tab>
+        <ds-tab slot="tab" value="ds-table-sort-button">ds-table-sort-button</ds-tab>
+        <ds-tab slot="tab" value="ds-table-pagination">ds-table-pagination</ds-tab>
+
+        <ds-tab-panel value="ds-table">
+          <ComponentApi tag="ds-table" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-table-sort-button">
+          <ComponentApi tag="ds-table-sort-button" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-table-pagination">
+          <ComponentApi tag="ds-table-pagination" />
+        </ds-tab-panel>
+      </ds-tabs>
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use <code>render(row)</code> on columns for custom cell content (badges, links, formatted numbers).</li>
+        <li>Keep sorting and pagination state in the parent — pass <code>sortState</code> and paging props in, handle events to update.</li>
+        <li>Right-align numeric columns via <code>align: 'right'</code>.</li>
+        <li>Mark columns sortable only when <code>sortable: true</code> — this wires <code>aria-sort</code>.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't expect the table to sort or paginate on its own — it's data-driven and presentation-only.</li>
+        <li>Don't nest interactive controls in rows without <code>event.stopPropagation()</code> if the row is also clickable.</li>
+        <li>Don't use tables for layout — use CSS grid instead.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders real <code>&lt;table&gt;</code>/<code>&lt;thead&gt;</code>/<code>&lt;tbody&gt;</code>/<code>&lt;th scope="col"&gt;</code> markup.</li>
+        <li>Sortable headers reflect <code>aria-sort</code> ("ascending", "descending", "none") from <code>sortState</code>.</li>
+        <li>Clickable rows are keyboard-focusable, activate on <kbd>Enter</kbd>/<kbd>Space</kbd>, and expose <code>role="button"</code>.</li>
+        <li>Clicks on interactive children (buttons, links, form controls) do not trigger row activation.</li>
+        <li>Pagination summary is a live region so screen readers announce page changes.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

@@ -11,6 +11,23 @@ export { DsRadioGroup } from './atoms/radio-group/index.js';
 export { DsSelect, type SelectOption } from './atoms/select/index.js';
 export { DsSearchableSelect } from './atoms/searchable-select/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './atoms/tabs/index.js';
+export {
+  DsTable,
+  DsTableSortButton,
+  DsTablePagination,
+  buildPaginationRange,
+  type TableColumn,
+  type TableColumnAlign,
+  type TableRow,
+  type TableSortDirection,
+  type TableSortState,
+  type TableRowClickDetail,
+  type TableSortDetail,
+  type TablePageChangeDetail,
+  type TablePageSizeChangeDetail,
+  type PaginationRangeItem,
+  type PaginationRangeInput,
+} from './atoms/table/index.js';
 export { DsField, type FieldLayout } from './molecules/field/index.js';
 export { DsCard, type CardElevation, type CardOrientation } from './molecules/card/index.js';
 export { DsAlert, type AlertTone } from './molecules/alert/index.js';

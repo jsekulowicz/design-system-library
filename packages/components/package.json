@@ -87,6 +87,11 @@
       "import": "./dist/atoms/tabs/index.js"
     },
     "./tabs/define": { "import": "./dist/atoms/tabs/define.js" },
+    "./table": {
+      "types": "./dist/atoms/table/index.d.ts",
+      "import": "./dist/atoms/table/index.js"
+    },
+    "./table/define": { "import": "./dist/atoms/table/define.js" },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"
