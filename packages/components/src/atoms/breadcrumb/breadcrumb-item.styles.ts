@@ -24,8 +24,8 @@ export const breadcrumbItemStyles = css`
     text-decoration: underline;
   }
   a:focus-visible {
-    outline: 2px solid var(--ds-color-focus);
-    outline-offset: 2px;
+    outline: 2px solid transparent;
+    box-shadow: var(--ds-shadow-focus);
   }
 
   .current {
