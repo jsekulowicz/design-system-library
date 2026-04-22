@@ -100,9 +100,9 @@ export const Sortable: Story = {
     };
     return html`
       <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
-        <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}></ds-table-sort-button>
-        <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}></ds-table-sort-button>
-        <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}></ds-table-sort-button>
+        <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}>Name</ds-table-sort-button>
+        <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}>Joined</ds-table-sort-button>
+        <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}>Salary</ds-table-sort-button>
       </ds-table>
     `;
   },
