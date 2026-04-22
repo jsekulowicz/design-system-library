@@ -29,7 +29,7 @@ const preview: Preview = {
           'Introduction',
           'Foundations',
           ['Design intent', 'Tokens', 'Typography', 'Color', 'Theming'],
-          ['Atoms', ['CheckboxGroup', 'Checkbox', 'RadioGroup', 'Radio', 'Select', 'SearchableSelect', 'Tabs', 'Table']],
+          ['Atoms', ['Breadcrumb', 'CheckboxGroup', 'Checkbox', 'RadioGroup', 'Radio', 'Select', 'SearchableSelect', 'Tabs', 'Table']],
           'Molecules',
           'Organisms',
           'Templates',

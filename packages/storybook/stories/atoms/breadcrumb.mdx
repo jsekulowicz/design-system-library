@@ -1,0 +1,72 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as BreadcrumbStories from './breadcrumb.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/breadcrumb/define';
+
+<Meta of={BreadcrumbStories} />
+
+# Breadcrumb
+
+Navigational trail showing the user's path through the hierarchy, with each ancestor as a link back to that level. The last crumb represents the current page and is rendered as plain text with `aria-current="page"`.
+
+## Anatomy
+
+A `ds-breadcrumb` host wraps any number of `ds-breadcrumb-item` children in ancestor-to-current order. The parent marks the final child as current; every earlier item renders as an `<a>` with a trailing chevron-right separator.
+
+```html
+<ds-breadcrumb>
+  <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
+  <ds-breadcrumb-item href="/products">Products</ds-breadcrumb-item>
+  <ds-breadcrumb-item>Widget</ds-breadcrumb-item>
+</ds-breadcrumb>
+```
+
+`ds-breadcrumb-item` forwards standard `<a>` attributes — `href`, `target`, `rel`, `download`, `hreflang`, `type`, `referrerpolicy` — so consumers control routing themselves (including SPA navigation via intercepted clicks).
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={BreadcrumbStories.Basic} />
+      <ds-tabs value="ds-breadcrumb">
+        <ds-tab slot="tab" value="ds-breadcrumb">ds-breadcrumb</ds-tab>
+        <ds-tab slot="tab" value="ds-breadcrumb-item">ds-breadcrumb-item</ds-tab>
+
+        <ds-tab-panel value="ds-breadcrumb">
+          <ComponentApi tag="ds-breadcrumb" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-breadcrumb-item">
+          <ComponentApi tag="ds-breadcrumb-item" />
+        </ds-tab-panel>
+      </ds-tabs>
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Order items from the topmost ancestor to the current page, left to right.</li>
+        <li>Omit <code>href</code> on the final item — the parent marks it current automatically.</li>
+        <li>Pair <code>target="_blank"</code> with <code>rel="noopener"</code> (and optionally <code>rel="noreferrer"</code>) for external links.</li>
+        <li>Keep labels short — one or two words per crumb.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use a breadcrumb for a single-page workflow — it's for hierarchy, not step progress.</li>
+        <li>Don't link the last crumb — it represents the page the user is already on.</li>
+        <li>Don't truncate labels with ellipsis unless space is genuinely constrained; prefer flatter IA.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders a <code>&lt;nav aria-label="Breadcrumb"&gt;</code> wrapping an <code>&lt;ol&gt;</code>; each item has <code>role="listitem"</code>.</li>
+        <li>The current crumb uses <code>aria-current="page"</code> and is not focusable.</li>
+        <li>Chevron separators carry <code>aria-hidden="true"</code> and <code>role="presentation"</code> so they're skipped by screen readers.</li>
+        <li>Use the <code>label</code> attribute on <code>ds-breadcrumb</code> when a page has multiple trails (e.g. "Section breadcrumb").</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

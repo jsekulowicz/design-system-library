@@ -12,6 +12,7 @@ import './atoms/select/define.js';
 import './atoms/searchable-select/define.js';
 import './atoms/tabs/define.js';
 import './atoms/table/define.js';
+import './atoms/breadcrumb/define.js';
 import './molecules/field/define.js';
 import './molecules/card/define.js';
 import './molecules/alert/define.js';

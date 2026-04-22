@@ -47,6 +47,10 @@
       "types": "./dist/atoms/icon/icons/cog-6-tooth.d.ts",
       "import": "./dist/atoms/icon/icons/cog-6-tooth.js"
     },
+    "./icon/chevron-right": {
+      "types": "./dist/atoms/icon/icons/chevron-right.d.ts",
+      "import": "./dist/atoms/icon/icons/chevron-right.js"
+    },
     "./text-field": {
       "types": "./dist/atoms/text-field/index.d.ts",
       "import": "./dist/atoms/text-field/index.js"
@@ -92,6 +96,11 @@
       "import": "./dist/atoms/table/index.js"
     },
     "./table/define": { "import": "./dist/atoms/table/define.js" },
+    "./breadcrumb": {
+      "types": "./dist/atoms/breadcrumb/index.d.ts",
+      "import": "./dist/atoms/breadcrumb/index.js"
+    },
+    "./breadcrumb/define": { "import": "./dist/atoms/breadcrumb/define.js" },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"
