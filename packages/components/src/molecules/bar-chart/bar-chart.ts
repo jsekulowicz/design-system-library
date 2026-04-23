@@ -18,6 +18,7 @@ const MARGIN = { top: 16, right: 16, bottomBase: 36, leftBase: 44 } as const;
 const BAND_OUTER_GAP = 0.18;
 const BAR_INNER_GAP = 2;
 const MIN_SEGMENT_HEIGHT = 1;
+const FALLBACK_WIDTH = 640;
 
 /**
  * @tag ds-bar-chart
@@ -50,6 +51,22 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   override firstUpdated(): void {
     this.#observeResize();
+    this.#remeasureNextFrame();
+  }
+
+  #remeasureNextFrame(): void {
+    if (typeof requestAnimationFrame === 'undefined') {
+      return;
+    }
+    requestAnimationFrame(() => {
+      if (!this._frame) {
+        return;
+      }
+      const measured = this._frame.clientWidth;
+      if (measured > 0 && measured !== this._width) {
+        this._width = measured;
+      }
+    });
   }
 
   override disconnectedCallback(): void {
@@ -105,7 +122,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       bottom: MARGIN.bottomBase + (this.xAxisLabel ? 18 : 0),
       left: MARGIN.leftBase + (this.yAxisLabel ? 18 : 0),
     };
-    const width = this._width;
+    const width = this._width > 0 ? this._width : FALLBACK_WIDTH;
     const innerWidth = Math.max(0, width - margin.left - margin.right);
     const innerHeight = Math.max(0, this.height - margin.top - margin.bottom);
     const bands = computeGroupBands(innerWidth, groups.length, BAND_OUTER_GAP);
@@ -126,7 +143,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   override render(): TemplateResult {
     const layout = this.#computeLayout();
     const { groups, yMax, innerHeight, width, margin, bands, ticks } = layout;
-    if (groups.length === 0 || width === 0) {
+    if (groups.length === 0) {
       return html`<div class="frame" style="height:${this.height}px" tabindex="0"></div>`;
     }
     return html`
