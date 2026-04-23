@@ -1,5 +1,6 @@
 export { Alert } from './ds-alert.js';
 export { Badge } from './ds-badge.js';
+export { BarChart } from './ds-bar-chart.js';
 export { Breadcrumb } from './ds-breadcrumb.js';
 export { BreadcrumbItem } from './ds-breadcrumb-item.js';
 export { Button } from './ds-button.js';

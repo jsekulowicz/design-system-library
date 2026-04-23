@@ -1,0 +1,73 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as BarChartStories from './bar-chart.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/bar-chart/define';
+
+<Meta of={BarChartStories} />
+
+# BarChart
+
+Responsive grouped or stacked bar chart. Pass rows via `.data`, a `domain` field to group on, and a `.series` array describing which fields to plot. Consumers own formatting, colors (optional), and any interaction logic downstream of the `ds-bar-focus` event.
+
+## Anatomy
+
+```ts
+type BarChartSeries = {
+  key: string;         // property name on each row
+  label?: string;      // legend + SR label (defaults to key)
+  color?: string;      // CSS color; defaults to a palette entry
+};
+```
+
+```html
+<ds-bar-chart
+  title="Game turns"
+  .data=${rows}
+  domain="turnOrdinalNumber"
+  .series=${[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
+  x-axis-label="Turn"
+  y-axis-label="Score"
+  stacked
+></ds-bar-chart>
+```
+
+Setting `stacked` collapses each group into a single bar of stacked segments (sum of series). Leaving it off renders one bar per series, side-by-side, with a gap between groups.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={BarChartStories.Grouped} />
+      <ComponentApi tag="ds-bar-chart" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use stacked mode when the total per group is meaningful (totals, cumulative values).</li>
+        <li>Use grouped mode when comparing individual series within each group matters more than the total.</li>
+        <li>Format values and domain labels with <code>.formatValue</code> / <code>.formatDomain</code> — the chart, tooltip, SR table, and live region all share the same formatting.</li>
+        <li>Provide a <code>title</code> — it's used to build the chart's accessible name.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't mix series with very different value ranges in one chart — the smaller ones disappear.</li>
+        <li>Don't hide the legend when there are two or more series.</li>
+        <li>Don't rely on color alone to distinguish series — also rely on legend order + tooltip labels.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>The chart is focusable (<code>tabindex=0</code>) with an <code>aria-label</code> summarizing group count, series, and keyboard usage.</li>
+        <li><kbd>←</kbd> / <kbd>→</kbd> move between groups; <kbd>Home</kbd> / <kbd>End</kbd> jump to first / last; <kbd>Esc</kbd> clears focus.</li>
+        <li>A visually-hidden <code>&lt;table&gt;</code> mirrors the full data — non-sighted users can read every cell directly.</li>
+        <li>An <code>aria-live="polite"</code> region announces the active group and all its values when focus or hover changes.</li>
+        <li>Palette colors come from <code>--ds-color-chart-1</code>…<code>--ds-color-chart-6</code>; override per-series via <code>color</code>.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

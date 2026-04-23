@@ -23,5 +23,11 @@ export const semanticDark = {
     'border-subtle': color.alpha.paperSubtle,
     focus: 'rgba(106, 149, 232, 0.45)',
     'danger-subtle': 'rgba(178, 26, 10, 0.22)',
+    'chart-1': '#7AA3F5',
+    'chart-2': '#50D8D4',
+    'chart-3': '#F7A53E',
+    'chart-4': '#F472B6',
+    'chart-5': '#70E380',
+    'chart-6': '#B995FF',
   },
 } as const;

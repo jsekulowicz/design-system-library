@@ -31,6 +31,13 @@ export {
 } from './atoms/table/index.js';
 export { DsField, type FieldLayout } from './molecules/field/index.js';
 export { DsCard, type CardElevation, type CardOrientation } from './molecules/card/index.js';
+export {
+  DsBarChart,
+  type BarChartSeries,
+  type BarChartRow,
+  type BarChartGroup,
+  type BarChartFocusDetail,
+} from './molecules/bar-chart/index.js';
 export { DsAlert, type AlertTone } from './molecules/alert/index.js';
 export { DsForm } from './organisms/form/index.js';
 export { DsPageShell } from './templates/page-shell/index.js';

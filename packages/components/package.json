@@ -118,6 +118,11 @@
       "import": "./dist/molecules/card/index.js"
     },
     "./card/define": { "import": "./dist/molecules/card/define.js" },
+    "./bar-chart": {
+      "types": "./dist/molecules/bar-chart/index.d.ts",
+      "import": "./dist/molecules/bar-chart/index.js"
+    },
+    "./bar-chart/define": { "import": "./dist/molecules/bar-chart/define.js" },
     "./alert": {
       "types": "./dist/molecules/alert/index.d.ts",
       "import": "./dist/molecules/alert/index.js"

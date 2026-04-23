@@ -40,6 +40,12 @@ export const semanticLight = {
     'warning-subtle': color.warning[100],
     danger: color.danger[500],
     'danger-subtle': color.danger[100],
+    'chart-1': '#4A72CC',
+    'chart-2': '#1F7A7A',
+    'chart-3': '#D97706',
+    'chart-4': '#B83280',
+    'chart-5': '#2B8A3E',
+    'chart-6': '#7B3FE4',
   },
   space,
   font: {

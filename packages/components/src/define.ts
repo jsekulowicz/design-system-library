@@ -15,6 +15,7 @@ import './atoms/table/define.js';
 import './atoms/breadcrumb/define.js';
 import './molecules/field/define.js';
 import './molecules/card/define.js';
+import './molecules/bar-chart/define.js';
 import './molecules/alert/define.js';
 import './organisms/form/define.js';
 import './templates/page-shell/define.js';
