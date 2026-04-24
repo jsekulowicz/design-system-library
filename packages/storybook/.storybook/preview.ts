@@ -29,7 +29,7 @@ const preview: Preview = {
           'Introduction',
           'Framework usage',
           'Foundations',
-          ['Design intent', 'Tokens', 'Typography', 'Color', 'Theming'],
+          ['Design intent', 'Tokens', 'Typography', 'Color', 'Spacing', 'Theming'],
           ['Atoms', ['Breadcrumb', 'CheckboxGroup', 'Checkbox', 'RadioGroup', 'Radio', 'Select', 'SearchableSelect', 'Tabs', 'Table']],
           ['Molecules', ['Alert', 'BarChart', 'Card', 'Field']],
           'Organisms',

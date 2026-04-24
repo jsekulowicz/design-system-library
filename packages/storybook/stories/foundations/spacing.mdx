@@ -1,0 +1,42 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as SpacingStories from './spacing.stories';
+
+<Meta of={SpacingStories} />
+
+# Spacing
+
+Spacing is the system's rhythm. Every step is a **multiple of 4px**, so any layout — a page, a card, a cramped table cell — snaps to the same grid. The number in the token name is the step count, so `--ds-space-3` is **3 × 4px = 12px**.
+
+<Canvas of={SpacingStories.Scale} />
+
+## Why rems, not pixels
+
+Spacing values are declared in **rem** (relative to the root font size). A user who bumps their browser's default text size up — for readability or accessibility — gets proportionally larger paddings and gaps alongside larger text. A design that's declared entirely in `px` stays fixed while the text grows, which breaks layout and line counts on the first zoom step.
+
+The rule of thumb the system follows:
+
+- **Spacing** — rem (accessibility scaling).
+- **Font sizes** — rem (the text itself scales with user preference).
+- **Borders, hairlines, shadow offsets** — px (they're meant to be crisp and aren't typographic).
+- **Breakpoint widths** — px (viewport is measured in device pixels, not font size).
+
+If you need an exact-px gap for a specific UI moment, use a raw `4px`/`8px`/`12px` literal rather than reaching for a new token — the scale only grows when there's a consistent reuse case.
+
+## Semantic choices by density
+
+- **`space-1` / `space-2`** — tight inline rhythms: icon↔label, adjacent chips, inline form affordances.
+- **`space-3`** — default padding for compact controls (inputs, buttons, table cells).
+- **`space-4` / `space-6`** — comfortable padding for cards, dialogs, and section content.
+- **`space-8`+** — section-to-section separation, page gutters.
+
+<Canvas of={SpacingStories.PaddingExamples} />
+
+## Invariants
+
+Enforced by unit tests in [packages/tokens/src/primitive/spacing.test.ts](packages/tokens/src/primitive/spacing.test.ts):
+
+1. Every token's pixel value is a multiple of 4.
+2. Every non-zero token is declared in `rem`.
+3. The step number matches the value: `space[N]` equals `N × 4px`.
+
+Add a new step only when the invariants still hold — i.e. a new number whose `rem` value resolves to `N × 4px`.
