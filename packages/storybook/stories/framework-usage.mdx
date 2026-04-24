@@ -1,0 +1,162 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Framework usage" />
+
+# Framework usage
+
+Every component is a native web component, so it runs anywhere the DOM does. The only thing that differs is how you pass **non-string props** (arrays, objects, functions) — frameworks set these as JS properties, not HTML attributes.
+
+Each component ships a `define` side-effect module that registers the custom element with the browser. Import it once at your app's entry point:
+
+```ts
+import '@ds/tokens/theme-default.css';
+import '@ds/components/bar-chart/define';
+```
+
+String and boolean props work the same everywhere — just attributes. The sections below focus on the non-string cases.
+
+## Lit / vanilla Lit templates
+
+Use a leading dot to tell Lit's parser to set a JS property instead of an attribute:
+
+```ts
+import { html } from 'lit';
+import '@ds/components/bar-chart/define';
+
+html`
+  <ds-bar-chart
+    title="Game turns"
+    domain="turnOrdinalNumber"
+    x-axis-label="Turn"
+    y-axis-label="Score"
+    stacked
+    .data=${rows}
+    .series=${[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
+    .formatDomain=${v => `Turn ${v}`}
+    @ds-bar-focus=${e => console.log(e.detail)}
+  ></ds-bar-chart>
+`;
+```
+
+Without the dot, `data` would be coerced to the string `"[object Object]"`.
+
+## React
+
+The repo ships React wrappers generated with `@lit/react` under the `@ds/react` package. Use them exactly like regular React components — no dots, no ref juggling:
+
+```tsx
+import { BarChart } from '@ds/react';
+
+<BarChart
+  title="Game turns"
+  domain="turnOrdinalNumber"
+  xAxisLabel="Turn"
+  yAxisLabel="Score"
+  stacked
+  data={rows}
+  series={[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
+  formatDomain={v => `Turn ${v}`}
+  onDsBarFocus={e => console.log(e.detail)}
+/>
+```
+
+Rules of thumb:
+
+- Every component has a matching wrapper in `@ds/react` (`Button`, `Breadcrumb`, `BarChart`, `Table`, …).
+- Kebab-case attributes become camelCase props (`x-axis-label` → `xAxisLabel`).
+- Custom events are camelCased with an `onDs` prefix (`ds-bar-focus` → `onDsBarFocus`, `ds-change` → `onDsChange`).
+- The wrapper sets React props as DOM properties on the underlying element, so arrays and functions pass through as real values, not stringified.
+
+## Vue 3
+
+Vue 3 needs two one-time setup steps: mark `ds-` elements as custom, and import the `define` side-effect for each component you use.
+
+```ts
+// main.ts
+import { createApp } from 'vue';
+import '@ds/tokens/theme-default.css';
+import '@ds/components/bar-chart/define';
+import App from './App.vue';
+
+const app = createApp(App);
+app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ds-');
+app.mount('#app');
+```
+
+Then in templates, use `:prop="…"` for non-string values — Vue sets them as JS properties on custom elements automatically:
+
+```html
+<template>
+  <ds-bar-chart
+    title="Game turns"
+    domain="turnOrdinalNumber"
+    x-axis-label="Turn"
+    y-axis-label="Score"
+    stacked
+    :data="rows"
+    :series="[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]"
+    :format-domain="v => `Turn ${v}`"
+    @ds-bar-focus="onBarFocus"
+  />
+</template>
+```
+
+Vue maps kebab-case template attributes (`:format-domain`) to camelCase JS properties (`formatDomain`) on custom elements.
+
+## Angular
+
+Tell the Angular compiler to allow unknown elements, then use property binding for non-strings:
+
+```ts
+// app.module.ts (or a standalone component's @Component)
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import '@ds/components/bar-chart/define';
+
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppModule {}
+```
+
+```html
+<ds-bar-chart
+  title="Game turns"
+  domain="turnOrdinalNumber"
+  x-axis-label="Turn"
+  y-axis-label="Score"
+  stacked
+  [data]="rows"
+  [series]="series"
+  [formatDomain]="formatTurn"
+  (ds-bar-focus)="onBarFocus($event)"
+></ds-bar-chart>
+```
+
+Square-bracket syntax (`[data]="rows"`) binds to the DOM property; parentheses (`(ds-bar-focus)`) listen for custom events.
+
+## Plain HTML + JavaScript
+
+Attributes only carry strings, so set complex values with JS property assignment after the element is in the DOM:
+
+```html
+<ds-bar-chart
+  domain="turnOrdinalNumber"
+  x-axis-label="Turn"
+  y-axis-label="Score"
+  stacked
+></ds-bar-chart>
+
+<script type="module">
+  import '@ds/components/bar-chart/define';
+
+  const chart = document.querySelector('ds-bar-chart');
+  chart.data = rows;
+  chart.series = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
+  chart.formatDomain = v => `Turn ${v}`;
+  chart.addEventListener('ds-bar-focus', e => console.log(e.detail));
+</script>
+```
+
+## Events
+
+Custom events are plain `CustomEvent`s that bubble and cross shadow boundaries, so any listener works — `.addEventListener('ds-change', …)` (vanilla), `@ds-change="…"` (Vue), `onDsChange={…}` (React), `(ds-change)="…"` (Angular). The `detail` payload is the same everywhere; types are exported from each component's subpath (e.g. `import type { BarChartFocusDetail } from '@ds/components/bar-chart'`).

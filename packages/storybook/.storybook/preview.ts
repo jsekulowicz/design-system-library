@@ -27,6 +27,7 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
+          'Framework usage',
           'Foundations',
           ['Design intent', 'Tokens', 'Typography', 'Color', 'Theming'],
           ['Atoms', ['Breadcrumb', 'CheckboxGroup', 'Checkbox', 'RadioGroup', 'Radio', 'Select', 'SearchableSelect', 'Tabs', 'Table']],
