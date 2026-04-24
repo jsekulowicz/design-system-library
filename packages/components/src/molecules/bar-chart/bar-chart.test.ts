@@ -74,7 +74,7 @@ describe('<ds-bar-chart>', () => {
 
   it('exposes a hidden data table mirroring the rows and series', async () => {
     const el = await mount();
-    const table = el.shadowRoot!.querySelector('table.sr-only')!;
+    const table = el.shadowRoot!.querySelector('.sr-only table')!;
     const rows = table.querySelectorAll('tbody tr');
     expect(rows).toHaveLength(3);
     const first = rows[0];
@@ -84,7 +84,7 @@ describe('<ds-bar-chart>', () => {
 
   it('includes a total column in the hidden table when stacked', async () => {
     const el = await mount({ stacked: true });
-    const headerCells = el.shadowRoot!.querySelectorAll('table.sr-only thead th');
+    const headerCells = el.shadowRoot!.querySelectorAll('.sr-only table thead th');
     expect(headerCells[headerCells.length - 1].textContent?.trim()).toBe('Total');
   });
 
@@ -133,6 +133,25 @@ describe('<ds-bar-chart>', () => {
     ]);
   });
 
+  it('only renders the group focus ring for keyboard interaction, not pointer hover', async () => {
+    const el = await mount();
+    const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
+
+    const rect = frame.getBoundingClientRect();
+    frame.dispatchEvent(new MouseEvent('pointermove', {
+      bubbles: true,
+      clientX: rect.left + 200,
+      clientY: rect.top + 100,
+    }));
+    await el.updateComplete;
+    expect((el as unknown as { _activeIndex: number | null })._activeIndex).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('rect.focus-ring')).toBeNull();
+
+    frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('rect.focus-ring')).not.toBeNull();
+  });
+
   it('shows the tooltip when a group is active and hides it on Escape', async () => {
     const el = await mount();
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
@@ -156,7 +175,7 @@ describe('<ds-bar-chart>', () => {
         { key: 'Andrew' },
       ],
     });
-    const table = el.shadowRoot!.querySelector('table.sr-only');
+    const table = el.shadowRoot!.querySelector('.sr-only table');
     expect(table?.textContent).toContain('Jessica');
     const firstRect = el.shadowRoot!.querySelector('rect.bar') as SVGRectElement;
     expect(firstRect.getAttribute('fill')).toBe('#ff0000');
@@ -167,7 +186,7 @@ describe('<ds-bar-chart>', () => {
       formatDomain: (v: unknown) => `Turn ${v}`,
       formatValue: (v: number) => `${v} pts`,
     });
-    const table = el.shadowRoot!.querySelector('table.sr-only');
+    const table = el.shadowRoot!.querySelector('.sr-only table');
     expect(table?.textContent).toContain('Turn 1');
     expect(table?.textContent).toContain('3 pts');
   });

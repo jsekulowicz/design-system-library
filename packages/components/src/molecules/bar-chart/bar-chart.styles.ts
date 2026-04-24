@@ -10,16 +10,16 @@ export const barChartStyles = css`
     font-size: var(--ds-font-size-sm);
   }
 
-  .host:focus-visible {
-    outline: 2px solid transparent;
-    box-shadow: var(--ds-shadow-focus);
-    border-radius: var(--ds-radius-md);
-  }
-
   .frame {
     position: relative;
     width: 100%;
     outline: none;
+    border-radius: var(--ds-radius-md);
+  }
+
+  .frame:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: var(--ds-shadow-focus);
   }
 
   svg {
@@ -101,8 +101,16 @@ export const barChartStyles = css`
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
     min-width: 120px;
     z-index: 1;
+  }
+
+  .tooltip[data-position="above"] {
     transform: translate(-50%, -100%);
     margin-top: -8px;
+  }
+
+  .tooltip[data-position="below"] {
+    transform: translate(-50%, 0);
+    margin-top: 8px;
   }
 
   .tooltip[hidden] {

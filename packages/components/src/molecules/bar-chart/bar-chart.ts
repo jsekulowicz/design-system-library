@@ -45,6 +45,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   @state() private _width = 0;
   @state() private _activeIndex: number | null = null;
+  @state() private _focusMode: 'keyboard' | 'pointer' | null = null;
 
   @query('.frame') private _frame!: HTMLElement;
   #resizeObserver?: ResizeObserver;
@@ -161,13 +162,13 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         @blur=${this.#onBlur}
         part="chart"
       >
-        <svg role="img" aria-hidden="true" viewBox="0 0 ${width} ${this.height}" width=${width} height=${this.height}>
+        <svg role="img" aria-hidden="true" viewBox="0 0 ${width} ${this.height}" width=${width} height=${this.height} preserveAspectRatio="none">
           <g transform="translate(${margin.left}, ${margin.top})">
             ${this.#renderGrid(ticks, innerHeight, layout.innerWidth)}
             ${this.#renderYAxis(ticks, innerHeight, margin.left)}
             ${this.#renderXAxis(groups, bands, innerHeight, margin)}
             ${this.#renderBars(groups, bands, innerHeight, yMax)}
-            ${this.#renderFocusRing(bands, innerHeight)}
+            ${this.#renderFocusRing(bands, innerHeight, groups, yMax)}
           </g>
         </svg>
         ${this.#renderTooltip(layout)}
@@ -303,26 +304,51 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     })}`;
   }
 
-  #renderFocusRing(bands: GroupBand[], innerHeight: number): SVGTemplateResult | typeof nothing {
-    if (this._activeIndex == null) {
+  #activeGroupMaxHeight(groups: BarChartGroup<T>[], innerHeight: number, yMax: number): number {
+    if (this._activeIndex == null || yMax <= 0) {
+      return 0;
+    }
+    const g = groups[this._activeIndex];
+    if (!g) {
+      return 0;
+    }
+    const value = this.stacked ? g.total : Math.max(...Object.values(g.values), 0);
+    return (value / yMax) * innerHeight;
+  }
+
+  #renderFocusRing(bands: GroupBand[], innerHeight: number, groups: BarChartGroup<T>[], yMax: number): SVGTemplateResult | typeof nothing {
+    if (this._activeIndex == null || this._focusMode !== 'keyboard') {
       return nothing;
     }
     const band = bands[this._activeIndex];
     if (!band) {
       return nothing;
     }
-    return svg`<rect class="focus-ring" x=${band.innerX - 2} y="-2" width=${band.innerWidth + 4} height=${innerHeight + 4} rx="4"></rect>`;
+    const maxHeight = this.#activeGroupMaxHeight(groups, innerHeight, yMax);
+    const drawHeight = Math.max(4, maxHeight);
+    const y = innerHeight - drawHeight - 2;
+    return svg`<rect class="focus-ring" x=${band.innerX - 2} y=${y} width=${band.innerWidth + 4} height=${drawHeight + 4} rx="4"></rect>`;
   }
 
   #renderTooltip(layout: ReturnType<typeof this.computeLayoutSnapshot>): TemplateResult {
-    const { bands, groups, margin } = layout;
+    const { bands, groups, margin, innerHeight, yMax } = layout;
     const hidden = this._activeIndex == null;
     const group = this._activeIndex != null ? groups[this._activeIndex] : undefined;
     const band = this._activeIndex != null ? bands[this._activeIndex] : undefined;
     const x = band ? margin.left + band.innerX + band.innerWidth / 2 : 0;
-    const y = margin.top;
+    const maxHeight = this.#activeGroupMaxHeight(groups, innerHeight, yMax);
+    const barTopY = margin.top + (innerHeight - maxHeight);
+    const placeBelow = barTopY < 96;
+    const y = barTopY;
     return html`
-      <div class="tooltip" part="tooltip" role="tooltip" ?hidden=${hidden} style="left:${x}px; top:${y}px">
+      <div
+        class="tooltip"
+        part="tooltip"
+        role="tooltip"
+        data-position=${placeBelow ? 'below' : 'above'}
+        ?hidden=${hidden}
+        style="left:${x}px; top:${y}px"
+      >
         ${group ? html`
           <div class="tooltip-title">${this.#formatDomain(group.domain)}</div>
           <ul class="tooltip-rows">
@@ -362,25 +388,27 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   #renderSrTable(groups: BarChartGroup<T>[]): TemplateResult {
     return html`
-      <table class="sr-only" id="${this.uid}-desc">
-        <caption>${this.title || 'Bar chart data'}</caption>
-        <thead>
-          <tr>
-            <th scope="col">${this.xAxisLabel ?? String(this.domain)}</th>
-            ${this.series.map(s => html`<th scope="col">${this.#seriesLabel(s)}</th>`)}
-            ${this.stacked ? html`<th scope="col">Total</th>` : nothing}
-          </tr>
-        </thead>
-        <tbody>
-          ${groups.map(g => html`
+      <div class="sr-only" id="${this.uid}-desc">
+        <table>
+          <caption>${this.title || 'Bar chart data'}</caption>
+          <thead>
             <tr>
-              <th scope="row">${this.#formatDomain(g.domain)}</th>
-              ${this.series.map(s => html`<td>${this.#formatValue(g.values[s.key] ?? 0)}</td>`)}
-              ${this.stacked ? html`<td>${this.#formatValue(g.total)}</td>` : nothing}
+              <th scope="col">${this.xAxisLabel ?? String(this.domain)}</th>
+              ${this.series.map(s => html`<th scope="col">${this.#seriesLabel(s)}</th>`)}
+              ${this.stacked ? html`<th scope="col">Total</th>` : nothing}
             </tr>
-          `)}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            ${groups.map(g => html`
+              <tr>
+                <th scope="row">${this.#formatDomain(g.domain)}</th>
+                ${this.series.map(s => html`<td>${this.#formatValue(g.values[s.key] ?? 0)}</td>`)}
+                ${this.stacked ? html`<td>${this.#formatValue(g.total)}</td>` : nothing}
+              </tr>
+            `)}
+          </tbody>
+        </table>
+      </div>
     `;
   }
 
@@ -421,10 +449,11 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       case 'ArrowLeft': next = Math.max(0, current < 0 ? 0 : current - 1); break;
       case 'Home': next = 0; break;
       case 'End': next = count - 1; break;
-      case 'Escape': this.#setActive(null); return;
+      case 'Escape': this._focusMode = null; this.#setActive(null); return;
       default: return;
     }
     event.preventDefault();
+    this._focusMode = 'keyboard';
     this.#setActive(next);
   };
 
@@ -440,14 +469,19 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       return;
     }
     const index = Math.min(layout.bands.length - 1, Math.max(0, Math.floor(localX / (layout.bands[0]?.bandWidth || 1))));
+    this._focusMode = 'pointer';
     this.#setActive(index);
   };
 
   #onPointerLeave = (): void => {
+    if (this._focusMode === 'pointer') {
+      this._focusMode = null;
+    }
     this.#setActive(null);
   };
 
   #onBlur = (): void => {
+    this._focusMode = null;
     this.#setActive(null);
   };
 }
