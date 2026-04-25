@@ -35,6 +35,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property() description = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
+  @property({ type: Boolean, reflect: true }) optional = false;
 
   @state() private _hasLeading = false;
   @state() private _hasTrailing = false;
@@ -80,7 +81,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
     return html`
-      ${this.label ? renderFieldLabel(this.label, this.required, 'input') : nothing}
+      ${this.label ? renderFieldLabel(this.label, this.required, 'input', this.optional) : nothing}
       <span class="wrap" part="wrap">
         <span class="adornment" ?hidden=${!this._hasLeading}>
           <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>

@@ -1,18 +1,19 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import { DsElement, nextId } from '@ds/core';
+import { DsElement } from '@ds/core';
 import { fieldStyles } from './field.styles.js';
 
 export type FieldLayout = 'block' | 'inline';
 
 interface LabelTarget extends HTMLElement {
   setAttribute(name: string, value: string): void;
+  removeAttribute(name: string): void;
 }
 
 /**
  * @tag ds-field
- * @summary Wraps an input atom with label, help text and error message.
- * @slot default - The form control (atom) to describe.
+ * @summary Forwards label, help, and error metadata to a slotted form control.
+ * @slot default - The form control to describe (it owns label/help/error rendering).
  */
 export class DsField extends DsElement {
   static override styles = [...DsElement.styles, fieldStyles];
@@ -23,50 +24,36 @@ export class DsField extends DsElement {
   @property({ type: Boolean }) optional = false;
   @property({ reflect: true }) layout: FieldLayout = 'block';
 
-  readonly #labelId = nextId('ds-field-label');
-  readonly #helpId = nextId('ds-field-help');
-  readonly #errorId = nextId('ds-field-error');
-
   @queryAssignedElements() private slotted!: LabelTarget[];
 
   override updated(): void {
     this.#wireControl();
   }
 
-  #focusControl = (): void => {
-    this.slotted[0]?.focus();
-  };
-
   #wireControl(): void {
     const control = this.slotted[0];
     if (!control) {
       return;
     }
-    if (this.label) {
-      control.setAttribute('label', this.label);
-    }
-    const description = [this.help, this.error].filter(Boolean).join(' ');
-    if (description) {
-      control.setAttribute('description', description);
+    this.#applyAttribute(control, 'label', this.label);
+    this.#applyAttribute(control, 'description', this.help);
+    this.#applyAttribute(control, 'error', this.error);
+    if (this.optional) {
+      control.setAttribute('optional', '');
     } else {
-      control.removeAttribute('description');
+      control.removeAttribute('optional');
+    }
+  }
+
+  #applyAttribute(control: LabelTarget, name: string, value: string): void {
+    if (value) {
+      control.setAttribute(name, value);
+    } else {
+      control.removeAttribute(name);
     }
   }
 
   override render(): TemplateResult {
-    const hasError = Boolean(this.error);
-    return html`<div class="row">
-        <label id=${this.#labelId} part="label" aria-hidden="true" @click=${this.#focusControl}>
-          ${this.label}
-          ${this.optional ? html`<span class="optional">optional</span>` : nothing}
-        </label>
-      </div>
-      <slot></slot>
-      ${this.help && !hasError
-        ? html`<p class="help" id=${this.#helpId} part="help">${this.help}</p>`
-        : nothing}
-      ${hasError
-        ? html`<p class="error" id=${this.#errorId} part="error" role="alert">${this.error}</p>`
-        : nothing}`;
+    return html`<slot @slotchange=${() => this.#wireControl()}></slot>`;
   }
 }

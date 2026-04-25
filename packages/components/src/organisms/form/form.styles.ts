@@ -8,7 +8,6 @@ export const formStyles = css`
   form {
     display: flex;
     flex-direction: column;
-    gap: var(--ds-space-5);
   }
   .section {
     display: flex;
@@ -24,6 +23,7 @@ export const formStyles = css`
     gap: var(--ds-space-3);
     justify-content: flex-end;
     flex-wrap: wrap;
+    margin-top: var(--ds-space-5);
   }
   @container (max-width: 480px) {
     .actions {
@@ -32,6 +32,7 @@ export const formStyles = css`
     }
   }
   .summary {
+    margin: 0 0 var(--ds-space-4);
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-xl);
     letter-spacing: var(--ds-letter-spacing-display);

@@ -2,6 +2,9 @@ import { html, nothing, css, type TemplateResult, type CSSResult } from 'lit';
 
 export const formFieldStyles: CSSResult = css`
   .label {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--ds-space-2);
     font-size: var(--ds-font-size-sm);
     font-weight: var(--ds-font-weight-medium);
     color: var(--ds-color-fg);
@@ -10,6 +13,13 @@ export const formFieldStyles: CSSResult = css`
   }
   .required {
     color: var(--ds-color-danger);
+  }
+  .optional {
+    font-size: var(--ds-font-size-2xs);
+    color: var(--ds-color-fg-muted);
+    letter-spacing: var(--ds-letter-spacing-wide);
+    text-transform: uppercase;
+    font-weight: var(--ds-font-weight-regular);
   }
   .description {
     margin: 0;
@@ -34,11 +44,14 @@ export const formFieldStyles: CSSResult = css`
   }
 `;
 
-export function renderFieldLabel(label: string, required: boolean, forId: string): TemplateResult {
+export function renderFieldLabel(label: string, required: boolean, forId: string, optional = false): TemplateResult {
   return html`
     <label class="label" for=${forId}>
-      ${label}
-      ${required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
+      <span>
+        ${label}
+        ${required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
+      </span>
+      ${optional ? html`<span class="optional" aria-hidden="true">optional</span>` : nothing}
     </label>
   `;
 }

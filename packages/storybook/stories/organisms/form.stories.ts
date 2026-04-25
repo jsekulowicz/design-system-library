@@ -44,10 +44,8 @@ export const AccountDetails: Story = {
         <ds-checkbox name="newsletter">
           Send me a weekly change log digest
         </ds-checkbox>
-        <div slot="actions">
-          <ds-button variant="ghost" type="reset">Cancel</ds-button>
-          <ds-button variant="primary" type="submit">Save</ds-button>
-        </div>
+        <ds-button slot="actions" variant="ghost" type="reset">Cancel</ds-button>
+        <ds-button slot="actions" variant="primary" type="submit">Save</ds-button>
       </ds-form>
     </div>
   `,
