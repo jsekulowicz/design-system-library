@@ -37,7 +37,7 @@ export const CustomLayout: Story = {
   render: () => html`
     <ds-footer>
       <div slot="start" style="display:flex;flex-direction:column;gap:var(--ds-space-1)">
-        <strong>Forma Studio</strong>
+        <strong>Brand</strong>
         <span>Editorial systems for thoughtful teams.</span>
       </div>
       <div slot="end" style="display:flex;gap:var(--ds-space-4);text-align:right">

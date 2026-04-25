@@ -21,7 +21,7 @@ type Story = StoryObj;
 export const Basic: Story = {
   render: () => html`
     <ds-navbar>
-      <strong slot="brand">Forma</strong>
+      <strong slot="brand">Brand</strong>
       <ds-nav-item href="/" current>Overview</ds-nav-item>
       <ds-nav-item href="/projects">Projects</ds-nav-item>
       <ds-nav-item href="/billing">Billing</ds-nav-item>
@@ -33,7 +33,7 @@ export const Basic: Story = {
 export const WithIcons: Story = {
   render: () => html`
     <ds-navbar>
-      <strong slot="brand">Forma</strong>
+      <strong slot="brand">Brand</strong>
       <ds-nav-item href="/" current>
         <ds-icon slot="icon" name="home" size="sm"></ds-icon>
         Home
@@ -55,7 +55,7 @@ export const Responsive: Story = {
   render: () => html`
     <div style="max-width:560px;border:1px dashed var(--ds-color-border-subtle)">
       <ds-navbar>
-        <strong slot="brand">Forma</strong>
+        <strong slot="brand">Brand</strong>
         <ds-nav-item href="/" current>Overview</ds-nav-item>
         <ds-nav-item href="/projects">Projects</ds-nav-item>
         <ds-nav-item href="/billing">Billing</ds-nav-item>
@@ -72,7 +72,7 @@ export const Responsive: Story = {
 export const WithCurrentPage: Story = {
   render: () => html`
     <ds-navbar>
-      <strong slot="brand">Forma</strong>
+      <strong slot="brand">Brand</strong>
       <ds-nav-item href="/">Overview</ds-nav-item>
       <ds-nav-item href="/projects" current>Projects</ds-nav-item>
       <ds-nav-item href="/billing">Billing</ds-nav-item>

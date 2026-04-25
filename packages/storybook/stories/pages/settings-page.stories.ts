@@ -32,7 +32,7 @@ const timezones = [
 export const Composition: Story = {
   render: () => html`
     <ds-settings-page
-      eyebrow="Workspace · Forma"
+      eyebrow="Workspace · Brand"
       heading="Settings"
       description="Studio preferences, billing, and the other plumbing."
       .sections=${sections}

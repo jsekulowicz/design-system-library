@@ -23,17 +23,14 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: (args) => html`
     <ds-field label=${args['label']} help=${args['help']} layout=${args['layout']}>
-      <ds-text-field placeholder="Studio Forma"></ds-text-field>
+      <ds-text-field placeholder="Brand"></ds-text-field>
     </ds-field>
   `,
 };
 
 export const WithError: Story = {
   render: () => html`
-    <ds-field
-      label="Display name"
-      error="Must be between 2 and 40 characters"
-    >
+    <ds-field label="Display name" error="Must be between 2 and 40 characters">
       <ds-text-field value="A" required></ds-text-field>
     </ds-field>
   `,

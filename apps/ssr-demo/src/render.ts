@@ -6,21 +6,19 @@ import '@ds/components/page-shell/define';
 
 export async function renderPage(baseCss: string): Promise<string> {
   const body = html`
-    <ds-page-shell brand="Forma · SSR">
+    <ds-page-shell brand="Brand · SSR">
       <article style="max-width:64ch;display:grid;gap:var(--ds-space-4)">
-        <h1
-          style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0"
-        >
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
           Rendered on the server
         </h1>
         <p>
-          This page is server-rendered via @lit-labs/ssr using Declarative
-          Shadow DOM. Try reloading with JavaScript disabled — the button
-          still renders from HTML alone; once JS boots, it hydrates in place.
+          This page is server-rendered via @lit-labs/ssr using Declarative Shadow DOM. Try reloading
+          with JavaScript disabled — the button still renders from HTML alone; once JS boots, it
+          hydrates in place.
         </p>
         <ds-button variant="primary">Primary (hydrates)</ds-button>
       </article>
-      <span slot="footer">&copy; Forma · SSR prototype</span>
+      <span slot="footer">&copy; Brand · SSR prototype</span>
     </ds-page-shell>
   `;
   const ssrHtml = await collectResult(render(body));

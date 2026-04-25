@@ -22,7 +22,7 @@ export const Basic: Story = {
   render: () => html`
     <div style="height:480px;display:flex">
       <ds-sidenav>
-        <strong slot="header">Forma</strong>
+        <strong slot="header">Brand</strong>
         <ds-nav-item href="/" current>
           <ds-icon slot="icon" name="home" size="sm"></ds-icon>
           Overview
@@ -48,7 +48,7 @@ export const WithGroups: Story = {
   render: () => html`
     <div style="height:520px;display:flex">
       <ds-sidenav>
-        <strong slot="header">Forma</strong>
+        <strong slot="header">Brand</strong>
         <ds-nav-item href="/" current>
           <ds-icon slot="icon" name="home" size="sm"></ds-icon>
           Overview
@@ -92,7 +92,7 @@ export const CollapseToggle: Story = {
   render: () => html`
     <div style="height:520px;display:flex">
       <ds-sidenav id="toggle-sidenav">
-        <strong slot="header">Forma</strong>
+        <strong slot="header">Brand</strong>
         <ds-nav-item href="/" current>
           <ds-icon slot="icon" name="home" size="sm"></ds-icon>
           Overview
