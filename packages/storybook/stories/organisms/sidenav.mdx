@@ -1,0 +1,64 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as SidenavStories from './sidenav.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={SidenavStories} />
+
+# Sidenav
+
+Vertical sidebar navigation. Hosts `ds-nav-item` and `ds-nav-group` children, with optional `header` and `footer` regions. Supports a `collapsed` attribute that hides labels and renders an icons-only column.
+
+## Anatomy
+
+```html
+<ds-sidenav>
+  <strong slot="header">Forma</strong>
+  <ds-nav-item href="/" current>
+    <ds-icon slot="icon" name="home" size="sm"></ds-icon>
+    Overview
+  </ds-nav-item>
+  <ds-nav-group label="Workspace" expanded>
+    <ds-nav-item href="/projects">Projects</ds-nav-item>
+    <ds-nav-item href="/team">Team</ds-nav-item>
+  </ds-nav-group>
+  <ds-nav-item slot="footer" href="/help">Help</ds-nav-item>
+</ds-sidenav>
+```
+
+The `collapsed` attribute is consumer-owned. Toggle it from outside (a button, a media query, your store) — the sidenav reflects it down to its children via CSS.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={SidenavStories.WithGroups} />
+      <ComponentApi tag="ds-sidenav" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Provide an icon on every nav-item if the sidenav can be collapsed — labels disappear when collapsed.</li>
+        <li>Group related items with <code>ds-nav-group</code>; keep groups to 2–6 items each.</li>
+        <li>Persist the user's collapsed preference in app state if you offer the toggle.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't change <code>collapsed</code> automatically based on viewport — let the user choose.</li>
+        <li>Don't put primary CTAs in the sidenav footer; reserve it for low-priority links (help, sign-out, theme).</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders <code>&lt;nav aria-label="Secondary"&gt;</code> by default — override via the <code>label</code> attribute.</li>
+        <li>In collapsed mode, item labels are visually clipped but remain in the accessibility tree, so screen readers still announce them.</li>
+        <li><code>ds-nav-group</code> uses the disclosure pattern: heading is a <code>&lt;button&gt;</code> with <code>aria-expanded</code>.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
