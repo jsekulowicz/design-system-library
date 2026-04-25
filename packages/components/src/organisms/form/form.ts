@@ -17,7 +17,7 @@ export class DsForm extends DsElement {
   @property() action = '';
   @property() method: 'get' | 'post' | 'dialog' = 'post';
   @property({ attribute: 'novalidate', type: Boolean }) noValidate = false;
-  @property({ attribute: 'title' }) formTitle = '';
+  @property({ attribute: 'title' }) header = '';
 
   #onSubmit = (event: SubmitEvent): void => {
     event.preventDefault();
@@ -30,7 +30,11 @@ export class DsForm extends DsElement {
     this.emit('ds-submit', { detail: { data: this.#buildFormData(controls) } });
   };
 
-  #collectControls(): ReadonlyArray<{ name?: string; value?: unknown; checkValidity?: () => boolean }> {
+  #collectControls(): ReadonlyArray<{
+    name?: string;
+    value?: unknown;
+    checkValidity?: () => boolean;
+  }> {
     return Array.from(this.querySelectorAll<HTMLElement>('[name]')) as never;
   }
 
@@ -57,7 +61,7 @@ export class DsForm extends DsElement {
       ?novalidate=${this.noValidate}
       @submit=${this.#onSubmit}
     >
-      ${this.formTitle ? html`<h2 class="title" part="title">${this.formTitle}</h2>` : nothing}
+      ${this.header ? html`<h2 class="title" part="title">${this.header}</h2>` : nothing}
       <div class="section" part="section"><slot></slot></div>
       <div class="actions" part="actions"><slot name="actions"></slot></div>
     </form>`;
