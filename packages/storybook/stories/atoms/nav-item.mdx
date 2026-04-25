@@ -1,0 +1,71 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as NavItemStories from './nav-item.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/nav-item/define';
+import '@ds/components/tabs/define';
+
+<Meta of={NavItemStories} />
+
+# NavItem
+
+A single navigation link. Renders an `<a>` (or `<span>` when disabled) with optional leading icon and a `current` state that maps to `aria-current="page"` and a visible active style.
+
+`ds-nav-item` is the shared link primitive used inside both `ds-navbar` (top bar) and `ds-sidenav` (sidebar). The consumer owns the `current` state — the parent does not coordinate which item is active. Set `current` based on the URL.
+
+## Anatomy
+
+```html
+<ds-nav-item href="/" current>
+  <ds-icon slot="icon" name="home" size="sm"></ds-icon>
+  Home
+</ds-nav-item>
+```
+
+For sibling layout, place items inside a flex column (sidenav) or row (navbar). When the closest ancestor is a `ds-sidenav[collapsed]`, the label is visually clipped — only the icon remains visible. The accessible name is preserved.
+
+`ds-nav-group` lets you bucket related items under a collapsible heading; useful in sidenavs with deep navigation.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={NavItemStories.Current} />
+      <ds-tabs value="ds-nav-item">
+        <ds-tab slot="tab" value="ds-nav-item">ds-nav-item</ds-tab>
+        <ds-tab slot="tab" value="ds-nav-group">ds-nav-group</ds-tab>
+
+        <ds-tab-panel value="ds-nav-item">
+          <ComponentApi tag="ds-nav-item" />
+        </ds-tab-panel>
+        <ds-tab-panel value="ds-nav-group">
+          <ComponentApi tag="ds-nav-group" />
+        </ds-tab-panel>
+      </ds-tabs>
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Set <code>current</code> on exactly one item per nav region, based on the active URL.</li>
+        <li>Provide an <code>icon</code> slot when the item will appear inside a collapsible <code>ds-sidenav</code> — collapsed mode hides the label.</li>
+        <li>Pair <code>target="_blank"</code> with <code>rel="noopener"</code> for external links.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use <code>ds-nav-item</code> for inline document links — use <code>ds-link</code> for those.</li>
+        <li>Don't disable items as a navigation gate; route the user to a "coming soon" page instead so they can read why.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li><code>current</code> reflects to <code>aria-current="page"</code> on the inner anchor.</li>
+        <li><code>disabled</code> renders a non-interactive <code>&lt;span&gt;</code> with <code>aria-disabled="true"</code>.</li>
+        <li>Inside a collapsed sidenav, the label remains in the accessibility tree (visually clipped, not <code>display:none</code>).</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
