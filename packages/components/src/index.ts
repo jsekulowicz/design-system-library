@@ -12,6 +12,7 @@ export { DsSelect, type SelectOption } from './atoms/select/index.js';
 export { DsSearchableSelect } from './atoms/searchable-select/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './atoms/tabs/index.js';
 export { DsBreadcrumb, DsBreadcrumbItem } from './atoms/breadcrumb/index.js';
+export { DsNavItem, DsNavGroup } from './atoms/nav-item/index.js';
 export {
   DsTable,
   DsTableSortButton,
@@ -40,5 +41,8 @@ export {
 } from './molecules/bar-chart/index.js';
 export { DsAlert, type AlertTone } from './molecules/alert/index.js';
 export { DsForm } from './organisms/form/index.js';
+export { DsNavbar } from './organisms/navbar/index.js';
+export { DsSidenav } from './organisms/sidenav/index.js';
+export { DsFooter } from './organisms/footer/index.js';
 export { DsPageShell } from './templates/page-shell/index.js';
 export { DsSettingsPage, type SettingsSection } from './pages/settings-page/index.js';

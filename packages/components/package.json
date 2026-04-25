@@ -51,6 +51,18 @@
       "types": "./dist/atoms/icon/icons/chevron-right.d.ts",
       "import": "./dist/atoms/icon/icons/chevron-right.js"
     },
+    "./icon/chevron-down": {
+      "types": "./dist/atoms/icon/icons/chevron-down.d.ts",
+      "import": "./dist/atoms/icon/icons/chevron-down.js"
+    },
+    "./icon/bars-3": {
+      "types": "./dist/atoms/icon/icons/bars-3.d.ts",
+      "import": "./dist/atoms/icon/icons/bars-3.js"
+    },
+    "./icon/x-mark": {
+      "types": "./dist/atoms/icon/icons/x-mark.d.ts",
+      "import": "./dist/atoms/icon/icons/x-mark.js"
+    },
     "./text-field": {
       "types": "./dist/atoms/text-field/index.d.ts",
       "import": "./dist/atoms/text-field/index.js"
@@ -101,6 +113,11 @@
       "import": "./dist/atoms/breadcrumb/index.js"
     },
     "./breadcrumb/define": { "import": "./dist/atoms/breadcrumb/define.js" },
+    "./nav-item": {
+      "types": "./dist/atoms/nav-item/index.d.ts",
+      "import": "./dist/atoms/nav-item/index.js"
+    },
+    "./nav-item/define": { "import": "./dist/atoms/nav-item/define.js" },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"
@@ -133,6 +150,21 @@
       "import": "./dist/organisms/form/index.js"
     },
     "./form/define": { "import": "./dist/organisms/form/define.js" },
+    "./navbar": {
+      "types": "./dist/organisms/navbar/index.d.ts",
+      "import": "./dist/organisms/navbar/index.js"
+    },
+    "./navbar/define": { "import": "./dist/organisms/navbar/define.js" },
+    "./sidenav": {
+      "types": "./dist/organisms/sidenav/index.d.ts",
+      "import": "./dist/organisms/sidenav/index.js"
+    },
+    "./sidenav/define": { "import": "./dist/organisms/sidenav/define.js" },
+    "./footer": {
+      "types": "./dist/organisms/footer/index.d.ts",
+      "import": "./dist/organisms/footer/index.js"
+    },
+    "./footer/define": { "import": "./dist/organisms/footer/define.js" },
     "./page-shell": {
       "types": "./dist/templates/page-shell/index.d.ts",
       "import": "./dist/templates/page-shell/index.js"
