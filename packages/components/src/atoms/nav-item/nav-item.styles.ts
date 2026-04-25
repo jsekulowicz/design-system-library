@@ -39,7 +39,7 @@ export const navItemStyles = css`
     display: inline-flex;
     flex: none;
   }
-  .icon:empty {
+  .icon[hidden] {
     display: none;
   }
   .label {

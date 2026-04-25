@@ -27,7 +27,7 @@ export const navbarStyles = css`
   .links {
     display: flex;
     align-items: center;
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-3);
     flex: 1;
   }
   .actions {

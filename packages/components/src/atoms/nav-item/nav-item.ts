@@ -1,5 +1,5 @@
 import { html, nothing, type TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@ds/core';
 import { navItemStyles } from './nav-item.styles.js';
 
@@ -20,14 +20,22 @@ export class DsNavItem extends DsElement {
   @property() rel?: string;
   @property({ type: Boolean, reflect: true }) current = false;
   @property({ type: Boolean, reflect: true }) disabled = false;
+  @state() private _hasIcon = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.setAttribute('role', 'listitem');
   }
 
+  #onIconSlotChange(e: Event): void {
+    const slot = e.target as HTMLSlotElement;
+    this._hasIcon = slot.assignedNodes({ flatten: true }).length > 0;
+  }
+
   #renderInner(): TemplateResult {
-    return html`<span class="icon" part="icon"><slot name="icon"></slot></span>
+    return html`<span class="icon" part="icon" ?hidden=${!this._hasIcon}>
+        <slot name="icon" @slotchange=${this.#onIconSlotChange}></slot>
+      </span>
       <span class="label" part="label"><slot></slot></span>`;
   }
 

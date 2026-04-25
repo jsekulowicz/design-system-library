@@ -54,6 +54,9 @@ export const navGroupStyles = css`
     gap: var(--ds-space-1);
     padding-left: var(--ds-space-2);
   }
+  .items[hidden] {
+    display: none;
+  }
   :host-context(ds-sidenav[collapsed]) .label,
   :host-context(ds-sidenav[collapsed]) .chevron {
     clip-path: inset(50%);
