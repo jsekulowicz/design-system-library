@@ -15,16 +15,11 @@ A native `<form>` in shadow DOM. Child controls participate via `ElementInternal
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
-    <ds-tab slot="tab" value="examples">Examples</ds-tab>
     <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
 
     <ds-tab-panel value="api">
       <Canvas of={FormStories.AccountDetails} />
       <ComponentApi tag="ds-form" />
-    </ds-tab-panel>
-
-    <ds-tab-panel value="examples">
-      <Stories includePrimary={false} />
     </ds-tab-panel>
 
     <ds-tab-panel value="guidelines">
@@ -44,7 +39,7 @@ A native `<form>` in shadow DOM. Child controls participate via `ElementInternal
       <ul>
         <li>Rendered as a native <code>&lt;form&gt;</code>, so browser autofill and submission work out of the box.</li>
         <li><code>ds-invalid</code> fires before submission blocks so you can focus the first invalid control.</li>
-        <li><code>summary</code> is exposed as the form's accessible name.</li>
+        <li>The <code>title</code> renders as a visible heading; the native <code>title</code> attribute is stripped to avoid a duplicate hover tooltip.</li>
       </ul>
     </ds-tab-panel>
   </ds-tabs>

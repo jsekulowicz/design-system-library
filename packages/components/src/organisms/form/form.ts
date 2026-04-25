@@ -1,4 +1,4 @@
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@ds/core';
 import { formStyles } from './form.styles.js';
@@ -17,9 +17,7 @@ export class DsForm extends DsElement {
   @property() action = '';
   @property() method: 'get' | 'post' | 'dialog' = 'post';
   @property({ attribute: 'novalidate', type: Boolean }) noValidate = false;
-  @property() summary?: string;
-
-  #form?: HTMLFormElement;
+  @property({ attribute: 'title' }) formTitle = '';
 
   #onSubmit = (event: SubmitEvent): void => {
     event.preventDefault();
@@ -51,10 +49,6 @@ export class DsForm extends DsElement {
     return data;
   }
 
-  override firstUpdated(): void {
-    this.#form = this.shadowRoot!.querySelector('form') ?? undefined;
-  }
-
   override render(): TemplateResult {
     return html`<form
       part="form"
@@ -63,7 +57,7 @@ export class DsForm extends DsElement {
       ?novalidate=${this.noValidate}
       @submit=${this.#onSubmit}
     >
-      ${this.summary ? html`<p class="summary" part="summary">${this.summary}</p>` : null}
+      ${this.formTitle ? html`<h2 class="title" part="title">${this.formTitle}</h2>` : nothing}
       <div class="section" part="section"><slot></slot></div>
       <div class="actions" part="actions"><slot name="actions"></slot></div>
     </form>`;

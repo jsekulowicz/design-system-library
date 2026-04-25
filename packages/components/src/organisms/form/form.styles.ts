@@ -31,7 +31,7 @@ export const formStyles = css`
       align-items: stretch;
     }
   }
-  .summary {
+  .title {
     margin: 0 0 var(--ds-space-4);
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-xl);

@@ -26,7 +26,7 @@ export const AccountDetails: Story = {
   render: () => html`
     <div style="max-width:520px">
       <ds-form
-        summary="Account details"
+        title="Account details"
         @ds-submit=${(event: CustomEvent<{ data: FormData }>) => {
           console.log('submit', Object.fromEntries(event.detail.data.entries()));
         }}
