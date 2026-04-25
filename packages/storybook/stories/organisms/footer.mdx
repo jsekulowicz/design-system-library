@@ -1,0 +1,54 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as FooterStories from './footer.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={FooterStories} />
+
+# Footer
+
+A minimal page footer. Three slots — `start`, default, `end` — laid out with `space-between` on a single row, wrapping to a column below 480px.
+
+## Anatomy
+
+`ds-footer` renders a native `<footer>` landmark. It carries no built-in content: every consumer writes their own copyright text, links, and meta. The intent is layout-only.
+
+```html
+<ds-footer>
+  <span slot="start">© 2026 Jan Sekułowicz</span>
+  <ds-link slot="end" href="/about" variant="quiet">About</ds-link>
+</ds-footer>
+```
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={FooterStories.Basic} />
+      <ComponentApi tag="ds-footer" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use <code>start</code> for copyright / attribution and <code>end</code> for nav links.</li>
+        <li>Keep the footer to a single line of meaningful content; if you need more structure, split into two rows with custom slot markup.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't put primary navigation here — that belongs in <code>ds-navbar</code> or <code>ds-sidenav</code>.</li>
+        <li>Don't put forms or interactive controls in the footer beyond simple links.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders a native <code>&lt;footer&gt;</code> landmark — screen readers announce it as a region.</li>
+        <li>Below 480px the row wraps to a column; verify your content reads sensibly stacked.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
