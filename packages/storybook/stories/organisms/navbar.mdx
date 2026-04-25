@@ -1,0 +1,64 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as NavbarStories from './navbar.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={NavbarStories} />
+
+# Navbar
+
+Top-bar shell that lays out brand / links / actions in a single row, and collapses to a hamburger menu below 640px container width.
+
+## Anatomy
+
+`ds-navbar` is a `<nav>` landmark with three regions:
+
+- **brand** — logo or wordmark on the left.
+- **default** — `ds-nav-item` children in the middle.
+- **actions** — buttons or user-menu on the right.
+
+Below the breakpoint, the brand and actions stay visible; the link list collapses behind a hamburger toggle that opens a stacked menu beneath the bar. Esc closes the menu.
+
+```html
+<ds-navbar>
+  <strong slot="brand">Forma</strong>
+  <ds-nav-item href="/" current>Overview</ds-nav-item>
+  <ds-nav-item href="/projects">Projects</ds-nav-item>
+  <ds-button slot="actions" variant="secondary" size="sm">Sign in</ds-button>
+</ds-navbar>
+```
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={NavbarStories.Basic} />
+      <ComponentApi tag="ds-navbar" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Keep nav-item count low (3–7) so the bar reads at a glance.</li>
+        <li>Mark the active route with <code>current</code> on a single nav-item.</li>
+        <li>Use the <code>actions</code> slot for the primary CTA or sign-in button — it stays visible at every width.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't mix navigation links and unrelated controls in the default slot — push controls into <code>actions</code>.</li>
+        <li>Don't nest a second <code>ds-navbar</code>; navigation hierarchy belongs in <code>ds-sidenav</code>.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders <code>&lt;nav aria-label="Primary"&gt;</code> — override via the <code>label</code> attribute when the page has multiple navs.</li>
+        <li>Hamburger toggle: <code>aria-expanded</code> reflects the open state and <code>aria-controls</code> points at the menu region.</li>
+        <li>Esc closes the open menu and returns focus to the toggle button.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
