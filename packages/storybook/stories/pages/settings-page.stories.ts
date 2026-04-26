@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import '@ds/components/page-shell/define';
 import '@ds/components/sidenav/define';
 import '@ds/components/nav-item/define';
+import '@ds/components/breadcrumb/define';
 import '@ds/components/footer/define';
 import '@ds/components/link/define';
 import '@ds/components/settings-page/define';
@@ -40,9 +41,43 @@ const timezones = [
 export const Default: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () => html`
+<style>
+  .collapse-toggle {
+    display: block;
+    width: calc(100% + 2 * var(--ds-space-3));
+    margin-inline: calc(-1 * var(--ds-space-3));
+  }
+  .collapse-toggle::part(button) {
+    width: 100%;
+    justify-content: flex-start;
+    padding: var(--ds-space-2) var(--ds-space-3);
+  }
+  .collapse-toggle ds-icon {
+    transition: transform var(--ds-duration-slow) var(--ds-easing-standard);
+  }
+  ds-sidenav:not([collapsed]) .collapse-toggle ds-icon { transform: rotate(180deg); }
+  ds-sidenav[collapsed] .collapse-toggle::part(button) {
+    justify-content: center;
+    padding: var(--ds-space-2);
+  }
+  ds-sidenav[collapsed] .collapse-toggle-label { display: none; }
+</style>
 <div style="height:${FRAME_HEIGHT}px;overflow:clip;border-bottom:1px solid var(--ds-color-border)">
 <ds-page-shell brand="Brand" style="min-height:0;height:100%">
   <ds-sidenav slot="aside">
+    <ds-button
+      class="collapse-toggle"
+      slot="header"
+      variant="ghost"
+      aria-label="Toggle navigation"
+      @click=${(e: Event) => {
+        const sidenav = (e.currentTarget as HTMLElement).closest('ds-sidenav');
+        sidenav?.toggleAttribute('collapsed');
+      }}
+    >
+      <ds-icon slot="leading" name="chevron-right" size="sm"></ds-icon>
+      <span class="collapse-toggle-label">Collapse</span>
+    </ds-button>
     <ds-nav-item href="#">
       <ds-icon slot="icon" name="home" size="lg"></ds-icon>
       Overview
@@ -77,6 +112,15 @@ export const Default: Story = {
       <ds-nav-item href="#">Changelog</ds-nav-item>
     </ds-nav-group>
   </ds-sidenav>
+  <ds-breadcrumb label="Settings breadcrumbs" style="margin-bottom:var(--ds-space-4)">
+    <ds-breadcrumb-item href="#">
+      <ds-icon slot="leading" name="home" size="sm"></ds-icon>
+      Brand
+    </ds-breadcrumb-item>
+    <ds-breadcrumb-item href="#">Workspace</ds-breadcrumb-item>
+    <ds-breadcrumb-item href="#">Account</ds-breadcrumb-item>
+    <ds-breadcrumb-item>Settings</ds-breadcrumb-item>
+  </ds-breadcrumb>
   <ds-settings-page
     eyebrow="Workspace · Brand"
     heading="Settings"
