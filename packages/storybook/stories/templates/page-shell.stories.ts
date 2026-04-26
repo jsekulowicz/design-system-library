@@ -10,6 +10,7 @@ import '@ds/components/icon/define';
 import '@ds/components/icon/home';
 import '@ds/components/icon/cog-6-tooth';
 import '@ds/components/icon/clock';
+import '@ds/components/icon/bars-3';
 
 const meta: Meta = {
   title: 'Templates/PageShell',
@@ -77,6 +78,18 @@ export const CollapsedSidenav: Story = {
       <ds-button variant="secondary" size="sm">Invite</ds-button>
     </div>
     <ds-sidenav slot="aside" collapsed>
+      <ds-button
+        slot="header"
+        variant="ghost"
+        size="sm"
+        aria-label="Toggle navigation"
+        @click=${(e: Event) => {
+          const sidenav = (e.currentTarget as HTMLElement).closest('ds-sidenav');
+          sidenav?.toggleAttribute('collapsed');
+        }}
+      >
+        <ds-icon slot="icon" name="bars-3"></ds-icon>
+      </ds-button>
       <ds-nav-item href="#" current>
         <ds-icon slot="icon" name="home" size="lg"></ds-icon>
         Overview
