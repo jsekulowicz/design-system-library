@@ -80,20 +80,31 @@ export const CollapsedSidenav: Story = {
     <style>
       .collapse-toggle {
         display: flex; align-items: center; gap: var(--ds-space-2);
+        justify-content: flex-start;
         width: calc(100% + 2 * var(--ds-space-3));
         margin-inline: calc(-1 * var(--ds-space-3));
         padding: var(--ds-space-2) var(--ds-space-3);
         background: none; border: none; border-radius: var(--ds-radius-sm);
-        cursor: pointer; color: var(--ds-color-fg-muted);
+        cursor: pointer; color: var(--ds-color-fg);
         font-family: var(--ds-font-body); font-size: var(--ds-font-size-sm);
         font-weight: var(--ds-font-weight-medium);
+        transition: padding var(--ds-duration-slow) var(--ds-easing-standard),
+                    background var(--ds-duration-fast) var(--ds-easing-standard);
       }
-      .collapse-toggle:hover { background: var(--ds-color-bg-subtle); color: var(--ds-color-fg); }
+      .collapse-toggle:hover { background: var(--ds-color-bg-subtle); }
       .collapse-toggle ds-icon {
         display: flex; flex: none;
         transition: transform var(--ds-duration-slow) var(--ds-easing-standard);
       }
       ds-sidenav:not([collapsed]) .collapse-toggle ds-icon { transform: rotate(180deg); }
+      .collapse-toggle-label {
+        overflow: hidden; white-space: nowrap;
+        max-width: 10rem; opacity: 1;
+        transition: max-width var(--ds-duration-slow) var(--ds-easing-standard),
+                    opacity var(--ds-duration-fast) var(--ds-easing-standard);
+      }
+      ds-sidenav[collapsed] .collapse-toggle { justify-content: center; padding: var(--ds-space-2); }
+      ds-sidenav[collapsed] .collapse-toggle-label { max-width: 0; opacity: 0; }
     </style>
     <ds-sidenav slot="aside" collapsed>
       <button
@@ -106,6 +117,7 @@ export const CollapsedSidenav: Story = {
         }}
       >
         <ds-icon name="chevron-right" size="sm"></ds-icon>
+        <span class="collapse-toggle-label">Collapse</span>
       </button>
       <ds-nav-item href="#" current>
         <ds-icon slot="icon" name="home" size="lg"></ds-icon>
