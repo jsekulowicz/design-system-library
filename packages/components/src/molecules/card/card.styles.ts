@@ -34,10 +34,16 @@ export const cardStyles = css`
     flex-direction: row;
     align-items: center;
   }
-  @container (max-width: 420px) {
+  :host([orientation='horizontal']) .body {
+    flex: 1;
+  }
+  @container (max-width: 360px) {
     :host([orientation='horizontal']) .card {
       flex-direction: column;
       align-items: stretch;
+    }
+    :host([orientation='horizontal']) .body {
+      flex: unset;
     }
   }
   .header {

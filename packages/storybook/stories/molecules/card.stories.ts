@@ -21,7 +21,7 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-<div style="max-width:420px">
+<div style="max-width:560px">
   <ds-card
     elevation=${args['elevation']}
     orientation=${args['orientation']}
