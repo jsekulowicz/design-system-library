@@ -1,0 +1,65 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as PageShellStories from './page-shell.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={PageShellStories} />
+
+# Page Shell
+
+Application frame that arranges a sticky header, a scrollable aside, a main content region, and a footer into a full-viewport grid.
+
+## Anatomy
+
+`ds-page-shell` is a CSS Grid template with four named areas:
+
+- **header** — sticky top bar; `brand` text on the left, `header-actions` slot on the right.
+- **aside** — side column; collapses below the header at narrow viewports (≤ 768px).
+- **main** — grows to fill remaining vertical space.
+- **footer** — full-width strip beneath the grid.
+
+```html
+<ds-page-shell brand="Brand">
+  <div slot="header-actions">...</div>
+  <ds-sidenav slot="aside">...</ds-sidenav>
+  <article><!-- page content --></article>
+  <ds-footer slot="footer">...</ds-footer>
+</ds-page-shell>
+```
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={PageShellStories.WithSidenav} />
+      <ComponentApi tag="ds-page-shell" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Slot a <code>ds-sidenav</code> into <code>aside</code> — it handles collapsed mode, icons-only state, and keyboard navigation.</li>
+        <li>Slot a <code>ds-footer</code> into <code>footer</code> for a consistent bottom strip across pages.</li>
+        <li>Constrain main content width (e.g. <code>max-width: 68ch</code> or <code>72rem</code>) inside the default slot for comfortable line lengths.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't place unbounded content in the <code>aside</code> slot — the aside is independently scrollable; keep its content concise.</li>
+        <li>Don't nest another <code>ds-page-shell</code>; one frame per page is the intended use.</li>
+        <li>Don't rely on the <code>brand</code> attribute for rich markup — use the <code>brand</code> slot instead so you can pass a logo element.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Each region maps to a native landmark: <code>&lt;header&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code> — screen readers announce them without extra <code>role</code> attributes.</li>
+        <li>The sticky header uses a semi-transparent backdrop; verify contrast ratios when the page has coloured hero content scrolling beneath it.</li>
+        <li>At narrow viewports the aside collapses into a stacked panel above <code>main</code> — ensure sidenav items are reachable in that order.</li>
+      </ul>
+    </ds-tab-panel>
+
+  </ds-tabs>
