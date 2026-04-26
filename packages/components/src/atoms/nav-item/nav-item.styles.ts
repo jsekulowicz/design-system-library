@@ -17,7 +17,8 @@ export const navItemStyles = css`
     text-decoration: none;
     transition:
       background var(--ds-duration-fast) var(--ds-easing-standard),
-      color var(--ds-duration-fast) var(--ds-easing-standard);
+      color var(--ds-duration-fast) var(--ds-easing-standard),
+      padding var(--ds-duration-slow) var(--ds-easing-standard);
   }
   .link:hover {
     background: var(--ds-color-bg-subtle);

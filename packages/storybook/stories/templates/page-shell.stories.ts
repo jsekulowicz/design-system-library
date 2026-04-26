@@ -10,7 +10,7 @@ import '@ds/components/icon/define';
 import '@ds/components/icon/home';
 import '@ds/components/icon/cog-6-tooth';
 import '@ds/components/icon/clock';
-import '@ds/components/icon/bars-3';
+import '@ds/components/icon/chevron-right';
 
 const meta: Meta = {
   title: 'Templates/PageShell',
@@ -77,19 +77,32 @@ export const CollapsedSidenav: Story = {
     <div slot="header-actions">
       <ds-button variant="secondary" size="sm">Invite</ds-button>
     </div>
+    <style>
+      .collapse-toggle {
+        display: flex; align-items: center; justify-content: center;
+        width: 100%; padding: var(--ds-space-2); margin: 0;
+        background: none; border: none; border-radius: var(--ds-radius-sm);
+        cursor: pointer; color: var(--ds-color-fg-muted);
+      }
+      .collapse-toggle:hover { background: var(--ds-color-bg-subtle); color: var(--ds-color-fg); }
+      .collapse-toggle ds-icon {
+        display: flex;
+        transition: transform var(--ds-duration-slow) var(--ds-easing-standard);
+      }
+      ds-sidenav:not([collapsed]) .collapse-toggle ds-icon { transform: rotate(180deg); }
+    </style>
     <ds-sidenav slot="aside" collapsed>
-      <ds-button
+      <button
+        class="collapse-toggle"
         slot="header"
-        variant="ghost"
-        size="sm"
         aria-label="Toggle navigation"
         @click=${(e: Event) => {
           const sidenav = (e.currentTarget as HTMLElement).closest('ds-sidenav');
           sidenav?.toggleAttribute('collapsed');
         }}
       >
-        <ds-icon slot="icon" name="bars-3"></ds-icon>
-      </ds-button>
+        <ds-icon name="chevron-right" size="sm"></ds-icon>
+      </button>
       <ds-nav-item href="#" current>
         <ds-icon slot="icon" name="home" size="lg"></ds-icon>
         Overview

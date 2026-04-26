@@ -10,9 +10,11 @@ export const pageShellStyles = css`
     grid-template-columns: minmax(14rem, 18rem) 1fr;
     grid-template-rows: auto 1fr auto;
     min-height: 100vh;
+    overflow-x: clip;
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
+    transition: grid-template-columns var(--ds-duration-slow) var(--ds-easing-standard);
   }
   header {
     grid-area: header;

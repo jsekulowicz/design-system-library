@@ -6,7 +6,7 @@ export const sidenavStyles = css`
     --ds-sidenav-width: var(--ds-space-64, 16rem);
     --ds-sidenav-collapsed-width: var(--ds-space-16, 4rem);
     width: var(--ds-sidenav-width);
-    transition: width var(--ds-duration-fast) var(--ds-easing-standard);
+    transition: width var(--ds-duration-slow) var(--ds-easing-standard);
   }
   :host([collapsed]) {
     width: var(--ds-sidenav-collapsed-width);
