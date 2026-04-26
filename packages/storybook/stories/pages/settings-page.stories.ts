@@ -38,7 +38,7 @@ const timezones = [
 export const Default: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () => html`
-<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
+<div style="height:${FRAME_HEIGHT}px;overflow:clip;border-bottom:1px solid var(--ds-color-border)">
 <ds-page-shell brand="Brand" style="min-height:0;height:100%">
   <ds-sidenav slot="aside">
     <ds-nav-item href="#">
