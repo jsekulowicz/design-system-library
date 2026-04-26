@@ -26,7 +26,7 @@ const FRAME_HEIGHT = 360;
 const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
 
 function pageShellStory(inner: ReturnType<typeof html>) {
-  return html`<div style="height:${FRAME_HEIGHT}px;overflow:hidden">
+  return html`<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
     <ds-page-shell brand="Brand" style="min-height:0;height:100%"> ${inner} </ds-page-shell>
   </div>`;
 }
