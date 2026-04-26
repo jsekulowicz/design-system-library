@@ -76,6 +76,28 @@ export default meta;
 type Story = StoryObj;
 
 export const Basic: Story = {
+  parameters: {
+    docs: {
+      source: {
+        language: 'ts',
+        code: `\
+import type { TableColumn } from '@ds/components/table';
+import '@ds/components/table/define';
+
+const columns: TableColumn<Person>[] = [
+  { name: 'name',   field: 'name',   label: 'Name' },
+  { name: 'role',   field: 'role',   label: 'Role' },
+  { name: 'status', field: 'status', label: 'Status' },
+  { name: 'joined', field: 'joined', label: 'Joined' },
+];
+
+// rows and columns must be set as JS properties, not HTML attributes
+const table = document.querySelector('ds-table');
+table.columns = columns;
+table.rows = rows;`,
+      },
+    },
+  },
   render: () => html`
 <ds-table .rows=${PEOPLE.slice(0, 4)} .columns=${BASIC_COLUMNS}></ds-table>
 `,
