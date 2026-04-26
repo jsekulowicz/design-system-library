@@ -30,6 +30,10 @@
   font-family: var(--ds-font-body);
 }
 
+p {
+  margin-block: var(--ds-space-2);
+}
+
 .sbdocs a {
   color: var(--ds-color-accent);
 }

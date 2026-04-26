@@ -30,8 +30,7 @@ export const pageShellStyles = css`
   }
   aside {
     grid-area: aside;
-    border-right: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-6);
+    display: flex;
     overflow-y: auto;
   }
   main {
@@ -41,10 +40,6 @@ export const pageShellStyles = css`
   }
   footer {
     grid-area: footer;
-    border-top: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-4) var(--ds-space-8);
-    color: var(--ds-color-fg-muted);
-    font-size: var(--ds-font-size-xs);
   }
   .brand {
     font-family: var(--ds-font-display);
@@ -61,16 +56,10 @@ export const pageShellStyles = css`
       grid-template-columns: 1fr;
       grid-template-rows: auto auto 1fr auto;
     }
-    aside {
-      border-right: none;
-      border-bottom: 1px solid var(--ds-color-border);
-      padding: var(--ds-space-3) var(--ds-space-5);
-    }
     main {
       padding: var(--ds-space-5);
     }
-    header,
-    footer {
+    header {
       padding: var(--ds-space-3) var(--ds-space-5);
     }
   }
