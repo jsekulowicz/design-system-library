@@ -46,6 +46,13 @@ export const navItemStyles = css`
   .label {
     display: inline-flex;
     min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 20rem;
+    opacity: 1;
+    transition:
+      max-width var(--ds-duration-slow) var(--ds-easing-standard),
+      opacity var(--ds-duration-fast) var(--ds-easing-standard);
   }
   :host-context(ds-sidenav) {
     display: block;
@@ -55,12 +62,8 @@ export const navItemStyles = css`
     width: 100%;
   }
   :host-context(ds-sidenav[collapsed]) .label {
-    clip-path: inset(50%);
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-    white-space: nowrap;
-    position: absolute;
+    max-width: 0;
+    opacity: 0;
   }
   :host-context(ds-sidenav[collapsed]) .link {
     justify-content: center;

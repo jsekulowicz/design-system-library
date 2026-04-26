@@ -17,30 +17,6 @@ export class DsPageShell extends DsElement {
 
   @property() brand = '';
 
-  #asideObserver: MutationObserver | null = null;
-
-  #syncCollapsed(el: Element | null) {
-    this.toggleAttribute('aside-collapsed', !!el?.hasAttribute('collapsed'));
-  }
-
-  #onAsideSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    const aside = slot.assignedElements()[0] ?? null;
-
-    this.#asideObserver?.disconnect();
-    this.#syncCollapsed(aside);
-
-    if (aside) {
-      this.#asideObserver = new MutationObserver(() => this.#syncCollapsed(aside));
-      this.#asideObserver.observe(aside, { attributes: true, attributeFilter: ['collapsed'] });
-    }
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback();
-    this.#asideObserver?.disconnect();
-  }
-
   override render(): TemplateResult {
     return html`<header part="header">
         <div class="brand">
@@ -49,7 +25,7 @@ export class DsPageShell extends DsElement {
         <div><slot name="header-actions"></slot></div>
       </header>
       <aside part="aside">
-        <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
+        <slot name="aside"></slot>
       </aside>
       <main part="main">
         <slot></slot>

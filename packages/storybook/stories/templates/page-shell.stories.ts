@@ -79,14 +79,18 @@ export const CollapsedSidenav: Story = {
     </div>
     <style>
       .collapse-toggle {
-        display: flex; align-items: center; justify-content: center;
-        width: 100%; padding: var(--ds-space-2); margin: 0;
+        display: flex; align-items: center; gap: var(--ds-space-2);
+        width: calc(100% + 2 * var(--ds-space-3));
+        margin-inline: calc(-1 * var(--ds-space-3));
+        padding: var(--ds-space-2) var(--ds-space-3);
         background: none; border: none; border-radius: var(--ds-radius-sm);
         cursor: pointer; color: var(--ds-color-fg-muted);
+        font-family: var(--ds-font-body); font-size: var(--ds-font-size-sm);
+        font-weight: var(--ds-font-weight-medium);
       }
       .collapse-toggle:hover { background: var(--ds-color-bg-subtle); color: var(--ds-color-fg); }
       .collapse-toggle ds-icon {
-        display: flex;
+        display: flex; flex: none;
         transition: transform var(--ds-duration-slow) var(--ds-easing-standard);
       }
       ds-sidenav:not([collapsed]) .collapse-toggle ds-icon { transform: rotate(180deg); }
