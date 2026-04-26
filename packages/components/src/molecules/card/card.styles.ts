@@ -42,15 +42,16 @@ export const cardStyles = css`
   }
   .header {
     display: flex;
-    gap: var(--ds-space-3);
-    align-items: flex-start;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+  }
+  .actions[hidden] {
+    display: none;
   }
   ::slotted([slot='actions']) {
     display: flex;
     gap: var(--ds-space-2);
-    flex-shrink: 0;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
   ::slotted([slot='title']) {
     font-family: var(--ds-font-display);

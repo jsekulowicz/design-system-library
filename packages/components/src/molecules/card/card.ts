@@ -1,5 +1,5 @@
 import { html, type TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@ds/core';
 import { cardStyles } from './card.styles.js';
 
@@ -21,16 +21,23 @@ export class DsCard extends DsElement {
   @property({ reflect: true }) orientation: CardOrientation = 'vertical';
   @property({ type: Boolean, reflect: true }) interactive = false;
 
+  @state() private _hasActions = false;
+
+  #onActionsSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    this._hasActions = slot.assignedNodes({ flatten: true }).length > 0;
+  }
+
   override render(): TemplateResult {
     return html`<article class="card" part="card">
       <header class="header">
-        <div>
-          <slot name="eyebrow"></slot>
-          <slot name="title"></slot>
-        </div>
-        <slot name="actions"></slot>
+        <slot name="eyebrow"></slot>
+        <slot name="title"></slot>
       </header>
       <div class="body"><slot></slot></div>
+      <div class="actions" ?hidden=${!this._hasActions}>
+        <slot name="actions" @slotchange=${this.#onActionsSlotChange}></slot>
+      </div>
       <footer><slot name="footer"></slot></footer>
     </article>`;
   }
