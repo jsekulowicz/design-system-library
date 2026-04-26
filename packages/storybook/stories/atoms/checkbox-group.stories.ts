@@ -34,64 +34,64 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-    <ds-checkbox-group
-      label=${args['label']}
-      name=${args['name']}
-      description=${args['description'] || ''}
-      error=${args['error'] || ''}
-      .value=${args['value']}
-      ?required=${args['required']}
-      ?disabled=${args['disabled']}
-      ?invalid=${args['invalid']}
-    >
-      <ds-checkbox checkboxvalue="email">Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
-    </ds-checkbox-group>
+<ds-checkbox-group
+  label=${args['label']}
+  name=${args['name']}
+  description=${args['description'] || ''}
+  error=${args['error'] || ''}
+  .value=${args['value']}
+  ?required=${args['required']}
+  ?disabled=${args['disabled']}
+  ?invalid=${args['invalid']}
+>
+  <ds-checkbox checkboxvalue="email">Email</ds-checkbox>
+  <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
+  <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+</ds-checkbox-group>
   `,
 };
 
 export const WithDescription: Story = {
   render: () => html`
-    <ds-checkbox-group
-      label="Notification channels"
-      name="channels-desc"
-      description="You can update these preferences in your account settings."
-    >
-      <ds-checkbox checkboxvalue="email" checked>Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
-    </ds-checkbox-group>
+<ds-checkbox-group
+  label="Notification channels"
+  name="channels-desc"
+  description="You can update these preferences in your account settings."
+>
+  <ds-checkbox checkboxvalue="email" checked>Email</ds-checkbox>
+  <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
+  <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+</ds-checkbox-group>
   `,
 };
 
 export const Required: Story = {
   render: () => html`
-    <ds-checkbox-group
-      label="Notification channels"
-      name="channels-req"
-      error="Please select at least one channel."
-      ?required=${true}
-      ?invalid=${true}
-    >
-      <ds-checkbox checkboxvalue="email">Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
-    </ds-checkbox-group>
+<ds-checkbox-group
+  label="Notification channels"
+  name="channels-req"
+  error="Please select at least one channel."
+  ?required=${true}
+  ?invalid=${true}
+>
+  <ds-checkbox checkboxvalue="email">Email</ds-checkbox>
+  <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
+  <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+</ds-checkbox-group>
   `,
 };
 
 export const Disabled: Story = {
   render: () => html`
-    <ds-checkbox-group
-      label="Notification channels"
-      name="channels-dis"
-      description="These settings are managed by your organization."
-      ?disabled=${true}
-    >
-      <ds-checkbox checkboxvalue="email" checked>Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
-    </ds-checkbox-group>
+<ds-checkbox-group
+  label="Notification channels"
+  name="channels-dis"
+  description="These settings are managed by your organization."
+  ?disabled=${true}
+>
+  <ds-checkbox checkboxvalue="email" checked>Email</ds-checkbox>
+  <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
+  <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+</ds-checkbox-group>
   `,
 };

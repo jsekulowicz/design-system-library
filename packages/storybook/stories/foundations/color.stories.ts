@@ -22,27 +22,27 @@ const swatches = [
 
 export const Semantic: Story = {
   render: () => html`
-    <div
-      style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--ds-space-3)"
-    >
-      ${swatches.map(
-        (s) => html`
-          <figure
-            style="margin:0;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-sm);overflow:hidden;background:var(--ds-color-bg-subtle)"
+<div
+  style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--ds-space-3)"
+>
+  ${swatches.map(
+    (s) => html`
+      <figure
+        style="margin:0;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-sm);overflow:hidden;background:var(--ds-color-bg-subtle)"
+      >
+        <div
+          style="height:80px;background:var(${s.name})"
+          aria-hidden="true"
+        ></div>
+        <figcaption
+          style="padding:var(--ds-space-3);display:grid;gap:2px"
+        >
+          <strong style="font-family:var(--ds-font-body)">${s.role}</strong>
+          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs)"
+            >${s.name}</code
           >
-            <div
-              style="height:80px;background:var(${s.name})"
-              aria-hidden="true"
-            ></div>
-            <figcaption
-              style="padding:var(--ds-space-3);display:grid;gap:2px"
-            >
-              <strong style="font-family:var(--ds-font-body)">${s.role}</strong>
-              <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs)"
-                >${s.name}</code
-              >
-            </figcaption>
-          </figure>
+        </figcaption>
+      </figure>
         `
       )}
     </div>

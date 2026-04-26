@@ -21,24 +21,24 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-    <p>
-      The editorial grid is defined in
-      <ds-link
-        href=${args['href']}
-        variant=${args['variant']}
-        ?external=${args['external']}
-        >the foundations chapter</ds-link
-      >.
-    </p>
+<p>
+  The editorial grid is defined in
+  <ds-link
+    href=${args['href']}
+    variant=${args['variant']}
+    ?external=${args['external']}
+    >the foundations chapter</ds-link
+  >.
+</p>
   `,
 };
 
 export const Variants: Story = {
   render: () => html`
-    <div style="display:grid;gap:var(--ds-space-2)">
-      <p>A paragraph with an <ds-link href="#">inline link</ds-link>.</p>
-      <ds-link href="#" variant="quiet">Quiet link</ds-link>
-      <ds-link href="#" variant="standalone" external>Standalone external</ds-link>
-    </div>
+<div style="display:grid;gap:var(--ds-space-2)">
+  <p>A paragraph with an <ds-link href="#">inline link</ds-link>.</p>
+  <ds-link href="#" variant="quiet">Quiet link</ds-link>
+  <ds-link href="#" variant="standalone" external>Standalone external</ds-link>
+</div>
   `,
 };

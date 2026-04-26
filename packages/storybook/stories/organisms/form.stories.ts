@@ -24,29 +24,29 @@ const disciplines = [
 
 export const AccountDetails: Story = {
   render: () => html`
-    <div style="max-width:520px">
-      <ds-form
-        title="Account details"
-        @ds-submit=${(event: CustomEvent<{ data: FormData }>) => {
-          console.log('submit', Object.fromEntries(event.detail.data.entries()));
-        }}
-        @ds-invalid=${() => console.warn('invalid')}
-      >
-        <ds-field label="Display name" help="Shown on invoices.">
-          <ds-text-field name="name" required></ds-text-field>
-        </ds-field>
-        <ds-field label="Email" error="">
-          <ds-text-field type="email" name="email" required></ds-text-field>
-        </ds-field>
-        <ds-field label="Discipline">
-          <ds-select name="discipline" .options=${disciplines}></ds-select>
-        </ds-field>
-        <ds-checkbox name="newsletter">
-          Send me a weekly change log digest
-        </ds-checkbox>
-        <ds-button slot="actions" variant="ghost" type="reset">Cancel</ds-button>
-        <ds-button slot="actions" variant="primary" type="submit">Save</ds-button>
-      </ds-form>
-    </div>
+<div style="max-width:520px">
+  <ds-form
+    title="Account details"
+    @ds-submit=${(event: CustomEvent<{ data: FormData }>) => {
+      console.log('submit', Object.fromEntries(event.detail.data.entries()));
+    }}
+    @ds-invalid=${() => console.warn('invalid')}
+  >
+    <ds-field label="Display name" help="Shown on invoices.">
+      <ds-text-field name="name" required></ds-text-field>
+    </ds-field>
+    <ds-field label="Email" error="">
+      <ds-text-field type="email" name="email" required></ds-text-field>
+    </ds-field>
+    <ds-field label="Discipline">
+      <ds-select name="discipline" .options=${disciplines}></ds-select>
+    </ds-field>
+    <ds-checkbox name="newsletter">
+      Send me a weekly change log digest
+    </ds-checkbox>
+    <ds-button slot="actions" variant="ghost" type="reset">Cancel</ds-button>
+    <ds-button slot="actions" variant="primary" type="submit">Save</ds-button>
+  </ds-form>
+</div>
   `,
 };

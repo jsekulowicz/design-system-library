@@ -24,12 +24,12 @@ export const Playground: Story = {
 
 export const Tones: Story = {
   render: () => html`
-    <div style="display:flex;gap:var(--ds-space-2);flex-wrap:wrap">
-      <ds-badge tone="neutral">Draft</ds-badge>
-      <ds-badge tone="accent">Featured</ds-badge>
-      <ds-badge tone="success">Paid</ds-badge>
-      <ds-badge tone="warning">Pending</ds-badge>
-      <ds-badge tone="danger">Overdue</ds-badge>
-    </div>
+<div style="display:flex;gap:var(--ds-space-2);flex-wrap:wrap">
+  <ds-badge tone="neutral">Draft</ds-badge>
+  <ds-badge tone="accent">Featured</ds-badge>
+  <ds-badge tone="success">Paid</ds-badge>
+  <ds-badge tone="warning">Pending</ds-badge>
+  <ds-badge tone="danger">Overdue</ds-badge>
+</div>
   `,
 };

@@ -19,23 +19,23 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-    <ds-checkbox
-      ?checked=${args['checked']}
-      ?indeterminate=${args['indeterminate']}
-      ?disabled=${args['disabled']}
-      >${args['label']}</ds-checkbox
-    >
+<ds-checkbox
+  ?checked=${args['checked']}
+  ?indeterminate=${args['indeterminate']}
+  ?disabled=${args['disabled']}
+  >${args['label']}</ds-checkbox
+>
   `,
 };
 
 export const States: Story = {
   render: () => html`
-    <div style="display:grid;gap:var(--ds-space-2)">
-      <ds-checkbox>Unchecked</ds-checkbox>
-      <ds-checkbox checked>Checked</ds-checkbox>
-      <ds-checkbox indeterminate>Indeterminate</ds-checkbox>
-      <ds-checkbox disabled>Disabled</ds-checkbox>
-      <ds-checkbox checked disabled>Checked + disabled</ds-checkbox>
-    </div>
+<div style="display:grid;gap:var(--ds-space-2)">
+  <ds-checkbox>Unchecked</ds-checkbox>
+  <ds-checkbox checked>Checked</ds-checkbox>
+  <ds-checkbox indeterminate>Indeterminate</ds-checkbox>
+  <ds-checkbox disabled>Disabled</ds-checkbox>
+  <ds-checkbox checked disabled>Checked + disabled</ds-checkbox>
+</div>
   `,
 };

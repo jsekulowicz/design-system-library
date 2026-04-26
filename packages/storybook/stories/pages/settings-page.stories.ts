@@ -31,31 +31,31 @@ const timezones = [
 
 export const Composition: Story = {
   render: () => html`
-    <ds-settings-page
-      eyebrow="Workspace · Brand"
-      heading="Settings"
-      description="Studio preferences, billing, and the other plumbing."
-      .sections=${sections}
-    >
-      <section id="profile" style="display:grid;gap:var(--ds-space-4)">
-        <h2 style="margin:0">Profile</h2>
-        <ds-field label="Display name">
-          <ds-text-field value="Jan"></ds-text-field>
-        </ds-field>
-        <ds-field label="Timezone">
-          <ds-select .options=${timezones} .value=${'waw'}></ds-select>
-        </ds-field>
-      </section>
-      <section id="notifications" style="display:grid;gap:var(--ds-space-4)">
-        <h2 style="margin:0">Notifications</h2>
-        <ds-checkbox checked>Digest email on Mondays</ds-checkbox>
-        <ds-checkbox>Ping me on build failures</ds-checkbox>
-      </section>
-      <section id="billing" style="display:grid;gap:var(--ds-space-4)">
-        <h2 style="margin:0">Billing</h2>
-        <p>Studio plan · renews April 30.</p>
-        <ds-button variant="secondary">Manage billing</ds-button>
-      </section>
-    </ds-settings-page>
+<ds-settings-page
+  eyebrow="Workspace · Brand"
+  heading="Settings"
+  description="Studio preferences, billing, and the other plumbing."
+  .sections=${sections}
+>
+  <section id="profile" style="display:grid;gap:var(--ds-space-4)">
+    <h2 style="margin:0">Profile</h2>
+    <ds-field label="Display name">
+      <ds-text-field value="Jan"></ds-text-field>
+    </ds-field>
+    <ds-field label="Timezone">
+      <ds-select .options=${timezones} .value=${'waw'}></ds-select>
+    </ds-field>
+  </section>
+  <section id="notifications" style="display:grid;gap:var(--ds-space-4)">
+    <h2 style="margin:0">Notifications</h2>
+    <ds-checkbox checked>Digest email on Mondays</ds-checkbox>
+    <ds-checkbox>Ping me on build failures</ds-checkbox>
+  </section>
+  <section id="billing" style="display:grid;gap:var(--ds-space-4)">
+    <h2 style="margin:0">Billing</h2>
+    <p>Studio plan · renews April 30.</p>
+    <ds-button variant="secondary">Manage billing</ds-button>
+  </section>
+</ds-settings-page>
   `,
 };

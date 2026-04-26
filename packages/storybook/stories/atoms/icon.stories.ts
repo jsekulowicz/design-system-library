@@ -43,7 +43,7 @@ export const Playground: Story = {
     },
   ],
   render: (args) => html`
-    <ds-icon name=${args['name']} size=${args['size']} label=${args['label']}></ds-icon>
+<ds-icon name=${args['name']} size=${args['size']} label=${args['label']}></ds-icon>
   `,
 };
 
@@ -55,10 +55,10 @@ export const Sizes: Story = {
     },
   ],
   render: () => html`
-    <div style="display:flex;gap:var(--ds-space-3);align-items:center">
-      <ds-icon name="arrow-right" size="sm"></ds-icon>
-      <ds-icon name="arrow-right" size="md"></ds-icon>
-      <ds-icon name="arrow-right" size="lg"></ds-icon>
-    </div>
+<div style="display:flex;gap:var(--ds-space-3);align-items:center">
+  <ds-icon name="arrow-right" size="sm"></ds-icon>
+  <ds-icon name="arrow-right" size="md"></ds-icon>
+  <ds-icon name="arrow-right" size="lg"></ds-icon>
+</div>
   `,
 };

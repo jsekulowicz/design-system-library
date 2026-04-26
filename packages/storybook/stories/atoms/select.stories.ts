@@ -47,76 +47,76 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-    <ds-select
-      label=${args['label']}
-      placeholder=${args['placeholder']}
-      description=${args['description'] || ''}
-      error=${args['error'] || ''}
-      ?invalid=${args['invalid']}
-      ?disabled=${args['disabled']}
-      ?required=${args['required']}
-      ?clearable=${args['clearable']}
-      .options=${options}
-    ></ds-select>
+<ds-select
+  label=${args['label']}
+  placeholder=${args['placeholder']}
+  description=${args['description'] || ''}
+  error=${args['error'] || ''}
+  ?invalid=${args['invalid']}
+  ?disabled=${args['disabled']}
+  ?required=${args['required']}
+  ?clearable=${args['clearable']}
+  .options=${options}
+></ds-select>
   `,
 };
 
 export const Preselected: Story = {
   render: () => html`
-    <ds-select
-      label="Discipline"
-      .options=${options}
-      .value=${'engineering'}
-    ></ds-select>
+<ds-select
+  label="Discipline"
+  .options=${options}
+  .value=${'engineering'}
+></ds-select>
   `,
 };
 
 export const WithDescription: Story = {
   render: () => html`
-    <ds-select
-      label="Discipline"
-      placeholder="Pick a discipline"
-      description="Choose the team you primarily work with."
-      .options=${options}
-    ></ds-select>
+<ds-select
+  label="Discipline"
+  placeholder="Pick a discipline"
+  description="Choose the team you primarily work with."
+  .options=${options}
+></ds-select>
   `,
 };
 
 export const Invalid: Story = {
   render: () => html`
-    <ds-select
-      label="Discipline"
-      placeholder="Pick a discipline"
-      description="Choose the team you primarily work with."
-      error="Please select a discipline."
-      ?invalid=${true}
-      ?required=${true}
-      .options=${options}
-    ></ds-select>
+<ds-select
+  label="Discipline"
+  placeholder="Pick a discipline"
+  description="Choose the team you primarily work with."
+  error="Please select a discipline."
+  ?invalid=${true}
+  ?required=${true}
+  .options=${options}
+></ds-select>
   `,
 };
 
 export const Disabled: Story = {
   render: () => html`
-    <ds-select
-      label="Discipline"
-      placeholder="Pick a discipline"
-      description="This field cannot be changed right now."
-      ?disabled=${true}
-      .options=${options}
-    ></ds-select>
+<ds-select
+  label="Discipline"
+  placeholder="Pick a discipline"
+  description="This field cannot be changed right now."
+  ?disabled=${true}
+  .options=${options}
+></ds-select>
   `,
 };
 
 export const Required: Story = {
   render: () => html`
-    <ds-select
-      label="Discipline"
-      placeholder="Pick a discipline"
-      description="This field is required."
-      ?required=${true}
-      .options=${options}
-    ></ds-select>
+<ds-select
+  label="Discipline"
+  placeholder="Pick a discipline"
+  description="This field is required."
+  ?required=${true}
+  .options=${options}
+></ds-select>
   `,
 };
 
@@ -124,12 +124,12 @@ export const Multiple: Story = {
   name: 'Multiple selection',
   parameters: { docs: { story: { height: '320px' } } },
   render: () => html`
-    <ds-select
-      label="Disciplines"
-      placeholder="Pick disciplines"
-      ?multiple=${true}
-      .options=${options}
-    ></ds-select>
+<ds-select
+  label="Disciplines"
+  placeholder="Pick disciplines"
+  ?multiple=${true}
+  .options=${options}
+></ds-select>
   `,
 };
 
@@ -137,13 +137,13 @@ export const MultiplePreselected: Story = {
   name: 'Multiple — preselected + maxLines',
   parameters: { docs: { story: { height: '320px' } } },
   render: () => html`
-    <ds-select
-      label="Disciplines"
-      placeholder="Pick disciplines"
-      ?multiple=${true}
-      .maxLines=${1}
-      .options=${options}
-      .values=${['design', 'engineering', 'product']}
-    ></ds-select>
+<ds-select
+  label="Disciplines"
+  placeholder="Pick disciplines"
+  ?multiple=${true}
+  .maxLines=${1}
+  .options=${options}
+  .values=${['design', 'engineering', 'product']}
+></ds-select>
   `,
 };

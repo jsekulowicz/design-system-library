@@ -77,13 +77,13 @@ type Story = StoryObj;
 
 export const Basic: Story = {
   render: () => html`
-    <ds-table .rows=${PEOPLE.slice(0, 4)} .columns=${BASIC_COLUMNS}></ds-table>
+<ds-table .rows=${PEOPLE.slice(0, 4)} .columns=${BASIC_COLUMNS}></ds-table>
   `,
 };
 
 export const WithRenderFunctions: Story = {
   render: () => html`
-    <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS}></ds-table>
+<ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS}></ds-table>
   `,
 };
 
@@ -99,62 +99,62 @@ export const Sortable: Story = {
       table.sortState = state;
     };
     return html`
-      <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
-        <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}>Name</ds-table-sort-button>
-        <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}>Joined</ds-table-sort-button>
-        <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}>Salary</ds-table-sort-button>
-      </ds-table>
+  <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
+    <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}>Name</ds-table-sort-button>
+    <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}>Joined</ds-table-sort-button>
+    <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}>Salary</ds-table-sort-button>
+  </ds-table>
     `;
   },
 };
 
 export const ClickableRows: Story = {
   render: () => html`
-    <div>
-      <p id="clickLog" style="margin: 0 0 var(--ds-space-3); color: var(--ds-color-fg-muted); font-family: var(--ds-font-body);">
-        Click or press Enter on a row.
-      </p>
-      <ds-table
-        clickable-rows
-        .rows=${PEOPLE.slice(0, 5)}
-        .columns=${[
-          ...RICH_COLUMNS,
-          {
-            name: 'action', field: 'id', label: '',
-            render: (row: Person) => html`<ds-button size="sm" variant="ghost" @ds-click=${(e: Event) => e.stopPropagation()}>Edit ${row.name.split(' ')[0]}</ds-button>`,
-          },
-        ]}
-        @ds-row-click=${(e: CustomEvent<{ row: Person }>) => {
-          const log = document.getElementById('clickLog');
-          if (log) {
-            log.textContent = `Clicked row: ${e.detail.row.name}`;
-          }
-        }}
-      ></ds-table>
-    </div>
+<div>
+  <p id="clickLog" style="margin: 0 0 var(--ds-space-3); color: var(--ds-color-fg-muted); font-family: var(--ds-font-body);">
+    Click or press Enter on a row.
+  </p>
+  <ds-table
+    clickable-rows
+    .rows=${PEOPLE.slice(0, 5)}
+    .columns=${[
+      ...RICH_COLUMNS,
+      {
+        name: 'action', field: 'id', label: '',
+        render: (row: Person) => html`<ds-button size="sm" variant="ghost" @ds-click=${(e: Event) => e.stopPropagation()}>Edit ${row.name.split(' ')[0]}</ds-button>`,
+      },
+    ]}
+    @ds-row-click=${(e: CustomEvent<{ row: Person }>) => {
+      const log = document.getElementById('clickLog');
+      if (log) {
+        log.textContent = `Clicked row: ${e.detail.row.name}`;
+      }
+    }}
+  ></ds-table>
+</div>
   `,
 };
 
 export const EmptyState: Story = {
   render: () => html`
-    <ds-table .rows=${[]} .columns=${BASIC_COLUMNS}>
-      <div slot="empty">
-        <p style="margin: 0 0 var(--ds-space-3);">No people yet.</p>
-        <ds-button size="sm">Invite someone</ds-button>
-      </div>
-    </ds-table>
+<ds-table .rows=${[]} .columns=${BASIC_COLUMNS}>
+  <div slot="empty">
+    <p style="margin: 0 0 var(--ds-space-3);">No people yet.</p>
+    <ds-button size="sm">Invite someone</ds-button>
+  </div>
+</ds-table>
   `,
 };
 
 export const WithCaptionAndToolbar: Story = {
   render: () => html`
-    <ds-table .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
-      <span slot="caption">Team roster — Q2 snapshot</span>
-      <div slot="toolbar" style="display: flex; gap: var(--ds-space-2); align-items: flex-end;">
-        <ds-text-field label="Filter by name" size="sm"></ds-text-field>
-        <ds-button variant="secondary" size="sm">Export CSV</ds-button>
-      </div>
-    </ds-table>
+<ds-table .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
+  <span slot="caption">Team roster — Q2 snapshot</span>
+  <div slot="toolbar" style="display: flex; gap: var(--ds-space-2); align-items: flex-end;">
+    <ds-text-field label="Filter by name" size="sm"></ds-text-field>
+    <ds-button variant="secondary" size="sm">Export CSV</ds-button>
+  </div>
+</ds-table>
   `,
 };
 
@@ -169,65 +169,65 @@ export const Paginated: Story = {
       pagination.pageSize = pageSize;
     };
     return html`
-      <ds-table
-        id="paginatedTable"
-        .rows=${PEOPLE.slice(0, 3)}
-        .columns=${RICH_COLUMNS}
-      >
-        <ds-table-pagination
-          slot="footer"
-          page=${page}
-          page-size=${pageSize}
-          total=${PEOPLE.length}
-          .pageSizeOptions=${[3, 5, 8]}
-          @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-            page = e.detail.page;
-            const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-            const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
-            render(table, pagination);
-          }}
-          @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-            pageSize = e.detail.pageSize;
-            page = e.detail.page;
-            const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-            const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
-            render(table, pagination);
-          }}
-        ></ds-table-pagination>
-      </ds-table>
+  <ds-table
+    id="paginatedTable"
+    .rows=${PEOPLE.slice(0, 3)}
+    .columns=${RICH_COLUMNS}
+  >
+    <ds-table-pagination
+      slot="footer"
+      page=${page}
+      page-size=${pageSize}
+      total=${PEOPLE.length}
+      .pageSizeOptions=${[3, 5, 8]}
+      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+        page = e.detail.page;
+        const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
+        const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
+        render(table, pagination);
+      }}
+      @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
+        pageSize = e.detail.pageSize;
+        page = e.detail.page;
+        const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
+        const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
+        render(table, pagination);
+      }}
+    ></ds-table-pagination>
+  </ds-table>
     `;
   },
 };
 
 export const PaginatedCompact: Story = {
   render: () => html`
-    <ds-table-pagination
-      hide-page-numbers
-      page="2"
-      page-size="10"
-      total="42"
-      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-        (e.target as HTMLElement & { page: number }).page = e.detail.page;
-      }}
-    ></ds-table-pagination>
+<ds-table-pagination
+  hide-page-numbers
+  page="2"
+  page-size="10"
+  total="42"
+  @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+    (e.target as HTMLElement & { page: number }).page = e.detail.page;
+  }}
+></ds-table-pagination>
   `,
 };
 
 export const StandalonePagination: Story = {
   render: () => html`
-    <ds-table-pagination
-      page="4"
-      page-size="10"
-      total="126"
-      .pageSizeOptions=${[10, 25, 50]}
-      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-        (e.target as HTMLElement & { page: number }).page = e.detail.page;
-      }}
-      @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-        const el = e.target as HTMLElement & { pageSize: number; page: number };
-        el.pageSize = e.detail.pageSize;
-        el.page = e.detail.page;
-      }}
-    ></ds-table-pagination>
+<ds-table-pagination
+  page="4"
+  page-size="10"
+  total="126"
+  .pageSizeOptions=${[10, 25, 50]}
+  @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+    (e.target as HTMLElement & { page: number }).page = e.detail.page;
+  }}
+  @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
+    const el = e.target as HTMLElement & { pageSize: number; page: number };
+    el.pageSize = e.detail.pageSize;
+    el.page = e.detail.page;
+  }}
+></ds-table-pagination>
   `,
 };
