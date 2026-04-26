@@ -27,7 +27,7 @@ export const WithHomeIcon: Story = {
   render: () => html`
     <ds-breadcrumb>
       <ds-breadcrumb-item href="/">
-        <ds-icon slot="leading" name="home" size="md"></ds-icon>
+        <ds-icon slot="leading" name="home" size="lg"></ds-icon>
         Home
       </ds-breadcrumb-item>
       <ds-breadcrumb-item href="/products">Products</ds-breadcrumb-item>

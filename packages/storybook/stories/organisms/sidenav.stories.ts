@@ -24,19 +24,19 @@ export const Basic: Story = {
       <ds-sidenav>
         <strong slot="header">Brand</strong>
         <ds-nav-item href="/" current>
-          <ds-icon slot="icon" name="home" size="md"></ds-icon>
+          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
           Overview
         </ds-nav-item>
         <ds-nav-item href="/activity">
-          <ds-icon slot="icon" name="clock" size="md"></ds-icon>
+          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
           Activity
         </ds-nav-item>
         <ds-nav-item href="/settings">
-          <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
           Settings
         </ds-nav-item>
         <ds-nav-item slot="footer" href="/help">
-          <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
           Help
         </ds-nav-item>
       </ds-sidenav>
@@ -50,7 +50,7 @@ export const WithGroups: Story = {
       <ds-sidenav>
         <strong slot="header">Brand</strong>
         <ds-nav-item href="/" current>
-          <ds-icon slot="icon" name="home" size="md"></ds-icon>
+          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
           Overview
         </ds-nav-item>
         <ds-nav-group label="Workspace" expanded>
@@ -72,15 +72,15 @@ export const Collapsed: Story = {
     <div style="height:480px;display:flex">
       <ds-sidenav collapsed>
         <ds-nav-item href="/" current>
-          <ds-icon slot="icon" name="home" size="md"></ds-icon>
+          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
           Overview
         </ds-nav-item>
         <ds-nav-item href="/activity">
-          <ds-icon slot="icon" name="clock" size="md"></ds-icon>
+          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
           Activity
         </ds-nav-item>
         <ds-nav-item href="/settings">
-          <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
           Settings
         </ds-nav-item>
       </ds-sidenav>
@@ -94,15 +94,15 @@ export const CollapseToggle: Story = {
       <ds-sidenav id="toggle-sidenav">
         <strong slot="header">Brand</strong>
         <ds-nav-item href="/" current>
-          <ds-icon slot="icon" name="home" size="md"></ds-icon>
+          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
           Overview
         </ds-nav-item>
         <ds-nav-item href="/activity">
-          <ds-icon slot="icon" name="clock" size="md"></ds-icon>
+          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
           Activity
         </ds-nav-item>
         <ds-nav-item href="/settings">
-          <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
           Settings
         </ds-nav-item>
         <ds-button

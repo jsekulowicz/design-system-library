@@ -21,7 +21,7 @@ export const Basic: Story = {
 export const WithIcon: Story = {
   render: () => html`
     <ds-nav-item href="/">
-      <ds-icon slot="icon" name="home" size="md"></ds-icon>
+      <ds-icon slot="icon" name="home" size="lg"></ds-icon>
       Home
     </ds-nav-item>
   `,
@@ -31,11 +31,11 @@ export const Current: Story = {
   render: () => html`
     <div style="display:flex;flex-direction:column;gap:var(--ds-space-1);width:240px">
       <ds-nav-item href="/">
-        <ds-icon slot="icon" name="home" size="md"></ds-icon>
+        <ds-icon slot="icon" name="home" size="lg"></ds-icon>
         Home
       </ds-nav-item>
       <ds-nav-item href="/settings" current>
-        <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+        <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
         Settings
       </ds-nav-item>
     </div>
@@ -45,7 +45,7 @@ export const Current: Story = {
 export const Disabled: Story = {
   render: () => html`
     <ds-nav-item href="/billing" disabled>
-      <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+      <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
       Billing (coming soon)
     </ds-nav-item>
   `,

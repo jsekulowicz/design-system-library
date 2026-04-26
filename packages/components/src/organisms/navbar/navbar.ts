@@ -65,7 +65,7 @@ export class DsNavbar extends DsElement {
           aria-controls=${menuId}
           @click=${this.#onToggle}
         >
-          <ds-icon name=${iconName} size="md"></ds-icon>
+          <ds-icon name=${iconName} size="lg"></ds-icon>
         </button>
         <div class="menu" part="menu" id=${menuId} role="list">
           <slot></slot>

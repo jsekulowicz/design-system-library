@@ -35,18 +35,18 @@ export const WithIcons: Story = {
     <ds-navbar>
       <strong slot="brand">Brand</strong>
       <ds-nav-item href="/" current>
-        <ds-icon slot="icon" name="home" size="md"></ds-icon>
+        <ds-icon slot="icon" name="home" size="lg"></ds-icon>
         Home
       </ds-nav-item>
       <ds-nav-item href="/activity">
-        <ds-icon slot="icon" name="clock" size="md"></ds-icon>
+        <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
         Activity
       </ds-nav-item>
       <ds-nav-item href="/settings">
-        <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+        <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
         Settings
       </ds-nav-item>
-      <ds-button slot="actions" variant="primary" size="md">New project</ds-button>
+      <ds-button slot="actions" variant="primary" size="lg">New project</ds-button>
     </ds-navbar>
   `,
 };

@@ -33,15 +33,15 @@ export const WithSidenav: Story = {
       </div>
       <ds-sidenav slot="aside">
         <ds-nav-item href="#" current>
-          <ds-icon slot="icon" name="home" size="md"></ds-icon>
+          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
           Overview
         </ds-nav-item>
         <ds-nav-item href="#">
-          <ds-icon slot="icon" name="clock" size="md"></ds-icon>
+          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
           Activity
         </ds-nav-item>
         <ds-nav-item href="#">
-          <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
           Settings
         </ds-nav-item>
       </ds-sidenav>
@@ -73,15 +73,15 @@ export const CollapsedSidenav: Story = {
       </div>
       <ds-sidenav slot="aside" collapsed>
         <ds-nav-item href="#" current>
-          <ds-icon slot="icon" name="home" size="md"></ds-icon>
+          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
           Overview
         </ds-nav-item>
         <ds-nav-item href="#">
-          <ds-icon slot="icon" name="clock" size="md"></ds-icon>
+          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
           Activity
         </ds-nav-item>
         <ds-nav-item href="#">
-          <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
           Settings
         </ds-nav-item>
       </ds-sidenav>
