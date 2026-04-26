@@ -15,7 +15,7 @@ export const sidenavStyles = css`
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: var(--ds-space-4) 0 var(--ds-space-4) var(--ds-space-4);
+    padding: var(--ds-space-2);
     background: var(--ds-color-bg);
     border-right: 1px solid var(--ds-color-border);
     box-sizing: border-box;
