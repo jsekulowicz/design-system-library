@@ -56,6 +56,7 @@
   color: var(--ds-color-fg) !important;
   border-color: var(--ds-color-border) !important;
   box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
 .sbdocs hr {
@@ -78,8 +79,8 @@
   background: var(--ds-color-bg) !important;
 }
 
-/* Source toolbar (Show code + copy) — kill default white bg that shows as
-   a dot behind the rounded button. */
+/* Source toolbar (Show code + copy) — kill contrasting backgrounds and the
+   top-left border-radius that creates a dot behind each action button. */
 .sbdocs .sb-bar,
 .sbdocs .sbdocs-preview .os-host,
 .sbdocs .docblock-code-toggle,
@@ -88,6 +89,7 @@
   color: var(--ds-color-fg) !important;
   border-color: var(--ds-color-border) !important;
   box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
 /* ===== Storybook ArgsTable (Props) ===== */
