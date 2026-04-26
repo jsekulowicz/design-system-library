@@ -31,24 +31,27 @@ export class DsSettingsPage extends DsElement {
 
   override render(): TemplateResult {
     const current = this.activeId || this.sections[0]?.id || '';
+    const hasNav = this.sections.length > 0;
     return html`<header class="hero" part="hero">
         <span class="eyebrow">${this.eyebrow}</span>
         <h1 part="heading">${this.heading}</h1>
         ${this.description ? html`<p>${this.description}</p>` : null}
       </header>
-      <div class="grid">
-        <nav aria-label="Settings sections" part="nav">
-          ${this.sections.map(
-            (section) =>
-              html`<a
-                href=${`#${section.id}`}
-                aria-current=${section.id === current ? 'true' : 'false'}
-                @click=${this.#scrollTo(section.id)}
-                >${section.label}</a
-              >`,
-          )}
-        </nav>
-        <div class="sections" part="sections"><slot></slot></div>
-      </div>`;
+      ${hasNav
+        ? html`<div class="grid">
+            <nav aria-label="Settings sections" part="nav">
+              ${this.sections.map(
+                (section) =>
+                  html`<a
+                    href=${`#${section.id}`}
+                    aria-current=${section.id === current ? 'true' : 'false'}
+                    @click=${this.#scrollTo(section.id)}
+                    >${section.label}</a
+                  >`,
+              )}
+            </nav>
+            <div class="sections" part="sections"><slot></slot></div>
+          </div>`
+        : html`<div class="sections" part="sections"><slot></slot></div>`}`;
   }
 }

@@ -26,15 +26,7 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-const FRAME_HEIGHT = 480;
-const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
-
-const sections = [
-  { id: 'profile', label: 'Profile' },
-  { id: 'security', label: 'Security' },
-  { id: 'notifications', label: 'Notifications' },
-  { id: 'billing', label: 'Billing' },
-];
+const STORY_HEIGHT = '520px';
 
 const timezones = [
   { label: 'UTC', value: 'utc' },
@@ -45,67 +37,64 @@ const timezones = [
 export const Default: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () => html`
-<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
-  <ds-page-shell brand="Brand" style="min-height:0;height:100%">
-    <ds-sidenav slot="aside">
-      <ds-nav-item href="#">
-        <ds-icon slot="icon" name="home" size="lg"></ds-icon>
-        Overview
-      </ds-nav-item>
-      <ds-nav-item href="#" current>
-        <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
-        Settings
-      </ds-nav-item>
-    </ds-sidenav>
-    <ds-settings-page
-      eyebrow="Workspace · Brand"
-      heading="Settings"
-      description="Studio preferences, billing, and the other plumbing."
-      .sections=${sections}
-    >
-      <section id="profile" style="display:grid;gap:var(--ds-space-4)">
-        <ds-form header="Profile">
-          <ds-text-field label="Display name" value="Jan Sekułowicz"></ds-text-field>
-          <ds-text-field label="Email" value="jan@example.com" type="email"></ds-text-field>
-          <ds-select label="Timezone" .options=${timezones} .value=${'waw'}></ds-select>
-          <ds-text-field label="Bio" value="Design systems engineer."></ds-text-field>
-          <ds-button slot="actions" variant="primary" size="sm">Save profile</ds-button>
-        </ds-form>
-      </section>
-      <section id="security" style="display:grid;gap:var(--ds-space-4)">
-        <ds-form header="Security">
-          <ds-text-field label="Current password" type="password"></ds-text-field>
-          <ds-text-field label="New password" type="password"></ds-text-field>
-          <ds-text-field label="Confirm new password" type="password"></ds-text-field>
-          <ds-button slot="actions" variant="primary" size="sm">Update password</ds-button>
-        </ds-form>
-      </section>
-      <section id="notifications" style="display:grid;gap:var(--ds-space-4)">
-        <ds-form header="Notifications">
-          <ds-checkbox checked>Digest email on Mondays</ds-checkbox>
-          <ds-checkbox>Ping me on build failures</ds-checkbox>
-          <ds-checkbox checked>Weekly activity summary</ds-checkbox>
-          <ds-button slot="actions" variant="primary" size="sm">Save preferences</ds-button>
-        </ds-form>
-      </section>
-      <section id="billing" style="display:grid;gap:var(--ds-space-4)">
-        <ds-form header="Billing">
-          <ds-text-field label="Billing email" value="billing@example.com" type="email"></ds-text-field>
-          <p style="margin:0;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-sm)">
-            Studio plan · renews 30 April 2027.
-          </p>
-          <div slot="actions" style="display:flex;gap:var(--ds-space-2)">
-            <ds-button variant="secondary" size="sm">Manage billing</ds-button>
-            <ds-button variant="ghost" size="sm">Cancel plan</ds-button>
-          </div>
-        </ds-form>
-      </section>
-    </ds-settings-page>
-    <ds-footer slot="footer">
-      <span slot="start">© 2026 Brand</span>
-      <ds-link slot="end" href="#" variant="quiet">Privacy</ds-link>
-    </ds-footer>
-  </ds-page-shell>
-</div>
+<ds-page-shell brand="Brand">
+  <ds-sidenav slot="aside">
+    <ds-nav-item href="#">
+      <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+      Overview
+    </ds-nav-item>
+    <ds-nav-item href="#" current>
+      <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+      Settings
+    </ds-nav-item>
+  </ds-sidenav>
+  <ds-settings-page
+    eyebrow="Workspace · Brand"
+    heading="Settings"
+    description="Studio preferences, billing, and the other plumbing."
+  >
+    <section id="profile" style="display:grid;gap:var(--ds-space-4)">
+      <ds-form header="Profile">
+        <ds-text-field label="Display name" value="Jan Sekułowicz"></ds-text-field>
+        <ds-text-field label="Email" value="jan@example.com" type="email"></ds-text-field>
+        <ds-select label="Timezone" .options=${timezones} .value=${'waw'}></ds-select>
+        <ds-text-field label="Bio" value="Design systems engineer."></ds-text-field>
+        <ds-button slot="actions" variant="primary" size="sm">Save profile</ds-button>
+      </ds-form>
+    </section>
+    <section id="security" style="display:grid;gap:var(--ds-space-4)">
+      <ds-form header="Security">
+        <ds-text-field label="Current password" type="password"></ds-text-field>
+        <ds-text-field label="New password" type="password"></ds-text-field>
+        <ds-text-field label="Confirm new password" type="password"></ds-text-field>
+        <ds-button slot="actions" variant="primary" size="sm">Update password</ds-button>
+      </ds-form>
+    </section>
+    <section id="notifications" style="display:grid;gap:var(--ds-space-4)">
+      <ds-form header="Notifications">
+        <ds-checkbox checked>Digest email on Mondays</ds-checkbox>
+        <ds-checkbox>Ping me on build failures</ds-checkbox>
+        <ds-checkbox checked>Weekly activity summary</ds-checkbox>
+        <ds-button slot="actions" variant="primary" size="sm">Save preferences</ds-button>
+      </ds-form>
+    </section>
+    <section id="billing" style="display:grid;gap:var(--ds-space-4)">
+      <ds-form header="Billing">
+        <ds-text-field label="Billing email" value="billing@example.com" type="email"></ds-text-field>
+        <p style="margin:0;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-sm)">
+          Studio plan · renews 30 April 2027.
+        </p>
+        <div slot="actions" style="display:flex;gap:var(--ds-space-2)">
+          <ds-button variant="secondary" size="sm">Manage billing</ds-button>
+          <ds-button variant="ghost" size="sm">Cancel plan</ds-button>
+        </div>
+      </ds-form>
+    </section>
+  </ds-settings-page>
+  <ds-footer slot="footer">
+    <span slot="start">© 2026 Brand</span>
+    <ds-link slot="end" href="#" variant="quiet">Privacy</ds-link>
+  </ds-footer>
+</ds-page-shell>
 `,
 };

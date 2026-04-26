@@ -68,4 +68,7 @@ export const settingsPageStyles = css`
     flex-direction: column;
     gap: var(--ds-space-6);
   }
+  :host > .sections {
+    padding-top: var(--ds-space-8);
+  }
 `;
