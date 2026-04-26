@@ -125,11 +125,6 @@
     "./badge/define": { "import": "./dist/atoms/badge/define.js" },
     "./link": { "types": "./dist/atoms/link/index.d.ts", "import": "./dist/atoms/link/index.js" },
     "./link/define": { "import": "./dist/atoms/link/define.js" },
-    "./field": {
-      "types": "./dist/molecules/field/index.d.ts",
-      "import": "./dist/molecules/field/index.js"
-    },
-    "./field/define": { "import": "./dist/molecules/field/define.js" },
     "./card": {
       "types": "./dist/molecules/card/index.d.ts",
       "import": "./dist/molecules/card/index.js"

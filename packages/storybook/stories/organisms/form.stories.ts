@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import '@ds/components/form/define';
-import '@ds/components/field/define';
 import '@ds/components/text-field/define';
 import '@ds/components/checkbox/define';
 import '@ds/components/select/define';
@@ -32,15 +31,9 @@ export const AccountDetails: Story = {
     }}
     @ds-invalid=${() => console.warn('invalid')}
   >
-    <ds-field label="Display name" help="Shown on invoices.">
-      <ds-text-field name="name" required></ds-text-field>
-    </ds-field>
-    <ds-field label="Email" error="">
-      <ds-text-field type="email" name="email" required></ds-text-field>
-    </ds-field>
-    <ds-field label="Discipline">
-      <ds-select name="discipline" .options=${disciplines}></ds-select>
-    </ds-field>
+    <ds-text-field label="Display name" description="Shown on invoices." name="name" required></ds-text-field>
+    <ds-text-field label="Email" type="email" name="email" required></ds-text-field>
+    <ds-select label="Discipline" name="discipline" .options=${disciplines}></ds-select>
     <ds-checkbox name="newsletter">
       Send me a weekly change log digest
     </ds-checkbox>
@@ -48,5 +41,5 @@ export const AccountDetails: Story = {
     <ds-button slot="actions" variant="primary" type="submit">Save</ds-button>
   </ds-form>
 </div>
-  `,
+`,
 };

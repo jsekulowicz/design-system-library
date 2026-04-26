@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import '@ds/components/settings-page/define';
-import '@ds/components/field/define';
 import '@ds/components/text-field/define';
 import '@ds/components/select/define';
 import '@ds/components/checkbox/define';
@@ -39,12 +38,8 @@ export const Composition: Story = {
 >
   <section id="profile" style="display:grid;gap:var(--ds-space-4)">
     <h2 style="margin:0">Profile</h2>
-    <ds-field label="Display name">
-      <ds-text-field value="Jan"></ds-text-field>
-    </ds-field>
-    <ds-field label="Timezone">
-      <ds-select .options=${timezones} .value=${'waw'}></ds-select>
-    </ds-field>
+    <ds-text-field label="Display name" value="Jan"></ds-text-field>
+    <ds-select label="Timezone" .options=${timezones} .value=${'waw'}></ds-select>
   </section>
   <section id="notifications" style="display:grid;gap:var(--ds-space-4)">
     <h2 style="margin:0">Notifications</h2>
@@ -57,5 +52,5 @@ export const Composition: Story = {
     <ds-button variant="secondary">Manage billing</ds-button>
   </section>
 </ds-settings-page>
-  `,
+`,
 };

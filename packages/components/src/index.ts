@@ -30,7 +30,6 @@ export {
   type PaginationRangeItem,
   type PaginationRangeInput,
 } from './atoms/table/index.js';
-export { DsField, type FieldLayout } from './molecules/field/index.js';
 export { DsCard, type CardElevation, type CardOrientation } from './molecules/card/index.js';
 export {
   DsBarChart,

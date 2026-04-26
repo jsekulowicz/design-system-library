@@ -7,7 +7,6 @@ export { Button } from './ds-button.js';
 export { Card } from './ds-card.js';
 export { Checkbox } from './ds-checkbox.js';
 export { CheckboxGroup } from './ds-checkbox-group.js';
-export { Field } from './ds-field.js';
 export { Form } from './ds-form.js';
 export { Icon } from './ds-icon.js';
 export { Link } from './ds-link.js';
