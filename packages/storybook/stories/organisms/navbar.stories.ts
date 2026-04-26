@@ -20,62 +20,62 @@ type Story = StoryObj;
 
 export const Basic: Story = {
   render: () => html`
-<ds-navbar>
-  <strong slot="brand">Brand</strong>
-  <ds-nav-item href="/" current>Overview</ds-nav-item>
-  <ds-nav-item href="/projects">Projects</ds-nav-item>
-  <ds-nav-item href="/billing">Billing</ds-nav-item>
-  <ds-button slot="actions" variant="secondary" size="sm">Sign in</ds-button>
-</ds-navbar>
-`,
+    <ds-navbar>
+      <strong slot="brand">Brand</strong>
+      <ds-nav-item href="/" current>Overview</ds-nav-item>
+      <ds-nav-item href="/projects">Projects</ds-nav-item>
+      <ds-nav-item href="/billing">Billing</ds-nav-item>
+      <ds-button slot="actions" variant="secondary" size="sm">Sign in</ds-button>
+    </ds-navbar>
+  `,
 };
 
 export const WithIcons: Story = {
   render: () => html`
-<ds-navbar>
-  <strong slot="brand">Brand</strong>
-  <ds-nav-item href="/" current>
-    <ds-icon slot="icon" name="home" size="sm"></ds-icon>
-    Home
-  </ds-nav-item>
-  <ds-nav-item href="/activity">
-    <ds-icon slot="icon" name="clock" size="sm"></ds-icon>
-    Activity
-  </ds-nav-item>
-  <ds-nav-item href="/settings">
-    <ds-icon slot="icon" name="cog-6-tooth" size="sm"></ds-icon>
-    Settings
-  </ds-nav-item>
-  <ds-button slot="actions" variant="primary" size="sm">New project</ds-button>
-</ds-navbar>
-`,
+    <ds-navbar>
+      <strong slot="brand">Brand</strong>
+      <ds-nav-item href="/" current>
+        <ds-icon slot="icon" name="home" size="md"></ds-icon>
+        Home
+      </ds-nav-item>
+      <ds-nav-item href="/activity">
+        <ds-icon slot="icon" name="clock" size="md"></ds-icon>
+        Activity
+      </ds-nav-item>
+      <ds-nav-item href="/settings">
+        <ds-icon slot="icon" name="cog-6-tooth" size="md"></ds-icon>
+        Settings
+      </ds-nav-item>
+      <ds-button slot="actions" variant="primary" size="md">New project</ds-button>
+    </ds-navbar>
+  `,
 };
 
 export const Responsive: Story = {
   render: () => html`
-<div style="max-width:560px;border:1px dashed var(--ds-color-border-subtle)">
-  <ds-navbar>
-    <strong slot="brand">Brand</strong>
-    <ds-nav-item href="/" current>Overview</ds-nav-item>
-    <ds-nav-item href="/projects">Projects</ds-nav-item>
-    <ds-nav-item href="/billing">Billing</ds-nav-item>
-    <ds-nav-item href="/team">Team</ds-nav-item>
-    <ds-button slot="actions" variant="secondary" size="sm">Sign in</ds-button>
-  </ds-navbar>
-  <div style="padding:var(--ds-space-4);color:var(--ds-color-fg-muted)">
-    Below 640px container width the links collapse to a hamburger toggle.
-  </div>
-</div>
-`,
+    <div style="max-width:560px;border:1px dashed var(--ds-color-border-subtle)">
+      <ds-navbar>
+        <strong slot="brand">Brand</strong>
+        <ds-nav-item href="/" current>Overview</ds-nav-item>
+        <ds-nav-item href="/projects">Projects</ds-nav-item>
+        <ds-nav-item href="/billing">Billing</ds-nav-item>
+        <ds-nav-item href="/team">Team</ds-nav-item>
+        <ds-button slot="actions" variant="secondary" size="md">Sign in</ds-button>
+      </ds-navbar>
+      <div style="padding:var(--ds-space-4);color:var(--ds-color-fg-muted)">
+        Below 640px container width the links collapse to a hamburger toggle.
+      </div>
+    </div>
+  `,
 };
 
 export const WithCurrentPage: Story = {
   render: () => html`
-<ds-navbar>
-  <strong slot="brand">Brand</strong>
-  <ds-nav-item href="/">Overview</ds-nav-item>
-  <ds-nav-item href="/projects" current>Projects</ds-nav-item>
-  <ds-nav-item href="/billing">Billing</ds-nav-item>
-</ds-navbar>
-`,
+    <ds-navbar>
+      <strong slot="brand">Brand</strong>
+      <ds-nav-item href="/">Overview</ds-nav-item>
+      <ds-nav-item href="/projects" current>Projects</ds-nav-item>
+      <ds-nav-item href="/billing">Billing</ds-nav-item>
+    </ds-navbar>
+  `,
 };

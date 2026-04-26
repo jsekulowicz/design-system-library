@@ -56,9 +56,7 @@ export class DsBreadcrumbItem extends DsElement {
 
   #renderCurrent(): TemplateResult {
     return html`
-      <span part="current" class="current" aria-current="page">
-        ${this.#renderLabel()}
-      </span>
+      <span part="current" class="current" aria-current="page"> ${this.#renderLabel()} </span>
     `;
   }
 
@@ -68,15 +66,14 @@ export class DsBreadcrumbItem extends DsElement {
     }
     return html`
       <span part="separator" class="separator" role="presentation" aria-hidden="true">
-        <ds-icon name="chevron-right" size="sm"></ds-icon>
+        <ds-icon name="chevron-right" size="md"></ds-icon>
       </span>
     `;
   }
 
   override render(): TemplateResult {
     return html`
-      ${this.current ? this.#renderCurrent() : this.#renderAnchor()}
-      ${this.#renderSeparator()}
+      ${this.current ? this.#renderCurrent() : this.#renderAnchor()} ${this.#renderSeparator()}
     `;
   }
 }

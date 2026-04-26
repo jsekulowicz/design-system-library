@@ -7,7 +7,7 @@ export const navItemStyles = css`
   .link {
     display: inline-flex;
     align-items: center;
-    gap: var(--ds-space-2);
+    gap: var(--ds-space-1);
     padding: var(--ds-space-2) var(--ds-space-3);
     border-radius: var(--ds-radius-sm);
     color: var(--ds-color-fg-muted);
