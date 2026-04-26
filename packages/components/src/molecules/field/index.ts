@@ -1,1 +1,1 @@
-export { DsField, type FieldLayout } from './field.js';
+export { DsField } from './field.js';

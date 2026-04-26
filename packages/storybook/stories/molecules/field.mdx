@@ -7,11 +7,23 @@ import '@ds/components/tabs/define';
 
 # Field
 
-Wraps any form control with a shared label, help text, and error slot. Use it to compose larger forms with consistent vertical rhythm.
+A thin prop-forwarding wrapper. Pass `label`, `help`, `error`, and `optional` on `ds-field` and it sets them as attributes on the slotted control. The control (e.g. `ds-text-field`, `ds-select`) is responsible for rendering the label and subtext in its own shadow DOM.
 
 ## Anatomy
 
-A layout-only wrapper that associates its label with the slotted control via id forwarding. Works with any `ds-*` input that follows the form-control contract.
+```html
+<ds-field label="Display name" help="Shown on receipts.">
+  <ds-text-field name="name"></ds-text-field>
+</ds-field>
+```
+
+This is equivalent to writing:
+
+```html
+<ds-text-field label="Display name" description="Shown on receipts." name="name"></ds-text-field>
+```
+
+`ds-field` maps `help` → `description` on the control, and forwards `error` and `optional` verbatim.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -32,21 +44,19 @@ A layout-only wrapper that associates its label with the slotted control via id 
     <ds-tab-panel value="guidelines">
       <h3>Do</h3>
       <ul>
-        <li>Use <code>ds-field</code> to layout form controls that don't already own their label (e.g. a plain input).</li>
-        <li>Mark truly optional fields with <code>optional</code>; otherwise assume required and label the minority.</li>
-        <li>Put help copy in <code>help</code>, not in the label.</li>
+        <li>Use <code>ds-field</code> when you want to set label/help/error in one place rather than on the control directly — it's especially useful inside form loops or when props are data-driven.</li>
+        <li>Mark truly optional fields with <code>optional</code>; assume required by default and only label the exceptions.</li>
+        <li>Put help copy in <code>help</code>, not in the label — labels should be short nouns.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Don't double-wrap a component that already renders its own label (e.g. <code>ds-text-field</code>).</li>
+        <li>Don't set <code>label</code> (or <code>description</code> / <code>error</code>) both on <code>ds-field</code> and directly on the slotted control — <code>ds-field</code> will overwrite what you set on the control.</li>
         <li>Don't replace inline errors with toast notifications — the message belongs next to the control.</li>
-        <li>Don't change <code>layout</code> mid-form to fit one odd field; normalize early.</li>
       </ul>
       <h3>Accessibility</h3>
       <ul>
-        <li>The label becomes the control's accessible name via <code>aria-labelledby</code>.</li>
-        <li>Help and error copy are wired to the control via <code>aria-describedby</code>.</li>
-        <li>Clicking the label focuses the control through native <code>&lt;label&gt;</code> semantics.</li>
+        <li>The <code>label</code> prop is forwarded to the slotted control, which renders it as a <code>&lt;label&gt;</code> element in its own shadow DOM.</li>
+        <li>Help and error text are forwarded as <code>description</code> and <code>error</code> attributes; each control wires them to the input via <code>aria-describedby</code>.</li>
       </ul>
     </ds-tab-panel>
   </ds-tabs>

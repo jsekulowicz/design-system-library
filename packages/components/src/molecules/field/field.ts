@@ -3,8 +3,6 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { DsElement } from '@ds/core';
 import { fieldStyles } from './field.styles.js';
 
-export type FieldLayout = 'block' | 'inline';
-
 interface LabelTarget extends HTMLElement {
   setAttribute(name: string, value: string): void;
   removeAttribute(name: string): void;
@@ -22,7 +20,6 @@ export class DsField extends DsElement {
   @property() help = '';
   @property() error = '';
   @property({ type: Boolean }) optional = false;
-  @property({ reflect: true }) layout: FieldLayout = 'block';
 
   @queryAssignedElements() private slotted!: LabelTarget[];
 
