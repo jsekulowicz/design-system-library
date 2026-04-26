@@ -9,7 +9,7 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Pages/SettingsPage',
   component: 'ds-settings-page',
-  tags: ['autodocs'],
+  tags: ['!dev'],
   parameters: { layout: 'fullscreen' },
 };
 
@@ -28,7 +28,8 @@ const timezones = [
   { label: 'America / New York', value: 'nyc' },
 ];
 
-export const Composition: Story = {
+export const Default: Story = {
+  parameters: { docs: { story: { height: '560px' } } },
   render: () => html`
 <ds-settings-page
   eyebrow="Workspace · Brand"

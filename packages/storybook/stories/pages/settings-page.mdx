@@ -1,0 +1,61 @@
+import { Meta, Canvas, Stories } from '@storybook/blocks';
+import * as SettingsPageStories from './settings-page.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={SettingsPageStories} />
+
+# Settings Page
+
+Full-page settings layout with a sticky section nav and scrollable form regions.
+
+## Anatomy
+
+`ds-settings-page` renders a hero header above a two-column grid. The left column is a sticky nav generated from the `sections` prop; the right column hosts the default slot.
+
+```html
+<ds-settings-page
+  eyebrow="Workspace · Brand"
+  heading="Settings"
+  description="Manage your preferences."
+  .sections=${[{ id: 'profile', label: 'Profile' }]}
+>
+  <section id="profile"><!-- form fields --></section>
+</ds-settings-page>
+```
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+  <ds-tab-panel value="api">
+    <Canvas of={SettingsPageStories.Default} />
+    <ComponentApi tag="ds-settings-page" />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="examples">
+    <Stories includePrimary={false} />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Do</h3>
+    <ul>
+      <li>Match every entry in the <code>sections</code> prop to a <code>&lt;section id="..."&gt;</code> in the default slot — the nav links scroll to these targets.</li>
+      <li>Place form controls inside <code>&lt;section&gt;</code> elements in the default slot; the component provides the surrounding layout.</li>
+      <li>Keep section content concise — the sticky nav is designed for a handful of top-level categories, not deep trees.</li>
+    </ul>
+    <h3>Don't</h3>
+    <ul>
+      <li>Don't add <code>sections</code> entries without a matching <code>id</code> in the slot — the nav link will scroll nowhere.</li>
+      <li>Don't pass rich markup through <code>eyebrow</code>, <code>heading</code>, or <code>description</code> — these are plain-text attributes; use CSS parts (<code>hero</code>, <code>heading</code>) for visual overrides.</li>
+      <li>Don't nest another <code>ds-settings-page</code>; place it in <code>ds-page-shell</code>'s default slot as a single content region.</li>
+    </ul>
+    <h3>Accessibility</h3>
+    <ul>
+      <li>The sticky nav is a <code>&lt;nav aria-label="Settings sections"&gt;</code> landmark — screen readers announce it separately from main content.</li>
+      <li>Active nav links carry <code>aria-current="true"</code> (updated on click) so assistive technologies can identify the current section.</li>
+      <li>On narrow viewports the nav collapses to a single column above the sections — ensure section headings remain visible and meaningful without the nav context.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>
