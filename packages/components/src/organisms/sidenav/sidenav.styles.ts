@@ -15,7 +15,7 @@ export const sidenavStyles = css`
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: var(--ds-space-4);
+    padding: var(--ds-space-4) 0 var(--ds-space-4) var(--ds-space-4);
     background: var(--ds-color-bg);
     border-right: 1px solid var(--ds-color-border);
     box-sizing: border-box;
@@ -27,7 +27,8 @@ export const sidenavStyles = css`
     font-size: var(--ds-font-size-lg);
     color: var(--ds-color-fg);
   }
-  .header:empty {
+  .header[hidden],
+  .footer[hidden] {
     display: none;
   }
   .list {
@@ -44,8 +45,5 @@ export const sidenavStyles = css`
     display: flex;
     flex-direction: column;
     gap: var(--ds-space-1);
-  }
-  .footer:empty {
-    display: none;
   }
 `;

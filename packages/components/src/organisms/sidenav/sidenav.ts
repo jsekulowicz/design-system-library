@@ -1,5 +1,5 @@
 import { html, type TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@ds/core';
 import { sidenavStyles } from './sidenav.styles.js';
 
@@ -20,11 +20,28 @@ export class DsSidenav extends DsElement {
   @property() label = 'Secondary';
   @property({ type: Boolean, reflect: true }) collapsed = false;
 
+  @state() private _hasHeader = false;
+  @state() private _hasFooter = false;
+
+  #onHeaderSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    this._hasHeader = slot.assignedNodes({ flatten: true }).length > 0;
+  }
+
+  #onFooterSlotChange(e: Event) {
+    const slot = e.target as HTMLSlotElement;
+    this._hasFooter = slot.assignedNodes({ flatten: true }).length > 0;
+  }
+
   override render(): TemplateResult {
     return html`<nav part="nav" aria-label=${this.label}>
-      <div class="header" part="header"><slot name="header"></slot></div>
+      <div class="header" part="header" ?hidden=${!this._hasHeader}>
+        <slot name="header" @slotchange=${this.#onHeaderSlotChange}></slot>
+      </div>
       <div class="list" part="list" role="list"><slot></slot></div>
-      <div class="footer" part="footer"><slot name="footer"></slot></div>
+      <div class="footer" part="footer" ?hidden=${!this._hasFooter}>
+        <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+      </div>
     </nav>`;
   }
 }

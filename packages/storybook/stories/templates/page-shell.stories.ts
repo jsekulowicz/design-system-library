@@ -21,7 +21,7 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-const STORY_HEIGHT = '520px';
+const STORY_HEIGHT = '580px';
 
 export const WithSidenav: Story = {
   name: 'With Sidenav',
