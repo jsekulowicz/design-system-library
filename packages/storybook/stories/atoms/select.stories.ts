@@ -58,7 +58,7 @@ export const Playground: Story = {
   ?clearable=${args['clearable']}
   .options=${options}
 ></ds-select>
-  `,
+`,
 };
 
 export const Preselected: Story = {
@@ -68,7 +68,7 @@ export const Preselected: Story = {
   .options=${options}
   .value=${'engineering'}
 ></ds-select>
-  `,
+`,
 };
 
 export const WithDescription: Story = {
@@ -79,7 +79,7 @@ export const WithDescription: Story = {
   description="Choose the team you primarily work with."
   .options=${options}
 ></ds-select>
-  `,
+`,
 };
 
 export const Invalid: Story = {
@@ -93,7 +93,7 @@ export const Invalid: Story = {
   ?required=${true}
   .options=${options}
 ></ds-select>
-  `,
+`,
 };
 
 export const Disabled: Story = {
@@ -105,7 +105,7 @@ export const Disabled: Story = {
   ?disabled=${true}
   .options=${options}
 ></ds-select>
-  `,
+`,
 };
 
 export const Required: Story = {
@@ -117,7 +117,7 @@ export const Required: Story = {
   ?required=${true}
   .options=${options}
 ></ds-select>
-  `,
+`,
 };
 
 export const Multiple: Story = {
@@ -130,7 +130,7 @@ export const Multiple: Story = {
   ?multiple=${true}
   .options=${options}
 ></ds-select>
-  `,
+`,
 };
 
 export const MultiplePreselected: Story = {
@@ -145,5 +145,5 @@ export const MultiplePreselected: Story = {
   .options=${options}
   .values=${['design', 'engineering', 'product']}
 ></ds-select>
-  `,
+`,
 };

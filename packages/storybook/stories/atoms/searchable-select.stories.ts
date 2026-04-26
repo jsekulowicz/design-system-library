@@ -179,18 +179,18 @@ class SbCountrySearch extends LitElement {
 
   override render() {
     return html`
-  <ds-searchable-select
-    label="Country"
-    placeholder="Select a country"
-    search-placeholder="Search countries…"
-    .options=${this._options}
-    .value=${this._value}
-    @ds-search=${this.#onSearch}
-    @ds-change=${this.#onChange}
-  >
-    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-  </ds-searchable-select>
-    `;
+<ds-searchable-select
+  label="Country"
+  placeholder="Select a country"
+  search-placeholder="Search countries…"
+  .options=${this._options}
+  .value=${this._value}
+  @ds-search=${this.#onSearch}
+  @ds-change=${this.#onChange}
+>
+  <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+</ds-searchable-select>
+`;
   }
 }
 
@@ -260,7 +260,7 @@ export const Playground: Story = {
   ?loading=${args['loading']}
   .options=${PLAYGROUND_OPTIONS}
 ></ds-searchable-select>
-  `,
+`,
 };
 
 export const Countries: Story = {
@@ -277,7 +277,7 @@ export const Loading: Story = {
 >
   <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
 </ds-searchable-select>
-  `,
+`,
 };
 
 class SbCountryMultiSearch extends LitElement {
@@ -297,20 +297,20 @@ class SbCountryMultiSearch extends LitElement {
 
   override render() {
     return html`
-  <ds-searchable-select
-    label="Countries"
-    placeholder="Select countries"
-    search-placeholder="Search countries…"
-    ?multiple=${true}
-    .maxLines=${2}
-    .options=${this._options}
-    .values=${this._values}
-    @ds-search=${this.#onSearch}
-    @ds-change=${this.#onChange}
-  >
-    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-  </ds-searchable-select>
-    `;
+<ds-searchable-select
+  label="Countries"
+  placeholder="Select countries"
+  search-placeholder="Search countries…"
+  ?multiple=${true}
+  .maxLines=${2}
+  .options=${this._options}
+  .values=${this._values}
+  @ds-search=${this.#onSearch}
+  @ds-change=${this.#onChange}
+>
+  <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+</ds-searchable-select>
+`;
   }
 }
 
@@ -341,20 +341,20 @@ class SbRequiredFrameworkSearch extends LitElement {
 
   override render() {
     return html`
-  <ds-searchable-select
-    label="Framework"
-    placeholder="Select a framework"
-    search-placeholder="Search frameworks…"
-    description="This field is required."
-    ?required=${true}
-    .options=${this._options}
-    .value=${this._value}
-    @ds-search=${this.#onSearch}
-    @ds-change=${this.#onChange}
-  >
-    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-  </ds-searchable-select>
-    `;
+<ds-searchable-select
+  label="Framework"
+  placeholder="Select a framework"
+  search-placeholder="Search frameworks…"
+  description="This field is required."
+  ?required=${true}
+  .options=${this._options}
+  .value=${this._value}
+  @ds-search=${this.#onSearch}
+  @ds-change=${this.#onChange}
+>
+  <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+</ds-searchable-select>
+`;
   }
 }
 
