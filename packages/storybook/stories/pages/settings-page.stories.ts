@@ -26,7 +26,8 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-const STORY_HEIGHT = '520px';
+const FRAME_HEIGHT = 480;
+const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
 
 const timezones = [
   { label: 'UTC', value: 'utc' },
@@ -37,7 +38,8 @@ const timezones = [
 export const Default: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () => html`
-<ds-page-shell brand="Brand">
+<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
+<ds-page-shell brand="Brand" style="min-height:0;height:100%">
   <ds-sidenav slot="aside">
     <ds-nav-item href="#">
       <ds-icon slot="icon" name="home" size="lg"></ds-icon>
@@ -96,5 +98,6 @@ export const Default: Story = {
     <ds-link slot="end" href="#" variant="quiet">Privacy</ds-link>
   </ds-footer>
 </ds-page-shell>
+</div>
 `,
 };
