@@ -247,19 +247,19 @@ const PLAYGROUND_OPTIONS: SelectOption[] = [
 
 export const Playground: Story = {
   render: (args) => html`
-<ds-searchable-select
-  label=${args['label']}
-  description=${args['description'] || ''}
-  error=${args['error'] || ''}
-  placeholder=${args['placeholder']}
-  search-placeholder=${args['searchPlaceholder']}
-  ?disabled=${args['disabled']}
-  ?required=${args['required']}
-  ?invalid=${args['invalid']}
-  ?clearable=${args['clearable']}
-  ?loading=${args['loading']}
-  .options=${PLAYGROUND_OPTIONS}
-></ds-searchable-select>
+  <ds-searchable-select
+    label=${args['label']}
+    description=${args['description'] || ''}
+    error=${args['error'] || ''}
+    placeholder=${args['placeholder']}
+    search-placeholder=${args['searchPlaceholder']}
+    ?disabled=${args['disabled']}
+    ?required=${args['required']}
+    ?invalid=${args['invalid']}
+    ?clearable=${args['clearable']}
+    ?loading=${args['loading']}
+    .options=${PLAYGROUND_OPTIONS}
+  ></ds-searchable-select>
 `,
 };
 
@@ -270,13 +270,13 @@ export const Countries: Story = {
 
 export const Loading: Story = {
   render: () => html`
-<ds-searchable-select
-  label="Country"
-  placeholder="Loading options…"
-  ?loading=${true}
->
-  <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-</ds-searchable-select>
+  <ds-searchable-select
+    label="Country"
+    placeholder="Loading options…"
+    ?loading=${true}
+  >
+    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+  </ds-searchable-select>
 `,
 };
 
