@@ -14,6 +14,8 @@ import '@ds/components/button/define';
 import '@ds/components/icon/define';
 import '@ds/components/icon/home';
 import '@ds/components/icon/cog-6-tooth';
+import '@ds/components/icon/clock';
+import '@ds/components/icon/magnifying-glass';
 import '@ds/components/icon/chevron-right';
 
 const meta: Meta = {
@@ -45,10 +47,35 @@ export const Default: Story = {
       <ds-icon slot="icon" name="home" size="lg"></ds-icon>
       Overview
     </ds-nav-item>
-    <ds-nav-item href="#" current>
-      <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
-      Settings
+    <ds-nav-item href="#">
+      <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+      Activity
     </ds-nav-item>
+    <ds-nav-item href="#">
+      <ds-icon slot="icon" name="magnifying-glass" size="lg"></ds-icon>
+      Search
+    </ds-nav-item>
+    <ds-nav-group label="Workspace" expanded>
+      <ds-nav-item href="#">General</ds-nav-item>
+      <ds-nav-item href="#">Members</ds-nav-item>
+      <ds-nav-item href="#">Integrations</ds-nav-item>
+      <ds-nav-item href="#">Plans</ds-nav-item>
+    </ds-nav-group>
+    <ds-nav-group label="Account" expanded>
+      <ds-nav-item href="#" current>
+        <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+        Settings
+      </ds-nav-item>
+      <ds-nav-item href="#">Profile</ds-nav-item>
+      <ds-nav-item href="#">Security</ds-nav-item>
+      <ds-nav-item href="#">Notifications</ds-nav-item>
+      <ds-nav-item href="#">API Keys</ds-nav-item>
+    </ds-nav-group>
+    <ds-nav-group label="Help">
+      <ds-nav-item href="#">Documentation</ds-nav-item>
+      <ds-nav-item href="#">Support</ds-nav-item>
+      <ds-nav-item href="#">Changelog</ds-nav-item>
+    </ds-nav-group>
   </ds-sidenav>
   <ds-settings-page
     eyebrow="Workspace · Brand"

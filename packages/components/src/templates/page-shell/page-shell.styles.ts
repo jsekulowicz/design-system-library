@@ -34,11 +34,14 @@ export const pageShellStyles = css`
     display: flex;
     overflow-x: clip;
     overflow-y: auto;
+    min-height: 0;
   }
   main {
     grid-area: main;
     padding: var(--ds-space-8);
     max-width: min(72rem, 100%);
+    overflow-y: auto;
+    min-height: 0;
   }
   footer {
     grid-area: footer;
