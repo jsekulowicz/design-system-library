@@ -78,13 +78,47 @@ type Story = StoryObj;
 export const Basic: Story = {
   render: () => html`
 <ds-table .rows=${PEOPLE.slice(0, 4)} .columns=${BASIC_COLUMNS}></ds-table>
-  `,
+`,
 };
 
 export const WithRenderFunctions: Story = {
+  parameters: {
+    docs: {
+      source: {
+        language: 'ts',
+        code: `\
+import { html } from 'lit';
+import type { TableColumn } from '@ds/components/table';
+import '@ds/components/table/define';
+import '@ds/components/badge/define';
+
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const statusTone = { active: 'success', pending: 'warning', disabled: 'neutral' } as const;
+
+const columns: TableColumn<Person>[] = [
+  { name: 'name',   field: 'name',   label: 'Name',   sortable: true },
+  { name: 'role',   field: 'role',   label: 'Role' },
+  {
+    name: 'status', field: 'status', label: 'Status',
+    render: row => html\`<ds-badge tone=\${statusTone[row.status]}>\${row.status}</ds-badge>\`,
+  },
+  { name: 'joined', field: 'joined', label: 'Joined',  sortable: true },
+  {
+    name: 'salary', field: 'salary', label: 'Salary',  align: 'right', sortable: true,
+    render: row => money.format(row.salary),
+  },
+];
+
+// rows and columns must be set as JS properties, not HTML attributes
+const table = document.querySelector('ds-table');
+table.columns = columns;
+table.rows = rows;`,
+      },
+    },
+  },
   render: () => html`
 <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS}></ds-table>
-  `,
+`,
 };
 
 export const Sortable: Story = {
@@ -99,12 +133,12 @@ export const Sortable: Story = {
       table.sortState = state;
     };
     return html`
-  <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
-    <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}>Name</ds-table-sort-button>
-    <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}>Joined</ds-table-sort-button>
-    <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}>Salary</ds-table-sort-button>
-  </ds-table>
-    `;
+<ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
+  <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}>Name</ds-table-sort-button>
+  <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}>Joined</ds-table-sort-button>
+  <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}>Salary</ds-table-sort-button>
+</ds-table>
+`;
   },
 };
 
@@ -132,7 +166,7 @@ export const ClickableRows: Story = {
     }}
   ></ds-table>
 </div>
-  `,
+`,
 };
 
 export const EmptyState: Story = {
@@ -143,7 +177,7 @@ export const EmptyState: Story = {
     <ds-button size="sm">Invite someone</ds-button>
   </div>
 </ds-table>
-  `,
+`,
 };
 
 export const WithCaptionAndToolbar: Story = {
@@ -155,7 +189,7 @@ export const WithCaptionAndToolbar: Story = {
     <ds-button variant="secondary" size="sm">Export CSV</ds-button>
   </div>
 </ds-table>
-  `,
+`,
 };
 
 export const Paginated: Story = {
@@ -169,33 +203,33 @@ export const Paginated: Story = {
       pagination.pageSize = pageSize;
     };
     return html`
-  <ds-table
-    id="paginatedTable"
-    .rows=${PEOPLE.slice(0, 3)}
-    .columns=${RICH_COLUMNS}
-  >
-    <ds-table-pagination
-      slot="footer"
-      page=${page}
-      page-size=${pageSize}
-      total=${PEOPLE.length}
-      .pageSizeOptions=${[3, 5, 8]}
-      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-        page = e.detail.page;
-        const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-        const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
-        render(table, pagination);
-      }}
-      @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-        pageSize = e.detail.pageSize;
-        page = e.detail.page;
-        const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-        const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
-        render(table, pagination);
-      }}
-    ></ds-table-pagination>
-  </ds-table>
-    `;
+<ds-table
+  id="paginatedTable"
+  .rows=${PEOPLE.slice(0, 3)}
+  .columns=${RICH_COLUMNS}
+>
+  <ds-table-pagination
+    slot="footer"
+    page=${page}
+    page-size=${pageSize}
+    total=${PEOPLE.length}
+    .pageSizeOptions=${[3, 5, 8]}
+    @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+      page = e.detail.page;
+      const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
+      const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
+      render(table, pagination);
+    }}
+    @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
+      pageSize = e.detail.pageSize;
+      page = e.detail.page;
+      const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
+      const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
+      render(table, pagination);
+    }}
+  ></ds-table-pagination>
+</ds-table>
+`;
   },
 };
 
@@ -210,7 +244,7 @@ export const PaginatedCompact: Story = {
     (e.target as HTMLElement & { page: number }).page = e.detail.page;
   }}
 ></ds-table-pagination>
-  `,
+`,
 };
 
 export const StandalonePagination: Story = {
@@ -229,5 +263,5 @@ export const StandalonePagination: Story = {
     el.page = e.detail.page;
   }}
 ></ds-table-pagination>
-  `,
+`,
 };
