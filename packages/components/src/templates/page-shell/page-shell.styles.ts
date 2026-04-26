@@ -32,6 +32,7 @@ export const pageShellStyles = css`
   aside {
     grid-area: aside;
     display: flex;
+    overflow-x: clip;
     overflow-y: auto;
   }
   main {
