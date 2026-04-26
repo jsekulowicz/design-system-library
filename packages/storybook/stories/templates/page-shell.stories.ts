@@ -21,13 +21,13 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-const STORY_HEIGHT = '580px';
+const STORY_HEIGHT = '400px';
 
 export const WithSidenav: Story = {
   name: 'With Sidenav',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () => html`
-    <ds-page-shell brand="Brand">
+    <ds-page-shell brand="Brand" style="min-height:calc(100vh - 2.5rem)">
       <div slot="header-actions">
         <ds-button variant="primary" size="sm">New project</ds-button>
       </div>
@@ -67,7 +67,7 @@ export const CollapsedSidenav: Story = {
   name: 'Collapsed Sidenav',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () => html`
-    <ds-page-shell brand="Brand">
+    <ds-page-shell brand="Brand" style="min-height:calc(100vh - 2.5rem)">
       <div slot="header-actions">
         <ds-button variant="secondary" size="sm">Invite</ds-button>
       </div>
