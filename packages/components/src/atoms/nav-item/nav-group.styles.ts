@@ -43,7 +43,13 @@ export const navGroupStyles = css`
     flex: 1;
   }
   .chevron {
+    display: inline-flex;
+    flex: none;
     transition: transform var(--ds-duration-fast) var(--ds-easing-standard);
+  }
+  .chevron svg {
+    width: 1rem;
+    height: 1rem;
   }
   :host([expanded]) .chevron {
     transform: rotate(180deg);
