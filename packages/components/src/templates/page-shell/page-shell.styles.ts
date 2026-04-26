@@ -41,7 +41,7 @@ export const pageShellStyles = css`
   footer {
     grid-area: footer;
   }
-  :host:has([slot='aside'][collapsed]) {
+  :host([aside-collapsed]) {
     grid-template-columns: var(--ds-space-16, 4rem) 1fr;
   }
   .brand {
