@@ -10,7 +10,9 @@ export const tooltipStyles = css`
     display: inline-flex;
   }
   .tooltip {
-    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
     z-index: var(--ds-z-index-tooltip, 999);
     background: var(--ds-color-fg);
     color: var(--ds-color-bg);
@@ -23,40 +25,13 @@ export const tooltipStyles = css`
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    transition: opacity var(--ds-duration-fast) var(--ds-easing-standard),
+    transition:
+      opacity var(--ds-duration-fast) var(--ds-easing-standard),
       visibility 0s linear var(--ds-duration-fast);
   }
-  :host(:hover) .tooltip {
-    opacity: 1;
-    visibility: visible;
-    transition-delay: var(--ds-tooltip-hover-delay, 0ms),
-      var(--ds-tooltip-hover-delay, 0ms);
-  }
-  :host(:focus-within) .tooltip,
-  :host([open]) .tooltip {
+  :host([data-visible]) .tooltip {
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;
-  }
-  :host(:not([placement])) .tooltip,
-  :host([placement='top']) .tooltip {
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  :host([placement='bottom']) .tooltip {
-    top: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  :host([placement='left']) .tooltip {
-    right: calc(100% + 6px);
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  :host([placement='right']) .tooltip {
-    left: calc(100% + 6px);
-    top: 50%;
-    transform: translateY(-50%);
   }
 `;
