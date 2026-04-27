@@ -144,24 +144,28 @@ p {
    boolean <label> without matching radio-group <label>s (which contain
    input[type="radio"]). Active span uses the same :checked/:not(:checked)
    sibling selector Storybook uses internally. */
-.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) {
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) {
   background: var(--ds-color-bg-muted) !important;
   border: 1px solid var(--ds-color-border) !important;
 }
 
-.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) span {
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) span {
   color: var(--ds-color-fg-muted) !important;
   background: transparent !important;
 }
 
-.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) input:checked ~ span:last-of-type,
-.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) input:not(:checked) ~ span:first-of-type {
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) input:checked ~ span:last-of-type,
+.sbdocs
+  .docblock-argstable
+  label:has(> input[type='checkbox'])
+  input:not(:checked)
+  ~ span:first-of-type {
   background: var(--ds-color-accent) !important;
   color: var(--ds-color-accent-fg) !important;
   box-shadow: none !important;
 }
 
-.sbdocs .docblock-argstable input:not([type="checkbox"]):not([type="radio"]),
+.sbdocs .docblock-argstable input:not([type='checkbox']):not([type='radio']),
 .sbdocs .docblock-argstable select,
 .sbdocs .docblock-argstable textarea {
   background: var(--ds-color-bg) !important;
@@ -171,7 +175,7 @@ p {
 
 /* The boolean toggle uses an absolute, full-size checkbox as an invisible
    click surface — keep it transparent so the True/False spans remain visible. */
-.sbdocs .docblock-argstable label:has(> input[type="checkbox"]) > input[type="checkbox"] {
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) > input[type='checkbox'] {
   background: transparent !important;
   border: 0 !important;
 }
@@ -214,4 +218,8 @@ p {
 
 .ds-api-table col.ds-api-col-description {
   width: 70%;
+}
+
+* {
+  box-sizing: border-box;
 }
