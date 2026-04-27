@@ -63,6 +63,34 @@
       "types": "./dist/atoms/icon/icons/x-mark.d.ts",
       "import": "./dist/atoms/icon/icons/x-mark.js"
     },
+    "./icon/briefcase": {
+      "types": "./dist/atoms/icon/icons/briefcase.d.ts",
+      "import": "./dist/atoms/icon/icons/briefcase.js"
+    },
+    "./icon/user": {
+      "types": "./dist/atoms/icon/icons/user.d.ts",
+      "import": "./dist/atoms/icon/icons/user.js"
+    },
+    "./icon/users": {
+      "types": "./dist/atoms/icon/icons/users.d.ts",
+      "import": "./dist/atoms/icon/icons/users.js"
+    },
+    "./icon/key": {
+      "types": "./dist/atoms/icon/icons/key.d.ts",
+      "import": "./dist/atoms/icon/icons/key.js"
+    },
+    "./icon/bell": {
+      "types": "./dist/atoms/icon/icons/bell.d.ts",
+      "import": "./dist/atoms/icon/icons/bell.js"
+    },
+    "./icon/book-open": {
+      "types": "./dist/atoms/icon/icons/book-open.d.ts",
+      "import": "./dist/atoms/icon/icons/book-open.js"
+    },
+    "./icon/puzzle-piece": {
+      "types": "./dist/atoms/icon/icons/puzzle-piece.d.ts",
+      "import": "./dist/atoms/icon/icons/puzzle-piece.js"
+    },
     "./text-field": {
       "types": "./dist/atoms/text-field/index.d.ts",
       "import": "./dist/atoms/text-field/index.js"
