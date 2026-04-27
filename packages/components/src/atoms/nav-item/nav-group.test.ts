@@ -82,4 +82,32 @@ describe('<ds-nav-group>', () => {
     const items = el.shadowRoot!.querySelector('[part="items"]')!;
     expect(items.hasAttribute('hidden')).toBe(false);
   });
+
+  it('reflects the compact attribute and sets aria-label on the heading', async () => {
+    document.body.innerHTML = `<ds-nav-group label="Workspace" compact>
+      <span slot="icon">★</span>
+    </ds-nav-group>`;
+    const el = document.body.firstElementChild as DsNavGroup;
+    await el.updateComplete;
+    expect(el.compact).toBe(true);
+    expect(el.hasAttribute('compact')).toBe(true);
+    const heading = el.shadowRoot!.querySelector('button[part="heading"]')!;
+    expect(heading.getAttribute('aria-label')).toBe('Workspace');
+  });
+
+  it('logs a console.error when compact is set without an icon', async () => {
+    const errors: unknown[][] = [];
+    const original = console.error;
+    console.error = (...args: unknown[]) => {
+      errors.push(args);
+    };
+    try {
+      document.body.innerHTML = `<ds-nav-group label="Workspace" compact></ds-nav-group>`;
+      const el = document.body.firstElementChild as DsNavGroup;
+      await el.updateComplete;
+      expect(errors.some((args) => String(args[0]).includes('compact mode requires'))).toBe(true);
+    } finally {
+      console.error = original;
+    }
+  });
 });

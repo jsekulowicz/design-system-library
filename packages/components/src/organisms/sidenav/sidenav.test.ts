@@ -56,4 +56,29 @@ describe('<ds-sidenav>', () => {
     await el.updateComplete;
     expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Workspace');
   });
+
+  it('propagates collapsed → compact to ds-nav-item and ds-nav-group children', async () => {
+    document.body.innerHTML = `<ds-sidenav>
+      <ds-nav-item href="/">Home</ds-nav-item>
+      <ds-nav-group label="Workspace">
+        <ds-nav-item href="/projects">Projects</ds-nav-item>
+      </ds-nav-group>
+    </ds-sidenav>`;
+    const el = document.body.firstElementChild as DsSidenav;
+    await el.updateComplete;
+    const item = el.querySelector('ds-nav-item')!;
+    const group = el.querySelector('ds-nav-group')!;
+    expect(item.hasAttribute('compact')).toBe(false);
+    expect(group.hasAttribute('compact')).toBe(false);
+
+    el.collapsed = true;
+    await el.updateComplete;
+    expect(item.hasAttribute('compact')).toBe(true);
+    expect(group.hasAttribute('compact')).toBe(true);
+
+    el.collapsed = false;
+    await el.updateComplete;
+    expect(item.hasAttribute('compact')).toBe(false);
+    expect(group.hasAttribute('compact')).toBe(false);
+  });
 });

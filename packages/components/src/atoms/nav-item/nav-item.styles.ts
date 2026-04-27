@@ -61,12 +61,28 @@ export const navItemStyles = css`
     display: flex;
     width: 100%;
   }
-  :host-context(ds-sidenav[collapsed]) .label {
+  :host([compact]) .label {
     max-width: 0;
     opacity: 0;
   }
-  :host-context(ds-sidenav[collapsed]) .link {
+  :host([compact]) .link {
     justify-content: center;
     padding: var(--ds-space-2);
+    gap: 0;
+  }
+  .tooltip {
+    position: fixed;
+    z-index: var(--ds-z-index-tooltip, 999);
+    background: var(--ds-color-fg);
+    color: var(--ds-color-bg);
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-font-size-xs);
+    line-height: 1.4;
+    padding: var(--ds-space-1) var(--ds-space-3);
+    border-radius: var(--ds-radius-xs);
+    max-width: 16rem;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translateY(-50%);
   }
 `;

@@ -69,4 +69,39 @@ describe('<ds-nav-item>', () => {
     expect(el.shadowRoot!.querySelector('slot[name="icon"]')).not.toBeNull();
     expect(el.shadowRoot!.querySelector('[part="label"] slot:not([name])')).not.toBeNull();
   });
+
+  it('reflects the compact attribute on the host', async () => {
+    const el = await mount('href="/" compact', '<ds-icon slot="icon" name="home"></ds-icon>Home');
+    expect(el.compact).toBe(true);
+    expect(el.hasAttribute('compact')).toBe(true);
+  });
+
+  it('sets aria-label on the link to the slotted text in compact mode', async () => {
+    const el = await mount(
+      'href="/" compact',
+      '<span slot="icon">★</span>Documentation',
+    );
+    const link = el.shadowRoot!.querySelector('a')!;
+    expect(link.getAttribute('aria-label')).toBe('Documentation');
+  });
+
+  it('does not set aria-label in non-compact mode', async () => {
+    const el = await mount('href="/"');
+    const link = el.shadowRoot!.querySelector('a')!;
+    expect(link.getAttribute('aria-label')).toBeNull();
+  });
+
+  it('logs a console.error when compact is set without an icon', async () => {
+    const errors: unknown[][] = [];
+    const original = console.error;
+    console.error = (...args: unknown[]) => {
+      errors.push(args);
+    };
+    try {
+      await mount('href="/" compact', 'No icon here');
+      expect(errors.some((args) => String(args[0]).includes('compact mode requires'))).toBe(true);
+    } finally {
+      console.error = original;
+    }
+  });
 });
