@@ -5,6 +5,8 @@ import { tooltipStyles } from './tooltip.styles.js';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
+const GAP = 6;
+
 interface PopoverElement extends HTMLElement {
   showPopover(): void;
   hidePopover(): void;
@@ -20,7 +22,7 @@ function isPopoverElement(el: Element | null): el is PopoverElement {
  * @slot default - The trigger element that the tooltip is anchored to.
  * @slot tip - The tooltip content (can be any HTML).
  * @csspart anchor - The wrapper around the trigger element.
- * @csspart tooltip - The tooltip bubble. Uses the Popover API top layer so it escapes ancestor overflow while staying anchored to the trigger via position:absolute.
+ * @csspart tooltip - The tooltip bubble. Rendered in the Popover API top layer so it escapes ancestor overflow; positioned via JS using getBoundingClientRect of the trigger.
  */
 export class DsTooltip extends DsElement {
   static override styles = [...DsElement.styles, tooltipStyles];
@@ -34,22 +36,10 @@ export class DsTooltip extends DsElement {
 
   private _hoverTimer?: number;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.addEventListener('mouseenter', this.#onMouseEnter);
-    this.addEventListener('mouseleave', this.#onMouseLeave);
-    this.addEventListener('focusin', this.#onFocusIn);
-    this.addEventListener('focusout', this.#onFocusOut);
-  }
-
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.#clearHoverTimer();
     this.#hide();
-    this.removeEventListener('mouseenter', this.#onMouseEnter);
-    this.removeEventListener('mouseleave', this.#onMouseLeave);
-    this.removeEventListener('focusin', this.#onFocusIn);
-    this.removeEventListener('focusout', this.#onFocusOut);
   }
 
   override updated(_changed: PropertyValues): void {
@@ -102,14 +92,17 @@ export class DsTooltip extends DsElement {
 
   #show = (): void => {
     const tooltip = this.#tooltipEl();
-    if (!tooltip || tooltip.matches(':popover-open')) {
+    if (!tooltip) {
       return;
     }
-    try {
-      tooltip.showPopover();
-    } catch {
-      // Already shown by another path, or popover unsupported.
+    if (!tooltip.matches(':popover-open')) {
+      try {
+        tooltip.showPopover();
+      } catch {
+        // ignore — possibly unsupported
+      }
     }
+    this.#updatePosition();
   };
 
   #hide = (): void => {
@@ -120,13 +113,56 @@ export class DsTooltip extends DsElement {
     try {
       tooltip.hidePopover();
     } catch {
-      // Already hidden.
+      // ignore
     }
+  };
+
+  #updatePosition = (): void => {
+    const tooltip = this.#tooltipEl();
+    if (!tooltip) {
+      return;
+    }
+    const rect = this.getBoundingClientRect();
+    let top = 0;
+    let left = 0;
+    let transform = '';
+    switch (this.placement) {
+      case 'top':
+        top = rect.top - GAP;
+        left = rect.left + rect.width / 2;
+        transform = 'translate(-50%, -100%)';
+        break;
+      case 'right':
+        top = rect.top + rect.height / 2;
+        left = rect.right + GAP;
+        transform = 'translateY(-50%)';
+        break;
+      case 'bottom':
+        top = rect.bottom + GAP;
+        left = rect.left + rect.width / 2;
+        transform = 'translateX(-50%)';
+        break;
+      case 'left':
+        top = rect.top + rect.height / 2;
+        left = rect.left - GAP;
+        transform = 'translate(-100%, -50%)';
+        break;
+    }
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
+    tooltip.style.transform = transform;
   };
 
   override render(): TemplateResult {
     return html`
-      <div class="anchor" part="anchor">
+      <div
+        class="anchor"
+        part="anchor"
+        @mouseenter=${this.#onMouseEnter}
+        @mouseleave=${this.#onMouseLeave}
+        @focusin=${this.#onFocusIn}
+        @focusout=${this.#onFocusOut}
+      >
         <slot></slot>
         <div role="tooltip" part="tooltip" class="tooltip" popover="manual">
           <slot name="tip"></slot>

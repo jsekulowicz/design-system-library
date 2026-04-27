@@ -10,7 +10,8 @@ export const tooltipStyles = css`
     display: inline-flex;
   }
   .tooltip {
-    position: absolute;
+    /* Override UA popover defaults so JS-set top/left/transform stay authoritative. */
+    position: fixed;
     inset: auto;
     margin: 0;
     border: none;
@@ -27,26 +28,5 @@ export const tooltipStyles = css`
     border-radius: var(--ds-radius-xs);
     max-width: 16rem;
     pointer-events: none;
-  }
-  :host([placement='top']) .tooltip,
-  :host(:not([placement])) .tooltip {
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  :host([placement='bottom']) .tooltip {
-    top: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  :host([placement='left']) .tooltip {
-    right: calc(100% + 6px);
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  :host([placement='right']) .tooltip {
-    left: calc(100% + 6px);
-    top: 50%;
-    transform: translateY(-50%);
   }
 `;
