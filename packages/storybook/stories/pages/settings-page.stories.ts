@@ -18,6 +18,13 @@ import '@ds/components/icon/cog-6-tooth';
 import '@ds/components/icon/clock';
 import '@ds/components/icon/magnifying-glass';
 import '@ds/components/icon/chevron-right';
+import '@ds/components/icon/briefcase';
+import '@ds/components/icon/user';
+import '@ds/components/icon/users';
+import '@ds/components/icon/key';
+import '@ds/components/icon/bell';
+import '@ds/components/icon/book-open';
+import '@ds/components/icon/puzzle-piece';
 
 const meta: Meta = {
   title: 'Pages/SettingsPage',
@@ -100,25 +107,53 @@ export const Default: Story = {
             Search
           </ds-nav-item>
           <ds-nav-group label="Workspace" expanded>
-            <ds-nav-item href="#">General</ds-nav-item>
-            <ds-nav-item href="#">Members</ds-nav-item>
-            <ds-nav-item href="#">Integrations</ds-nav-item>
-            <ds-nav-item href="#">Plans</ds-nav-item>
+            <ds-icon slot="icon" name="briefcase" size="lg"></ds-icon>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+              General
+            </ds-nav-item>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="users" size="lg"></ds-icon>
+              Members
+            </ds-nav-item>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="puzzle-piece" size="lg"></ds-icon>
+              Integrations
+            </ds-nav-item>
           </ds-nav-group>
           <ds-nav-group label="Account" expanded>
+            <ds-icon slot="icon" name="user" size="lg"></ds-icon>
             <ds-nav-item href="#" current>
               <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
               Settings
             </ds-nav-item>
-            <ds-nav-item href="#">Profile</ds-nav-item>
-            <ds-nav-item href="#">Security</ds-nav-item>
-            <ds-nav-item href="#">Notifications</ds-nav-item>
-            <ds-nav-item href="#">API Keys</ds-nav-item>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="user" size="lg"></ds-icon>
+              Profile
+            </ds-nav-item>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="key" size="lg"></ds-icon>
+              Security
+            </ds-nav-item>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="bell" size="lg"></ds-icon>
+              Notifications
+            </ds-nav-item>
           </ds-nav-group>
           <ds-nav-group label="Help">
-            <ds-nav-item href="#">Documentation</ds-nav-item>
-            <ds-nav-item href="#">Support</ds-nav-item>
-            <ds-nav-item href="#">Changelog</ds-nav-item>
+            <ds-icon slot="icon" name="book-open" size="lg"></ds-icon>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="book-open" size="lg"></ds-icon>
+              Documentation
+            </ds-nav-item>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="magnifying-glass" size="lg"></ds-icon>
+              Support
+            </ds-nav-item>
+            <ds-nav-item href="#">
+              <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+              Changelog
+            </ds-nav-item>
           </ds-nav-group>
         </ds-sidenav>
         <ds-breadcrumb label="Settings breadcrumbs" style="margin-bottom:var(--ds-space-4)">

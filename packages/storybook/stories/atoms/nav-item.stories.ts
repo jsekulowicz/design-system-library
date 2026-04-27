@@ -58,3 +58,21 @@ export const NewTab: Story = {
     </ds-nav-item>
   `,
 };
+
+export const Compact: Story = {
+  render: () => html`
+    <div style="display:flex;flex-direction:column;gap:var(--ds-space-1);width:64px">
+      <ds-nav-item href="/" compact current>
+        <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+        Home
+      </ds-nav-item>
+      <ds-nav-item href="/settings" compact>
+        <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+        Settings
+      </ds-nav-item>
+    </div>
+    <p style="margin-top:var(--ds-space-4);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-sm)">
+      Hover an item for ~2s to see the tooltip with the original label.
+    </p>
+  `,
+};
