@@ -42,7 +42,6 @@ export const Default: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () => html`
 <style>
-  html, body { margin: 0; overflow: hidden; }
   .collapse-toggle {
     display: block;
     width: calc(100% + 2 * var(--ds-space-3));
