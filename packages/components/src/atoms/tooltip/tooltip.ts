@@ -5,7 +5,14 @@ import { tooltipStyles } from './tooltip.styles.js';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
-const GAP = 6;
+interface PopoverElement extends HTMLElement {
+  showPopover(): void;
+  hidePopover(): void;
+}
+
+function isPopoverElement(el: Element | null): el is PopoverElement {
+  return !!el && typeof (el as Partial<PopoverElement>).showPopover === 'function';
+}
 
 /**
  * @tag ds-tooltip
@@ -13,7 +20,7 @@ const GAP = 6;
  * @slot default - The trigger element that the tooltip is anchored to.
  * @slot tip - The tooltip content (can be any HTML).
  * @csspart anchor - The wrapper around the trigger element.
- * @csspart tooltip - The tooltip bubble (rendered with position:fixed; escapes ancestor overflow).
+ * @csspart tooltip - The tooltip bubble. Uses the Popover API top layer so it escapes ancestor overflow while staying anchored to the trigger via position:absolute.
  */
 export class DsTooltip extends DsElement {
   static override styles = [...DsElement.styles, tooltipStyles];
@@ -38,18 +45,18 @@ export class DsTooltip extends DsElement {
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.#clearHoverTimer();
+    this.#hide();
     this.removeEventListener('mouseenter', this.#onMouseEnter);
     this.removeEventListener('mouseleave', this.#onMouseLeave);
     this.removeEventListener('focusin', this.#onFocusIn);
     this.removeEventListener('focusout', this.#onFocusOut);
   }
 
-  override updated(changed: PropertyValues): void {
+  override updated(_changed: PropertyValues): void {
     if (this.#shouldShow()) {
-      this.#updatePosition();
-    }
-    if (changed.has('open') || changed.has('_hovered') || changed.has('_focused')) {
-      this.toggleAttribute('data-visible', this.#shouldShow());
+      this.#show();
+    } else {
+      this.#hide();
     }
   }
 
@@ -88,47 +95,40 @@ export class DsTooltip extends DsElement {
     this._focused = false;
   };
 
-  #updatePosition = (): void => {
-    const tooltip = this.shadowRoot?.querySelector('.tooltip') as HTMLElement | null;
-    if (!tooltip) {
+  #tooltipEl(): PopoverElement | null {
+    const el = this.shadowRoot?.querySelector('.tooltip') ?? null;
+    return isPopoverElement(el) ? el : null;
+  }
+
+  #show = (): void => {
+    const tooltip = this.#tooltipEl();
+    if (!tooltip || tooltip.matches(':popover-open')) {
       return;
     }
-    const rect = this.getBoundingClientRect();
-    let top = 0;
-    let left = 0;
-    let transform = '';
-    switch (this.placement) {
-      case 'top':
-        top = rect.top - GAP;
-        left = rect.left + rect.width / 2;
-        transform = 'translate(-50%, -100%)';
-        break;
-      case 'right':
-        top = rect.top + rect.height / 2;
-        left = rect.right + GAP;
-        transform = 'translateY(-50%)';
-        break;
-      case 'bottom':
-        top = rect.bottom + GAP;
-        left = rect.left + rect.width / 2;
-        transform = 'translateX(-50%)';
-        break;
-      case 'left':
-        top = rect.top + rect.height / 2;
-        left = rect.left - GAP;
-        transform = 'translate(-100%, -50%)';
-        break;
+    try {
+      tooltip.showPopover();
+    } catch {
+      // Already shown by another path, or popover unsupported.
     }
-    tooltip.style.top = `${top}px`;
-    tooltip.style.left = `${left}px`;
-    tooltip.style.transform = transform;
+  };
+
+  #hide = (): void => {
+    const tooltip = this.#tooltipEl();
+    if (!tooltip || !tooltip.matches(':popover-open')) {
+      return;
+    }
+    try {
+      tooltip.hidePopover();
+    } catch {
+      // Already hidden.
+    }
   };
 
   override render(): TemplateResult {
     return html`
       <div class="anchor" part="anchor">
         <slot></slot>
-        <div role="tooltip" part="tooltip" class="tooltip">
+        <div role="tooltip" part="tooltip" class="tooltip" popover="manual">
           <slot name="tip"></slot>
         </div>
       </div>
