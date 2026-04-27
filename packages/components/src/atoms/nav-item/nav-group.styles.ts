@@ -85,21 +85,12 @@ export const navGroupStyles = css`
   :host([compact]) .items {
     padding-left: 0;
   }
-  .tooltip {
-    position: fixed;
-    z-index: var(--ds-z-index-tooltip, 999);
-    background: var(--ds-color-fg);
-    color: var(--ds-color-bg);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-xs);
-    line-height: 1.4;
-    padding: var(--ds-space-1) var(--ds-space-3);
-    border-radius: var(--ds-radius-xs);
-    max-width: 16rem;
-    white-space: nowrap;
-    pointer-events: none;
-    transform: translateY(-50%);
-    text-transform: none;
-    letter-spacing: normal;
+  .tooltip-wrapper {
+    display: block;
+    width: 100%;
+  }
+  .tooltip-wrapper::part(anchor) {
+    display: block;
+    width: 100%;
   }
 `;

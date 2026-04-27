@@ -26,7 +26,12 @@ export const tooltipStyles = css`
     transition: opacity var(--ds-duration-fast) var(--ds-easing-standard),
       visibility 0s linear var(--ds-duration-fast);
   }
-  :host(:hover) .tooltip,
+  :host(:hover) .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: var(--ds-tooltip-hover-delay, 0ms),
+      var(--ds-tooltip-hover-delay, 0ms);
+  }
   :host(:focus-within) .tooltip,
   :host([open]) .tooltip {
     opacity: 1;
