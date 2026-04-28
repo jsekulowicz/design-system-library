@@ -18,7 +18,7 @@ export const pageShellStyles = css`
   header {
     grid-area: header;
     border-bottom: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-4) var(--ds-space-8);
+    padding: var(--ds-space-5) var(--ds-space-4);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -40,7 +40,7 @@ export const pageShellStyles = css`
   }
   main {
     grid-area: main;
-    padding: var(--ds-space-8);
+    padding: var(--ds-space-5);
     max-width: min(72rem, 100%);
     overflow-y: auto;
     min-height: 0;
