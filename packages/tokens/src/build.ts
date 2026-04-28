@@ -25,9 +25,11 @@ function buildBaseCss(): string {
 function buildThemeCss(name: 'light' | 'dark'): string {
   const semantic = name === 'light' ? semanticLight : semanticDark;
   const tokens = flatten(semantic as unknown as TokenTree);
+  const colorScheme = name === 'light' ? 'light' : 'dark';
   const root = renderBlock(tokens, {
     selector: name === 'light' ? ':root, [data-ds-theme="light"]' : '[data-ds-theme="dark"]',
     layer: 'ds.theme',
+    extraProps: { 'color-scheme': colorScheme },
   });
   if (name !== 'dark') {
     return renderFile(FILE_HEADER, [root]);
@@ -36,6 +38,7 @@ function buildThemeCss(name: 'light' | 'dark'): string {
     selector: ':root:not([data-ds-theme])',
     layer: 'ds.theme',
     mediaQuery: '(prefers-color-scheme: dark)',
+    extraProps: { 'color-scheme': 'dark' },
   });
   return renderFile(FILE_HEADER, [root, prefersDark]);
 }

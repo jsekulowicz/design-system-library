@@ -35,6 +35,8 @@ export const pageShellStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     min-height: 0;
+    scrollbar-color: var(--ds-color-fg-subtle) transparent;
+    scrollbar-width: thin;
   }
   main {
     grid-area: main;
@@ -42,6 +44,8 @@ export const pageShellStyles = css`
     max-width: min(72rem, 100%);
     overflow-y: auto;
     min-height: 0;
+    scrollbar-color: var(--ds-color-fg-subtle) transparent;
+    scrollbar-width: thin;
   }
   footer {
     grid-area: footer;

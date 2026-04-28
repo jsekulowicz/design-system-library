@@ -8,7 +8,7 @@ apps/**/src/**/*.js
 apps/**/src/**/*.js.map
 apps/**/src/**/*.d.ts
 apps/**/src/**/*.d.ts.map
-build
+/build
 coverage
 .DS_Store
 .turbo
