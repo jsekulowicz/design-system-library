@@ -21,7 +21,7 @@ export const sidenavStyles = css`
     box-sizing: border-box;
   }
   .header {
-    padding: var(--ds-space-2) var(--ds-space-3);
+    padding: 0 var(--ds-space-3);
     margin-bottom: var(--ds-space-3);
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-lg);
