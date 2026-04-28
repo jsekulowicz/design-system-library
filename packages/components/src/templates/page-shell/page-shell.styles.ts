@@ -35,6 +35,7 @@ export const pageShellStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     min-height: 0;
+    width: 240px;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
   }
