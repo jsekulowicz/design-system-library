@@ -1,0 +1,60 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as TypographyStories from './typography.stories';
+
+<Meta of={TypographyStories} />
+
+# Typography
+
+The system ships three typefaces with distinct roles, eleven size steps, four weights, four line heights, and four letter-spacing values.
+Every combination is intentional — the tokens encode the decisions so individual components never hard-code a font or size.
+
+## Type scale
+
+<Canvas of={TypographyStories.TypeScale} />
+
+The scale is **not linear**. The lower end compresses (11 px → 16 px over five steps) while the upper end expands aggressively (16 px → 64 px over six steps).
+This mirrors how typographic contrast works in practice: small UI text lives in a tight band, while display type needs room to breathe.
+
+### Size guidance by role
+
+| Size range | Role |
+|---|---|
+| `3xs` – `xs` | Caption, helper text, badges, timestamps |
+| `sm` – `md` | Body copy, UI labels, form fields |
+| `lg` – `xl` | Sub-headings, card titles, section labels |
+| `2xl` – `3xl` | Page headings (h1 / h2) |
+| `4xl` – `5xl` | Hero display, marketing headlines |
+
+## Font families
+
+<Canvas of={TypographyStories.FontFamilies} />
+
+- **Fraunces** (`--ds-font-display`) — a variable optical-size serif. Use for editorial moments: hero headings, pull quotes, the brand wordmark. Do not use for body copy or UI labels.
+- **General Sans** (`--ds-font-body`) — the default for everything else: paragraphs, buttons, form labels, nav items.
+- **JetBrains Mono** (`--ds-font-mono`) — reserved for code blocks and technical values (token names, version strings, file paths).
+
+## Font weights
+
+<Canvas of={TypographyStories.FontWeights} />
+
+General Sans supports all four weights with genuine optical differentiation. Fraunces is used at `semibold`/`bold` for display headings only — lighter weights at large sizes risk losing contrast.
+
+## Line heights
+
+<Canvas of={TypographyStories.LineHeights} />
+
+Pair line height with size, not just context:
+
+- **`tight` (1.1)** — single-line headings at `3xl`+, where cap-height ascenders create implied leading.
+- **`snug` (1.25)** — two-to-three line display headings, `xl`–`2xl`.
+- **`normal` (1.45)** — the default for UI text, labels, and short runs of body copy.
+- **`relaxed` (1.6)** — long-form prose in docs pages or article layouts.
+
+## Letter spacing
+
+<Canvas of={TypographyStories.LetterSpacing} />
+
+- **`tight` (−0.02 em)** — optically tightens large display type (> `3xl`) whose letterforms open up at scale.
+- **`display` (−0.01 em)** — a lighter tightening for `xl`–`2xl` headings.
+- **`normal` (0)** — the default; no adjustment.
+- **`wide` (+0.04 em)** — always paired with `text-transform: uppercase` on small caps (categories, labels, nav group headings). Never widen lowercase body copy.
