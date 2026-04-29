@@ -37,6 +37,7 @@ export const pageShellStyles = css`
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
+    scrollbar-gutter: stable;
   }
   main {
     grid-area: main;
