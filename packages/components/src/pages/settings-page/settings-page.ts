@@ -17,7 +17,6 @@ export class DsSettingsPage extends DsElement {
   static override styles = [...DsElement.styles, settingsPageStyles];
 
   @property() heading = 'Settings';
-  @property() eyebrow = 'Workspace';
   @property() description = '';
   @property({ type: Array }) sections: SettingsSection[] = [];
   @state() private activeId = '';
@@ -33,7 +32,6 @@ export class DsSettingsPage extends DsElement {
     const current = this.activeId || this.sections[0]?.id || '';
     const hasNav = this.sections.length > 0;
     return html`<header class="hero" part="hero">
-        <span class="eyebrow">${this.eyebrow}</span>
         <h1 part="heading">${this.heading}</h1>
         ${this.description ? html`<p>${this.description}</p>` : null}
       </header>

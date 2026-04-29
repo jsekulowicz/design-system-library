@@ -20,8 +20,6 @@ export const settingsPageStyles = css`
   .hero h1 {
     font-family: var(--ds-font-display);
     font-weight: var(--ds-font-weight-semibold);
-    font-size: clamp(var(--ds-font-size-2xl), 4vw, var(--ds-font-size-4xl));
-    letter-spacing: var(--ds-letter-spacing-display);
     margin: 0;
   }
   .hero p {

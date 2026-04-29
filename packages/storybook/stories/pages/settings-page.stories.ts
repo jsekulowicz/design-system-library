@@ -166,7 +166,6 @@ export const Default: Story = {
           <ds-breadcrumb-item>Settings</ds-breadcrumb-item>
         </ds-breadcrumb>
         <ds-settings-page
-          eyebrow="Workspace · Brand"
           heading="Settings"
           description="Studio preferences, billing, and the other plumbing."
         >
