@@ -6,32 +6,90 @@ A framework-agnostic design system built on **Lit** web components, organized by
 
 | Package | Description |
 | --- | --- |
-| [`@ds/tokens`](./packages/tokens) | Design tokens (primitive, semantic, component) + CSS themes |
+| [`@ds/tokens`](./packages/tokens) | Design tokens (primitive + semantic layers) + generated CSS themes |
 | [`@ds/core`](./packages/core) | `DsElement` base class, `FormControlMixin` (ElementInternals), controllers, utils |
-| [`@ds/components`](./packages/components) | Web components (atoms, molecules, organisms, templates, pages) |
-| [`@ds/icons`](./packages/icons) | Tree-shakable icon set powering `<ds-icon>` |
-| [`@ds/react`](./packages/react) | Thin React wrappers generated from the Custom Elements Manifest |
-| [`@ds/storybook`](./packages/storybook) | Storybook docs site (live examples, API tables, dos/don'ts, design intent) |
+| [`@ds/components`](./packages/components) | Web components (atoms → molecules → organisms → templates → pages) |
+| [`@ds/react`](./packages/react) | Thin React wrappers generated from the Custom Elements Manifest via `@lit/react` |
+| [`@ds/storybook`](./packages/storybook) | Storybook docs site (live examples, API tables, design intent, foundations) |
+
+## Components
+
+**Atoms** — `ds-badge`, `ds-breadcrumb`, `ds-button`, `ds-checkbox`, `ds-checkbox-group`, `ds-icon`, `ds-link`, `ds-nav-item`, `ds-nav-group`, `ds-radio`, `ds-radio-group`, `ds-searchable-select`, `ds-select`, `ds-table`, `ds-tabs`, `ds-text-field`, `ds-tooltip`
+
+**Molecules** — `ds-alert`, `ds-bar-chart`, `ds-card`, `ds-field`
+
+**Organisms** — `ds-footer`, `ds-form`, `ds-navbar`, `ds-sidenav`
+
+**Templates** — `ds-page-shell`
+
+**Pages** — `ds-settings-page`
 
 ## Getting started
 
 ```sh
 pnpm install
-pnpm build
-pnpm dev          # Storybook
-pnpm test         # Vitest (component) across packages
-pnpm test:e2e     # Playwright
-pnpm test:a11y    # axe-core against every story
+pnpm build          # build all packages
+pnpm dev            # start Storybook with watch mode
+pnpm test           # Vitest unit tests across all packages
+pnpm test:e2e       # Playwright end-to-end tests
+pnpm test:a11y      # axe-core accessibility tests against every story
+pnpm lint           # ESLint + Stylelint across all packages
+pnpm typecheck      # TypeScript type-check across all packages
 ```
 
 ## Consumer usage
 
-```ts
-import '@ds/tokens/theme-default-light.css';
-import '@ds/components/button/define';
+### Install tokens and a component
 
-// Or the typed class-only import:
-import { DsButton } from '@ds/components/button';
+```ts
+// Load the default theme (light + dark, switches via data-ds-theme on <html>)
+import '@ds/tokens/theme-default.css';
+
+// Register individual components on demand (tree-shakable)
+import '@ds/components/button/define';
+import '@ds/components/text-field/define';
 ```
 
-See the [implementation plan](../../.claude/plans/noble-prancing-thacker.md) for architecture details.
+### Use in HTML
+
+```html
+<ds-button variant="primary">Save</ds-button>
+<ds-text-field label="Email" type="email"></ds-text-field>
+```
+
+### Use in React
+
+```tsx
+import { DsButton, DsTextField } from '@ds/react';
+
+export function MyForm() {
+  return (
+    <>
+      <DsTextField label="Email" type="email" />
+      <DsButton variant="primary">Save</DsButton>
+    </>
+  );
+}
+```
+
+### Theming
+
+Override semantic CSS custom properties on any ancestor to retheme all child components. No component source changes needed.
+
+```css
+:root {
+  --ds-color-accent: #E2341D;
+  --ds-color-accent-hover: #C12613;
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 16px;
+}
+```
+
+Dark mode is applied by setting `data-ds-theme="dark"` on `<html>`. Light mode is the default; `data-ds-theme="light"` makes it explicit. The `color-scheme` property is set automatically so native UI elements (scrollbars, form controls) follow the active theme.
+
+### Class-only import (no side-effects)
+
+```ts
+import { DsButton } from '@ds/components/button';
+customElements.define('ds-button', DsButton);
+```
