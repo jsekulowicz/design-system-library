@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const sidenavStyles = css`
   :host {
     display: block;
-    --ds-sidenav-width: var(--ds-space-64, 16rem);
+    --ds-sidenav-width: var(--ds-space-60, 14rem);
     --ds-sidenav-collapsed-width: var(--ds-space-16, 4rem);
     width: var(--ds-sidenav-width);
     transition: width var(--ds-duration-slow) var(--ds-easing-standard);
