@@ -1,0 +1,63 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as ThemingStories from './theming.stories';
+
+<Meta of={ThemingStories} />
+
+# Theming
+
+The system uses a **three-layer token architecture**. Override only the layer you need — you never touch component source code.
+
+```
+Primitive layer   —  raw values: #4A72CC, 1rem, 4px, 120ms
+       ↓
+Semantic layer    —  roles: --ds-color-accent, --ds-radius-sm, --ds-duration-fast
+       ↓
+Component layer   —  ds-button reads --ds-color-accent, not the hex
+```
+
+Every `ds-*` component references semantic tokens exclusively. Changing a semantic token propagates automatically to every component that uses it.
+
+## What is overridable
+
+| Token group | Semantic tokens | Effect |
+|---|---|---|
+| Brand colour | `--ds-color-accent`, `--ds-color-accent-hover`, `--ds-color-accent-active`, `--ds-color-accent-subtle` | Buttons, links, badges, focus rings |
+| Radii | `--ds-radius-xs` through `--ds-radius-full` | All rounded corners |
+| Borders | `--ds-color-border`, `--ds-color-border-strong` | Cards, inputs, dividers |
+| Display font | `--ds-font-display` | Headings that use the display typeface |
+| Surface colours | `--ds-color-bg`, `--ds-color-bg-subtle`, `--ds-color-bg-muted` | Page and card backgrounds |
+| Status colours | `--ds-color-success/warning/danger` | Alert banners, validation states |
+
+## How to apply overrides
+
+Set overrides on any ancestor element. They cascade into every shadow root via CSS custom property inheritance.
+
+**Page-level** — targets the whole app:
+```css
+:root {
+  --ds-color-accent: #E2341D;
+  --ds-color-accent-hover: #C12613;
+  --ds-radius-sm: 8px;
+}
+```
+
+**Scoped to a region** — targets one section or component:
+```html
+<div style="--ds-color-accent: #1F7A7A; --ds-radius-md: 16px;">
+  <ds-button variant="primary">Scoped theme</ds-button>
+</div>
+```
+
+**Dark mode** is applied by the theme controller setting `data-ds-theme="dark"` on `<html>`. All semantic tokens resolve to their dark counterparts automatically — no extra overrides needed.
+
+## Live playground
+
+Adjust the controls panel below to see how accent, radius, border, and display font changes propagate across components in real time.
+
+<Canvas of={ThemingStories.LivePlayground} />
+
+## Brand presets
+
+Three pre-configured brand themes showing how a few token overrides create a meaningfully different visual identity.
+
+<Canvas of={ThemingStories.BrandPresets} />

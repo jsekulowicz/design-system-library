@@ -1,0 +1,48 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import * as ColorStories from './color.stories';
+
+<Meta of={ColorStories} />
+
+# Color
+
+The system uses a **two-layer** color model. The primitive layer holds raw hex values; the semantic layer maps those values to roles. Components reference only semantic tokens, so a full palette swap — or a dark-mode adaptation — requires changing one layer, not individual component stylesheets.
+
+## Semantic palette
+
+All semantic color tokens, grouped by role. Toggle the dark-theme switch in the toolbar to see how each token resolves in dark mode.
+
+<Canvas of={ColorStories.SemanticPalette} />
+
+### Surface tokens
+
+`bg`, `bg-subtle`, and `bg-muted` form a stack of three surfaces you can layer — base page, raised card, pressed state. `bg-inverse` is for reversals: a dark panel on a light page, or a tooltip.
+
+### Text tokens
+
+`fg` is always the highest-contrast choice and should be used for the primary content in any context. `fg-muted` reads secondary information without competing visually. `fg-subtle` is strictly for disabled or decorative copy — it does not pass WCAG AA at body sizes.
+
+### Accent tokens
+
+`accent` is the single branded colour. Do not hard-code a hex; always reference the token so theme overrides propagate automatically. The `hover` and `active` variants are pre-darkened; use them for interactive states rather than computing ad-hoc `filter: brightness()` values.
+
+### Border & focus tokens
+
+`border` is semi-transparent so it adapts gracefully to any surface. `border-strong` is opaque and higher-contrast for inputs and modals. The `focus` token is the only one used for keyboard accessibility signals — it must always be visible and must never be overridden by component styles.
+
+### Status tokens
+
+Each status colour comes with a `subtle` tinted-background companion. Pair them: `success` text on `success-subtle` background, `danger` text on `danger-subtle` background. Avoid placing `success`/`warning`/`danger` on a plain `bg` background — the contrast varies too much across themes.
+
+### Chart colours
+
+Six distinct hues tuned to remain legible side-by-side and to maintain relative contrast across light and dark themes. Always use them in order (1 → 6) so sequential charts are consistent across the product.
+
+## Approved pairings
+
+Only pair foreground and background tokens that the system explicitly defines as compatible. Improvised combinations may fail contrast requirements in one or both themes.
+
+<Canvas of={ColorStories.UsagePairings} />
+
+## Dark mode
+
+Dark mode is applied by setting `data-ds-theme="dark"` on `<html>`. All semantic tokens automatically resolve to their dark-mode counterparts — no per-component dark-mode logic is needed. See the **Theming** page for how to override tokens.
