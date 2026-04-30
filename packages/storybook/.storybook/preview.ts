@@ -14,14 +14,50 @@ function applyTheme(globals: Record<string, unknown>): void {
   document.documentElement.setAttribute('data-ds-theme', theme);
 }
 
+function applyViewport(globals: Record<string, unknown>): void {
+  const rawViewport = globals['viewport'];
+  const viewport = typeof rawViewport === 'string'
+    ? rawViewport
+    : (rawViewport as { value?: string } | undefined)?.value ?? 'desktop';
+  const width = viewport === 'mobile' ? '360px' : viewport === 'tablet' ? '768px' : '1280px';
+  document.documentElement.setAttribute('data-ds-viewport', viewport);
+  document.documentElement.style.setProperty('--ds-docs-viewport-width', width);
+}
+
 const channel = addons.getChannel();
-channel.on('globalsUpdated', ({ globals }: { globals: Record<string, unknown> }) => applyTheme(globals));
-channel.on('setGlobals', ({ globals }: { globals: Record<string, unknown> }) => applyTheme(globals));
+channel.on('globalsUpdated', ({ globals }: { globals: Record<string, unknown> }) =>
+  (applyTheme(globals), applyViewport(globals)),
+);
+channel.on('setGlobals', ({ globals }: { globals: Record<string, unknown> }) =>
+  (applyTheme(globals), applyViewport(globals)),
+);
 
 const preview: Preview = {
+  initialGlobals: {
+    viewport: { value: 'desktop', isRotated: false },
+  },
   parameters: {
     controls: { expanded: true },
     backgrounds: { disable: true },
+    viewport: {
+      options: {
+        mobile: {
+          name: 'Mobile (360px)',
+          styles: { width: '360px', height: '844px' },
+          type: 'mobile',
+        },
+        tablet: {
+          name: 'Tablet (768px)',
+          styles: { width: '768px', height: '1024px' },
+          type: 'tablet',
+        },
+        desktop: {
+          name: 'Desktop (1280px)',
+          styles: { width: '1280px', height: '800px' },
+          type: 'desktop',
+        },
+      },
+    },
     docs: { page: DocsPage },
     options: {
       storySort: {
@@ -30,7 +66,21 @@ const preview: Preview = {
           'Framework usage',
           'Foundations',
           ['Design intent', 'Tokens', 'Typography', 'Color', 'Spacing', 'Theming'],
-          ['Atoms', ['Breadcrumb', 'CheckboxGroup', 'Checkbox', 'NavItem', 'RadioGroup', 'Radio', 'Select', 'SearchableSelect', 'Tabs', 'Table']],
+          [
+            'Atoms',
+            [
+              'Breadcrumb',
+              'CheckboxGroup',
+              'Checkbox',
+              'NavItem',
+              'RadioGroup',
+              'Radio',
+              'Select',
+              'SearchableSelect',
+              'Tabs',
+              'Table',
+            ],
+          ],
           ['Molecules', ['Alert', 'BarChart', 'Card', 'Field']],
           ['Organisms', ['Form', 'Navbar', 'Sidenav', 'Footer']],
           'Templates',

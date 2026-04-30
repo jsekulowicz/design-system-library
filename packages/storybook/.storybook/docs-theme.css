@@ -76,6 +76,10 @@ p {
   border-radius: var(--ds-radius-md) !important;
   box-shadow: none !important;
   overflow: hidden !important;
+  width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
+  max-width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .sbdocs .docs-story,
