@@ -50,11 +50,23 @@ export class DsCheckboxGroup extends DsElement {
   #wireCheckboxes = (syncChecked = false): void => {
     this._checkboxes.forEach(el => {
       if (this.name) el.setAttribute('name', this.name);
-      this.required ? el.setAttribute('required', '') : el.removeAttribute('required');
-      this.disabled ? el.setAttribute('disabled', '') : el.removeAttribute('disabled');
+      if (this.required) {
+        el.setAttribute('required', '');
+      } else {
+        el.removeAttribute('required');
+      }
+      if (this.disabled) {
+        el.setAttribute('disabled', '');
+      } else {
+        el.removeAttribute('disabled');
+      }
       if (syncChecked) {
         const cv = el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '';
-        this.value.includes(cv) ? el.setAttribute('checked', '') : el.removeAttribute('checked');
+        if (this.value.includes(cv)) {
+          el.setAttribute('checked', '');
+        } else {
+          el.removeAttribute('checked');
+        }
       }
     });
   };

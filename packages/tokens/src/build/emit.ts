@@ -22,7 +22,7 @@ export function renderBlock(tokens: FlatTokens, options: BlockOptions): string {
     : '';
   const inner = extras + renderVars(tokens, '    ');
   const rule = `  ${selector} {\n${inner}\n  }`;
-  const layered = layer ? `@layer ${layer} {\n${rule}\n}` : rule.replace(/^  /gm, '');
+  const layered = layer ? `@layer ${layer} {\n${rule}\n}` : rule.replace(/^ {2}/gm, '');
   if (!mediaQuery) {
     return layered;
   }

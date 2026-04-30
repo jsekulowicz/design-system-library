@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createComponent, type EventName } from '@lit/react';
+import { createComponent } from '@lit/react';
 import { DsBreadcrumb } from '@ds/components/breadcrumb';
 import '@ds/components/breadcrumb/define';
 

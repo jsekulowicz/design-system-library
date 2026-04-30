@@ -1,7 +1,7 @@
 import type { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
-type Constructor<T = object> = new (...args: any[]) => T;
+type Constructor<T = object> = new (...args: unknown[]) => T;
 
 export interface FormControlHost {
   value: FormDataEntryValue | null;
@@ -37,7 +37,7 @@ export function FormControlMixin<TBase extends LitCtor>(
     @property({ type: Boolean, reflect: true }) disabled = false;
     @property({ type: Boolean, reflect: true }) required = false;
 
-    constructor(...args: any[]) {
+    constructor(...args: unknown[]) {
       super(...args);
       this.#internals = (this as unknown as HTMLElement).attachInternals();
     }

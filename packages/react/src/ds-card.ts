@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createComponent, type EventName } from '@lit/react';
+import { createComponent } from '@lit/react';
 import { DsCard } from '@ds/components/card';
 import '@ds/components/card/define';
 

@@ -443,7 +443,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       return;
     }
     const current = this._activeIndex ?? -1;
-    let next = current;
+    let next: number;
     switch (event.key) {
       case 'ArrowRight': next = Math.min(count - 1, current + 1); break;
       case 'ArrowLeft': next = Math.max(0, current < 0 ? 0 : current - 1); break;

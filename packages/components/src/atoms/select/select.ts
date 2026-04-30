@@ -254,6 +254,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
         <div id="trigger" class="trigger${this.multiple ? ' trigger-multiple' : ''}" part="trigger"
           tabindex=${this.disabled ? '-1' : '0'} role="combobox" aria-haspopup="listbox"
           aria-expanded=${this._open ? 'true' : 'false'} aria-controls="listbox"
+          aria-label=${ifDefined(this.label || undefined)}
           aria-activedescendant=${ifDefined(activeDesc)} aria-disabled=${this.disabled ? 'true' : 'false'}
           @click=${this.#toggle} @keydown=${this.#onTriggerKeydown}>
           <span class="leading" ?hidden=${!this._hasLeading}>
@@ -287,6 +288,10 @@ export class DsSelect extends FormControlMixin(DsElement) {
 
   #toggle = (): void => {
     if (this.disabled) return;
-    this._open ? this.#close() : this.#openDropdown();
+    if (this._open) {
+      this.#close();
+    } else {
+      this.#openDropdown();
+    }
   };
 }

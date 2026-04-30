@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createComponent, type EventName } from '@lit/react';
+import { createComponent } from '@lit/react';
 import { DsTabPanel } from '@ds/components/tabs';
 import '@ds/components/tabs/define';
 

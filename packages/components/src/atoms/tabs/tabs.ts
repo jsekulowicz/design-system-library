@@ -88,7 +88,7 @@ export class DsTabs extends DsElement {
       return;
     }
     const current = this._tabs.findIndex(t => t.value === this.value);
-    let next = current;
+    let next: number;
     switch (event.key) {
       case 'ArrowLeft':
         next = current <= 0 ? count - 1 : current - 1;

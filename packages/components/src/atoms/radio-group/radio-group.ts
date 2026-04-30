@@ -50,11 +50,23 @@ export class DsRadioGroup extends DsElement {
   #wireRadios = (syncChecked = false): void => {
     this._radios.forEach(radio => {
       if (this.name) radio.setAttribute('name', this.name);
-      this.required ? radio.setAttribute('required', '') : radio.removeAttribute('required');
-      this.disabled ? radio.setAttribute('disabled', '') : radio.removeAttribute('disabled');
+      if (this.required) {
+        radio.setAttribute('required', '');
+      } else {
+        radio.removeAttribute('required');
+      }
+      if (this.disabled) {
+        radio.setAttribute('disabled', '');
+      } else {
+        radio.removeAttribute('disabled');
+      }
       if (syncChecked) {
         const rv = radio.radioValue ?? radio.getAttribute('radiovalue') ?? '';
-        rv === this.value ? radio.setAttribute('checked', '') : radio.removeAttribute('checked');
+        if (rv === this.value) {
+          radio.setAttribute('checked', '');
+        } else {
+          radio.removeAttribute('checked');
+        }
       }
     });
   };
