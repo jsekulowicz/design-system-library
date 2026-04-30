@@ -2,6 +2,8 @@
 
 A framework-agnostic design system built on **Lit** web components, organized by **atomic design**, themeable via a three-tier token layer, responsive by default, tree-shakable (JS and CSS), and accessible to WCAG 2.2 AA.
 
+Live Storybook docs: https://jsekulowicz.github.io/design-system-library
+
 ## Packages
 
 | Package | Description |
