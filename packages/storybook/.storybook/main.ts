@@ -1,4 +1,8 @@
 import type { StorybookConfig } from '@storybook/web-components-vite';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const publicDir = resolve(__dirname, '../public');
 
 const config: StorybookConfig = {
   stories: [
@@ -15,7 +19,7 @@ const config: StorybookConfig = {
     options: {},
   },
   docs: { autodocs: 'tag' },
-  staticDirs: ['../public'],
+  staticDirs: existsSync(publicDir) ? ['../public'] : [],
 };
 
 export default config;
