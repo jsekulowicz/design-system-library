@@ -2,23 +2,35 @@ import { css } from 'lit';
 
 export const sidenavStyles = css`
   :host {
+    --ds-sidenav-item-height: var(--ds-space-10, 2.5rem);
+    --ds-sidenav-item-compact-size: var(--ds-space-12, 3rem);
+    --ds-sidenav-width: var(--ds-space-64, 16rem);
+
     display: block;
-    --ds-sidenav-width: var(--ds-space-60, 14rem);
-    --ds-sidenav-collapsed-width: var(--ds-space-16, 4rem);
     width: var(--ds-sidenav-width);
+    max-width: 100%;
     transition: width var(--ds-duration-slow) var(--ds-easing-standard);
   }
   :host([collapsed]) {
+    --ds-sidenav-collapsed-width: var(--ds-space-14, 3.5rem);
+    justify-items: flex-start;
     width: var(--ds-sidenav-collapsed-width);
+
+    nav {
+      width: var(--ds-sidenav-collapsed-width);
+      scrollbar-width: none;
+    }
   }
   nav {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: var(--ds-space-2);
+    padding: var(--ds-space-1);
     background: var(--ds-color-bg);
-    border-right: 1px solid var(--ds-color-border);
-    box-sizing: border-box;
+    overflow-x: clip;
+    overflow-y: auto;
+    scrollbar-color: var(--ds-color-fg-subtle) transparent;
+    scrollbar-width: thin;
   }
   .header {
     padding: 0 var(--ds-space-3);
@@ -40,10 +52,12 @@ export const sidenavStyles = css`
   }
   .footer {
     margin-top: var(--ds-space-4);
-    padding-top: var(--ds-space-3);
     border-top: 1px solid var(--ds-color-border);
     display: flex;
     flex-direction: column;
     gap: var(--ds-space-1);
+  }
+  :host-context(ds-page-shell:not([mobile-layout])) nav {
+    border-right: 1px solid var(--ds-color-border);
   }
 `;

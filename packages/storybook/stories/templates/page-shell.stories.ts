@@ -98,6 +98,10 @@ export const CollapsedSidenav: Story = {
           padding: var(--ds-space-2);
         }
         ds-sidenav[collapsed] .collapse-toggle-label { display: none; }
+        @media (max-width: 768px) {
+          .collapse-toggle { display: none; }
+        }
+        ds-page-shell[mobile-layout] .collapse-toggle { display: none; }
       </style>
       <ds-sidenav slot="aside" collapsed>
         <ds-button

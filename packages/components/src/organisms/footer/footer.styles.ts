@@ -9,6 +9,7 @@ export const footerStyles = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: nowrap;
     gap: var(--ds-space-4);
     padding: var(--ds-space-2) var(--ds-space-6);
     border-top: 1px solid var(--ds-color-border);
@@ -29,12 +30,14 @@ export const footerStyles = css`
   }
   @container (max-width: 480px) {
     footer {
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--ds-space-3);
+      gap: var(--ds-space-2);
+      padding: var(--ds-space-2) var(--ds-space-4);
+      font-size: var(--ds-font-size-xs);
     }
+    .start,
+    .middle,
     .end {
-      justify-content: flex-start;
+      gap: var(--ds-space-2);
     }
   }
 `;

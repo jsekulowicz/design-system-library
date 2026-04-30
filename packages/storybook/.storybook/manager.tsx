@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { addons, types, useGlobals } from '@storybook/manager-api';
 import { IconButton } from '@storybook/components';
 
@@ -49,12 +49,6 @@ const VIEWPORTS: ViewportPreset[] = [
   { key: 'desktop', title: 'Computer', icon: <ComputerDesktopIcon /> },
 ];
 
-const VIEWPORT_SIZES: Record<ViewportKey, { width: string; height: string }> = {
-  mobile: { width: '360px', height: '844px' },
-  tablet: { width: '768px', height: '1024px' },
-  desktop: { width: '1280px', height: '800px' },
-};
-
 function ViewportToolbar(): React.ReactElement {
   const [globals, updateGlobals] = useGlobals();
   const rawViewport = globals['viewport'];
@@ -77,23 +71,6 @@ function ViewportToolbar(): React.ReactElement {
       },
     });
   }
-
-  useEffect(() => {
-    const size = VIEWPORT_SIZES[(viewport as ViewportKey) ?? 'desktop'];
-    const styleId = 'ds-viewport-toolbar-style';
-    let styleEl = document.getElementById(styleId) as HTMLStyleElement | null;
-    if (!styleEl) {
-      styleEl = document.createElement('style');
-      styleEl.id = styleId;
-      document.head.appendChild(styleEl);
-    }
-    styleEl.textContent = `
-      iframe[data-is-storybook="true"] {
-        width: ${size.width} !important;
-        height: ${size.height} !important;
-      }
-    `;
-  }, [viewport]);
 
   return (
     <div style={{ display: 'inline-flex', gap: 6, alignItems: 'center', marginRight: 8 }}>

@@ -4,9 +4,16 @@ export const navItemStyles = css`
   :host {
     display: block;
   }
+  :host([compact]) {
+    .link {
+      height: var(--ds-sidenav-item-compact-size);
+      width: var(--ds-sidenav-item-compact-size);
+    }
+  }
   .link {
     display: inline-flex;
     align-items: center;
+    height: var(--ds-sidenav-item-height);
     gap: var(--ds-space-1);
     padding: var(--ds-space-2) var(--ds-space-3);
     border-radius: var(--ds-radius-sm);

@@ -4,11 +4,18 @@ export const navGroupStyles = css`
   :host {
     display: block;
   }
+  :host([compact]) {
+    .heading {
+      height: var(--ds-sidenav-item-compact-size);
+      width: var(--ds-sidenav-item-compact-size);
+    }
+  }
   .heading {
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
     width: 100%;
+    height: var(--ds-sidenav-item-height);
     padding: var(--ds-space-2) var(--ds-space-3);
     border: none;
     background: transparent;

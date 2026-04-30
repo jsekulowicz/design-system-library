@@ -72,6 +72,14 @@ export const Default: Story = {
       ds-sidenav[collapsed] .collapse-toggle-label {
         display: none;
       }
+      @media (max-width: 768px) {
+        .collapse-toggle {
+          display: none;
+        }
+      }
+      ds-page-shell[mobile-layout] .collapse-toggle {
+        display: none;
+      }
       #story--pages-settingspage--default {
         overflow: hidden;
       }
