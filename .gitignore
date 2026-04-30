@@ -25,3 +25,5 @@ test-results
 !.changeset/README.md
 !.changeset/config.json
 custom-elements.json
+CLAUDE.md
+AGENTS.md
