@@ -49,6 +49,92 @@ const VIEWPORTS: ViewportPreset[] = [
   { key: 'desktop', title: 'Computer', icon: <ComputerDesktopIcon /> },
 ];
 
+const DOCS_RESULT_SELECTOR = '.search-result-item[data-id$="--docs"]';
+
+function getLastPathSegment(value: string): string {
+  const segments = value
+    .split('/')
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+  return segments.at(-1) ?? value.trim();
+}
+
+function getFriendlyDocsLabel(item: { id: string; name: string }, api: { getData: (id: string) => { title?: string } }): string {
+  if (item.name !== 'Docs') {
+    return item.name;
+  }
+  const title = api.getData(item.id)?.title;
+  if (!title) {
+    return item.name;
+  }
+  return getLastPathSegment(title);
+}
+
+function relabelSearchDocs(scope: ParentNode = document): void {
+  const docsItems = scope.querySelectorAll<HTMLElement>(DOCS_RESULT_SELECTOR);
+  for (const item of docsItems) {
+    if (item.dataset['dsDocsRelabeled'] === 'true') {
+      continue;
+    }
+    const nameCell = item.querySelector<HTMLElement>('.search-result-item--label > *:first-child');
+    if (!nameCell || nameCell.textContent?.trim() !== 'Docs') {
+      continue;
+    }
+    const pathSegments = item.querySelectorAll<HTMLElement>('.search-result-item--label > *:last-child span');
+    const lastSegment = pathSegments.item(pathSegments.length - 1)?.textContent?.trim();
+    if (!lastSegment) {
+      continue;
+    }
+    nameCell.textContent = getLastPathSegment(lastSegment);
+    item.dataset['dsDocsRelabeled'] = 'true';
+  }
+}
+
+function setupSearchDocsRelabeling(): void {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return;
+  }
+  let scheduled = false;
+  function schedule(): void {
+    if (scheduled) {
+      return;
+    }
+    scheduled = true;
+    window.requestAnimationFrame(() => {
+      scheduled = false;
+      relabelSearchDocs(document);
+    });
+  }
+  function attachMenuObserver(): boolean {
+    const menu = document.getElementById('storybook-explorer-menu');
+    if (!menu) {
+      return false;
+    }
+    const observer = new MutationObserver(() => schedule());
+    observer.observe(menu, { childList: true, subtree: true });
+    return true;
+  }
+
+  schedule();
+  if (attachMenuObserver()) {
+    return;
+  }
+  const bootstrapObserver = new MutationObserver(() => {
+    if (attachMenuObserver()) {
+      bootstrapObserver.disconnect();
+      schedule();
+    }
+  });
+  bootstrapObserver.observe(document.body, { childList: true, subtree: true });
+}
+
+addons.setConfig({
+  sidebar: {
+    renderLabel: (item, api) => getFriendlyDocsLabel(item, api),
+  },
+});
+setupSearchDocsRelabeling();
+
 function ViewportToolbar(): React.ReactElement {
   const [globals, updateGlobals] = useGlobals();
   const rawViewport = globals['viewport'];
