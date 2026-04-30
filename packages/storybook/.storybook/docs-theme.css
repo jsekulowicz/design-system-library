@@ -67,10 +67,9 @@ p {
   border-color: var(--ds-color-border);
 }
 
-/* Story canvas — overflow:hidden clips inner chrome to the rounded corners,
-   preventing the quarter-circle gap at the edges. */
-.sbdocs .sbdocs-preview,
-.sbdocs .docs-story {
+/* Story canvas — keep a single border/radius on the outer preview only.
+   Inner docs-story border causes doubled edges and corner artifacts. */
+.sbdocs .sbdocs-preview {
   background: var(--ds-color-bg) !important;
   border: 1px solid var(--ds-color-border) !important;
   border-radius: var(--ds-radius-md) !important;
@@ -80,6 +79,14 @@ p {
   max-width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
   margin-left: auto !important;
   margin-right: auto !important;
+}
+
+.sbdocs .docs-story {
+  background: var(--ds-color-bg) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
 }
 
 .sbdocs .docs-story,
