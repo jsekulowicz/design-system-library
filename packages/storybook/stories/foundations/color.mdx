@@ -7,6 +7,8 @@ import * as ColorStories from './color.stories';
 
 The system uses a **two-layer** color model. The primitive layer holds raw hex values; the semantic layer maps those values to roles. Components reference only semantic tokens, so a full palette swap — or a dark-mode adaptation — requires changing one layer, not individual component stylesheets.
 
+Follow the same naming pattern shown in the Tokens foundation page: use semantic role tokens (`--ds-color-*`) in components, never raw palette values.
+
 ## Semantic palette
 
 All semantic color tokens, grouped by role. Toggle the dark-theme switch in the toolbar to see how each token resolves in dark mode.

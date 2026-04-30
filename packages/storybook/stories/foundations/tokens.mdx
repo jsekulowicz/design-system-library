@@ -1,11 +1,12 @@
 import { Meta } from '@storybook/blocks';
 import * as TokensStories from './tokens.stories';
+import { Canvas } from '@storybook/blocks';
 
 <Meta of={TokensStories} />
 
 # Tokens
 
-Three tiers:
+Use tokens in three layers:
 
 1. **Primitive** — raw values (`--ds-color-ink-900`, `--ds-font-size-md`).
 2. **Semantic** — role-based, consumed by components (`--ds-color-fg`, `--ds-color-accent`, `--ds-space-4`).
@@ -16,6 +17,26 @@ CSS cascade layers guarantee consumer overrides win without `!important`:
 ```css
 @layer ds.base, ds.theme, ds.components, ds.utilities;
 ```
+
+## Token families
+
+### Shape
+
+Radius, shadow, and border-width tokens define component geometry and depth.
+
+<Canvas of={TokensStories.Shape} />
+
+### Motion
+
+Duration and easing tokens keep interaction timing consistent across components.
+
+<Canvas of={TokensStories.Motion} />
+
+### Layout
+
+Breakpoints, container widths, and z-index tokens coordinate responsive structure and stacking.
+
+<Canvas of={TokensStories.BreakpointsAndZIndex} />
 
 ## Theming
 

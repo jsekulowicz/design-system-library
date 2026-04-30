@@ -7,6 +7,8 @@ import * as SpacingStories from './spacing.stories';
 
 Spacing is the system's rhythm. Every step is a **multiple of 4px**, so any layout — a page, a card, a cramped table cell — snaps to the same grid. The number in the token name is the step count, so `--ds-space-3` is **3 × 4px = 12px**.
 
+This matches the Tokens foundation convention: token names encode intent and step (`space-*`), so spacing decisions stay consistent and predictable.
+
 <Canvas of={SpacingStories.Scale} />
 
 ## Why rems, not pixels
