@@ -81,8 +81,12 @@ export const navItemStyles = css`
     display: block;
     width: 100%;
   }
-  .tooltip-wrapper::part(anchor) {
-    display: block;
-    width: 100%;
+  :host([compact]) .tooltip-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  :host([compact]) .tooltip-wrapper::part(anchor) {
+    display: inline-flex;
+    width: auto;
   }
 `;

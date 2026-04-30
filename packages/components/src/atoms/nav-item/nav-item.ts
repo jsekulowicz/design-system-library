@@ -100,6 +100,7 @@ export class DsNavItem extends DsElement {
         class="tooltip-wrapper"
         placement="right"
         delay=${HOVER_TOOLTIP_DELAY_MS}
+        ?hover-only=${true}
       >
         ${this.#renderLink()}
         <span slot="tip">${this._labelText}</span>

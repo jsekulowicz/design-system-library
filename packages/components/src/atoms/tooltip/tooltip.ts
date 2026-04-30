@@ -29,6 +29,7 @@ export class DsTooltip extends DsElement {
 
   @property({ reflect: true }) placement: TooltipPlacement = 'top';
   @property({ type: Boolean, reflect: true }) open = false;
+  @property({ type: Boolean, attribute: 'hover-only' }) hoverOnly = false;
   @property({ type: Number }) delay = 0;
 
   @state() private _hovered = false;
@@ -51,7 +52,7 @@ export class DsTooltip extends DsElement {
   }
 
   #shouldShow(): boolean {
-    return this.open || this._hovered || this._focused;
+    return this.open || this._hovered || (!this.hoverOnly && this._focused);
   }
 
   #clearHoverTimer = (): void => {
@@ -78,10 +79,16 @@ export class DsTooltip extends DsElement {
   };
 
   #onFocusIn = (): void => {
+    if (this.hoverOnly) {
+      return;
+    }
     this._focused = true;
   };
 
   #onFocusOut = (): void => {
+    if (this.hoverOnly) {
+      return;
+    }
     this._focused = false;
   };
 
@@ -122,7 +129,8 @@ export class DsTooltip extends DsElement {
     if (!tooltip) {
       return;
     }
-    const rect = this.getBoundingClientRect();
+    const anchorRect = this.shadowRoot?.querySelector('.anchor')?.getBoundingClientRect();
+    const rect = anchorRect ?? this.getBoundingClientRect();
     let top = 0;
     let left = 0;
     let transform = '';
