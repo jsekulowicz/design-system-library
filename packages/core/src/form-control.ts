@@ -1,7 +1,8 @@
 import type { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
-type Constructor<T = object> = new (...args: unknown[]) => T;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Constructor<T = object> = new (...args: any[]) => T;
 
 export interface FormControlHost {
   value: FormDataEntryValue | null;
@@ -37,7 +38,9 @@ export function FormControlMixin<TBase extends LitCtor>(
     @property({ type: Boolean, reflect: true }) disabled = false;
     @property({ type: Boolean, reflect: true }) required = false;
 
-    constructor(...args: unknown[]) {
+    // TypeScript mixin constraint requires `any[]` here.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constructor(...args: any[]) {
       super(...args);
       this.#internals = (this as unknown as HTMLElement).attachInternals();
     }
