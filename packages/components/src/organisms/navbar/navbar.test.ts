@@ -91,4 +91,20 @@ describe('<ds-navbar>', () => {
     const menu = el.shadowRoot!.querySelector('[part="menu"]')!;
     expect(toggle.getAttribute('aria-controls')).toBe(menu.id);
   });
+
+  it('ignores non-Escape key presses while menu is open', async () => {
+    const el = await mount<DsNavbar>(`
+      <ds-navbar>
+        <a href="/">Home</a>
+      </ds-navbar>
+    `);
+    const toggle = el.shadowRoot!.querySelector('button.toggle') as HTMLButtonElement;
+    toggle.click();
+    await el.updateComplete;
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    await el.updateComplete;
+
+    expect(el.hasAttribute('data-open')).toBe(true);
+  });
 });

@@ -1,4 +1,4 @@
-import { html, svg, type TemplateResult } from 'lit';
+import { html, svg, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { checkboxStyles } from './checkbox.styles.js';
@@ -17,7 +17,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property() checkboxValue = '';
 
-  override updated(changed: Map<string, unknown>): void {
+  override willUpdate(changed: PropertyValues): void {
     if (changed.has('checked') || changed.has('indeterminate') || changed.has('checkboxValue')) {
       this.value = this.checked ? (this.checkboxValue || 'on') : null;
       this.#syncValidity();

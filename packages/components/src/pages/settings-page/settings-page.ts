@@ -21,10 +21,17 @@ export class DsSettingsPage extends DsElement {
   @property({ type: Array }) sections: SettingsSection[] = [];
   @state() private activeId = '';
 
+  #escapeId(value: string): string {
+    if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+      return CSS.escape(value);
+    }
+    return value.replaceAll('"', '\\"');
+  }
+
   #scrollTo = (id: string) => (event: MouseEvent) => {
     event.preventDefault();
     this.activeId = id;
-    const target = document.getElementById(id) ?? this.querySelector(`#${CSS.escape(id)}`);
+    const target = document.getElementById(id) ?? this.querySelector(`#${this.#escapeId(id)}`);
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 

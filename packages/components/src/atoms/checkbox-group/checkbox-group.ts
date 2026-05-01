@@ -72,7 +72,10 @@ export class DsCheckboxGroup extends DsElement {
   };
 
   #onCheckboxChange = (event: Event): void => {
-    event.stopPropagation();
+    if (event.target === this) {
+      return;
+    }
+    event.stopImmediatePropagation();
     const values = this._checkboxes
       .filter(el => el.checked === true)
       .map(el => el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '')

@@ -1,4 +1,4 @@
-import { html, type TemplateResult } from 'lit';
+import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { radioStyles } from './radio.styles.js';
@@ -15,10 +15,17 @@ export class DsRadio extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) checked = false;
   @property() radioValue = '';
 
-  override updated(changed: Map<string, unknown>): void {
+  override willUpdate(changed: PropertyValues): void {
     if (changed.has('checked')) {
       this.value = this.checked ? this.radioValue || 'on' : null;
     }
+  }
+
+  #escapeName(value: string): string {
+    if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+      return CSS.escape(value);
+    }
+    return value.replaceAll('"', '\\"');
   }
 
   #uncheckSiblings(): void {
@@ -26,7 +33,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
     if (!(scope instanceof HTMLElement) && !(scope instanceof ShadowRoot) && !(scope instanceof Document)) {
       return;
     }
-    const selector = `ds-radio[name="${CSS.escape(this.name)}"]`;
+    const selector = `ds-radio[name="${this.#escapeName(this.name)}"]`;
     const siblings = (scope as Element | ShadowRoot | Document).querySelectorAll<DsRadio>(selector);
     siblings.forEach((sibling) => {
       if (sibling !== this) {

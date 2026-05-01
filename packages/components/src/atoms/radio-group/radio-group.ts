@@ -72,7 +72,10 @@ export class DsRadioGroup extends DsElement {
   };
 
   #onRadioChange = (event: Event): void => {
-    event.stopPropagation();
+    if (event.target === this) {
+      return;
+    }
+    event.stopImmediatePropagation();
     const { value } = (event as CustomEvent<{ value: string }>).detail;
     this.value = value;
     this.invalid = false;
