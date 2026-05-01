@@ -4,5 +4,14 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
+    coverage: {
+      provider: 'istanbul',
+      reporter: ['text', 'html', 'lcov', 'json-summary'],
+      reportsDirectory: './coverage',
+      all: true,
+      include: ['src/**/*.ts'],
+      exclude: ['src/**/*.test.ts'],
+      reportOnFailure: true,
+    },
   },
 });
