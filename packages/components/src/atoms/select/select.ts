@@ -4,9 +4,18 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { renderVirtualItems, ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/virtual-list.js';
+import {
+  clampTileFocusIndex,
+  countOverflowTiles,
+  getNextTileFocusIndex,
+  getVisibleTileCount,
+  queueTaskOnce,
+  renderChevronDownIcon,
+  renderClearButton,
+  renderOptionItem,
+  renderSelectedTiles,
+} from './select.shared.js';
 import { selectStyles } from './select.styles.js';
-
-const TILE_ROW_H = 28; // tile height (24px) + gap (4px)
 
 export interface SelectOption {
   value: string;
@@ -146,30 +155,25 @@ export class DsSelect extends FormControlMixin(DsElement) {
   #removeTile = (value: string): void => {
     this.values = this.values.filter((v) => v !== value);
     this.value = this.values.join(',');
-    const visibleCount = this.values.length - this._overflowCount;
-    if (this._focusedTileIndex >= visibleCount)
-      this._focusedTileIndex = Math.max(-1, visibleCount - 1);
+    const visibleCount = getVisibleTileCount(this.values.length, this._overflowCount);
+    this._focusedTileIndex = clampTileFocusIndex(this._focusedTileIndex, visibleCount);
     this.emit('ds-change', { detail: { values: this.values } });
   };
 
   #checkOverflow = (): void => {
-    if (!this.maxLines || !this._tilesEl) {
-      if (this._overflowCount) this._overflowCount = 0;
-      return;
-    }
-    const tiles = Array.from(this._tilesEl.querySelectorAll<HTMLElement>('.tile[data-value]'));
-    const count = tiles.filter((t) => t.offsetTop >= this.maxLines! * TILE_ROW_H).length;
+    const count = countOverflowTiles(this._tilesEl, this.maxLines);
     if (count !== this._overflowCount) {
       this._overflowCount = count;
     }
   };
 
   #queueOverflowCheck = (): void => {
-    if (this._overflowCheckQueued) return;
-    this._overflowCheckQueued = true;
-    queueMicrotask(() => {
-      this._overflowCheckQueued = false;
-      this.#checkOverflow();
+    queueTaskOnce({
+      isQueued: this._overflowCheckQueued,
+      setQueued: (value) => {
+        this._overflowCheckQueued = value;
+      },
+      task: this.#checkOverflow,
     });
   };
 
@@ -191,19 +195,25 @@ export class DsSelect extends FormControlMixin(DsElement) {
   #onTriggerKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) return;
     if ((event.target as Element).classList.contains('clear-btn')) return;
-    const visibleCount = this.values.length - this._overflowCount;
+    const visibleCount = getVisibleTileCount(this.values.length, this._overflowCount);
 
     if (this.multiple && visibleCount > 0) {
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        this._focusedTileIndex =
-          this._focusedTileIndex <= 0 ? visibleCount - 1 : this._focusedTileIndex - 1;
+        this._focusedTileIndex = getNextTileFocusIndex(
+          this._focusedTileIndex,
+          visibleCount,
+          'left',
+        );
         return;
       }
       if (event.key === 'ArrowRight' && this._focusedTileIndex >= 0) {
         event.preventDefault();
-        this._focusedTileIndex =
-          this._focusedTileIndex >= visibleCount - 1 ? -1 : this._focusedTileIndex + 1;
+        this._focusedTileIndex = getNextTileFocusIndex(
+          this._focusedTileIndex,
+          visibleCount,
+          'right',
+        );
         return;
       }
       if ((event.key === ' ' || event.key === 'Backspace') && this._focusedTileIndex >= 0) {
@@ -242,79 +252,30 @@ export class DsSelect extends FormControlMixin(DsElement) {
   };
 
   #renderTiles = (): TemplateResult =>
-    html` <div
-      class="tiles"
-      style=${this.maxLines ? `max-height:${this.maxLines * TILE_ROW_H - 4}px;overflow:hidden` : ''}
-    >
-      ${this._overflowCount > 0
-        ? html` <span class="tile tile-overflow" aria-label="${this._overflowCount} more selected">
-            +${this._overflowCount}
-          </span>`
-        : nothing}
-      ${this.values.map((v, i) => {
-        const label = this.options.find((o) => o.value === v)?.label ?? v;
-        return html` <span
-          class="tile${this._focusedTileIndex === i ? ' tile-focused' : ''}"
-          data-value=${v}
-        >
-          <span class="tile-label">${label}</span>
-          <button
-            class="tile-remove"
-            type="button"
-            tabindex="-1"
-            aria-label="Remove ${label}"
-            @pointerdown=${(e: Event) => e.preventDefault()}
-            @click=${(e: Event) => {
-              e.stopPropagation();
-              this.#removeTile(v);
-            }}
-          >
-            <!-- Heroicons 2.2.0 — 16/solid: x-mark -->
-            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-              <path
-                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-              />
-            </svg>
-          </button>
-        </span>`;
-      })}
-    </div>`;
+    renderSelectedTiles({
+      values: this.values,
+      focusedTileIndex: this._focusedTileIndex,
+      overflowCount: this._overflowCount,
+      maxLines: this.maxLines,
+      labelFor: (value) => this.options.find((option) => option.value === value)?.label ?? value,
+      onRemove: this.#removeTile,
+    });
 
   #renderOption = (option: SelectOption, index: number, current: string): TemplateResult => {
     const isSelected = this.multiple
       ? this.values.includes(option.value)
       : option.value === current;
-    const classes = [
-      'option',
-      isSelected && 'selected',
-      this._focusedIndex === index && 'focused',
-      option.disabled && 'disabled',
-    ]
-      .filter(Boolean)
-      .join(' ');
-    return html` <div
-      id="option-${index}"
-      class=${classes}
-      part="option"
-      role="option"
-      aria-selected=${isSelected}
-      aria-disabled=${option.disabled ?? false}
-      @click=${() => this.#selectOption(option)}
-      @mouseenter=${() => {
+    return renderOptionItem({
+      id: `option-${index}`,
+      label: option.label,
+      isSelected,
+      isFocused: this._focusedIndex === index,
+      isDisabled: option.disabled ?? false,
+      onSelect: () => this.#selectOption(option),
+      onFocus: () => {
         this._focusedIndex = index;
-      }}
-    >
-      <span class="option-label">${option.label}</span>
-      ${isSelected
-        ? html` <svg class="check-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <path
-              fill-rule="evenodd"
-              d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
-              clip-rule="evenodd"
-            />
-          </svg>`
-        : nothing}
-    </div>`;
+      },
+    });
   };
 
   override render(): TemplateResult {
@@ -352,31 +313,15 @@ export class DsSelect extends FormControlMixin(DsElement) {
                 ${selectedOption?.label ?? this.placeholder}
               </span>`}
           ${hasClearBtn
-            ? html` <button
-                class="clear-btn"
-                type="button"
-                aria-label="Clear selection"
-                @click=${(e: Event) => {
-                  e.stopPropagation();
+            ? renderClearButton(
+                (event: Event) => {
+                  event.stopPropagation();
                   this.#clear();
-                }}
-                @keydown=${this.#onClearKeydown}
-              >
-                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </button>`
+                },
+                this.#onClearKeydown,
+              )
             : nothing}
-          <!-- Heroicons 2.2.0 — 16/solid: chevron-down -->
-          <svg class="caret" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <path
-              fill-rule="evenodd"
-              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-              clip-rule="evenodd"
-            />
-          </svg>
+          ${renderChevronDownIcon()}
         </div>
         ${this._open
           ? html` <div
