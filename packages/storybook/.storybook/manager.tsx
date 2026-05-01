@@ -168,6 +168,7 @@ function ThemeToolbar(): React.ReactElement {
   const [theme, setTheme] = React.useState<ThemeKey>(() => readStoredTheme());
 
   React.useEffect(() => {
+    document.documentElement.setAttribute('data-ds-theme', theme);
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
     channel.emit(DS_THEME_CHANGED, { theme });
   }, [channel, theme]);

@@ -1,0 +1,19 @@
+<script>
+  (function () {
+    try {
+      var theme = localStorage.getItem('ds-storybook-theme') === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-ds-theme', theme);
+    } catch (_error) {
+      document.documentElement.setAttribute('data-ds-theme', 'light');
+    }
+  })();
+</script>
+<style>
+  html[data-ds-theme='dark'] div:has(> #preview-loader) {
+    background: #222425 !important;
+  }
+
+  html[data-ds-theme='light'] div:has(> #preview-loader) {
+    background: #faf8f5 !important;
+  }
+</style>
