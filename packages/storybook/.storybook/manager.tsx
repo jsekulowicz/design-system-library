@@ -1,13 +1,9 @@
 import React from 'react';
-import { addons, types, useGlobals } from '@storybook/manager-api';
+import { addons, types } from '@storybook/manager-api';
 import { IconButton } from '@storybook/components';
 
 type ViewportKey = 'mobile' | 'tablet' | 'desktop';
-
-type ViewportState = {
-  value?: ViewportKey;
-  isRotated?: boolean;
-};
+type ThemeKey = 'light' | 'dark';
 
 type ViewportPreset = {
   key: ViewportKey;
@@ -48,6 +44,38 @@ const VIEWPORTS: ViewportPreset[] = [
   { key: 'tablet', title: 'Tablet', icon: <DeviceTabletIcon /> },
   { key: 'desktop', title: 'Computer', icon: <ComputerDesktopIcon /> },
 ];
+
+const DS_THEME_CHANGED = 'ds/theme-changed';
+const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
+const THEME_STORAGE_KEY = 'ds-storybook-theme';
+const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
+
+function SunIcon(): React.ReactElement {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2.5v2.2M12 19.3v2.2M4.7 4.7l1.6 1.6M17.7 17.7l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.7 19.3l1.6-1.6M17.7 6.3l1.6-1.6" />
+    </svg>
+  );
+}
+
+function MoonIcon(): React.ReactElement {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M21 12.8A8.8 8.8 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+    </svg>
+  );
+}
+
+function readStoredTheme(): ThemeKey {
+  const value = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return value === 'dark' ? 'dark' : 'light';
+}
+
+function readStoredViewport(): ViewportKey {
+  const value = window.localStorage.getItem(VIEWPORT_STORAGE_KEY);
+  return value === 'mobile' || value === 'tablet' || value === 'desktop' ? value : 'desktop';
+}
 
 const DOCS_RESULT_SELECTOR = '.search-result-item[data-id$="--docs"]';
 
@@ -135,27 +163,38 @@ addons.setConfig({
 });
 setupSearchDocsRelabeling();
 
-function ViewportToolbar(): React.ReactElement {
-  const [globals, updateGlobals] = useGlobals();
-  const rawViewport = globals['viewport'];
-  const viewport = typeof rawViewport === 'string'
-    ? rawViewport
-    : (rawViewport as ViewportState | undefined)?.value ?? 'desktop';
+function ThemeToolbar(): React.ReactElement {
+  const channel = addons.getChannel();
+  const [theme, setTheme] = React.useState<ThemeKey>(() => readStoredTheme());
 
-  function setViewport(value: ViewportKey): void {
-    if (typeof rawViewport === 'string') {
-      updateGlobals({
-        viewport: value,
-        viewportRotated: false,
-      });
-      return;
-    }
-    updateGlobals({
-      viewport: {
-        value,
-        isRotated: false,
-      },
-    });
+  React.useEffect(() => {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    channel.emit(DS_THEME_CHANGED, { theme });
+  }, [channel, theme]);
+
+  return (
+    <div style={{ display: 'inline-flex', gap: 6, alignItems: 'center', marginRight: 8 }}>
+      <IconButton title="Light theme" active={theme === 'light'} onClick={() => setTheme('light')}>
+        <SunIcon />
+      </IconButton>
+      <IconButton title="Dark theme" active={theme === 'dark'} onClick={() => setTheme('dark')}>
+        <MoonIcon />
+      </IconButton>
+    </div>
+  );
+}
+
+function ViewportToolbar(): React.ReactElement {
+  const channel = addons.getChannel();
+  const [viewport, setViewportState] = React.useState<ViewportKey>(() => readStoredViewport());
+
+  React.useEffect(() => {
+    window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
+    channel.emit(DS_VIEWPORT_CHANGED, { viewport });
+  }, [channel, viewport]);
+
+  function updateViewport(value: ViewportKey): void {
+    setViewportState(value);
   }
 
   return (
@@ -165,7 +204,7 @@ function ViewportToolbar(): React.ReactElement {
           key={item.key}
           title={item.title}
           active={viewport === item.key}
-          onClick={() => setViewport(item.key)}
+          onClick={() => updateViewport(item.key)}
         >
           {item.icon}
         </IconButton>
@@ -175,6 +214,12 @@ function ViewportToolbar(): React.ReactElement {
 }
 
 addons.register('ds/viewport-toolbar', () => {
+  addons.add('ds/theme-toolbar/tool', {
+    title: 'Theme',
+    type: types.TOOL,
+    match: ({ viewMode }) => viewMode === 'docs' || viewMode === 'story',
+    render: () => <ThemeToolbar />,
+  });
   addons.add('ds/viewport-toolbar/tool', {
     title: 'Viewport',
     type: types.TOOL,
