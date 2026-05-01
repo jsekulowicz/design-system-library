@@ -86,6 +86,31 @@ describe('<ds-table>', () => {
     expect(headers[0].getAttribute('aria-sort')).toBe('none');
   });
 
+  it('sets aria-sort="descending" for desc sort direction', async () => {
+    const sortState: TableSortState = { name: 'name', direction: 'desc' };
+    const el = await mountTable({ sortState });
+    const headers = el.shadowRoot!.querySelectorAll('thead th');
+    expect(headers[0].getAttribute('aria-sort')).toBe('descending');
+  });
+
+  it('renders empty text for nullish cell values', async () => {
+    const rows = [{ id: 1, name: null, salary: 100 }] as unknown as readonly Person[];
+    const columns: TableColumn<Person>[] = [{ name: 'name', field: 'name', label: 'Name' }];
+    const el = await mountTable({ rows, columns });
+    const cell = el.shadowRoot!.querySelector('tbody td') as HTMLTableCellElement;
+    expect(cell.textContent?.trim()).toBe('');
+  });
+
+  it('applies column width style when width is provided', async () => {
+    const columns: TableColumn<Person>[] = [
+      { name: 'name', field: 'name', label: 'Name', width: '140px' },
+      { name: 'salary', field: 'salary', label: 'Salary' },
+    ];
+    const el = await mountTable({ columns });
+    const col = el.shadowRoot!.querySelector('colgroup col') as HTMLTableColElement;
+    expect(col.getAttribute('style')).toContain('width: 140px');
+  });
+
   describe('clickable rows', () => {
     it('fires ds-row-click on click when clickable-rows is set', async () => {
       const el = await mountTable({ clickableRows: true });
@@ -116,6 +141,15 @@ describe('<ds-table>', () => {
       expect(events).toHaveLength(2);
     });
 
+    it('does not fire on non-activation keydown', async () => {
+      const el = await mountTable({ clickableRows: true });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      const tr = el.shadowRoot!.querySelector('tbody tr')!;
+      tr.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true }));
+      expect(events).toHaveLength(0);
+    });
+
     it('does not fire when the click target is inside an interactive descendant', async () => {
       const columns: TableColumn<Person>[] = [
         { name: 'name', field: 'name', label: 'Name' },
@@ -130,6 +164,52 @@ describe('<ds-table>', () => {
       const button = el.shadowRoot!.querySelector('button[data-id]') as HTMLButtonElement;
       button.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
+    });
+
+    it('does not fire when the click target has role=button', async () => {
+      const columns: TableColumn<Person>[] = [
+        { name: 'name', field: 'name', label: 'Name' },
+        {
+          name: 'action', field: 'id', label: '',
+          render: () => html`<span role="button">Open</span>`,
+        },
+      ];
+      const el = await mountTable({ columns, clickableRows: true });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      const roleButton = el.shadowRoot!.querySelector('span[role="button"]') as HTMLSpanElement;
+      roleButton.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      expect(events).toHaveLength(0);
+    });
+
+    it('fires when click originates in non-interactive descendants', async () => {
+      const columns: TableColumn<Person>[] = [
+        { name: 'name', field: 'name', label: 'Name' },
+        {
+          name: 'meta', field: 'id', label: '',
+          render: () => html`<span class="meta"><span class="text">Open</span></span>`,
+        },
+      ];
+      const el = await mountTable({ columns, clickableRows: true });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      const text = el.shadowRoot!.querySelector('.text')!.firstChild as Text;
+      text.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      expect(events).toHaveLength(1);
+    });
+
+    it('still fires when composedPath has no tr element', async () => {
+      const el = await mountTable({ clickableRows: true });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      const tr = el.shadowRoot!.querySelector('tbody tr') as HTMLTableRowElement;
+      const event = new MouseEvent('click', { bubbles: true, composed: true });
+      Object.defineProperty(event, 'composedPath', {
+        configurable: true,
+        value: () => [document.createTextNode('x'), document.createElement('span')],
+      });
+      tr.dispatchEvent(event);
+      expect(events).toHaveLength(1);
     });
 
     it('sets role=button and tabindex=0 on rows when clickable', async () => {

@@ -96,6 +96,16 @@ describe('<ds-table-pagination>', () => {
     expect(events[0]?.detail.page).toBe(1);
   });
 
+  it('ignores invalid page-size changes', async () => {
+    const el = await mountPagination({ page: 3, pageSize: 10, pageSizeOptions: [10, 25, 50] });
+    const events: CustomEvent[] = [];
+    el.addEventListener('ds-page-size-change', (e) => events.push(e as CustomEvent));
+    const select = el.shadowRoot!.querySelector('select')!;
+    select.value = '0';
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+    expect(events).toHaveLength(0);
+  });
+
   it('renders hidePageNumbers with a compact label', async () => {
     const el = await mountPagination({ hidePageNumbers: true, page: 3, pageSize: 10, total: 50 });
     expect(getPageButton(el, 2)).toBeNull();

@@ -83,6 +83,25 @@ describe('<ds-checkbox-group>', () => {
     expect(events.at(-1)?.detail).toEqual({ values: ['a'] });
   });
 
+  it('falls back to checkboxvalue attribute and skips empty fallback values', async () => {
+    const el = await mount<DsCheckboxGroup>(`
+      <ds-checkbox-group label="Features">
+        <ds-checkbox checkboxvalue="from-attr">A</ds-checkbox>
+        <ds-checkbox>B</ds-checkbox>
+      </ds-checkbox-group>
+    `);
+    const checkboxes = Array.from(el.querySelectorAll<DsCheckbox>('ds-checkbox')) as Array<DsCheckbox & { checkboxValue?: string }>;
+    checkboxes[0].checkboxValue = undefined;
+    checkboxes[1].checkboxValue = undefined;
+    checkboxes[0].checked = true;
+    checkboxes[1].checked = true;
+
+    checkboxes[0].dispatchEvent(new CustomEvent('ds-change', { bubbles: true, composed: true }));
+    await el.updateComplete;
+
+    expect(el.value).toEqual(['from-attr']);
+  });
+
   it('syncs checked state from preselected values on slotchange', async () => {
     const el = await mount<DsCheckboxGroup>(`
       <ds-checkbox-group label="Features">

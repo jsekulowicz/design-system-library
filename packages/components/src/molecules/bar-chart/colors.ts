@@ -9,5 +9,5 @@ export const DEFAULT_CHART_COLORS: readonly string[] = [
 
 export function colorForIndex(index: number): string {
   const i = ((index % DEFAULT_CHART_COLORS.length) + DEFAULT_CHART_COLORS.length) % DEFAULT_CHART_COLORS.length;
-  return DEFAULT_CHART_COLORS[i] ?? DEFAULT_CHART_COLORS[0]!;
+  return DEFAULT_CHART_COLORS[i]!;
 }

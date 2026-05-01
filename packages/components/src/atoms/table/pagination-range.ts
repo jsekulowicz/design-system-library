@@ -47,9 +47,6 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 function range(start: number, end: number): number[] {
-  const length = end - start + 1;
-  if (length <= 0) {
-    return [];
-  }
+  const length = Math.max(0, end - start + 1);
   return Array.from({ length }, (_, i) => start + i);
 }

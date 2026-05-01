@@ -26,6 +26,10 @@ describe('niceMax', () => {
     expect(niceMax(0.8)).toBe(1);
     expect(niceMax(0.04)).toBe(0.05);
   });
+
+  it('keeps exact powers at the same scale', () => {
+    expect(niceMax(1)).toBe(1);
+  });
 });
 
 describe('generateTicks', () => {
@@ -36,6 +40,11 @@ describe('generateTicks', () => {
 
   it('returns a single tick when max is 0', () => {
     expect(generateTicks(0)).toEqual([0]);
+  });
+
+  it('uses wider step multipliers for larger ranges', () => {
+    expect(generateTicks(120, 5)).toEqual([0, 50, 100]);
+    expect(generateTicks(260, 5)).toEqual([0, 100, 200]);
   });
 });
 
@@ -75,6 +84,10 @@ describe('computeGroupBands', () => {
     const bands = computeGroupBands(100, 2, 2);
     expect(bands[0].innerWidth).toBeGreaterThanOrEqual(0);
   });
+
+  it('returns no bands when group count is zero', () => {
+    expect(computeGroupBands(100, 0, 0.1)).toEqual([]);
+  });
 });
 
 describe('computeGroupedBars', () => {
@@ -111,5 +124,12 @@ describe('computeStackSegments', () => {
   it('returns zero-height segments when yMax or innerHeight is 0', () => {
     const segs = computeStackSegments({ a: 2 }, ['a'], 0, 10);
     expect(segs[0].height).toBe(0);
+  });
+
+  it('falls back missing keys to 0 in both normal and zero-height paths', () => {
+    const regular = computeStackSegments({ a: 2 }, ['a', 'b'], 100, 10);
+    expect(regular[1].value).toBe(0);
+    const empty = computeStackSegments({}, ['missing'], 0, 0);
+    expect(empty[0].value).toBe(0);
   });
 });

@@ -47,7 +47,7 @@ export class DsRadioGroup extends DsElement {
     this.#wireRadios(this.value !== '');
   };
 
-  #wireRadios = (syncChecked = false): void => {
+  #wireRadios = (syncChecked: boolean): void => {
     this._radios.forEach(radio => {
       if (this.name) radio.setAttribute('name', this.name);
       if (this.required) {

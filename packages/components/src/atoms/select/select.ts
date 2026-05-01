@@ -51,6 +51,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @query('.tiles') private _tilesEl?: HTMLElement;
 
   private _docClickHandler?: (e: MouseEvent) => void;
+  private _overflowCheckQueued = false;
 
   #onLeadingChange = (e: Event): void => {
     this._hasLeading = (e.target as HTMLSlotElement).assignedElements().length > 0;
@@ -60,12 +61,18 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (changed.has('label')) this.setAriaLabel(this.label || null);
     if (changed.has('description')) this.setAriaDescription(this.description || null);
     if (changed.has('_scrollTop') && this._listboxEl) this._listboxEl.scrollTop = this._scrollTop;
-    if ((changed.has('values') || changed.has('maxLines')) && this.multiple) this.#checkOverflow();
+    if (
+      (changed.has('values') || changed.has('maxLines') || changed.has('multiple')) &&
+      this.multiple
+    ) {
+      this.#queueOverflowCheck();
+    }
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.label) console.warn('<ds-select>: the `label` property is required for accessibility.');
+    if (!this.label)
+      console.warn('<ds-select>: the `label` property is required for accessibility.');
   }
 
   override disconnectedCallback(): void {
@@ -77,8 +84,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
     this._open = true;
     this._focusedTileIndex = -1;
     const idx = this.multiple
-      ? this.options.findIndex(o => this.values.includes(o.value))
-      : this.options.findIndex(o => o.value === this.value);
+      ? this.options.findIndex((o) => this.values.includes(o.value))
+      : this.options.findIndex((o) => o.value === this.value);
     this._focusedIndex = idx >= 0 ? idx : 0;
     this._scrollTop = Math.max(0, (this._focusedIndex - 2) * ITEM_HEIGHT);
     this._docClickHandler = (e: MouseEvent) => {
@@ -101,7 +108,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (option.disabled) return;
     if (this.multiple) {
       this.values = this.values.includes(option.value)
-        ? this.values.filter(v => v !== option.value)
+        ? this.values.filter((v) => v !== option.value)
         : [...this.values, option.value];
       this.value = this.values.join(',');
       this.emit('ds-change', { detail: { values: this.values } });
@@ -137,18 +144,33 @@ export class DsSelect extends FormControlMixin(DsElement) {
   };
 
   #removeTile = (value: string): void => {
-    this.values = this.values.filter(v => v !== value);
+    this.values = this.values.filter((v) => v !== value);
     this.value = this.values.join(',');
     const visibleCount = this.values.length - this._overflowCount;
-    if (this._focusedTileIndex >= visibleCount) this._focusedTileIndex = Math.max(-1, visibleCount - 1);
+    if (this._focusedTileIndex >= visibleCount)
+      this._focusedTileIndex = Math.max(-1, visibleCount - 1);
     this.emit('ds-change', { detail: { values: this.values } });
   };
 
   #checkOverflow = (): void => {
-    if (!this.maxLines || !this._tilesEl) { if (this._overflowCount) this._overflowCount = 0; return; }
+    if (!this.maxLines || !this._tilesEl) {
+      if (this._overflowCount) this._overflowCount = 0;
+      return;
+    }
     const tiles = Array.from(this._tilesEl.querySelectorAll<HTMLElement>('.tile[data-value]'));
-    const count = tiles.filter(t => t.offsetTop >= this.maxLines! * TILE_ROW_H).length;
-    if (count !== this._overflowCount) this._overflowCount = count;
+    const count = tiles.filter((t) => t.offsetTop >= this.maxLines! * TILE_ROW_H).length;
+    if (count !== this._overflowCount) {
+      this._overflowCount = count;
+    }
+  };
+
+  #queueOverflowCheck = (): void => {
+    if (this._overflowCheckQueued) return;
+    this._overflowCheckQueued = true;
+    queueMicrotask(() => {
+      this._overflowCheckQueued = false;
+      this.#checkOverflow();
+    });
   };
 
   #scrollToFocused = (): void => {
@@ -160,7 +182,10 @@ export class DsSelect extends FormControlMixin(DsElement) {
 
   #moveFocus = (direction: 1 | -1): void => {
     const next = this._focusedIndex + direction;
-    if (next >= 0 && next < this.options.length) { this._focusedIndex = next; this.#scrollToFocused(); }
+    if (next >= 0 && next < this.options.length) {
+      this._focusedIndex = next;
+      this.#scrollToFocused();
+    }
   };
 
   #onTriggerKeydown = (event: KeyboardEvent): void => {
@@ -171,12 +196,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (this.multiple && visibleCount > 0) {
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        this._focusedTileIndex = this._focusedTileIndex <= 0 ? visibleCount - 1 : this._focusedTileIndex - 1;
+        this._focusedTileIndex =
+          this._focusedTileIndex <= 0 ? visibleCount - 1 : this._focusedTileIndex - 1;
         return;
       }
       if (event.key === 'ArrowRight' && this._focusedTileIndex >= 0) {
         event.preventDefault();
-        this._focusedTileIndex = this._focusedTileIndex >= visibleCount - 1 ? -1 : this._focusedTileIndex + 1;
+        this._focusedTileIndex =
+          this._focusedTileIndex >= visibleCount - 1 ? -1 : this._focusedTileIndex + 1;
         return;
       }
       if ((event.key === ' ' || event.key === 'Backspace') && this._focusedTileIndex >= 0) {
@@ -187,101 +214,184 @@ export class DsSelect extends FormControlMixin(DsElement) {
       }
     }
 
-    if (event.key === 'Escape') { this.#close(); return; }
+    if (event.key === 'Escape') {
+      this.#close();
+      return;
+    }
     if (!this._open && (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
       this._focusedTileIndex = -1;
       this.#openDropdown();
       return;
     }
-    if (event.key === 'ArrowDown') { event.preventDefault(); this.#moveFocus(1); }
-    else if (event.key === 'ArrowUp') { event.preventDefault(); this.#moveFocus(-1); }
-    else if (event.key === 'Enter' && this._focusedIndex >= 0) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      this.#moveFocus(1);
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.#moveFocus(-1);
+    } else if (event.key === 'Enter' && this._focusedIndex >= 0) {
       const f = this.options[this._focusedIndex];
-      if (f?.disabled) event.preventDefault(); else if (f) this.#selectOption(f);
+      if (f?.disabled) event.preventDefault();
+      else if (f) this.#selectOption(f);
     }
   };
 
-  #onScroll = (): void => { this._scrollTop = this._listboxEl?.scrollTop ?? 0; };
+  #onScroll = (): void => {
+    this._scrollTop = this._listboxEl?.scrollTop ?? 0;
+  };
 
-  #renderTiles = (): TemplateResult => html`
-    <div class="tiles" style=${this.maxLines ? `max-height:${this.maxLines * TILE_ROW_H - 4}px;overflow:hidden` : ''}>
-      ${this._overflowCount > 0 ? html`
-        <span class="tile tile-overflow" aria-label="${this._overflowCount} more selected">
-          +${this._overflowCount}
-        </span>` : nothing}
+  #renderTiles = (): TemplateResult =>
+    html` <div
+      class="tiles"
+      style=${this.maxLines ? `max-height:${this.maxLines * TILE_ROW_H - 4}px;overflow:hidden` : ''}
+    >
+      ${this._overflowCount > 0
+        ? html` <span class="tile tile-overflow" aria-label="${this._overflowCount} more selected">
+            +${this._overflowCount}
+          </span>`
+        : nothing}
       ${this.values.map((v, i) => {
-        const label = this.options.find(o => o.value === v)?.label ?? v;
-        return html`
-          <span class="tile${this._focusedTileIndex === i ? ' tile-focused' : ''}" data-value=${v}>
-            <span class="tile-label">${label}</span>
-            <button class="tile-remove" type="button" tabindex="-1" aria-label="Remove ${label}"
-              @pointerdown=${(e: Event) => e.preventDefault()}
-              @click=${(e: Event) => { e.stopPropagation(); this.#removeTile(v); }}>
-              <!-- Heroicons 2.2.0 — 16/solid: x-mark -->
-              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
-              </svg>
-            </button>
-          </span>`;
+        const label = this.options.find((o) => o.value === v)?.label ?? v;
+        return html` <span
+          class="tile${this._focusedTileIndex === i ? ' tile-focused' : ''}"
+          data-value=${v}
+        >
+          <span class="tile-label">${label}</span>
+          <button
+            class="tile-remove"
+            type="button"
+            tabindex="-1"
+            aria-label="Remove ${label}"
+            @pointerdown=${(e: Event) => e.preventDefault()}
+            @click=${(e: Event) => {
+              e.stopPropagation();
+              this.#removeTile(v);
+            }}
+          >
+            <!-- Heroicons 2.2.0 — 16/solid: x-mark -->
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </span>`;
       })}
     </div>`;
 
   #renderOption = (option: SelectOption, index: number, current: string): TemplateResult => {
-    const isSelected = this.multiple ? this.values.includes(option.value) : option.value === current;
-    const classes = ['option', isSelected && 'selected', this._focusedIndex === index && 'focused', option.disabled && 'disabled'].filter(Boolean).join(' ');
-    return html`
-      <div id="option-${index}" class=${classes} part="option" role="option"
-        aria-selected=${isSelected} aria-disabled=${option.disabled ?? false}
-        @click=${() => this.#selectOption(option)} @mouseenter=${() => { this._focusedIndex = index; }}>
-        <span class="option-label">${option.label}</span>
-        ${isSelected ? html`
-          <svg class="check-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
-          </svg>` : nothing}
-      </div>`;
+    const isSelected = this.multiple
+      ? this.values.includes(option.value)
+      : option.value === current;
+    const classes = [
+      'option',
+      isSelected && 'selected',
+      this._focusedIndex === index && 'focused',
+      option.disabled && 'disabled',
+    ]
+      .filter(Boolean)
+      .join(' ');
+    return html` <div
+      id="option-${index}"
+      class=${classes}
+      part="option"
+      role="option"
+      aria-selected=${isSelected}
+      aria-disabled=${option.disabled ?? false}
+      @click=${() => this.#selectOption(option)}
+      @mouseenter=${() => {
+        this._focusedIndex = index;
+      }}
+    >
+      <span class="option-label">${option.label}</span>
+      ${isSelected
+        ? html` <svg class="check-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path
+              fill-rule="evenodd"
+              d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+              clip-rule="evenodd"
+            />
+          </svg>`
+        : nothing}
+    </div>`;
   };
 
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
-    const selectedOption = this.options.find(o => o.value === current);
-    const activeDesc = this._open && this._focusedIndex >= 0 ? `option-${this._focusedIndex}` : undefined;
+    const selectedOption = this.options.find((o) => o.value === current);
+    const activeDesc =
+      this._open && this._focusedIndex >= 0 ? `option-${this._focusedIndex}` : undefined;
     const hasTiles = this.multiple && this.values.length > 0;
-    const hasClearBtn = (this.clearable || this.required) && (this.multiple ? this.values.length > 0 : current !== '');
-    return html`
-      ${renderFieldLabel(this.label, this.required, 'trigger')}
+    const hasClearBtn =
+      (this.clearable || this.required) &&
+      (this.multiple ? this.values.length > 0 : current !== '');
+    return html` ${renderFieldLabel(this.label, this.required, 'trigger')}
       <div class="control-wrap">
-        <div id="trigger" class="trigger${this.multiple ? ' trigger-multiple' : ''}" part="trigger"
-          tabindex=${this.disabled ? '-1' : '0'} role="combobox" aria-haspopup="listbox"
-          aria-expanded=${this._open ? 'true' : 'false'} aria-controls="listbox"
+        <div
+          id="trigger"
+          class="trigger${this.multiple ? ' trigger-multiple' : ''}"
+          part="trigger"
+          tabindex=${this.disabled ? '-1' : '0'}
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-expanded=${this._open ? 'true' : 'false'}
+          aria-controls="listbox"
           aria-label=${ifDefined(this.label || undefined)}
-          aria-activedescendant=${ifDefined(activeDesc)} aria-disabled=${this.disabled ? 'true' : 'false'}
-          @click=${this.#toggle} @keydown=${this.#onTriggerKeydown}>
+          aria-activedescendant=${ifDefined(activeDesc)}
+          aria-disabled=${this.disabled ? 'true' : 'false'}
+          @click=${this.#toggle}
+          @keydown=${this.#onTriggerKeydown}
+        >
           <span class="leading" ?hidden=${!this._hasLeading}>
             <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
           </span>
-          ${hasTiles ? this.#renderTiles() : html`
-            <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
-              ${selectedOption?.label ?? this.placeholder}
-            </span>`}
-          ${hasClearBtn ? html`
-            <button class="clear-btn" type="button" aria-label="Clear selection"
-              @click=${(e: Event) => { e.stopPropagation(); this.#clear(); }}
-              @keydown=${this.#onClearKeydown}>
-              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
-              </svg>
-            </button>` : nothing}
+          ${hasTiles
+            ? this.#renderTiles()
+            : html` <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
+                ${selectedOption?.label ?? this.placeholder}
+              </span>`}
+          ${hasClearBtn
+            ? html` <button
+                class="clear-btn"
+                type="button"
+                aria-label="Clear selection"
+                @click=${(e: Event) => {
+                  e.stopPropagation();
+                  this.#clear();
+                }}
+                @keydown=${this.#onClearKeydown}
+              >
+                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>`
+            : nothing}
           <!-- Heroicons 2.2.0 — 16/solid: chevron-down -->
           <svg class="caret" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+            <path
+              fill-rule="evenodd"
+              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd"
+            />
           </svg>
         </div>
-        ${this._open ? html`
-          <div id="listbox" class="listbox" part="listbox" role="listbox"
-            aria-multiselectable=${this.multiple ? 'true' : 'false'} @scroll=${this.#onScroll}>
-            ${renderVirtualItems(this.options, this._scrollTop, (o, i) => this.#renderOption(o, i, current))}
-          </div>` : nothing}
+        ${this._open
+          ? html` <div
+              id="listbox"
+              class="listbox"
+              part="listbox"
+              role="listbox"
+              aria-multiselectable=${this.multiple ? 'true' : 'false'}
+              @scroll=${this.#onScroll}
+            >
+              ${renderVirtualItems(this.options, this._scrollTop, (o, i) =>
+                this.#renderOption(o, i, current),
+              )}
+            </div>`
+          : nothing}
       </div>
       ${renderSubtext(this.description, this.error, this.invalid)}`;
   }

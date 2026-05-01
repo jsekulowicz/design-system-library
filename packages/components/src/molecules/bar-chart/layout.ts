@@ -62,7 +62,10 @@ export function computeGroupBands(
   groupCount: number,
   outerGapRatio: number,
 ): GroupBand[] {
-  const count = Math.max(1, groupCount);
+  if (groupCount <= 0) {
+    return [];
+  }
+  const count = groupCount;
   const bandWidth = Math.max(0, innerWidth / count);
   const pad = bandWidth * Math.max(0, Math.min(0.45, outerGapRatio));
   const bands: GroupBand[] = [];

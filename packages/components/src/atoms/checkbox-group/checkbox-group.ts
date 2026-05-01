@@ -47,7 +47,7 @@ export class DsCheckboxGroup extends DsElement {
     this.#wireCheckboxes(this.value.length > 0);
   };
 
-  #wireCheckboxes = (syncChecked = false): void => {
+  #wireCheckboxes = (syncChecked: boolean): void => {
     this._checkboxes.forEach(el => {
       if (this.name) el.setAttribute('name', this.name);
       if (this.required) {

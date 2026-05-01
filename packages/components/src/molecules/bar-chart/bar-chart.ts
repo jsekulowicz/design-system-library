@@ -60,9 +60,6 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       return;
     }
     requestAnimationFrame(() => {
-      if (!this._frame) {
-        return;
-      }
       const measured = this._frame.clientWidth;
       if (measured > 0 && measured !== this._width) {
         this._width = measured;
@@ -87,10 +84,6 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       }
     });
     this.#resizeObserver.observe(this._frame);
-    const measured = this._frame.clientWidth;
-    if (measured > 0) {
-      this._width = measured;
-    }
   }
 
   #seriesLabel(s: BarChartSeries): string {
@@ -164,8 +157,8 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       >
         <svg role="img" aria-hidden="true" viewBox="0 0 ${width} ${this.height}" width=${width} height=${this.height} preserveAspectRatio="none">
           <g transform="translate(${margin.left}, ${margin.top})">
-            ${this.#renderGrid(ticks, innerHeight, layout.innerWidth)}
-            ${this.#renderYAxis(ticks, innerHeight, margin.left)}
+            ${this.#renderGrid(ticks, innerHeight, layout.innerWidth, yMax)}
+            ${this.#renderYAxis(ticks, innerHeight, margin.left, yMax)}
             ${this.#renderXAxis(groups, bands, innerHeight, margin)}
             ${this.#renderBars(groups, bands, innerHeight, yMax)}
             ${this.#renderFocusRing(bands, innerHeight, groups, yMax)}
@@ -194,24 +187,25 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       return '';
     }
     const domain = this.#formatDomain(g.domain);
-    const parts = this.series.map(s => `${this.#seriesLabel(s)} ${this.#formatValue(g.values[s.key] ?? 0)}`);
+    const parts = this.series.map((s) => {
+      return `${this.#seriesLabel(s)} ${this.#formatValue(g.values[s.key] ?? 0)}`;
+    });
     const total = this.stacked ? `. Total ${this.#formatValue(g.total)}` : '';
     return `${domain}: ${parts.join(', ')}${total}.`;
   }
 
-  #renderGrid(ticks: number[], innerHeight: number, innerWidth: number): SVGTemplateResult {
+  #renderGrid(ticks: number[], innerHeight: number, innerWidth: number, yMax: number): SVGTemplateResult {
     return svg`
       <g class="grid" aria-hidden="true">
         ${ticks.map(tick => {
-          const y = innerHeight - (tick / (ticks.at(-1) || 1)) * innerHeight;
+          const y = innerHeight - (tick / yMax) * innerHeight;
           return svg`<line x1="0" x2=${innerWidth} y1=${y} y2=${y}></line>`;
         })}
       </g>
     `;
   }
 
-  #renderYAxis(ticks: number[], innerHeight: number, marginLeft: number): SVGTemplateResult {
-    const yMax = ticks.at(-1) || 1;
+  #renderYAxis(ticks: number[], innerHeight: number, marginLeft: number, yMax: number): SVGTemplateResult {
     return svg`
       <g class="axis axis-y" aria-hidden="true">
         <line x1="0" x2="0" y1="0" y2=${innerHeight}></line>
@@ -232,20 +226,19 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   }
 
   #renderXAxis(groups: BarChartGroup<T>[], bands: GroupBand[], innerHeight: number, margin: { bottom: number }): SVGTemplateResult {
-    const bandWidth = bands[0]?.bandWidth ?? 0;
+    const firstBand = bands[0]!;
+    const lastBand = bands[bands.length - 1]!;
+    const bandWidth = firstBand.bandWidth;
     const every = this.#xTickEvery(bandWidth);
     const rotation = this.#xLabelRotation(bandWidth);
     return svg`
       <g class="axis axis-x" aria-hidden="true" transform="translate(0, ${innerHeight})">
-        <line x1="0" x2=${bands.at(-1)?.x ? bands.at(-1)!.x + bands.at(-1)!.bandWidth : 0} y1="0" y2="0"></line>
+        <line x1="0" x2=${lastBand.x + lastBand.bandWidth} y1="0" y2="0"></line>
         ${groups.map((g, i) => {
           if (i % every !== 0) {
             return nothing;
           }
-          const band = bands[i];
-          if (!band) {
-            return nothing;
-          }
+          const band = bands[i]!;
           const cx = band.x + band.bandWidth / 2;
           const text = this.#formatDomain(g.domain);
           return svg`
@@ -256,7 +249,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
           `;
         })}
         ${this.xAxisLabel
-          ? svg`<text class="axis-label" x=${(bands.at(-1)?.x ?? 0) / 2 + (bands[0]?.bandWidth ?? 0) / 2} y=${margin.bottom - 8} text-anchor="middle">${this.xAxisLabel}</text>`
+          ? svg`<text class="axis-label" x=${lastBand.x / 2 + firstBand.bandWidth / 2} y=${margin.bottom - 8} text-anchor="middle">${this.xAxisLabel}</text>`
           : nothing}
       </g>
     `;
@@ -264,10 +257,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   #renderBars(groups: BarChartGroup<T>[], bands: GroupBand[], innerHeight: number, yMax: number): SVGTemplateResult {
     return svg`${groups.map((g, gi) => {
-      const band = bands[gi];
-      if (!band) {
-        return nothing;
-      }
+      const band = bands[gi]!;
       const inactive = this._activeIndex != null && this._activeIndex !== gi ? 'inactive' : '';
       const content = this.stacked
         ? this.#renderStackedBars(g, band, innerHeight, yMax)
@@ -279,10 +269,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   #renderStackedBars(g: BarChartGroup<T>, band: GroupBand, innerHeight: number, yMax: number): SVGTemplateResult {
     const segments = computeStackSegments(g.values, this.series.map(s => s.key), innerHeight, yMax);
     return svg`${segments.map((seg, si) => {
-      const s = this.series[si];
-      if (!s) {
-        return nothing;
-      }
+      const s = this.series[si]!;
       const height = seg.value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, seg.height) : 0;
       const y = innerHeight - (segments.slice(0, si + 1).reduce((a, v) => a + Math.max(v.value > 0 ? MIN_SEGMENT_HEIGHT : 0, v.height), 0));
       return svg`<rect class="bar" x=${band.innerX} y=${y} width=${band.innerWidth} height=${height} fill=${this.#seriesColor(s, si)}></rect>`;
@@ -292,10 +279,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   #renderGroupedBars(g: BarChartGroup<T>, band: GroupBand, innerHeight: number, yMax: number): SVGTemplateResult {
     const bars = computeGroupedBars(band.innerX, band.innerWidth, this.series.length, BAR_INNER_GAP);
     return svg`${this.series.map((s, si) => {
-      const bar = bars[si];
-      if (!bar) {
-        return nothing;
-      }
+      const bar = bars[si]!;
       const value = g.values[s.key] ?? 0;
       const h = yMax > 0 ? (value / yMax) * innerHeight : 0;
       const drawH = value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, h) : 0;
@@ -402,7 +386,9 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
             ${groups.map(g => html`
               <tr>
                 <th scope="row">${this.#formatDomain(g.domain)}</th>
-                ${this.series.map(s => html`<td>${this.#formatValue(g.values[s.key] ?? 0)}</td>`)}
+                ${this.series.map((s) => {
+                  return html`<td>${this.#formatValue(g.values[s.key] ?? 0)}</td>`;
+                })}
                 ${this.stacked ? html`<td>${this.#formatValue(g.total)}</td>` : nothing}
               </tr>
             `)}
@@ -428,7 +414,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       detail: {
         groupIndex: index,
         domainValue: g.domain,
-        values: this.series.map(s => ({
+        values: this.series.map((s) => ({
           key: s.key,
           label: this.#seriesLabel(s),
           value: g.values[s.key] ?? 0,
@@ -468,7 +454,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       this.#setActive(null);
       return;
     }
-    const index = Math.min(layout.bands.length - 1, Math.max(0, Math.floor(localX / (layout.bands[0]?.bandWidth || 1))));
+    const index = Math.min(layout.bands.length - 1, Math.max(0, Math.floor(localX / Math.max(1, layout.bands[0]!.bandWidth))));
     this._focusMode = 'pointer';
     this.#setActive(index);
   };

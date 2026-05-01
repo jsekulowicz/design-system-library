@@ -94,6 +94,19 @@ describe('<ds-nav-group>', () => {
     expect(items.hasAttribute('hidden')).toBe(false);
   });
 
+  it('ignores heading click handler when collapsible is false', async () => {
+    const el = await mount<DsNavGroup>('<ds-nav-group label="Workspace"></ds-nav-group>');
+    el.collapsible = false;
+    await el.updateComplete;
+    const events: CustomEvent[] = [];
+    el.addEventListener('ds-group-toggle', (event) => events.push(event as CustomEvent));
+    const heading = el.shadowRoot!.querySelector('button[part="heading"]') as HTMLButtonElement;
+    heading.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+    await el.updateComplete;
+    expect(events).toHaveLength(0);
+    expect(el.expanded).toBe(false);
+  });
+
   it('reflects the compact attribute and sets aria-label on the heading', async () => {
     const el = await mount<DsNavGroup>(
       '<ds-nav-group label="Workspace" compact><span slot="icon">*</span></ds-nav-group>',
@@ -125,6 +138,30 @@ describe('<ds-nav-group>', () => {
       expect(errors.some((args) => String(args[0]).includes('compact mode requires'))).toBe(true);
     } finally {
       console.error = original;
+    }
+  });
+
+  it('handles missing icon slot lookup safely', async () => {
+    const el = await mount<DsNavGroup>('<ds-nav-group label="Workspace"></ds-nav-group>');
+    const originalError = console.error;
+    console.error = () => {};
+    try {
+      const root = el.shadowRoot as ShadowRoot & {
+        querySelector: (selectors: string) => Element | null;
+      };
+      const original = root.querySelector.bind(root);
+      root.querySelector = ((selectors: string) => {
+        if (selectors === 'slot[name="icon"]') {
+          return null;
+        }
+        return original(selectors);
+      }) as typeof root.querySelector;
+
+      el.compact = true;
+      await el.updateComplete;
+      expect(el.hasAttribute('compact')).toBe(true);
+    } finally {
+      console.error = originalError;
     }
   });
 });

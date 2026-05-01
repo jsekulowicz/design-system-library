@@ -82,6 +82,17 @@ describe('<ds-nav-item>', () => {
     expect(link.getAttribute('aria-label')).toBe('Documentation');
   });
 
+  it('sets aria-label on disabled compact link content', async () => {
+    const el = await mount<DsNavItem>(
+      '<ds-nav-item href="/" compact disabled><span slot="icon">*</span>Documentation</ds-nav-item>',
+    );
+    const slot = el.shadowRoot!.querySelector('[part="label"] slot') as HTMLSlotElement;
+    slot.dispatchEvent(new Event('slotchange'));
+    await el.updateComplete;
+    const link = el.shadowRoot!.querySelector('[part="link"]') as HTMLElement;
+    expect(link.getAttribute('aria-label')).toBe('Documentation');
+  });
+
   it('does not set aria-label in non-compact mode', async () => {
     const el = await mount<DsNavItem>('<ds-nav-item href="/">Home</ds-nav-item>');
     const link = el.shadowRoot!.querySelector('a')!;
@@ -110,5 +121,42 @@ describe('<ds-nav-item>', () => {
     } finally {
       console.error = original;
     }
+  });
+
+  it('handles missing icon slot lookup safely', async () => {
+    const el = await mount<DsNavItem>('<ds-nav-item href="/">Home</ds-nav-item>');
+    const originalError = console.error;
+    console.error = () => {};
+    try {
+      const root = el.shadowRoot as ShadowRoot & {
+        querySelector: (selectors: string) => Element | null;
+      };
+      const original = root.querySelector.bind(root);
+      root.querySelector = ((selectors: string) => {
+        if (selectors === 'slot[name="icon"]') {
+          return null;
+        }
+        return original(selectors);
+      }) as typeof root.querySelector;
+
+      el.compact = true;
+      await el.updateComplete;
+      expect(el.hasAttribute('compact')).toBe(true);
+    } finally {
+      console.error = originalError;
+    }
+  });
+
+  it('handles slotted nodes with null textContent', async () => {
+    const el = await mount<DsNavItem>('<ds-nav-item href="/">Home</ds-nav-item>');
+    const slot = el.shadowRoot!.querySelector('[part="label"] slot') as HTMLSlotElement & {
+      assignedNodes: (options?: AssignedNodesOptions) => Node[];
+    };
+    const original = slot.assignedNodes.bind(slot);
+    slot.assignedNodes = () => [{ textContent: null } as unknown as Node];
+    slot.dispatchEvent(new Event('slotchange'));
+    await el.updateComplete;
+    slot.assignedNodes = original;
+    expect(el.shadowRoot!.querySelector('[part="label"]')).not.toBeNull();
   });
 });
