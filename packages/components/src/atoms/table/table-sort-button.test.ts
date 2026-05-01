@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsTableSortButton } from './table-sort-button.js';
 import './define.js';
+import { mount, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
   if (!customElements.get('ds-table-sort-button')) {
@@ -9,15 +10,8 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  document.body.innerHTML = '';
+  resetTestDom();
 });
-
-async function mount(attrs = ''): Promise<DsTableSortButton> {
-  document.body.innerHTML = `<ds-table-sort-button ${attrs}></ds-table-sort-button>`;
-  const el = document.body.firstElementChild as DsTableSortButton;
-  await el.updateComplete;
-  return el;
-}
 
 function click(el: DsTableSortButton): void {
   el.shadowRoot!.querySelector('button')!.click();
@@ -25,12 +19,12 @@ function click(el: DsTableSortButton): void {
 
 describe('<ds-table-sort-button>', () => {
   it('defaults direction to null', async () => {
-    const el = await mount();
+    const el = await mount<DsTableSortButton>('<ds-table-sort-button></ds-table-sort-button>');
     expect(el.direction).toBeNull();
   });
 
   it('emits ds-sort with next direction on click (null -> asc -> desc -> null)', async () => {
-    const el = await mount();
+    const el = await mount<DsTableSortButton>('<ds-table-sort-button></ds-table-sort-button>');
     const events: CustomEvent<{ direction: string | null }>[] = [];
     el.addEventListener('ds-sort', (e) => events.push(e as CustomEvent));
 
@@ -49,7 +43,7 @@ describe('<ds-table-sort-button>', () => {
   });
 
   it('reflects direction to attribute', async () => {
-    const el = await mount();
+    const el = await mount<DsTableSortButton>('<ds-table-sort-button></ds-table-sort-button>');
     el.direction = 'asc';
     await el.updateComplete;
     expect(el.getAttribute('direction')).toBe('asc');
@@ -59,7 +53,7 @@ describe('<ds-table-sort-button>', () => {
   });
 
   it('sets aria-pressed based on direction', async () => {
-    const el = await mount();
+    const el = await mount<DsTableSortButton>('<ds-table-sort-button></ds-table-sort-button>');
     const btn = el.shadowRoot!.querySelector('button')!;
     expect(btn.getAttribute('aria-pressed')).toBe('false');
     el.direction = 'asc';
@@ -68,7 +62,7 @@ describe('<ds-table-sort-button>', () => {
   });
 
   it('includes column in aria-label', async () => {
-    const el = await mount('column="Name"');
+    const el = await mount<DsTableSortButton>('<ds-table-sort-button column="Name"></ds-table-sort-button>');
     const btn = el.shadowRoot!.querySelector('button')!;
     expect(btn.getAttribute('aria-label')).toBe('Sort by Name');
     el.direction = 'asc';

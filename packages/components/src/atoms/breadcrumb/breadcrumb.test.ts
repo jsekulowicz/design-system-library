@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsBreadcrumb } from './breadcrumb.js';
 import { DsBreadcrumbItem } from './breadcrumb-item.js';
 import './define.js';
+import { mount, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
   if (!customElements.get('ds-breadcrumb')) {
@@ -13,13 +14,11 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  document.body.innerHTML = '';
+  resetTestDom();
 });
 
-async function mount(inner: string): Promise<DsBreadcrumb> {
-  document.body.innerHTML = `<ds-breadcrumb>${inner}</ds-breadcrumb>`;
-  const el = document.body.firstElementChild as DsBreadcrumb;
-  await el.updateComplete;
+async function mountBreadcrumb(inner: string): Promise<DsBreadcrumb> {
+  const el = await mount<DsBreadcrumb>(`<ds-breadcrumb>${inner}</ds-breadcrumb>`);
   await Promise.all(
     Array.from(el.querySelectorAll('ds-breadcrumb-item'))
       .map(child => (child as DsBreadcrumbItem).updateComplete),
@@ -33,20 +32,20 @@ function items(el: DsBreadcrumb): DsBreadcrumbItem[] {
 
 describe('<ds-breadcrumb>', () => {
   it('renders a <nav> with aria-label="Breadcrumb" by default', async () => {
-    const el = await mount('<ds-breadcrumb-item>Home</ds-breadcrumb-item>');
+    const el = await mountBreadcrumb('<ds-breadcrumb-item>Home</ds-breadcrumb-item>');
     const nav = el.shadowRoot!.querySelector('nav')!;
     expect(nav.getAttribute('aria-label')).toBe('Breadcrumb');
   });
 
   it('honors the label attribute', async () => {
-    document.body.innerHTML = '<ds-breadcrumb label="Section"><ds-breadcrumb-item>Home</ds-breadcrumb-item></ds-breadcrumb>';
-    const el = document.body.firstElementChild as DsBreadcrumb;
-    await el.updateComplete;
+    const el = await mount<DsBreadcrumb>(
+      '<ds-breadcrumb label="Section"><ds-breadcrumb-item>Home</ds-breadcrumb-item></ds-breadcrumb>',
+    );
     expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Section');
   });
 
   it('marks only the last item as last + current', async () => {
-    const el = await mount(`
+    const el = await mountBreadcrumb(`
       <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
       <ds-breadcrumb-item href="/p">Products</ds-breadcrumb-item>
       <ds-breadcrumb-item>Widget</ds-breadcrumb-item>
@@ -61,7 +60,7 @@ describe('<ds-breadcrumb>', () => {
   });
 
   it('re-syncs when items are added', async () => {
-    const el = await mount(`
+    const el = await mountBreadcrumb(`
       <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
       <ds-breadcrumb-item>Page</ds-breadcrumb-item>
     `);
@@ -81,7 +80,7 @@ describe('<ds-breadcrumb>', () => {
   });
 
   it('renders an <ol> with role="list"', async () => {
-    const el = await mount('<ds-breadcrumb-item>Home</ds-breadcrumb-item>');
+    const el = await mountBreadcrumb('<ds-breadcrumb-item>Home</ds-breadcrumb-item>');
     const ol = el.shadowRoot!.querySelector('ol')!;
     expect(ol.getAttribute('role')).toBe('list');
   });

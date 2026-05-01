@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { DsButton } from './button.js';
 import './define.js';
+import { mount } from '../../test-utils/mount.js';
 
 beforeAll(() => {
   if (!customElements.get('ds-button')) {
@@ -8,23 +9,16 @@ beforeAll(() => {
   }
 });
 
-async function mount(html: string): Promise<DsButton> {
-  document.body.innerHTML = html;
-  const el = document.body.firstElementChild as DsButton;
-  await el.updateComplete;
-  return el;
-}
-
 describe('<ds-button>', () => {
   it('defaults to primary/md button type', async () => {
-    const el = await mount('<ds-button>Go</ds-button>');
+    const el = await mount<DsButton>('<ds-button>Go</ds-button>');
     expect(el.variant).toBe('primary');
     expect(el.size).toBe('md');
     expect(el.type).toBe('button');
   });
 
   it('emits ds-click on activation and respects disabled', async () => {
-    const el = await mount('<ds-button>Go</ds-button>');
+    const el = await mount<DsButton>('<ds-button>Go</ds-button>');
     const events: Event[] = [];
     el.addEventListener('ds-click', (event) => events.push(event));
     el.shadowRoot!.querySelector('button')!.click();

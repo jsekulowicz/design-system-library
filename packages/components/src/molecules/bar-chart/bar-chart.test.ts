@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsBarChart } from './bar-chart.js';
 import type { BarChartSeries } from './types.js';
 import './define.js';
+import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
   if (!customElements.get('ds-bar-chart')) {
@@ -34,18 +35,20 @@ const SERIES: readonly BarChartSeries[] = [
   { key: 'Andrew' },
 ];
 
-async function mount(props: Partial<DsBarChart<Turn>> = {}): Promise<DsBarChart<Turn>> {
-  document.body.innerHTML = '<ds-bar-chart></ds-bar-chart>';
-  const el = document.body.firstElementChild as DsBarChart<Turn>;
-  Object.assign(el, { data: ROWS, domain: 'turn', series: SERIES, ...props });
-  await el.updateComplete;
+async function mountBarChart(props: Partial<DsBarChart<Turn>> = {}): Promise<DsBarChart<Turn>> {
+  const el = await mountWithProps<DsBarChart<Turn>>('<ds-bar-chart></ds-bar-chart>', {
+    data: ROWS,
+    domain: 'turn',
+    series: SERIES,
+    ...props,
+  });
   (el as unknown as { _width: number })._width = 600;
   await el.updateComplete;
   return el;
 }
 
 beforeEach(() => {
-  document.body.innerHTML = '';
+  resetTestDom();
 });
 
 function groups(el: DsBarChart<Turn>): SVGGElement[] {
@@ -58,22 +61,22 @@ function bars(el: DsBarChart<Turn>): SVGRectElement[] {
 
 describe('<ds-bar-chart>', () => {
   it('renders one bar-group per data row', async () => {
-    const el = await mount();
+    const el = await mountBarChart();
     expect(groups(el)).toHaveLength(3);
   });
 
   it('renders seriesCount bars per group in grouped mode', async () => {
-    const el = await mount({ stacked: false });
+    const el = await mountBarChart({ stacked: false });
     expect(bars(el)).toHaveLength(3 * 3);
   });
 
   it('renders seriesCount segments per group in stacked mode', async () => {
-    const el = await mount({ stacked: true });
+    const el = await mountBarChart({ stacked: true });
     expect(bars(el)).toHaveLength(3 * 3);
   });
 
   it('exposes a hidden data table mirroring the rows and series', async () => {
-    const el = await mount();
+    const el = await mountBarChart();
     const table = el.shadowRoot!.querySelector('.sr-only table')!;
     const rows = table.querySelectorAll('tbody tr');
     expect(rows).toHaveLength(3);
@@ -83,13 +86,13 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('includes a total column in the hidden table when stacked', async () => {
-    const el = await mount({ stacked: true });
+    const el = await mountBarChart({ stacked: true });
     const headerCells = el.shadowRoot!.querySelectorAll('.sr-only table thead th');
     expect(headerCells[headerCells.length - 1].textContent?.trim()).toBe('Total');
   });
 
   it('moves active group with ArrowRight / ArrowLeft / Home / End', async () => {
-    const el = await mount();
+    const el = await mountBarChart();
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await el.updateComplete;
@@ -109,7 +112,7 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('does not wrap past the last or first group', async () => {
-    const el = await mount();
+    const el = await mountBarChart();
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'End' }));
     await el.updateComplete;
@@ -119,7 +122,7 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('emits ds-bar-focus on active change with series values', async () => {
-    const el = await mount();
+    const el = await mountBarChart();
     const events: CustomEvent[] = [];
     el.addEventListener('ds-bar-focus', e => events.push(e as CustomEvent));
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
@@ -134,7 +137,7 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('only renders the group focus ring for keyboard interaction, not pointer hover', async () => {
-    const el = await mount();
+    const el = await mountBarChart();
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
 
     const rect = frame.getBoundingClientRect();
@@ -153,7 +156,7 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('shows the tooltip when a group is active and hides it on Escape', async () => {
-    const el = await mount();
+    const el = await mountBarChart();
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
     await el.updateComplete;
@@ -168,7 +171,7 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('uses series label and color overrides when provided', async () => {
-    const el = await mount({
+    const el = await mountBarChart({
       series: [
         { key: 'Jess', label: 'Jessica', color: '#ff0000' },
         { key: 'Marco' },
@@ -182,7 +185,7 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('formats domain and values via formatters in the sr-table', async () => {
-    const el = await mount({
+    const el = await mountBarChart({
       formatDomain: (v: unknown) => `Turn ${v}`,
       formatValue: (v: number) => `${v} pts`,
     });

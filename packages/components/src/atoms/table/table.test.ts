@@ -3,6 +3,7 @@ import { html } from 'lit';
 import { DsTable } from './table.js';
 import './define.js';
 import type { TableColumn, TableSortState } from './types.js';
+import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
   if (!customElements.get('ds-table')) {
@@ -22,21 +23,21 @@ const COLUMNS: readonly TableColumn<Person>[] = [
   { name: 'salary', field: 'salary', label: 'Salary', align: 'right' },
 ];
 
-async function mount(props: Partial<DsTable<Person>> = {}): Promise<DsTable<Person>> {
-  document.body.innerHTML = '<ds-table></ds-table>';
-  const el = document.body.firstElementChild as DsTable<Person>;
-  Object.assign(el, { rows: ROWS, columns: COLUMNS, ...props });
-  await el.updateComplete;
-  return el;
+async function mountTable(props: Partial<DsTable<Person>> = {}): Promise<DsTable<Person>> {
+  return mountWithProps<DsTable<Person>>('<ds-table></ds-table>', {
+    rows: ROWS,
+    columns: COLUMNS,
+    ...props,
+  });
 }
 
 beforeEach(() => {
-  document.body.innerHTML = '';
+  resetTestDom();
 });
 
 describe('<ds-table>', () => {
   it('renders one row per item with cells from row fields', async () => {
-    const el = await mount();
+    const el = await mountTable();
     const rows = el.shadowRoot!.querySelectorAll('tbody tr');
     expect(rows).toHaveLength(2);
     expect(rows[0].textContent).toContain('Ada');
@@ -44,7 +45,7 @@ describe('<ds-table>', () => {
   });
 
   it('applies align class to cells', async () => {
-    const el = await mount();
+    const el = await mountTable();
     const cells = el.shadowRoot!.querySelectorAll('tbody tr:first-child td');
     expect(cells[0].classList.contains('align-left')).toBe(true);
     expect(cells[1].classList.contains('align-right')).toBe(true);
@@ -61,33 +62,33 @@ describe('<ds-table>', () => {
         },
       },
     ];
-    const el = await mount({ columns });
+    const el = await mountTable({ columns });
     expect(received).toEqual([{ name: 'Ada', index: 0 }, { name: 'Bob', index: 1 }]);
     expect(el.shadowRoot!.querySelector('em')?.textContent).toBe('ADA');
   });
 
   it('shows empty slot fallback when rows is empty', async () => {
-    const el = await mount({ rows: [] });
+    const el = await mountTable({ rows: [] });
     expect(el.shadowRoot!.querySelector('[part="empty"]')?.textContent).toContain('No data');
   });
 
   it('sets aria-sort from sortState on sortable columns', async () => {
     const sortState: TableSortState = { name: 'name', direction: 'asc' };
-    const el = await mount({ sortState });
+    const el = await mountTable({ sortState });
     const headers = el.shadowRoot!.querySelectorAll('thead th');
     expect(headers[0].getAttribute('aria-sort')).toBe('ascending');
     expect(headers[1].hasAttribute('aria-sort')).toBe(false);
   });
 
   it('sets aria-sort="none" on sortable columns when no sort state matches', async () => {
-    const el = await mount();
+    const el = await mountTable();
     const headers = el.shadowRoot!.querySelectorAll('thead th');
     expect(headers[0].getAttribute('aria-sort')).toBe('none');
   });
 
   describe('clickable rows', () => {
     it('fires ds-row-click on click when clickable-rows is set', async () => {
-      const el = await mount({ clickableRows: true });
+      const el = await mountTable({ clickableRows: true });
       const events: CustomEvent<{ row: Person; index: number }>[] = [];
       el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
       const tr = el.shadowRoot!.querySelector('tbody tr')!;
@@ -97,7 +98,7 @@ describe('<ds-table>', () => {
     });
 
     it('does not fire when clickable-rows is unset', async () => {
-      const el = await mount({ clickableRows: false });
+      const el = await mountTable({ clickableRows: false });
       const events: CustomEvent[] = [];
       el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
       const tr = el.shadowRoot!.querySelector('tbody tr')!;
@@ -106,7 +107,7 @@ describe('<ds-table>', () => {
     });
 
     it('fires on Enter and Space keydown', async () => {
-      const el = await mount({ clickableRows: true });
+      const el = await mountTable({ clickableRows: true });
       const events: CustomEvent[] = [];
       el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
       const tr = el.shadowRoot!.querySelector('tbody tr')!;
@@ -123,7 +124,7 @@ describe('<ds-table>', () => {
           render: (row) => html`<button data-id=${row.id}>Edit</button>`,
         },
       ];
-      const el = await mount({ columns, clickableRows: true });
+      const el = await mountTable({ columns, clickableRows: true });
       const events: CustomEvent[] = [];
       el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
       const button = el.shadowRoot!.querySelector('button[data-id]') as HTMLButtonElement;
@@ -132,7 +133,7 @@ describe('<ds-table>', () => {
     });
 
     it('sets role=button and tabindex=0 on rows when clickable', async () => {
-      const el = await mount({ clickableRows: true });
+      const el = await mountTable({ clickableRows: true });
       const tr = el.shadowRoot!.querySelector('tbody tr')!;
       expect(tr.getAttribute('role')).toBe('button');
       expect(tr.getAttribute('tabindex')).toBe('0');
