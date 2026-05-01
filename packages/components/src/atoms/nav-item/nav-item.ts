@@ -39,8 +39,17 @@ export class DsNavItem extends DsElement {
     }
   }
 
+  #hasAssignedIcon(): boolean {
+    const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot[name="icon"]');
+    if (!slot) {
+      return false;
+    }
+
+    return slot.assignedNodes({ flatten: true }).length > 0;
+  }
+
   #warnIfMissingIcon(): void {
-    if (this.compact && !this._hasIcon) {
+    if (this.compact && !this.#hasAssignedIcon()) {
       console.error(
         '[ds-nav-item] compact mode requires a child element with slot="icon".',
         this,
@@ -48,9 +57,9 @@ export class DsNavItem extends DsElement {
     }
   }
 
-  #onIconSlotChange = (e: Event): void => {
-    const slot = e.target as HTMLSlotElement;
-    this._hasIcon = slot.assignedNodes({ flatten: true }).length > 0;
+  #onIconSlotChange = (): void => {
+    this._hasIcon = this.#hasAssignedIcon();
+    this.#warnIfMissingIcon();
   };
 
   #onLabelSlotChange = (e: Event): void => {

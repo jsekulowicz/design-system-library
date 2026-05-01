@@ -1,6 +1,12 @@
 import { defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
 
+function suppressKnownTestNoise(log: string, type: 'stdout' | 'stderr'): boolean | void {
+  if (type === 'stderr' && log.includes('Lit is in dev mode. Not recommended for production!')) {
+    return false;
+  }
+}
+
 export default defineConfig({
   resolve: {
     alias: {
@@ -11,6 +17,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     include: ['src/**/*.test.ts'],
+    onConsoleLog: suppressKnownTestNoise,
     coverage: {
       provider: 'istanbul',
       reporter: ['text', 'html', 'lcov', 'json-summary'],
