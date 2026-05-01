@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config';
+import { coverageConfigDefaults, defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
 
 function suppressKnownTestNoise(log: string, type: 'stdout' | 'stderr'): boolean | void {
@@ -24,7 +24,17 @@ export default defineConfig({
       reportsDirectory: './coverage',
       all: true,
       include: ['src/**/*.ts'],
-      exclude: ['src/**/*.test.ts', 'src/**/*.stories.ts', 'src/**/define.ts'],
+      exclude: [
+        ...coverageConfigDefaults.exclude,
+        'src/**/*.test.ts',
+        'src/**/*.stories.ts',
+        'src/**/define.ts',
+        'src/**/utils/**',
+        'src/test-utils/**',
+        'src/**/*.styles.ts',
+        'src/atoms/icon/icons/**',
+      ],
+      excludeAfterRemap: true,
       reportOnFailure: true,
     },
   },
