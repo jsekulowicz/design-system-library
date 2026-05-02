@@ -61,7 +61,7 @@ export class DsNavbar extends DsElement {
           part="toggle"
           type="button"
           aria-label=${this.menuLabel}
-          aria-expanded=${String(this._open)}
+          aria-expanded=${this._open ? 'true' : 'false'}
           aria-controls=${menuId}
           @click=${this.#onToggle}
         >

@@ -37,6 +37,9 @@ jobs:
       - name: Lit static validation
         run: pnpm lint:lit
 
+      - name: Lit analyzer validation
+        run: pnpm lint:lit:analyzer
+
       - name: Unit tests
         run: pnpm test
 

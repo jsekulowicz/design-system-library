@@ -72,7 +72,7 @@ export class DsNavGroup extends DsElement {
       part="heading"
       id=${headingId}
       type="button"
-      aria-expanded=${this.collapsible ? String(isOpen) : 'true'}
+      aria-expanded=${this.collapsible ? (isOpen ? 'true' : 'false') : 'true'}
       aria-controls=${itemsId}
       aria-label=${this.compact ? this.label : ''}
       ?disabled=${!this.collapsible}
