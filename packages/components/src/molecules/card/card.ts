@@ -13,6 +13,8 @@ export type CardOrientation = 'vertical' | 'horizontal';
  * @slot title - Heading content.
  * @slot default - Body content.
  * @slot footer - Footer content (actions, meta).
+ * @csspart card - The outer container element.
+ * @csspart body - The body wrapper that holds the default slot.
  */
 export class DsCard extends DsElement {
   static override styles = [...DsElement.styles, cardStyles];
@@ -34,7 +36,7 @@ export class DsCard extends DsElement {
         <slot name="eyebrow"></slot>
         <slot name="title"></slot>
       </header>
-      <div class="body"><slot></slot></div>
+      <div class="body" part="body"><slot></slot></div>
       <div class="actions" ?hidden=${!this._hasActions}>
         <slot name="actions" @slotchange=${this.#onActionsSlotChange}></slot>
       </div>

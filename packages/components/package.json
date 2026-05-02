@@ -158,6 +158,11 @@
       "import": "./dist/molecules/card/index.js"
     },
     "./card/define": { "import": "./dist/molecules/card/define.js" },
+    "./dialog": {
+      "types": "./dist/molecules/dialog/index.d.ts",
+      "import": "./dist/molecules/dialog/index.js"
+    },
+    "./dialog/define": { "import": "./dist/molecules/dialog/define.js" },
     "./bar-chart": {
       "types": "./dist/molecules/bar-chart/index.d.ts",
       "import": "./dist/molecules/bar-chart/index.js"

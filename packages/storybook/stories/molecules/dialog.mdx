@@ -1,0 +1,56 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as DialogStories from './dialog.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={DialogStories} />
+
+# Dialog
+
+Modal surface built on the native `<dialog>` element. Use it for focused tasks that interrupt the flow — confirmations, destructive prompts, multi-step forms — when the rest of the page must wait.
+
+## Anatomy
+
+A header with the title and close affordance, a scrolling body, and a sticky footer for actions. The header and footer stay fixed while the body scrolls. Composes `ds-card` for the visual frame and `ds-button` in the footer slot.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={DialogStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={DialogStories.Playground} />
+      <ComponentApi tag="ds-dialog" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Reach for a dialog when the user must respond before continuing — confirmations, destructive actions, focused tasks.</li>
+        <li>Keep the title verb-led and specific (e.g. "Delete project", not "Are you sure?").</li>
+        <li>Place the primary action on the right of the footer with a `secondary` or `ghost` cancel beside it.</li>
+        <li>Let the body scroll; keep header and footer concise so the actions stay reachable on small viewports.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't open dialogs from non-user actions (timers, page load) — they hijack focus.</li>
+        <li>Don't nest dialogs. If a flow needs more than one step, prefer a multi-step form inside a single dialog.</li>
+        <li>Don't disable <code>dismissible</code> by default — only when the user truly must commit to a choice.</li>
+        <li>Don't put long-form content inside a dialog when a dedicated page would serve the user better.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders a native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>: focus is trapped inside, the rest of the page becomes inert, and Escape closes by default.</li>
+        <li>The dialog is labelled by the slotted <code>title</code> via <code>aria-labelledby</code>; pass the <code>label</code> prop to override with a plain string.</li>
+        <li>Focus returns to the element that opened the dialog when it closes.</li>
+        <li>The header close button is a native <code>&lt;button&gt;</code> with <code>aria-label="Close"</code>.</li>
+        <li><code>dismissible={false}</code> cancels the native <code>cancel</code> event, blocking Escape and backdrop dismissal — use sparingly.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
