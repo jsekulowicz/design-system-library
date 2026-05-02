@@ -34,6 +34,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Lit static validation
+        run: pnpm lint:lit
+
       - name: Unit tests
         run: pnpm test
 
