@@ -4,36 +4,18 @@ import { live } from 'lit/directives/live.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
-import { renderVirtualItems, ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/virtual-list.js';
+import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
-  clampTileFocusIndex,
-  countOverflowTiles,
-  getNextTileFocusIndex,
-  getVisibleTileCount,
-  queueTaskOnce,
   renderChevronDownIcon,
   renderClearButton,
   renderOptionItem,
   renderSelectedTiles,
 } from '../select/select.shared.js';
+import { DropdownController } from '../select/dropdown-controller.js';
+import { clearKeydown, dropdownKeydown } from '../select/dropdown-keydown.js';
 import { searchableSelectStyles } from './searchable-select.styles.js';
+import { highlightMatch } from './highlight-match.js';
 import type { SelectOption } from '../select/select.js';
-
-function highlightMatch(label: string, query: string): TemplateResult {
-  if (!query) return html`${label}`;
-  const lower = label.toLowerCase();
-  const q = query.toLowerCase();
-  const parts: Array<TemplateResult | string> = [];
-  let pos = 0;
-  let idx: number;
-  while ((idx = lower.indexOf(q, pos)) !== -1) {
-    if (idx > pos) parts.push(label.slice(pos, idx));
-    parts.push(html`<mark class="match">${label.slice(idx, idx + q.length)}</mark>`);
-    pos = idx + q.length;
-  }
-  if (pos < label.length) parts.push(label.slice(pos));
-  return html`${parts}`;
-}
 
 /**
  * @tag ds-searchable-select
@@ -64,13 +46,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ type: Array }) values: string[] = [];
   @property({ type: Number }) maxLines?: number;
 
-  @state() private _open = false;
   @state() private _search = '';
-  @state() private _focusedIndex = -1;
-  @state() private _scrollTop = 0;
-  @state() private _focusedTileIndex = -1;
-  @state() private _overflowCount = 0;
-  @state() private _hasLeading = false;
 
   private _labelMap = new Map<string, string>();
 
@@ -78,12 +54,41 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @query('.tiles') private _tilesEl?: HTMLElement;
   @query('.search-input') private _inputEl?: HTMLInputElement;
 
-  private _docClickHandler?: (e: MouseEvent) => void;
-  private _overflowCheckQueued = false;
+  #dropdown = new DropdownController(this, {
+    getOptions: () => this.options,
+    getCurrentValue: () => (typeof this.value === 'string' ? this.value : ''),
+    getValues: () => this.values,
+    getMultiple: () => this.multiple,
+    getMaxLines: () => this.maxLines,
+    getTilesEl: () => this._tilesEl,
+    getListboxEl: () => this._listboxEl,
+    applyValues: (next) => {
+      this.values = next;
+      this.value = next.join(',');
+      this.emit('ds-change', { detail: { values: next } });
+    },
+    canOpen: () => !this.loading,
+    onOpen: () => {
+      this._search = '';
+    },
+    onClose: () => {
+      this._search = '';
+      this.emit('ds-search', { detail: { query: '' } });
+    },
+  });
 
-  #onLeadingChange = (e: Event): void => {
-    this._hasLeading = (e.target as HTMLSlotElement).assignedElements().length > 0;
-  };
+  /* test-facing forwarders to controller state */
+  get _open(): boolean { return this.#dropdown.open; }
+  get _focusedIndex(): number { return this.#dropdown.focusedIndex; }
+  set _focusedIndex(value: number) { this.#dropdown.focusedIndex = value; }
+  get _focusedTileIndex(): number { return this.#dropdown.focusedTileIndex; }
+  set _focusedTileIndex(value: number) { this.#dropdown.focusedTileIndex = value; }
+  get _scrollTop(): number { return this.#dropdown.scrollTop; }
+  set _scrollTop(value: number) { this.#dropdown.scrollTop = value; }
+  get _hasLeading(): boolean { return this.#dropdown.hasLeading; }
+  get _overflowCount(): number { return this.#dropdown.overflowCount; }
+  get _overflowCheckQueued(): boolean { return this.#dropdown.overflowCheckQueued; }
+  set _overflowCheckQueued(value: boolean) { this.#dropdown.overflowCheckQueued = value; }
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('options')) {
@@ -94,15 +99,13 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   override updated(changed: PropertyValues): void {
     if (changed.has('label')) this.setAriaLabel(this.label || null);
     if (changed.has('description')) this.setAriaDescription(this.description || null);
-    if (changed.has('_scrollTop') && this._listboxEl) {
-      this._listboxEl.scrollTop = this._scrollTop;
-    }
     if (
       (changed.has('values') || changed.has('maxLines') || changed.has('multiple')) &&
       this.multiple
     ) {
-      this.#queueOverflowCheck();
+      this.#dropdown.queueOverflowCheck();
     }
+    this.#dropdown.syncScrollTop();
   }
 
   override connectedCallback(): void {
@@ -113,58 +116,30 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.#close();
+    this.#dropdown.close();
   }
 
-  #openDropdown = (): void => {
-    if (this._open || this.loading) return;
-    this._open = true;
-    this._search = '';
-    this._focusedTileIndex = -1;
-    const idx = this.multiple
-      ? this.options.findIndex((o) => this.values.includes(o.value))
-      : this.options.findIndex((o) => o.value === this.value);
-    this._focusedIndex = idx >= 0 ? idx : 0;
-    this._scrollTop = Math.max(0, (this._focusedIndex - 2) * ITEM_HEIGHT);
-    this._docClickHandler = (e: MouseEvent) => {
-      if (!e.composedPath().includes(this)) this.#close();
-    };
-    document.addEventListener('click', this._docClickHandler);
-  };
-
-  #close = (): void => {
-    this._open = false;
-    this._search = '';
-    this._focusedIndex = -1;
-    this._scrollTop = 0;
-    this.emit('ds-search', { detail: { query: '' } });
-    if (this._docClickHandler) {
-      document.removeEventListener('click', this._docClickHandler);
-      this._docClickHandler = undefined;
-    }
-  };
-
   #onFocus = (): void => {
-    if (!this.disabled && !this.loading && !this._open) this.#openDropdown();
+    if (!this.disabled && !this.loading && !this.#dropdown.open) this.#dropdown.openDropdown();
   };
 
-  #onSearchInput = (e: Event): void => {
-    this._search = (e.target as HTMLInputElement).value;
-    this._focusedIndex = 0;
-    this._scrollTop = 0;
+  #onSearchInput = (event: Event): void => {
+    this._search = (event.target as HTMLInputElement).value;
+    this.#dropdown.focusedIndex = 0;
     this.emit('ds-search', { detail: { query: this._search } });
   };
 
   #selectOption = (option: SelectOption): void => {
     if (option.disabled) return;
     if (this.multiple) {
-      this.values = this.values.includes(option.value)
+      const next = this.values.includes(option.value)
         ? this.values.filter((v) => v !== option.value)
         : [...this.values, option.value];
-      this.value = this.values.join(',');
+      this.values = next;
+      this.value = next.join(',');
       this._search = '';
       this.emit('ds-search', { detail: { query: '' } });
-      this.emit('ds-change', { detail: { values: this.values } });
+      this.emit('ds-change', { detail: { values: next } });
     } else {
       this.value = option.value;
       this.invalid = this.required && !option.value;
@@ -173,7 +148,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
         this.invalid ? 'Please select an option.' : '',
       );
       this.emit('ds-change', { detail: { value: option.value } });
-      this.#close();
+      this.#dropdown.close();
     }
   };
 
@@ -190,121 +165,35 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
   };
 
-  #onClearKeydown = (e: KeyboardEvent): void => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.stopPropagation();
-      e.preventDefault();
-      this.#clear();
-    }
-  };
-
-  #removeTile = (value: string): void => {
-    this.values = this.values.filter((v) => v !== value);
-    this.value = this.values.join(',');
-    const visibleCount = getVisibleTileCount(this.values.length, this._overflowCount);
-    this._focusedTileIndex = clampTileFocusIndex(this._focusedTileIndex, visibleCount);
-    this.emit('ds-change', { detail: { values: this.values } });
-  };
-
-  #checkOverflow = (): void => {
-    const count = countOverflowTiles(this._tilesEl, this.maxLines);
-    if (count !== this._overflowCount) {
-      this._overflowCount = count;
-    }
-  };
-
-  #queueOverflowCheck = (): void => {
-    queueTaskOnce({
-      isQueued: this._overflowCheckQueued,
-      setQueued: (value) => {
-        this._overflowCheckQueued = value;
-      },
-      task: this.#checkOverflow,
-    });
-  };
-
-  #scrollToFocused = (): void => {
-    const top = this._focusedIndex * ITEM_HEIGHT;
-    const bottom = top + ITEM_HEIGHT;
-    if (top < this._scrollTop) {
-      this._scrollTop = top;
-    } else if (bottom > this._scrollTop + LISTBOX_HEIGHT) {
-      this._scrollTop = bottom - LISTBOX_HEIGHT;
-    }
-  };
-
-  #moveFocus = (direction: 1 | -1): void => {
-    const next = this._focusedIndex + direction;
-    if (next >= 0 && next < this.options.length) {
-      this._focusedIndex = next;
-      this.#scrollToFocused();
-    }
-  };
+  #onClearKeydown = (event: KeyboardEvent): void => clearKeydown(event, this.#clear);
 
   #onKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) return;
-    const visibleCount = getVisibleTileCount(this.values.length, this._overflowCount);
-
-    if (this.multiple && visibleCount > 0) {
-      if (event.key === 'ArrowLeft' && this._inputEl?.selectionStart === 0) {
-        event.preventDefault();
-        this._focusedTileIndex = getNextTileFocusIndex(
-          this._focusedTileIndex,
-          visibleCount,
-          'left',
-        );
-        return;
-      }
-      if (event.key === 'ArrowRight' && this._focusedTileIndex >= 0) {
-        event.preventDefault();
-        this._focusedTileIndex = getNextTileFocusIndex(
-          this._focusedTileIndex,
-          visibleCount,
-          'right',
-        );
-        return;
-      }
-      if ((event.key === ' ' || event.key === 'Backspace') && this._focusedTileIndex >= 0) {
-        event.preventDefault();
-        const v = this.values[this._focusedTileIndex];
-        if (v !== undefined) this.#removeTile(v);
-        return;
-      }
-    }
-
-    if (event.key === 'Escape') {
-      this.#close();
+    if (
+      dropdownKeydown(event, {
+        controller: this.#dropdown,
+        multiple: this.multiple,
+        options: this.options,
+        values: this.values,
+        selectOption: this.#selectOption,
+        tileArrowLeftGate: () => this._inputEl?.selectionStart === 0,
+      }) === 'handled'
+    ) {
       return;
     }
-    if (!this._open && event.key === 'ArrowDown') {
-      this.#openDropdown();
-      return;
+    if (!this.#dropdown.open && event.key === 'ArrowDown') {
+      this.#dropdown.openDropdown();
     }
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      this.#moveFocus(1);
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      this.#moveFocus(-1);
-    } else if (event.key === 'Enter' && this._open && this._focusedIndex >= 0) {
-      const focused = this.options[this._focusedIndex];
-      if (focused?.disabled) event.preventDefault();
-      else if (focused) this.#selectOption(focused);
-    }
-  };
-
-  #onScroll = (): void => {
-    this._scrollTop = this._listboxEl?.scrollTop ?? 0;
   };
 
   #renderTiles = (): TemplateResult =>
     renderSelectedTiles({
       values: this.values,
-      focusedTileIndex: this._focusedTileIndex,
-      overflowCount: this._overflowCount,
+      focusedTileIndex: this.#dropdown.focusedTileIndex,
+      overflowCount: this.#dropdown.overflowCount,
       maxLines: this.maxLines,
       labelFor: (value) => this._labelMap.get(value) ?? value,
-      onRemove: this.#removeTile,
+      onRemove: this.#dropdown.removeTile,
     });
 
   #renderOption = (option: SelectOption, index: number, current: string): TemplateResult => {
@@ -315,39 +204,40 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       id: `option-${index}`,
       label: highlightMatch(option.label, this._search),
       isSelected,
-      isFocused: this._focusedIndex === index,
+      isFocused: this.#dropdown.focusedIndex === index,
       isDisabled: option.disabled ?? false,
       onSelect: () => this.#selectOption(option),
       onFocus: () => {
-        this._focusedIndex = index;
+        this.#dropdown.focusedIndex = index;
       },
     });
   };
 
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
+    const open = this.#dropdown.open;
     const hasTiles = this.multiple && this.values.length > 0;
     const hasClearBtn =
       (this.clearable || this.required) &&
       (this.multiple ? this.values.length > 0 : current !== '');
-    const displayValue = this._open
+    const displayValue = open
       ? this._search
       : !this.multiple
         ? (this._labelMap.get(current) ?? '')
         : '';
     const activeDesc =
-      this._open && this._focusedIndex >= 0 ? `option-${this._focusedIndex}` : undefined;
+      open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
     return html` ${renderFieldLabel(this.label, this.required, 'search-input')}
       <div class="control-wrap">
         <div
-          class="trigger${this.multiple ? ' trigger-multiple' : ''} ${this._open ? 'open' : ''}"
+          class="trigger${this.multiple ? ' trigger-multiple' : ''} ${open ? 'open' : ''}"
           part="trigger"
           @click=${() => {
-            if (!this.disabled) this.#openDropdown();
+            if (!this.disabled) this.#dropdown.openDropdown();
           }}
         >
-          <span class="leading" ?hidden=${!this._hasLeading}>
-            <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
+          <span class="leading" ?hidden=${!this.#dropdown.hasLeading}>
+            <slot name="leading" @slotchange=${this.#dropdown.onLeadingChange}></slot>
           </span>
           ${hasTiles ? this.#renderTiles() : nothing}
           <input
@@ -356,26 +246,23 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             type="text"
             role="combobox"
             aria-haspopup="listbox"
-            aria-expanded=${this._open ? 'true' : 'false'}
+            aria-expanded=${open ? 'true' : 'false'}
             aria-controls="listbox"
             aria-autocomplete="list"
             aria-activedescendant=${ifDefined(activeDesc)}
             aria-disabled=${this.disabled ? 'true' : 'false'}
             .value=${live(displayValue)}
-            placeholder=${this._open ? this.searchPlaceholder : hasTiles ? '' : this.placeholder}
+            placeholder=${open ? this.searchPlaceholder : hasTiles ? '' : this.placeholder}
             ?readonly=${this.disabled}
             @focus=${this.#onFocus}
             @input=${this.#onSearchInput}
             @keydown=${this.#onKeydown}
           />
           ${hasClearBtn
-            ? renderClearButton(
-                (event: Event) => {
-                  event.stopPropagation();
-                  this.#clear();
-                },
-                this.#onClearKeydown,
-              )
+            ? renderClearButton((event: Event) => {
+                event.stopPropagation();
+                this.#clear();
+              }, this.#onClearKeydown)
             : nothing}
           ${this.loading
             ? html` <svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -392,19 +279,19 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
               </svg>`
             : renderChevronDownIcon()}
         </div>
-        ${this._open
+        ${open
           ? html` <div
               id="listbox"
               class="listbox"
               part="listbox"
               role="listbox"
               aria-multiselectable=${this.multiple ? 'true' : 'false'}
-              @scroll=${this.#onScroll}
+              @scroll=${this.#dropdown.onScroll}
             >
               ${this.options.length === 0
                 ? html`<p class="empty">No results found.</p>`
-                : renderVirtualItems(this.options, this._scrollTop, (o, i) =>
-                    this.#renderOption(o, i, current),
+                : renderVirtualItems(this.options, this.#dropdown.scrollTop, (option, index) =>
+                    this.#renderOption(option, index, current),
                   )}
             </div>`
           : nothing}
