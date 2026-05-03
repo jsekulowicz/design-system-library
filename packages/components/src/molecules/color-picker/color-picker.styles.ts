@@ -12,8 +12,12 @@ export const colorPickerStyles = css`
     width: 100%;
   }
   .trigger {
+    width: 100%;
+  }
+  .trigger::part(button) {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     width: 100%;
     min-height: var(--ds-size-md);
     gap: var(--ds-space-3);
@@ -22,47 +26,31 @@ export const colorPickerStyles = css`
     border-radius: var(--ds-radius-sm);
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    height: auto;
     text-align: left;
-    cursor: pointer;
     transition:
       border-color var(--ds-duration-fast) var(--ds-easing-standard),
       box-shadow var(--ds-duration-fast) var(--ds-easing-standard);
   }
-  .trigger:hover {
+  .trigger:hover::part(button) {
     border-color: var(--ds-color-fg-subtle);
   }
-  .trigger:focus-visible,
-  .trigger[aria-expanded='true'] {
+  .trigger[aria-expanded='true']::part(button) {
     border-color: var(--ds-color-accent);
     box-shadow: var(--ds-shadow-focus);
     outline: none;
   }
-  :host([invalid]) .trigger {
+  :host([invalid]) .trigger::part(button) {
     border-color: var(--ds-color-danger);
     background: var(--ds-color-danger-subtle);
   }
-  :host([disabled]) .trigger {
+  :host([disabled]) .trigger::part(button) {
     opacity: 0.5;
     background: var(--ds-color-bg-subtle);
     cursor: not-allowed;
   }
   .preview {
-    background:
-      linear-gradient(45deg, #d7dce4 25%, transparent 25%),
-      linear-gradient(-45deg, #d7dce4 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #d7dce4 75%),
-      linear-gradient(-45deg, transparent 75%, #d7dce4 75%),
-      var(--color-picker-value, transparent);
-    background-position:
-      0 0,
-      0 6px,
-      6px -6px,
-      -6px 0;
-    background-size: 12px 12px;
-  }
-  .preview {
+    background: var(--color-picker-value, transparent);
     width: 28px;
     height: 28px;
     border: 1px solid var(--ds-color-border-strong);
@@ -107,16 +95,10 @@ export const colorPickerStyles = css`
     display: grid;
     gap: var(--ds-space-2);
   }
-  .section-label,
-  .hex-label {
+  .section-label {
     color: var(--ds-color-fg);
     font-size: var(--ds-font-size-xs);
     font-weight: var(--ds-font-weight-medium);
-  }
-  .swatches {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
-    gap: var(--ds-space-2);
   }
   .custom-row {
     display: grid;
@@ -125,40 +107,10 @@ export const colorPickerStyles = css`
     align-items: end;
   }
   .native-color {
-    width: var(--ds-size-lg);
-    height: var(--ds-size-lg);
-    padding: 2px;
-    border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
-    background: var(--ds-color-bg);
-    cursor: pointer;
-  }
-  .hex-field {
-    display: grid;
-    gap: var(--ds-space-1);
+    align-self: end;
   }
   .hex-input {
-    height: var(--ds-size-lg);
-    border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
-    padding: 0 var(--ds-space-3);
-    background: var(--ds-color-bg);
-    color: var(--ds-color-fg);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
-  }
-  .hex-input:focus-visible {
-    border-color: var(--ds-color-accent);
-    box-shadow: var(--ds-shadow-focus);
-    outline: none;
-  }
-  .hex-input[aria-invalid='true'] {
-    border-color: var(--ds-color-danger);
-  }
-  .input-error {
-    margin: 0;
-    color: var(--ds-color-danger);
-    font-size: var(--ds-font-size-xs);
+    min-width: 0;
   }
   .panel-actions {
     display: flex;
@@ -170,9 +122,6 @@ export const colorPickerStyles = css`
     .custom-row {
       grid-template-columns: 1fr;
       align-items: stretch;
-    }
-    .native-color {
-      width: 100%;
     }
     .panel-actions ds-button {
       flex: 1 1 120px;

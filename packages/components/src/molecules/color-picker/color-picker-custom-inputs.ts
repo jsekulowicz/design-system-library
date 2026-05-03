@@ -52,11 +52,11 @@ export class ColorPickerCustomInputs {
   }
 
   focusHexInput(root: ParentNode | null): void {
-    root?.querySelector<HTMLInputElement>('.hex-input')?.focus();
+    root?.querySelector<HTMLElement>('.hex-input')?.focus();
   }
 
-  onNativeInput = (event: Event): void => {
-    const normalized = normalizeHexColor((event.target as HTMLInputElement).value);
+  onNativeInput = (event: CustomEvent<{ value: string }>): void => {
+    const normalized = normalizeHexColor(event.detail.value);
     if (!normalized) {
       return;
     }
@@ -64,12 +64,12 @@ export class ColorPickerCustomInputs {
     this.delegate.emitInput(normalized);
   };
 
-  onNativeChange = (): void => {
-    this.delegate.emitChange(this.nativeValue);
+  onNativeChange = (event: CustomEvent<{ value: string }>): void => {
+    this.delegate.emitChange(normalizeHexColor(event.detail.value) || this.nativeValue);
   };
 
-  onTextInput = (event: Event): void => {
-    const raw = (event.target as HTMLInputElement).value.trim();
+  onTextInput = (event: CustomEvent<{ value: string }>): void => {
+    const raw = event.detail.value.trim();
     this.textValue = raw;
     if (raw === '') {
       this.delegate.setValue('');

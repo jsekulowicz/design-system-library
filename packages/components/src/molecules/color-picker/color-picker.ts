@@ -2,16 +2,17 @@ import { html, nothing, LitElement, type PropertyValues, type TemplateResult } f
 import { property, query } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import '../../atoms/button/define.js';
+import '../../atoms/text-field/define.js';
 import '../card/define.js';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { ColorPickerCustomInputs } from './color-picker-custom-inputs.js';
 import { ColorPickerPopover } from './color-picker-popover.js';
-import { renderColorPickerPanel, renderColorPickerTrigger } from './color-picker.render.js';
-import { ColorPickerSwatchFocus } from './color-picker-swatch-focus.js';
 import { colorPickerStyles } from './color-picker.styles.js';
-import './color-picker-swatch.js';
+import './color-picker-swatch-group.js';
+import './input-color.js';
 import {
   COLOR_FORMAT_ERROR,
+  getColorLabel,
   normalizeColorOptions,
   normalizeHexColor,
 } from './color-utils.js';
@@ -43,17 +44,11 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) optional = false;
   @property({ type: Boolean, reflect: true }) clearable = false;
 
-  @query('#trigger') private triggerEl?: HTMLButtonElement;
-
-  #swatchFocus = new ColorPickerSwatchFocus(
-    this,
-    () => this.#colorOptions(),
-    () => this.#currentValue(),
-  );
+  @query('#trigger') private triggerEl?: HTMLElement;
 
   #popover = new ColorPickerPopover(this, {
-    focusTrigger: () => this.triggerEl?.focus(),
-    onOpen: () => this.#swatchFocus.sync(),
+    focusTrigger: () => this.#focusTrigger(),
+    onOpen: () => {},
   });
 
   #customInputs = new ColorPickerCustomInputs(this, {
@@ -109,9 +104,6 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     if (changed.has('required') || changed.has('value')) {
       this.#syncValidity();
     }
-    if (changed.has('colors')) {
-      this.#swatchFocus.sync();
-    }
   }
 
   override updated(changed: PropertyValues): void {
@@ -148,6 +140,11 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     this.invalid = Boolean(validationMessage);
   }
 
+  #focusTrigger(): void {
+    const button = this.triggerEl?.shadowRoot?.querySelector<HTMLButtonElement>('button');
+    (button ?? this.triggerEl)?.focus();
+  }
+
   #clear = (): void => {
     this.value = '';
     this.emit('ds-change', { detail: { value: '' } });
@@ -163,53 +160,117 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     this.#popover.close(true);
   };
 
-  #selectColor(option: ColorPickerOption): void {
-    if (option.disabled || this.disabled) {
+  #selectColor(value: string): void {
+    if (this.disabled) {
       return;
     }
-    this.value = option.value;
-    this.emit('ds-change', { detail: { value: option.value } });
+    this.value = value;
+    this.emit('ds-change', { detail: { value } });
     this.#popover.close(true);
   }
+
+  #onSwatchGroupSelect = (event: CustomEvent<{ value: string }>): void => {
+    this.#selectColor(event.detail.value);
+  };
 
   override render(): TemplateResult {
     const options = this.#colorOptions();
     const current = this.#currentValue();
     const selected = this.#selectedOption(options);
-    const renderParams = {
-      clearable: this.clearable,
-      current,
-      disabled: this.disabled,
-      focusedIndex: this.#swatchFocus.focusedIndex,
-      invalid: this.invalid,
-      label: this.label,
-      nativeValue: this.#customInputs.nativeValue,
-      onClear: this.#clear,
-      onCommitAndClose: this.#commitAndClose,
-      onNativeChange: this.#customInputs.onNativeChange,
-      onNativeInput: this.#customInputs.onNativeInput,
-      onSelectColor: (option: ColorPickerOption) => this.#selectColor(option),
-      onSwatchKeydown: this.#swatchFocus.onKeydown,
-      onTextChange: this.#customInputs.onTextChange,
-      onTextInput: this.#customInputs.onTextInput,
-      onTextKeydown: this.#customInputs.onTextKeydown,
-      onTogglePicker: this.#popover.toggle,
-      onTriggerKeydown: this.#popover.onTriggerKeydown,
-      open: this.#popover.open,
-      options,
-      placeholder: this.placeholder,
-      selected,
-      textValue: this.#customInputs.textValue,
-      validationError: this.#customInputs.validationError,
-    };
 
     return html`
       ${this.label ? renderFieldLabel(this.label, this.required, 'trigger', this.optional) : nothing}
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
-        ${renderColorPickerTrigger(renderParams)}
-        ${this.#popover.open ? renderColorPickerPanel(renderParams) : nothing}
+        ${this.#renderTrigger(current, selected)}
+        ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>
       ${renderSubtext(this.description, this.error, this.invalid)}
     `;
+  }
+
+  #renderTrigger(current: string, selected?: ColorPickerOption): TemplateResult {
+    const label = selected ? getColorLabel(selected) : current || this.placeholder;
+
+    return html`<ds-button
+      id="trigger"
+      class="trigger"
+      part="trigger"
+      variant="secondary"
+      full-width
+      ?disabled=${this.disabled}
+      label=${this.label || this.placeholder}
+      aria-haspopup="dialog"
+      aria-expanded=${this.#popover.open ? 'true' : 'false'}
+      aria-controls=${this.#popover.open ? 'panel' : nothing}
+      aria-invalid=${this.invalid ? 'true' : 'false'}
+      @ds-click=${this.#popover.toggle}
+      @keydown=${this.#popover.onTriggerKeydown}
+    >
+      <span
+        class="preview"
+        part="preview"
+        style=${current ? `--color-picker-value:${current}` : ''}
+        aria-hidden="true"
+      ></span>
+      <span class="trigger-text">
+        <span class=${current ? 'trigger-label' : 'trigger-label placeholder'}>${label}</span>
+        ${current ? html`<span class="trigger-value">${current}</span>` : nothing}
+      </span>
+    </ds-button>`;
+  }
+
+  #renderPanel(options: ColorPickerOption[], current: string): TemplateResult {
+    return html`<div id="panel" class="panel" part="panel" role="dialog" aria-label=${this.label}>
+      <ds-card elevation="md">
+        <span slot="title" class="panel-title">${this.label || 'Color picker'}</span>
+        ${options.length ? this.#renderSwatches(options, current) : nothing}
+        ${this.#renderCustomInputs()}
+        <div slot="footer" class="panel-actions">
+          ${this.clearable
+            ? html`<ds-button variant="ghost" size="sm" @ds-click=${this.#clear}>Clear</ds-button>`
+            : nothing}
+          <ds-button variant="primary" size="sm" @ds-click=${this.#commitAndClose}>Done</ds-button>
+        </div>
+      </ds-card>
+    </div>`;
+  }
+
+  #renderSwatches(options: ColorPickerOption[], current: string): TemplateResult {
+    return html`<ds-color-picker-swatch-group
+      .options=${options}
+      .value=${current}
+      ?disabled=${this.disabled}
+      @ds-color-picker-swatch-group-select=${this.#onSwatchGroupSelect}
+    ></ds-color-picker-swatch-group>`;
+  }
+
+  #renderCustomInputs(): TemplateResult {
+    const validationError = this.#customInputs.validationError;
+
+    return html`<section class="section" aria-labelledby="custom-label">
+      <div id="custom-label" class="section-label">Custom color</div>
+      <div class="custom-row">
+        <ds-color-picker-input-color
+          class="native-color"
+          .value=${this.#customInputs.nativeValue}
+          ?disabled=${this.disabled}
+          @ds-input=${this.#customInputs.onNativeInput}
+          @ds-change=${this.#customInputs.onNativeChange}
+        ></ds-color-picker-input-color>
+        <ds-text-field
+          class="hex-input"
+          label="Hex"
+          size="lg"
+          placeholder="#RRGGBB"
+          .value=${this.#customInputs.textValue}
+          .error=${validationError}
+          ?disabled=${this.disabled}
+          ?invalid=${Boolean(validationError)}
+          @ds-input=${this.#customInputs.onTextInput}
+          @ds-change=${this.#customInputs.onTextChange}
+          @keydown=${this.#customInputs.onTextKeydown}
+        ></ds-text-field>
+      </div>
+    </section>`;
   }
 }

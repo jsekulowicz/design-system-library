@@ -1,6 +1,9 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import type { DsTextField } from '../../atoms/text-field/index.js';
 import { DsColorPicker } from './color-picker.js';
+import type { DsColorPickerInputColor } from './input-color.js';
 import type { DsColorPickerSwatch } from './color-picker-swatch.js';
+import type { DsColorPickerSwatchGroup } from './color-picker-swatch-group.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
@@ -25,16 +28,30 @@ async function mountColorPicker(props: Partial<DsColorPicker> = {}): Promise<DsC
   );
 }
 
-function getTrigger(el: DsColorPicker): HTMLButtonElement {
+function getTrigger(el: DsColorPicker): HTMLElement {
   return el.shadowRoot!.querySelector('#trigger')!;
+}
+
+function clickTrigger(el: DsColorPicker): void {
+  getTrigger(el).shadowRoot!.querySelector<HTMLButtonElement>('button')!.click();
 }
 
 function getPanel(el: DsColorPicker): HTMLElement | null {
   return el.shadowRoot!.querySelector('.panel');
 }
 
+function getSwatchGroup(el: DsColorPicker): DsColorPickerSwatchGroup {
+  return el.shadowRoot!.querySelector<DsColorPickerSwatchGroup>(
+    'ds-color-picker-swatch-group',
+  )!;
+}
+
 function getSwatches(el: DsColorPicker): DsColorPickerSwatch[] {
-  return Array.from(el.shadowRoot!.querySelectorAll<DsColorPickerSwatch>('ds-color-picker-swatch'));
+  return Array.from(
+    getSwatchGroup(el).shadowRoot!.querySelectorAll<DsColorPickerSwatch>(
+      'ds-color-picker-swatch',
+    ),
+  );
 }
 
 function keydown(target: HTMLElement, key: string): void {
@@ -42,7 +59,7 @@ function keydown(target: HTMLElement, key: string): void {
 }
 
 async function openPicker(el: DsColorPicker): Promise<void> {
-  getTrigger(el).click();
+  clickTrigger(el);
   await el.updateComplete;
 }
 
@@ -102,10 +119,9 @@ describe('<ds-color-picker>', () => {
     el.addEventListener('ds-change', (event) => changeEvents.push(event as CustomEvent));
 
     await openPicker(el);
-    const input = el.shadowRoot!.querySelector<HTMLInputElement>('.native-color')!;
-    input.value = '#abcdef';
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('change', { bubbles: true }));
+    const input = el.shadowRoot!.querySelector<DsColorPickerInputColor>('.native-color')!;
+    input.dispatchEvent(new CustomEvent('ds-input', { detail: { value: '#abcdef' } }));
+    input.dispatchEvent(new CustomEvent('ds-change', { detail: { value: '#abcdef' } }));
 
     expect(el.value).toBe('#ABCDEF');
     expect(inputEvents[0]?.detail).toEqual({ value: '#ABCDEF' });
@@ -115,17 +131,15 @@ describe('<ds-color-picker>', () => {
   it('validates text Hex input and accepts corrected values', async () => {
     const el = await mountColorPicker();
     await openPicker(el);
-    const input = el.shadowRoot!.querySelector<HTMLInputElement>('.hex-input')!;
+    const input = el.shadowRoot!.querySelector<DsTextField>('.hex-input')!;
 
-    input.value = 'red';
-    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new CustomEvent('ds-input', { detail: { value: 'red' } }));
     await el.updateComplete;
 
     expect(el.invalid).toBe(true);
     expect(el.value).toBe('');
 
-    input.value = '#0f0';
-    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new CustomEvent('ds-input', { detail: { value: '#0f0' } }));
     await el.updateComplete;
 
     expect(el.invalid).toBe(false);
@@ -155,7 +169,7 @@ describe('<ds-color-picker>', () => {
 
   it('does not open when disabled', async () => {
     const el = await mountColorPicker({ disabled: true });
-    getTrigger(el).click();
+    clickTrigger(el);
     await el.updateComplete;
 
     expect(getPanel(el)).toBeNull();
@@ -167,13 +181,13 @@ describe('<ds-color-picker>', () => {
 
     getSwatches(el)[0].focus();
     keydown(getSwatches(el)[0], 'ArrowRight');
-    await el.updateComplete;
+    await getSwatchGroup(el).updateComplete;
 
-    expect(el.shadowRoot!.activeElement).toBe(getSwatches(el)[1]);
+    expect(getSwatchGroup(el).shadowRoot!.activeElement).toBe(getSwatches(el)[1]);
 
     keydown(getSwatches(el)[1], 'End');
-    await el.updateComplete;
-    const focused = el.shadowRoot!.activeElement as HTMLElement;
+    await getSwatchGroup(el).updateComplete;
+    const focused = getSwatchGroup(el).shadowRoot!.activeElement as HTMLElement;
     keydown(focused, 'Enter');
     await el.updateComplete;
 

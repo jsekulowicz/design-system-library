@@ -10,18 +10,7 @@ export const colorPickerSwatchStyles = css`
     min-width: 36px;
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-sm);
-    background:
-      linear-gradient(45deg, #d7dce4 25%, transparent 25%),
-      linear-gradient(-45deg, #d7dce4 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #d7dce4 75%),
-      linear-gradient(-45deg, transparent 75%, #d7dce4 75%),
-      var(--color-picker-value, transparent);
-    background-position:
-      0 0,
-      0 6px,
-      6px -6px,
-      -6px 0;
-    background-size: 12px 12px;
+    background: var(--color-picker-value, transparent);
     cursor: pointer;
   }
 

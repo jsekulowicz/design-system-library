@@ -1,4 +1,4 @@
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@ds/core';
 import { buttonStyles } from './button.styles.js';
@@ -26,6 +26,10 @@ export class DsButton extends DsElement {
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Boolean, reflect: true, attribute: 'full-width' }) fullWidth = false;
   @property() label?: string;
+  @property({ attribute: 'aria-controls' }) ariaControlsAttr?: string;
+  @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: string;
+  @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: string;
+  @property({ attribute: 'aria-invalid' }) ariaInvalidAttr?: string;
 
   #handleClick = (event: MouseEvent): void => {
     if (this.disabled || this.loading) {
@@ -64,7 +68,11 @@ export class DsButton extends DsElement {
         type=${this.type}
         aria-disabled=${this.disabled || this.loading ? 'true' : 'false'}
         aria-busy=${this.loading ? 'true' : 'false'}
-        aria-label=${this.label ?? ''}
+        aria-controls=${this.ariaControlsAttr ?? nothing}
+        aria-expanded=${this.ariaExpandedAttr ?? nothing}
+        aria-haspopup=${this.ariaHasPopupAttr ?? nothing}
+        aria-invalid=${this.ariaInvalidAttr ?? nothing}
+        aria-label=${this.label ?? nothing}
         @click=${this.#handleClick}
       >
         ${this.loading

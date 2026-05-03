@@ -50,7 +50,9 @@ export {
 } from './molecules/toast/index.js';
 export {
   DsColorPicker,
+  DsColorPickerInputColor,
   DsColorPickerSwatch,
+  DsColorPickerSwatchGroup,
   type ColorPickerOption,
 } from './molecules/color-picker/index.js';
 export {
