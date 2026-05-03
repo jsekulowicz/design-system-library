@@ -1,0 +1,61 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as MenuStories from './menu.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={MenuStories} />
+
+# Menu
+
+Action menu following the WAI-ARIA Menu pattern. Use it for kebab menus, context menus, and any popover that surfaces a list of actions. For *selection* (one-of-many or many-of-many), reach for `ds-select` instead — the patterns look similar but the keyboard model and ARIA are different.
+
+## Anatomy
+
+A container with optional `header` and `footer` regions surrounding a list of `ds-menu-item` rows. Items compose four slots — `leading`, primary text (default), `description`, and `trailing` — so a row can be just a label, or an avatar with name + email and a trailing chevron.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={MenuStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={MenuStories.Playground} />
+      <h3>ds-menu</h3>
+      <ComponentApi tag="ds-menu" />
+      <h3>ds-menu-item</h3>
+      <ComponentApi tag="ds-menu-item" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use a menu for actions ("Rename", "Delete") — for picking a value, use <code>ds-select</code>.</li>
+        <li>Keep labels verb-led and short. The first word should be the action.</li>
+        <li>Use <code>description</code> sparingly — a single helpful clarifier per item, not a paragraph.</li>
+        <li>Group related items and separate destructive actions visually (e.g. via a footer slot).</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't nest menus more than one level deep — flatten or use a dialog instead.</li>
+        <li>Don't put non-action content in the items list. Headers, descriptions of the menu, and links to "Manage…" go in the <code>header</code> / <code>footer</code> slots, which sit outside the menu's role tree.</li>
+        <li>Don't disable items without a reason — explain *why* in <code>description</code> when it's not obvious.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Inner region uses <code>role="menu"</code> with <code>aria-orientation="vertical"</code>; pass <code>label</code> for an <code>aria-label</code> on the menu.</li>
+        <li>Items use <code>role="menuitem"</code> with <code>aria-disabled</code> reflecting <code>disabled</code>.</li>
+        <li>Roving tabindex: only one item is tabbable at a time. Tab leaves the menu via the natural focus order.</li>
+        <li>Arrow keys move focus (skipping disabled, wrapping). <code>Home</code> / <code>End</code> jump to the first / last enabled item.</li>
+        <li><code>Enter</code> and <code>Space</code> activate the focused item; the menu re-emits as <code>ds-select</code>.</li>
+        <li><code>Escape</code> bubbles up — the host (e.g. a popover) decides whether to close.</li>
+        <li>Type-ahead (buffered, 500&nbsp;ms idle reset): printable letters jump to the first enabled item whose primary text starts with the typed prefix. Case-insensitive; <code>description</code> text is ignored.</li>
+        <li>Header and footer regions sit outside <code>role="menu"</code>, so screen readers don't announce them as menu items.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

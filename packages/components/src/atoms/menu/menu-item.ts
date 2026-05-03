@@ -1,0 +1,97 @@
+import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { property } from 'lit/decorators.js';
+import { DsElement } from '@ds/core';
+import { menuItemStyles } from './menu-item.styles.js';
+
+/**
+ * @tag ds-menu-item
+ * @summary A row inside `ds-menu`. Composes leading icon, primary text, optional description, and trailing content.
+ * @slot leading - Icon, avatar, or image rendered before the primary text.
+ * @slot default - Primary text. Used by `ds-menu` for type-ahead matching.
+ * @slot description - Optional secondary line below the primary text.
+ * @slot trailing - Trailing content (chevron, badge, keyboard shortcut).
+ * @csspart item - The internal item container.
+ * @csspart check - The checkmark icon shown when `selected`.
+ * @event ds-activate - Fires when the item is activated. Detail: `{ value, originalEvent }`.
+ */
+export class DsMenuItem extends DsElement {
+  static override styles = [...DsElement.styles, menuItemStyles];
+
+  @property() value = '';
+  @property({ type: Boolean, reflect: true }) disabled = false;
+  @property({ type: Boolean, reflect: true }) selected = false;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (!this.hasAttribute('role')) this.setAttribute('role', 'menuitem');
+    if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
+    this.addEventListener('click', this.#onClick);
+    this.addEventListener('keydown', this.#onKeydown);
+  }
+
+  override updated(changed: PropertyValues): void {
+    if (changed.has('disabled')) {
+      this.setAttribute('aria-disabled', this.disabled ? 'true' : 'false');
+      if (this.disabled) this.setAttribute('tabindex', '-1');
+    }
+  }
+
+  /** Primary slot text used by ds-menu type-ahead. */
+  get primaryText(): string {
+    const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
+    if (!slot) return (this.textContent ?? '').trim();
+    return slot
+      .assignedNodes({ flatten: true })
+      .map((node) => node.textContent ?? '')
+      .join('')
+      .trim();
+  }
+
+  #onClick = (event: MouseEvent): void => {
+    if (this.disabled) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    this.emit('ds-activate', { detail: { value: this.value, originalEvent: event } });
+  };
+
+  #onKeydown = (event: KeyboardEvent): void => {
+    if (this.disabled) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.click();
+    }
+  };
+
+  override render(): TemplateResult {
+    return html`<div class="item" part="item">
+      <span class="leading"><slot name="leading"></slot></span>
+      <span class="content">
+        <span class="primary"><slot></slot></span>
+        <span class="description"><slot name="description"></slot></span>
+      </span>
+      <span class="trailing">
+        ${this.selected ? this.#renderCheck() : nothing}
+        <slot name="trailing"></slot>
+      </span>
+    </div>`;
+  }
+
+  #renderCheck(): TemplateResult {
+    return html`<svg
+      class="check"
+      part="check"
+      viewBox="0 0 16 16"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"
+        clip-rule="evenodd"
+      />
+    </svg>`;
+  }
+}

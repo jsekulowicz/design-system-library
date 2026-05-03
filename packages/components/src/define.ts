@@ -14,6 +14,7 @@ import './atoms/tabs/define.js';
 import './atoms/table/define.js';
 import './atoms/breadcrumb/define.js';
 import './atoms/nav-item/define.js';
+import './atoms/menu/define.js';
 import './molecules/card/define.js';
 import './molecules/dialog/define.js';
 import './molecules/bar-chart/define.js';

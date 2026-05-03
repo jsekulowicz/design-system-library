@@ -146,6 +146,11 @@
       "import": "./dist/atoms/nav-item/index.js"
     },
     "./nav-item/define": { "import": "./dist/atoms/nav-item/define.js" },
+    "./menu": {
+      "types": "./dist/atoms/menu/index.d.ts",
+      "import": "./dist/atoms/menu/index.js"
+    },
+    "./menu/define": { "import": "./dist/atoms/menu/define.js" },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"

@@ -13,6 +13,7 @@ export { DsSearchableSelect } from './atoms/searchable-select/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './atoms/tabs/index.js';
 export { DsBreadcrumb, DsBreadcrumbItem } from './atoms/breadcrumb/index.js';
 export { DsNavItem, DsNavGroup } from './atoms/nav-item/index.js';
+export { DsMenu, DsMenuItem } from './atoms/menu/index.js';
 export {
   DsTable,
   DsTableSortButton,
