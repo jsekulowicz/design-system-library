@@ -133,6 +133,10 @@ describe('<ds-color-picker>', () => {
     await openPicker(el);
     const input = el.shadowRoot!.querySelector<DsTextField>('.hex-input')!;
 
+    expect(input.label).toBe('');
+    expect(input.inputLabel).toBe('Hex code');
+    expect(input.placeholder).toBe('Hex code (#RRGGBB)');
+
     input.dispatchEvent(new CustomEvent('ds-input', { detail: { value: 'red' } }));
     await el.updateComplete;
 
@@ -204,5 +208,23 @@ describe('<ds-color-picker>', () => {
 
     expect(getPanel(el)).toBeNull();
     expect(el.shadowRoot!.activeElement).toBe(getTrigger(el));
+  });
+
+  it('renders compact without visible field text', async () => {
+    const el = await mountColorPicker({
+      compact: true,
+      label: '',
+      placeholder: 'Player color',
+      value: '#0ea5e9',
+    });
+    await el.updateComplete;
+
+    expect(el.hasAttribute('compact')).toBe(true);
+    expect(el.shadowRoot!.querySelector('.label')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.trigger-text')).toBeNull();
+    expect(getTrigger(el).getAttribute('label')).toContain('Player color');
+
+    await openPicker(el);
+    expect(getPanel(el)).not.toBeNull();
   });
 });

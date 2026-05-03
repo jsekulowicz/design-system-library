@@ -7,7 +7,8 @@ export const colorPickerSwatchStyles = css`
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
-    min-width: 36px;
+    width: var(--color-picker-swatch-size, 28px);
+    min-width: var(--color-picker-swatch-size, 28px);
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-sm);
     background: var(--color-picker-value, transparent);
@@ -32,9 +33,9 @@ export const colorPickerSwatchStyles = css`
 
   .check {
     display: none;
-    width: 20px;
-    height: 20px;
-    padding: 3px;
+    width: 14px;
+    height: 14px;
+    padding: 2px;
     border-radius: 999px;
     background: rgb(255 255 255 / 0.92);
     color: #111827;

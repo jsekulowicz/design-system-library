@@ -18,6 +18,7 @@ export class DsColorPickerSwatchGroup extends DsElement {
   @property() value = '';
   @property() label = 'Preset colors';
   @property({ type: Boolean, reflect: true }) disabled = false;
+  @property({ type: Boolean, reflect: true }) compact = false;
 
   @state() private _focusedIndex = -1;
 

@@ -3,14 +3,14 @@ import { css } from 'lit';
 export const inputColorStyles = css`
   :host {
     display: inline-flex;
-    width: var(--ds-size-lg);
-    height: var(--ds-size-lg);
+    width: var(--color-picker-input-size, var(--ds-size-sm));
+    height: var(--color-picker-input-size, var(--ds-size-sm));
   }
 
   input {
     width: 100%;
     height: 100%;
-    padding: 2px;
+    padding: 1px;
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-sm);
     background: var(--ds-color-bg);

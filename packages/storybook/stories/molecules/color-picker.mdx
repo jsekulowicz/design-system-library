@@ -11,7 +11,7 @@ Form-associated color picker for selecting a normalized Hex RGB value from prese
 
 ## Anatomy
 
-A field trigger opens a responsive card panel. Presets render as an accessible radiogroup, and custom color editing uses a native color input plus a Hex text input.
+A field trigger opens a responsive card panel. Presets render as an accessible radiogroup, and custom color editing uses a native color input plus a Hex text input. Use `compact` when the picker is nested in another control, such as a `ds-text-field` adornment.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -33,6 +33,7 @@ A field trigger opens a responsive card panel. Presets render as an accessible r
       <h3>Do</h3>
       <ul>
         <li>Use predefined <code>colors</code> for brand, theme, or status palettes.</li>
+        <li>Use <code>compact</code> when the picker is an icon-sized affordance inside another field.</li>
         <li>Provide human labels for swatches when color names are meaningful.</li>
         <li>Use <code>required</code> when a missing color would break the downstream workflow.</li>
       </ul>

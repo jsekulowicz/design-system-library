@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/web-components';
 import '@ds/components/color-picker/define';
 import '@ds/components/button/define';
 import '@ds/components/form/define';
+import '@ds/components/text-field/define';
 
 const brandColors = [
   { label: 'Ocean', value: '#0EA5E9' },
@@ -40,6 +41,7 @@ const meta: Meta = {
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
     clearable: { control: 'boolean' },
+    compact: { control: 'boolean' },
     colors: { control: false },
   },
   args: {
@@ -51,6 +53,7 @@ const meta: Meta = {
     disabled: false,
     required: false,
     clearable: true,
+    compact: false,
   },
 };
 
@@ -68,6 +71,7 @@ export const Playground: Story = {
       ?disabled=${args['disabled']}
       ?required=${args['required']}
       ?clearable=${args['clearable']}
+      ?compact=${args['compact']}
       .colors=${brandColors}
     ></ds-color-picker>
   `,
@@ -133,6 +137,32 @@ export const NarrowMobile: Story = {
         clearable
         .colors=${brandColors}
       ></ds-color-picker>
+    </div>
+  `,
+};
+
+export const CompactInTextField: Story = {
+  name: 'Compact in text field',
+  render: () => html`
+    <div style="display: grid; gap: var(--ds-space-4);">
+      <ds-text-field label="Player 1" placeholder="e.g. Bob">
+        <ds-color-picker
+          slot="leading"
+          compact
+          placeholder="Player color"
+          value="#EF4444"
+          .colors=${brandColors}
+        ></ds-color-picker>
+      </ds-text-field>
+      <ds-text-field label="Player 2" placeholder="e.g. Alice">
+        <ds-color-picker
+          slot="leading"
+          compact
+          placeholder="Player color"
+          value="#2563EB"
+          .colors=${brandColors}
+        ></ds-color-picker>
+      </ds-text-field>
     </div>
   `,
 };

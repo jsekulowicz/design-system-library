@@ -43,6 +43,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
   @property({ type: Boolean, reflect: true }) clearable = false;
+  @property({ type: Boolean, reflect: true }) compact = false;
 
   @query('#trigger') private triggerEl?: HTMLElement;
 
@@ -90,7 +91,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     if (this.value === null) {
       this.value = '';
     }
-    if (!this.label) {
+    if (!this.label && !this.compact) {
       console.warn('<ds-color-picker>: the `label` property is required for accessibility.');
     }
   }
@@ -107,8 +108,8 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   }
 
   override updated(changed: PropertyValues): void {
-    if (changed.has('label')) {
-      this.setAriaLabel(this.label || null);
+    if (changed.has('label') || changed.has('compact') || changed.has('placeholder')) {
+      this.setAriaLabel(this.#fieldAccessibleName());
     }
     if (changed.has('description')) {
       this.setAriaDescription(this.description || null);
@@ -138,6 +139,10 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       this.setValidity(flags, validationMessage);
     }
     this.invalid = Boolean(validationMessage);
+  }
+
+  #fieldAccessibleName(): string | null {
+    return this.label || (this.compact ? this.placeholder || 'Select color' : null);
   }
 
   #focusTrigger(): void {
@@ -179,12 +184,14 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     const selected = this.#selectedOption(options);
 
     return html`
-      ${this.label ? renderFieldLabel(this.label, this.required, 'trigger', this.optional) : nothing}
+      ${this.label && !this.compact
+        ? renderFieldLabel(this.label, this.required, 'trigger', this.optional)
+        : nothing}
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
         ${this.#renderTrigger(current, selected)}
         ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>
-      ${renderSubtext(this.description, this.error, this.invalid)}
+      ${this.compact ? nothing : renderSubtext(this.description, this.error, this.invalid)}
     `;
   }
 
@@ -196,9 +203,9 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       class="trigger"
       part="trigger"
       variant="secondary"
-      full-width
+      ?full-width=${!this.compact}
       ?disabled=${this.disabled}
-      label=${this.label || this.placeholder}
+      label=${this.#triggerAccessibleName(current, selected)}
       aria-haspopup="dialog"
       aria-expanded=${this.#popover.open ? 'true' : 'false'}
       aria-controls=${this.#popover.open ? 'panel' : nothing}
@@ -212,17 +219,35 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
         style=${current ? `--color-picker-value:${current}` : ''}
         aria-hidden="true"
       ></span>
-      <span class="trigger-text">
-        <span class=${current ? 'trigger-label' : 'trigger-label placeholder'}>${label}</span>
-        ${current ? html`<span class="trigger-value">${current}</span>` : nothing}
-      </span>
+      ${this.compact
+        ? nothing
+        : html`<span class="trigger-text">
+            <span class=${current ? 'trigger-label' : 'trigger-label placeholder'}>${label}</span>
+            ${current ? html`<span class="trigger-value">${current}</span>` : nothing}
+          </span>`}
     </ds-button>`;
   }
 
+  #triggerAccessibleName(current: string, selected?: ColorPickerOption): string {
+    const base = this.label || this.placeholder || 'Select color';
+    if (!current) {
+      return base;
+    }
+    return `${base}: ${selected ? getColorLabel(selected) : current} ${current}`;
+  }
+
   #renderPanel(options: ColorPickerOption[], current: string): TemplateResult {
-    return html`<div id="panel" class="panel" part="panel" role="dialog" aria-label=${this.label}>
+    return html`<div
+      id="panel"
+      class="panel"
+      part="panel"
+      role="dialog"
+      aria-label=${this.#fieldAccessibleName() || 'Color picker'}
+    >
       <ds-card elevation="md">
-        <span slot="title" class="panel-title">${this.label || 'Color picker'}</span>
+        <span slot="title" class="panel-title">
+          ${this.#fieldAccessibleName() || 'Color picker'}
+        </span>
         ${options.length ? this.#renderSwatches(options, current) : nothing}
         ${this.#renderCustomInputs()}
         <div slot="footer" class="panel-actions">
@@ -239,6 +264,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     return html`<ds-color-picker-swatch-group
       .options=${options}
       .value=${current}
+      ?compact=${this.compact}
       ?disabled=${this.disabled}
       @ds-color-picker-swatch-group-select=${this.#onSwatchGroupSelect}
     ></ds-color-picker-swatch-group>`;
@@ -259,9 +285,9 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
         ></ds-color-picker-input-color>
         <ds-text-field
           class="hex-input"
-          label="Hex"
-          size="lg"
-          placeholder="#RRGGBB"
+          input-label="Hex code"
+          size="sm"
+          placeholder="Hex code (#RRGGBB)"
           .value=${this.#customInputs.textValue}
           .error=${validationError}
           ?disabled=${this.disabled}

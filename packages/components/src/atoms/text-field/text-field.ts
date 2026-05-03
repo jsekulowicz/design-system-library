@@ -32,6 +32,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property() pattern?: string;
   @property() autocomplete?: string;
   @property() label = '';
+  @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
@@ -93,6 +94,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
           type=${this.type}
           name=${this.name || nothing}
           placeholder=${this.placeholder}
+          aria-label=${this.label ? nothing : this.inputLabel || nothing}
           ?required=${this.required}
           ?readonly=${this.disabled || this.readonly}
           minlength=${this.minLength ?? nothing}

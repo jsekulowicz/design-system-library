@@ -7,12 +7,21 @@ export const colorPickerStyles = css`
     gap: var(--ds-space-1);
     width: 100%;
   }
+  :host([compact]) {
+    width: auto;
+  }
   .control-wrap {
     position: relative;
     width: 100%;
   }
+  :host([compact]) .control-wrap {
+    width: auto;
+  }
   .trigger {
     width: 100%;
+  }
+  :host([compact]) .trigger {
+    width: auto;
   }
   .trigger::part(button) {
     display: flex;
@@ -40,6 +49,14 @@ export const colorPickerStyles = css`
     box-shadow: var(--ds-shadow-focus);
     outline: none;
   }
+  :host([compact]) .trigger::part(button) {
+    width: var(--ds-size-md);
+    min-width: var(--ds-size-md);
+    height: var(--ds-size-md);
+    min-height: var(--ds-size-md);
+    padding: var(--ds-space-1);
+    justify-content: center;
+  }
   :host([invalid]) .trigger::part(button) {
     border-color: var(--ds-color-danger);
     background: var(--ds-color-danger-subtle);
@@ -51,11 +68,15 @@ export const colorPickerStyles = css`
   }
   .preview {
     background: var(--color-picker-value, transparent);
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-xs);
     flex: 0 0 auto;
+  }
+  :host([compact]) .preview {
+    width: 24px;
+    height: 24px;
   }
   .trigger-text {
     display: grid;
@@ -83,9 +104,19 @@ export const colorPickerStyles = css`
     z-index: 100;
     max-width: min(100%, calc(100vw - 2rem));
   }
+  :host([compact]) .panel {
+    width: min(280px, calc(100vw - 2rem));
+    max-width: calc(100vw - 2rem);
+    inset-inline-end: auto;
+  }
   ds-card::part(card) {
-    gap: var(--ds-space-4);
+    gap: var(--ds-space-3);
+    padding: var(--ds-space-4);
     box-shadow: var(--ds-shadow-md);
+  }
+  ds-card::part(body) {
+    display: grid;
+    gap: var(--ds-space-3);
   }
   .panel-title {
     font-size: var(--ds-font-size-sm);
@@ -97,7 +128,7 @@ export const colorPickerStyles = css`
   }
   .section-label {
     color: var(--ds-color-fg);
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-sm);
     font-weight: var(--ds-font-weight-medium);
   }
   .custom-row {
@@ -108,6 +139,7 @@ export const colorPickerStyles = css`
   }
   .native-color {
     align-self: end;
+    --color-picker-input-size: var(--ds-size-sm);
   }
   .hex-input {
     min-width: 0;

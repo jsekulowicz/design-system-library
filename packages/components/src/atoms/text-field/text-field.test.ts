@@ -57,6 +57,14 @@ describe('<ds-text-field>', () => {
     expect(input.disabled).toBe(false);
   });
 
+  it('supports an accessible input label without rendering a visible label', async () => {
+    const el = await mount<DsTextField>('<ds-text-field input-label="Hex code"></ds-text-field>');
+    const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+    expect(input.getAttribute('aria-label')).toBe('Hex code');
+    expect(el.shadowRoot!.querySelector('.label')).toBeNull();
+  });
+
   it('updates adornment visibility on slot changes', async () => {
     const el = await mount<DsTextField>(`
       <ds-text-field>
