@@ -224,6 +224,8 @@ describe('<ds-color-picker>', () => {
     expect(el.shadowRoot!.querySelector('.trigger-text')).toBeNull();
     expect(el.shadowRoot!.querySelector('ds-icon[name="swatch"]')).toBeTruthy();
     expect(getTrigger(el).getAttribute('label')).toContain('Player color');
+    expect(getTrigger(el).getAttribute('style')).toContain('--color-picker-compact-bg:#0EA5E9');
+    expect(getTrigger(el).getAttribute('style')).toContain('--color-picker-compact-fg:var(--ds-color-fg)');
 
     await openPicker(el);
     expect(getPanel(el)).not.toBeNull();

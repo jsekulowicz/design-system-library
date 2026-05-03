@@ -50,12 +50,19 @@ export const colorPickerStyles = css`
     outline: none;
   }
   :host([compact]) .trigger::part(button) {
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
-    min-height: 32px;
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+    min-height: 28px;
     padding: 0;
+    border-color: var(--color-picker-compact-bg, var(--ds-color-border-strong));
+    background: var(--color-picker-compact-bg, var(--ds-color-bg));
+    color: var(--color-picker-compact-fg, var(--ds-color-fg));
     justify-content: center;
+  }
+  :host([compact]) .trigger:hover::part(button),
+  :host([compact]) .trigger[aria-expanded='true']::part(button) {
+    border-color: var(--color-picker-compact-fg, var(--ds-color-fg-subtle));
   }
   :host([invalid]) .trigger::part(button) {
     border-color: var(--ds-color-danger);
@@ -82,8 +89,8 @@ export const colorPickerStyles = css`
   }
   :host([compact]) .compact-icon {
     display: inline-flex;
-    color: var(--color-picker-icon-color, var(--ds-color-fg-muted));
-    font-size: 1.25rem;
+    color: currentColor;
+    font-size: 1rem;
   }
   .trigger-text {
     display: grid;

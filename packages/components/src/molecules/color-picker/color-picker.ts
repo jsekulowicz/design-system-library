@@ -14,6 +14,7 @@ import './color-picker-swatch-group.js';
 import './input-color.js';
 import {
   COLOR_FORMAT_ERROR,
+  getContrastingThemeColor,
   getColorLabel,
   normalizeColorOptions,
   normalizeHexColor,
@@ -205,6 +206,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       class="trigger"
       part="trigger"
       variant="secondary"
+      style=${this.compact ? this.#compactTriggerStyle(current) : nothing}
       ?full-width=${!this.compact}
       ?disabled=${this.disabled}
       label=${this.#triggerAccessibleName(current, selected)}
@@ -222,11 +224,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
         aria-hidden="true"
       ></span>
       ${this.compact
-        ? html`<ds-icon
-            class="compact-icon"
-            name="swatch"
-            style=${current ? `--color-picker-icon-color:${current}` : ''}
-          ></ds-icon>`
+        ? html`<ds-icon class="compact-icon" name="swatch"></ds-icon>`
         : html`<span class="trigger-text">
             <span class=${current ? 'trigger-label' : 'trigger-label placeholder'}>${label}</span>
             ${current ? html`<span class="trigger-value">${current}</span>` : nothing}
@@ -240,6 +238,19 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       return base;
     }
     return `${base}: ${selected ? getColorLabel(selected) : current} ${current}`;
+  }
+
+  #compactTriggerStyle(current: string): string {
+    if (!this.compact || !current) {
+      return '';
+    }
+    const styles = getComputedStyle(this);
+    const color = getContrastingThemeColor(
+      current,
+      styles.getPropertyValue('--ds-color-bg'),
+      styles.getPropertyValue('--ds-color-fg'),
+    );
+    return `--color-picker-compact-bg:${current};--color-picker-compact-fg:${color};`;
   }
 
   #renderPanel(options: ColorPickerOption[], current: string): TemplateResult {
