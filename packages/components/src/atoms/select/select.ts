@@ -7,7 +7,6 @@ import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
-  renderOptionItem,
   renderSelectedTiles,
 } from './select.shared.js';
 import { DropdownController } from './dropdown-controller.js';
@@ -171,17 +170,19 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const isSelected = this.multiple
       ? this.values.includes(option.value)
       : option.value === current;
-    return renderOptionItem({
-      id: `option-${index}`,
-      label: option.label,
-      isSelected,
-      isFocused: this.#dropdown.focusedIndex === index,
-      isDisabled: option.disabled ?? false,
-      onSelect: () => this.#selectOption(option),
-      onFocus: () => {
+    return html`<ds-select-option
+      id="option-${index}"
+      part="option"
+      .value=${option.value}
+      ?selected=${isSelected}
+      ?active=${this.#dropdown.focusedIndex === index}
+      ?disabled=${option.disabled ?? false}
+      @click=${() => this.#selectOption(option)}
+      @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
-      },
-    });
+      }}
+      >${option.label}</ds-select-option
+    >`;
   };
 
   override render(): TemplateResult {
@@ -235,6 +236,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
               role="listbox"
               aria-multiselectable=${this.multiple ? 'true' : 'false'}
               @scroll=${this.#dropdown.onScroll}
+              @ds-activate=${(event: Event) => event.stopPropagation()}
             >
               ${renderVirtualItems(this.options, this.#dropdown.scrollTop, (option, index) =>
                 this.#renderOption(option, index, current),

@@ -79,12 +79,12 @@ describe('<ds-searchable-select> extra coverage', () => {
     input.value = 'ea';
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await el.updateComplete;
-    expect(el.shadowRoot!.querySelector('.option .match')?.textContent?.toLowerCase()).toContain('ea');
+    expect(el.shadowRoot!.querySelector('ds-select-option .match')?.textContent?.toLowerCase()).toContain('ea');
 
     input.value = 'ct';
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await el.updateComplete;
-    expect(el.shadowRoot!.querySelector('.option .match')?.textContent?.toLowerCase()).toContain('ct');
+    expect(el.shadowRoot!.querySelector('ds-select-option .match')?.textContent?.toLowerCase()).toContain('ct');
 
     const tiles = Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('.tile[data-value]'));
     tiles.forEach((tile, index) => {
@@ -148,7 +148,7 @@ describe('<ds-searchable-select> extra coverage', () => {
 
     input.dispatchEvent(new Event('focus'));
     await el.updateComplete;
-    (el.shadowRoot!.querySelector('.option') as HTMLElement).click();
+    (el.shadowRoot!.querySelector('ds-select-option') as HTMLElement).click();
     await el.updateComplete;
     expect(el.invalid).toBe(true);
   });
@@ -175,7 +175,7 @@ describe('<ds-searchable-select> extra coverage', () => {
     expect((el as unknown as { _scrollTop: number })._scrollTop).toBe(0);
     Object.defineProperty(el, '_listboxEl', { configurable: true, value: listbox });
 
-    const firstOption = el.shadowRoot!.querySelector('.option') as HTMLElement;
+    const firstOption = el.shadowRoot!.querySelector('ds-select-option') as HTMLElement;
     firstOption.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
     await el.updateComplete;
     expect((el as unknown as { _focusedIndex: number })._focusedIndex).toBe(0);

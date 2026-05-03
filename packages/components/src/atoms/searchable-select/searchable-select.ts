@@ -8,7 +8,6 @@ import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
-  renderOptionItem,
   renderSelectedTiles,
 } from '../select/select.shared.js';
 import { DropdownController } from '../select/dropdown-controller.js';
@@ -200,17 +199,19 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     const isSelected = this.multiple
       ? this.values.includes(option.value)
       : option.value === current;
-    return renderOptionItem({
-      id: `option-${index}`,
-      label: highlightMatch(option.label, this._search),
-      isSelected,
-      isFocused: this.#dropdown.focusedIndex === index,
-      isDisabled: option.disabled ?? false,
-      onSelect: () => this.#selectOption(option),
-      onFocus: () => {
+    return html`<ds-select-option
+      id="option-${index}"
+      part="option"
+      .value=${option.value}
+      ?selected=${isSelected}
+      ?active=${this.#dropdown.focusedIndex === index}
+      ?disabled=${option.disabled ?? false}
+      @click=${() => this.#selectOption(option)}
+      @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
-      },
-    });
+      }}
+      >${highlightMatch(option.label, this._search)}</ds-select-option
+    >`;
   };
 
   override render(): TemplateResult {
@@ -287,6 +288,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
               role="listbox"
               aria-multiselectable=${this.multiple ? 'true' : 'false'}
               @scroll=${this.#dropdown.onScroll}
+              @ds-activate=${(event: Event) => event.stopPropagation()}
             >
               ${this.options.length === 0
                 ? html`<p class="empty">No results found.</p>`

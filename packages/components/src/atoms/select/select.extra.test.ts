@@ -143,7 +143,7 @@ describe('<ds-select> extra coverage', () => {
 
     expect((el as unknown as { _scrollTop: number })._scrollTop).toBeGreaterThan(0);
 
-    const firstOption = el.shadowRoot!.querySelector('.option') as HTMLElement;
+    const firstOption = el.shadowRoot!.querySelector('ds-select-option') as HTMLElement;
     firstOption.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
     await el.updateComplete;
     expect((el as unknown as { _focusedIndex: number })._focusedIndex).toBe(0);
@@ -162,9 +162,9 @@ describe('<ds-select> extra coverage', () => {
 
     trigger.click();
     await el.updateComplete;
-    const none = Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('.option')).find((option) =>
-      option.querySelector('.option-label')?.textContent?.trim() === 'None',
-    ) as HTMLElement;
+    const none = Array.from(
+      el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option'),
+    ).find((option) => (option.textContent ?? '').trim() === 'None') as HTMLElement;
     none.click();
     await el.updateComplete;
     expect(el.invalid).toBe(true);

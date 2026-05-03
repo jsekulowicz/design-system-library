@@ -190,39 +190,4 @@ export const selectStyles = css`
     max-height: 240px;
     overflow-y: auto;
   }
-  .option {
-    display: flex;
-    align-items: center;
-    gap: var(--ds-space-2);
-    height: 36px; /* must match ITEM_HEIGHT constant in virtual-list.ts */
-    box-sizing: border-box;
-    padding: 0 var(--ds-space-3);
-    cursor: pointer;
-    font-size: var(--ds-font-size-sm);
-    color: var(--ds-color-fg);
-  }
-  .option:hover,
-  .option.focused {
-    background: var(--ds-color-bg-subtle);
-  }
-  .option.selected {
-    background: var(--ds-color-accent-subtle);
-  }
-  .option.selected.focused,
-  .option.selected:hover {
-    background: var(--ds-color-bg-subtle);
-  }
-  .option.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .option-label {
-    flex: 1;
-  }
-  .check-icon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
-    color: var(--ds-color-accent);
-  }
 `;
