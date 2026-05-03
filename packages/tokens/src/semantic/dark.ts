@@ -22,6 +22,8 @@ export const semanticDark = {
     'border-strong': color.ink[300],
     'border-subtle': color.alpha.paperSubtle,
     focus: 'rgba(106, 149, 232, 0.45)',
+    'success-subtle': 'rgba(31, 122, 72, 0.22)',
+    'warning-subtle': 'rgba(166, 98, 11, 0.25)',
     'danger-subtle': 'rgba(178, 26, 10, 0.22)',
     'chart-1': '#7AA3F5',
     'chart-2': '#50D8D4',
