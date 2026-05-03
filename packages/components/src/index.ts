@@ -1,4 +1,9 @@
-export { DsButton, type ButtonVariant, type ButtonSize, type ButtonType } from './atoms/button/index.js';
+export {
+  DsButton,
+  type ButtonVariant,
+  type ButtonSize,
+  type ButtonType,
+} from './atoms/button/index.js';
 export { DsTooltip, type TooltipPlacement } from './atoms/tooltip/index.js';
 export { DsBadge, type BadgeTone } from './atoms/badge/index.js';
 export { DsIcon, registerIcon, getIcon, type IconSize } from './atoms/icon/index.js';
@@ -43,7 +48,11 @@ export {
   type ToastOptions,
   type ToastController,
 } from './molecules/toast/index.js';
-export { DsColorPicker, type ColorPickerOption } from './molecules/color-picker/index.js';
+export {
+  DsColorPicker,
+  DsColorPickerSwatch,
+  type ColorPickerOption,
+} from './molecules/color-picker/index.js';
 export {
   DsBarChart,
   type BarChartSeries,

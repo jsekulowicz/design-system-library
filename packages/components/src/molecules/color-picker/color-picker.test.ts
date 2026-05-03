@@ -1,5 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DsColorPicker } from './color-picker.js';
+import type { DsColorPickerSwatch } from './color-picker-swatch.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
@@ -32,8 +33,8 @@ function getPanel(el: DsColorPicker): HTMLElement | null {
   return el.shadowRoot!.querySelector('.panel');
 }
 
-function getSwatches(el: DsColorPicker): HTMLButtonElement[] {
-  return Array.from(el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.swatch'));
+function getSwatches(el: DsColorPicker): DsColorPickerSwatch[] {
+  return Array.from(el.shadowRoot!.querySelectorAll<DsColorPickerSwatch>('ds-color-picker-swatch'));
 }
 
 function keydown(target: HTMLElement, key: string): void {
