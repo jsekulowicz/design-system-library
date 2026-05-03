@@ -168,6 +168,11 @@
       "import": "./dist/molecules/dialog/index.js"
     },
     "./dialog/define": { "import": "./dist/molecules/dialog/define.js" },
+    "./toast": {
+      "types": "./dist/molecules/toast/index.d.ts",
+      "import": "./dist/molecules/toast/index.js"
+    },
+    "./toast/define": { "import": "./dist/molecules/toast/define.js" },
     "./color-picker": {
       "types": "./dist/molecules/color-picker/index.d.ts",
       "import": "./dist/molecules/color-picker/index.js"

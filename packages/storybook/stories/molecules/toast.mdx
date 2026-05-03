@@ -1,0 +1,78 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as ToastStories from './toast.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={ToastStories} />
+
+# Toast
+
+Transient notification anchored to a corner of the viewport. Use it for feedback after a user action — "Saved", "Item moved to trash", "Couldn't connect" — when the user shouldn't have to read it but should be able to. For static, in-flow messages that live with the content, reach for `ds-alert` instead.
+
+## Anatomy
+
+A `ds-toast-stack` is a fixed-position queue at one of four corners; it holds `ds-toast` children. You can author either declaratively (a stack with toasts inside) or imperatively via `toast()`, which lazily creates a singleton stack on `<body>` for the requested placement and returns a controller you can `dismiss()` or `update()`.
+
+Each toast composes a heading, body (default slot), and an optional `actions` slot for a follow-up button (Undo, Retry). Tone maps to a semantic colour (info / success / warning / danger), drawn from the same tokens as `ds-alert` for consistency.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={ToastStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={ToastStories.Playground} />
+      <h3>ds-toast</h3>
+      <ComponentApi tag="ds-toast" />
+      <h3>ds-toast-stack</h3>
+      <ComponentApi tag="ds-toast-stack" />
+      <h3>Imperative <code>toast()</code> API</h3>
+      <p>
+        Imported from <code>@ds/components/toast</code>. Lazy-mounts a <code>ds-toast-stack</code> on <code>document.body</code> for the requested placement (default <code>'bottom-right'</code>) and returns a controller you can dismiss or update.
+      </p>
+      <pre><code>{`import { toast } from '@ds/components/toast';
+
+toast.success('Saved', { body: 'Your changes are live.' });
+
+const ctl = toast({
+  tone: 'info',
+  heading: 'Uploading…',
+  duration: 0,            // sticky
+  placement: 'top-right',
+});
+ctl.update({ heading: 'Upload complete', tone: 'success' });
+ctl.dismiss();`}</code></pre>
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Reach for a toast after a user action that succeeded or failed — "Saved", "Item moved to trash", "Couldn't save".</li>
+        <li>Keep the heading verb-led and short. The body, if needed, fits on one line.</li>
+        <li>Pair destructive confirmations with an <code>actions</code> slot containing an Undo button.</li>
+        <li>Use <code>danger</code> tone (which is sticky by default) when the user must acknowledge the message.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't fire toasts as a substitute for inline validation. Form errors belong with the field.</li>
+        <li>Don't queue more than a handful at once. The default cap is 5; if you're hitting it, you're probably announcing too much.</li>
+        <li>Don't auto-dismiss something the user must read or act on. Set <code>duration={0}</code> to make it sticky.</li>
+        <li>Don't put critical actions only in a toast — they vanish on their own. The action should also be reachable from the page.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li><code>info</code> / <code>success</code> / <code>warning</code> render as <code>role="status"</code> with <code>aria-live="polite"</code>; <code>danger</code> uses <code>role="alert"</code> with <code>aria-live="assertive"</code>.</li>
+        <li>Toasts do not steal focus. Screen readers announce them via the live region.</li>
+        <li>Auto-dismiss timer pauses on hover and on keyboard <code>focus-within</code> (e.g. when the Undo button is focused) and resumes on leave. This gives users time to read and act.</li>
+        <li>Default durations: info / success 5&nbsp;s, warning 8&nbsp;s, danger sticky (must be acknowledged).</li>
+        <li>The dismiss button is a real <code>&lt;button&gt;</code> with <code>aria-label="Dismiss"</code>, focusable.</li>
+        <li>The stack itself is <code>role="region"</code> with an <code>aria-label</code>; it does NOT have <code>aria-live</code> (each toast owns its own live region, avoiding double announcements).</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
