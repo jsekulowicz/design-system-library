@@ -15,6 +15,7 @@
     "typecheck": "pnpm -r --parallel typecheck",
     "lint": "pnpm -r --parallel lint",
     "lint:lit": "eslint \"packages/{components,core}/src/**/*.ts\" --max-warnings=0",
+    "lint:lit:analyzer": "lit-analyzer \"packages/components/src/**/*.ts\" \"packages/core/src/**/*.ts\" --quiet",
     "test": "pnpm -r --parallel test",
     "test:coverage": "pnpm --filter @ds/components test:coverage",
     "test:coverage:all": "pnpm -r --parallel --if-present test:coverage",
