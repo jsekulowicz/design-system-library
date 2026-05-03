@@ -50,11 +50,11 @@ export const colorPickerStyles = css`
     outline: none;
   }
   :host([compact]) .trigger::part(button) {
-    width: var(--ds-size-md);
-    min-width: var(--ds-size-md);
-    height: var(--ds-size-md);
-    min-height: var(--ds-size-md);
-    padding: var(--ds-space-1);
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0;
     justify-content: center;
   }
   :host([invalid]) .trigger::part(button) {
@@ -75,8 +75,15 @@ export const colorPickerStyles = css`
     flex: 0 0 auto;
   }
   :host([compact]) .preview {
-    width: 24px;
-    height: 24px;
+    display: none;
+  }
+  .compact-icon {
+    display: none;
+  }
+  :host([compact]) .compact-icon {
+    display: inline-flex;
+    color: var(--color-picker-icon-color, var(--ds-color-fg-muted));
+    font-size: 1.25rem;
   }
   .trigger-text {
     display: grid;

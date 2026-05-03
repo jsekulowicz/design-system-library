@@ -4,6 +4,8 @@ import { DsColorPickerSwatch } from './color-picker-swatch.js';
 import { DsColorPickerSwatchGroup } from './color-picker-swatch-group.js';
 import '../card/define.js';
 import '../../atoms/button/define.js';
+import '../../atoms/icon/define.js';
+import '../../atoms/icon/icons/swatch.js';
 import '../../atoms/text-field/define.js';
 
 if (!customElements.get('ds-color-picker')) {

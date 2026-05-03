@@ -47,6 +47,10 @@
       "types": "./dist/atoms/icon/icons/cog-6-tooth.d.ts",
       "import": "./dist/atoms/icon/icons/cog-6-tooth.js"
     },
+    "./icon/swatch": {
+      "types": "./dist/atoms/icon/icons/swatch.d.ts",
+      "import": "./dist/atoms/icon/icons/swatch.js"
+    },
     "./icon/chevron-right": {
       "types": "./dist/atoms/icon/icons/chevron-right.d.ts",
       "import": "./dist/atoms/icon/icons/chevron-right.js"

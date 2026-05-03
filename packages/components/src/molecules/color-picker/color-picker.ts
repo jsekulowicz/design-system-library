@@ -2,6 +2,8 @@ import { html, nothing, LitElement, type PropertyValues, type TemplateResult } f
 import { property, query } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@ds/core';
 import '../../atoms/button/define.js';
+import '../../atoms/icon/define.js';
+import '../../atoms/icon/icons/swatch.js';
 import '../../atoms/text-field/define.js';
 import '../card/define.js';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
@@ -220,7 +222,11 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
         aria-hidden="true"
       ></span>
       ${this.compact
-        ? nothing
+        ? html`<ds-icon
+            class="compact-icon"
+            name="swatch"
+            style=${current ? `--color-picker-icon-color:${current}` : ''}
+          ></ds-icon>`
         : html`<span class="trigger-text">
             <span class=${current ? 'trigger-label' : 'trigger-label placeholder'}>${label}</span>
             ${current ? html`<span class="trigger-value">${current}</span>` : nothing}
