@@ -30,6 +30,8 @@ interface WrapperSpec {
   modulePath: string;
 }
 
+const INTERNAL_TAGS = new Set(['ds-select-option']);
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
 const CEM_PATH = resolve(ROOT, '../components/custom-elements.json');
@@ -59,6 +61,9 @@ function collectWrapperSpecs(cem: Cem): WrapperSpec[] {
   for (const mod of cem.modules) {
     for (const decl of mod.declarations ?? []) {
       if (decl.kind !== 'class' || !decl.customElement || !decl.tagName) {
+        continue;
+      }
+      if (INTERNAL_TAGS.has(decl.tagName)) {
         continue;
       }
       specs.push({

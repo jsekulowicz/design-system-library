@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as ColorPickerStories from './color-picker.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={ColorPickerStories} />
+
+# ColorPicker
+
+Form-associated color picker for selecting a normalized Hex RGB value from preset swatches or a custom color.
+
+## Anatomy
+
+A field trigger opens a responsive card panel. Presets render as an accessible radiogroup, and custom color editing uses a native color input plus a Hex text input.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={ColorPickerStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={ColorPickerStories.Playground} />
+      <ComponentApi tag="ds-color-picker" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use predefined <code>colors</code> for brand, theme, or status palettes.</li>
+        <li>Provide human labels for swatches when color names are meaningful.</li>
+        <li>Use <code>required</code> when a missing color would break the downstream workflow.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use unsupported color formats in v1; values normalize to <code>#RRGGBB</code>.</li>
+        <li>Don't rely on color alone — labels and selected state are exposed to assistive tech.</li>
+        <li>Don't place the picker in containers that clip overflow unless the popover can remain visible.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>The trigger exposes <code>aria-haspopup="dialog"</code> and reflects expanded/invalid state.</li>
+        <li>Preset swatches use <code>role="radio"</code>, <code>aria-checked</code>, and roving keyboard focus.</li>
+        <li>Keyboard: <code>Enter</code> / <code>Space</code> opens and selects, arrows move among swatches, <code>Escape</code> closes.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

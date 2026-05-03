@@ -168,6 +168,11 @@
       "import": "./dist/molecules/dialog/index.js"
     },
     "./dialog/define": { "import": "./dist/molecules/dialog/define.js" },
+    "./color-picker": {
+      "types": "./dist/molecules/color-picker/index.d.ts",
+      "import": "./dist/molecules/color-picker/index.js"
+    },
+    "./color-picker/define": { "import": "./dist/molecules/color-picker/define.js" },
     "./bar-chart": {
       "types": "./dist/molecules/bar-chart/index.d.ts",
       "import": "./dist/molecules/bar-chart/index.js"
