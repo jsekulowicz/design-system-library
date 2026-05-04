@@ -30,6 +30,14 @@ describe('<ds-color-picker-swatch>', () => {
     expect(el.getAttribute('aria-checked')).toBe('true');
   });
 
+  it('uses theme contrast for the selected checkmark', async () => {
+    const el = await mountSwatch({ selected: true, value: '#FDE68A' });
+
+    expect(el.style.getPropertyValue('--color-picker-check-color')).toBe(
+      'var(--ds-color-fg)',
+    );
+  });
+
   it('emits selection on click and keyboard activation', async () => {
     const el = await mountSwatch();
     const events: CustomEvent[] = [];

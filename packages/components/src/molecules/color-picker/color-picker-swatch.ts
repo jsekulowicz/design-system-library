@@ -2,6 +2,7 @@ import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@ds/core';
 import { colorPickerSwatchStyles } from './color-picker-swatch.styles.js';
+import { getContrastingThemeColor } from './color-utils.js';
 
 /**
  * @tag ds-color-picker-swatch
@@ -41,6 +42,7 @@ export class DsColorPickerSwatch extends DsElement {
     if (changed.has('label') || changed.has('value')) {
       this.setAttribute('aria-label', this.#accessibleLabel());
       this.style.setProperty('--color-picker-value', this.value);
+      this.#syncCheckColor();
     }
   }
 
@@ -72,12 +74,27 @@ export class DsColorPickerSwatch extends DsElement {
     this.emit('ds-color-picker-swatch-select', { detail: { value: this.value } });
   }
 
+  #syncCheckColor(): void {
+    if (!this.value) {
+      this.style.removeProperty('--color-picker-check-color');
+      return;
+    }
+
+    const styles = getComputedStyle(this);
+    const color = getContrastingThemeColor(
+      this.value,
+      styles.getPropertyValue('--ds-color-bg'),
+      styles.getPropertyValue('--ds-color-fg'),
+    );
+    this.style.setProperty('--color-picker-check-color', color);
+  }
+
   override render(): TemplateResult {
     return html`<svg class="check" viewBox="0 0 20 20" fill="none" aria-hidden="true">
       <path
         d="M5 10.5l3 3L15 6"
         stroke="currentColor"
-        stroke-width="2"
+        stroke-width="2.6"
         stroke-linecap="round"
         stroke-linejoin="round"
       />

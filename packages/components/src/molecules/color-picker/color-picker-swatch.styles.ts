@@ -26,19 +26,14 @@ export const colorPickerSwatchStyles = css`
   }
 
   :host([selected]) {
-    box-shadow:
-      inset 0 0 0 2px var(--ds-color-bg),
-      0 0 0 2px var(--ds-color-accent);
+    border-color: transparent;
   }
 
   .check {
     display: none;
-    width: 14px;
-    height: 14px;
-    padding: 2px;
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.92);
-    color: #111827;
+    width: 18px;
+    height: 18px;
+    color: var(--color-picker-check-color, var(--ds-color-bg));
   }
 
   :host([selected]) .check {
