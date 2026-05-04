@@ -50,10 +50,11 @@ export const colorPickerStyles = css`
     outline: none;
   }
   :host([compact]) .trigger::part(button) {
-    width: 28px;
-    min-width: 28px;
-    height: 28px;
-    min-height: 28px;
+    --color-picker-compact-size: 24px;
+    width: var(--color-picker-compact-size);
+    min-width: var(--color-picker-compact-size);
+    height: var(--color-picker-compact-size);
+    min-height: var(--color-picker-compact-size);
     padding: 0;
     border-color: var(--color-picker-compact-bg, var(--ds-color-border-strong));
     background: var(--color-picker-compact-bg, var(--ds-color-bg));

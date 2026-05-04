@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export const colorPickerSwatchGroupStyles = css`
   :host {
-    --color-picker-swatch-size: 28px;
+    --color-picker-swatch-size: 24px;
 
     display: grid;
     gap: var(--ds-space-2);
