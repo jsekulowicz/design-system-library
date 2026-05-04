@@ -79,7 +79,7 @@ export const colorPickerStyles = css`
     width: 24px;
     height: 24px;
     border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-xs);
+    border-radius: var(--ds-radius-sm);
     flex: 0 0 auto;
   }
   :host([compact]) .preview {
