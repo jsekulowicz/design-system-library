@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { state } from 'lit/decorators.js';
 import type { Meta, StoryObj } from '@storybook/web-components';
 import type { SelectOption } from '@ds/components/select';
 import '@ds/components/searchable-select/define';
@@ -168,9 +168,7 @@ class SbCountrySearch extends LitElement {
 
   #onSearch = (e: CustomEvent<{ query: string }>): void => {
     const q = e.detail.query.toLowerCase();
-    this._options = q
-      ? COUNTRIES.filter(c => c.label.toLowerCase().includes(q))
-      : COUNTRIES;
+    this._options = q ? COUNTRIES.filter((c) => c.label.toLowerCase().includes(q)) : COUNTRIES;
   };
 
   #onChange = (e: CustomEvent<{ value: string }>): void => {
@@ -179,18 +177,18 @@ class SbCountrySearch extends LitElement {
 
   override render() {
     return html`
-<ds-searchable-select
-  label="Country"
-  placeholder="Select a country"
-  search-placeholder="Search countries…"
-  .options=${this._options}
-  .value=${this._value}
-  @ds-search=${this.#onSearch}
-  @ds-change=${this.#onChange}
->
-  <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-</ds-searchable-select>
-`;
+      <ds-searchable-select
+        label="Country"
+        placeholder="Select a country"
+        search-placeholder="Search countries…"
+        .options=${this._options}
+        .value=${this._value}
+        @ds-search=${this.#onSearch}
+        @ds-change=${this.#onChange}
+      >
+        <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+      </ds-searchable-select>
+    `;
   }
 }
 
@@ -205,7 +203,7 @@ const meta: Meta = {
   decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
   parameters: {
     docs: {
-      story: { height: '360px' },
+      story: { height: '330px' },
     },
   },
   argTypes: {
@@ -246,21 +244,22 @@ const PLAYGROUND_OPTIONS: SelectOption[] = [
 ];
 
 export const Playground: Story = {
+  parameters: { docs: { story: { height: '270px' } } },
   render: (args) => html`
-  <ds-searchable-select
-    label=${args['label']}
-    description=${args['description'] || ''}
-    error=${args['error'] || ''}
-    placeholder=${args['placeholder']}
-    search-placeholder=${args['searchPlaceholder']}
-    ?disabled=${args['disabled']}
-    ?required=${args['required']}
-    ?invalid=${args['invalid']}
-    ?clearable=${args['clearable']}
-    ?loading=${args['loading']}
-    .options=${PLAYGROUND_OPTIONS}
-  ></ds-searchable-select>
-`,
+    <ds-searchable-select
+      label=${args['label']}
+      description=${args['description'] || ''}
+      error=${args['error'] || ''}
+      placeholder=${args['placeholder']}
+      search-placeholder=${args['searchPlaceholder']}
+      ?disabled=${args['disabled']}
+      ?required=${args['required']}
+      ?invalid=${args['invalid']}
+      ?clearable=${args['clearable']}
+      ?loading=${args['loading']}
+      .options=${PLAYGROUND_OPTIONS}
+    ></ds-searchable-select>
+  `,
 };
 
 export const Countries: Story = {
@@ -269,15 +268,12 @@ export const Countries: Story = {
 };
 
 export const Loading: Story = {
+  parameters: { docs: { story: { height: '80px' } } },
   render: () => html`
-  <ds-searchable-select
-    label="Country"
-    placeholder="Loading options…"
-    ?loading=${true}
-  >
-    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-  </ds-searchable-select>
-`,
+    <ds-searchable-select label="Country" placeholder="Loading options…" ?loading=${true}>
+      <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+    </ds-searchable-select>
+  `,
 };
 
 class SbCountryMultiSearch extends LitElement {
@@ -286,9 +282,7 @@ class SbCountryMultiSearch extends LitElement {
 
   #onSearch = (e: CustomEvent<{ query: string }>): void => {
     const q = e.detail.query.toLowerCase();
-    this._options = q
-      ? COUNTRIES.filter(c => c.label.toLowerCase().includes(q))
-      : COUNTRIES;
+    this._options = q ? COUNTRIES.filter((c) => c.label.toLowerCase().includes(q)) : COUNTRIES;
   };
 
   #onChange = (e: CustomEvent<{ values: string[] }>): void => {
@@ -297,20 +291,20 @@ class SbCountryMultiSearch extends LitElement {
 
   override render() {
     return html`
-<ds-searchable-select
-  label="Countries"
-  placeholder="Select countries"
-  search-placeholder="Search countries…"
-  ?multiple=${true}
-  .maxLines=${2}
-  .options=${this._options}
-  .values=${this._values}
-  @ds-search=${this.#onSearch}
-  @ds-change=${this.#onChange}
->
-  <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-</ds-searchable-select>
-`;
+      <ds-searchable-select
+        label="Countries"
+        placeholder="Select countries"
+        search-placeholder="Search countries…"
+        ?multiple=${true}
+        .maxLines=${2}
+        .options=${this._options}
+        .values=${this._values}
+        @ds-search=${this.#onSearch}
+        @ds-change=${this.#onChange}
+      >
+        <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+      </ds-searchable-select>
+    `;
   }
 }
 
@@ -332,7 +326,7 @@ class SbRequiredFrameworkSearch extends LitElement {
 
   #onSearch = (e: CustomEvent<{ query: string }>): void => {
     const q = e.detail.query.toLowerCase();
-    this._options = q ? FRAMEWORKS.filter(f => f.label.toLowerCase().includes(q)) : FRAMEWORKS;
+    this._options = q ? FRAMEWORKS.filter((f) => f.label.toLowerCase().includes(q)) : FRAMEWORKS;
   };
 
   #onChange = (e: CustomEvent<{ value: string }>): void => {
@@ -341,20 +335,20 @@ class SbRequiredFrameworkSearch extends LitElement {
 
   override render() {
     return html`
-<ds-searchable-select
-  label="Framework"
-  placeholder="Select a framework"
-  search-placeholder="Search frameworks…"
-  description="This field is required."
-  ?required=${true}
-  .options=${this._options}
-  .value=${this._value}
-  @ds-search=${this.#onSearch}
-  @ds-change=${this.#onChange}
->
-  <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-</ds-searchable-select>
-`;
+      <ds-searchable-select
+        label="Framework"
+        placeholder="Select a framework"
+        search-placeholder="Search frameworks…"
+        description="This field is required."
+        ?required=${true}
+        .options=${this._options}
+        .value=${this._value}
+        @ds-search=${this.#onSearch}
+        @ds-change=${this.#onChange}
+      >
+        <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+      </ds-searchable-select>
+    `;
   }
 }
 
@@ -363,11 +357,12 @@ if (!customElements.get('sb-required-framework-search')) {
 }
 
 export const Required: Story = {
+  parameters: { docs: { story: { height: '270px' } } },
   render: () => html`<sb-required-framework-search></sb-required-framework-search>`,
 };
 
 export const MultipleCountries: Story = {
   name: 'Multiple — Countries (maxLines=2)',
-  parameters: { docs: { story: { height: '420px' } } },
+  parameters: { docs: { story: { height: '330px' } } },
   render: () => html`<sb-country-multi-search></sb-country-multi-search>`,
 };
