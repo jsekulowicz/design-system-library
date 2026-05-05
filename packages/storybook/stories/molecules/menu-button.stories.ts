@@ -7,12 +7,10 @@ const meta: Meta = {
   title: 'Molecules/MenuButton',
   component: 'ds-menu-button',
   tags: ['!dev'],
-  decorators: [
-    (story) => html`<div style="padding: 4px 6px 240px;">${story()}</div>`,
-  ],
+  decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
   parameters: {
     docs: {
-      story: { height: '320px' },
+      story: { height: '80px' },
     },
   },
   argTypes: {
@@ -191,6 +189,7 @@ export const WithShortcuts: Story = {
 };
 
 export const Placements: Story = {
+  parameters: { docs: { story: { height: '560px' } } },
   render: () => html`
     <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:160px 32px;padding:160px 32px;">
       <ds-menu-button label="Bottom start" placement="bottom-start" @ds-select=${logSelect}>
