@@ -10,12 +10,15 @@ const meta: Meta = {
   decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
   parameters: {
     docs: {
-      story: { height: '80px' },
+      story: { height: '220px' },
     },
   },
   argTypes: {
     label: { control: 'text' },
-    variant: { control: { type: 'inline-radio' }, options: ['primary', 'secondary', 'ghost', 'danger'] },
+    variant: {
+      control: { type: 'inline-radio' },
+      options: ['primary', 'secondary', 'ghost', 'danger'],
+    },
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
     placement: {
       control: { type: 'inline-radio' },
@@ -116,19 +119,40 @@ export const WithIcons: Story = {
   render: () => html`
     <ds-menu-button label="View" @ds-select=${logSelect}>
       <ds-menu-item value="grid">
-        <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <svg
+          slot="leading"
+          viewBox="0 0 16 16"
+          width="16"
+          height="16"
+          fill="currentColor"
+          aria-hidden="true"
+        >
           <path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" />
         </svg>
         Grid
       </ds-menu-item>
       <ds-menu-item value="list">
-        <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <svg
+          slot="leading"
+          viewBox="0 0 16 16"
+          width="16"
+          height="16"
+          fill="currentColor"
+          aria-hidden="true"
+        >
           <path d="M2 3h12v2H2zM2 7h12v2H2zM2 11h12v2H2z" />
         </svg>
         List
       </ds-menu-item>
       <ds-menu-item value="kanban">
-        <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <svg
+          slot="leading"
+          viewBox="0 0 16 16"
+          width="16"
+          height="16"
+          fill="currentColor"
+          aria-hidden="true"
+        >
           <path d="M2 2h3v12H2zM6.5 2h3v8h-3zM11 2h3v6h-3z" />
         </svg>
         Board
@@ -174,24 +198,38 @@ export const WithShortcuts: Story = {
     <ds-menu-button label="File" @ds-select=${logSelect}>
       <ds-menu-item value="new">
         New
-        <span slot="trailing" style="font-size:var(--ds-font-size-2xs);color:var(--ds-color-fg-subtle)">⌘N</span>
+        <span
+          slot="trailing"
+          style="font-size:var(--ds-font-size-2xs);color:var(--ds-color-fg-subtle)"
+          >⌘N</span
+        >
       </ds-menu-item>
       <ds-menu-item value="open">
         Open
-        <span slot="trailing" style="font-size:var(--ds-font-size-2xs);color:var(--ds-color-fg-subtle)">⌘O</span>
+        <span
+          slot="trailing"
+          style="font-size:var(--ds-font-size-2xs);color:var(--ds-color-fg-subtle)"
+          >⌘O</span
+        >
       </ds-menu-item>
       <ds-menu-item value="save">
         Save
-        <span slot="trailing" style="font-size:var(--ds-font-size-2xs);color:var(--ds-color-fg-subtle)">⌘S</span>
+        <span
+          slot="trailing"
+          style="font-size:var(--ds-font-size-2xs);color:var(--ds-color-fg-subtle)"
+          >⌘S</span
+        >
       </ds-menu-item>
     </ds-menu-button>
   `,
 };
 
 export const Placements: Story = {
-  parameters: { docs: { story: { height: '560px' } } },
+  parameters: { docs: { story: { height: '260px' } } },
   render: () => html`
-    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:160px 32px;padding:160px 32px;">
+    <div
+      style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:80px 32px;padding:60px 32px;"
+    >
       <ds-menu-button label="Bottom start" placement="bottom-start" @ds-select=${logSelect}>
         <ds-menu-item value="a">Option A</ds-menu-item>
         <ds-menu-item value="b">Option B</ds-menu-item>
@@ -213,6 +251,7 @@ export const Placements: Story = {
 };
 
 export const Disabled: Story = {
+  parameters: { docs: { story: { height: '60px' } } },
   render: () => html`
     <ds-menu-button label="Actions" disabled>
       <ds-menu-item value="x">Won't open</ds-menu-item>
