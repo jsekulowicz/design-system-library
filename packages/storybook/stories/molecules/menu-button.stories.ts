@@ -26,7 +26,7 @@ const meta: Meta = {
     disabled: { control: 'boolean' },
   },
   args: {
-    label: 'Actions',
+    label: 'Edit',
     variant: 'secondary',
     size: 'md',
     placement: 'bottom-start',
@@ -42,16 +42,70 @@ function logSelect(event: Event): void {
   console.log('ds-select →', detail.value);
 }
 
+const PENCIL_ICON = html`<svg
+  viewBox="0 0 16 16"
+  width="16"
+  height="16"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.756l8.61-8.61Z"
+  />
+</svg>`;
+
+const CHEVRON_DOWN_ICON = html`<svg
+  viewBox="0 0 16 16"
+  width="16"
+  height="16"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path
+    fill-rule="evenodd"
+    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+    clip-rule="evenodd"
+  />
+</svg>`;
+
+const PLAYGROUND_SOURCE = `<ds-menu-button placement="bottom-start">
+  <ds-button slot="trigger" variant="secondary" size="md">
+    <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">…</svg>
+    Edit
+    <svg slot="trailing" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">…</svg>
+  </ds-button>
+  <ds-menu-item value="duplicate">Duplicate</ds-menu-item>
+  <ds-menu-item value="rename">Rename</ds-menu-item>
+  <ds-menu-item value="archive">Archive</ds-menu-item>
+  <ds-menu-item value="delete">Delete</ds-menu-item>
+</ds-menu-button>`;
+
 export const Playground: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use `slot="trigger"` to put a `ds-button` (or any element) inside the trigger. The component wires up `aria-haspopup`, `aria-expanded`, `aria-controls`, click, and keyboard handling automatically — so the slotted button is free to use its own `leading` / `trailing` slots for icons.',
+      },
+      source: { code: PLAYGROUND_SOURCE },
+    },
+  },
   render: (args) => html`
     <ds-menu-button
-      label=${args['label']}
-      variant=${args['variant']}
-      size=${args['size']}
       placement=${args['placement']}
       ?disabled=${args['disabled']}
       @ds-select=${logSelect}
     >
+      <ds-button
+        slot="trigger"
+        variant=${args['variant']}
+        size=${args['size']}
+        ?disabled=${args['disabled']}
+      >
+        <span slot="leading">${PENCIL_ICON}</span>
+        ${args['label']}
+        <span slot="trailing">${CHEVRON_DOWN_ICON}</span>
+      </ds-button>
       <ds-menu-item value="duplicate">Duplicate</ds-menu-item>
       <ds-menu-item value="rename">Rename</ds-menu-item>
       <ds-menu-item value="archive">Archive</ds-menu-item>
