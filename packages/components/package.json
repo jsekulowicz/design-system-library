@@ -182,6 +182,11 @@
       "import": "./dist/molecules/color-picker/index.js"
     },
     "./color-picker/define": { "import": "./dist/molecules/color-picker/define.js" },
+    "./menu-button": {
+      "types": "./dist/molecules/menu-button/index.d.ts",
+      "import": "./dist/molecules/menu-button/index.js"
+    },
+    "./menu-button/define": { "import": "./dist/molecules/menu-button/define.js" },
     "./bar-chart": {
       "types": "./dist/molecules/bar-chart/index.d.ts",
       "import": "./dist/molecules/bar-chart/index.js"
