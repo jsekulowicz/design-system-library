@@ -100,6 +100,8 @@ export const barChartStyles = css`
     font-size: var(--ds-font-size-sm);
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
     min-width: 120px;
+    max-width: min(220px, calc(100% - 16px));
+    box-sizing: border-box;
     z-index: 1;
   }
 

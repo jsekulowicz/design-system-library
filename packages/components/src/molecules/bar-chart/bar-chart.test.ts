@@ -170,6 +170,17 @@ describe('<ds-bar-chart>', () => {
     expect(tooltip.hasAttribute('hidden')).toBe(true);
   });
 
+  it('keeps the tooltip inside the chart width for edge groups', async () => {
+    const el = await mountBarChart();
+    const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
+
+    frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'End' }));
+    await el.updateComplete;
+
+    const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
+    expect(Number.parseFloat(tooltip.style.left)).toBeLessThan(600 - 110);
+  });
+
   it('uses series label and color overrides when provided', async () => {
     const el = await mountBarChart({
       series: [

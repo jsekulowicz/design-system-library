@@ -19,6 +19,8 @@ const BAND_OUTER_GAP = 0.18;
 const BAR_INNER_GAP = 2;
 const MIN_SEGMENT_HEIGHT = 1;
 const FALLBACK_WIDTH = 640;
+const TOOLTIP_MAX_WIDTH = 220;
+const TOOLTIP_EDGE_GAP = 8;
 
 /**
  * @tag ds-bar-chart
@@ -319,7 +321,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     const hidden = this._activeIndex == null;
     const group = this._activeIndex != null ? groups[this._activeIndex] : undefined;
     const band = this._activeIndex != null ? bands[this._activeIndex] : undefined;
-    const x = band ? margin.left + band.innerX + band.innerWidth / 2 : 0;
+    const x = this.#tooltipLeft(band ? margin.left + band.innerX + band.innerWidth / 2 : 0, layout.width);
     const maxHeight = this.#activeGroupMaxHeight(groups, innerHeight, yMax);
     const barTopY = margin.top + (innerHeight - maxHeight);
     const placeBelow = barTopY < 96;
@@ -355,6 +357,15 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   private computeLayoutSnapshot() {
     return this.#computeLayout();
+  }
+
+  #tooltipLeft(x: number, width: number): number {
+    const tooltipWidth = Math.min(TOOLTIP_MAX_WIDTH, Math.max(0, width - TOOLTIP_EDGE_GAP * 2));
+    const half = tooltipWidth / 2;
+    if (half === 0) {
+      return x;
+    }
+    return Math.min(Math.max(x, half + TOOLTIP_EDGE_GAP), width - half - TOOLTIP_EDGE_GAP);
   }
 
   #renderLegend(): TemplateResult {
