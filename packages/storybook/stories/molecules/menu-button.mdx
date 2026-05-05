@@ -1,0 +1,56 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import * as MenuButtonStories from './menu-button.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@ds/components/tabs/define';
+
+<Meta of={MenuButtonStories} />
+
+# MenuButton
+
+Pairs a trigger button with `ds-menu` and owns the WAI-ARIA Menu Button pattern: open and close, focus return, click-outside dismissal, and close-on-select. Reach for it whenever a button reveals a list of actions — kebab menus, "More" overflow, user avatar dropdowns. Use plain `ds-menu` directly only when you already have your own popover host.
+
+## Anatomy
+
+A trigger sits in front of a popover panel containing a `ds-menu`. By default, the trigger is a `ds-button` rendered from `label` / `variant` / `size` props. For icon-only or avatar triggers, supply your own button via `slot="trigger"` — the component wires `aria-haspopup`, `aria-expanded`, `aria-controls`, click, and keyboard handling automatically.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={MenuButtonStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={MenuButtonStories.Playground} />
+      <ComponentApi tag="ds-menu-button" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use a menu button for actions ("Rename", "Delete") — for picking a value, use <code>ds-select</code>.</li>
+        <li>Provide a clear, verb-led label on the default trigger, or a meaningful <code>aria-label</code> on a slotted icon trigger.</li>
+        <li>Pick a <code>placement</code> that keeps the menu inside the viewport relative to the trigger's neighborhood.</li>
+        <li>Pass <code>menu-label</code> when the trigger label alone is ambiguous out of context (e.g. a bare "⋯" button).</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't nest a menu button inside another menu — flatten or use a dialog.</li>
+        <li>Don't use the menu button as a navigation control; navigation lists belong in <code>ds-nav-item</code> / <code>ds-nav-group</code>.</li>
+        <li>Don't manually wire <code>aria-haspopup</code> / <code>aria-expanded</code> on a slotted trigger — the component owns those.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Trigger exposes <code>aria-haspopup="menu"</code> and reflects <code>aria-expanded</code> / <code>aria-controls</code>.</li>
+        <li><code>ArrowDown</code>, <code>Enter</code>, or <code>Space</code> on the trigger opens the menu and focuses the first enabled item.</li>
+        <li><code>Escape</code> closes the menu and returns focus to the trigger.</li>
+        <li>Selecting an item closes the menu and returns focus to the trigger; the underlying <code>ds-select</code> event bubbles to consumers.</li>
+        <li>Click outside the host closes the menu without changing focus.</li>
+        <li>While open, the inner <code>ds-menu</code> handles arrow keys, <code>Home</code> / <code>End</code>, and printable-letter type-ahead.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
