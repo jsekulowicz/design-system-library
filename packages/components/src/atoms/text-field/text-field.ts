@@ -1,7 +1,7 @@
 import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
-import { DsElement, FormControlMixin } from '@ds/core';
+import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { textFieldStyles } from './text-field.styles.js';
 

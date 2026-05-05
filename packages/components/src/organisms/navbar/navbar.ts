@@ -1,6 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { navbarStyles } from './navbar.styles.js';
 import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/bars-3.js';

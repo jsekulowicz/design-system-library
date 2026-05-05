@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsTextField } from '@ds/components/text-field';
-import '@ds/components/text-field/define';
+import { DsTextField } from '@jsekulowicz/ds-components/text-field';
+import '@jsekulowicz/ds-components/text-field/define';
 
 export const TextField = createComponent({
   tagName: 'ds-text-field',

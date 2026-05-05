@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/alert/define';
+import '@jsekulowicz/ds-components/alert/define';
 
 const meta: Meta = {
   title: 'Molecules/Alert',

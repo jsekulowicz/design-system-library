@@ -10,8 +10,8 @@ function suppressKnownTestNoise(log: string, type: 'stdout' | 'stderr'): boolean
 export default defineConfig({
   resolve: {
     alias: {
-      '@ds/core': resolve(__dirname, '../core/src/index.ts'),
-      '@ds/tokens': resolve(__dirname, '../tokens/src/index.ts'),
+      '@jsekulowicz/ds-core': resolve(__dirname, '../core/src/index.ts'),
+      '@jsekulowicz/ds-tokens': resolve(__dirname, '../tokens/src/index.ts'),
     },
   },
   test: {

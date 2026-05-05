@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsTablePagination } from '@ds/components/table';
-import '@ds/components/table/define';
+import { DsTablePagination } from '@jsekulowicz/ds-components/table';
+import '@jsekulowicz/ds-components/table/define';
 
 export const TablePagination = createComponent({
   tagName: 'ds-table-pagination',

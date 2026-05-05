@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import type { BarChartSeries } from '@ds/components/bar-chart';
-import '@ds/components/bar-chart/define';
+import type { BarChartSeries } from '@jsekulowicz/ds-components/bar-chart';
+import '@jsekulowicz/ds-components/bar-chart/define';
 
 type Turn = {
   turnOrdinalNumber: number;

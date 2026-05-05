@@ -1,6 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { breadcrumbStyles } from './breadcrumb.styles.js';
 import type { DsBreadcrumbItem } from './breadcrumb-item.js';
 

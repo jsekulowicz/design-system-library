@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ds/components": "workspace:*",
-    "@ds/tokens": "workspace:*",
+    "@jsekulowicz/ds-components": "workspace:*",
+    "@jsekulowicz/ds-tokens": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {

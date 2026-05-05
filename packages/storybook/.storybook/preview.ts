@@ -1,8 +1,8 @@
 import type { Preview } from '@storybook/web-components';
 import { addons } from 'storybook/internal/preview-api';
 import { DocsPage } from './docs-page.js';
-import '@ds/tokens/theme-default.css';
-import '@ds/components/define';
+import '@jsekulowicz/ds-tokens/theme-default.css';
+import '@jsekulowicz/ds-components/define';
 import './fonts.css';
 import './docs-theme.css';
 

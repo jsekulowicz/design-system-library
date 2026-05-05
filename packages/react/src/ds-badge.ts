@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { DsBadge } from '@ds/components/badge';
-import '@ds/components/badge/define';
+import { DsBadge } from '@jsekulowicz/ds-components/badge';
+import '@jsekulowicz/ds-components/badge/define';
 
 export const Badge = createComponent({
   tagName: 'ds-badge',

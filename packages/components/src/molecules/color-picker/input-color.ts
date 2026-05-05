@@ -1,7 +1,7 @@
 import { html, type TemplateResult } from 'lit';
 import { live } from 'lit/directives/live.js';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { DEFAULT_COLOR, normalizeHexColor } from './color-utils.js';
 import { inputColorStyles } from './input-color.styles.js';
 

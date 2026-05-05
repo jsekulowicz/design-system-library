@@ -1,6 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { checkboxGroupStyles } from './checkbox-group.styles.js';
 

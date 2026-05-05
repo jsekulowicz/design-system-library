@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsCheckbox } from '@ds/components/checkbox';
-import '@ds/components/checkbox/define';
+import { DsCheckbox } from '@jsekulowicz/ds-components/checkbox';
+import '@jsekulowicz/ds-components/checkbox/define';
 
 export const Checkbox = createComponent({
   tagName: 'ds-checkbox',

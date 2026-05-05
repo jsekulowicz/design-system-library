@@ -1,6 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { badgeStyles } from './badge.styles.js';
 
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';

@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/color-picker/define';
-import '@ds/components/button/define';
-import '@ds/components/form/define';
-import '@ds/components/text-field/define';
+import '@jsekulowicz/ds-components/color-picker/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/form/define';
+import '@jsekulowicz/ds-components/text-field/define';
 
 const brandColors = [
   { label: 'Ocean', value: '#0EA5E9' },

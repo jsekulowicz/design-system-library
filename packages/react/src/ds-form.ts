@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsForm } from '@ds/components/form';
-import '@ds/components/form/define';
+import { DsForm } from '@jsekulowicz/ds-components/form';
+import '@jsekulowicz/ds-components/form/define';
 
 export const Form = createComponent({
   tagName: 'ds-form',

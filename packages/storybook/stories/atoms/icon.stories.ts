@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/icon/define';
-import { registerIcon, getIcon } from '@ds/components/icon';
+import '@jsekulowicz/ds-components/icon/define';
+import { registerIcon, getIcon } from '@jsekulowicz/ds-components/icon';
 
 const HEROICONS_CDN = 'https://cdn.jsdelivr.net/npm/heroicons@2/16/solid';
 

@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/card/define';
-import '@ds/components/button/define';
-import '@ds/components/badge/define';
+import '@jsekulowicz/ds-components/card/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/badge/define';
 
 const meta: Meta = {
   title: 'Molecules/Card',

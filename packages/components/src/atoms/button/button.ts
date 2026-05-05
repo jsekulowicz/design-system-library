@@ -1,6 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { buttonStyles } from './button.styles.js';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';

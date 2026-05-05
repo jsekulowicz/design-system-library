@@ -1,10 +1,10 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/form/define';
-import '@ds/components/text-field/define';
-import '@ds/components/checkbox/define';
-import '@ds/components/select/define';
-import '@ds/components/button/define';
+import '@jsekulowicz/ds-components/form/define';
+import '@jsekulowicz/ds-components/text-field/define';
+import '@jsekulowicz/ds-components/checkbox/define';
+import '@jsekulowicz/ds-components/select/define';
+import '@jsekulowicz/ds-components/button/define';
 
 const meta: Meta = {
   title: 'Organisms/Form',

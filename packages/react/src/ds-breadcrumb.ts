@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { DsBreadcrumb } from '@ds/components/breadcrumb';
-import '@ds/components/breadcrumb/define';
+import { DsBreadcrumb } from '@jsekulowicz/ds-components/breadcrumb';
+import '@jsekulowicz/ds-components/breadcrumb/define';
 
 export const Breadcrumb = createComponent({
   tagName: 'ds-breadcrumb',

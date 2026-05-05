@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/button/define';
+import '@jsekulowicz/ds-components/button/define';
 
 const meta: Meta = {
   title: 'Atoms/Button',

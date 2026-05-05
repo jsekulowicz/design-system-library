@@ -13,8 +13,8 @@ Live docs: [https://jsekulowicz.github.io/design-system-library](https://jsekulo
 ## Quick start
 
 ```ts
-import '@ds/tokens/dist/theme-default.css';
-import '@ds/components/button/define';
+import '@jsekulowicz/ds-tokens/dist/theme-default.css';
+import '@jsekulowicz/ds-components/button/define';
 ```
 
 ```html
@@ -26,7 +26,7 @@ import '@ds/components/button/define';
 - **Tokens are the contract.** Components never hardcode values. Consumers restyle by overriding semantic tokens.
 - **Container-first responsiveness.** An atom reshapes to its slot, not the viewport. Templates own viewport logic.
 - **Native platform, augmented.** Form controls implement `ElementInternals` — they submit, validate, and reset like native inputs.
-- **Tree-shake by default.** Subpath imports (`@ds/components/button`) bring only what you use. CSS rides with JS via Constructable Stylesheets.
+- **Tree-shake by default.** Subpath imports (`@jsekulowicz/ds-components/button`) bring only what you use. CSS rides with JS via Constructable Stylesheets.
 - **A11y is not a toggle.** Every interactive atom ships with role, ARIA state, keyboard interaction, and focus-visible styling verified by axe-core.
 
 ## Atomic hierarchy

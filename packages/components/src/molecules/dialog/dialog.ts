@@ -1,7 +1,7 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import '../card/define.js';
 import { dialogStyles } from './dialog.styles.js';
 

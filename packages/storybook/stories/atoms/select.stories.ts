@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/select/define';
+import '@jsekulowicz/ds-components/select/define';
 
 const options = [
   { label: 'Design', value: 'design' },

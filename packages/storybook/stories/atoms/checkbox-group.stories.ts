@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/checkbox/define';
-import '@ds/components/checkbox-group/define';
+import '@jsekulowicz/ds-components/checkbox/define';
+import '@jsekulowicz/ds-components/checkbox-group/define';
 
 const meta: Meta = {
   title: 'Atoms/CheckboxGroup',

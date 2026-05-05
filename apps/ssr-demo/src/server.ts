@@ -22,8 +22,8 @@ const server = createServer(async (request, response) => {
 function clientBootstrap(): string {
   return `
     import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
-    import '@ds/components/button/define';
-    import '@ds/components/page-shell/define';
+    import '@jsekulowicz/ds-components/button/define';
+    import '@jsekulowicz/ds-components/page-shell/define';
     console.info('[ssr-demo] hydrated');
   `;
 }

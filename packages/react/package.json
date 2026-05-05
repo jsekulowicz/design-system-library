@@ -1,12 +1,26 @@
 {
-  "name": "@ds/react",
+  "name": "@jsekulowicz/ds-react",
   "version": "0.1.0",
-  "description": "React wrappers for @ds/components built with @lit/react.",
+  "description": "React wrappers for @jsekulowicz/ds-components built with @lit/react.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsekulowicz/design-system-library.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://jsekulowicz.github.io/design-system-library",
+  "bugs": {
+    "url": "https://github.com/jsekulowicz/design-system-library/issues"
+  },
   "type": "module",
   "sideEffects": false,
   "files": ["dist"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "exports": {
     ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
   },
@@ -21,7 +35,7 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@ds/components": "workspace:*",
+    "@jsekulowicz/ds-components": "workspace:*",
     "@lit/react": "^1.0.6",
     "lit": "^3.2.1"
   },

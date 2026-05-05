@@ -1,6 +1,6 @@
 import { html, svg, nothing, type TemplateResult, type SVGTemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { tablePaginationStyles } from './table-pagination.styles.js';
 import { buildPaginationRange, type PaginationRangeItem } from './pagination-range.js';
 

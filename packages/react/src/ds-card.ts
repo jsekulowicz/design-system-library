@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { DsCard } from '@ds/components/card';
-import '@ds/components/card/define';
+import { DsCard } from '@jsekulowicz/ds-components/card';
+import '@jsekulowicz/ds-components/card/define';
 
 export const Card = createComponent({
   tagName: 'ds-card',

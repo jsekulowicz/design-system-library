@@ -1,7 +1,7 @@
 import { html, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { menuStyles } from './menu.styles.js';
 import type { DsMenuItem } from './menu-item.js';
 

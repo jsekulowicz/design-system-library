@@ -1,7 +1,7 @@
 import { html, nothing, svg, type TemplateResult, type SVGTemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { iconStyles } from './icon.styles.js';
 
 export type IconSize = 'sm' | 'md' | 'lg';

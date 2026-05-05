@@ -1,6 +1,6 @@
 import { html, nothing, LitElement, type PropertyValues, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
-import { DsElement, FormControlMixin } from '@ds/core';
+import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import '../../atoms/button/define.js';
 import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/swatch.js';

@@ -1,16 +1,16 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components';
-import '@ds/components/page-shell/define';
-import '@ds/components/link/define';
-import '@ds/components/button/define';
-import '@ds/components/nav-item/define';
-import '@ds/components/sidenav/define';
-import '@ds/components/footer/define';
-import '@ds/components/icon/define';
-import '@ds/components/icon/home';
-import '@ds/components/icon/cog-6-tooth';
-import '@ds/components/icon/clock';
-import '@ds/components/icon/chevron-right';
+import '@jsekulowicz/ds-components/page-shell/define';
+import '@jsekulowicz/ds-components/link/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/nav-item/define';
+import '@jsekulowicz/ds-components/sidenav/define';
+import '@jsekulowicz/ds-components/footer/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/home';
+import '@jsekulowicz/ds-components/icon/cog-6-tooth';
+import '@jsekulowicz/ds-components/icon/clock';
+import '@jsekulowicz/ds-components/icon/chevron-right';
 
 const meta: Meta = {
   title: 'Templates/PageShell',

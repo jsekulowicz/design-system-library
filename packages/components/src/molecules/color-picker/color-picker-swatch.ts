@@ -1,6 +1,6 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { colorPickerSwatchStyles } from './color-picker-swatch.styles.js';
 import { getContrastingThemeColor } from './color-utils.js';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { DsTooltip } from '@ds/components/tooltip';
-import '@ds/components/tooltip/define';
+import { DsTooltip } from '@jsekulowicz/ds-components/tooltip';
+import '@jsekulowicz/ds-components/tooltip/define';
 
 export const Tooltip = createComponent({
   tagName: 'ds-tooltip',
