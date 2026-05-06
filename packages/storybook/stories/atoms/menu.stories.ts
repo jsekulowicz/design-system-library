@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/menu/define';
+import '@jsekulowicz/ds-components/menu/define';
 
 const meta: Meta = {
   title: 'Atoms/Menu',

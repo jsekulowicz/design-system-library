@@ -1,5 +1,5 @@
 import { html, type TemplateResult } from 'lit';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { footerStyles } from './footer.styles.js';
 
 /**

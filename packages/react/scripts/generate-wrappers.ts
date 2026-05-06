@@ -94,8 +94,8 @@ function renderWrapperFile(spec: WrapperSpec): string {
     : "import { createComponent } from '@lit/react';";
   return `import * as React from 'react';
 ${litReactImport}
-import { ${spec.className} } from '@ds/components/${subpath}';
-import '@ds/components/${subpath}/define';
+import { ${spec.className} } from '@jsekulowicz/ds-components/${subpath}';
+import '@jsekulowicz/ds-components/${subpath}/define';
 
 export const ${componentName} = createComponent({
   tagName: '${spec.tagName}',

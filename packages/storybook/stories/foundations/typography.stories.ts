@@ -1,6 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import { fontSize, fontWeight, lineHeight, letterSpacing } from '@ds/tokens';
+import { fontSize, fontWeight, lineHeight, letterSpacing } from '@jsekulowicz/ds-tokens';
 
 const meta: Meta = {
   title: 'Foundations/Typography',

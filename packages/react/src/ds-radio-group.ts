@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsRadioGroup } from '@ds/components/radio-group';
-import '@ds/components/radio-group/define';
+import { DsRadioGroup } from '@jsekulowicz/ds-components/radio-group';
+import '@jsekulowicz/ds-components/radio-group/define';
 
 export const RadioGroup = createComponent({
   tagName: 'ds-radio-group',

@@ -1,9 +1,9 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/nav-item/define';
-import '@ds/components/icon/define';
-import '@ds/components/icon/home';
-import '@ds/components/icon/cog-6-tooth';
+import '@jsekulowicz/ds-components/nav-item/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/home';
+import '@jsekulowicz/ds-components/icon/cog-6-tooth';
 
 const meta: Meta = {
   title: 'Atoms/NavItem',

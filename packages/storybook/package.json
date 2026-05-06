@@ -10,9 +10,9 @@
     "preview": "http-server storybook-static -p 6006"
   },
   "dependencies": {
-    "@ds/components": "workspace:*",
-    "@ds/core": "workspace:*",
-    "@ds/tokens": "workspace:*",
+    "@jsekulowicz/ds-components": "workspace:*",
+    "@jsekulowicz/ds-core": "workspace:*",
+    "@jsekulowicz/ds-tokens": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

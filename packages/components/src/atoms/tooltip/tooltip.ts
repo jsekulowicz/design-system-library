@@ -1,6 +1,6 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { tooltipStyles } from './tooltip.styles.js';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';

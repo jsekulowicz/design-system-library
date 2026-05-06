@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import { render } from '@lit-labs/ssr';
 import { collectResult } from '@lit-labs/ssr/lib/render-result.js';
-import '@ds/components/button/define';
-import '@ds/components/page-shell/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/page-shell/define';
 
 export async function renderPage(baseCss: string): Promise<string> {
   const body = html`

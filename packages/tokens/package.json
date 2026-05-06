@@ -1,12 +1,26 @@
 {
-  "name": "@ds/tokens",
+  "name": "@jsekulowicz/ds-tokens",
   "version": "0.1.0",
   "description": "Design tokens (primitive, semantic, component) for the Design System Library.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsekulowicz/design-system-library.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://jsekulowicz.github.io/design-system-library",
+  "bugs": {
+    "url": "https://github.com/jsekulowicz/design-system-library/issues"
+  },
   "type": "module",
   "sideEffects": false,
   "files": ["dist"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { DsFooter } from '@ds/components/footer';
-import '@ds/components/footer/define';
+import { DsFooter } from '@jsekulowicz/ds-components/footer';
+import '@jsekulowicz/ds-components/footer/define';
 
 export const Footer = createComponent({
   tagName: 'ds-footer',

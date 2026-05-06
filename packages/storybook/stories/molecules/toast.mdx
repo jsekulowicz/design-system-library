@@ -1,7 +1,7 @@
 import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
 import * as ToastStories from './toast.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
-import '@ds/components/tabs/define';
+import '@jsekulowicz/ds-components/tabs/define';
 
 <Meta of={ToastStories} />
 
@@ -30,9 +30,9 @@ Each toast composes a heading, body (default slot), and an optional `actions` sl
       <ComponentApi tag="ds-toast-stack" />
       <h3>Imperative <code>toast()</code> API</h3>
       <p>
-        Imported from <code>@ds/components/toast</code>. Lazy-mounts a <code>ds-toast-stack</code> on <code>document.body</code> for the requested placement (default <code>'bottom-right'</code>) and returns a controller you can dismiss or update.
+        Imported from <code>@jsekulowicz/ds-components/toast</code>. Lazy-mounts a <code>ds-toast-stack</code> on <code>document.body</code> for the requested placement (default <code>'bottom-right'</code>) and returns a controller you can dismiss or update.
       </p>
-      <pre><code>{`import { toast } from '@ds/components/toast';
+      <pre><code>{`import { toast } from '@jsekulowicz/ds-components/toast';
 
 toast.success('Saved', { body: 'Your changes are live.' });
 

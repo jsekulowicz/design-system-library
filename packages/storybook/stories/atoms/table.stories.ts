@@ -1,10 +1,10 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import type { TableColumn, TableSortDirection, TableSortState } from '@ds/components/table';
-import '@ds/components/table/define';
-import '@ds/components/badge/define';
-import '@ds/components/button/define';
-import '@ds/components/text-field/define';
+import type { TableColumn, TableSortDirection, TableSortState } from '@jsekulowicz/ds-components/table';
+import '@jsekulowicz/ds-components/table/define';
+import '@jsekulowicz/ds-components/badge/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/text-field/define';
 
 type Person = {
   id: number;
@@ -85,8 +85,8 @@ export const Basic: Story = {
       source: {
         language: 'ts',
         code: `\
-import type { TableColumn } from '@ds/components/table';
-import '@ds/components/table/define';
+import type { TableColumn } from '@jsekulowicz/ds-components/table';
+import '@jsekulowicz/ds-components/table/define';
 
 const columns: TableColumn<Person>[] = [
   { name: 'name',   field: 'name',   label: 'Name' },
@@ -114,9 +114,9 @@ export const WithRenderFunctions: Story = {
         language: 'ts',
         code: `\
 import { html } from 'lit';
-import type { TableColumn } from '@ds/components/table';
-import '@ds/components/table/define';
-import '@ds/components/badge/define';
+import type { TableColumn } from '@jsekulowicz/ds-components/table';
+import '@jsekulowicz/ds-components/table/define';
+import '@jsekulowicz/ds-components/badge/define';
 
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const statusTone = { active: 'success', pending: 'warning', disabled: 'neutral' } as const;

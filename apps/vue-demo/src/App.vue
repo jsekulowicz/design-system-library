@@ -20,7 +20,7 @@ function onSubmit(event: CustomEvent<{ data: FormData }>) {
   >
     <header style="display:grid;gap:var(--ds-space-2)">
       <span style="font-family:var(--ds-font-body);color:var(--ds-color-fg-muted)"
-        >@ds/components · Vue 3</span
+        >@jsekulowicz/ds-components · Vue 3</span
       >
       <h1
         style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0"

@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/badge/define';
+import '@jsekulowicz/ds-components/badge/define';
 
 const meta: Meta = {
   title: 'Atoms/Badge',

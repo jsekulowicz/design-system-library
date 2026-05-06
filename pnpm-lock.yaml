@@ -47,10 +47,10 @@ importers:
 
   apps/ssr-demo:
     dependencies:
-      '@ds/components':
+      '@jsekulowicz/ds-components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@ds/tokens':
+      '@jsekulowicz/ds-tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       '@lit-labs/ssr':
@@ -75,10 +75,10 @@ importers:
 
   apps/vue-demo:
     dependencies:
-      '@ds/components':
+      '@jsekulowicz/ds-components':
         specifier: workspace:*
         version: link:../../packages/components
-      '@ds/tokens':
+      '@jsekulowicz/ds-tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       vue:
@@ -100,10 +100,10 @@ importers:
 
   packages/components:
     dependencies:
-      '@ds/core':
+      '@jsekulowicz/ds-core':
         specifier: workspace:*
         version: link:../core
-      '@ds/tokens':
+      '@jsekulowicz/ds-tokens':
         specifier: workspace:*
         version: link:../tokens
       lit:
@@ -156,7 +156,7 @@ importers:
 
   packages/react:
     dependencies:
-      '@ds/components':
+      '@jsekulowicz/ds-components':
         specifier: workspace:*
         version: link:../components
       '@lit/react':
@@ -187,13 +187,13 @@ importers:
 
   packages/storybook:
     dependencies:
-      '@ds/components':
+      '@jsekulowicz/ds-components':
         specifier: workspace:*
         version: link:../components
-      '@ds/core':
+      '@jsekulowicz/ds-core':
         specifier: workspace:*
         version: link:../core
-      '@ds/tokens':
+      '@jsekulowicz/ds-tokens':
         specifier: workspace:*
         version: link:../tokens
       lit:

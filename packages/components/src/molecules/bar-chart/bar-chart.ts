@@ -1,6 +1,6 @@
 import { html, svg, type TemplateResult, type SVGTemplateResult, nothing } from 'lit';
 import { property, state, query } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { barChartStyles } from './bar-chart.styles.js';
 import { colorForIndex } from './colors.js';
 import {

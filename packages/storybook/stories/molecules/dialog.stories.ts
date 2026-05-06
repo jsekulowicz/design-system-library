@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/dialog/define';
-import '@ds/components/button/define';
+import '@jsekulowicz/ds-components/dialog/define';
+import '@jsekulowicz/ds-components/button/define';
 
 const meta: Meta = {
   title: 'Molecules/Dialog',

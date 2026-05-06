@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsTableSortButton } from '@ds/components/table';
-import '@ds/components/table/define';
+import { DsTableSortButton } from '@jsekulowicz/ds-components/table';
+import '@jsekulowicz/ds-components/table/define';
 
 export const TableSortButton = createComponent({
   tagName: 'ds-table-sort-button',

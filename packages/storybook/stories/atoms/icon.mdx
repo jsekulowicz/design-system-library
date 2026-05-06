@@ -1,7 +1,7 @@
 import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
 import * as IconStories from './icon.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
-import '@ds/components/tabs/define';
+import '@jsekulowicz/ds-components/tabs/define';
 
 <Meta of={IconStories} />
 
@@ -32,10 +32,10 @@ Each icon module self-registers on import, so only the ones you import end up in
     <ds-tab-panel value="guidelines">
       <h3>Using icons in your project</h3>
       <p>Import only what you need — each module self-registers:</p>
-      <pre><code>import '@ds/components/icon/check';{'\n'}import '@ds/components/icon/minus';</code></pre>
+      <pre><code>import '@jsekulowicz/ds-components/icon/check';{'\n'}import '@jsekulowicz/ds-components/icon/minus';</code></pre>
       <pre><code>&lt;ds-icon name="check"&gt;&lt;/ds-icon&gt;</code></pre>
       <p>To register a custom icon or a different Heroicons variant:</p>
-      <pre><code>import {'{'} registerIcon {'}'} from '@ds/components/icon';{'\n'}registerIcon('my-icon', '&lt;svg viewBox="0 0 16 16" fill="currentColor"&gt;...&lt;/svg&gt;');</code></pre>
+      <pre><code>import {'{'} registerIcon {'}'} from '@jsekulowicz/ds-components/icon';{'\n'}registerIcon('my-icon', '&lt;svg viewBox="0 0 16 16" fill="currentColor"&gt;...&lt;/svg&gt;');</code></pre>
 
       <h3>Do</h3>
       <ul>

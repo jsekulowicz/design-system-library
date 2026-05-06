@@ -1,10 +1,10 @@
 import { html, LitElement } from 'lit';
 import { state } from 'lit/decorators.js';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import type { SelectOption } from '@ds/components/select';
-import '@ds/components/searchable-select/define';
-import '@ds/components/icon/define';
-import '@ds/components/icon/magnifying-glass';
+import type { SelectOption } from '@jsekulowicz/ds-components/select';
+import '@jsekulowicz/ds-components/searchable-select/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/magnifying-glass';
 
 const COUNTRIES: SelectOption[] = [
   { value: 'af', label: '🇦🇫 Afghanistan' },

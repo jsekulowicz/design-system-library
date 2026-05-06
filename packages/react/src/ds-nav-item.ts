@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent } from '@lit/react';
-import { DsNavItem } from '@ds/components/nav-item';
-import '@ds/components/nav-item/define';
+import { DsNavItem } from '@jsekulowicz/ds-components/nav-item';
+import '@jsekulowicz/ds-components/nav-item/define';
 
 export const NavItem = createComponent({
   tagName: 'ds-nav-item',

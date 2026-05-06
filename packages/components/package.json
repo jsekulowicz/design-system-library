@@ -1,13 +1,27 @@
 {
-  "name": "@ds/components",
+  "name": "@jsekulowicz/ds-components",
   "version": "0.1.0",
   "description": "Lit web components for the Design System Library (atoms, molecules, organisms, templates, pages).",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsekulowicz/design-system-library.git",
+    "directory": "packages/components"
+  },
+  "homepage": "https://jsekulowicz.github.io/design-system-library",
+  "bugs": {
+    "url": "https://github.com/jsekulowicz/design-system-library/issues"
+  },
   "type": "module",
   "sideEffects": ["./dist/**/define.js", "./src/**/define.ts", "./dist/**/icons/*.js", "./src/**/icons/*.ts"],
   "files": ["dist", "custom-elements.json"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "customElements": "custom-elements.json",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "exports": {
     ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
     "./define": { "types": "./dist/define.d.ts", "import": "./dist/define.js" },
@@ -256,8 +270,8 @@
     }
   ],
   "dependencies": {
-    "@ds/core": "workspace:*",
-    "@ds/tokens": "workspace:*",
+    "@jsekulowicz/ds-core": "workspace:*",
+    "@jsekulowicz/ds-tokens": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {

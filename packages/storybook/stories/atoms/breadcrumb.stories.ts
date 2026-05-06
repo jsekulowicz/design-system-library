@@ -1,8 +1,8 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/breadcrumb/define';
-import '@ds/components/icon/define';
-import '@ds/components/icon/home';
+import '@jsekulowicz/ds-components/breadcrumb/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/home';
 
 const meta: Meta = {
   title: 'Atoms/Breadcrumb',

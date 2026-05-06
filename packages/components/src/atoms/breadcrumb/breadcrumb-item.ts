@@ -1,6 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { breadcrumbItemStyles } from './breadcrumb-item.styles.js';
 import '../icon/define.js';
 import '../icon/icons/chevron-right.js';

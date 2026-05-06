@@ -1,7 +1,7 @@
 import { html, nothing, LitElement, type PropertyValues, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement, FormControlMixin } from '@ds/core';
+import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {

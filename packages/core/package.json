@@ -1,12 +1,26 @@
 {
-  "name": "@ds/core",
+  "name": "@jsekulowicz/ds-core",
   "version": "0.1.0",
   "description": "Lit base class, form-control mixin, controllers, and utilities for Design System components.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsekulowicz/design-system-library.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://jsekulowicz.github.io/design-system-library",
+  "bugs": {
+    "url": "https://github.com/jsekulowicz/design-system-library/issues"
+  },
   "type": "module",
   "sideEffects": false,
   "files": ["dist"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "exports": {
     ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
     "./base-element": { "types": "./dist/base-element.d.ts", "import": "./dist/base-element.js" },

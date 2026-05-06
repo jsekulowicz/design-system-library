@@ -6,13 +6,13 @@ Live Storybook docs: https://jsekulowicz.github.io/design-system-library
 
 ## Packages
 
-| Package | Description |
-| --- | --- |
-| [`@ds/tokens`](./packages/tokens) | Design tokens (primitive + semantic layers) + generated CSS themes |
-| [`@ds/core`](./packages/core) | `DsElement` base class, `FormControlMixin` (ElementInternals), controllers, utils |
-| [`@ds/components`](./packages/components) | Web components (atoms → molecules → organisms → templates → pages) |
-| [`@ds/react`](./packages/react) | Thin React wrappers generated from the Custom Elements Manifest via `@lit/react` |
-| [`@ds/storybook`](./packages/storybook) | Storybook docs site (live examples, API tables, design intent, foundations) |
+| Package                                               | Description                                                                       |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [`@jsekulowicz/ds-tokens`](./packages/tokens)         | Design tokens (primitive + semantic layers) + generated CSS themes                |
+| [`@jsekulowicz/ds-core`](./packages/core)             | `DsElement` base class, `FormControlMixin` (ElementInternals), controllers, utils |
+| [`@jsekulowicz/ds-components`](./packages/components) | Web components (atoms → molecules → organisms → templates → pages)                |
+| [`@jsekulowicz/ds-react`](./packages/react)           | Thin React wrappers generated from the Custom Elements Manifest via `@lit/react`  |
+| [`@ds/storybook`](./packages/storybook)               | Storybook docs site (live examples, API tables, design intent, foundations)       |
 
 ## Components
 
@@ -41,15 +41,29 @@ pnpm typecheck      # TypeScript type-check across all packages
 
 ## Consumer usage
 
-### Install tokens and a component
+### Install
+
+```sh
+pnpm add @jsekulowicz/ds-tokens @jsekulowicz/ds-components
+```
+
+For React projects, also install the React wrappers:
+
+```sh
+pnpm add @jsekulowicz/ds-react
+```
+
+The packages are public scoped npm packages. Consumers do not need npm authentication to install them.
+
+### Import tokens and a component
 
 ```ts
 // Load the default theme (light + dark, switches via data-ds-theme on <html>)
-import '@ds/tokens/theme-default.css';
+import '@jsekulowicz/ds-tokens/theme-default.css';
 
 // Register individual components on demand (tree-shakable)
-import '@ds/components/button/define';
-import '@ds/components/text-field/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/text-field/define';
 ```
 
 ### Use in HTML
@@ -62,13 +76,13 @@ import '@ds/components/text-field/define';
 ### Use in React
 
 ```tsx
-import { DsButton, DsTextField } from '@ds/react';
+import { Button, TextField } from '@jsekulowicz/ds-react';
 
 export function MyForm() {
   return (
     <>
-      <DsTextField label="Email" type="email" />
-      <DsButton variant="primary">Save</DsButton>
+      <TextField label="Email" type="email" />
+      <Button variant="primary">Save</Button>
     </>
   );
 }
@@ -80,8 +94,8 @@ Override semantic CSS custom properties on any ancestor to retheme all child com
 
 ```css
 :root {
-  --ds-color-accent: #E2341D;
-  --ds-color-accent-hover: #C12613;
+  --ds-color-accent: #e2341d;
+  --ds-color-accent-hover: #c12613;
   --ds-radius-sm: 8px;
   --ds-radius-md: 16px;
 }
@@ -92,6 +106,43 @@ Dark mode is applied by setting `data-ds-theme="dark"` on `<html>`. Light mode i
 ### Class-only import (no side-effects)
 
 ```ts
-import { DsButton } from '@ds/components/button';
+import { DsButton } from '@jsekulowicz/ds-components/button';
 customElements.define('ds-button', DsButton);
 ```
+
+## Releases
+
+Published packages use semver and are managed with Changesets:
+
+| Package                      | Published to npm           |
+| ---------------------------- | -------------------------- |
+| `@jsekulowicz/ds-tokens`     | Yes                        |
+| `@jsekulowicz/ds-core`       | Yes                        |
+| `@jsekulowicz/ds-components` | Yes                        |
+| `@jsekulowicz/ds-react`      | Yes                        |
+| `@ds/storybook`              | No, private docs workspace |
+
+### One-time npm setup
+
+1. Make sure the npm account or organization owns the `@jsekulowicz` scope.
+2. Create an npm access token that can publish packages in that scope.
+3. Add the token to the GitHub repository secrets as `NPM_TOKEN`.
+
+### Releasing a new version
+
+1. Add a changeset on the feature branch:
+
+   ```sh
+   pnpm changeset
+   ```
+
+2. Select the changed public packages and choose the semver bump:
+   - patch for fixes and internal improvements
+   - minor for backward-compatible features
+   - major for breaking changes
+
+3. Commit the generated `.changeset/*.md` file with the code change.
+4. Merge the feature branch to `main`.
+5. The `Release` workflow opens or updates a `chore: version packages` PR.
+6. Review and merge that version PR.
+7. The next `Release` workflow run publishes the new package versions and creates GitHub Releases.

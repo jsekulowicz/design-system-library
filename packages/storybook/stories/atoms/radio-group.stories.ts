@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/radio/define';
-import '@ds/components/radio-group/define';
+import '@jsekulowicz/ds-components/radio/define';
+import '@jsekulowicz/ds-components/radio-group/define';
 
 const meta: Meta = {
   title: 'Atoms/RadioGroup',

@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/text-field/define';
+import '@jsekulowicz/ds-components/text-field/define';
 
 const meta: Meta = {
   title: 'Atoms/TextField',

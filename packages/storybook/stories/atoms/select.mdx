@@ -1,7 +1,7 @@
 import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
 import * as SelectStories from './select.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
-import '@ds/components/tabs/define';
+import '@jsekulowicz/ds-components/tabs/define';
 
 <Meta of={SelectStories} />
 
@@ -28,7 +28,7 @@ A custom trigger and a listbox popover rendered in shadow DOM. Supports `clearab
         The row element <code>ds-select</code> renders for each option. It composes four slots — <code>leading</code>, primary text (default), <code>description</code>, and <code>trailing</code> — and reflects <code>selected</code>, <code>active</code>, and <code>disabled</code> via attributes. The same element backs <code>ds-searchable-select</code>.
       </p>
       <p>
-        Internal: <code>ds-select-option</code> is registered transitively when you import <code>@ds/components/select/define</code>, but it isn't part of the public API surface — consumers don't author it directly. Documented here so the option visuals (slot shape, ARIA, keyboard highlight) live next to the component that uses them.
+        Internal: <code>ds-select-option</code> is registered transitively when you import <code>@jsekulowicz/ds-components/select/define</code>, but it isn't part of the public API surface — consumers don't author it directly. Documented here so the option visuals (slot shape, ARIA, keyboard highlight) live next to the component that uses them.
       </p>
       <ComponentApi tag="ds-select-option" />
     </ds-tab-panel>

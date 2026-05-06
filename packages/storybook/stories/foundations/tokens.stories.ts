@@ -1,6 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import { radius, shadow, border, duration, easing, breakpoint, container, zIndex } from '@ds/tokens';
+import { radius, shadow, border, duration, easing, breakpoint, container, zIndex } from '@jsekulowicz/ds-tokens';
 
 const meta: Meta = {
   title: 'Foundations/Tokens',

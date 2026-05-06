@@ -9,8 +9,8 @@ Every component is a native web component, so it runs anywhere the DOM does. The
 Each component ships a `define` side-effect module that registers the custom element with the browser. Import it once at your app's entry point:
 
 ```ts
-import '@ds/tokens/theme-default.css';
-import '@ds/components/bar-chart/define';
+import '@jsekulowicz/ds-tokens/theme-default.css';
+import '@jsekulowicz/ds-components/bar-chart/define';
 ```
 
 String and boolean props work the same everywhere — just attributes. The sections below focus on the non-string cases.
@@ -21,7 +21,7 @@ Use a leading dot to tell Lit's parser to set a JS property instead of an attrib
 
 ```ts
 import { html } from 'lit';
-import '@ds/components/bar-chart/define';
+import '@jsekulowicz/ds-components/bar-chart/define';
 
 html`
   <ds-bar-chart
@@ -42,10 +42,10 @@ Without the dot, `data` would be coerced to the string `"[object Object]"`.
 
 ## React
 
-The repo ships React wrappers generated with `@lit/react` under the `@ds/react` package. Use them exactly like regular React components — no dots, no ref juggling:
+The repo ships React wrappers generated with `@lit/react` under the `@jsekulowicz/ds-react` package. Use them exactly like regular React components — no dots, no ref juggling:
 
 ```tsx
-import { BarChart } from '@ds/react';
+import { BarChart } from '@jsekulowicz/ds-react';
 
 <BarChart
   title="Game turns"
@@ -62,7 +62,7 @@ import { BarChart } from '@ds/react';
 
 Rules of thumb:
 
-- Every component has a matching wrapper in `@ds/react` (`Button`, `Breadcrumb`, `BarChart`, `Table`, …).
+- Every component has a matching wrapper in `@jsekulowicz/ds-react` (`Button`, `Breadcrumb`, `BarChart`, `Table`, …).
 - Kebab-case attributes become camelCase props (`x-axis-label` → `xAxisLabel`).
 - Custom events are camelCased with an `onDs` prefix (`ds-bar-focus` → `onDsBarFocus`, `ds-change` → `onDsChange`).
 - The wrapper sets React props as DOM properties on the underlying element, so arrays and functions pass through as real values, not stringified.
@@ -74,8 +74,8 @@ Vue 3 needs two one-time setup steps: mark `ds-` elements as custom, and import 
 ```ts
 // main.ts
 import { createApp } from 'vue';
-import '@ds/tokens/theme-default.css';
-import '@ds/components/bar-chart/define';
+import '@jsekulowicz/ds-tokens/theme-default.css';
+import '@jsekulowicz/ds-components/bar-chart/define';
 import App from './App.vue';
 
 const app = createApp(App);
@@ -110,7 +110,7 @@ Tell the Angular compiler to allow unknown elements, then use property binding f
 ```ts
 // app.module.ts (or a standalone component's @Component)
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import '@ds/components/bar-chart/define';
+import '@jsekulowicz/ds-components/bar-chart/define';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -147,7 +147,7 @@ Attributes only carry strings, so set complex values with JS property assignment
 ></ds-bar-chart>
 
 <script type="module">
-  import '@ds/components/bar-chart/define';
+  import '@jsekulowicz/ds-components/bar-chart/define';
 
   const chart = document.querySelector('ds-bar-chart');
   chart.data = rows;
@@ -159,4 +159,4 @@ Attributes only carry strings, so set complex values with JS property assignment
 
 ## Events
 
-Custom events are plain `CustomEvent`s that bubble and cross shadow boundaries, so any listener works — `.addEventListener('ds-change', …)` (vanilla), `@ds-change="…"` (Vue), `onDsChange={…}` (React), `(ds-change)="…"` (Angular). The `detail` payload is the same everywhere; types are exported from each component's subpath (e.g. `import type { BarChartFocusDetail } from '@ds/components/bar-chart'`).
+Custom events are plain `CustomEvent`s that bubble and cross shadow boundaries, so any listener works — `.addEventListener('ds-change', …)` (vanilla), `@ds-change="…"` (Vue), `onDsChange={…}` (React), `(ds-change)="…"` (Angular). The `detail` payload is the same everywhere; types are exported from each component's subpath (e.g. `import type { BarChartFocusDetail } from '@jsekulowicz/ds-components/bar-chart'`).

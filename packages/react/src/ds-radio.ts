@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsRadio } from '@ds/components/radio';
-import '@ds/components/radio/define';
+import { DsRadio } from '@jsekulowicz/ds-components/radio';
+import '@jsekulowicz/ds-components/radio/define';
 
 export const Radio = createComponent({
   tagName: 'ds-radio',

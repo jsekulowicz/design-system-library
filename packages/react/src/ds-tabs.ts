@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsTabs } from '@ds/components/tabs';
-import '@ds/components/tabs/define';
+import { DsTabs } from '@jsekulowicz/ds-components/tabs';
+import '@jsekulowicz/ds-components/tabs/define';
 
 export const Tabs = createComponent({
   tagName: 'ds-tabs',

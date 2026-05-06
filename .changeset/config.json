@@ -3,9 +3,16 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [["@ds/tokens", "@ds/core", "@ds/components", "@ds/icons", "@ds/react"]],
+  "linked": [
+    [
+      "@jsekulowicz/ds-tokens",
+      "@jsekulowicz/ds-core",
+      "@jsekulowicz/ds-components",
+      "@jsekulowicz/ds-react"
+    ]
+  ],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@ds/storybook", "vue-demo", "ssr-demo", "tests"]
+  "ignore": ["@ds/storybook", "@ds-demo/vue", "@ds-demo/ssr", "@ds/tests"]
 }

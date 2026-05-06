@@ -1,6 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement, announce } from '@ds/core';
+import { DsElement, announce } from '@jsekulowicz/ds-core';
 import { alertStyles } from './alert.styles.js';
 
 export type AlertTone = 'info' | 'success' | 'warning' | 'danger';

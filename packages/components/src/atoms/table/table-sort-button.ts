@@ -1,6 +1,6 @@
 import { html, svg, type TemplateResult, type SVGTemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { tableSortButtonStyles } from './table-sort-button.styles.js';
 import type { TableSortDirection } from './types.js';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsSearchableSelect } from '@ds/components/searchable-select';
-import '@ds/components/searchable-select/define';
+import { DsSearchableSelect } from '@jsekulowicz/ds-components/searchable-select';
+import '@jsekulowicz/ds-components/searchable-select/define';
 
 export const SearchableSelect = createComponent({
   tagName: 'ds-searchable-select',

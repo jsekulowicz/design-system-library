@@ -27,7 +27,7 @@ type LitCtor = Constructor<LitElement> & { formAssociated?: boolean };
 
 export function FormControlMixin<TBase extends LitCtor>(
   Base: TBase,
-): TBase & Constructor<FormControlHost & LitElement> {
+): TBase & Constructor<FormControlHost & InstanceType<TBase>> {
   class FormControl extends Base implements FormControlHost {
     static override readonly formAssociated = true;
 
@@ -125,5 +125,5 @@ export function FormControlMixin<TBase extends LitCtor>(
       this.#value = state;
     }
   }
-  return FormControl as unknown as TBase & Constructor<FormControlHost & LitElement>;
+  return FormControl as unknown as TBase & Constructor<FormControlHost & InstanceType<TBase>>;
 }

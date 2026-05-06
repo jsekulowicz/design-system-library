@@ -1,6 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { tableStyles } from './table.styles.js';
 import type { TableColumn, TableRow, TableSortState } from './types.js';
 

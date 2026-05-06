@@ -1,12 +1,12 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/navbar/define';
-import '@ds/components/nav-item/define';
-import '@ds/components/button/define';
-import '@ds/components/icon/define';
-import '@ds/components/icon/home';
-import '@ds/components/icon/cog-6-tooth';
-import '@ds/components/icon/clock';
+import '@jsekulowicz/ds-components/navbar/define';
+import '@jsekulowicz/ds-components/nav-item/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/home';
+import '@jsekulowicz/ds-components/icon/cog-6-tooth';
+import '@jsekulowicz/ds-components/icon/clock';
 
 const meta: Meta = {
   title: 'Organisms/Navbar',

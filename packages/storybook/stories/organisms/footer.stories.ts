@@ -1,7 +1,7 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import '@ds/components/footer/define';
-import '@ds/components/link/define';
+import '@jsekulowicz/ds-components/footer/define';
+import '@jsekulowicz/ds-components/link/define';
 
 const meta: Meta = {
   title: 'Organisms/Footer',

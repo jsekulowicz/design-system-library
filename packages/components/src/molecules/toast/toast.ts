@@ -1,6 +1,6 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@ds/core';
+import { DsElement } from '@jsekulowicz/ds-core';
 import { toastStyles } from './toast.styles.js';
 
 export type ToastTone = 'info' | 'success' | 'warning' | 'danger';

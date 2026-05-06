@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
-import { DsAlert } from '@ds/components/alert';
-import '@ds/components/alert/define';
+import { DsAlert } from '@jsekulowicz/ds-components/alert';
+import '@jsekulowicz/ds-components/alert/define';
 
 export const Alert = createComponent({
   tagName: 'ds-alert',
