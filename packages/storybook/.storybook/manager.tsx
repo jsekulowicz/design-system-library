@@ -50,6 +50,8 @@ const DS_THEME_CHANGED = 'ds/theme-changed';
 const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
 const THEME_STORAGE_KEY = 'ds-storybook-theme';
 const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
+const FIXED_DESKTOP_TITLES = new Set(['Introduction', 'Framework usage']);
+const FIXED_DESKTOP_STORY_PREFIXES = ['foundations-', 'introduction--', 'framework-usage--'] as const;
 const toolbarGroupStyle: React.CSSProperties = {
   display: 'inline-flex',
   gap: 6,
@@ -128,15 +130,23 @@ function ToolbarButton({ active, children, disabled = false, title, onClick }: T
   );
 }
 
-function isFoundationsEntry(title?: string, storyId?: string): boolean {
-  return title?.startsWith('Foundations/') === true || storyId?.startsWith('foundations-') === true;
+function hasFixedDesktopTitle(title?: string): boolean {
+  return title?.startsWith('Foundations/') === true || (title !== undefined && FIXED_DESKTOP_TITLES.has(title));
 }
 
-function useIsFoundationsPage(): boolean {
+function hasFixedDesktopStoryId(storyId?: string): boolean {
+  return FIXED_DESKTOP_STORY_PREFIXES.some((prefix) => storyId?.startsWith(prefix) === true);
+}
+
+function isFixedDesktopEntry(title?: string, storyId?: string): boolean {
+  return hasFixedDesktopTitle(title) || hasFixedDesktopStoryId(storyId);
+}
+
+function useIsFixedDesktopPage(): boolean {
   const api = useStorybookApi();
   const { refId, storyId } = useStorybookState();
   const entry = storyId ? api.getData(storyId, refId) : undefined;
-  return isFoundationsEntry(entry?.title, storyId);
+  return isFixedDesktopEntry(entry?.title, storyId);
 }
 
 const DOCS_RESULT_SELECTOR = '.search-result-item[data-id$="--docs"]';
@@ -236,7 +246,7 @@ function ThemeToolbar(): React.ReactElement {
   }, [channel, theme]);
 
   return (
-    <div style={toolbarGroupStyle}>
+    <div data-ds-theme="dark" style={toolbarGroupStyle}>
       <ToolbarButton
         active={theme === 'light'}
         disabled={theme === 'light'}
@@ -257,32 +267,35 @@ function ThemeToolbar(): React.ReactElement {
   );
 }
 
-function ViewportToolbar(): React.ReactElement {
+function ViewportToolbar(): React.ReactElement | null {
   const channel = addons.getChannel();
-  const foundationsPage = useIsFoundationsPage();
+  const fixedDesktopPage = useIsFixedDesktopPage();
   const [viewport, setViewportState] = React.useState<ViewportKey>(() => readStoredViewport());
-  const effectiveViewport = foundationsPage ? 'desktop' : viewport;
+  const effectiveViewport = fixedDesktopPage ? 'desktop' : viewport;
 
   React.useEffect(() => {
-    if (!foundationsPage) {
+    if (!fixedDesktopPage) {
       window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
     }
-    channel.emit(DS_VIEWPORT_CHANGED, { persist: !foundationsPage, viewport: effectiveViewport });
-  }, [channel, effectiveViewport, foundationsPage, viewport]);
+    channel.emit(DS_VIEWPORT_CHANGED, { persist: !fixedDesktopPage, viewport: effectiveViewport });
+  }, [channel, effectiveViewport, fixedDesktopPage, viewport]);
 
   function updateViewport(value: ViewportKey): void {
-    if (foundationsPage) {
+    if (fixedDesktopPage) {
       return;
     }
     setViewportState(value);
   }
 
+  if (fixedDesktopPage) {
+    return null;
+  }
+
   return (
-    <div style={toolbarGroupStyle}>
+    <div data-ds-theme="dark" style={toolbarGroupStyle}>
       {VIEWPORTS.map((item) => (
         <ToolbarButton
           active={effectiveViewport === item.key}
-          disabled={foundationsPage}
           key={item.key}
           title={item.title}
           onClick={() => updateViewport(item.key)}

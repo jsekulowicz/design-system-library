@@ -37,13 +37,13 @@ function applyViewport(viewport: ViewportKey, persist = true): void {
   }
 }
 
-function isFoundationsPreview(): boolean {
+function isFixedDesktopPreview(): boolean {
   const id = new URLSearchParams(window.location.search).get('id') ?? '';
-  return id.startsWith('foundations-');
+  return id.startsWith('foundations-') || id.startsWith('introduction--') || id.startsWith('framework-usage--');
 }
 
 function readInitialViewport(): ViewportKey {
-  if (isFoundationsPreview()) {
+  if (isFixedDesktopPreview()) {
     return 'desktop';
   }
   return normalizeViewport(window.localStorage.getItem(VIEWPORT_STORAGE_KEY));
