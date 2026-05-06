@@ -5,7 +5,6 @@ import '@ds/components/alert/define';
 const meta: Meta = {
   title: 'Molecules/Alert',
   component: 'ds-alert',
-  tags: ['!dev'],
   argTypes: {
     tone: {
       control: { type: 'inline-radio' },

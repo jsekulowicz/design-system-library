@@ -6,7 +6,6 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Atoms/Tooltip',
   component: 'ds-tooltip',
-  tags: ['!dev'],
   argTypes: {
     placement: {
       control: { type: 'inline-radio' },

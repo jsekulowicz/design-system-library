@@ -5,7 +5,6 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Atoms/Button',
   component: 'ds-button',
-  tags: ['!dev'],
   argTypes: {
     variant: {
       control: { type: 'select' },

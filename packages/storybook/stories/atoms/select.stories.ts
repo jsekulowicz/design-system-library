@@ -12,7 +12,6 @@ const options = [
 const meta: Meta = {
   title: 'Atoms/Select',
   component: 'ds-select',
-  tags: ['!dev'],
   decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
   parameters: {
     docs: {

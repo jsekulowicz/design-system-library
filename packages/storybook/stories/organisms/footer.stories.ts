@@ -6,7 +6,6 @@ import '@ds/components/link/define';
 const meta: Meta = {
   title: 'Organisms/Footer',
   component: 'ds-footer',
-  tags: ['!dev'],
 };
 
 export default meta;

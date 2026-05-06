@@ -21,7 +21,6 @@ fetchHeroicon('arrow-right');
 const meta: Meta = {
   title: 'Atoms/Icon',
   component: 'ds-icon',
-  tags: ['!dev'],
   argTypes: {
     name: {
       control: { type: 'text' },

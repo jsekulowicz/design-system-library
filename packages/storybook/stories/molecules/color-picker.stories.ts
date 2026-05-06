@@ -25,7 +25,6 @@ const neutralColors = [
 const meta: Meta = {
   title: 'Molecules/ColorPicker',
   component: 'ds-color-picker',
-  tags: ['!dev'],
   decorators: [(story) => html`<div style="max-width: 420px; padding: 4px 6px 280px;">${story()}</div>`],
   parameters: {
     docs: {

@@ -199,7 +199,6 @@ if (!customElements.get('sb-country-search')) {
 const meta: Meta = {
   title: 'Atoms/SearchableSelect',
   component: 'ds-searchable-select',
-  tags: ['!dev'],
   decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
   parameters: {
     docs: {

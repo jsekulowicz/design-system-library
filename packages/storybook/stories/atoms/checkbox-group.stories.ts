@@ -6,7 +6,6 @@ import '@ds/components/checkbox-group/define';
 const meta: Meta = {
   title: 'Atoms/CheckboxGroup',
   component: 'ds-checkbox-group',
-  tags: ['!dev'],
   argTypes: {
     label: { control: 'text' },
     name: { control: 'text' },

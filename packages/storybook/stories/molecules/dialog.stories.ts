@@ -6,7 +6,6 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Molecules/Dialog',
   component: 'ds-dialog',
-  tags: ['!dev'],
   argTypes: {
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
     dismissible: { control: 'boolean' },

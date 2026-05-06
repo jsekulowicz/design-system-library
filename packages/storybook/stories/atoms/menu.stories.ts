@@ -5,7 +5,6 @@ import '@ds/components/menu/define';
 const meta: Meta = {
   title: 'Atoms/Menu',
   component: 'ds-menu',
-  tags: ['!dev'],
   argTypes: {
     label: { control: 'text' },
   },

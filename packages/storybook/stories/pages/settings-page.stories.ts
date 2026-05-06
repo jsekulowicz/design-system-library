@@ -29,7 +29,6 @@ import '@ds/components/icon/puzzle-piece';
 const meta: Meta = {
   title: 'Pages/SettingsPage',
   component: 'ds-settings-page',
-  tags: ['!dev'],
   parameters: { layout: 'fullscreen' },
 };
 

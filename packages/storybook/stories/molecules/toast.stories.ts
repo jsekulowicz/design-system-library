@@ -7,7 +7,6 @@ import { toast, type ToastPlacement } from '@ds/components/toast';
 const meta: Meta = {
   title: 'Molecules/Toast',
   component: 'ds-toast',
-  tags: ['!dev'],
   argTypes: {
     tone: { control: { type: 'inline-radio' }, options: ['info', 'success', 'warning', 'danger'] },
     heading: { control: 'text' },

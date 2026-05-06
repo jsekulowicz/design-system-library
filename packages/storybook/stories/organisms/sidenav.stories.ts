@@ -11,7 +11,6 @@ import '@ds/components/icon/clock';
 const meta: Meta = {
   title: 'Organisms/Sidenav',
   component: 'ds-sidenav',
-  tags: ['!dev'],
   parameters: { layout: 'padded' },
 };
 

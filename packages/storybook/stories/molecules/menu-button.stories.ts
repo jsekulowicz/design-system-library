@@ -6,7 +6,6 @@ import '@ds/components/button/define';
 const meta: Meta = {
   title: 'Molecules/MenuButton',
   component: 'ds-menu-button',
-  tags: ['!dev'],
   decorators: [(story) => html`<div style="padding: 4px 6px;">${story()}</div>`],
   parameters: {
     docs: {

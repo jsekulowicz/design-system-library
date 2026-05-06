@@ -11,7 +11,6 @@ import '@ds/components/icon/clock';
 const meta: Meta = {
   title: 'Organisms/Navbar',
   component: 'ds-navbar',
-  tags: ['!dev'],
   parameters: {
     layout: 'fullscreen',
     docs: {

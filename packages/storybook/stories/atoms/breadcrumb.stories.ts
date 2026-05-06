@@ -7,7 +7,6 @@ import '@ds/components/icon/home';
 const meta: Meta = {
   title: 'Atoms/Breadcrumb',
   component: 'ds-breadcrumb',
-  tags: ['!dev'],
 };
 
 export default meta;

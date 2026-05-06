@@ -5,7 +5,6 @@ import '@ds/components/checkbox/define';
 const meta: Meta = {
   title: 'Atoms/Checkbox',
   component: 'ds-checkbox',
-  tags: ['!dev'],
   argTypes: {
     checked: { control: 'boolean' },
     indeterminate: { control: 'boolean' },

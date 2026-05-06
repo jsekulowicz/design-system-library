@@ -5,7 +5,6 @@ import '@ds/components/radio/define';
 const meta: Meta = {
   title: 'Atoms/Radio',
   component: 'ds-radio',
-  tags: ['!dev'],
   argTypes: {
     checked: { control: 'boolean' },
     disabled: { control: 'boolean' },

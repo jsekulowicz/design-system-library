@@ -7,7 +7,6 @@ import '@ds/components/badge/define';
 const meta: Meta = {
   title: 'Molecules/Card',
   component: 'ds-card',
-  tags: ['!dev'],
   argTypes: {
     elevation: { control: { type: 'inline-radio' }, options: ['none', 'sm', 'md'] },
     orientation: { control: { type: 'inline-radio' }, options: ['vertical', 'horizontal'] },

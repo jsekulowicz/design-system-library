@@ -5,7 +5,6 @@ import '@ds/components/link/define';
 const meta: Meta = {
   title: 'Atoms/Link',
   component: 'ds-link',
-  tags: ['!dev'],
   argTypes: {
     variant: {
       control: { type: 'inline-radio' },

@@ -19,6 +19,8 @@ const config: StorybookConfig = {
     options: {},
   },
 
+  docs: { docsMode: true },
+
   staticDirs: existsSync(publicDir) ? ['../public'] : [],
 };
 

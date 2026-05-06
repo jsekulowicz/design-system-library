@@ -4,7 +4,6 @@ import { fontSize, fontWeight, lineHeight, letterSpacing } from '@ds/tokens';
 
 const meta: Meta = {
   title: 'Foundations/Typography',
-  tags: ['!dev'],
 };
 
 export default meta;

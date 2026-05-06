@@ -9,7 +9,6 @@ import '@ds/components/icon/cog-6-tooth';
 const meta: Meta = {
   title: 'Atoms/Tabs',
   component: 'ds-tabs',
-  tags: ['!dev'],
 };
 
 export default meta;

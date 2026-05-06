@@ -6,7 +6,6 @@ import '@ds/components/radio-group/define';
 const meta: Meta = {
   title: 'Atoms/RadioGroup',
   component: 'ds-radio-group',
-  tags: ['!dev'],
   argTypes: {
     label: { control: 'text' },
     name: { control: 'text' },

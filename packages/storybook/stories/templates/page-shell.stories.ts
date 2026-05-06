@@ -15,7 +15,6 @@ import '@ds/components/icon/chevron-right';
 const meta: Meta = {
   title: 'Templates/PageShell',
   component: 'ds-page-shell',
-  tags: ['!dev'],
   parameters: { layout: 'fullscreen' },
 };
 

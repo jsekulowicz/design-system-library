@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 
 const meta: Meta = {
   title: 'Foundations/Color',
-  tags: ['!dev'],
 };
 
 export default meta;

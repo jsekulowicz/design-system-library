@@ -69,7 +69,6 @@ function sortBy<T extends Record<string, unknown>>(rows: readonly T[], field: st
 const meta: Meta = {
   title: 'Atoms/Table',
   component: 'ds-table',
-  tags: ['!dev'],
 };
 
 export default meta;

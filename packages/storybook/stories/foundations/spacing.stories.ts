@@ -4,7 +4,6 @@ import { space } from '@ds/tokens';
 
 const meta: Meta = {
   title: 'Foundations/Spacing',
-  tags: ['!dev'],
 };
 
 export default meta;

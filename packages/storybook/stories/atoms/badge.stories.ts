@@ -5,7 +5,6 @@ import '@ds/components/badge/define';
 const meta: Meta = {
   title: 'Atoms/Badge',
   component: 'ds-badge',
-  tags: ['!dev'],
   argTypes: {
     tone: {
       control: { type: 'select' },

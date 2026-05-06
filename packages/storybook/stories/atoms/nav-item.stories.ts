@@ -8,7 +8,6 @@ import '@ds/components/icon/cog-6-tooth';
 const meta: Meta = {
   title: 'Atoms/NavItem',
   component: 'ds-nav-item',
-  tags: ['!dev'],
 };
 
 export default meta;

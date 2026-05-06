@@ -5,7 +5,6 @@ import '@ds/components/text-field/define';
 const meta: Meta = {
   title: 'Atoms/TextField',
   component: 'ds-text-field',
-  tags: ['!dev'],
   argTypes: {
     type: {
       control: { type: 'select' },
