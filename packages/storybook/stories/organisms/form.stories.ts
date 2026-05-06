@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@ds/components/form/define';
 import '@ds/components/text-field/define';
 import '@ds/components/checkbox/define';

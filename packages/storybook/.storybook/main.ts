@@ -1,23 +1,24 @@
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/web-components-vite';
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, dirname } from 'node:path';
 
-const publicDir = resolve(__dirname, '../public');
+const configDir = dirname(fileURLToPath(import.meta.url));
+const publicDir = resolve(configDir, '../public');
 
 const config: StorybookConfig = {
   stories: [
     '../stories/**/*.mdx',
     '../stories/**/*.stories.@(ts|tsx)',
   ],
-  addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-a11y',
-  ],
+
+  addons: ['@storybook/addon-a11y', '@storybook/addon-docs'],
+
   framework: {
     name: '@storybook/web-components-vite',
     options: {},
   },
-  docs: { autodocs: 'tag' },
+
   staticDirs: existsSync(publicDir) ? ['../public'] : [],
 };
 

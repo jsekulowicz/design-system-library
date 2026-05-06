@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@ds/components/toast/define';
 import '@ds/components/button/define';
 import { toast, type ToastPlacement } from '@ds/components/toast';

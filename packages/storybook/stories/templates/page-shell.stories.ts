@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@ds/components/page-shell/define';
 import '@ds/components/link/define';
 import '@ds/components/button/define';

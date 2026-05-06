@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import litPlugin from 'eslint-plugin-lit';
 import wcPlugin from 'eslint-plugin-wc';
+import storybook from 'eslint-plugin-storybook';
 
 const litFiles = ['packages/components/src/**/*.ts', 'packages/core/src/**/*.ts'];
 const litRecommended = litPlugin.configs['flat/recommended'];
@@ -47,4 +48,5 @@ export default [
       ...wcRecommended.rules,
     },
   },
+  ...storybook.configs['flat/recommended'],
 ];

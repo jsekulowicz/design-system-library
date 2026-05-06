@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/web-components';
+import type { Preview } from '@storybook/web-components-vite';
 import { addons } from 'storybook/internal/preview-api';
 import { DocsPage } from './docs-page.js';
 import '@ds/tokens/theme-default.css';
@@ -50,7 +50,7 @@ applyViewport(normalizeViewport(window.localStorage.getItem(VIEWPORT_STORAGE_KEY
 const preview: Preview = {
   parameters: {
     controls: { expanded: true },
-    backgrounds: { disable: true },
+    backgrounds: { disabled: true },
     viewport: { disable: true },
     docs: { page: DocsPage },
     options: {

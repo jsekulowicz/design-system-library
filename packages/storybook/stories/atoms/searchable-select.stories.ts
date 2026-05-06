@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { state } from 'lit/decorators.js';
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { SelectOption } from '@ds/components/select';
 import '@ds/components/searchable-select/define';
 import '@ds/components/icon/define';

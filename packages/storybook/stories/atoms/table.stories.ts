@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { TableColumn, TableSortDirection, TableSortState } from '@ds/components/table';
 import '@ds/components/table/define';
 import '@ds/components/badge/define';

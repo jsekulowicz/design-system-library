@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import type { Meta, StoryObj } from '@storybook/web-components';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@ds/components/nav-item/define';
 import '@ds/components/icon/define';
 import '@ds/components/icon/home';
