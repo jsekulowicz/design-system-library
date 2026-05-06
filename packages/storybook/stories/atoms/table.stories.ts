@@ -15,6 +15,11 @@ type Person = {
   salary: number;
 };
 
+type SortableStoryTable = HTMLElement & {
+  rows: readonly Person[];
+  sortState: TableSortState;
+};
+
 const PEOPLE: readonly Person[] = [
   { id: 1, name: 'Ada Lovelace', role: 'Engineer', status: 'active', joined: '2021-03-12', salary: 120000 },
   { id: 2, name: 'Alan Turing', role: 'Researcher', status: 'active', joined: '2019-07-01', salary: 135000 },
@@ -147,7 +152,7 @@ export const Sortable: Story = {
     let state: TableSortState = { name: 'name', direction: null };
     const handleSort = (field: string) => (event: CustomEvent<{ direction: TableSortDirection }>) => {
       const button = event.target as HTMLElement & { direction: TableSortDirection };
-      const table = button.closest('ds-table') as HTMLElement & { rows: readonly Person[]; sortState: TableSortState };
+      const table = button.closest('ds-table') as unknown as SortableStoryTable;
       state = { name: field, direction: event.detail.direction };
       button.direction = event.detail.direction;
       table.rows = sortBy(PEOPLE, field, event.detail.direction);

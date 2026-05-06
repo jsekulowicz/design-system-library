@@ -1,6 +1,7 @@
 import React from 'react';
-import { addons, types } from 'storybook/manager-api';
-import { IconButton } from 'storybook/internal/components';
+import { addons, types, useStorybookApi, useStorybookState } from 'storybook/manager-api';
+import '@ds/tokens/theme-default.css';
+import '@ds/components/button/define';
 
 type ViewportKey = 'mobile' | 'tablet' | 'desktop';
 type ThemeKey = 'light' | 'dark';
@@ -49,6 +50,40 @@ const DS_THEME_CHANGED = 'ds/theme-changed';
 const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
 const THEME_STORAGE_KEY = 'ds-storybook-theme';
 const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
+const toolbarGroupStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  gap: 6,
+  alignItems: 'center',
+  marginRight: 8,
+};
+
+type ToolbarButtonProps = {
+  active: boolean;
+  children: React.ReactNode;
+  disabled?: boolean;
+  title: string;
+  onClick: () => void;
+};
+
+type DsButtonElement = HTMLElement & {
+  disabled?: boolean;
+  label?: string;
+  size?: string;
+  variant?: string;
+};
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'ds-button': React.DetailedHTMLProps<React.HTMLAttributes<DsButtonElement>, DsButtonElement> & {
+        disabled?: boolean;
+        label?: string;
+        size?: 'sm' | 'md' | 'lg';
+        variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+      };
+    }
+  }
+}
 
 function SunIcon(): React.ReactElement {
   return (
@@ -75,6 +110,33 @@ function readStoredTheme(): ThemeKey {
 function readStoredViewport(): ViewportKey {
   const value = window.localStorage.getItem(VIEWPORT_STORAGE_KEY);
   return value === 'mobile' || value === 'tablet' || value === 'desktop' ? value : 'desktop';
+}
+
+function ToolbarButton({ active, children, disabled = false, title, onClick }: ToolbarButtonProps): React.ReactElement {
+  const disabledProps = disabled ? { disabled: true } : {};
+  return (
+    <ds-button
+      {...disabledProps}
+      label={title}
+      size="sm"
+      title={title}
+      variant={active ? 'secondary' : 'ghost'}
+      onClick={disabled ? undefined : onClick}
+    >
+      {children}
+    </ds-button>
+  );
+}
+
+function isFoundationsEntry(title?: string, storyId?: string): boolean {
+  return title?.startsWith('Foundations/') === true || storyId?.startsWith('foundations-') === true;
+}
+
+function useIsFoundationsPage(): boolean {
+  const api = useStorybookApi();
+  const { refId, storyId } = useStorybookState();
+  const entry = storyId ? api.getData(storyId, refId) : undefined;
+  return isFoundationsEntry(entry?.title, storyId);
 }
 
 const DOCS_RESULT_SELECTOR = '.search-result-item[data-id$="--docs"]';
@@ -174,41 +236,59 @@ function ThemeToolbar(): React.ReactElement {
   }, [channel, theme]);
 
   return (
-    <div style={{ display: 'inline-flex', gap: 6, alignItems: 'center', marginRight: 8 }}>
-      <IconButton title="Light theme" active={theme === 'light'} onClick={() => setTheme('light')}>
+    <div style={toolbarGroupStyle}>
+      <ToolbarButton
+        active={theme === 'light'}
+        disabled={theme === 'light'}
+        title="Light theme"
+        onClick={() => setTheme('light')}
+      >
         <SunIcon />
-      </IconButton>
-      <IconButton title="Dark theme" active={theme === 'dark'} onClick={() => setTheme('dark')}>
+      </ToolbarButton>
+      <ToolbarButton
+        active={theme === 'dark'}
+        disabled={theme === 'dark'}
+        title="Dark theme"
+        onClick={() => setTheme('dark')}
+      >
         <MoonIcon />
-      </IconButton>
+      </ToolbarButton>
     </div>
   );
 }
 
 function ViewportToolbar(): React.ReactElement {
   const channel = addons.getChannel();
+  const foundationsPage = useIsFoundationsPage();
   const [viewport, setViewportState] = React.useState<ViewportKey>(() => readStoredViewport());
+  const effectiveViewport = foundationsPage ? 'desktop' : viewport;
 
   React.useEffect(() => {
-    window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
-    channel.emit(DS_VIEWPORT_CHANGED, { viewport });
-  }, [channel, viewport]);
+    if (!foundationsPage) {
+      window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
+    }
+    channel.emit(DS_VIEWPORT_CHANGED, { persist: !foundationsPage, viewport: effectiveViewport });
+  }, [channel, effectiveViewport, foundationsPage, viewport]);
 
   function updateViewport(value: ViewportKey): void {
+    if (foundationsPage) {
+      return;
+    }
     setViewportState(value);
   }
 
   return (
-    <div style={{ display: 'inline-flex', gap: 6, alignItems: 'center', marginRight: 8 }}>
+    <div style={toolbarGroupStyle}>
       {VIEWPORTS.map((item) => (
-        <IconButton
+        <ToolbarButton
+          active={effectiveViewport === item.key}
+          disabled={foundationsPage}
           key={item.key}
           title={item.title}
-          active={viewport === item.key}
           onClick={() => updateViewport(item.key)}
         >
           {item.icon}
-        </IconButton>
+        </ToolbarButton>
       ))}
     </div>
   );

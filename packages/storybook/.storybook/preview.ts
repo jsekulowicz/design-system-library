@@ -8,6 +8,7 @@ import './docs-theme.css';
 
 type ThemeKey = 'light' | 'dark';
 type ViewportKey = 'mobile' | 'tablet' | 'desktop';
+type ViewportPayload = { viewport?: ViewportKey; persist?: boolean } | ViewportKey;
 
 const DS_THEME_CHANGED = 'ds/theme-changed';
 const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
@@ -27,11 +28,25 @@ function applyTheme(theme: ThemeKey): void {
   window.localStorage.setItem(THEME_STORAGE_KEY, theme);
 }
 
-function applyViewport(viewport: ViewportKey): void {
+function applyViewport(viewport: ViewportKey, persist = true): void {
   const width = viewport === 'mobile' ? '360px' : viewport === 'tablet' ? '768px' : '1280px';
   document.documentElement.setAttribute('data-ds-viewport', viewport);
   document.documentElement.style.setProperty('--ds-docs-viewport-width', width);
-  window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
+  if (persist) {
+    window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
+  }
+}
+
+function isFoundationsPreview(): boolean {
+  const id = new URLSearchParams(window.location.search).get('id') ?? '';
+  return id.startsWith('foundations-');
+}
+
+function readInitialViewport(): ViewportKey {
+  if (isFoundationsPreview()) {
+    return 'desktop';
+  }
+  return normalizeViewport(window.localStorage.getItem(VIEWPORT_STORAGE_KEY));
 }
 
 const channel = addons.getChannel();
@@ -39,13 +54,14 @@ channel.on(DS_THEME_CHANGED, (payload: { theme?: ThemeKey } | ThemeKey) => {
   const theme = typeof payload === 'string' ? payload : payload.theme;
   applyTheme(normalizeTheme(theme));
 });
-channel.on(DS_VIEWPORT_CHANGED, (payload: { viewport?: ViewportKey } | ViewportKey) => {
+channel.on(DS_VIEWPORT_CHANGED, (payload: ViewportPayload) => {
   const viewport = typeof payload === 'string' ? payload : payload.viewport;
-  applyViewport(normalizeViewport(viewport));
+  const persist = typeof payload === 'string' ? true : payload.persist !== false;
+  applyViewport(normalizeViewport(viewport), persist);
 });
 
 applyTheme(normalizeTheme(window.localStorage.getItem(THEME_STORAGE_KEY)));
-applyViewport(normalizeViewport(window.localStorage.getItem(VIEWPORT_STORAGE_KEY)));
+applyViewport(readInitialViewport(), false);
 
 const preview: Preview = {
   parameters: {
