@@ -1,7 +1,6 @@
 import React from 'react';
 import { addons, types, useStorybookApi, useStorybookState } from 'storybook/manager-api';
-import '@ds/tokens/theme-default.css';
-import '@ds/components/button/define';
+import { IconButton } from 'storybook/internal/components';
 
 type ViewportKey = 'mobile' | 'tablet' | 'desktop';
 type ThemeKey = 'light' | 'dark';
@@ -59,34 +58,6 @@ const toolbarGroupStyle: React.CSSProperties = {
   marginRight: 8,
 };
 
-type ToolbarButtonProps = {
-  active: boolean;
-  children: React.ReactNode;
-  disabled?: boolean;
-  title: string;
-  onClick: () => void;
-};
-
-type DsButtonElement = HTMLElement & {
-  disabled?: boolean;
-  label?: string;
-  size?: string;
-  variant?: string;
-};
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'ds-button': React.DetailedHTMLProps<React.HTMLAttributes<DsButtonElement>, DsButtonElement> & {
-        disabled?: boolean;
-        label?: string;
-        size?: 'sm' | 'md' | 'lg';
-        variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
-      };
-    }
-  }
-}
-
 function SunIcon(): React.ReactElement {
   return (
     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -112,22 +83,6 @@ function readStoredTheme(): ThemeKey {
 function readStoredViewport(): ViewportKey {
   const value = window.localStorage.getItem(VIEWPORT_STORAGE_KEY);
   return value === 'mobile' || value === 'tablet' || value === 'desktop' ? value : 'desktop';
-}
-
-function ToolbarButton({ active, children, disabled = false, title, onClick }: ToolbarButtonProps): React.ReactElement {
-  const disabledProps = disabled ? { disabled: true } : {};
-  return (
-    <ds-button
-      {...disabledProps}
-      label={title}
-      size="sm"
-      title={title}
-      variant={active ? 'secondary' : 'ghost'}
-      onClick={disabled ? undefined : onClick}
-    >
-      {children}
-    </ds-button>
-  );
 }
 
 function hasFixedDesktopTitle(title?: string): boolean {
@@ -246,23 +201,23 @@ function ThemeToolbar(): React.ReactElement {
   }, [channel, theme]);
 
   return (
-    <div data-ds-theme="dark" style={toolbarGroupStyle}>
-      <ToolbarButton
+    <div style={toolbarGroupStyle}>
+      <IconButton
+        title="Light theme"
         active={theme === 'light'}
         disabled={theme === 'light'}
-        title="Light theme"
         onClick={() => setTheme('light')}
       >
         <SunIcon />
-      </ToolbarButton>
-      <ToolbarButton
+      </IconButton>
+      <IconButton
+        title="Dark theme"
         active={theme === 'dark'}
         disabled={theme === 'dark'}
-        title="Dark theme"
         onClick={() => setTheme('dark')}
       >
         <MoonIcon />
-      </ToolbarButton>
+      </IconButton>
     </div>
   );
 }
@@ -292,16 +247,16 @@ function ViewportToolbar(): React.ReactElement | null {
   }
 
   return (
-    <div data-ds-theme="dark" style={toolbarGroupStyle}>
+    <div style={toolbarGroupStyle}>
       {VIEWPORTS.map((item) => (
-        <ToolbarButton
-          active={effectiveViewport === item.key}
+        <IconButton
           key={item.key}
           title={item.title}
+          active={effectiveViewport === item.key}
           onClick={() => updateViewport(item.key)}
         >
           {item.icon}
-        </ToolbarButton>
+        </IconButton>
       ))}
     </div>
   );
