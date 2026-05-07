@@ -62,4 +62,22 @@ describe('<ds-card>', () => {
     expect(el.getAttribute('orientation')).toBe('horizontal');
     expect(el.hasAttribute('interactive')).toBe(true);
   });
+
+  it('hides the header region when neither eyebrow nor title is slotted', async () => {
+    const el = await mount<DsCard>('<ds-card>Just body</ds-card>');
+    const header = el.shadowRoot!.querySelector('.header')!;
+    expect(header.hasAttribute('hidden')).toBe(true);
+  });
+
+  it('shows the header region when only an eyebrow is slotted', async () => {
+    const el = await mount<DsCard>('<ds-card><span slot="eyebrow">New</span>Body</ds-card>');
+    const header = el.shadowRoot!.querySelector('.header')!;
+    expect(header.hasAttribute('hidden')).toBe(false);
+  });
+
+  it('hides the footer region when nothing is slotted into footer', async () => {
+    const el = await mount<DsCard>('<ds-card><span slot="title">T</span>Body</ds-card>');
+    const footer = el.shadowRoot!.querySelector('footer')!;
+    expect(footer.hasAttribute('hidden')).toBe(true);
+  });
 });

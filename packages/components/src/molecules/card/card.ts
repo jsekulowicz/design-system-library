@@ -23,24 +23,52 @@ export class DsCard extends DsElement {
   @property({ reflect: true }) orientation: CardOrientation = 'vertical';
   @property({ type: Boolean, reflect: true }) interactive = false;
 
+  @state() private _hasEyebrow = false;
+  @state() private _hasTitle = false;
   @state() private _hasActions = false;
+  @state() private _hasFooter = false;
 
-  #onActionsSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    this._hasActions = slot.assignedNodes({ flatten: true }).length > 0;
-  }
+  #onEyebrowSlotChange = (e: Event) => {
+    this._hasEyebrow = hasAssignedContent(e.target as HTMLSlotElement);
+  };
+
+  #onTitleSlotChange = (e: Event) => {
+    this._hasTitle = hasAssignedContent(e.target as HTMLSlotElement);
+  };
+
+  #onActionsSlotChange = (e: Event) => {
+    this._hasActions = hasAssignedContent(e.target as HTMLSlotElement);
+  };
+
+  #onFooterSlotChange = (e: Event) => {
+    this._hasFooter = hasAssignedContent(e.target as HTMLSlotElement);
+  };
 
   override render(): TemplateResult {
+    const showHeader = this._hasEyebrow || this._hasTitle;
     return html`<article class="card" part="card">
-      <header class="header">
-        <slot name="eyebrow"></slot>
-        <slot name="title"></slot>
+      <header class="header" ?hidden=${!showHeader}>
+        <slot name="eyebrow" @slotchange=${this.#onEyebrowSlotChange}></slot>
+        <slot name="title" @slotchange=${this.#onTitleSlotChange}></slot>
       </header>
       <div class="body" part="body"><slot></slot></div>
       <div class="actions" ?hidden=${!this._hasActions}>
         <slot name="actions" @slotchange=${this.#onActionsSlotChange}></slot>
       </div>
-      <footer><slot name="footer"></slot></footer>
+      <footer ?hidden=${!this._hasFooter}>
+        <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+      </footer>
     </article>`;
   }
+}
+
+function hasAssignedContent(slot: HTMLSlotElement): boolean {
+  const nodes = slot.assignedNodes({ flatten: true });
+  return nodes.some((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE) return true;
+    if (node.nodeType === Node.TEXT_NODE) {
+      return (node.textContent ?? '').trim().length > 0;
+    }
+    return false;
+  });
 }

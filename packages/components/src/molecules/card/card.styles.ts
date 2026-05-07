@@ -51,7 +51,7 @@ export const cardStyles = css`
     flex-direction: column;
     gap: var(--ds-space-1);
   }
-  .actions[hidden] {
+  [hidden] {
     display: none;
   }
   ::slotted([slot='actions']) {

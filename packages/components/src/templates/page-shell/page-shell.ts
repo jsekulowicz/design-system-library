@@ -12,7 +12,7 @@ import '../../atoms/icon/icons/x-mark.js';
  * @summary Application frame: header + aside + main + footer with responsive collapse.
  * @slot brand - Top-left brand/logo.
  * @slot header-actions - Top-right actions.
- * @slot aside - Side navigation.
+ * @slot aside - Side navigation. When empty, the aside column and hamburger toggle are not rendered.
  * @slot default - Main content.
  * @slot footer - Footer content.
  */
@@ -22,6 +22,8 @@ export class DsPageShell extends DsElement {
   @property() brand = '';
   @property({ attribute: 'menu-label' }) menuLabel = 'Navigation menu';
   @state() private _mobileNavOpen = false;
+  @state() private _hasAside = false;
+  @state() private _hasFooter = false;
   #resizeObserver: ResizeObserver | null = null;
 
   override connectedCallback(): void {
@@ -44,6 +46,19 @@ export class DsPageShell extends DsElement {
     document.removeEventListener('keydown', this.#onDocumentKeydown);
     this.#resizeObserver?.disconnect();
     this.#resizeObserver = null;
+  }
+
+  override firstUpdated(): void {
+    const aside = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside"]');
+    const footer = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="footer"]');
+    if (aside) {
+      this._hasAside = hasAssignedContent(aside);
+      this.toggleAttribute('aside-empty', !this._hasAside);
+    }
+    if (footer) {
+      this._hasFooter = hasAssignedContent(footer);
+      this.toggleAttribute('footer-empty', !this._hasFooter);
+    }
   }
 
   #syncLayout = (width: number): void => {
@@ -94,22 +109,36 @@ export class DsPageShell extends DsElement {
     }
   };
 
+  #onAsideSlotChange = (event: Event): void => {
+    const slot = event.target as HTMLSlotElement;
+    this._hasAside = hasAssignedContent(slot);
+    this.toggleAttribute('aside-empty', !this._hasAside);
+  };
+
+  #onFooterSlotChange = (event: Event): void => {
+    const slot = event.target as HTMLSlotElement;
+    this._hasFooter = hasAssignedContent(slot);
+    this.toggleAttribute('footer-empty', !this._hasFooter);
+  };
+
   override render(): TemplateResult {
     const menuIcon = this._mobileNavOpen ? 'x-mark' : 'bars-3';
     const ariaExpanded: 'true' | 'false' = this._mobileNavOpen ? 'true' : 'false';
     return html`<header part="header">
-        <ds-button
-          class="menu-toggle"
-          variant="ghost"
-          size="sm"
-          label=${this.menuLabel}
-          aria-label=${this.menuLabel}
-          aria-expanded=${ariaExpanded}
-          aria-controls="mobile-aside"
-          @click=${this.#toggleMobileNav}
-        >
-          <ds-icon slot="leading" name=${menuIcon} size="lg"></ds-icon>
-        </ds-button>
+        ${this._hasAside
+          ? html`<ds-button
+              class="menu-toggle"
+              variant="ghost"
+              size="sm"
+              label=${this.menuLabel}
+              aria-label=${this.menuLabel}
+              aria-expanded=${ariaExpanded}
+              aria-controls="mobile-aside"
+              @click=${this.#toggleMobileNav}
+            >
+              <ds-icon slot="leading" name=${menuIcon} size="lg"></ds-icon>
+            </ds-button>`
+          : null}
         <div class="brand">
           <slot name="brand">${this.brand}</slot>
         </div>
@@ -135,13 +164,24 @@ export class DsPageShell extends DsElement {
             <ds-icon slot="leading" name="x-mark" size="lg"></ds-icon>
           </ds-button>
         </div>
-        <slot name="aside"></slot>
+        <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
       </aside>
       <main part="main">
         <slot></slot>
       </main>
       <footer part="footer">
-        <slot name="footer"></slot>
+        <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
       </footer>`;
   }
+}
+
+function hasAssignedContent(slot: HTMLSlotElement): boolean {
+  const nodes = slot.assignedNodes({ flatten: true });
+  return nodes.some((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE) return true;
+    if (node.nodeType === Node.TEXT_NODE) {
+      return (node.textContent ?? '').trim().length > 0;
+    }
+    return false;
+  });
 }

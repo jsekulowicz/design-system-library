@@ -81,6 +81,26 @@
       "types": "./dist/atoms/icon/icons/x-mark.d.ts",
       "import": "./dist/atoms/icon/icons/x-mark.js"
     },
+    "./icon/eye": {
+      "types": "./dist/atoms/icon/icons/eye.d.ts",
+      "import": "./dist/atoms/icon/icons/eye.js"
+    },
+    "./icon/eye-slash": {
+      "types": "./dist/atoms/icon/icons/eye-slash.d.ts",
+      "import": "./dist/atoms/icon/icons/eye-slash.js"
+    },
+    "./icon/plus": {
+      "types": "./dist/atoms/icon/icons/plus.d.ts",
+      "import": "./dist/atoms/icon/icons/plus.js"
+    },
+    "./icon/moon": {
+      "types": "./dist/atoms/icon/icons/moon.d.ts",
+      "import": "./dist/atoms/icon/icons/moon.js"
+    },
+    "./icon/sun": {
+      "types": "./dist/atoms/icon/icons/sun.d.ts",
+      "import": "./dist/atoms/icon/icons/sun.js"
+    },
     "./icon/briefcase": {
       "types": "./dist/atoms/icon/icons/briefcase.d.ts",
       "import": "./dist/atoms/icon/icons/briefcase.js"
@@ -169,6 +189,16 @@
       "import": "./dist/atoms/menu/index.js"
     },
     "./menu/define": { "import": "./dist/atoms/menu/define.js" },
+    "./divider": {
+      "types": "./dist/atoms/divider/index.d.ts",
+      "import": "./dist/atoms/divider/index.js"
+    },
+    "./divider/define": { "import": "./dist/atoms/divider/define.js" },
+    "./list": {
+      "types": "./dist/atoms/list/index.d.ts",
+      "import": "./dist/atoms/list/index.js"
+    },
+    "./list/define": { "import": "./dist/atoms/list/define.js" },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"

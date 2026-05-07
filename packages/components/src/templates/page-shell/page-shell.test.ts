@@ -215,4 +215,41 @@ describe('<ds-page-shell>', () => {
       observer.callback([], observer as never);
     }).not.toThrow();
   });
+
+  describe('empty aside slot', () => {
+    it('reflects aside-empty when nothing is slotted in aside', async () => {
+      const el = await mount<DsPageShell>(
+        `<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`,
+      );
+      await el.updateComplete;
+      expect(el.hasAttribute('aside-empty')).toBe(true);
+      expect(el.shadowRoot!.querySelector('ds-button.menu-toggle')).toBeNull();
+    });
+
+    it('keeps aside markup when content is slotted', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      expect(el.hasAttribute('aside-empty')).toBe(false);
+      expect(el.shadowRoot!.querySelector('aside')).not.toBeNull();
+      expect(el.shadowRoot!.querySelector('ds-button.menu-toggle')).not.toBeNull();
+    });
+  });
+
+  describe('empty footer slot', () => {
+    it('reflects footer-empty when nothing is slotted in footer', async () => {
+      const el = await mount<DsPageShell>(
+        `<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`,
+      );
+      await el.updateComplete;
+      expect(el.hasAttribute('footer-empty')).toBe(true);
+    });
+
+    it('does not reflect footer-empty when footer slot has content', async () => {
+      const el = await mount<DsPageShell>(
+        `<ds-page-shell brand="Brand"><div>Content</div><div slot="footer">© 2026</div></ds-page-shell>`,
+      );
+      await el.updateComplete;
+      expect(el.hasAttribute('footer-empty')).toBe(false);
+    });
+  });
 });

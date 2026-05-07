@@ -14,9 +14,9 @@ Application frame that arranges a sticky header, a scrollable aside, a main cont
 `ds-page-shell` is a CSS Grid template with four named areas:
 
 - **header** — sticky top bar; `brand` text on the left, `header-actions` slot on the right.
-- **aside** — side column; collapses below the header at narrow viewports (≤ 768px).
+- **aside** — side column; collapses below the header at narrow viewports (≤ 768px). When the slot is empty the column, hamburger toggle, and drawer are not rendered (single-section apps).
 - **main** — grows to fill remaining vertical space.
-- **footer** — full-width strip beneath the grid.
+- **footer** — full-width strip beneath the grid; padding and border collapse when empty.
 
 ```html
 <ds-page-shell brand="Brand">

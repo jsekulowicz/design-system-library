@@ -1,6 +1,8 @@
 import './atoms/button/define.js';
 import './atoms/tooltip/define.js';
 import './atoms/badge/define.js';
+import './atoms/divider/define.js';
+import './atoms/list/define.js';
 import './atoms/icon/define.js';
 import './atoms/link/define.js';
 import './atoms/text-field/define.js';

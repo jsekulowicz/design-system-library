@@ -6,6 +6,8 @@ export {
 } from './atoms/button/index.js';
 export { DsTooltip, type TooltipPlacement } from './atoms/tooltip/index.js';
 export { DsBadge, type BadgeTone } from './atoms/badge/index.js';
+export { DsDivider, type DividerOrientation } from './atoms/divider/index.js';
+export { DsList, DsListItem, type ListVariant, type ListDensity } from './atoms/list/index.js';
 export { DsIcon, registerIcon, getIcon, type IconSize } from './atoms/icon/index.js';
 export { DsLink, type LinkVariant } from './atoms/link/index.js';
 export { DsTextField, type TextFieldType, type TextFieldSize } from './atoms/text-field/index.js';

@@ -69,6 +69,32 @@ export const WithSidenav: Story = {
     `),
 };
 
+export const NoAside: Story = {
+  name: 'No Aside',
+  parameters: { docs: { story: { height: STORY_HEIGHT } } },
+  render: () =>
+    html`<div
+      style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)"
+    >
+      <ds-page-shell brand="Brand" style="min-height:0;height:100%">
+        <div slot="header-actions">
+          <ds-button variant="primary" size="sm">New session</ds-button>
+        </div>
+        <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+            Single-section app
+          </h1>
+          <p>
+            Leave the <code>aside</code> slot empty and the page shell auto-collapses to a single
+            column on every viewport — the hamburger toggle, drawer, and aside region don't render.
+            Useful for focused, single-purpose tools that don't need a global
+            <code>ds-sidenav</code>.
+          </p>
+        </article>
+      </ds-page-shell>
+    </div>`,
+};
+
 export const CollapsedSidenav: Story = {
   name: 'Collapsed Sidenav',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },

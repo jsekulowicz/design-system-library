@@ -19,12 +19,11 @@ export const pageShellStyles = css`
   header {
     grid-area: header;
     border-bottom: 1px solid var(--ds-color-border);
-    margin-bottom: var(--ds-space-1, 0.25rem);
-    padding: var(--ds-space-5) var(--ds-space-4);
+    padding: var(--ds-space-1) var(--ds-space-2);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--ds-space-4);
+    gap: var(--ds-space-3);
     position: sticky;
     top: 0;
     background: color-mix(in oklab, var(--ds-color-bg) 92%, transparent);
@@ -52,6 +51,12 @@ export const pageShellStyles = css`
   }
   footer {
     grid-area: footer;
+    padding: var(--ds-space-1) var(--ds-space-2);
+    border-top: 1px solid var(--ds-color-border);
+  }
+  :host([footer-empty]) footer {
+    padding: 0;
+    border-top: 0;
   }
   .brand {
     font-family: var(--ds-font-display);
@@ -92,9 +97,6 @@ export const pageShellStyles = css`
   }
   :host([mobile-layout]) main {
     padding: var(--ds-space-5);
-  }
-  :host([mobile-layout]) header {
-    padding: var(--ds-space-3) var(--ds-space-5);
   }
   :host([mobile-layout]) aside {
     position: absolute;
@@ -142,5 +144,16 @@ export const pageShellStyles = css`
     padding: 0;
     background: color-mix(in oklab, var(--ds-color-fg) 26%, transparent);
     z-index: var(--ds-z-index-overlay);
+  }
+  :host([aside-empty]) {
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+  :host([aside-empty]) aside,
+  :host([aside-empty]) .mobile-backdrop {
+    display: none;
   }
 `;
