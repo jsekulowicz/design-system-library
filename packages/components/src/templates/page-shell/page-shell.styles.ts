@@ -19,7 +19,7 @@ export const pageShellStyles = css`
   header {
     grid-area: header;
     border-bottom: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-1) var(--ds-space-2);
+    padding: var(--ds-space-1) var(--ds-space-5);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -51,7 +51,7 @@ export const pageShellStyles = css`
   }
   footer {
     grid-area: footer;
-    padding: var(--ds-space-1) var(--ds-space-2);
+    padding: var(--ds-space-1) var(--ds-space-5);
     border-top: 1px solid var(--ds-color-border);
   }
   :host([footer-empty]) footer {

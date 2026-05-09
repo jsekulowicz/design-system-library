@@ -5,7 +5,8 @@ export const tablePaginationStyles = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--ds-space-3);
+    column-gap: var(--ds-space-4);
+    row-gap: var(--ds-space-3);
     flex-wrap: wrap;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
