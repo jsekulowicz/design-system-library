@@ -31,6 +31,7 @@ export class DsTooltip extends DsElement {
   @property({ type: Boolean, reflect: true }) open = false;
   @property({ type: Boolean, attribute: 'hover-only' }) hoverOnly = false;
   @property({ type: Number }) delay = 0;
+  @property({ type: Boolean, reflect: true, attribute: 'full-width' }) fullWidth = false;
 
   @state() private _hovered = false;
   @state() private _focused = false;

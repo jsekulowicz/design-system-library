@@ -21,7 +21,7 @@ export const pageShellStyles = css`
     border-bottom: 1px solid var(--ds-color-border);
     padding: var(--ds-space-1) var(--ds-space-5);
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     gap: var(--ds-space-3);
     position: sticky;

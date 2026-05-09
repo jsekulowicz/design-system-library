@@ -5,9 +5,17 @@ export const tooltipStyles = css`
     display: inline-flex;
     position: relative;
   }
+  :host([full-width]) {
+    display: flex;
+    width: 100%;
+  }
   .anchor {
     position: relative;
     display: inline-flex;
+  }
+  :host([full-width]) .anchor {
+    display: flex;
+    width: 100%;
   }
   .tooltip {
     /* Override UA popover defaults so JS-set top/left/transform stay authoritative. */
