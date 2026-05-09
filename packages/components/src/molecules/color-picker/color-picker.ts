@@ -10,8 +10,6 @@ import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/f
 import { ColorPickerCustomInputs } from './color-picker-custom-inputs.js';
 import { ColorPickerPopover } from './color-picker-popover.js';
 import { colorPickerStyles } from './color-picker.styles.js';
-import './color-picker-swatch-group.js';
-import './input-color.js';
 import {
   COLOR_FORMAT_ERROR,
   getContrastingThemeColor,

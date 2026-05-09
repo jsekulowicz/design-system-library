@@ -2,7 +2,6 @@ import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { getColorLabel, normalizeColorOptions } from './color-utils.js';
-import './color-picker-swatch.js';
 import { colorPickerSwatchGroupStyles } from './color-picker-swatch-group.styles.js';
 import type { ColorPickerOption } from './types.js';
 
