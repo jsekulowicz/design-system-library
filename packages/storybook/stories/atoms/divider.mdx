@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as DividerStories from './divider.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={DividerStories} />
+
+# Divider
+
+A hairline separator with a `role="separator"` so assistive tech announces the section break. Horizontal by default; flip to `vertical` for inline meta strings.
+
+## Anatomy
+
+`ds-divider` is a single styled span. It carries vertical breathing room on its own (`--ds-space-3` top and bottom), so you don't have to wrap it in spacer elements. Vertical dividers swap that to inline margins instead.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={DividerStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={DividerStories.Playground} />
+      <ComponentApi tag="ds-divider" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use a divider to separate <em>peers</em> — sections of the same hierarchy. Don't use one to mark a sub-section break, that's what spacing is for.</li>
+        <li>Trust the built-in spacing. If a divider feels crowded, the surrounding rhythm is the problem, not the divider.</li>
+        <li>Reach for <code>orientation="vertical"</code> only inline — meta strings, toolbars, breadcrumb-like navs.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't stack a divider directly on top of another component's border — they'll read as a double rule.</li>
+        <li>Don't use multiple dividers in close succession to create boxes; reach for <code>ds-card</code>.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>The component renders <code>role="separator"</code> and <code>aria-orientation</code>, so screen readers announce the boundary correctly.</li>
+        <li>Color isn't the only signal — the spacing on either side already communicates the break visually.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

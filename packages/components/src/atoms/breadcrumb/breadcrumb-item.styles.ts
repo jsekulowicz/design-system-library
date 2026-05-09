@@ -15,7 +15,7 @@ export const breadcrumbItemStyles = css`
     gap: var(--ds-space-1);
     color: var(--ds-color-fg-muted);
     text-decoration: none;
-    padding: var(--ds-space-1) var(--ds-space-2);
+    padding: var(--ds-space-1) 0;
     border-radius: var(--ds-radius-sm);
     transition: color var(--ds-duration-fast) var(--ds-easing-standard);
   }
@@ -34,7 +34,7 @@ export const breadcrumbItemStyles = css`
     gap: var(--ds-space-1);
     color: var(--ds-color-fg);
     font-weight: var(--ds-font-weight-medium);
-    padding: var(--ds-space-1) var(--ds-space-2);
+    padding: var(--ds-space-1) 0;
   }
 
   .separator {

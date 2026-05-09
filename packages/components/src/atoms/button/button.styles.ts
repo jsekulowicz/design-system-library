@@ -10,7 +10,7 @@ export const buttonStyles = css`
     align-items: center;
     justify-content: center;
     gap: var(--ds-space-1);
-    padding: 0 var(--ds-space-5);
+    padding: 0 var(--ds-space-2);
     height: var(--ds-size-md);
     min-width: var(--ds-size-md);
     border-radius: var(--ds-radius-sm);
@@ -87,12 +87,10 @@ export const buttonStyles = css`
   }
   :host([size='sm']) .btn {
     height: var(--ds-size-sm);
-    padding: 0 var(--ds-space-4);
     font-size: var(--ds-font-size-xs);
   }
   :host([size='lg']) .btn {
     height: var(--ds-size-lg);
-    padding: 0 var(--ds-space-6);
     font-size: var(--ds-font-size-md);
   }
   :host([full-width]) {

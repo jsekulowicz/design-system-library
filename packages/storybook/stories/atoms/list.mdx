@@ -1,0 +1,65 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ListStories from './list.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={ListStories} />
+
+# List
+
+Vertical stack of `ds-list-item` rows. Each row exposes `leading`, default and `trailing` slots — leading and trailing wrappers auto-hide when their slots are empty, so a list of plain labels stays compact without leftover gutters.
+
+## Anatomy
+
+```html
+<ds-list>
+  <ds-list-item>
+    <ds-icon slot="leading" name="check"></ds-icon>
+    Item label
+    <ds-badge slot="trailing" tone="success">Done</ds-badge>
+  </ds-list-item>
+</ds-list>
+```
+
+`ds-list` renders a `<ul role="list">`. Setting `variant="bordered"` (the default) wraps the list in a card-like surround with hairline dividers between rows. `variant="plain"` drops the surround entirely — useful inside an existing `ds-card` so you don't get a card-in-a-card visual.
+
+The list does **not** clip its own overflow, so popovers anchored inside a row (color picker, menu, tooltip) escape the list correctly.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={ListStories.Playground} />
+      <h3>ds-list props</h3>
+      <Controls of={ListStories.Playground} />
+      <ComponentApi tag="ds-list" />
+      <h3>ds-list-item</h3>
+      <ComponentApi tag="ds-list-item" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use the bordered variant for self-contained lists; switch to plain when the list lives inside an existing surface like <code>ds-card</code>.</li>
+        <li>Match the leading content type across rows — all icons, all swatches, all avatars. Mixing breaks the rhythm.</li>
+        <li>Keep the trailing slot for short metadata or a single action button.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't put long-form content inside a list. Reach for cards or a real page layout.</li>
+        <li>Don't nest lists inside lists. Pick one level of hierarchy and stick with it.</li>
+        <li>Don't put more than one trailing affordance per row — pick the most important.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>The wrapper is a real <code>&lt;ul role="list"&gt;</code> — assistive tech announces the count automatically.</li>
+        <li>If your rows are interactive, use a real <code>&lt;a&gt;</code> or <code>ds-button</code> inside the row rather than attaching click handlers to the row itself.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
