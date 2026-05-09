@@ -1,6 +1,6 @@
 {
   "name": "@jsekulowicz/ds-components",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lit web components for the Design System Library (atoms, molecules, organisms, templates, pages).",
   "license": "UNLICENSED",
   "repository": {
@@ -13,8 +13,16 @@
     "url": "https://github.com/jsekulowicz/design-system-library/issues"
   },
   "type": "module",
-  "sideEffects": ["./dist/**/define.js", "./src/**/define.ts", "./dist/**/icons/*.js", "./src/**/icons/*.ts"],
-  "files": ["dist", "custom-elements.json"],
+  "sideEffects": [
+    "./dist/**/define.js",
+    "./src/**/define.ts",
+    "./dist/**/icons/*.js",
+    "./src/**/icons/*.ts"
+  ],
+  "files": [
+    "dist",
+    "custom-elements.json"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "customElements": "custom-elements.json",
@@ -23,20 +31,35 @@
     "registry": "https://registry.npmjs.org/"
   },
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./define": { "types": "./dist/define.d.ts", "import": "./dist/define.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./define": {
+      "types": "./dist/define.d.ts",
+      "import": "./dist/define.js"
+    },
     "./button": {
       "types": "./dist/atoms/button/index.d.ts",
       "import": "./dist/atoms/button/index.js"
     },
-    "./button/define": { "import": "./dist/atoms/button/define.js" },
+    "./button/define": {
+      "import": "./dist/atoms/button/define.js"
+    },
     "./tooltip": {
       "types": "./dist/atoms/tooltip/index.d.ts",
       "import": "./dist/atoms/tooltip/index.js"
     },
-    "./tooltip/define": { "import": "./dist/atoms/tooltip/define.js" },
-    "./icon": { "types": "./dist/atoms/icon/index.d.ts", "import": "./dist/atoms/icon/index.js" },
-    "./icon/define": { "import": "./dist/atoms/icon/define.js" },
+    "./tooltip/define": {
+      "import": "./dist/atoms/tooltip/define.js"
+    },
+    "./icon": {
+      "types": "./dist/atoms/icon/index.d.ts",
+      "import": "./dist/atoms/icon/index.js"
+    },
+    "./icon/define": {
+      "import": "./dist/atoms/icon/define.js"
+    },
     "./icon/check": {
       "types": "./dist/atoms/icon/icons/check.d.ts",
       "import": "./dist/atoms/icon/icons/check.js"
@@ -133,144 +156,205 @@
       "types": "./dist/atoms/text-field/index.d.ts",
       "import": "./dist/atoms/text-field/index.js"
     },
-    "./text-field/define": { "import": "./dist/atoms/text-field/define.js" },
+    "./text-field/define": {
+      "import": "./dist/atoms/text-field/define.js"
+    },
     "./checkbox": {
       "types": "./dist/atoms/checkbox/index.d.ts",
       "import": "./dist/atoms/checkbox/index.js"
     },
-    "./checkbox/define": { "import": "./dist/atoms/checkbox/define.js" },
+    "./checkbox/define": {
+      "import": "./dist/atoms/checkbox/define.js"
+    },
     "./checkbox-group": {
       "types": "./dist/atoms/checkbox-group/index.d.ts",
       "import": "./dist/atoms/checkbox-group/index.js"
     },
-    "./checkbox-group/define": { "import": "./dist/atoms/checkbox-group/define.js" },
+    "./checkbox-group/define": {
+      "import": "./dist/atoms/checkbox-group/define.js"
+    },
     "./radio": {
       "types": "./dist/atoms/radio/index.d.ts",
       "import": "./dist/atoms/radio/index.js"
     },
-    "./radio/define": { "import": "./dist/atoms/radio/define.js" },
+    "./radio/define": {
+      "import": "./dist/atoms/radio/define.js"
+    },
     "./radio-group": {
       "types": "./dist/atoms/radio-group/index.d.ts",
       "import": "./dist/atoms/radio-group/index.js"
     },
-    "./radio-group/define": { "import": "./dist/atoms/radio-group/define.js" },
+    "./radio-group/define": {
+      "import": "./dist/atoms/radio-group/define.js"
+    },
     "./select": {
       "types": "./dist/atoms/select/index.d.ts",
       "import": "./dist/atoms/select/index.js"
     },
-    "./select/define": { "import": "./dist/atoms/select/define.js" },
+    "./select/define": {
+      "import": "./dist/atoms/select/define.js"
+    },
     "./searchable-select": {
       "types": "./dist/atoms/searchable-select/index.d.ts",
       "import": "./dist/atoms/searchable-select/index.js"
     },
-    "./searchable-select/define": { "import": "./dist/atoms/searchable-select/define.js" },
+    "./searchable-select/define": {
+      "import": "./dist/atoms/searchable-select/define.js"
+    },
     "./tabs": {
       "types": "./dist/atoms/tabs/index.d.ts",
       "import": "./dist/atoms/tabs/index.js"
     },
-    "./tabs/define": { "import": "./dist/atoms/tabs/define.js" },
+    "./tabs/define": {
+      "import": "./dist/atoms/tabs/define.js"
+    },
     "./table": {
       "types": "./dist/atoms/table/index.d.ts",
       "import": "./dist/atoms/table/index.js"
     },
-    "./table/define": { "import": "./dist/atoms/table/define.js" },
+    "./table/define": {
+      "import": "./dist/atoms/table/define.js"
+    },
     "./breadcrumb": {
       "types": "./dist/atoms/breadcrumb/index.d.ts",
       "import": "./dist/atoms/breadcrumb/index.js"
     },
-    "./breadcrumb/define": { "import": "./dist/atoms/breadcrumb/define.js" },
+    "./breadcrumb/define": {
+      "import": "./dist/atoms/breadcrumb/define.js"
+    },
     "./nav-item": {
       "types": "./dist/atoms/nav-item/index.d.ts",
       "import": "./dist/atoms/nav-item/index.js"
     },
-    "./nav-item/define": { "import": "./dist/atoms/nav-item/define.js" },
+    "./nav-item/define": {
+      "import": "./dist/atoms/nav-item/define.js"
+    },
     "./menu": {
       "types": "./dist/atoms/menu/index.d.ts",
       "import": "./dist/atoms/menu/index.js"
     },
-    "./menu/define": { "import": "./dist/atoms/menu/define.js" },
+    "./menu/define": {
+      "import": "./dist/atoms/menu/define.js"
+    },
     "./divider": {
       "types": "./dist/atoms/divider/index.d.ts",
       "import": "./dist/atoms/divider/index.js"
     },
-    "./divider/define": { "import": "./dist/atoms/divider/define.js" },
+    "./divider/define": {
+      "import": "./dist/atoms/divider/define.js"
+    },
     "./list": {
       "types": "./dist/atoms/list/index.d.ts",
       "import": "./dist/atoms/list/index.js"
     },
-    "./list/define": { "import": "./dist/atoms/list/define.js" },
+    "./list/define": {
+      "import": "./dist/atoms/list/define.js"
+    },
     "./badge": {
       "types": "./dist/atoms/badge/index.d.ts",
       "import": "./dist/atoms/badge/index.js"
     },
-    "./badge/define": { "import": "./dist/atoms/badge/define.js" },
-    "./link": { "types": "./dist/atoms/link/index.d.ts", "import": "./dist/atoms/link/index.js" },
-    "./link/define": { "import": "./dist/atoms/link/define.js" },
+    "./badge/define": {
+      "import": "./dist/atoms/badge/define.js"
+    },
+    "./link": {
+      "types": "./dist/atoms/link/index.d.ts",
+      "import": "./dist/atoms/link/index.js"
+    },
+    "./link/define": {
+      "import": "./dist/atoms/link/define.js"
+    },
     "./card": {
       "types": "./dist/molecules/card/index.d.ts",
       "import": "./dist/molecules/card/index.js"
     },
-    "./card/define": { "import": "./dist/molecules/card/define.js" },
+    "./card/define": {
+      "import": "./dist/molecules/card/define.js"
+    },
     "./dialog": {
       "types": "./dist/molecules/dialog/index.d.ts",
       "import": "./dist/molecules/dialog/index.js"
     },
-    "./dialog/define": { "import": "./dist/molecules/dialog/define.js" },
+    "./dialog/define": {
+      "import": "./dist/molecules/dialog/define.js"
+    },
     "./toast": {
       "types": "./dist/molecules/toast/index.d.ts",
       "import": "./dist/molecules/toast/index.js"
     },
-    "./toast/define": { "import": "./dist/molecules/toast/define.js" },
+    "./toast/define": {
+      "import": "./dist/molecules/toast/define.js"
+    },
     "./color-picker": {
       "types": "./dist/molecules/color-picker/index.d.ts",
       "import": "./dist/molecules/color-picker/index.js"
     },
-    "./color-picker/define": { "import": "./dist/molecules/color-picker/define.js" },
+    "./color-picker/define": {
+      "import": "./dist/molecules/color-picker/define.js"
+    },
     "./menu-button": {
       "types": "./dist/molecules/menu-button/index.d.ts",
       "import": "./dist/molecules/menu-button/index.js"
     },
-    "./menu-button/define": { "import": "./dist/molecules/menu-button/define.js" },
+    "./menu-button/define": {
+      "import": "./dist/molecules/menu-button/define.js"
+    },
     "./bar-chart": {
       "types": "./dist/molecules/bar-chart/index.d.ts",
       "import": "./dist/molecules/bar-chart/index.js"
     },
-    "./bar-chart/define": { "import": "./dist/molecules/bar-chart/define.js" },
+    "./bar-chart/define": {
+      "import": "./dist/molecules/bar-chart/define.js"
+    },
     "./alert": {
       "types": "./dist/molecules/alert/index.d.ts",
       "import": "./dist/molecules/alert/index.js"
     },
-    "./alert/define": { "import": "./dist/molecules/alert/define.js" },
+    "./alert/define": {
+      "import": "./dist/molecules/alert/define.js"
+    },
     "./form": {
       "types": "./dist/organisms/form/index.d.ts",
       "import": "./dist/organisms/form/index.js"
     },
-    "./form/define": { "import": "./dist/organisms/form/define.js" },
+    "./form/define": {
+      "import": "./dist/organisms/form/define.js"
+    },
     "./navbar": {
       "types": "./dist/organisms/navbar/index.d.ts",
       "import": "./dist/organisms/navbar/index.js"
     },
-    "./navbar/define": { "import": "./dist/organisms/navbar/define.js" },
+    "./navbar/define": {
+      "import": "./dist/organisms/navbar/define.js"
+    },
     "./sidenav": {
       "types": "./dist/organisms/sidenav/index.d.ts",
       "import": "./dist/organisms/sidenav/index.js"
     },
-    "./sidenav/define": { "import": "./dist/organisms/sidenav/define.js" },
+    "./sidenav/define": {
+      "import": "./dist/organisms/sidenav/define.js"
+    },
     "./footer": {
       "types": "./dist/organisms/footer/index.d.ts",
       "import": "./dist/organisms/footer/index.js"
     },
-    "./footer/define": { "import": "./dist/organisms/footer/define.js" },
+    "./footer/define": {
+      "import": "./dist/organisms/footer/define.js"
+    },
     "./page-shell": {
       "types": "./dist/templates/page-shell/index.d.ts",
       "import": "./dist/templates/page-shell/index.js"
     },
-    "./page-shell/define": { "import": "./dist/templates/page-shell/define.js" },
+    "./page-shell/define": {
+      "import": "./dist/templates/page-shell/define.js"
+    },
     "./settings-page": {
       "types": "./dist/pages/settings-page/index.d.ts",
       "import": "./dist/pages/settings-page/index.js"
     },
-    "./settings-page/define": { "import": "./dist/pages/settings-page/define.js" }
+    "./settings-page/define": {
+      "import": "./dist/pages/settings-page/define.js"
+    }
   },
   "scripts": {
     "dev": "tsc -p tsconfig.json --watch",
@@ -285,12 +369,18 @@
   "size-limit": [
     {
       "name": "ds-button (subpath + define, gzip)",
-      "path": ["dist/atoms/button/index.js", "dist/atoms/button/define.js"],
+      "path": [
+        "dist/atoms/button/index.js",
+        "dist/atoms/button/define.js"
+      ],
       "limit": "16 kB"
     },
     {
       "name": "ds-text-field (subpath + define, gzip)",
-      "path": ["dist/atoms/text-field/index.js", "dist/atoms/text-field/define.js"],
+      "path": [
+        "dist/atoms/text-field/index.js",
+        "dist/atoms/text-field/define.js"
+      ],
       "limit": "18 kB"
     },
     {
