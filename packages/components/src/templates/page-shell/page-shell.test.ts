@@ -252,4 +252,29 @@ describe('<ds-page-shell>', () => {
       expect(el.hasAttribute('footer-empty')).toBe(false);
     });
   });
+
+  describe('content column', () => {
+    it('wraps header content, body, and footer content in capped containers', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      const root = el.shadowRoot!;
+      const headerInner = root.querySelector('header > .shell-inner');
+      const body = root.querySelector('.shell-body');
+      const footerInner = root.querySelector('footer > .shell-inner');
+      expect(headerInner).not.toBeNull();
+      expect(body).not.toBeNull();
+      expect(footerInner).not.toBeNull();
+      // body wraps aside + main as siblings of the same column
+      expect(body!.querySelector('aside')).not.toBeNull();
+      expect(body!.querySelector('main')).not.toBeNull();
+    });
+
+    it('exposes a body part for consumer styling', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      const body = el.shadowRoot!.querySelector('[part="body"]')!;
+      expect(body).not.toBeNull();
+      expect(body.classList.contains('shell-body')).toBe(true);
+    });
+  });
 });

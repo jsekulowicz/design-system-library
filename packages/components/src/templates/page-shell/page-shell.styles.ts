@@ -2,36 +2,66 @@ import { css } from 'lit';
 
 export const pageShellStyles = css`
   :host {
-    display: grid;
+    --ds-page-shell-max-width: 90rem;
+
+    display: flex;
+    flex-direction: column;
     position: relative;
-    grid-template-areas:
-      'header header'
-      'aside main'
-      'footer footer';
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1fr auto;
     min-height: 100vh;
     overflow-x: clip;
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
   }
+
   header {
-    grid-area: header;
     border-bottom: 1px solid var(--ds-color-border);
     padding: var(--ds-space-2) var(--ds-space-5);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ds-space-3);
     position: sticky;
     top: 0;
     background: color-mix(in oklab, var(--ds-color-bg) 92%, transparent);
     backdrop-filter: blur(12px);
     z-index: var(--ds-z-index-sticky);
   }
+
+  footer {
+    border-top: 1px solid var(--ds-color-border);
+    padding: var(--ds-space-2) var(--ds-space-5);
+  }
+
+  :host([footer-empty]) footer {
+    padding: 0;
+    border-top: 0;
+  }
+
+  .shell-inner {
+    width: 100%;
+    max-width: var(--ds-page-shell-max-width);
+    margin-inline: auto;
+  }
+
+  .shell-inner--header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+  }
+
+  .shell-body {
+    flex: 1;
+    width: 100%;
+    max-width: var(--ds-page-shell-max-width);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    min-height: 0;
+  }
+
+  :host([aside-empty]) .shell-body {
+    grid-template-columns: 1fr;
+  }
+
   aside {
-    grid-area: aside;
     display: flex;
     overflow-x: clip;
     overflow-y: auto;
@@ -40,23 +70,26 @@ export const pageShellStyles = css`
     scrollbar-width: thin;
     scrollbar-gutter: stable;
   }
+
+  :host([aside-empty]) aside,
+  :host([aside-empty]) .mobile-backdrop {
+    display: none;
+  }
+
   main {
-    grid-area: main;
     padding: var(--ds-space-5);
-    max-width: min(72rem, 100%);
     overflow-y: auto;
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
   }
-  footer {
-    grid-area: footer;
-  }
+
   .brand {
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-lg);
     letter-spacing: var(--ds-letter-spacing-display);
   }
+
   .menu-toggle {
     display: inline-flex;
   }
@@ -75,22 +108,16 @@ export const pageShellStyles = css`
     width: var(--ds-size-sm);
     padding: 0;
   }
-  :host([mobile-layout]) {
-    grid-template-areas:
-      'header'
-      'main'
-      'footer';
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
-  }
+
   :host(:not([mobile-layout])) .menu-toggle {
     display: none;
   }
+
+  :host([mobile-layout]) .shell-body {
+    grid-template-columns: 1fr;
+  }
   :host([mobile-layout]) .brand {
     flex: 1;
-  }
-  :host([mobile-layout]) main {
-    padding: var(--ds-space-5);
   }
   :host([mobile-layout]) aside {
     position: absolute;
@@ -138,16 +165,5 @@ export const pageShellStyles = css`
     padding: 0;
     background: color-mix(in oklab, var(--ds-color-fg) 26%, transparent);
     z-index: var(--ds-z-index-overlay);
-  }
-  :host([aside-empty]) {
-    grid-template-areas:
-      'header'
-      'main'
-      'footer';
-    grid-template-columns: 1fr;
-  }
-  :host([aside-empty]) aside,
-  :host([aside-empty]) .mobile-backdrop {
-    display: none;
   }
 `;

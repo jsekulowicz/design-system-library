@@ -7,16 +7,14 @@ import '@jsekulowicz/ds-components/tabs/define';
 
 # Page Shell
 
-Application frame that arranges a sticky header, a scrollable aside, a main content region, and a footer into a full-viewport grid.
+Application frame that arranges a sticky header, a scrollable aside, a main content region, and a footer. Header and footer chrome stretch to the viewport edges; the *content column* (header inner content, the aside + main row, footer inner content) caps at `--ds-page-shell-max-width` and centres in the viewport, so brand, sidenav, and main all align vertically on wide screens.
 
 ## Anatomy
 
-`ds-page-shell` is a CSS Grid template with four named areas:
-
-- **header** — sticky top bar; `brand` text on the left, `header-actions` slot on the right.
+- **header** — sticky top bar with full-bleed border + backdrop blur. Inner content (`brand` slot left, `header-actions` slot right) sits inside a centred column capped at `--ds-page-shell-max-width`.
 - **aside** — side column; collapses below the header at narrow viewports (≤ 768px). When the slot is empty the column, hamburger toggle, and drawer are not rendered (single-section apps).
-- **main** — grows to fill remaining vertical space.
-- **footer** — full-width strip beneath the grid; padding and border collapse when empty.
+- **main** — grows to fill remaining vertical space within the centred column.
+- **footer** — full-width strip beneath the body. Inner content centres at `--ds-page-shell-max-width`. Padding and border collapse when empty.
 
 ```html
 <ds-page-shell brand="Brand">
@@ -26,6 +24,18 @@ Application frame that arranges a sticky header, a scrollable aside, a main cont
   <ds-footer slot="footer">...</ds-footer>
 </ds-page-shell>
 ```
+
+### Content cap
+
+The shell exposes `--ds-page-shell-max-width` (default `90rem` / 1440 px) so consumers can widen or tighten the column without forking the component:
+
+```css
+ds-page-shell {
+  --ds-page-shell-max-width: 96rem; /* a touch wider for dashboards */
+}
+```
+
+Below the cap, layout is identical to the viewport edges — the cap only kicks in once the viewport exceeds it.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>

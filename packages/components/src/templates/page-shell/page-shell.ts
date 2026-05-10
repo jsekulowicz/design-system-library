@@ -15,6 +15,10 @@ import '../../atoms/icon/icons/x-mark.js';
  * @slot aside - Side navigation. When empty, the aside column and hamburger toggle are not rendered.
  * @slot default - Main content.
  * @slot footer - Footer content.
+ * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner content,
+ *   the aside + main row, and footer inner content all centre at this width and align vertically.
+ *   Defaults to `90rem` (1440px). Header and footer chrome (border, sticky background) remain
+ *   full-bleed.
  */
 export class DsPageShell extends DsElement {
   static override styles = [...DsElement.styles, pageShellStyles];
@@ -125,24 +129,26 @@ export class DsPageShell extends DsElement {
     const menuIcon = this._mobileNavOpen ? 'x-mark' : 'bars-3';
     const ariaExpanded: 'true' | 'false' = this._mobileNavOpen ? 'true' : 'false';
     return html`<header part="header">
-        ${this._hasAside
-          ? html`<ds-button
-              class="menu-toggle"
-              variant="ghost"
-              size="sm"
-              label=${this.menuLabel}
-              aria-label=${this.menuLabel}
-              aria-expanded=${ariaExpanded}
-              aria-controls="mobile-aside"
-              @click=${this.#toggleMobileNav}
-            >
-              <ds-icon slot="leading" name=${menuIcon} size="lg"></ds-icon>
-            </ds-button>`
-          : null}
-        <div class="brand">
-          <slot name="brand">${this.brand}</slot>
+        <div class="shell-inner shell-inner--header">
+          ${this._hasAside
+            ? html`<ds-button
+                class="menu-toggle"
+                variant="ghost"
+                size="sm"
+                label=${this.menuLabel}
+                aria-label=${this.menuLabel}
+                aria-expanded=${ariaExpanded}
+                aria-controls="mobile-aside"
+                @click=${this.#toggleMobileNav}
+              >
+                <ds-icon slot="leading" name=${menuIcon} size="lg"></ds-icon>
+              </ds-button>`
+            : null}
+          <div class="brand">
+            <slot name="brand">${this.brand}</slot>
+          </div>
+          <div><slot name="header-actions"></slot></div>
         </div>
-        <div><slot name="header-actions"></slot></div>
       </header>
       <button
         class="mobile-backdrop"
@@ -151,26 +157,30 @@ export class DsPageShell extends DsElement {
         ?hidden=${!this._mobileNavOpen}
         @click=${this.#closeMobileNav}
       ></button>
-      <aside id="mobile-aside" part="aside" @click=${this.#onAsideClick}>
-        <div class="drawer-header">
-          <ds-button
-            class="drawer-close"
-            variant="ghost"
-            size="sm"
-            label="Close navigation"
-            aria-label="Close navigation"
-            @click=${this.#closeMobileNav}
-          >
-            <ds-icon slot="leading" name="x-mark" size="lg"></ds-icon>
-          </ds-button>
-        </div>
-        <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
-      </aside>
-      <main part="main">
-        <slot></slot>
-      </main>
+      <div class="shell-body" part="body">
+        <aside id="mobile-aside" part="aside" @click=${this.#onAsideClick}>
+          <div class="drawer-header">
+            <ds-button
+              class="drawer-close"
+              variant="ghost"
+              size="sm"
+              label="Close navigation"
+              aria-label="Close navigation"
+              @click=${this.#closeMobileNav}
+            >
+              <ds-icon slot="leading" name="x-mark" size="lg"></ds-icon>
+            </ds-button>
+          </div>
+          <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
+        </aside>
+        <main part="main">
+          <slot></slot>
+        </main>
+      </div>
       <footer part="footer">
-        <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+        <div class="shell-inner shell-inner--footer">
+          <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+        </div>
       </footer>`;
   }
 }
