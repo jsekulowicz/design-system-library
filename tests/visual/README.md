@@ -8,15 +8,16 @@ mobile, tablet, and desktop widths.
 
 ```sh
 pnpm test:visual
-pnpm test:visual:baseline
 pnpm test:visual:update
+pnpm test:visual:update:ci
 ```
 
-Use local updates for iteration only. The authoritative baseline should come from the GitHub
-Actions visual snapshot workflow so screenshots are generated on the same Linux Chromium runtime
-that verifies pull requests.
+Use `pnpm test:visual` to verify the current branch against committed baselines.
+Use `pnpm test:visual:update` for local iteration only. The authoritative baseline should come from
+the GitHub Actions visual snapshot workflow so screenshots are generated on the same Linux Chromium
+runtime that verifies pull requests.
 
-Use `pnpm test:visual:baseline` when the current branch is clean and pushed. It dispatches the
+Use `pnpm test:visual:update:ci` when the current branch is clean and pushed. It dispatches the
 GitHub Actions workflow for the current branch and lets CI commit updated PNG baselines when
 screenshots changed.
 

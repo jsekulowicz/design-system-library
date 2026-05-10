@@ -128,9 +128,9 @@ function printHelp() {
   console.log(`Request CI-generated visual screenshot baselines.
 
 Usage:
-  pnpm test:visual:baseline
-  pnpm test:visual:baseline -- --branch main
-  pnpm test:visual:baseline -- --branch feature/foo --workflow-ref main
+  pnpm test:visual:update:ci
+  pnpm test:visual:update:ci -- --branch main
+  pnpm test:visual:update:ci -- --branch feature/foo --workflow-ref main
 
 Options:
   --branch        Branch that GitHub Actions should checkout and update.
