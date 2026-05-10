@@ -39,6 +39,9 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm --filter @ds/tests exec playwright install --with-deps chromium
 
+      - name: Remove stale visual snapshots
+        run: rm -rf tests/visual/__screenshots__
+
       - name: Update visual snapshots
         run: pnpm --filter @ds/tests test:visual:update
 

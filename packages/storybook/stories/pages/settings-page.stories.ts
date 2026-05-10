@@ -44,13 +44,6 @@ const timezones = [
   { label: 'America / New York', value: 'nyc' },
 ];
 
-const settingsSections = [
-  { id: 'profile', label: 'Profile' },
-  { id: 'security', label: 'Security' },
-  { id: 'notifications', label: 'Notifications' },
-  { id: 'billing', label: 'Billing' },
-];
-
 function frameStyle(): string {
   if (
     typeof window !== 'undefined' &&
@@ -222,7 +215,6 @@ function renderSettingsPage() {
         <ds-settings-page
           heading="Settings"
           description="Studio preferences, billing, and the other plumbing."
-          .sections=${settingsSections}
         >
           <section id="profile" style="display:grid;gap:var(--ds-space-4)">
             <ds-form header="Profile">
