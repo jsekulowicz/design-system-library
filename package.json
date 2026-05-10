@@ -23,7 +23,6 @@
     "test:a11y": "pnpm --filter @ds/tests test:a11y",
     "test:visual": "pnpm --filter @ds/tests test:visual",
     "test:visual:update:ci": "node scripts/request-visual-snapshots.mjs",
-    "test:visual:update": "pnpm --filter @ds/tests test:visual:update",
     "size": "pnpm -r --parallel size",
     "analyze": "pnpm --filter @jsekulowicz/ds-components analyze",
     "changeset": "changeset",
