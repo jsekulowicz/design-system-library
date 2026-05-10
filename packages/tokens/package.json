@@ -1,6 +1,6 @@
 {
   "name": "@jsekulowicz/ds-tokens",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Design tokens (primitive, semantic, component) for the Design System Library.",
   "license": "UNLICENSED",
   "repository": {
