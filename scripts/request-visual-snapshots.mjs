@@ -11,13 +11,21 @@ function main() {
     return;
   }
 
-  ensureCommand('gh', ['--version'], 'Install GitHub CLI to request CI visual baselines.');
-  ensureCommand('gh', ['auth', 'status'], 'Authenticate GitHub CLI with `gh auth login`.');
-
   const branch = args.branch ?? readGit(['branch', '--show-current']);
   const workflowRef = args.workflowRef ?? branch;
 
   ensureBranch(branch);
+
+  if (!commandSucceeds('gh', ['--version'])) {
+    printManualDispatch(branch, workflowRef, 'GitHub CLI is not installed or not on PATH.');
+    process.exit(1);
+  }
+
+  if (!commandSucceeds('gh', ['auth', 'status'])) {
+    printManualDispatch(branch, workflowRef, 'GitHub CLI is not authenticated.');
+    process.exit(1);
+  }
+
   ensureCleanTree();
   ensureBranchIsPushed(branch);
 
@@ -78,12 +86,9 @@ function readValue(args, index, name) {
   return value;
 }
 
-function ensureCommand(command, args, message) {
+function commandSucceeds(command, args) {
   const result = spawnSync(command, args, { encoding: 'utf8', stdio: 'pipe' });
-
-  if (result.status !== 0) {
-    fail(message);
-  }
+  return result.status === 0;
 }
 
 function ensureBranch(branch) {
@@ -136,6 +141,36 @@ Options:
   --branch        Branch that GitHub Actions should checkout and update.
   --workflow-ref  Branch or tag containing ${workflowFile}. Defaults to --branch.
 `);
+}
+
+function printManualDispatch(branch, workflowRef, reason) {
+  console.error(reason);
+  console.error('');
+  console.error('Either install GitHub CLI and run `gh auth login`, or dispatch the workflow manually:');
+  console.error(`1. Push ${branch}.`);
+  console.error(`2. Open ${workflowUrl()}.`);
+  console.error(`3. Choose workflow ref: ${workflowRef}.`);
+  console.error(`4. Enter branch input: ${branch}.`);
+}
+
+function workflowUrl() {
+  const remote = spawnSync('git', ['remote', 'get-url', 'origin'], {
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
+  const slug = parseGitHubSlug(remote.stdout.trim());
+
+  if (!slug) {
+    return `the ${workflowFile} workflow in GitHub Actions`;
+  }
+
+  return `https://github.com/${slug}/actions/workflows/${workflowFile}`;
+}
+
+function parseGitHubSlug(remote) {
+  const normalized = remote.replace(/\.git$/, '');
+  const match = normalized.match(/github\.com[:/]([^/]+\/[^/]+)$/);
+  return match?.[1];
 }
 
 function fail(message) {

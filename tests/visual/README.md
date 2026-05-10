@@ -15,7 +15,8 @@ Use `pnpm test:visual` to verify the current branch against committed baselines.
 
 Use `pnpm test:visual:update:ci` when the current branch is clean and pushed. It dispatches the
 GitHub Actions workflow for the current branch and lets CI commit updated PNG baselines when
-screenshots changed.
+screenshots changed. It uses GitHub CLI when available and prints manual workflow dispatch steps
+when `gh` is not installed or authenticated.
 
 Do not update committed baselines locally. Local rendering depends on OS, fonts, browser binaries,
 and graphics libraries, so local screenshots are useful for debugging but not authoritative.
