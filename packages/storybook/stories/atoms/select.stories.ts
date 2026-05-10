@@ -9,6 +9,22 @@ const options = [
   { label: 'Operations', value: 'ops', disabled: true },
 ];
 
+const countryOptions = [
+  { label: 'Argentina', value: 'ar' },
+  { label: 'Australia', value: 'au' },
+  { label: 'Belgium', value: 'be' },
+  { label: 'Bosnia and Herzegovina', value: 'ba' },
+  { label: 'Brazil', value: 'br' },
+  { label: 'Canada', value: 'ca' },
+  { label: 'France', value: 'fr' },
+  { label: 'Germany', value: 'de' },
+  { label: 'Japan', value: 'jp' },
+  { label: 'Netherlands', value: 'nl' },
+  { label: 'Poland', value: 'pl' },
+  { label: 'United Kingdom', value: 'gb' },
+  { label: 'United States', value: 'us' },
+];
+
 const meta: Meta = {
   title: 'Atoms/Select',
   component: 'ds-select',
@@ -115,6 +131,18 @@ export const Required: Story = {
     description="This field is required."
     ?required=${true}
     .options=${options}
+  ></ds-select>
+`,
+};
+
+export const Countries: Story = {
+  parameters: { docs: { story: { height: '320px' } } },
+  render: () => html`
+  <ds-select
+    label="Country"
+    placeholder="Pick a country"
+    description="Choose the country associated with this workspace."
+    .options=${countryOptions}
   ></ds-select>
 `,
 };

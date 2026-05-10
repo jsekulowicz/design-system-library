@@ -44,9 +44,37 @@ const timezones = [
   { label: 'America / New York', value: 'nyc' },
 ];
 
-export const Default: Story = {
+const settingsSections = [
+  { id: 'profile', label: 'Profile' },
+  { id: 'security', label: 'Security' },
+  { id: 'notifications', label: 'Notifications' },
+  { id: 'billing', label: 'Billing' },
+];
+
+function frameStyle(): string {
+  if (
+    typeof window !== 'undefined' &&
+    window.localStorage.getItem('ds-storybook-visual-test') === 'true'
+  ) {
+    return 'height:100vh;overflow:hidden';
+  }
+  return `height:${FRAME_HEIGHT}px;overflow:clip;border-bottom:1px solid var(--ds-color-border)`;
+}
+
+export const PageWithSidenav: Story = {
+  name: 'Page with sidenav',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
-  render: () => html`
+  render: () => renderPage(true),
+};
+
+export const PageWithoutSidenav: Story = {
+  name: 'Page without sidenav',
+  parameters: { docs: { story: { height: STORY_HEIGHT } } },
+  render: () => renderPage(false),
+};
+
+function renderPage(withSidenav: boolean) {
+  return html`
     <style>
       .collapse-toggle {
         display: block;
@@ -79,14 +107,23 @@ export const Default: Story = {
       ds-page-shell[mobile-layout] .collapse-toggle {
         display: none;
       }
-      #story--pages-settingspage--default {
+      [id^='story--pages-settingspage--'] {
         overflow: hidden;
       }
     </style>
-    <div
-      style="height:${FRAME_HEIGHT}px;overflow:clip;border-bottom:1px solid var(--ds-color-border)"
-    >
+    <div style=${frameStyle()}>
       <ds-page-shell brand="Brand" style="min-height:0;height:100%">
+        ${withSidenav ? renderSidenav() : null}
+        ${renderBreadcrumb()}
+        ${renderSettingsPage()}
+        ${renderFooter()}
+      </ds-page-shell>
+    </div>
+  `;
+}
+
+function renderSidenav() {
+  return html`
         <ds-sidenav slot="aside">
           <ds-button
             class="collapse-toggle"
@@ -163,6 +200,11 @@ export const Default: Story = {
             </ds-nav-item>
           </ds-nav-group>
         </ds-sidenav>
+  `;
+}
+
+function renderBreadcrumb() {
+  return html`
         <ds-breadcrumb label="Settings breadcrumbs" style="margin-bottom:var(--ds-space-4)">
           <ds-breadcrumb-item href="#">
             <ds-icon slot="leading" name="home" size="sm"></ds-icon>
@@ -172,9 +214,15 @@ export const Default: Story = {
           <ds-breadcrumb-item href="#">Account</ds-breadcrumb-item>
           <ds-breadcrumb-item>Settings</ds-breadcrumb-item>
         </ds-breadcrumb>
+  `;
+}
+
+function renderSettingsPage() {
+  return html`
         <ds-settings-page
           heading="Settings"
           description="Studio preferences, billing, and the other plumbing."
+          .sections=${settingsSections}
         >
           <section id="profile" style="display:grid;gap:var(--ds-space-4)">
             <ds-form header="Profile">
@@ -218,11 +266,14 @@ export const Default: Story = {
             </ds-form>
           </section>
         </ds-settings-page>
+  `;
+}
+
+function renderFooter() {
+  return html`
         <ds-footer slot="footer">
           <span slot="start">© 2026 Brand</span>
           <ds-link slot="end" href="#" variant="quiet">Privacy</ds-link>
         </ds-footer>
-      </ds-page-shell>
-    </div>
-  `,
-};
+  `;
+}

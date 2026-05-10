@@ -13,23 +13,23 @@ export const visualScenarios: VisualScenario[] = [
   staticStory('select-invalid', 'atoms-select--invalid'),
   {
     name: 'select-open',
-    storyId: 'atoms-select--playground',
+    storyId: 'atoms-select--countries',
     themes,
-    viewports: responsive,
+    viewports: desktop,
     beforeCapture: openSelect,
   },
   {
     name: 'searchable-select-open',
-    storyId: 'atoms-searchableselect--playground',
+    storyId: 'atoms-searchableselect--countries',
     themes,
-    viewports: responsive,
+    viewports: desktop,
     beforeCapture: openSearchableSelect,
   },
   {
     name: 'menu-button-open',
     storyId: 'molecules-menubutton--playground',
     themes,
-    viewports: responsive,
+    viewports: desktop,
     beforeCapture: openMenuButton,
   },
   {
@@ -43,7 +43,7 @@ export const visualScenarios: VisualScenario[] = [
     name: 'color-picker-open',
     storyId: 'molecules-colorpicker--playground',
     themes,
-    viewports: responsive,
+    viewports: desktop,
     beforeCapture: openColorPicker,
   },
   {
@@ -54,8 +54,8 @@ export const visualScenarios: VisualScenario[] = [
     beforeCapture: submitInvalidForm,
   },
   responsiveStory('navbar-responsive', 'organisms-navbar--responsive'),
-  responsiveStory('page-shell-sidenav', 'templates-pageshell--with-sidenav'),
-  responsiveStory('settings-page-default', 'pages-settingspage--default'),
+  responsiveStory('settings-page-with-sidenav', 'pages-settingspage--page-with-sidenav'),
+  responsiveStory('settings-page-without-sidenav', 'pages-settingspage--page-without-sidenav'),
 ];
 
 function staticStory(name: string, storyId: string): VisualScenario {
@@ -67,13 +67,13 @@ function responsiveStory(name: string, storyId: string): VisualScenario {
 }
 
 async function openSelect(page: Page): Promise<void> {
-  await page.getByRole('combobox', { name: 'Discipline' }).click();
-  await page.getByRole('option', { name: 'Engineering' }).waitFor();
+  await page.getByRole('combobox', { name: 'Country' }).click();
+  await page.getByRole('option', { name: 'Poland' }).waitFor();
 }
 
 async function openSearchableSelect(page: Page): Promise<void> {
-  await page.getByRole('combobox', { name: 'Framework' }).click();
-  await page.getByRole('option', { name: 'React' }).waitFor();
+  await page.getByRole('combobox', { name: 'Country' }).click();
+  await page.getByRole('option', { name: /Afghanistan/ }).waitFor();
 }
 
 async function openMenuButton(page: Page): Promise<void> {

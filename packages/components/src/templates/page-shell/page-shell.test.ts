@@ -41,6 +41,18 @@ function pageShellTemplate(): string {
   `;
 }
 
+function pageShellWithFooterTemplate(): string {
+  return `
+    <ds-page-shell brand="Brand">
+      <div slot="aside" collapsed>
+        <a href="#settings">Settings</a>
+      </div>
+      <div>Content</div>
+      <div slot="footer">Footer</div>
+    </ds-page-shell>
+  `;
+}
+
 beforeAll(() => {
   if (!customElements.get('ds-page-shell')) {
     customElements.define('ds-page-shell', DsPageShell);
@@ -244,6 +256,14 @@ describe('<ds-page-shell>', () => {
       expect(el.hasAttribute('footer-empty')).toBe(true);
     });
 
+    it('does not render footer markup when nothing is slotted in footer', async () => {
+      const el = await mount<DsPageShell>(
+        `<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`,
+      );
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('footer')).toBeNull();
+    });
+
     it('does not reflect footer-empty when footer slot has content', async () => {
       const el = await mount<DsPageShell>(
         `<ds-page-shell brand="Brand"><div>Content</div><div slot="footer">© 2026</div></ds-page-shell>`,
@@ -251,19 +271,26 @@ describe('<ds-page-shell>', () => {
       await el.updateComplete;
       expect(el.hasAttribute('footer-empty')).toBe(false);
     });
+
+    it('renders footer as a bare slot wrapper', async () => {
+      const el = await mount<DsPageShell>(pageShellWithFooterTemplate());
+      await el.updateComplete;
+      const footer = el.shadowRoot!.querySelector('footer')!;
+      expect(footer).not.toBeNull();
+      expect(footer.querySelector('.shell-inner')).toBeNull();
+      expect(footer.querySelector('slot[name="footer"]')).not.toBeNull();
+    });
   });
 
   describe('content column', () => {
-    it('wraps header content, body, and footer content in capped containers', async () => {
+    it('wraps header content and body in capped containers', async () => {
       const el = await mount<DsPageShell>(pageShellTemplate());
       await el.updateComplete;
       const root = el.shadowRoot!;
       const headerInner = root.querySelector('header > .shell-inner');
       const body = root.querySelector('.shell-body');
-      const footerInner = root.querySelector('footer > .shell-inner');
       expect(headerInner).not.toBeNull();
       expect(body).not.toBeNull();
-      expect(footerInner).not.toBeNull();
       // body wraps aside + main as siblings of the same column
       expect(body!.querySelector('aside')).not.toBeNull();
       expect(body!.querySelector('main')).not.toBeNull();

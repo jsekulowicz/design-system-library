@@ -51,6 +51,7 @@ async function seedStorybookState(
     ({ theme, viewport }) => {
       window.localStorage.setItem('ds-storybook-theme', theme);
       window.localStorage.setItem('ds-storybook-viewport', viewport);
+      window.localStorage.setItem('ds-storybook-visual-test', 'true');
     },
     { theme, viewport },
   );

@@ -9,16 +9,15 @@ import '../../atoms/icon/icons/x-mark.js';
 
 /**
  * @tag ds-page-shell
- * @summary Application frame: header + aside + main + footer with responsive collapse.
+ * @summary Application frame: header + aside + main + optional footer with responsive collapse.
  * @slot brand - Top-left brand/logo.
  * @slot header-actions - Top-right actions.
  * @slot aside - Side navigation. When empty, the aside column and hamburger toggle are not rendered.
  * @slot default - Main content.
  * @slot footer - Footer content.
- * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner content,
- *   the aside + main row, and footer inner content all centre at this width and align vertically.
- *   Defaults to `90rem` (1440px). Header and footer chrome (border, sticky background) remain
- *   full-bleed.
+ * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
+ *   content and the aside + main row centre at this width and align vertically. Defaults to `90rem`
+ *   (1440px). Header chrome remains full-bleed.
  */
 export class DsPageShell extends DsElement {
   static override styles = [...DsElement.styles, pageShellStyles];
@@ -29,9 +28,18 @@ export class DsPageShell extends DsElement {
   @state() private _hasAside = false;
   @state() private _hasFooter = false;
   #resizeObserver: ResizeObserver | null = null;
+  #slotObserver: MutationObserver | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();
+    this.#syncSlotPresence();
+    this.#slotObserver = new MutationObserver(this.#syncSlotPresence);
+    this.#slotObserver.observe(this, {
+      attributeFilter: ['slot'],
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
     this.#setMobileNav(false);
     document.addEventListener('keydown', this.#onDocumentKeydown);
     this.#resizeObserver = new ResizeObserver((entries) => {
@@ -49,21 +57,23 @@ export class DsPageShell extends DsElement {
     super.disconnectedCallback();
     document.removeEventListener('keydown', this.#onDocumentKeydown);
     this.#resizeObserver?.disconnect();
+    this.#slotObserver?.disconnect();
     this.#resizeObserver = null;
+    this.#slotObserver = null;
   }
 
   override firstUpdated(): void {
+    this.#syncSlotPresence();
+  }
+
+  #syncSlotPresence = (): void => {
     const aside = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside"]');
     const footer = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="footer"]');
-    if (aside) {
-      this._hasAside = hasAssignedContent(aside);
-      this.toggleAttribute('aside-empty', !this._hasAside);
-    }
-    if (footer) {
-      this._hasFooter = hasAssignedContent(footer);
-      this.toggleAttribute('footer-empty', !this._hasFooter);
-    }
-  }
+    this._hasAside = hasNamedSlotContent(this, 'aside', aside);
+    this._hasFooter = hasNamedSlotContent(this, 'footer', footer);
+    this.toggleAttribute('aside-empty', !this._hasAside);
+    this.toggleAttribute('footer-empty', !this._hasFooter);
+  };
 
   #syncLayout = (width: number): void => {
     const isMobileLayout = width < 768;
@@ -128,6 +138,7 @@ export class DsPageShell extends DsElement {
   override render(): TemplateResult {
     const menuIcon = this._mobileNavOpen ? 'x-mark' : 'bars-3';
     const ariaExpanded: 'true' | 'false' = this._mobileNavOpen ? 'true' : 'false';
+    const hasFooter = this._hasFooter || hasNamedSlotContent(this, 'footer');
     return html`<header part="header">
         <div class="shell-inner shell-inner--header">
           ${this._hasAside
@@ -177,18 +188,31 @@ export class DsPageShell extends DsElement {
           <slot></slot>
         </main>
       </div>
-      <footer part="footer">
-        <div class="shell-inner shell-inner--footer">
-          <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
-        </div>
-      </footer>`;
+      ${hasFooter
+        ? html`<footer part="footer">
+            <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+          </footer>`
+        : null}`;
   }
+}
+
+function hasNamedSlotContent(
+  host: HTMLElement,
+  name: string,
+  slot?: HTMLSlotElement | null,
+): boolean {
+  if (slot) {
+    return hasAssignedContent(slot);
+  }
+  return Array.from(host.children).some((child) => child.slot === name);
 }
 
 function hasAssignedContent(slot: HTMLSlotElement): boolean {
   const nodes = slot.assignedNodes({ flatten: true });
   return nodes.some((node) => {
-    if (node.nodeType === Node.ELEMENT_NODE) return true;
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      return true;
+    }
     if (node.nodeType === Node.TEXT_NODE) {
       return (node.textContent ?? '').trim().length > 0;
     }

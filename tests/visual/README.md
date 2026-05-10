@@ -1,8 +1,8 @@
 # Visual Screenshot Tests
 
 Visual tests use Storybook iframe stories as fixtures and Playwright screenshots as the assertion
-layer. Static component matrices run at desktop width; stateful and composed components run at
-mobile, tablet, and desktop widths.
+layer. Static component matrices and width-stable popovers run at desktop width. Stateful layouts
+that actually respond to viewport changes run at mobile, tablet, and desktop widths.
 
 ## Commands
 
@@ -31,4 +31,6 @@ Lossless WebP or AVIF would require a custom capture and diff pipeline outside `
 
 Add scenarios in `tests/visual/scenarios.ts`. Prefer small named screenshots over one large catalog
 page. Use `selector: '#storybook-root'` for compact static stories and page screenshots for popovers,
-dialogs, responsive layouts, and other states where surrounding layout matters.
+dialogs, responsive layouts, and other states where surrounding layout matters. Storybook stories may
+use reduced frames for docs, but visual tests set `ds-storybook-visual-test` in local storage so page
+stories can use the full Playwright viewport.

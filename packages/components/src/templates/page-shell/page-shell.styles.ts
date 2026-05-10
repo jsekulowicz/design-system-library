@@ -25,13 +25,7 @@ export const pageShellStyles = css`
   }
 
   footer {
-    border-top: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-2) 0;
-  }
-
-  :host([footer-empty]) footer {
-    padding: 0;
-    border-top: 0;
+    display: block;
   }
 
   .shell-inner {
