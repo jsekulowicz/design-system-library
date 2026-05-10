@@ -46,14 +46,30 @@ jobs:
           printf '%s\n' "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "$HOME/.npmrc"
           printf '%s\n' "registry=https://registry.npmjs.org/" >> "$HOME/.npmrc"
 
+      - name: Determine next version
+        id: nextver
+        run: |
+          pnpm exec changeset status --output=plan.json
+          NEXT=$(node -e "
+            const p = require('./plan.json');
+            const r = p.releases.find(x => x.name === '@jsekulowicz/ds-components') || p.releases[0];
+            console.log(r ? r.newVersion : '');
+          ")
+          rm -f plan.json
+          if [ -n "$NEXT" ]; then
+            echo "title=release: $NEXT" >> "$GITHUB_OUTPUT"
+          else
+            echo "title=chore: version packages" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create release PR or publish
         id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm run version
           publish: pnpm run release
-          commit: "chore: version packages"
-          title: "chore: version packages"
+          commit: ${{ steps.nextver.outputs.title }}
+          title: ${{ steps.nextver.outputs.title }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
