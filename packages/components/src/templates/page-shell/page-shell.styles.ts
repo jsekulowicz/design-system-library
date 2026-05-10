@@ -16,7 +16,7 @@ export const pageShellStyles = css`
 
   header {
     border-bottom: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-2) var(--ds-space-5);
+    padding: var(--ds-space-2) 0;
     position: sticky;
     top: 0;
     background: color-mix(in oklab, var(--ds-color-bg) 92%, transparent);
@@ -26,7 +26,7 @@ export const pageShellStyles = css`
 
   footer {
     border-top: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-2) var(--ds-space-5);
+    padding: var(--ds-space-2) 0;
   }
 
   :host([footer-empty]) footer {
@@ -38,6 +38,7 @@ export const pageShellStyles = css`
     width: 100%;
     max-width: var(--ds-page-shell-max-width);
     margin-inline: auto;
+    padding-inline: var(--ds-space-5);
   }
 
   .shell-inner--header {
