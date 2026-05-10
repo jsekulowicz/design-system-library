@@ -16,7 +16,8 @@ test('disabled ds-button does not emit ds-click', async ({ page }) => {
     (window as unknown as Record<string, number>)[key] = 0;
     document.querySelectorAll('ds-button').forEach((el) => {
       el.addEventListener('ds-click', () => {
-        (window as unknown as Record<string, number>)[key] += 1;
+        const store = window as unknown as Record<string, number>;
+        store[key] = (store[key] ?? 0) + 1;
       });
     });
   }, counter);

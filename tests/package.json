@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "test:e2e": "playwright test --config=playwright.config.ts",
-    "test:a11y": "playwright test --config=playwright.config.ts --grep @a11y"
+    "test:a11y": "playwright test --config=playwright.config.ts --grep @a11y",
+    "test:visual": "playwright test --config=playwright.visual.config.ts",
+    "test:visual:update": "playwright test --config=playwright.visual.config.ts --update-snapshots"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",

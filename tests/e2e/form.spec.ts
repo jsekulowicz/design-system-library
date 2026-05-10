@@ -41,7 +41,7 @@ async function attachEventCounter(page: Page, event: string) {
       window.addEventListener(
         event,
         () => {
-          store[key] += 1;
+          store[key] = (store[key] ?? 0) + 1;
         },
         true
       );

@@ -21,6 +21,8 @@ coverage
 storybook-static
 playwright-report
 test-results
+visual-report
+visual-results
 custom-elements.json
 CLAUDE.md
 AGENTS.md
