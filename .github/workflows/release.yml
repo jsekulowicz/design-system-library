@@ -57,9 +57,13 @@ jobs:
           ")
           rm -f plan.json
           if [ -n "$NEXT" ]; then
+            echo "version=$NEXT" >> "$GITHUB_OUTPUT"
             echo "title=release: $NEXT" >> "$GITHUB_OUTPUT"
+            echo "branch=release/$NEXT" >> "$GITHUB_OUTPUT"
           else
+            echo "version=" >> "$GITHUB_OUTPUT"
             echo "title=chore: version packages" >> "$GITHUB_OUTPUT"
+            echo "branch=changeset-release/main" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create release PR or publish
@@ -70,6 +74,7 @@ jobs:
           publish: pnpm run release
           commit: ${{ steps.nextver.outputs.title }}
           title: ${{ steps.nextver.outputs.title }}
+          branch: ${{ steps.nextver.outputs.branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
