@@ -56,7 +56,7 @@ export const TypeScale: Story = {
 };
 
 const FAMILIES = [
-  { token: '--ds-font-display', label: 'Display', name: 'Fraunces', note: 'Variable optical-size serif. Headlines, pull quotes, brand moments.', sample: 'A studied restraint in editorial type.' },
+  { token: '--ds-font-display', label: 'Display', name: 'Source Serif 4', note: 'Workhorse serif. Headlines, page titles, calm brand moments.', sample: 'A measured voice for practical interfaces.' },
   { token: '--ds-font-body', label: 'Body', name: 'General Sans', note: 'Humanist sans. Body copy, UI labels, any prose.', sample: 'Clean and legible at any size, across long paragraphs and tight UI chrome alike.' },
   { token: '--ds-font-mono', label: 'Mono', name: 'JetBrains Mono', note: 'Monospaced. Code blocks, token values, technical metadata.', sample: "const value = token('--ds-space-4');" },
 ];

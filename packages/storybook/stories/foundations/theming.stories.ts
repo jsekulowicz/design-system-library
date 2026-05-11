@@ -19,7 +19,7 @@ const meta: Meta = {
     accentHover: '#3860B8',
     radius: 4,
     hairline: 'rgba(11, 11, 12, 0.12)',
-    displayFont: 'Fraunces, ui-serif, Georgia, serif',
+    displayFont: "'Source Serif 4', Georgia, ui-serif, serif",
   },
 };
 

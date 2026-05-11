@@ -1,6 +1,6 @@
 export const fontFamily = {
   display:
-    "'Fraunces', 'Times New Roman', Georgia, serif",
+    "'Source Serif 4', Georgia, 'Times New Roman', serif",
   body: "'General Sans', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif",
   mono: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace",
 } as const;
