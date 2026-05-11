@@ -1,7 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoint } from '@jsekulowicz/ds-tokens';
 
-const mobileBreakpoint = unsafeCSS(breakpoint.sm);
+const belowMobileBreakpoint = unsafeCSS(`calc(${breakpoint.sm} - 0.02px)`);
 
 export const colorPickerStyles = css`
   :host {
@@ -168,7 +168,7 @@ export const colorPickerStyles = css`
     justify-content: flex-end;
     gap: var(--ds-space-2);
   }
-  @media (width < ${mobileBreakpoint}) {
+  @media (max-width: ${belowMobileBreakpoint}) {
     .custom-row {
       grid-template-columns: 1fr;
       align-items: stretch;

@@ -1,7 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 import { breakpoint } from '@jsekulowicz/ds-tokens';
 
-const tabletBreakpoint = unsafeCSS(breakpoint.md);
+const belowTabletBreakpoint = unsafeCSS(`calc(${breakpoint.md} - 0.02px)`);
 
 export const cardStyles = css`
   :host {
@@ -58,7 +58,7 @@ export const cardStyles = css`
     display: flex;
     justify-content: flex-start;
   }
-  @media (width < ${tabletBreakpoint}) {
+  @media (max-width: ${belowTabletBreakpoint}) {
     .actions {
       justify-content: flex-end;
     }
