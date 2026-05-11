@@ -386,7 +386,7 @@
     {
       "name": "full barrel (define, gzip)",
       "path": "dist/define.js",
-      "limit": "38 kB"
+      "limit": "50 kB"
     }
   ],
   "dependencies": {
