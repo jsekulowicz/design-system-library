@@ -67,7 +67,7 @@ export const Responsive: Story = {
         <ds-button slot="actions" variant="secondary" size="md">Sign in</ds-button>
       </ds-navbar>
       <div style="padding:var(--ds-space-4);color:var(--ds-color-fg-muted)">
-        Below 640px container width the links collapse to a hamburger toggle.
+        Below the tablet container breakpoint the links collapse to a hamburger toggle.
       </div>
     </div>
   `,

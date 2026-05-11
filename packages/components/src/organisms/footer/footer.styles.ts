@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const mobileBreakpoint = unsafeCSS(breakpoint.sm);
 
 export const footerStyles = css`
   :host {
@@ -28,7 +31,7 @@ export const footerStyles = css`
   .end {
     justify-content: flex-end;
   }
-  @container (max-width: 480px) {
+  @container (max-width: ${mobileBreakpoint}) {
     footer {
       gap: var(--ds-space-2);
       padding: var(--ds-space-2) var(--ds-space-4);

@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const tabletBreakpoint = unsafeCSS(breakpoint.md);
 
 export const settingsPageStyles = css`
   :host {
@@ -34,7 +37,7 @@ export const settingsPageStyles = css`
     gap: var(--ds-space-10);
     padding: var(--ds-space-8) 0;
   }
-  @media (max-width: 768px) {
+  @media (width < ${tabletBreakpoint}) {
     .grid {
       grid-template-columns: 1fr;
       gap: var(--ds-space-6);

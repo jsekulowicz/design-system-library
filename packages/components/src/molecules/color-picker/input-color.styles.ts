@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const mobileBreakpoint = unsafeCSS(breakpoint.sm);
 
 export const inputColorStyles = css`
   :host {
@@ -28,7 +31,7 @@ export const inputColorStyles = css`
     cursor: not-allowed;
   }
 
-  @media (max-width: 480px) {
+  @media (width < ${mobileBreakpoint}) {
     :host {
       width: 100%;
     }

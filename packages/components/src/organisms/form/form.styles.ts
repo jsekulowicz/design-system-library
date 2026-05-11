@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const tabletBreakpoint = unsafeCSS(breakpoint.md);
 
 export const formStyles = css`
   :host {
@@ -24,7 +27,7 @@ export const formStyles = css`
     justify-content: flex-start;
     margin-top: var(--ds-space-5);
   }
-  @container (max-width: 480px) {
+  @media (width < ${tabletBreakpoint}) {
     .actions {
       justify-content: flex-end;
     }

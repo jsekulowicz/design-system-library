@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
 import '@jsekulowicz/ds-components/page-shell/define';
 import '@jsekulowicz/ds-components/link/define';
 import '@jsekulowicz/ds-components/button/define';
@@ -23,6 +24,7 @@ type Story = StoryObj;
 
 const FRAME_HEIGHT = 360;
 const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
+const TABLET_BREAKPOINT = breakpoint.md;
 
 function pageShellStory(inner: ReturnType<typeof html>) {
   return html`<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
@@ -125,7 +127,7 @@ export const CollapsedSidenav: Story = {
           padding: var(--ds-space-2);
         }
         ds-sidenav[collapsed] .collapse-toggle-label { display: none; }
-        @media (max-width: 768px) {
+        @media (width < ${TABLET_BREAKPOINT}) {
           .collapse-toggle { display: none; }
         }
         ds-page-shell[mobile-layout] .collapse-toggle { display: none; }

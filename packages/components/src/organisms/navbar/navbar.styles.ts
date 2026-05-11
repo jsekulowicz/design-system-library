@@ -1,10 +1,12 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const tabletBreakpoint = unsafeCSS(breakpoint.md);
 
 export const navbarStyles = css`
   :host {
     display: block;
     container-type: inline-size;
-    --_breakpoint: 640px;
   }
   nav {
     position: relative;
@@ -53,7 +55,7 @@ export const navbarStyles = css`
   .menu {
     display: contents;
   }
-  @container (max-width: 640px) {
+  @container (max-width: ${tabletBreakpoint}) {
     .links {
       justify-content: flex-end;
       flex: 0 0 auto;

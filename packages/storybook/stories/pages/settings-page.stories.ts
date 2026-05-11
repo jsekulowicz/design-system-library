@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
 import '@jsekulowicz/ds-components/page-shell/define';
 import '@jsekulowicz/ds-components/sidenav/define';
 import '@jsekulowicz/ds-components/nav-item/define';
@@ -37,6 +38,7 @@ type Story = StoryObj;
 
 const FRAME_HEIGHT = 480;
 const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
+const TABLET_BREAKPOINT = breakpoint.md;
 
 const timezones = [
   { label: 'UTC', value: 'utc' },
@@ -94,7 +96,7 @@ function renderPage(withSidenav: boolean) {
       ds-sidenav[collapsed] .collapse-toggle-label {
         display: none;
       }
-      @media (max-width: 768px) {
+      @media (width < ${TABLET_BREAKPOINT}) {
         .collapse-toggle {
           display: none;
         }
