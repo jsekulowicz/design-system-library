@@ -68,7 +68,10 @@ const preview: Preview = {
     controls: { expanded: true },
     backgrounds: { disabled: true },
     viewport: { disable: true },
-    docs: { page: DocsPage },
+    docs: {
+      page: DocsPage,
+      story: { inline: false },
+    },
     options: {
       storySort: {
         order: [

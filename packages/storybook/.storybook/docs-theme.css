@@ -75,8 +75,8 @@ p {
   border-radius: var(--ds-radius-md) !important;
   box-shadow: none !important;
   overflow: hidden !important;
-  width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
-  max-width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
@@ -92,6 +92,14 @@ p {
 .sbdocs .docs-story,
 .sbdocs .docs-story > div {
   background: var(--ds-color-bg) !important;
+}
+
+.sbdocs iframe[id^='iframe--'] {
+  display: block !important;
+  width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
+  max-width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* Source toolbar (Show code + copy) — kill contrasting backgrounds and the

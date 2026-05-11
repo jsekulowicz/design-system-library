@@ -44,11 +44,6 @@ const VIEWPORTS: ViewportPreset[] = [
   { key: 'tablet', title: 'Tablet', icon: <DeviceTabletIcon /> },
   { key: 'desktop', title: 'Computer', icon: <ComputerDesktopIcon /> },
 ];
-const VIEWPORT_WIDTHS: Record<ViewportKey, string> = {
-  mobile: '360px',
-  tablet: '768px',
-  desktop: '100%',
-};
 
 const DS_THEME_CHANGED = 'ds/theme-changed';
 const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
@@ -88,23 +83,6 @@ function readStoredTheme(): ThemeKey {
 function readStoredViewport(): ViewportKey {
   const value = window.localStorage.getItem(VIEWPORT_STORAGE_KEY);
   return value === 'mobile' || value === 'tablet' || value === 'desktop' ? value : 'desktop';
-}
-
-function applyPreviewFrameViewport(viewport: ViewportKey): void {
-  const iframe = document.getElementById('storybook-preview-iframe') as HTMLIFrameElement | null;
-  if (!iframe) {
-    return;
-  }
-  const parent = iframe.parentElement;
-  const width = VIEWPORT_WIDTHS[viewport];
-  iframe.style.width = width;
-  iframe.style.maxWidth = width;
-  iframe.style.marginInline = viewport === 'desktop' ? '' : 'auto';
-  if (!parent) {
-    return;
-  }
-  parent.style.width = '100%';
-  parent.style.display = 'block';
 }
 
 function hasFixedDesktopTitle(title?: string): boolean {
@@ -254,10 +232,7 @@ function ViewportToolbar(): React.ReactElement | null {
     if (!fixedDesktopPage) {
       window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
     }
-    applyPreviewFrameViewport(effectiveViewport);
-    const frame = window.requestAnimationFrame(() => applyPreviewFrameViewport(effectiveViewport));
     channel.emit(DS_VIEWPORT_CHANGED, { persist: !fixedDesktopPage, viewport: effectiveViewport });
-    return () => window.cancelAnimationFrame(frame);
   }, [channel, effectiveViewport, fixedDesktopPage, viewport]);
 
   function updateViewport(value: ViewportKey): void {
