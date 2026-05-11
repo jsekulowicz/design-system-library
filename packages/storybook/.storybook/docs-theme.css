@@ -81,6 +81,11 @@ p {
   margin-right: auto !important;
 }
 
+.sbdocs .sbdocs-preview:has(iframe[id^='iframe--']) {
+  width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
+  max-width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
+}
+
 .sbdocs .docs-story {
   background: var(--ds-color-bg) !important;
   border: 0 !important;
