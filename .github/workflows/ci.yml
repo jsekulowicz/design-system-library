@@ -75,3 +75,16 @@ jobs:
             tests/visual-results
           if-no-files-found: ignore
           retention-days: 7
+
+      - name: Upload Playwright visual diffs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-visual-diffs
+          path: |
+            tests/visual-results/**/*-expected.png
+            tests/visual-results/**/*-actual.png
+            tests/visual-results/**/*-diff.png
+            tests/visual-results/**/error-context.md
+          if-no-files-found: ignore
+          retention-days: 7

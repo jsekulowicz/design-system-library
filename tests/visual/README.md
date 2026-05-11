@@ -12,6 +12,8 @@ pnpm test:visual:update:ci
 ```
 
 Use `pnpm test:visual` to verify the current branch against committed baselines.
+When visual tests fail in CI, download the `playwright-visual-diffs` artifact to inspect the
+`*-expected.png`, `*-actual.png`, and `*-diff.png` files directly.
 
 Use `pnpm test:visual:update:ci` when the current branch is clean and pushed. It dispatches the
 GitHub Actions workflow for the current branch and lets CI commit updated PNG baselines when
