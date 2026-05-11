@@ -86,6 +86,8 @@ function renderPage(withSidenav: boolean) {
         transform: rotate(180deg);
       }
       ds-sidenav[collapsed] .collapse-toggle::part(button) {
+        width: var(--ds-sidenav-item-compact-size);
+        min-width: var(--ds-sidenav-item-compact-size);
         justify-content: center;
         padding: var(--ds-space-2);
       }

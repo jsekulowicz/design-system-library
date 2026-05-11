@@ -34,11 +34,13 @@ A native `<button>` lives in shadow DOM, styled via `::part(button)`. Slots for 
       <ul>
         <li>Use one <code>primary</code> per surface — the clearest next step for the user.</li>
         <li>Use <code>ghost</code> for low-emphasis actions that live among other content.</li>
+        <li>Use <code>square</code> for icon-only buttons in toolbars, collapsed navigation, and compact controls.</li>
         <li>Pair <code>loading</code> with optimistic copy ("Saving…") so the label still communicates progress.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
         <li>Don't stack two <code>primary</code> buttons in the same action row.</li>
+        <li>Don't use <code>square</code> for text buttons; it is only for icon-only controls with an accessible label.</li>
         <li>Don't use <code>danger</code> for destructive-but-recoverable actions — reserve it for irreversible ones.</li>
         <li>Don't disable without explanation. Prefer keeping it enabled and surfacing the error.</li>
       </ul>

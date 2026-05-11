@@ -26,6 +26,7 @@ A native `<form>` in shadow DOM. Child controls participate via `ElementInternal
       <h3>Do</h3>
       <ul>
         <li>Let the form own submission — listen for <code>ds-submit</code> rather than binding to each input.</li>
+        <li>Use the <code>actions</code> slot for form buttons. It aligns actions left on tablet/desktop and right on mobile.</li>
         <li>Surface server-side errors by setting each control's <code>invalid</code> and <code>error</code> props after submission.</li>
       </ul>
       <h3>Don't</h3>

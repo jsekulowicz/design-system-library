@@ -2,6 +2,8 @@ import { css } from 'lit';
 
 export const buttonStyles = css`
   :host {
+    --ds-button-size: var(--ds-size-md);
+    --ds-button-min-width: 4.5rem;
     display: inline-flex;
     vertical-align: middle;
   }
@@ -11,8 +13,8 @@ export const buttonStyles = css`
     justify-content: center;
     gap: var(--ds-space-1);
     padding: 0 var(--ds-space-2);
-    height: var(--ds-size-md);
-    min-width: var(--ds-size-md);
+    height: var(--ds-button-size);
+    min-width: var(--ds-button-min-width);
     border-radius: var(--ds-radius-sm);
     border: 1px solid transparent;
     font-family: var(--ds-font-body);
@@ -85,12 +87,19 @@ export const buttonStyles = css`
     background: var(--ds-color-danger);
     color: var(--ds-color-accent-fg);
   }
+  :host([square]) .btn {
+    width: var(--ds-button-size);
+    min-width: var(--ds-button-size);
+    padding: 0;
+  }
   :host([size='sm']) .btn {
-    height: var(--ds-size-sm);
+    --ds-button-size: var(--ds-size-sm);
+    --ds-button-min-width: 4rem;
     font-size: var(--ds-font-size-xs);
   }
   :host([size='lg']) .btn {
-    height: var(--ds-size-lg);
+    --ds-button-size: var(--ds-size-lg);
+    --ds-button-min-width: 5rem;
     font-size: var(--ds-font-size-md);
   }
   :host([full-width]) {

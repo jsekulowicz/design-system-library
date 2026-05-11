@@ -21,8 +21,13 @@ export const formStyles = css`
   .actions {
     display: flex;
     gap: var(--ds-space-3);
-    justify-content: flex-end;
+    justify-content: flex-start;
     margin-top: var(--ds-space-5);
+  }
+  @container (max-width: 480px) {
+    .actions {
+      justify-content: flex-end;
+    }
   }
   .title {
     margin: 0 0 var(--ds-space-4);

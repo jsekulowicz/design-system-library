@@ -24,6 +24,13 @@ describe('<ds-button>', () => {
     expect(el.variant).toBe('primary');
     expect(el.size).toBe('md');
     expect(el.type).toBe('button');
+    expect(el.square).toBe(false);
+  });
+
+  it('reflects square for icon-only sizing', async () => {
+    const el = await mount<DsButton>('<ds-button square label="Search">*</ds-button>');
+    expect(el.square).toBe(true);
+    expect(el.hasAttribute('square')).toBe(true);
   });
 
   it('emits ds-click on activation and respects disabled', async () => {

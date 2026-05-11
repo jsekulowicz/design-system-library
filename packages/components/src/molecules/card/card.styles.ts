@@ -51,6 +51,15 @@ export const cardStyles = css`
     flex-direction: column;
     gap: var(--ds-space-1);
   }
+  .actions {
+    display: flex;
+    justify-content: flex-start;
+  }
+  @container (max-width: 480px) {
+    .actions {
+      justify-content: flex-end;
+    }
+  }
   [hidden] {
     display: none;
   }

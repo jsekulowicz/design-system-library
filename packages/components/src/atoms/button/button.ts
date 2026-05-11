@@ -13,6 +13,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @slot default - The button label.
  * @slot leading - Icon or adornment rendered before the label.
  * @slot trailing - Icon or adornment rendered after the label.
+ * @attr {boolean} square - Forces an icon-sized square button and ignores the text-button min width.
  * @csspart button - The internal `<button>` element.
  * @event ds-click - Emitted when the button is activated.
  */
@@ -25,6 +26,7 @@ export class DsButton extends DsElement {
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Boolean, reflect: true, attribute: 'full-width' }) fullWidth = false;
+  @property({ type: Boolean, reflect: true }) square = false;
   @property() label?: string;
   @property({ attribute: 'aria-controls' }) ariaControlsAttr?: string;
   @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: string;
