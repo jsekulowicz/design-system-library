@@ -12,8 +12,10 @@ type ViewportPayload = { viewport?: ViewportKey; persist?: boolean } | ViewportK
 
 const DS_THEME_CHANGED = 'ds/theme-changed';
 const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
+const THEME_ATTR = 'data-ds-theme';
 const THEME_STORAGE_KEY = 'ds-storybook-theme';
 const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
+const STORY_IFRAME_SELECTOR = 'iframe[id^="iframe--"]';
 
 function normalizeTheme(value: unknown): ThemeKey {
   return value === 'dark' ? 'dark' : 'light';
@@ -24,8 +26,9 @@ function normalizeViewport(value: unknown): ViewportKey {
 }
 
 function applyTheme(theme: ThemeKey): void {
-  document.documentElement.setAttribute('data-ds-theme', theme);
+  document.documentElement.setAttribute(THEME_ATTR, theme);
   window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  syncStoryIframeThemes(theme);
 }
 
 function applyViewport(viewport: ViewportKey, persist = true): void {
@@ -49,6 +52,41 @@ function readInitialViewport(): ViewportKey {
   return normalizeViewport(window.localStorage.getItem(VIEWPORT_STORAGE_KEY));
 }
 
+function readAppliedTheme(): ThemeKey {
+  return normalizeTheme(document.documentElement.getAttribute(THEME_ATTR));
+}
+
+function syncStoryIframeTheme(iframe: HTMLIFrameElement, theme = readAppliedTheme()): void {
+  const root = iframe.contentDocument?.documentElement;
+  root?.setAttribute(THEME_ATTR, theme);
+}
+
+function attachStoryIframeThemeSync(iframe: HTMLIFrameElement): void {
+  if (iframe.dataset['dsThemeSyncAttached'] === 'true') {
+    return;
+  }
+  iframe.dataset['dsThemeSyncAttached'] = 'true';
+  iframe.addEventListener('load', () => syncStoryIframeTheme(iframe));
+}
+
+function syncStoryIframeThemes(theme = readAppliedTheme()): void {
+  const iframes = document.querySelectorAll<HTMLIFrameElement>(STORY_IFRAME_SELECTOR);
+  for (const iframe of iframes) {
+    attachStoryIframeThemeSync(iframe);
+    syncStoryIframeTheme(iframe, theme);
+  }
+}
+
+function setupStoryIframeThemeSync(): void {
+  if (!document.body) {
+    window.addEventListener('DOMContentLoaded', setupStoryIframeThemeSync, { once: true });
+    return;
+  }
+  const observer = new MutationObserver(() => syncStoryIframeThemes());
+  observer.observe(document.body, { childList: true, subtree: true });
+  syncStoryIframeThemes();
+}
+
 const channel = addons.getChannel();
 channel.on(DS_THEME_CHANGED, (payload: { theme?: ThemeKey } | ThemeKey) => {
   const theme = typeof payload === 'string' ? payload : payload.theme;
@@ -62,6 +100,7 @@ channel.on(DS_VIEWPORT_CHANGED, (payload: ViewportPayload) => {
 
 applyTheme(normalizeTheme(window.localStorage.getItem(THEME_STORAGE_KEY)));
 applyViewport(readInitialViewport(), false);
+setupStoryIframeThemeSync();
 
 const preview: Preview = {
   parameters: {
