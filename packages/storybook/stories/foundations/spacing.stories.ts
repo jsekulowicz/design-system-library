@@ -4,6 +4,7 @@ import { space } from '@jsekulowicz/ds-tokens';
 
 const meta: Meta = {
   title: 'Foundations/Spacing',
+  parameters: { docs: { story: { inline: true } } },
 };
 
 export default meta;

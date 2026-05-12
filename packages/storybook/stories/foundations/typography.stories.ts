@@ -4,6 +4,7 @@ import { fontSize, fontWeight, lineHeight, letterSpacing } from '@jsekulowicz/ds
 
 const meta: Meta = {
   title: 'Foundations/Typography',
+  parameters: { docs: { story: { inline: true } } },
 };
 
 export default meta;

@@ -7,6 +7,7 @@ import '@jsekulowicz/ds-components/badge/define';
 
 const meta: Meta = {
   title: 'Foundations/Theming',
+  parameters: { docs: { story: { inline: true } } },
   argTypes: {
     accent: { control: { type: 'color' } },
     accentHover: { control: { type: 'color' } },

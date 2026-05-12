@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 
 const meta: Meta = {
   title: 'Foundations/Color',
+  parameters: { docs: { story: { inline: true } } },
 };
 
 export default meta;

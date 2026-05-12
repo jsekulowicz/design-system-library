@@ -4,6 +4,7 @@ import { radius, shadow, border, duration, easing, breakpoint, container, zIndex
 
 const meta: Meta = {
   title: 'Foundations/Tokens',
+  parameters: { docs: { story: { inline: true } } },
 };
 
 export default meta;
