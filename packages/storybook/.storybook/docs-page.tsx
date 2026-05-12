@@ -1,4 +1,3 @@
-import React from 'react';
 import { Title, Description, Primary, Controls, Stories, useOf } from '@storybook/addon-docs/blocks';
 import { ComponentApi } from './api-blocks.js';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import cem from '../../components/custom-elements.json';
 
 type Entry = { name: string; description?: string };

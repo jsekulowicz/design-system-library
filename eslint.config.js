@@ -3,6 +3,7 @@ import tseslint from 'typescript-eslint';
 import litPlugin from 'eslint-plugin-lit';
 import wcPlugin from 'eslint-plugin-wc';
 import storybook from 'eslint-plugin-storybook';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 const litFiles = ['packages/components/src/**/*.ts', 'packages/core/src/**/*.ts'];
 const litRecommended = litPlugin.configs['flat/recommended'];
@@ -18,6 +19,9 @@ export default [
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',
+      parserOptions: {
+        jsxPragma: null,
+      },
       globals: {
         window: 'readonly',
         document: 'readonly',
@@ -31,10 +35,15 @@ export default [
         process: 'readonly',
       },
     },
+    plugins: {
+      'unused-imports': unusedImports,
+    },
     rules: {
       'no-console': ['warn', { allow: ['warn', 'error'] }],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/consistent-type-imports': 'error',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
   {

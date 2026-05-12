@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006 --disable-telemetry --no-version-updates",
     "build": "storybook build -o storybook-static --disable-telemetry",
+    "lint": "eslint \".storybook/**/*.{ts,tsx}\" \"stories/**/*.ts\"",
     "preview": "http-server storybook-static -p 6006"
   },
   "dependencies": {
