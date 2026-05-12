@@ -3,7 +3,6 @@ import { css } from 'lit';
 export const tabStyles = css`
   :host {
     display: inline-flex;
-    outline: none;
   }
   :host([disabled]) {
     cursor: not-allowed;

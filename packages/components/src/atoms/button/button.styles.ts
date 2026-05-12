@@ -34,7 +34,6 @@ export const buttonStyles = css`
     -webkit-tap-highlight-color: transparent;
   }
   .btn:focus-visible {
-    outline: 2px solid transparent;
     box-shadow: var(--ds-shadow-focus);
   }
   .btn:active:not([aria-disabled='true']) {

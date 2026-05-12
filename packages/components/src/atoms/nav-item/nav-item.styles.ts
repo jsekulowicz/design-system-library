@@ -32,7 +32,6 @@ export const navItemStyles = css`
     color: var(--ds-color-fg);
   }
   .link:focus-visible {
-    outline: 2px solid transparent;
     box-shadow: var(--ds-shadow-focus);
   }
   :host([current]) .link {

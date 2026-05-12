@@ -66,7 +66,6 @@ export const toastStyles = css`
     border-radius: var(--ds-radius-xs);
   }
   .close:focus-visible {
-    outline: 2px solid transparent;
     box-shadow: var(--ds-shadow-focus);
   }
 `;

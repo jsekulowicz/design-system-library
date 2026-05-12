@@ -21,10 +21,6 @@ export const menuStyles = css`
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
   }
-  .header:has(slot:not([name='header']):empty),
-  .footer:has(slot:not([name='footer']):empty) {
-    display: none;
-  }
   .header[hidden],
   .footer[hidden] {
     display: none;

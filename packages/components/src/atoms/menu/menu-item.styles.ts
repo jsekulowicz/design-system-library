@@ -19,7 +19,6 @@ export const menuItemStyles = css`
     background: var(--ds-color-bg-subtle);
   }
   :host(:focus-visible) {
-    outline: none;
     box-shadow: var(--ds-shadow-focus);
   }
   .item {

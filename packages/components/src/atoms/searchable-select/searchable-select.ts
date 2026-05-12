@@ -12,6 +12,7 @@ import {
 } from '../select/select.shared.js';
 import { DropdownController } from '../select/dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from '../select/dropdown-keydown.js';
+import { selectCommonStyles } from '../select/select.common-styles.js';
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import { highlightMatch } from './highlight-match.js';
 import type { SelectOption } from '../select/select.js';
@@ -26,7 +27,12 @@ import type { SelectOption } from '../select/select.js';
  * @csspart option - Each individual option item.
  */
 export class DsSearchableSelect extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, formFieldStyles, searchableSelectStyles];
+  static override styles = [
+    ...DsElement.styles,
+    formFieldStyles,
+    selectCommonStyles,
+    searchableSelectStyles,
+  ];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,

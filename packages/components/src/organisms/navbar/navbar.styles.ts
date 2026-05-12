@@ -49,7 +49,6 @@ export const navbarStyles = css`
     padding: var(--ds-space-2);
   }
   .toggle:focus-visible {
-    outline: 2px solid transparent;
     box-shadow: var(--ds-shadow-focus);
   }
   .menu {

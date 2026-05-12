@@ -16,7 +16,6 @@ export const colorPickerSwatchStyles = css`
   }
 
   :host(:focus-visible) {
-    outline: none;
     box-shadow: var(--ds-shadow-focus);
   }
 

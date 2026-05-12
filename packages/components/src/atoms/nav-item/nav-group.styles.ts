@@ -36,7 +36,6 @@ export const navGroupStyles = css`
     color: var(--ds-color-fg);
   }
   .heading:focus-visible {
-    outline: 2px solid transparent;
     box-shadow: var(--ds-shadow-focus);
   }
   .icon {

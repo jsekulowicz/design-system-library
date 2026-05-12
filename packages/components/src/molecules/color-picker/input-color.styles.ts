@@ -23,7 +23,6 @@ export const inputColorStyles = css`
   input:focus-visible {
     border-color: var(--ds-color-accent);
     box-shadow: var(--ds-shadow-focus);
-    outline: none;
   }
 
   :host([disabled]) input {

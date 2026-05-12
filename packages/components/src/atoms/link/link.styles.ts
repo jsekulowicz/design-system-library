@@ -16,7 +16,6 @@ export const linkStyles = css`
     color: var(--ds-color-accent);
   }
   a:focus-visible {
-    outline: 2px solid transparent;
     box-shadow: var(--ds-shadow-focus);
   }
   :host([variant='quiet']) a {

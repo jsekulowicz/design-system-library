@@ -11,6 +11,7 @@ import {
 } from './select.shared.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
+import { selectCommonStyles } from './select.common-styles.js';
 import { selectStyles } from './select.styles.js';
 
 export interface SelectOption {
@@ -28,7 +29,7 @@ export interface SelectOption {
  * @csspart option - Each individual option item.
  */
 export class DsSelect extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, formFieldStyles, selectStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, selectCommonStyles, selectStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
