@@ -73,7 +73,8 @@ export const pageShellStyles = css`
 
   main {
     padding: var(--ds-space-5);
-    overflow-y: auto;
+    overflow: auto;
+    min-width: 0;
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;

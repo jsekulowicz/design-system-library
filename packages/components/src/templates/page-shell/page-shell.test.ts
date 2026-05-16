@@ -303,5 +303,13 @@ describe('<ds-page-shell>', () => {
       expect(body).not.toBeNull();
       expect(body.classList.contains('shell-body')).toBe(true);
     });
+
+    it('lets the main grid track shrink below intrinsic content width and contains overflow', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/main\s*{[^}]*min-width:\s*0/);
+      expect(css).toMatch(/main\s*{[^}]*overflow:\s*auto/);
+    });
   });
 });
