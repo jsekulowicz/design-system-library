@@ -45,6 +45,49 @@ export function FormControlMixin<TBase extends LitCtor>(
       this.#internals = (this as unknown as HTMLElement).attachInternals();
     }
 
+    override connectedCallback(): void {
+      super.connectedCallback();
+      (this as unknown as HTMLElement).addEventListener(
+        'keydown',
+        this.#handleImplicitSubmit,
+      );
+    }
+
+    override disconnectedCallback(): void {
+      (this as unknown as HTMLElement).removeEventListener(
+        'keydown',
+        this.#handleImplicitSubmit,
+      );
+      super.disconnectedCallback();
+    }
+
+    #handleImplicitSubmit = (event: KeyboardEvent): void => {
+      if (event.key !== 'Enter' || event.defaultPrevented || event.isComposing) {
+        return;
+      }
+      if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+      if (this.disabled) {
+        return;
+      }
+      const type = (this as unknown as { type?: string }).type;
+      if (type === 'textarea') {
+        return;
+      }
+      const form =
+        this.#internals.form ?? (this as unknown as HTMLElement).closest('form');
+      if (!form) {
+        return;
+      }
+      event.preventDefault();
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        form.submit();
+      }
+    };
+
     get value(): FormDataEntryValue | null {
       return this.#value;
     }

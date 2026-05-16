@@ -112,4 +112,75 @@ describe('<ds-text-field>', () => {
     expect(el.shadowRoot!.querySelector('.error')?.getAttribute('role')).toBe('alert');
     expect(el.shadowRoot!.querySelector('.error')?.textContent).toContain('Required');
   });
+
+  it('submits the surrounding form when Enter is pressed inside the field', async () => {
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      '<form id="impl-form"><ds-text-field name="email"></ds-text-field><button type="submit">Go</button></form>',
+    );
+    const form = document.getElementById('impl-form') as HTMLFormElement;
+    const el = form.querySelector('ds-text-field') as DsTextField;
+    await el.updateComplete;
+    let submitted = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitted = true;
+    });
+    el.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+    );
+    expect(submitted).toBe(true);
+  });
+
+  it('does not submit on Enter when the field is disabled', async () => {
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      '<form id="disabled-form"><ds-text-field disabled name="email"></ds-text-field></form>',
+    );
+    const form = document.getElementById('disabled-form') as HTMLFormElement;
+    const el = form.querySelector('ds-text-field') as DsTextField;
+    await el.updateComplete;
+    let submitted = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitted = true;
+    });
+    el.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+    );
+    expect(submitted).toBe(false);
+  });
+
+  it('does not submit on Enter when no form ancestor exists', async () => {
+    const el = await mount<DsTextField>('<ds-text-field></ds-text-field>');
+    expect(() =>
+      el.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+      ),
+    ).not.toThrow();
+  });
+
+  it('ignores Enter when a modifier key is held', async () => {
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      '<form id="modifier-form"><ds-text-field name="email"></ds-text-field></form>',
+    );
+    const form = document.getElementById('modifier-form') as HTMLFormElement;
+    const el = form.querySelector('ds-text-field') as DsTextField;
+    await el.updateComplete;
+    let submitted = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitted = true;
+    });
+    el.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Enter',
+        shiftKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+    expect(submitted).toBe(false);
+  });
 });
