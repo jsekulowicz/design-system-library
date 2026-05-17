@@ -30,7 +30,13 @@ import '@jsekulowicz/ds-components/icon/puzzle-piece';
 const meta: Meta = {
   title: 'Pages/SettingsPage',
   component: 'ds-settings-page',
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    // Full-viewport page; docs renders it in an iframe so the page-shell
+    // chrome has an isolated viewport box. Per-story `height` controls
+    // that iframe.
+    docs: { story: { inline: false } },
+  },
 };
 
 export default meta;

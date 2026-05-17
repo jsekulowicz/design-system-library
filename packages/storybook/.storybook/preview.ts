@@ -109,7 +109,13 @@ const preview: Preview = {
     viewport: { disable: true },
     docs: {
       page: DocsPage,
-      story: { inline: false },
+      // Render stories inline in docs by default so each example sizes
+      // to its content (no fixed iframe height to babysit, expanding
+      // controls like SearchableSelect and MenuButton extend the page
+      // flow rather than overflowing a small frame). Full-viewport
+      // templates and pages opt back into iframe rendering by setting
+      // `parameters.docs.story.inline = false` on their meta.
+      story: { inline: true },
     },
     options: {
       storySort: {

@@ -14,7 +14,9 @@ const meta: Meta = {
   parameters: {
     layout: 'fullscreen',
     docs: {
-      story: { height: '128px' },
+      // Navbar styles itself against a full-width viewport; keep iframe
+      // rendering so the example has an isolated box of the declared height.
+      story: { inline: false, height: '128px' },
     },
   },
 };

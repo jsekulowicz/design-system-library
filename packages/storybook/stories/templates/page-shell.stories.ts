@@ -16,7 +16,13 @@ import '@jsekulowicz/ds-components/icon/chevron-right';
 const meta: Meta = {
   title: 'Templates/PageShell',
   component: 'ds-page-shell',
-  parameters: { layout: 'fullscreen' },
+  parameters: {
+    layout: 'fullscreen',
+    // This template fills the viewport with its own header/aside/main/footer
+    // grid, so docs render it in an iframe to give that layout an isolated
+    // box to claim. Per-story `height` settings control that iframe.
+    docs: { story: { inline: false } },
+  },
 };
 
 export default meta;
