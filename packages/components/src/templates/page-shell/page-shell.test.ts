@@ -304,6 +304,15 @@ describe('<ds-page-shell>', () => {
       expect(body.classList.contains('shell-body')).toBe(true);
     });
 
+    it('uses compact header padding below desktop', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/\.shell-inner\s*{[^}]*padding-inline:\s*var\(--ds-space-5\)/);
+      expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
+      expect(css).toContain('padding-inline: var(--ds-space-4)');
+    });
+
     it('lets the main grid track shrink below intrinsic content width and contains overflow', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
@@ -330,6 +339,22 @@ describe('<ds-page-shell>', () => {
       // Both-edges keeps content horizontally centred regardless of whether
       // main's overflow scrollbar is currently present.
       expect(css).toMatch(/main\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/);
+    });
+
+    it('uses compact main padding below desktop', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/main\s*{[^}]*padding:\s*var\(--ds-space-5\)/);
+      expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
+      expect(css).toContain('padding: var(--ds-space-4) var(--ds-space-2)');
+    });
+
+    it('uses the xl icon size for mobile drawer controls', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      const icons = Array.from(el.shadowRoot!.querySelectorAll('ds-icon[name]'));
+      expect(icons.every((icon) => icon.getAttribute('size') === 'xl')).toBe(true);
     });
   });
 

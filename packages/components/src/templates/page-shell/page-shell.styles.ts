@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
 
 export const pageShellStyles = css`
   :host {
@@ -97,6 +100,16 @@ export const pageShellStyles = css`
        present or not. Without this, an overflowing main has its content
        pushed inward on the inline-end side only (asymmetric margins). */
     scrollbar-gutter: stable both-edges;
+  }
+
+  @media (max-width: ${belowDesktopBreakpoint}) {
+    .shell-inner {
+      padding-inline: var(--ds-space-4);
+    }
+
+    main {
+      padding: var(--ds-space-4) var(--ds-space-2);
+    }
   }
 
   .brand {

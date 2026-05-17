@@ -164,7 +164,7 @@ export class DsPageShell extends DsElement {
                 aria-controls="mobile-aside"
                 @click=${this.#toggleMobileNav}
               >
-                <ds-icon slot="leading" name=${menuIcon} size="lg"></ds-icon>
+                <ds-icon slot="leading" name=${menuIcon} size="xl"></ds-icon>
               </ds-button>`
             : null}
           <div class="brand">
@@ -196,7 +196,7 @@ export class DsPageShell extends DsElement {
               aria-label="Close navigation"
               @click=${this.#closeMobileNav}
             >
-              <ds-icon slot="leading" name="x-mark" size="lg"></ds-icon>
+              <ds-icon slot="leading" name="x-mark" size="xl"></ds-icon>
             </ds-button>
           </div>
           <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>

@@ -2,6 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoint } from '@jsekulowicz/ds-tokens';
 
 const mobileBreakpoint = unsafeCSS(breakpoint.sm);
+const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
 
 export const footerStyles = css`
   :host {
@@ -34,13 +35,17 @@ export const footerStyles = css`
   @container (max-width: ${mobileBreakpoint}) {
     footer {
       gap: var(--ds-space-2);
-      padding: var(--ds-space-2) var(--ds-space-4);
       font-size: var(--ds-font-size-xs);
     }
     .start,
     .middle,
     .end {
       gap: var(--ds-space-2);
+    }
+  }
+  @media (max-width: ${belowDesktopBreakpoint}) {
+    footer {
+      padding-inline: var(--ds-space-4);
     }
   }
 `;

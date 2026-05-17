@@ -1,10 +1,11 @@
-import { html, nothing, svg, type TemplateResult, type SVGTemplateResult } from 'lit';
+import { html, svg, type TemplateResult, type SVGTemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { iconStyles } from './icon.styles.js';
 
-export type IconSize = 'sm' | 'md' | 'lg';
+export type IconSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 const registry = new Map<string, string>();
 
@@ -45,11 +46,11 @@ export class DsIcon extends DsElement {
 
   override render(): TemplateResult {
     const ariaHidden = this.label ? 'false' : 'true';
-    const role = this.label ? 'img' : undefined;
+    const role: 'img' | undefined = this.label ? 'img' : undefined;
     return html`<span
-      role=${role ?? nothing}
+      role=${ifDefined(role)}
       aria-hidden=${ariaHidden}
-      aria-label=${this.label ?? nothing}
+      aria-label=${ifDefined(this.label)}
     >
       ${this.svg ? this.svg : html`<slot></slot>`}
     </span>`;

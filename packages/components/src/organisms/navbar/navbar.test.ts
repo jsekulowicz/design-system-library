@@ -53,7 +53,9 @@ describe('<ds-navbar>', () => {
       </ds-navbar>
     `);
     const toggle = el.shadowRoot!.querySelector('button.toggle') as HTMLButtonElement;
+    const icon = toggle.querySelector('ds-icon') as HTMLElement;
     expect(toggle).not.toBeNull();
+    expect(icon.getAttribute('size')).toBe('xl');
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     toggle.click();
     await el.updateComplete;
@@ -106,5 +108,15 @@ describe('<ds-navbar>', () => {
     await el.updateComplete;
 
     expect(el.hasAttribute('data-open')).toBe(true);
+  });
+
+  it('uses compact horizontal padding below desktop', () => {
+    const css = (DsNavbar as unknown as { styles: { cssText: string }[] }).styles
+      .map((s) => s.cssText)
+      .join('\n');
+    expect(css).toMatch(/nav\s*{[^}]*padding:\s*var\(--ds-space-3\)\s+var\(--ds-space-5\)/);
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*calc\(1024px - 0\.02px\)\)\s*{[^}]*nav\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/,
+    );
   });
 });

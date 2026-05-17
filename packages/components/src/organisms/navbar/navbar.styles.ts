@@ -2,6 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoint } from '@jsekulowicz/ds-tokens';
 
 const tabletBreakpoint = unsafeCSS(breakpoint.md);
+const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
 
 export const navbarStyles = css`
   :host {
@@ -13,7 +14,7 @@ export const navbarStyles = css`
     display: flex;
     align-items: center;
     gap: var(--ds-space-4);
-    padding: var(--ds-space-3) var(--ds-space-6);
+    padding: var(--ds-space-3) var(--ds-space-5);
     background: var(--ds-color-bg);
     border-bottom: 1px solid var(--ds-color-border);
     font-family: var(--ds-font-body);
@@ -80,6 +81,11 @@ export const navbarStyles = css`
     }
     :host([data-open]) .menu {
       display: flex;
+    }
+  }
+  @media (max-width: ${belowDesktopBreakpoint}) {
+    nav {
+      padding-inline: var(--ds-space-4);
     }
   }
 `;

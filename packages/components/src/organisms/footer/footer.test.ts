@@ -38,4 +38,14 @@ describe('<ds-footer>', () => {
     expect((startNodes[0] as HTMLElement).getAttribute('data-test')).toBe('s');
     expect((endNodes[0] as HTMLElement).getAttribute('data-test')).toBe('e');
   });
+
+  it('uses compact horizontal padding below desktop', () => {
+    const css = (DsFooter as unknown as { styles: { cssText: string }[] }).styles
+      .map((s) => s.cssText)
+      .join('\n');
+    expect(css).toMatch(/footer\s*{[^}]*padding:\s*var\(--ds-space-2\)\s+var\(--ds-space-5\)/);
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*calc\(1024px - 0\.02px\)\)\s*{[^}]*footer\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/,
+    );
+  });
 });
