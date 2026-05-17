@@ -18,6 +18,7 @@ export const sidenavStyles = css`
 
     nav {
       width: var(--ds-sidenav-collapsed-width);
+      padding: var(--ds-space-4) var(--ds-space-1);
       scrollbar-width: none;
     }
   }
@@ -25,7 +26,7 @@ export const sidenavStyles = css`
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: var(--ds-space-1);
+    padding: var(--ds-space-4);
     background: var(--ds-color-bg);
     overflow-x: clip;
     overflow-y: auto;

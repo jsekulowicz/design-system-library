@@ -69,6 +69,17 @@ describe('<ds-sidenav>', () => {
     expect(el.shadowRoot!.querySelector('nav')!.getAttribute('aria-label')).toBe('Workspace');
   });
 
+  it('uses page-shell aligned padding while keeping collapsed rail horizontally compact', () => {
+    const css = (DsSidenav as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
+    expect(css).toMatch(/nav\s*{[^}]*padding:\s*var\(--ds-space-4\)/);
+    expect(css).toMatch(
+      /:host\(\[collapsed\]\)\s*{[^}]*nav\s*{[^}]*padding:\s*var\(--ds-space-4\)\s+var\(--ds-space-1\)/,
+    );
+    expect(css).not.toContain(':host-context(ds-page-shell[mobile-layout]) nav');
+  });
+
   it('propagates collapsed -> compact to ds-nav-item and ds-nav-group children', async () => {
     const el = await mount<DsSidenav>(`
       <ds-sidenav>
