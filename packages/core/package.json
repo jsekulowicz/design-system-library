@@ -1,6 +1,6 @@
 {
   "name": "@jsekulowicz/ds-core",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Lit base class, form-control mixin, controllers, and utilities for Design System components.",
   "license": "UNLICENSED",
   "repository": {
