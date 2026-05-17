@@ -63,7 +63,9 @@ export const pageShellStyles = css`
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
-    scrollbar-gutter: stable;
+    /* No scrollbar-gutter reservation: the aside sits flush with its column
+       edge so the consumer's <main> solely owns the gap. The scrollbar
+       appears on demand when the aside genuinely overflows. */
   }
 
   :host([aside-empty]) aside,

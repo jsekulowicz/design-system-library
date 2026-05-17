@@ -311,5 +311,16 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/main\s*{[^}]*min-width:\s*0/);
       expect(css).toMatch(/main\s*{[^}]*overflow:\s*auto/);
     });
+
+    it('keeps the desktop aside flush with its column edge (no scrollbar gutter)', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      // The base aside selector intentionally omits scrollbar-gutter so that
+      // <main>'s padding solely owns the horizontal gap between aside and main.
+      const baseAsideRule = css.match(/(?<![\w-])aside\s*{[^}]*}/)?.[0];
+      expect(baseAsideRule).toBeTruthy();
+      expect(baseAsideRule).not.toMatch(/scrollbar-gutter:\s*stable/);
+    });
   });
 });
