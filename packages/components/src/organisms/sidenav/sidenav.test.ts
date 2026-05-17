@@ -77,7 +77,9 @@ describe('<ds-sidenav>', () => {
     expect(css).toMatch(
       /:host\(\[collapsed\]\)\s*{[^}]*nav\s*{[^}]*padding:\s*var\(--ds-space-4\)\s+var\(--ds-space-1\)/,
     );
-    expect(css).not.toContain(':host-context(ds-page-shell[mobile-layout]) nav');
+    expect(css).toMatch(
+      /:host-context\(ds-page-shell\[mobile-layout\]\)\s*nav\s*{[^}]*padding-block:\s*var\(--ds-space-2\)/,
+    );
   });
 
   it('aligns header content with nav item contents and leaves footer unindented', () => {

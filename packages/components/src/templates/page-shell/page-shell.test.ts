@@ -355,8 +355,25 @@ describe('<ds-page-shell>', () => {
         .map((s) => s.cssText)
         .join('\n');
       expect(css).toMatch(
-        /:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*padding:\s*var\(--ds-space-4\)\s+var\(--ds-space-4\)\s+0/,
+        /:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*padding:\s*var\(--ds-space-2\)\s+var\(--ds-space-4\)/,
       );
+    });
+
+    it('places drawer brand content before the mobile drawer close button', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand">
+          <span slot="drawer-brand">Wide Brand</span>
+          <div slot="aside"><a href="#settings">Settings</a></div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await el.updateComplete;
+
+      const drawerHeader = el.shadowRoot!.querySelector('.drawer-header')!;
+      const children = Array.from(drawerHeader.children);
+      expect(children[0]?.classList.contains('drawer-brand')).toBe(true);
+      expect(children[1]?.classList.contains('drawer-close')).toBe(true);
+      expect(drawerHeader.querySelector('slot[name="drawer-brand"]')).not.toBeNull();
     });
 
     it('uses the xl icon size for mobile drawer controls', async () => {

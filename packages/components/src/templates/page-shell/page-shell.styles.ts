@@ -127,6 +127,9 @@ export const pageShellStyles = css`
   .drawer-header {
     display: none;
   }
+  .drawer-brand {
+    display: none;
+  }
   .drawer-close {
     display: none;
   }
@@ -175,10 +178,25 @@ export const pageShellStyles = css`
   :host([mobile-layout]) .drawer-header {
     display: flex;
     align-items: center;
-    padding: var(--ds-space-4) var(--ds-space-4) 0;
+    justify-content: space-between;
+    gap: var(--ds-space-3);
+    padding: var(--ds-space-2) var(--ds-space-4);
+  }
+  :host([mobile-layout]) .drawer-brand {
+    display: inline-flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-font-size-lg);
+    letter-spacing: var(--ds-letter-spacing-display);
+  }
+  :host([mobile-layout]) slot[name='drawer-brand']::slotted(*) {
+    max-width: 100%;
   }
   :host([mobile-layout]) .drawer-close {
     display: inline-flex;
+    flex: 0 0 auto;
     margin: 0;
   }
   :host([mobile-layout]) aside[part="aside"] ::slotted(ds-sidenav) {

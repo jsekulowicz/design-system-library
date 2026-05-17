@@ -11,6 +11,7 @@ import '../../atoms/icon/icons/x-mark.js';
  * @tag ds-page-shell
  * @summary Application frame: header + aside + main + optional footer with responsive collapse.
  * @slot brand - Top-left brand/logo.
+ * @slot drawer-brand - Brand/logo shown at the start of the mobile navigation drawer.
  * @slot header-actions - Top-right actions.
  * @slot aside - Primary side navigation (inline-start). When empty, the column and hamburger toggle are not rendered.
  * @slot aside-end - Secondary side region (inline-end), e.g. table of contents, contextual help. Hidden on mobile.
@@ -188,6 +189,9 @@ export class DsPageShell extends DsElement {
           @click=${this.#onAsideClick}
         >
           <div class="drawer-header">
+            <div class="drawer-brand">
+              <slot name="drawer-brand">${this.brand}</slot>
+            </div>
             <ds-button
               class="drawer-close"
               variant="ghost"

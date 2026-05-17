@@ -58,6 +58,9 @@ export const sidenavStyles = css`
     flex-direction: column;
     gap: var(--ds-space-1);
   }
+  :host-context(ds-page-shell[mobile-layout]) nav {
+    padding-block: var(--ds-space-2);
+  }
   :host-context(ds-page-shell:not([mobile-layout])) nav {
     border-right: 1px solid var(--ds-color-border);
   }
