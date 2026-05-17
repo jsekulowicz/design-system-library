@@ -322,6 +322,15 @@ describe('<ds-page-shell>', () => {
       expect(baseAsideRule).toBeTruthy();
       expect(baseAsideRule).not.toMatch(/scrollbar-gutter:\s*stable/);
     });
+
+    it('reserves scrollbar gutters on both inline edges of main for symmetric content', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      // Both-edges keeps content horizontally centred regardless of whether
+      // main's overflow scrollbar is currently present.
+      expect(css).toMatch(/main\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/);
+    });
   });
 
   describe('aside-end slot', () => {

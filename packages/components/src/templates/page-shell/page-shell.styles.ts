@@ -92,6 +92,11 @@ export const pageShellStyles = css`
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
+    /* Reserve scrollbar gutters on both inline sides so the horizontal
+       content position stays symmetric whether the vertical scrollbar is
+       present or not. Without this, an overflowing main has its content
+       pushed inward on the inline-end side only (asymmetric margins). */
+    scrollbar-gutter: stable both-edges;
   }
 
   .brand {
