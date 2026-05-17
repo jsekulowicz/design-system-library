@@ -48,11 +48,19 @@ export const pageShellStyles = css`
     max-width: var(--ds-page-shell-max-width);
     margin-inline: auto;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     min-height: 0;
   }
 
   :host([aside-empty]) .shell-body {
+    grid-template-columns: 1fr auto;
+  }
+
+  :host([aside-end-empty]) .shell-body {
+    grid-template-columns: auto 1fr;
+  }
+
+  :host([aside-empty][aside-end-empty]) .shell-body {
     grid-template-columns: 1fr;
   }
 
@@ -68,8 +76,12 @@ export const pageShellStyles = css`
        appears on demand when the aside genuinely overflows. */
   }
 
-  :host([aside-empty]) aside,
+  :host([aside-empty]) aside[part="aside"],
   :host([aside-empty]) .mobile-backdrop {
+    display: none;
+  }
+
+  :host([aside-end-empty]) aside[part="aside-end"] {
     display: none;
   }
 
@@ -114,10 +126,15 @@ export const pageShellStyles = css`
   :host([mobile-layout]) .shell-body {
     grid-template-columns: 1fr;
   }
+  :host([mobile-layout]) aside[part="aside-end"] {
+    /* Secondary inline-end region is not surfaced in the mobile drawer in v1.
+       Consumers can opt back in by overriding via ::part(aside-end). */
+    display: none;
+  }
   :host([mobile-layout]) .brand {
     flex: 1;
   }
-  :host([mobile-layout]) aside {
+  :host([mobile-layout]) aside[part="aside"] {
     position: absolute;
     top: 0;
     left: 0;
@@ -134,7 +151,7 @@ export const pageShellStyles = css`
     overflow: hidden;
     box-sizing: border-box;
   }
-  :host([mobile-layout][data-mobile-nav-open]) aside {
+  :host([mobile-layout][data-mobile-nav-open]) aside[part="aside"] {
     transform: translateX(0);
   }
   :host([mobile-layout]) .drawer-header {
@@ -146,7 +163,7 @@ export const pageShellStyles = css`
     display: inline-flex;
     margin: 0;
   }
-  :host([mobile-layout]) aside ::slotted(ds-sidenav) {
+  :host([mobile-layout]) aside[part="aside"] ::slotted(ds-sidenav) {
     width: 100% !important;
     max-width: 100% !important;
     flex: 1 1 auto;

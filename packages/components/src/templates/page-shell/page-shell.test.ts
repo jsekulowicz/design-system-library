@@ -318,9 +318,57 @@ describe('<ds-page-shell>', () => {
         .join('\n');
       // The base aside selector intentionally omits scrollbar-gutter so that
       // <main>'s padding solely owns the horizontal gap between aside and main.
-      const baseAsideRule = css.match(/(?<![\w-])aside\s*{[^}]*}/)?.[0];
+      const baseAsideRule = css.match(/(?<![\w-\]"])aside\s*{[^}]*}/)?.[0];
       expect(baseAsideRule).toBeTruthy();
       expect(baseAsideRule).not.toMatch(/scrollbar-gutter:\s*stable/);
+    });
+  });
+
+  describe('aside-end slot', () => {
+    it('does not render the inline-end column when the slot is empty', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      const asideEnd = el.shadowRoot!.querySelector('aside[part="aside-end"]');
+      expect(asideEnd?.hasAttribute('hidden')).toBe(true);
+      expect(el.hasAttribute('aside-end-empty')).toBe(true);
+    });
+
+    it('renders the inline-end column when content is slotted into aside-end', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand">
+          <div slot="aside-end">Table of contents</div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await el.updateComplete;
+      const asideEnd = el.shadowRoot!.querySelector('aside[part="aside-end"]');
+      expect(asideEnd).not.toBeNull();
+      expect(asideEnd?.hasAttribute('hidden')).toBe(false);
+      expect(el.hasAttribute('aside-end-empty')).toBe(false);
+    });
+
+    it('applies the configurable end-label to the secondary aside', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand" end-label="On this page">
+          <div slot="aside-end">TOC</div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await el.updateComplete;
+      const asideEnd = el.shadowRoot!.querySelector('aside[part="aside-end"]');
+      expect(asideEnd?.getAttribute('aria-label')).toBe('On this page');
+    });
+
+    it('keeps the inline-end column independent of the inline-start column presence', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand">
+          <div slot="aside-end">TOC</div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await el.updateComplete;
+      expect(el.hasAttribute('aside-empty')).toBe(true);
+      expect(el.hasAttribute('aside-end-empty')).toBe(false);
     });
   });
 });

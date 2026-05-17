@@ -12,7 +12,8 @@ import '../../atoms/icon/icons/x-mark.js';
  * @summary Application frame: header + aside + main + optional footer with responsive collapse.
  * @slot brand - Top-left brand/logo.
  * @slot header-actions - Top-right actions.
- * @slot aside - Side navigation. When empty, the aside column and hamburger toggle are not rendered.
+ * @slot aside - Primary side navigation (inline-start). When empty, the column and hamburger toggle are not rendered.
+ * @slot aside-end - Secondary side region (inline-end), e.g. table of contents, contextual help. Hidden on mobile.
  * @slot default - Main content.
  * @slot footer - Footer content.
  * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
@@ -24,8 +25,10 @@ export class DsPageShell extends DsElement {
 
   @property() brand = '';
   @property({ attribute: 'menu-label' }) menuLabel = 'Navigation menu';
+  @property({ attribute: 'end-label' }) endLabel = 'Secondary navigation';
   @state() private _mobileNavOpen = false;
   @state() private _hasAside = false;
+  @state() private _hasAsideEnd = false;
   @state() private _hasFooter = false;
   #resizeObserver: ResizeObserver | null = null;
   #slotObserver: MutationObserver | null = null;
@@ -68,10 +71,13 @@ export class DsPageShell extends DsElement {
 
   #syncSlotPresence = (): void => {
     const aside = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside"]');
+    const asideEnd = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside-end"]');
     const footer = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="footer"]');
     this._hasAside = hasNamedSlotContent(this, 'aside', aside);
+    this._hasAsideEnd = hasNamedSlotContent(this, 'aside-end', asideEnd);
     this._hasFooter = hasNamedSlotContent(this, 'footer', footer);
     this.toggleAttribute('aside-empty', !this._hasAside);
+    this.toggleAttribute('aside-end-empty', !this._hasAsideEnd);
     this.toggleAttribute('footer-empty', !this._hasFooter);
   };
 
@@ -129,6 +135,12 @@ export class DsPageShell extends DsElement {
     this.toggleAttribute('aside-empty', !this._hasAside);
   };
 
+  #onAsideEndSlotChange = (event: Event): void => {
+    const slot = event.target as HTMLSlotElement;
+    this._hasAsideEnd = hasAssignedContent(slot);
+    this.toggleAttribute('aside-end-empty', !this._hasAsideEnd);
+  };
+
   #onFooterSlotChange = (event: Event): void => {
     const slot = event.target as HTMLSlotElement;
     this._hasFooter = hasAssignedContent(slot);
@@ -169,7 +181,12 @@ export class DsPageShell extends DsElement {
         @click=${this.#closeMobileNav}
       ></button>
       <div class="shell-body" part="body">
-        <aside id="mobile-aside" part="aside" @click=${this.#onAsideClick}>
+        <aside
+          id="mobile-aside"
+          part="aside"
+          aria-label=${this.menuLabel}
+          @click=${this.#onAsideClick}
+        >
           <div class="drawer-header">
             <ds-button
               class="drawer-close"
@@ -187,6 +204,13 @@ export class DsPageShell extends DsElement {
         <main part="main">
           <slot></slot>
         </main>
+        <aside
+          part="aside-end"
+          aria-label=${this.endLabel}
+          ?hidden=${!this._hasAsideEnd}
+        >
+          <slot name="aside-end" @slotchange=${this.#onAsideEndSlotChange}></slot>
+        </aside>
       </div>
       ${hasFooter
         ? html`<footer part="footer">
