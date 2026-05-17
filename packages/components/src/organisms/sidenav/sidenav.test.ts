@@ -80,6 +80,14 @@ describe('<ds-sidenav>', () => {
     expect(css).not.toContain(':host-context(ds-page-shell[mobile-layout]) nav');
   });
 
+  it('aligns header content with nav item contents and leaves footer unindented', () => {
+    const css = (DsSidenav as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
+    expect(css).toMatch(/\.header\s*{[^}]*padding:\s*0\s+var\(--ds-space-3\)/);
+    expect(css).not.toMatch(/\.footer\s*{[^}]*padding-inline/);
+  });
+
   it('propagates collapsed -> compact to ds-nav-item and ds-nav-group children', async () => {
     const el = await mount<DsSidenav>(`
       <ds-sidenav>

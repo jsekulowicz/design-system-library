@@ -175,7 +175,7 @@ export const pageShellStyles = css`
   :host([mobile-layout]) .drawer-header {
     display: flex;
     align-items: center;
-    padding: var(--ds-space-2) var(--ds-space-2) 0;
+    padding: var(--ds-space-4) var(--ds-space-4) 0;
   }
   :host([mobile-layout]) .drawer-close {
     display: inline-flex;

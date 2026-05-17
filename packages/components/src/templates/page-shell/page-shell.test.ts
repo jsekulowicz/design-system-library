@@ -350,6 +350,15 @@ describe('<ds-page-shell>', () => {
       expect(css).toContain('padding: var(--ds-space-4) var(--ds-space-2)');
     });
 
+    it('aligns mobile drawer header padding with sidenav chrome', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(
+        /:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*padding:\s*var\(--ds-space-4\)\s+var\(--ds-space-4\)\s+0/,
+      );
+    });
+
     it('uses the xl icon size for mobile drawer controls', async () => {
       const el = await mount<DsPageShell>(pageShellTemplate());
       await el.updateComplete;

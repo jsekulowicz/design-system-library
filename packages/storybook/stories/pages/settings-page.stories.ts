@@ -110,6 +110,9 @@ function renderPage(withSidenav: boolean) {
       ds-page-shell[mobile-layout] .collapse-toggle {
         display: none;
       }
+      ds-page-shell[mobile-layout] ds-sidenav::part(header) {
+        display: none;
+      }
       [id^='story--pages-settingspage--'] {
         overflow: hidden;
       }
