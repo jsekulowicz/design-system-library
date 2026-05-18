@@ -367,13 +367,14 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/main\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/);
     });
 
-    it('uses compact main padding below desktop', () => {
+    it('uses real mobile main padding below desktop', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
       expect(css).toMatch(/main\s*{[^}]*padding:\s*var\(--ds-space-5\)/);
       expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
-      expect(css).toContain('padding: var(--ds-space-4) var(--ds-space-2)');
+      expect(css).toContain('padding-block: var(--ds-space-4)');
+      expect(css).toContain('padding-inline: var(--ds-space-4)');
     });
 
     it('aligns mobile drawer header padding with sidenav chrome', () => {

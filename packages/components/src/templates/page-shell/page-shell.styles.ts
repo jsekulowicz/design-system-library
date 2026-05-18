@@ -88,22 +88,14 @@ export const pageShellStyles = css`
     scrollbar-width: thin;
     /* Reserve scrollbar gutters on both inline sides so the inline-start
        and inline-end visible empty bands stay equal in width whether the
-       vertical scrollbar is present or not. The gutter is rendered
-       *outside* the padding-box per spec (between the padding and the
-       border edge), so the visible inline empty space on each side is
-       (declared padding-inline) + (gutter ≈ thin scrollbar width, ~6-8px).
-       The declared padding-inline below is tuned to land near the target
-       visible value once the gutter is added. */
+       vertical scrollbar is present or not. */
     scrollbar-gutter: stable both-edges;
   }
 
   @media (max-width: ${belowDesktopBreakpoint}) {
-    /* Target visible inline padding: ~16px. With scrollbar-gutter
-       stable both-edges on main, declared padding-inline of space-2
-       (8px) + ~7px gutter ≈ 15px visible per side, matching the
-       16px chrome bars (ds-top-bar / ds-footer). */
     main {
-      padding: var(--ds-space-4) var(--ds-space-2);
+      padding-block: var(--ds-space-4);
+      padding-inline: var(--ds-space-4);
     }
   }
 
