@@ -53,7 +53,7 @@ export const visualScenarios: VisualScenario[] = [
     viewports: responsive,
     beforeCapture: submitInvalidForm,
   },
-  responsiveStory('navbar-responsive', 'organisms-navbar--responsive'),
+  responsiveStory('top-bar-responsive', 'organisms-topbar--with-profile-menu'),
   responsiveStory('settings-page-with-sidenav', 'pages-settingspage--page-with-sidenav'),
   responsiveStory('settings-page-without-sidenav', 'pages-settingspage--page-without-sidenav'),
 ];

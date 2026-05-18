@@ -22,6 +22,7 @@ export async function prepareScenario(
   await page.setViewportSize(visualViewports[viewport]);
   await seedStorybookState(page, viewport, theme);
   await page.goto(`/iframe.html?id=${scenario.storyId}&viewMode=story`);
+  await assertStorybookReady(page, scenario);
   await page.addStyleTag({ content: stableStyles });
   await waitForRender(page);
   await scenario.beforeCapture?.(page);
@@ -72,4 +73,11 @@ export async function waitForRender(page: Page): Promise<void> {
     await Promise.all(updates);
   });
   await page.waitForTimeout(100);
+}
+
+async function assertStorybookReady(page: Page, scenario: VisualScenario): Promise<void> {
+  const hasError = await page.locator('body.sb-show-errordisplay').count();
+  if (hasError > 0) {
+    throw new Error(`Storybook failed to render visual scenario "${scenario.name}" (${scenario.storyId}).`);
+  }
 }
