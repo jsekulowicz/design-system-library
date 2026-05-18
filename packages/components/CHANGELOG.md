@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.6.1
+
+### Patch Changes
+
+- f71cbfb: Give `ds-page-shell` real 16px inline padding below the desktop breakpoint instead of relying on scrollbar gutter width to approximate the mobile content spacing.
+
 ## 0.6.0
 
 ### Minor Changes
