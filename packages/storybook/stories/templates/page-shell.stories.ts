@@ -179,3 +179,46 @@ export const CollapsedSidenav: Story = {
       </ds-footer>
     `),
 };
+
+export const OverflowingMain: Story = {
+  name: 'Overflowing Main',
+  parameters: { docs: { story: { height: STORY_HEIGHT } } },
+  render: () =>
+    pageShellStory(html`
+      <div slot="header-actions">
+        <ds-button variant="primary" size="sm">Action</ds-button>
+      </div>
+      <ds-sidenav slot="aside">
+        <ds-nav-item href="#" current>
+          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+          Overview
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+          Settings
+        </ds-nav-item>
+      </ds-sidenav>
+      <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+          Overflowing main
+        </h1>
+        <p>
+          When main has more content than fits, a thin vertical scrollbar appears at the
+          inline-end. Because main reserves a scrollbar gutter on both inline edges
+          (<code>scrollbar-gutter: stable both-edges</code>), the inline-start and inline-end
+          visible empty bands stay equal in width whether or not the scrollbar is currently
+          rendered — so the page doesn't shift horizontally when overflow toggles on or off.
+        </p>
+        ${Array.from(
+          { length: 30 },
+          (_, i) =>
+            html`<p>
+              Filler row ${i + 1}: lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>`,
+        )}
+      </article>
+      <ds-footer slot="footer">
+        <span slot="start">© 2026 Brand</span>
+      </ds-footer>
+    `),
+};
