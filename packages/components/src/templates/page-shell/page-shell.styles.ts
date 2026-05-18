@@ -10,7 +10,8 @@ export const pageShellStyles = css`
     display: flex;
     flex-direction: column;
     position: relative;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     overflow-x: clip;
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);

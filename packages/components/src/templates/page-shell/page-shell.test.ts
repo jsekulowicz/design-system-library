@@ -329,6 +329,14 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/\.chrome\s*{[^}]*--ds-top-bar-bg:\s*transparent/);
     });
 
+    it('constrains the shell to the viewport so main owns page scrolling', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/:host\s*{[^}]*height:\s*100vh/);
+      expect(css).toMatch(/:host\s*{[^}]*height:\s*100dvh/);
+    });
+
     it('hides the drawer toggle by default and shows it only in mobile-layout', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
