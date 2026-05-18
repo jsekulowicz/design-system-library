@@ -19,6 +19,25 @@ const meta: Meta = {
       story: { inline: false, height: '128px' },
     },
   },
+  decorators: [
+    /* Force ds-navbar's desktop layout in every docs example regardless of
+       the iframe's actual width. The component's container query collapses
+       links behind a hamburger toggle below the tablet breakpoint; in docs
+       that toggle is a stray click target that obscures the example, so we
+       override the toggle + menu parts here. Real consumer apps still get
+       the collapse behavior at runtime. */
+    (story) =>
+      html`<style>
+          ds-navbar::part(toggle) {
+            display: none !important;
+          }
+          ds-navbar::part(menu) {
+            display: contents !important;
+            position: static !important;
+          }
+        </style>
+        ${story()}`,
+  ],
 };
 
 export default meta;
@@ -41,10 +60,6 @@ export const WithIcons: Story = {
         <ds-icon slot="icon" name="home" size="lg"></ds-icon>
         Home
       </ds-nav-item>
-      <ds-nav-item href="/activity">
-        <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
-        Activity
-      </ds-nav-item>
       <ds-nav-item href="/settings">
         <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
         Settings
@@ -54,31 +69,12 @@ export const WithIcons: Story = {
   `,
 };
 
-export const Responsive: Story = {
-  render: () => html`
-    <div style="max-width:560px;border:1px dashed var(--ds-color-border-subtle)">
-      <ds-navbar>
-        <strong slot="brand">Brand</strong>
-        <ds-nav-item href="/" current>Overview</ds-nav-item>
-        <ds-nav-item href="/projects">Projects</ds-nav-item>
-        <ds-nav-item href="/billing">Billing</ds-nav-item>
-        <ds-nav-item href="/team">Team</ds-nav-item>
-        <ds-button slot="actions" variant="secondary" size="md">Sign in</ds-button>
-      </ds-navbar>
-      <div style="padding:var(--ds-space-4);color:var(--ds-color-fg-muted)">
-        Below the tablet container breakpoint the links collapse to a hamburger toggle.
-      </div>
-    </div>
-  `,
-};
-
 export const WithCurrentPage: Story = {
   render: () => html`
     <ds-navbar>
       <strong slot="brand">Brand</strong>
       <ds-nav-item href="/">Overview</ds-nav-item>
       <ds-nav-item href="/projects" current>Projects</ds-nav-item>
-      <ds-nav-item href="/billing">Billing</ds-nav-item>
     </ds-navbar>
   `,
 };
