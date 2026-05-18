@@ -283,13 +283,14 @@ describe('<ds-page-shell>', () => {
       expect(el.hasAttribute('footer-empty')).toBe(false);
     });
 
-    it('renders footer as a bare slot wrapper', async () => {
+    it('wraps the footer slot in a shell-inner so it shares horizontal padding', async () => {
       const el = await mount<DsPageShell>(pageShellWithFooterTemplate());
       await el.updateComplete;
       const footer = el.shadowRoot!.querySelector('footer')!;
       expect(footer).not.toBeNull();
-      expect(footer.querySelector('.shell-inner')).toBeNull();
-      expect(footer.querySelector('slot[name="footer"]')).not.toBeNull();
+      const inner = footer.querySelector('.shell-inner');
+      expect(inner).not.toBeNull();
+      expect(inner!.querySelector('slot[name="footer"]')).not.toBeNull();
     });
   });
 
