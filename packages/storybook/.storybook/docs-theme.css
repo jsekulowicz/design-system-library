@@ -11,6 +11,11 @@
 .sbdocs.sbdocs-content,
 .sbdocs-content {
   color: var(--ds-color-fg);
+  /* Storybook's default docs content is capped at a comfortable reading
+     width (~1000px), which leaves wide empty rails next to component
+     previews on big monitors. Lift the cap so the preview canvas (and
+     thus the iframe-rendered story) can fill the whole docs panel. */
+  max-width: none !important;
 }
 
 .sbdocs h1,
@@ -81,9 +86,16 @@ p {
   margin-right: auto !important;
 }
 
-.sbdocs .sbdocs-preview:has(iframe[id^='iframe--']) {
+/* When an iframe story is rendered, the preview wrapper shrinks to the
+   active viewport width (plus 2px for its border) so the canvas itself
+   matches the iframe size — no empty rails inside the wrapper. On
+   desktop (viewport-width = 100%), the wrapper fills the docs panel.
+   On narrow panels, min(100%, …) keeps the wrapper inside the panel. */
+.sbdocs .sbdocs-preview:has(iframe[id^='iframe-']) {
   width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
   max-width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
 }
 
 .sbdocs .docs-story {
@@ -99,11 +111,16 @@ p {
   background: var(--ds-color-bg) !important;
 }
 
-.sbdocs iframe[id^='iframe--'] {
+/* Iframe is sized to the active viewport setting via a CSS variable
+   the viewport toolbar writes on documentElement (mobile / tablet /
+   desktop -> 360px / 768px / 100%). The min(100%, …) cap keeps the
+   iframe inside narrow panels. The wrapper above already matches
+   this size so visually there are no rails inside the canvas. */
+.sbdocs iframe[id^='iframe-'] {
   display: block !important;
   width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
   max-width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
-  margin-left: auto !important;
+  margin-left: 0 !important;
   margin-right: auto !important;
 }
 

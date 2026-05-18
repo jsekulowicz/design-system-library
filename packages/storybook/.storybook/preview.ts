@@ -32,7 +32,13 @@ function applyTheme(theme: ThemeKey): void {
 }
 
 function applyViewport(viewport: ViewportKey, persist = true): void {
-  const width = viewport === 'mobile' ? '360px' : viewport === 'tablet' ? '768px' : '1280px';
+  // mobile/tablet are pinned to representative widths so component
+  // breakpoints fire as expected; desktop fills 100% of the docs panel
+  // so the iframe uses all available horizontal space (and naturally
+  // hits the lg breakpoint on any reasonably-sized monitor) instead of
+  // being capped at an arbitrary 1280px that leaves empty rails on
+  // wider panels or overflows on narrower ones.
+  const width = viewport === 'mobile' ? '360px' : viewport === 'tablet' ? '768px' : '100%';
   document.documentElement.setAttribute('data-ds-viewport', viewport);
   document.documentElement.style.setProperty('--ds-docs-viewport-width', width);
   if (persist) {
