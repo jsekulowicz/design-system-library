@@ -132,6 +132,10 @@
       "types": "./dist/atoms/icon/icons/user.d.ts",
       "import": "./dist/atoms/icon/icons/user.js"
     },
+    "./icon/user-circle": {
+      "types": "./dist/atoms/icon/icons/user-circle.d.ts",
+      "import": "./dist/atoms/icon/icons/user-circle.js"
+    },
     "./icon/users": {
       "types": "./dist/atoms/icon/icons/users.d.ts",
       "import": "./dist/atoms/icon/icons/users.js"

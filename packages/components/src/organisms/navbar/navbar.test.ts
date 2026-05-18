@@ -56,11 +56,25 @@ describe('<ds-navbar>', () => {
     const icon = toggle.querySelector('ds-icon') as HTMLElement;
     expect(toggle).not.toBeNull();
     expect(icon.getAttribute('size')).toBe('xl');
+    expect(icon.getAttribute('name')).toBe('bars-3');
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     toggle.click();
     await el.updateComplete;
     expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(icon.getAttribute('name')).toBe('bars-3');
     expect(el.hasAttribute('data-open')).toBe(true);
+  });
+
+  it('hides the links region and toggle when no default links are slotted', async () => {
+    const el = await mount<DsNavbar>(`
+      <ds-navbar>
+        <strong slot="brand">Forma</strong>
+        <button slot="actions">Sign in</button>
+      </ds-navbar>
+    `);
+    await el.updateComplete;
+    const links = el.shadowRoot!.querySelector('.links') as HTMLElement;
+    expect(links.hasAttribute('hidden')).toBe(true);
   });
 
   it('closes the menu and refocuses the toggle on Escape', async () => {

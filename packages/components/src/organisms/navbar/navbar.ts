@@ -4,7 +4,6 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { navbarStyles } from './navbar.styles.js';
 import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/bars-3.js';
-import '../../atoms/icon/icons/x-mark.js';
 
 /**
  * @tag ds-navbar
@@ -26,6 +25,7 @@ export class DsNavbar extends DsElement {
   @property({ attribute: 'menu-label' }) menuLabel = 'Menu';
 
   @state() private _open = false;
+  @state() private _hasLinks = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -36,6 +36,15 @@ export class DsNavbar extends DsElement {
     super.disconnectedCallback();
     document.removeEventListener('keydown', this.#onDocumentKeydown);
   }
+
+  #syncLinksPresence = (): void => {
+    const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('.menu slot:not([name])');
+    this._hasLinks = Boolean(slot?.assignedNodes({ flatten: true }).some(isContentNode));
+  };
+
+  #onLinksSlotChange = (): void => {
+    this.#syncLinksPresence();
+  };
 
   #onDocumentKeydown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape' && this._open) {
@@ -52,10 +61,9 @@ export class DsNavbar extends DsElement {
 
   override render(): TemplateResult {
     const menuId = `${this.uid}-menu`;
-    const iconName = this._open ? 'x-mark' : 'bars-3';
     return html`<nav part="bar" aria-label=${this.label}>
       <div class="brand" part="brand"><slot name="brand"></slot></div>
-      <div class="links" part="links">
+      <div class="links" part="links" ?hidden=${!this._hasLinks}>
         <button
           class="toggle"
           part="toggle"
@@ -65,13 +73,17 @@ export class DsNavbar extends DsElement {
           aria-controls=${menuId}
           @click=${this.#onToggle}
         >
-          <ds-icon name=${iconName} size="xl"></ds-icon>
+          <ds-icon name="bars-3" size="xl"></ds-icon>
         </button>
         <div class="menu" part="menu" id=${menuId} role="list">
-          <slot></slot>
+          <slot @slotchange=${this.#onLinksSlotChange}></slot>
         </div>
       </div>
       <div class="actions" part="actions"><slot name="actions"></slot></div>
     </nav>`;
   }
+}
+
+function isContentNode(node: Node): boolean {
+  return node.nodeType !== Node.TEXT_NODE || Boolean(node.textContent?.trim());
 }

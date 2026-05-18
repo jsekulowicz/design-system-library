@@ -17,13 +17,11 @@ Top-bar shell that lays out brand / links / actions in a single row, and collaps
 - **default** — `ds-nav-item` children in the middle.
 - **actions** — buttons or user-menu on the right.
 
-Below the breakpoint, the brand and actions stay visible; the link list collapses behind a hamburger toggle that opens a stacked menu beneath the bar. Esc closes the menu.
+Below the breakpoint, the brand and actions stay visible. When links are provided, the link list collapses behind a hamburger toggle that opens a stacked menu beneath the bar. Esc closes the menu.
 
 ```html
 <ds-navbar>
   <strong slot="brand">Brand</strong>
-  <ds-nav-item href="/" current>Overview</ds-nav-item>
-  <ds-nav-item href="/projects">Projects</ds-nav-item>
   <ds-button slot="actions" variant="secondary" size="sm">Sign in</ds-button>
 </ds-navbar>
 ```

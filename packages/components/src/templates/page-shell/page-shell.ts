@@ -149,7 +149,6 @@ export class DsPageShell extends DsElement {
   };
 
   override render(): TemplateResult {
-    const menuIcon = this._mobileNavOpen ? 'x-mark' : 'bars-3';
     const ariaExpanded: 'true' | 'false' = this._mobileNavOpen ? 'true' : 'false';
     const hasFooter = this._hasFooter || hasNamedSlotContent(this, 'footer');
     return html`<header part="header">
@@ -165,13 +164,13 @@ export class DsPageShell extends DsElement {
                 aria-controls="mobile-aside"
                 @click=${this.#toggleMobileNav}
               >
-                <ds-icon slot="leading" name=${menuIcon} size="xl"></ds-icon>
+                <ds-icon slot="leading" name="bars-3" size="xl"></ds-icon>
               </ds-button>`
             : null}
           <div class="brand">
             <slot name="brand">${this.brand}</slot>
           </div>
-          <div><slot name="header-actions"></slot></div>
+          <div class="header-actions"><slot name="header-actions"></slot></div>
         </div>
       </header>
       <button

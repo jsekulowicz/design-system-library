@@ -28,9 +28,6 @@ export const Basic: Story = {
   render: () => html`
     <ds-navbar>
       <strong slot="brand">Brand</strong>
-      <ds-nav-item href="/" current>Overview</ds-nav-item>
-      <ds-nav-item href="/projects">Projects</ds-nav-item>
-      <ds-nav-item href="/billing">Billing</ds-nav-item>
       <ds-button slot="actions" variant="secondary" size="sm">Sign in</ds-button>
     </ds-navbar>
   `,

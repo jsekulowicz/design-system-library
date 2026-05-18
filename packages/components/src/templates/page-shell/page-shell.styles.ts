@@ -118,6 +118,11 @@ export const pageShellStyles = css`
     letter-spacing: var(--ds-letter-spacing-display);
   }
 
+  .header-actions {
+    display: inline-flex;
+    align-items: center;
+  }
+
   .menu-toggle {
     display: inline-flex;
   }
@@ -154,6 +159,13 @@ export const pageShellStyles = css`
   }
   :host([mobile-layout]) .brand {
     flex: 1;
+    order: 0;
+  }
+  :host([mobile-layout]) .menu-toggle {
+    order: 1;
+  }
+  :host([mobile-layout]) .header-actions {
+    order: 2;
   }
   :host([mobile-layout]) aside[part="aside"] {
     position: absolute;

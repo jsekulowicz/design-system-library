@@ -92,6 +92,16 @@ describe('<ds-page-shell>', () => {
     expect(slottedAside.hasAttribute('collapsed')).toBe(false);
   });
 
+  it('keeps the mobile menu trigger as a bars icon while navigation is open', async () => {
+    const el = await mount<DsPageShell>(pageShellTemplate());
+    const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
+    menuToggle.click();
+    await el.updateComplete;
+
+    const icon = menuToggle.querySelector('ds-icon')!;
+    expect(icon.getAttribute('name')).toBe('bars-3');
+  });
+
   it('closes navigation on Escape', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
@@ -311,6 +321,21 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/\.shell-inner\s*{[^}]*padding-inline:\s*var\(--ds-space-5\)/);
       expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
       expect(css).toContain('padding-inline: var(--ds-space-4)');
+    });
+
+    it('orders mobile header controls as brand, menu, then actions', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.brand\s*{[^}]*order:\s*0/);
+      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.menu-toggle\s*{[^}]*order:\s*1/);
+      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.header-actions\s*{[^}]*order:\s*2/);
+    });
+
+    it('wraps header actions with a targetable class', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.header-actions slot[name="header-actions"]')).not.toBeNull();
     });
 
     it('lets the main grid track shrink below intrinsic content width and contains overflow', () => {

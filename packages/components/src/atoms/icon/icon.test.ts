@@ -1,6 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DsIcon, getIcon, registerIcon } from './icon.js';
 import './define.js';
+import './icons/user-circle.js';
 import { mount, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
@@ -18,6 +19,10 @@ describe('<ds-icon>', () => {
     registerIcon('unit-test-icon', '<svg><path d="M0 0h1v1z"/></svg>');
     expect(getIcon('unit-test-icon')).toContain('<path');
     expect(getIcon('missing-icon')).toBeUndefined();
+  });
+
+  it('registers the user-circle icon by name', () => {
+    expect(getIcon('user-circle')).toContain('17.982 18.725');
   });
 
   it('renders slot fallback when no icon name is provided', async () => {
