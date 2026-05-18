@@ -73,25 +73,18 @@ p {
 }
 
 /* Story canvas — keep a single border/radius on the outer preview only.
-   Inner docs-story border causes doubled edges and corner artifacts. */
+   Inner docs-story border causes doubled edges and corner artifacts.
+   The wrapper shrinks to the active viewport width (plus 2px for its
+   border) so the canvas matches the iframe / inline story content size.
+   Applies to BOTH iframe-rendered and inline stories: inline stories
+   that use container queries (sidenav, footer, etc.) react to the
+   wrapper width, so the viewport toolbar affects them too. */
 .sbdocs .sbdocs-preview {
   background: var(--ds-color-bg) !important;
   border: 1px solid var(--ds-color-border) !important;
   border-radius: var(--ds-radius-md) !important;
   box-shadow: none !important;
   overflow: hidden !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* When an iframe story is rendered, the preview wrapper shrinks to the
-   active viewport width (plus 2px for its border) so the canvas itself
-   matches the iframe size — no empty rails inside the wrapper. On
-   desktop (viewport-width = 100%), the wrapper fills the docs panel.
-   On narrow panels, min(100%, …) keeps the wrapper inside the panel. */
-.sbdocs .sbdocs-preview:has(iframe[id^='iframe-']) {
   width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
   max-width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
   margin-left: 0 !important;

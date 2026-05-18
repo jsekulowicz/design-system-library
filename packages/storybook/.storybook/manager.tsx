@@ -206,6 +206,7 @@ function ThemeToolbar(): React.ReactElement {
         title="Light theme"
         active={theme === 'light'}
         disabled={theme === 'light'}
+        data-ds-active={theme === 'light' ? 'true' : undefined}
         onClick={() => setTheme('light')}
       >
         <SunIcon />
@@ -214,6 +215,7 @@ function ThemeToolbar(): React.ReactElement {
         title="Dark theme"
         active={theme === 'dark'}
         disabled={theme === 'dark'}
+        data-ds-active={theme === 'dark' ? 'true' : undefined}
         onClick={() => setTheme('dark')}
       >
         <MoonIcon />
@@ -253,6 +255,7 @@ function ViewportToolbar(): React.ReactElement | null {
           key={item.key}
           title={item.title}
           active={effectiveViewport === item.key}
+          data-ds-active={effectiveViewport === item.key ? 'true' : undefined}
           onClick={() => updateViewport(item.key)}
         >
           {item.icon}

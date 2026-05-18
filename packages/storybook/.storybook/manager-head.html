@@ -16,4 +16,21 @@
   html[data-ds-theme='light'] div:has(> #preview-loader) {
     background: #faf8f5 !important;
   }
+
+  /* Give Storybook's toolbar IconButton a visible accent highlight when
+     active. Storybook 10's Button applies its `active` styling via
+     CSS-in-JS to the button class — too subtle to read as "this one
+     is selected" — and exposes no data attribute to hook on to. The
+     manager toolbars therefore emit their own data-ds-active="true"
+     attribute, which this rule paints in the accent color so the
+     active viewport / theme button matches the look of Storybook's
+     built-in grid / outline / measure toggles. */
+  button[data-ds-active='true'] {
+    background: rgba(74, 114, 204, 0.18) !important;
+    color: #4a72cc !important;
+  }
+  html[data-ds-theme='dark'] button[data-ds-active='true'] {
+    background: rgba(106, 149, 232, 0.22) !important;
+    color: #6a95e8 !important;
+  }
 </style>
