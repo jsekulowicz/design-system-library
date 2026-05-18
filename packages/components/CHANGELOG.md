@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.7.1
+
+### Patch Changes
+
+- 4c544df: Constrain `ds-page-shell` to the viewport so its internal main region owns page scrolling instead of the document.
+
 ## 0.7.0
 
 ### Minor Changes
