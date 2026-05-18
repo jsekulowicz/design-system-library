@@ -43,14 +43,12 @@ describe('<ds-top-bar>', () => {
     expect(el.shadowRoot!.querySelector('slot:not([name])')).toBeNull();
   });
 
-  it('uses a fixed responsive height (56px desktop, 48px below) and 16px inline padding', () => {
+  it('uses a fixed 48px height and 16px inline padding at every viewport', () => {
     const css = (DsTopBar as unknown as { styles: { cssText: string }[] }).styles
       .map((s) => s.cssText)
       .join('\n');
-    expect(css).toMatch(/nav\s*{[^}]*height:\s*56px/);
+    expect(css).toMatch(/nav\s*{[^}]*height:\s*48px/);
     expect(css).toMatch(/nav\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*calc\(1024px - 0\.02px\)\)\s*{[\s\S]*?nav\s*{[^}]*height:\s*48px/,
-    );
+    expect(css).toMatch(/nav\s*{[^}]*align-items:\s*center/);
   });
 });

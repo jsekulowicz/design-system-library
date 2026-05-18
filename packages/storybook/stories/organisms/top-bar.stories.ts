@@ -40,7 +40,7 @@ export const BrandWithPageName: Story = {
           Settings
         </span>
       </span>
-      <ds-button slot="actions" variant="ghost" size="sm" label="Menu" aria-label="Menu">
+      <ds-button slot="actions" variant="ghost" size="sm" square label="Menu" aria-label="Menu">
         <ds-icon slot="leading" name="bars-3" size="xl"></ds-icon>
       </ds-button>
     </ds-top-bar>
@@ -51,11 +51,11 @@ export const WithProfileMenu: Story = {
   render: () => html`
     <ds-top-bar>
       <strong slot="brand">Brand</strong>
-      <ds-button slot="actions" variant="ghost" size="sm" label="Account" aria-label="Account">
-        <ds-icon slot="leading" name="user-circle" size="xl"></ds-icon>
-      </ds-button>
-      <ds-button slot="actions" variant="ghost" size="sm" label="Menu" aria-label="Menu">
+      <ds-button slot="actions" variant="ghost" size="sm" square label="Menu" aria-label="Menu">
         <ds-icon slot="leading" name="bars-3" size="xl"></ds-icon>
+      </ds-button>
+      <ds-button slot="actions" variant="ghost" size="sm" square label="Account" aria-label="Account">
+        <ds-icon slot="leading" name="user-circle" size="xl"></ds-icon>
       </ds-button>
     </ds-top-bar>
   `,

@@ -9,8 +9,7 @@ import { topBarStyles } from './top-bar.styles.js';
  *
  * The bar is intentionally minimal: it does not own primary navigation. Pair it with
  * `ds-sidenav` (typically inside `ds-page-shell`) for navigation. The bar has a fixed
- * responsive height (48px below the desktop breakpoint, 56px on desktop) and a
- * symmetric 16px inline padding.
+ * 48px height at every viewport and a symmetric 16px inline padding.
  *
  * @slot brand - Logo, wordmark, and/or page title (left).
  * @slot actions - Buttons, account menus, drawer toggle, etc. (right).
