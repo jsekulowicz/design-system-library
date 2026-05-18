@@ -298,15 +298,18 @@ describe('<ds-page-shell>', () => {
   });
 
   describe('content column', () => {
-    it('wraps header content and body in capped containers', async () => {
+    it('composes ds-top-bar inside the header and slots brand + actions through', async () => {
       const el = await mount<DsPageShell>(pageShellTemplate());
       await el.updateComplete;
       const root = el.shadowRoot!;
-      const headerInner = root.querySelector('header > .shell-inner');
+      const topBar = root.querySelector('header > ds-top-bar');
       const body = root.querySelector('.shell-body');
-      expect(headerInner).not.toBeNull();
-      expect(body).not.toBeNull();
+      expect(topBar).not.toBeNull();
+      // brand and header-actions slots are forwarded into ds-top-bar's slots.
+      expect(root.querySelector('slot[name="brand"][slot="brand"]')).not.toBeNull();
+      expect(root.querySelector('slot[name="header-actions"][slot="actions"]')).not.toBeNull();
       // body wraps aside + main as siblings of the same column
+      expect(body).not.toBeNull();
       expect(body!.querySelector('aside')).not.toBeNull();
       expect(body!.querySelector('main')).not.toBeNull();
     });
@@ -319,37 +322,21 @@ describe('<ds-page-shell>', () => {
       expect(body.classList.contains('shell-body')).toBe(true);
     });
 
-    it('uses compact header padding below desktop', () => {
+    it('makes the embedded ds-top-bar background transparent so the sticky header bg shows through', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      expect(css).toMatch(/\.shell-inner\s*{[^}]*padding-inline:\s*var\(--ds-space-5\)/);
-      expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
-      expect(css).toContain('padding-inline: var(--ds-space-4)');
+      expect(css).toMatch(/\.chrome\s*{[^}]*--ds-top-bar-bg:\s*transparent/);
     });
 
-    it('centers brand slot content vertically in the header', () => {
+    it('hides the drawer toggle by default and shows it only in mobile-layout', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      expect(css).toMatch(/\.brand\s*{[^}]*display:\s*inline-flex/);
-      expect(css).toMatch(/\.brand\s*{[^}]*align-items:\s*center/);
-      expect(css).toMatch(/\.brand\s*{[^}]*min-width:\s*0/);
-    });
-
-    it('orders mobile header controls as brand, menu, then actions', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
-      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.brand\s*{[^}]*order:\s*0/);
-      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.menu-toggle\s*{[^}]*order:\s*1/);
-      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.header-actions\s*{[^}]*order:\s*2/);
-    });
-
-    it('wraps header actions with a targetable class', async () => {
-      const el = await mount<DsPageShell>(pageShellTemplate());
-      await el.updateComplete;
-      expect(el.shadowRoot!.querySelector('.header-actions slot[name="header-actions"]')).not.toBeNull();
+      expect(css).toMatch(/\.menu-toggle\s*{[^}]*display:\s*none/);
+      expect(css).toMatch(
+        /:host\(\[mobile-layout\]\)\s*\.menu-toggle\s*{[^}]*display:\s*inline-flex/,
+      );
     });
 
     it('lets the main grid track shrink below intrinsic content width and contains overflow', () => {

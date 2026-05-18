@@ -18,8 +18,6 @@ export const pageShellStyles = css`
   }
 
   header {
-    border-bottom: 1px solid var(--ds-color-border);
-    padding: var(--ds-space-2) 0;
     position: sticky;
     top: 0;
     background: color-mix(in oklab, var(--ds-color-bg) 92%, transparent);
@@ -27,22 +25,15 @@ export const pageShellStyles = css`
     z-index: var(--ds-z-index-sticky);
   }
 
+  /* The header composes ds-top-bar; let the top-bar own height, padding,
+     border-bottom, and layout. We just make its background transparent so
+     the sticky header's blurred bg shows through. */
+  .chrome {
+    --ds-top-bar-bg: transparent;
+  }
+
   footer {
     display: block;
-  }
-
-  .shell-inner {
-    width: 100%;
-    max-width: var(--ds-page-shell-max-width);
-    margin-inline: auto;
-    padding-inline: var(--ds-space-5);
-  }
-
-  .shell-inner--header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ds-space-3);
   }
 
   .shell-body {
@@ -107,34 +98,28 @@ export const pageShellStyles = css`
   }
 
   @media (max-width: ${belowDesktopBreakpoint}) {
-    .shell-inner {
-      padding-inline: var(--ds-space-4);
-    }
-
-    /* Target visible inline padding: ~16px to match .shell-inner.
-       8px declared + ~7px gutter ≈ 15px visible. */
+    /* Target visible inline padding: ~16px. With scrollbar-gutter
+       stable both-edges on main, declared padding-inline of space-2
+       (8px) + ~7px gutter ≈ 15px visible per side, matching the
+       16px chrome bars (ds-top-bar / ds-footer). */
     main {
       padding: var(--ds-space-4) var(--ds-space-2);
     }
   }
 
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    min-width: 0;
-    font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-lg);
-    letter-spacing: var(--ds-letter-spacing-display);
-  }
-
-  .header-actions {
-    display: inline-flex;
-    align-items: center;
-  }
-
   .menu-toggle {
+    display: none;
+  }
+  .menu-toggle::part(button),
+  .drawer-close::part(button) {
+    min-width: var(--ds-size-sm);
+    width: var(--ds-size-sm);
+    padding: 0;
+  }
+  :host([mobile-layout]) .menu-toggle {
     display: inline-flex;
   }
+
   .mobile-backdrop {
     display: none;
   }
@@ -147,16 +132,6 @@ export const pageShellStyles = css`
   .drawer-close {
     display: none;
   }
-  .menu-toggle::part(button),
-  .drawer-close::part(button) {
-    min-width: var(--ds-size-sm);
-    width: var(--ds-size-sm);
-    padding: 0;
-  }
-
-  :host(:not([mobile-layout])) .menu-toggle {
-    display: none;
-  }
 
   :host([mobile-layout]) .shell-body {
     grid-template-columns: 1fr;
@@ -165,16 +140,6 @@ export const pageShellStyles = css`
     /* Secondary inline-end region is not surfaced in the mobile drawer in v1.
        Consumers can opt back in by overriding via ::part(aside-end). */
     display: none;
-  }
-  :host([mobile-layout]) .brand {
-    flex: 1;
-    order: 0;
-  }
-  :host([mobile-layout]) .menu-toggle {
-    order: 1;
-  }
-  :host([mobile-layout]) .header-actions {
-    order: 2;
   }
   :host([mobile-layout]) aside[part="aside"] {
     position: absolute;

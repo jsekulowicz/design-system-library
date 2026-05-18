@@ -6,6 +6,7 @@ import '../../atoms/button/define.js';
 import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/bars-3.js';
 import '../../atoms/icon/icons/x-mark.js';
+import '../../organisms/top-bar/define.js';
 
 /**
  * @tag ds-page-shell
@@ -152,9 +153,12 @@ export class DsPageShell extends DsElement {
     const ariaExpanded: 'true' | 'false' = this._mobileNavOpen ? 'true' : 'false';
     const hasFooter = this._hasFooter || hasNamedSlotContent(this, 'footer');
     return html`<header part="header">
-        <div class="shell-inner shell-inner--header">
+        <ds-top-bar class="chrome" label=${this.menuLabel}>
+          <slot name="brand" slot="brand">${this.brand}</slot>
+          <slot name="header-actions" slot="actions"></slot>
           ${this._hasAside
             ? html`<ds-button
+                slot="actions"
                 class="menu-toggle"
                 variant="ghost"
                 size="sm"
@@ -167,11 +171,7 @@ export class DsPageShell extends DsElement {
                 <ds-icon slot="leading" name="bars-3" size="3xl"></ds-icon>
               </ds-button>`
             : null}
-          <div class="brand">
-            <slot name="brand">${this.brand}</slot>
-          </div>
-          <div class="header-actions"><slot name="header-actions"></slot></div>
-        </div>
+        </ds-top-bar>
       </header>
       <button
         class="mobile-backdrop"
