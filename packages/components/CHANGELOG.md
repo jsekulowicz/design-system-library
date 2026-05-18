@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.5.4
+
+### Patch Changes
+
+- c2d60d1: Center `ds-page-shell` brand slot content vertically in the header.
+
 ## 0.5.3
 
 ### Patch Changes
