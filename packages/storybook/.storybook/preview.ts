@@ -124,7 +124,6 @@ const preview: Preview = {
           'Introduction',
           'Framework usage',
           'Foundations',
-          ['Design intent', 'Tokens', 'Typography', 'Color', 'Spacing', 'Theming'],
           'Pages',
           'Templates',
           'Organisms',
