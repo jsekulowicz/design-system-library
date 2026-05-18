@@ -324,6 +324,15 @@ describe('<ds-page-shell>', () => {
       expect(css).toContain('padding-inline: var(--ds-space-4)');
     });
 
+    it('centers brand slot content vertically in the header', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/\.brand\s*{[^}]*display:\s*inline-flex/);
+      expect(css).toMatch(/\.brand\s*{[^}]*align-items:\s*center/);
+      expect(css).toMatch(/\.brand\s*{[^}]*min-width:\s*0/);
+    });
+
     it('orders mobile header controls as brand, menu, then actions', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)

@@ -113,6 +113,9 @@ export const pageShellStyles = css`
   }
 
   .brand {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-lg);
     letter-spacing: var(--ds-letter-spacing-display);
