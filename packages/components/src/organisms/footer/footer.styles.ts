@@ -2,7 +2,6 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoint } from '@jsekulowicz/ds-tokens';
 
 const mobileBreakpoint = unsafeCSS(breakpoint.sm);
-const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
 
 export const footerStyles = css`
   :host {
@@ -15,11 +14,16 @@ export const footerStyles = css`
     justify-content: space-between;
     flex-wrap: nowrap;
     gap: var(--ds-space-4);
-    padding: var(--ds-space-2) var(--ds-space-5);
+    /* Fixed 36px height; symmetric 16px inline padding. Padding is
+       declared via padding-inline only — vertical centering is owned by
+       the flexbox + fixed height. */
+    height: 36px;
+    padding-inline: var(--ds-space-4);
     border-top: 1px solid var(--ds-color-border);
     color: var(--ds-color-fg-muted);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-sm);
+    box-sizing: border-box;
   }
   .start,
   .middle,
@@ -41,11 +45,6 @@ export const footerStyles = css`
     .middle,
     .end {
       gap: var(--ds-space-2);
-    }
-  }
-  @media (max-width: ${belowDesktopBreakpoint}) {
-    footer {
-      padding-inline: var(--ds-space-4);
     }
   }
 `;
