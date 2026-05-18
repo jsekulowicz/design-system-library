@@ -324,12 +324,12 @@
     "./form/define": {
       "import": "./dist/organisms/form/define.js"
     },
-    "./navbar": {
-      "types": "./dist/organisms/navbar/index.d.ts",
-      "import": "./dist/organisms/navbar/index.js"
+    "./top-bar": {
+      "types": "./dist/organisms/top-bar/index.d.ts",
+      "import": "./dist/organisms/top-bar/index.js"
     },
-    "./navbar/define": {
-      "import": "./dist/organisms/navbar/define.js"
+    "./top-bar/define": {
+      "import": "./dist/organisms/top-bar/define.js"
     },
     "./sidenav": {
       "types": "./dist/organisms/sidenav/index.d.ts",

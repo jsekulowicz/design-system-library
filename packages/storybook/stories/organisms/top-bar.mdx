@@ -1,0 +1,59 @@
+import { Meta, Canvas, Stories } from '@storybook/addon-docs/blocks';
+import * as TopBarStories from './top-bar.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={TopBarStories} />
+
+# TopBar
+
+Application chrome bar with a left brand region and a right actions region. Intentionally minimal — it does not own primary navigation. Pair it with `ds-sidenav` (typically inside `ds-page-shell`) for navigation. The bar has a fixed responsive height (56px on desktop, 48px below the desktop breakpoint) and a symmetric 16px inline padding.
+
+## Anatomy
+
+`ds-top-bar` is a `<nav>` landmark with two slots:
+
+- **brand** — logo, wordmark, and/or page title on the left.
+- **actions** — buttons, account menus, drawer toggle, etc. on the right.
+
+```html
+<ds-top-bar>
+  <strong slot="brand">Brand</strong>
+  <ds-button slot="actions" variant="secondary" size="sm">Sign in</ds-button>
+</ds-top-bar>
+```
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={TopBarStories.Basic} />
+      <ComponentApi tag="ds-top-bar" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use the <code>brand</code> slot for the app mark plus an optional page title so the user always knows where they are.</li>
+        <li>Use the <code>actions</code> slot for account controls, the drawer toggle, or a primary CTA — kept on the right at every width.</li>
+        <li>Lean on <code>ds-page-shell</code> when you need a full app frame; it composes <code>ds-top-bar</code> internally.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use the bar as a primary navigation list — that's <code>ds-sidenav</code>'s job.</li>
+        <li>Don't nest a second <code>ds-top-bar</code> inside a page.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders <code>&lt;nav aria-label="Primary"&gt;</code> — override via the <code>label</code> attribute when the page has multiple navs.</li>
+        <li>Slotted controls retain their own accessible names; the bar adds no extra ARIA wrapping around them.</li>
+      </ul>
+    </ds-tab-panel>
+
+  </ds-tabs>

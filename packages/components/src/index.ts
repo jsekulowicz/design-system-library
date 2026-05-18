@@ -67,7 +67,7 @@ export {
 } from './molecules/bar-chart/index.js';
 export { DsAlert, type AlertTone } from './molecules/alert/index.js';
 export { DsForm } from './organisms/form/index.js';
-export { DsNavbar } from './organisms/navbar/index.js';
+export { DsTopBar } from './organisms/top-bar/index.js';
 export { DsSidenav } from './organisms/sidenav/index.js';
 export { DsFooter } from './organisms/footer/index.js';
 export { DsPageShell } from './templates/page-shell/index.js';

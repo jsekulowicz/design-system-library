@@ -10,7 +10,7 @@ import '@jsekulowicz/ds-components/tabs/define';
 
 A single navigation link. Renders an `<a>` (or `<span>` when disabled) with optional leading icon and a `current` state that maps to `aria-current="page"` and a visible active style.
 
-`ds-nav-item` is the shared link primitive used inside both `ds-navbar` (top bar) and `ds-sidenav` (sidebar). The consumer owns the `current` state — the parent does not coordinate which item is active. Set `current` based on the URL.
+`ds-nav-item` is the link primitive used inside `ds-sidenav` (sidebar). The consumer owns the `current` state — the parent does not coordinate which item is active. Set `current` based on the URL.
 
 ## Anatomy
 
@@ -21,7 +21,7 @@ A single navigation link. Renders an `<a>` (or `<span>` when disabled) with opti
 </ds-nav-item>
 ```
 
-For sibling layout, place items inside a flex column (sidenav) or row (navbar). When the closest ancestor is a `ds-sidenav[collapsed]`, the label is visually clipped — only the icon remains visible. The accessible name is preserved.
+Items live in `ds-sidenav` as a flex column. When the closest ancestor is a `ds-sidenav[collapsed]`, the label is visually clipped — only the icon remains visible. The accessible name is preserved.
 
 `ds-nav-group` lets you bucket related items under a collapsible heading; useful in sidenavs with deep navigation.
 

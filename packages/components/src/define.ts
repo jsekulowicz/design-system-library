@@ -25,7 +25,7 @@ import './molecules/menu-button/define.js';
 import './molecules/bar-chart/define.js';
 import './molecules/alert/define.js';
 import './organisms/form/define.js';
-import './organisms/navbar/define.js';
+import './organisms/top-bar/define.js';
 import './organisms/sidenav/define.js';
 import './organisms/footer/define.js';
 import './templates/page-shell/define.js';
