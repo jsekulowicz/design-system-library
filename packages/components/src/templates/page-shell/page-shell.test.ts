@@ -283,14 +283,17 @@ describe('<ds-page-shell>', () => {
       expect(el.hasAttribute('footer-empty')).toBe(false);
     });
 
-    it('wraps the footer slot in a shell-inner so it shares horizontal padding', async () => {
+    it('renders the footer slot as a bare child of <footer> so consumer chrome owns the width', async () => {
       const el = await mount<DsPageShell>(pageShellWithFooterTemplate());
       await el.updateComplete;
       const footer = el.shadowRoot!.querySelector('footer')!;
       expect(footer).not.toBeNull();
-      const inner = footer.querySelector('.shell-inner');
-      expect(inner).not.toBeNull();
-      expect(inner!.querySelector('slot[name="footer"]')).not.toBeNull();
+      // No .shell-inner wrapper: ds-footer (or whatever the consumer slots
+      // here) already owns its own padding and border-top, and adding an
+      // outer .shell-inner clipped that chrome inside extra horizontal
+      // padding so the footer's border-top stopped reaching the page edges.
+      expect(footer.querySelector('.shell-inner')).toBeNull();
+      expect(footer.querySelector('slot[name="footer"]')).not.toBeNull();
     });
   });
 

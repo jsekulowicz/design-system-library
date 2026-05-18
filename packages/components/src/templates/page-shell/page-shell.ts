@@ -217,9 +217,7 @@ export class DsPageShell extends DsElement {
       </div>
       ${hasFooter
         ? html`<footer part="footer">
-            <div class="shell-inner">
-              <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
-            </div>
+            <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
           </footer>`
         : null}`;
   }
