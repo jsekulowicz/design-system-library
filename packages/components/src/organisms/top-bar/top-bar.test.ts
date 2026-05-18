@@ -43,12 +43,17 @@ describe('<ds-top-bar>', () => {
     expect(el.shadowRoot!.querySelector('slot:not([name])')).toBeNull();
   });
 
-  it('uses a fixed 48px height and 16px inline padding at every viewport', () => {
+  it('uses a fixed 48px chrome height on nav and 16px inline padding on the inner content wrapper', () => {
     const css = (DsTopBar as unknown as { styles: { cssText: string }[] }).styles
       .map((s) => s.cssText)
       .join('\n');
+    // Full-width chrome (height + border-bottom + bg) lives on nav itself.
     expect(css).toMatch(/nav\s*{[^}]*height:\s*48px/);
-    expect(css).toMatch(/nav\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
-    expect(css).toMatch(/nav\s*{[^}]*align-items:\s*center/);
+    // The inner wrapper holds the 16px symmetric padding and centers
+    // brand + actions horizontally — its width is capped by the
+    // optional --ds-top-bar-content-max-width custom property.
+    expect(css).toMatch(/\.inner\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
+    expect(css).toMatch(/\.inner\s*{[^}]*align-items:\s*center/);
+    expect(css).toMatch(/\.inner\s*{[^}]*max-width:\s*var\(--ds-top-bar-content-max-width/);
   });
 });

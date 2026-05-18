@@ -39,11 +39,16 @@ describe('<ds-footer>', () => {
     expect((endNodes[0] as HTMLElement).getAttribute('data-test')).toBe('e');
   });
 
-  it('uses a fixed 36px height and 16px inline padding', () => {
+  it('uses a fixed 36px chrome height on footer and 16px inline padding on the inner content wrapper', () => {
     const css = (DsFooter as unknown as { styles: { cssText: string }[] }).styles
       .map((s) => s.cssText)
       .join('\n');
+    // Full-width chrome (height + border-top) lives on footer itself.
     expect(css).toMatch(/footer\s*{[^}]*height:\s*36px/);
-    expect(css).toMatch(/footer\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
+    // The inner wrapper holds the 16px symmetric padding and centers
+    // start / middle / end — its width is capped by the optional
+    // --ds-footer-content-max-width custom property.
+    expect(css).toMatch(/\.inner\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
+    expect(css).toMatch(/\.inner\s*{[^}]*max-width:\s*var\(--ds-footer-content-max-width/);
   });
 });

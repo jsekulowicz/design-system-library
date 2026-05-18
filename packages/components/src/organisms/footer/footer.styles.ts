@@ -9,20 +9,30 @@ export const footerStyles = css`
     container-type: inline-size;
   }
   footer {
+    /* Full-width chrome: fixed 36px height + border-top span the
+       footer's full width regardless of the inner content cap. */
+    height: 36px;
+    border-top: 1px solid var(--ds-color-border);
+    color: var(--ds-color-fg-muted);
+    font-family: var(--ds-font-body);
+    font-size: var(--ds-font-size-sm);
+    box-sizing: border-box;
+  }
+  .inner {
+    /* Inner wrapper holds start / middle / end, optionally capped to
+       align with a constrained content column above. 16px symmetric
+       inline padding lives here so it scales with the (capped) content
+       column, not the full-width chrome. */
+    height: 100%;
+    width: 100%;
+    max-width: var(--ds-footer-content-max-width, none);
+    margin-inline: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: nowrap;
     gap: var(--ds-space-4);
-    /* Fixed 36px height; symmetric 16px inline padding. Padding is
-       declared via padding-inline only — vertical centering is owned by
-       the flexbox + fixed height. */
-    height: 36px;
     padding-inline: var(--ds-space-4);
-    border-top: 1px solid var(--ds-color-border);
-    color: var(--ds-color-fg-muted);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
     box-sizing: border-box;
   }
   .start,
@@ -37,7 +47,7 @@ export const footerStyles = css`
     justify-content: flex-end;
   }
   @container (max-width: ${mobileBreakpoint}) {
-    footer {
+    .inner {
       gap: var(--ds-space-2);
       font-size: var(--ds-font-size-xs);
     }

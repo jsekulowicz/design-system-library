@@ -26,10 +26,23 @@ export const pageShellStyles = css`
   }
 
   /* The header composes ds-top-bar; let the top-bar own height, padding,
-     border-bottom, and layout. We just make its background transparent so
-     the sticky header's blurred bg shows through. */
+     border-bottom, and layout. We just (a) make its background transparent
+     so the sticky header's blurred bg shows through, and (b) constrain its
+     inner brand + actions content to the same max-width as the shell-body
+     below so the bar's brand left-aligns with the aside, and its actions
+     right-align with the aside-end (or the right edge of main when no
+     aside-end is slotted). */
   .chrome {
     --ds-top-bar-bg: transparent;
+    --ds-top-bar-content-max-width: var(--ds-page-shell-max-width);
+  }
+
+  /* Same treatment for a slotted ds-footer: cap its inner content to the
+     shell-body's max-width so footer content aligns with the column above.
+     Consumers who slot a non-ds-footer custom element can override the
+     property themselves. */
+  ::slotted(ds-footer) {
+    --ds-footer-content-max-width: var(--ds-page-shell-max-width);
   }
 
   footer {
