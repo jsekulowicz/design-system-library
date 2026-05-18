@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.5.3
+
+### Patch Changes
+
+- f5ff508: Add the `3xl` icon size at `1.75rem` and use it for design-system mobile menu buttons.
+
 ## 0.5.2
 
 ### Patch Changes
