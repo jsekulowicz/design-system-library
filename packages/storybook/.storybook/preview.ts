@@ -119,6 +119,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
+        method: 'alphabetical',
         order: [
           'Introduction',
           'Framework usage',
@@ -127,22 +128,8 @@ const preview: Preview = {
           'Pages',
           'Templates',
           'Organisms',
-          ['Form', 'Navbar', 'Sidenav', 'Footer'],
           'Molecules',
-          ['Alert', 'BarChart', 'Card', 'Field'],
           'Atoms',
-          [
-            'Breadcrumb',
-            'CheckboxGroup',
-            'Checkbox',
-            'NavItem',
-            'RadioGroup',
-            'Radio',
-            'Select',
-            'SearchableSelect',
-            'Tabs',
-            'Table',
-          ],
         ],
       },
     },
