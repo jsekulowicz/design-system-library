@@ -15,7 +15,11 @@ export const breadcrumbItemStyles = css`
     gap: var(--ds-space-1);
     color: var(--ds-color-fg-muted);
     text-decoration: none;
-    padding: var(--ds-space-1) 0;
+    /* padding-inline + negative margin-inline widens the focus-ring
+       bounding box on the horizontal axis while keeping the link's
+       footprint identical, so adjacent crumbs stay aligned. */
+    padding: var(--ds-space-1) 2px;
+    margin-inline: -2px;
     border-radius: var(--ds-radius-sm);
     transition: color var(--ds-duration-fast) var(--ds-easing-standard);
   }
