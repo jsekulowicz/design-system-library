@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.5.2
+
+### Patch Changes
+
+- fdb812e: Add the `user-circle` icon export, keep mobile menu triggers as bars icons while open, order mobile `ds-page-shell` header content as brand, menu toggle, then header actions, and hide `ds-navbar`'s mobile toggle when no links are slotted.
+
 ## 0.5.1
 
 ### Patch Changes
