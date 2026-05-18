@@ -55,7 +55,7 @@ describe('<ds-navbar>', () => {
     const toggle = el.shadowRoot!.querySelector('button.toggle') as HTMLButtonElement;
     const icon = toggle.querySelector('ds-icon') as HTMLElement;
     expect(toggle).not.toBeNull();
-    expect(icon.getAttribute('size')).toBe('xl');
+    expect(icon.getAttribute('size')).toBe('3xl');
     expect(icon.getAttribute('name')).toBe('bars-3');
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
     toggle.click();

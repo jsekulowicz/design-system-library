@@ -53,12 +53,13 @@ describe('<ds-icon>', () => {
     expect(el.shadowRoot!.innerHTML).toContain('rect');
   });
 
-  it('supports xl and 2xl icon sizes', () => {
+  it('supports xl, 2xl, and 3xl icon sizes', () => {
     const css = (DsIcon as unknown as { styles: { cssText: string }[] }).styles
       .map((s) => s.cssText)
       .join('\n');
     expect(css).toMatch(/:host\(\[size='xl'\]\)\s*{[^}]*width:\s*1\.25rem/);
     expect(css).toMatch(/:host\(\[size='2xl'\]\)\s*{[^}]*width:\s*1\.5rem/);
+    expect(css).toMatch(/:host\(\[size='3xl'\]\)\s*{[^}]*width:\s*1\.75rem/);
   });
 
   it('warns and falls back to slot when icon name is unknown', async () => {

@@ -26,7 +26,7 @@ const meta: Meta = {
       control: { type: 'text' },
       description: 'Heroicon name in kebab-case. Browse all icons at [heroicons.com](https://heroicons.com).',
     },
-    size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', '2xl'] },
+    size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl'] },
   },
   args: { name: 'check', size: 'md', label: '' },
 };
@@ -60,6 +60,7 @@ export const Sizes: Story = {
   <ds-icon name="arrow-right" size="lg"></ds-icon>
   <ds-icon name="arrow-right" size="xl"></ds-icon>
   <ds-icon name="arrow-right" size="2xl"></ds-icon>
+  <ds-icon name="arrow-right" size="3xl"></ds-icon>
 </div>
   `,
 };

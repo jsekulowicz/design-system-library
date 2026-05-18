@@ -5,7 +5,7 @@ import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { iconStyles } from './icon.styles.js';
 
-export type IconSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+export type IconSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
 const registry = new Map<string, string>();
 

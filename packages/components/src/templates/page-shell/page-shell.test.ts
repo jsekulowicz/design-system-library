@@ -100,6 +100,7 @@ describe('<ds-page-shell>', () => {
 
     const icon = menuToggle.querySelector('ds-icon')!;
     expect(icon.getAttribute('name')).toBe('bars-3');
+    expect(icon.getAttribute('size')).toBe('3xl');
   });
 
   it('closes navigation on Escape', async () => {
@@ -401,11 +402,13 @@ describe('<ds-page-shell>', () => {
       expect(drawerHeader.querySelector('slot[name="drawer-brand"]')).not.toBeNull();
     });
 
-    it('uses the xl icon size for mobile drawer controls', async () => {
+    it('uses larger menu icons while keeping the drawer close icon at xl', async () => {
       const el = await mount<DsPageShell>(pageShellTemplate());
       await el.updateComplete;
-      const icons = Array.from(el.shadowRoot!.querySelectorAll('ds-icon[name]'));
-      expect(icons.every((icon) => icon.getAttribute('size') === 'xl')).toBe(true);
+      const menuIcon = el.shadowRoot!.querySelector('.menu-toggle ds-icon')!;
+      const drawerCloseIcon = el.shadowRoot!.querySelector('.drawer-close ds-icon')!;
+      expect(menuIcon.getAttribute('size')).toBe('3xl');
+      expect(drawerCloseIcon.getAttribute('size')).toBe('xl');
     });
   });
 
