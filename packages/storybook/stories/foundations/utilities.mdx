@@ -1,6 +1,7 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as UtilitiesStories from './utilities.stories';
 
-<Meta title="Foundations/Utilities" />
+<Meta of={UtilitiesStories} />
 
 # Utilities
 
@@ -28,27 +29,9 @@ CSS utility files are not tree-shaken at the individual class level. The package
 
 ## Spacing
 
-Spacing utilities use `--ds-space-*` tokens. The supported scale is `0` through `6`.
+Spacing utilities use `--ds-space-*` tokens. Replace `{n}` with a supported spacing step: `0`, `1`, `2`, `3`, `4`, `5`, or `6`.
 
-| Class | Property |
-|---|---|
-| `.ds-p-0` ... `.ds-p-6` | `padding` |
-| `.ds-px-0` ... `.ds-px-6` | `padding-inline` |
-| `.ds-py-0` ... `.ds-py-6` | `padding-block` |
-| `.ds-pt-0` ... `.ds-pt-6` | `padding-block-start` |
-| `.ds-pr-0` ... `.ds-pr-6` | `padding-inline-end` |
-| `.ds-pb-0` ... `.ds-pb-6` | `padding-block-end` |
-| `.ds-pl-0` ... `.ds-pl-6` | `padding-inline-start` |
-| `.ds-m-0` ... `.ds-m-6` | `margin` |
-| `.ds-mx-0` ... `.ds-mx-6` | `margin-inline` |
-| `.ds-my-0` ... `.ds-my-6` | `margin-block` |
-| `.ds-mt-0` ... `.ds-mt-6` | `margin-block-start` |
-| `.ds-mr-0` ... `.ds-mr-6` | `margin-inline-end` |
-| `.ds-mb-0` ... `.ds-mb-6` | `margin-block-end` |
-| `.ds-ml-0` ... `.ds-ml-6` | `margin-inline-start` |
-| `.ds-gap-0` ... `.ds-gap-6` | `gap` |
-| `.ds-gap-x-0` ... `.ds-gap-x-6` | `column-gap` |
-| `.ds-gap-y-0` ... `.ds-gap-y-6` | `row-gap` |
+<Canvas of={UtilitiesStories.Spacing} />
 
 Example:
 
@@ -62,55 +45,26 @@ Example:
 
 Layout utilities cover display, flex direction/wrapping, and alignment.
 
-| Class | Property |
-|---|---|
-| `.ds-d-block` | `display: block` |
-| `.ds-d-inline-block` | `display: inline-block` |
-| `.ds-d-flex` | `display: flex` |
-| `.ds-d-inline-flex` | `display: inline-flex` |
-| `.ds-d-grid` | `display: grid` |
-| `.ds-d-none` | `display: none` |
-| `.ds-flex-row` | `flex-direction: row` |
-| `.ds-flex-column` | `flex-direction: column` |
-| `.ds-flex-wrap` | `flex-wrap: wrap` |
-| `.ds-flex-nowrap` | `flex-wrap: nowrap` |
-| `.ds-items-start` | `align-items: flex-start` |
-| `.ds-items-center` | `align-items: center` |
-| `.ds-items-end` | `align-items: flex-end` |
-| `.ds-items-stretch` | `align-items: stretch` |
-| `.ds-justify-start` | `justify-content: flex-start` |
-| `.ds-justify-center` | `justify-content: center` |
-| `.ds-justify-end` | `justify-content: flex-end` |
-| `.ds-justify-between` | `justify-content: space-between` |
-| `.ds-content-start` | `align-content: flex-start` |
-| `.ds-content-center` | `align-content: center` |
-| `.ds-content-end` | `align-content: flex-end` |
-| `.ds-content-between` | `align-content: space-between` |
-| `.ds-self-start` | `align-self: flex-start` |
-| `.ds-self-center` | `align-self: center` |
-| `.ds-self-end` | `align-self: flex-end` |
-| `.ds-self-stretch` | `align-self: stretch` |
+<Canvas of={UtilitiesStories.Layout} />
+
+Example:
+
+```html
+<div class="ds-d-flex ds-flex-wrap ds-items-center ds-justify-between">
+  ...
+</div>
+```
 
 ## Typography
 
 Typography utilities map to font family, font size, font weight, and line-height tokens.
 
-| Class | Property |
-|---|---|
-| `.ds-font-sans` | `font-family: var(--ds-font-family-body)` |
-| `.ds-font-serif` | `font-family: var(--ds-font-family-display)` |
-| `.ds-font-mono` | `font-family: var(--ds-font-family-mono)` |
-| `.ds-text-xs` | `font-size: var(--ds-font-size-xs)` |
-| `.ds-text-sm` | `font-size: var(--ds-font-size-sm)` |
-| `.ds-text-md` | `font-size: var(--ds-font-size-md)` |
-| `.ds-text-lg` | `font-size: var(--ds-font-size-lg)` |
-| `.ds-text-xl` | `font-size: var(--ds-font-size-xl)` |
-| `.ds-text-2xl` | `font-size: var(--ds-font-size-2xl)` |
-| `.ds-text-3xl` | `font-size: var(--ds-font-size-3xl)` |
-| `.ds-font-normal` | `font-weight: var(--ds-font-weight-regular)` |
-| `.ds-font-medium` | `font-weight: var(--ds-font-weight-medium)` |
-| `.ds-font-semibold` | `font-weight: var(--ds-font-weight-semibold)` |
-| `.ds-font-bold` | `font-weight: var(--ds-font-weight-bold)` |
-| `.ds-leading-tight` | `line-height: var(--ds-line-height-tight)` |
-| `.ds-leading-normal` | `line-height: var(--ds-line-height-normal)` |
-| `.ds-leading-relaxed` | `line-height: var(--ds-line-height-relaxed)` |
+<Canvas of={UtilitiesStories.Typography} />
+
+Example:
+
+```html
+<p class="ds-font-mono ds-text-sm ds-leading-normal">
+  Version 0.8.0
+</p>
+```
