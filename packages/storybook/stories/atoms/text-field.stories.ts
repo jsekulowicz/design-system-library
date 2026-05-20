@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/text-field/define';
+import '@jsekulowicz/ds-components/icon/home';
+import '@jsekulowicz/ds-components/icon/clock';
 
 const meta: Meta = {
   title: 'Atoms/TextField',
@@ -58,6 +60,20 @@ export const WithDescription: Story = {
   type="email"
   placeholder="you@studio.co"
 ></ds-text-field>
+  `,
+};
+
+export const WithIcons: Story = {
+  render: () => html`
+  <ds-text-field
+    label="Email address"
+    description="We'll use this for receipts and audit logs only."
+    type="email"
+    placeholder="you@studio.co"
+  >
+    <ds-icon slot="leading" name="home" size="md"></ds-icon>
+    <ds-icon slot="trailing" name="clock" size="md"></ds-icon>
+  </ds-text-field>
   `,
 };
 

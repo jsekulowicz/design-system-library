@@ -13,7 +13,7 @@ export const navControlStyles = css`
     align-items: center;
     box-sizing: border-box;
     height: var(--ds-sidenav-item-height);
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-2);
     padding: var(--ds-space-2) var(--ds-space-3);
     border: 0;
     border-radius: var(--ds-radius-sm);

@@ -7,7 +7,7 @@ export const badgeStyles = css`
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-2);
     padding: 2px var(--ds-space-2);
     border-radius: var(--ds-radius-xs);
     font-family: var(--ds-font-body);

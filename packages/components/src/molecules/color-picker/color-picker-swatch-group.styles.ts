@@ -23,6 +23,6 @@ export const colorPickerSwatchGroupStyles = css`
       auto-fill,
       minmax(var(--color-picker-swatch-size), var(--color-picker-swatch-size))
     );
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-2);
   }
 `;

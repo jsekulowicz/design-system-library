@@ -16,13 +16,13 @@ export const tablePaginationStyles = css`
   nav {
     display: flex;
     align-items: center;
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-2);
   }
 
   .list {
     display: flex;
     align-items: center;
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-2);
     list-style: none;
     padding: 0;
     margin: 0;

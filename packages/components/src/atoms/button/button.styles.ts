@@ -11,7 +11,7 @@ export const buttonStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-2);
     padding: 0 var(--ds-space-2);
     height: var(--ds-button-size);
     min-width: var(--ds-button-min-width);

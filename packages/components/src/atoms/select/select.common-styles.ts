@@ -14,6 +14,7 @@ export const selectCommonStyles = css`
   .trigger {
     display: flex;
     align-items: center;
+    gap: var(--ds-space-2);
     width: 100%;
     height: var(--ds-size-md);
     padding: 0 var(--ds-space-3);
@@ -45,7 +46,7 @@ export const selectCommonStyles = css`
     padding: 6px var(--ds-space-3);
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--ds-space-1);
+    gap: var(--ds-space-2);
     overflow: visible;
   }
   .tiles {
@@ -108,7 +109,6 @@ export const selectCommonStyles = css`
   .leading {
     display: inline-flex;
     align-items: center;
-    margin-right: var(--ds-space-1);
     color: var(--ds-color-fg-muted);
     flex-shrink: 0;
   }
@@ -130,7 +130,6 @@ export const selectCommonStyles = css`
   .caret {
     width: 1.2rem;
     height: 1.2rem;
-    margin-left: var(--ds-space-2);
     color: var(--ds-color-fg-muted);
     pointer-events: none;
     flex-shrink: 0;
