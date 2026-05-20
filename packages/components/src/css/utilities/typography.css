@@ -1,0 +1,30 @@
+@layer ds.utilities {
+  .ds-font-sans {
+    font-family: var(--ds-font-family-body, var(--ds-font-body));
+  }
+
+  .ds-font-serif {
+    font-family: var(--ds-font-family-display, var(--ds-font-display));
+  }
+
+  .ds-font-mono {
+    font-family: var(--ds-font-family-mono, var(--ds-font-mono));
+  }
+
+  .ds-text-xs { font-size: var(--ds-font-size-xs); }
+  .ds-text-sm { font-size: var(--ds-font-size-sm); }
+  .ds-text-md { font-size: var(--ds-font-size-md); }
+  .ds-text-lg { font-size: var(--ds-font-size-lg); }
+  .ds-text-xl { font-size: var(--ds-font-size-xl); }
+  .ds-text-2xl { font-size: var(--ds-font-size-2xl); }
+  .ds-text-3xl { font-size: var(--ds-font-size-3xl); }
+
+  .ds-font-normal { font-weight: var(--ds-font-weight-regular); }
+  .ds-font-medium { font-weight: var(--ds-font-weight-medium); }
+  .ds-font-semibold { font-weight: var(--ds-font-weight-semibold); }
+  .ds-font-bold { font-weight: var(--ds-font-weight-bold); }
+
+  .ds-leading-tight { line-height: var(--ds-line-height-tight); }
+  .ds-leading-normal { line-height: var(--ds-line-height-normal); }
+  .ds-leading-relaxed { line-height: var(--ds-line-height-relaxed); }
+}

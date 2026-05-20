@@ -17,7 +17,9 @@
     "./dist/**/define.js",
     "./src/**/define.ts",
     "./dist/**/icons/*.js",
-    "./src/**/icons/*.ts"
+    "./src/**/icons/*.ts",
+    "./dist/css/**/*.css",
+    "./src/css/**/*.css"
   ],
   "files": [
     "dist",
@@ -281,12 +283,16 @@
     },
     "./settings-page/define": {
       "import": "./dist/pages/settings-page/define.js"
-    }
+    },
+    "./css/utilities.css": "./dist/css/utilities.css",
+    "./css/utilities/spacing.css": "./dist/css/utilities/spacing.css",
+    "./css/utilities/layout.css": "./dist/css/utilities/layout.css",
+    "./css/utilities/typography.css": "./dist/css/utilities/typography.css"
   },
   "scripts": {
     "dev": "pnpm generate:icons && tsc -p tsconfig.json --watch",
     "generate:icons": "node scripts/generate-heroicons.mjs",
-    "build": "pnpm generate:icons && tsc -p tsconfig.json && cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir .",
+    "build": "pnpm generate:icons && tsc -p tsconfig.json && node scripts/copy-css.mjs && cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir .",
     "typecheck": "pnpm generate:icons && tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run",

@@ -1,0 +1,33 @@
+@layer ds.utilities {
+  .ds-d-block { display: block; }
+  .ds-d-inline-block { display: inline-block; }
+  .ds-d-flex { display: flex; }
+  .ds-d-inline-flex { display: inline-flex; }
+  .ds-d-grid { display: grid; }
+  .ds-d-none { display: none; }
+
+  .ds-flex-row { flex-direction: row; }
+  .ds-flex-column { flex-direction: column; }
+  .ds-flex-wrap { flex-wrap: wrap; }
+  .ds-flex-nowrap { flex-wrap: nowrap; }
+
+  .ds-items-start { align-items: flex-start; }
+  .ds-items-center { align-items: center; }
+  .ds-items-end { align-items: flex-end; }
+  .ds-items-stretch { align-items: stretch; }
+
+  .ds-justify-start { justify-content: flex-start; }
+  .ds-justify-center { justify-content: center; }
+  .ds-justify-end { justify-content: flex-end; }
+  .ds-justify-between { justify-content: space-between; }
+
+  .ds-content-start { align-content: flex-start; }
+  .ds-content-center { align-content: center; }
+  .ds-content-end { align-content: flex-end; }
+  .ds-content-between { align-content: space-between; }
+
+  .ds-self-start { align-self: flex-start; }
+  .ds-self-center { align-self: center; }
+  .ds-self-end { align-self: flex-end; }
+  .ds-self-stretch { align-self: stretch; }
+}
