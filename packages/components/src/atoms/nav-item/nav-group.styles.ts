@@ -1,54 +1,17 @@
 import { css } from 'lit';
+import { navControlStyles } from './nav-control.styles.js';
 
-export const navGroupStyles = css`
-  :host {
-    display: block;
-  }
-  :host([compact]) {
-    .heading {
-      height: var(--ds-sidenav-item-compact-size);
-      width: var(--ds-sidenav-item-compact-size);
-    }
-  }
+export const navGroupStyles = [
+  navControlStyles,
+  css`
   .heading {
-    display: flex;
-    align-items: center;
-    gap: var(--ds-space-2);
     width: 100%;
-    height: var(--ds-sidenav-item-height);
-    padding: var(--ds-space-2) var(--ds-space-3);
-    border: none;
-    background: transparent;
-    border-radius: var(--ds-radius-sm);
-    color: var(--ds-color-fg-subtle);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-2xs);
-    font-weight: var(--ds-font-weight-semibold);
-    letter-spacing: var(--ds-letter-spacing-wide);
-    text-transform: uppercase;
-    text-align: left;
-    cursor: pointer;
-  }
-  .heading[disabled] {
-    cursor: default;
-  }
-  .heading:hover:not([disabled]) {
-    color: var(--ds-color-fg);
-  }
-  .heading:focus-visible {
-    box-shadow: var(--ds-shadow-focus);
-  }
-  .icon {
-    display: inline-flex;
-    flex: none;
-  }
-  .icon[hidden] {
-    display: none;
   }
   .label {
     flex: 1;
-    overflow: hidden;
-    white-space: nowrap;
+  }
+  .heading[disabled] {
+    cursor: default;
   }
   .chevron {
     display: inline-flex;
@@ -75,14 +38,10 @@ export const navGroupStyles = css`
     clip-path: inset(50%);
     height: 1px;
     width: 1px;
-    overflow: hidden;
-    white-space: nowrap;
     position: absolute;
   }
   :host([compact]) .heading {
-    justify-content: center;
     gap: var(--ds-space-1);
-    padding: var(--ds-space-2);
   }
   :host([compact]) .chevron svg {
     width: 0.75rem;
@@ -91,16 +50,8 @@ export const navGroupStyles = css`
   :host([compact]) .items {
     padding-left: 0;
   }
-  .tooltip-wrapper {
-    display: block;
-    width: 100%;
+  .icon-probe {
+    display: none;
   }
-  :host([compact]) .tooltip-wrapper {
-    display: flex;
-    justify-content: center;
-  }
-  :host([compact]) .tooltip-wrapper::part(anchor) {
-    display: inline-flex;
-    width: auto;
-  }
-`;
+`,
+];

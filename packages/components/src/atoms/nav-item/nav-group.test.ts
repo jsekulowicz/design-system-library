@@ -117,6 +117,11 @@ describe('<ds-nav-group>', () => {
     expect(heading.getAttribute('aria-label')).toBe('Workspace');
   });
 
+  it('does not render the icon wrapper when no icon is assigned', async () => {
+    const el = await mount<DsNavGroup>('<ds-nav-group label="Workspace"></ds-nav-group>');
+    expect(el.shadowRoot!.querySelector('[part="icon"]')).toBeNull();
+  });
+
   it('enables hover-only tooltip mode in compact variant', async () => {
     const el = await mount<DsNavGroup>(
       '<ds-nav-group label="Workspace" compact><span slot="icon">*</span></ds-nav-group>',

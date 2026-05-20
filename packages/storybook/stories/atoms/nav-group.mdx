@@ -1,0 +1,58 @@
+import { Meta, Canvas, Stories } from '@storybook/addon-docs/blocks';
+import * as NavGroupStories from './nav-group.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/nav-item/define';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={NavGroupStories} />
+
+# NavGroup
+
+A collapsible heading for grouping related `ds-nav-item` links in sidenavs and other vertical navigation surfaces.
+
+The heading uses the same interaction styling as `ds-nav-item`. The chevron is the visual distinction between a group heading and a regular navigation link.
+
+## Anatomy
+
+```html
+<ds-nav-group label="Workspace" expanded>
+  <ds-icon slot="icon" name="briefcase" size="lg"></ds-icon>
+  <ds-nav-item href="/settings">General</ds-nav-item>
+  <ds-nav-item href="/members">Members</ds-nav-item>
+</ds-nav-group>
+```
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+  <ds-tab-panel value="api">
+    <Canvas of={NavGroupStories.Basic} />
+    <ComponentApi tag="ds-nav-group" />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="examples">
+    <Stories includePrimary={false} />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Do</h3>
+    <ul>
+      <li>Use groups for related navigation items with a shared parent concept.</li>
+      <li>Keep group labels short and scannable.</li>
+      <li>Provide an <code>icon</code> slot when the group can appear in compact sidenavs.</li>
+    </ul>
+    <h3>Don't</h3>
+    <ul>
+      <li>Don't use groups for one-off links; use <code>ds-nav-item</code> instead.</li>
+      <li>Don't nest groups inside groups.</li>
+    </ul>
+    <h3>Accessibility</h3>
+    <ul>
+      <li>The heading is a <code>&lt;button&gt;</code> with <code>aria-expanded</code>.</li>
+      <li>The nested items region is labelled by the group heading.</li>
+      <li>Compact mode exposes the group label through the heading's accessible name.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>

@@ -17,7 +17,7 @@ const HOVER_TOOLTIP_DELAY_MS = 2000;
  * @csspart items - The nested items container.
  */
 export class DsNavGroup extends DsElement {
-  static override styles = [...DsElement.styles, navGroupStyles];
+  static override styles = [...DsElement.styles, ...navGroupStyles];
 
   @property() label = '';
   @property({ type: Boolean, reflect: true }) expanded = false;
@@ -63,12 +63,24 @@ export class DsNavGroup extends DsElement {
     this.emit('ds-group-toggle', { detail: { expanded: this.expanded } });
   };
 
+  #renderIcon(): TemplateResult {
+    const iconSlot = html`<slot name="icon" @slotchange=${this.#onIconSlotChange}></slot>`;
+    if (this._hasIcon) {
+      return html`<span class="icon" part="icon">${iconSlot}</span>`;
+    }
+    return html`<slot
+      class="icon-probe"
+      name="icon"
+      @slotchange=${this.#onIconSlotChange}
+    ></slot>`;
+  }
+
   #renderHeading(): TemplateResult {
     const headingId = `${this.uid}-heading`;
     const itemsId = `${this.uid}-items`;
     const isOpen = !this.collapsible || this.expanded;
     return html`<button
-      class="heading"
+      class="heading nav-control"
       part="heading"
       id=${headingId}
       type="button"
@@ -78,9 +90,7 @@ export class DsNavGroup extends DsElement {
       ?disabled=${!this.collapsible}
       @click=${this.#onHeadingClick}
     >
-      <span class="icon" part="icon" ?hidden=${!this._hasIcon}>
-        <slot name="icon" @slotchange=${this.#onIconSlotChange}></slot>
-      </span>
+      ${this.#renderIcon()}
       <span class="label">${this.label}</span>
       ${this.collapsible
         ? html`<span class="chevron" part="chevron" aria-hidden="true">

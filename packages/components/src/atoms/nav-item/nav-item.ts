@@ -16,7 +16,7 @@ const HOVER_TOOLTIP_DELAY_MS = 2000;
  * @csspart label - The label slot wrapper.
  */
 export class DsNavItem extends DsElement {
-  static override styles = [...DsElement.styles, navItemStyles];
+  static override styles = [...DsElement.styles, ...navItemStyles];
 
   @property() href = '';
   @property() target?: '_self' | '_blank' | '_parent' | '_top';
@@ -83,7 +83,7 @@ export class DsNavItem extends DsElement {
   #renderLink(): TemplateResult {
     if (this.disabled) {
       return html`<span
-        class="link"
+        class="link nav-control"
         part="link"
         aria-disabled="true"
         aria-label=${this.compact && this._labelText ? this._labelText : nothing}
@@ -91,7 +91,7 @@ export class DsNavItem extends DsElement {
       >`;
     }
     return html`<a
-      class="link"
+      class="link nav-control"
       part="link"
       href=${this.href}
       target=${this.target ?? nothing}

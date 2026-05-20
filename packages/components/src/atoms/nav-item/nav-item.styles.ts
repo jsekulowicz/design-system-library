@@ -1,39 +1,9 @@
 import { css } from 'lit';
+import { navControlStyles } from './nav-control.styles.js';
 
-export const navItemStyles = css`
-  :host {
-    display: block;
-  }
-  :host([compact]) {
-    .link {
-      height: var(--ds-sidenav-item-compact-size);
-      width: var(--ds-sidenav-item-compact-size);
-    }
-  }
-  .link {
-    display: inline-flex;
-    align-items: center;
-    height: var(--ds-sidenav-item-height);
-    gap: var(--ds-space-1);
-    padding: var(--ds-space-2) var(--ds-space-3);
-    border-radius: var(--ds-radius-sm);
-    color: var(--ds-color-fg-muted);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-medium);
-    text-decoration: none;
-    transition:
-      background var(--ds-duration-fast) var(--ds-easing-standard),
-      color var(--ds-duration-fast) var(--ds-easing-standard),
-      padding var(--ds-duration-slow) var(--ds-easing-standard);
-  }
-  .link:hover {
-    background: var(--ds-color-bg-subtle);
-    color: var(--ds-color-fg);
-  }
-  .link:focus-visible {
-    box-shadow: var(--ds-shadow-focus);
-  }
+export const navItemStyles = [
+  navControlStyles,
+  css`
   :host([current]) .link {
     background: var(--ds-color-accent-subtle);
     color: var(--ds-color-accent-active);
@@ -42,50 +12,5 @@ export const navItemStyles = css`
     color: var(--ds-color-fg-subtle);
     cursor: not-allowed;
   }
-  .icon {
-    display: inline-flex;
-    flex: none;
-  }
-  .icon[hidden] {
-    display: none;
-  }
-  .label {
-    display: inline-flex;
-    min-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 20rem;
-    opacity: 1;
-    transition:
-      max-width var(--ds-duration-slow) var(--ds-easing-standard),
-      opacity var(--ds-duration-fast) var(--ds-easing-standard);
-  }
-  :host-context(ds-sidenav) {
-    display: block;
-  }
-  :host-context(ds-sidenav) .link {
-    display: flex;
-    width: 100%;
-  }
-  :host([compact]) .label {
-    max-width: 0;
-    opacity: 0;
-  }
-  :host([compact]) .link {
-    justify-content: center;
-    padding: var(--ds-space-2);
-    gap: 0;
-  }
-  .tooltip-wrapper {
-    display: block;
-    width: 100%;
-  }
-  :host([compact]) .tooltip-wrapper {
-    display: flex;
-    justify-content: center;
-  }
-  :host([compact]) .tooltip-wrapper::part(anchor) {
-    display: inline-flex;
-    width: auto;
-  }
-`;
+`,
+];
