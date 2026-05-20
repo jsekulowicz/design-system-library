@@ -60,101 +60,17 @@
     "./icon/define": {
       "import": "./dist/atoms/icon/define.js"
     },
-    "./icon/check": {
-      "types": "./dist/atoms/icon/icons/check.d.ts",
-      "import": "./dist/atoms/icon/icons/check.js"
+    "./icon/all": {
+      "types": "./dist/atoms/icon/icons/all.d.ts",
+      "import": "./dist/atoms/icon/icons/all.js"
     },
-    "./icon/minus": {
-      "types": "./dist/atoms/icon/icons/minus.d.ts",
-      "import": "./dist/atoms/icon/icons/minus.js"
+    "./icon/names": {
+      "types": "./dist/atoms/icon/icons/names.d.ts",
+      "import": "./dist/atoms/icon/icons/names.js"
     },
-    "./icon/magnifying-glass": {
-      "types": "./dist/atoms/icon/icons/magnifying-glass.d.ts",
-      "import": "./dist/atoms/icon/icons/magnifying-glass.js"
-    },
-    "./icon/home": {
-      "types": "./dist/atoms/icon/icons/home.d.ts",
-      "import": "./dist/atoms/icon/icons/home.js"
-    },
-    "./icon/clock": {
-      "types": "./dist/atoms/icon/icons/clock.d.ts",
-      "import": "./dist/atoms/icon/icons/clock.js"
-    },
-    "./icon/cog-6-tooth": {
-      "types": "./dist/atoms/icon/icons/cog-6-tooth.d.ts",
-      "import": "./dist/atoms/icon/icons/cog-6-tooth.js"
-    },
-    "./icon/swatch": {
-      "types": "./dist/atoms/icon/icons/swatch.d.ts",
-      "import": "./dist/atoms/icon/icons/swatch.js"
-    },
-    "./icon/chevron-right": {
-      "types": "./dist/atoms/icon/icons/chevron-right.d.ts",
-      "import": "./dist/atoms/icon/icons/chevron-right.js"
-    },
-    "./icon/chevron-down": {
-      "types": "./dist/atoms/icon/icons/chevron-down.d.ts",
-      "import": "./dist/atoms/icon/icons/chevron-down.js"
-    },
-    "./icon/bars-3": {
-      "types": "./dist/atoms/icon/icons/bars-3.d.ts",
-      "import": "./dist/atoms/icon/icons/bars-3.js"
-    },
-    "./icon/x-mark": {
-      "types": "./dist/atoms/icon/icons/x-mark.d.ts",
-      "import": "./dist/atoms/icon/icons/x-mark.js"
-    },
-    "./icon/eye": {
-      "types": "./dist/atoms/icon/icons/eye.d.ts",
-      "import": "./dist/atoms/icon/icons/eye.js"
-    },
-    "./icon/eye-slash": {
-      "types": "./dist/atoms/icon/icons/eye-slash.d.ts",
-      "import": "./dist/atoms/icon/icons/eye-slash.js"
-    },
-    "./icon/plus": {
-      "types": "./dist/atoms/icon/icons/plus.d.ts",
-      "import": "./dist/atoms/icon/icons/plus.js"
-    },
-    "./icon/moon": {
-      "types": "./dist/atoms/icon/icons/moon.d.ts",
-      "import": "./dist/atoms/icon/icons/moon.js"
-    },
-    "./icon/sun": {
-      "types": "./dist/atoms/icon/icons/sun.d.ts",
-      "import": "./dist/atoms/icon/icons/sun.js"
-    },
-    "./icon/briefcase": {
-      "types": "./dist/atoms/icon/icons/briefcase.d.ts",
-      "import": "./dist/atoms/icon/icons/briefcase.js"
-    },
-    "./icon/user": {
-      "types": "./dist/atoms/icon/icons/user.d.ts",
-      "import": "./dist/atoms/icon/icons/user.js"
-    },
-    "./icon/user-circle": {
-      "types": "./dist/atoms/icon/icons/user-circle.d.ts",
-      "import": "./dist/atoms/icon/icons/user-circle.js"
-    },
-    "./icon/users": {
-      "types": "./dist/atoms/icon/icons/users.d.ts",
-      "import": "./dist/atoms/icon/icons/users.js"
-    },
-    "./icon/key": {
-      "types": "./dist/atoms/icon/icons/key.d.ts",
-      "import": "./dist/atoms/icon/icons/key.js"
-    },
-    "./icon/bell": {
-      "types": "./dist/atoms/icon/icons/bell.d.ts",
-      "import": "./dist/atoms/icon/icons/bell.js"
-    },
-    "./icon/book-open": {
-      "types": "./dist/atoms/icon/icons/book-open.d.ts",
-      "import": "./dist/atoms/icon/icons/book-open.js"
-    },
-    "./icon/puzzle-piece": {
-      "types": "./dist/atoms/icon/icons/puzzle-piece.d.ts",
-      "import": "./dist/atoms/icon/icons/puzzle-piece.js"
+    "./icon/*": {
+      "types": "./dist/atoms/icon/icons/*.d.ts",
+      "import": "./dist/atoms/icon/icons/*.js"
     },
     "./text-field": {
       "types": "./dist/atoms/text-field/index.d.ts",
@@ -361,9 +277,10 @@
     }
   },
   "scripts": {
-    "dev": "tsc -p tsconfig.json --watch",
-    "build": "tsc -p tsconfig.json && cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir .",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "pnpm generate:icons && tsc -p tsconfig.json --watch",
+    "generate:icons": "node scripts/generate-heroicons.mjs",
+    "build": "pnpm generate:icons && tsc -p tsconfig.json && cem analyze --litelement --globs \"src/**/*.ts\" --exclude \"src/**/*.test.ts\" --outdir .",
+    "typecheck": "pnpm generate:icons && tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

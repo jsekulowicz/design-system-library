@@ -31,11 +31,25 @@ Each icon module self-registers on import, so only the ones you import end up in
 
     <ds-tab-panel value="guidelines">
       <h3>Using icons in your project</h3>
-      <p>Import only what you need — each module self-registers:</p>
-      <pre><code>import '@jsekulowicz/ds-components/icon/check';{'\n'}import '@jsekulowicz/ds-components/icon/minus';</code></pre>
-      <pre><code>&lt;ds-icon name="check"&gt;&lt;/ds-icon&gt;</code></pre>
-      <p>To register a custom icon or a different Heroicons variant:</p>
+      <p>First define the web component once. This registers <code>&lt;ds-icon&gt;</code>, but it does not register any icon artwork:</p>
+      <pre><code>import '@jsekulowicz/ds-components/icon/define';</code></pre>
+      <p>Every Heroicons 24 outline icon is available as a kebab-case side-effect module. Import only the icons you use; each module self-registers that icon name:</p>
+      <pre><code>import '@jsekulowicz/ds-components/icon/academic-cap';{'\n'}import '@jsekulowicz/ds-components/icon/arrow-right';</code></pre>
+      <pre><code>&lt;ds-icon name="academic-cap"&gt;&lt;/ds-icon&gt;</code></pre>
+      <p>For prototypes, demos, or documentation, register the full Heroicons set at once:</p>
+      <pre><code>import '@jsekulowicz/ds-components/icon/all';</code></pre>
+      <p>To inspect available names without registering SVGs, import the generated name list:</p>
+      <pre><code>import {'{'} heroiconNames, type HeroiconName {'}'} from '@jsekulowicz/ds-components/icon/names';</code></pre>
+      <p>To register a custom icon or a different Heroicons variant, use the registry API:</p>
       <pre><code>import {'{'} registerIcon {'}'} from '@jsekulowicz/ds-components/icon';{'\n'}registerIcon('my-icon', '&lt;svg viewBox="0 0 16 16" fill="currentColor"&gt;...&lt;/svg&gt;');</code></pre>
+
+      <h3>Tree shaking</h3>
+      <ul>
+        <li>Individual icon imports are tree-shake friendly: <code>import '@jsekulowicz/ds-components/icon/arrow-right'</code> only registers that icon module.</li>
+        <li>Unimported icon modules are not included just because a template contains <code>&lt;ds-icon name="..."&gt;</code>. The <code>name</code> property is only a runtime lookup key.</li>
+        <li><code>@jsekulowicz/ds-components/icon/all</code> intentionally imports every generated icon, so it is not tree-shaken down to only the names you render.</li>
+        <li><code>@jsekulowicz/ds-components/icon/names</code> exports the string list and type only; it does not register SVG artwork.</li>
+      </ul>
 
       <h3>Do</h3>
       <ul>

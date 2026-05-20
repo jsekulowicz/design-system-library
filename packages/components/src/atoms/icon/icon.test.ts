@@ -25,6 +25,16 @@ describe('<ds-icon>', () => {
     expect(getIcon('user-circle')).toContain('17.982 18.725');
   });
 
+  it('registers generated Heroicons by package name', async () => {
+    await import('./icons/academic-cap.js');
+    expect(getIcon('academic-cap')).toContain('M4.26 10.147');
+  });
+
+  it('registers all generated Heroicons from the all module', async () => {
+    await import('./icons/all.js');
+    expect(getIcon('arrow-right')).toContain('M13.5 4.5');
+  });
+
   it('renders slot fallback when no icon name is provided', async () => {
     const el = await mount<DsIcon>('<ds-icon>Fallback</ds-icon>');
     const span = el.shadowRoot!.querySelector('span') as HTMLSpanElement;
