@@ -62,4 +62,11 @@ export const skeletonStyles = css`
     from { background-position: 120% 0; }
     to { background-position: -120% 0; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .item {
+      animation: none;
+      background-size: 100% 100%;
+    }
+  }
 `;
