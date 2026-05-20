@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.7.2
+
+### Patch Changes
+
+- 8626736: Add standalone NavGroup docs, align nav group heading styles with nav items, and avoid rendering an empty nav group icon wrapper.
+
 ## 0.7.1
 
 ### Patch Changes
