@@ -32,11 +32,13 @@ export const skeletonStyles = css`
       linear-gradient(
         90deg,
         var(--ds-color-bg-muted) 0%,
-        var(--ds-color-bg-subtle) 45%,
-        var(--ds-color-bg-muted) 90%
+        var(--ds-color-bg-muted) 34%,
+        var(--ds-color-bg-subtle) 50%,
+        var(--ds-color-bg-muted) 66%,
+        var(--ds-color-bg-muted) 100%
       );
-    background-size: 240% 100%;
-    animation: ds-skeleton-shimmer var(--ds-skeleton-duration, 4s) ease-in-out infinite;
+    background-size: 200% 100%;
+    animation: ds-skeleton-shimmer var(--ds-skeleton-duration, 4s) linear infinite;
   }
 
   :host([variant='text']) .item {
@@ -59,8 +61,8 @@ export const skeletonStyles = css`
   }
 
   @keyframes ds-skeleton-shimmer {
-    from { background-position: 120% 0; }
-    to { background-position: -120% 0; }
+    from { background-position: 200% 0; }
+    to { background-position: 0 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
