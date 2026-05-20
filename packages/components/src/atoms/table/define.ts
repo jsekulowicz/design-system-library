@@ -1,6 +1,7 @@
 import { DsTable } from './table.js';
 import { DsTableSortButton } from './table-sort-button.js';
 import { DsTablePagination } from './table-pagination.js';
+import '../skeleton/define.js';
 
 if (!customElements.get('ds-table')) {
   customElements.define('ds-table', DsTable);

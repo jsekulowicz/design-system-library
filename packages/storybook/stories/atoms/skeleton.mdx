@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as SkeletonStories from './skeleton.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={SkeletonStories} />
+
+# Skeleton
+
+Decorative placeholder for content that has not loaded yet. Compose multiple `ds-skeleton` instances to match the eventual layout instead of inventing one-off shimmer styles.
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+  <ds-tab-panel value="api">
+    <Canvas of={SkeletonStories.Playground} />
+    <h3>Props</h3>
+    <Controls of={SkeletonStories.Playground} />
+    <ComponentApi tag="ds-skeleton" />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="examples">
+    <Stories includePrimary={false} />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Do</h3>
+    <ul>
+      <li>Match the rough size of the content that will replace the skeleton.</li>
+      <li>Use `text` for copy, `rectangle` for media or panels, and `circle` for avatars.</li>
+      <li>Keep skeletons decorative; put loading announcements on the surrounding region.</li>
+    </ul>
+    <h3>Don't</h3>
+    <ul>
+      <li>Use skeletons for errors or empty states.</li>
+      <li>Mix several unrelated placeholder layouts in the same region.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>

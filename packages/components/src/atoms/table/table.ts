@@ -1,7 +1,10 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import '../skeleton/define.js';
 import { tableStyles } from './table.styles.js';
+import { renderTableSkeleton } from './table-skeleton.js';
 import type { TableColumn, TableRow, TableSortState } from './types.js';
 
 const INTERACTIVE_TAGS = new Set([
@@ -31,6 +34,7 @@ const INTERACTIVE_TAGS = new Set([
  * @csspart toolbar - The toolbar wrapper.
  * @csspart footer - The footer wrapper.
  * @csspart empty - The empty-state wrapper.
+ * @csspart loading - Loading overlay rendered when `loading` is true.
  */
 export class DsTable<T extends TableRow = TableRow> extends DsElement {
   static override styles = [...DsElement.styles, tableStyles];
@@ -39,9 +43,15 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ attribute: false }) columns: readonly TableColumn<T>[] = [];
   @property({ attribute: false }) sortState: TableSortState | null = null;
   @property({ type: Boolean, reflect: true, attribute: 'clickable-rows' }) clickableRows = false;
+  @property({ type: Boolean, reflect: true }) loading = false;
+  @property({ type: Number, attribute: 'skeleton-rows' }) skeletonRows = 5;
+  @property({ type: Number, attribute: 'skeleton-columns' }) skeletonColumns = 4;
   @property({ attribute: 'row-key' }) rowKey?: string;
 
   #onRowClick = (event: MouseEvent, row: T, index: number): void => {
+    if (this.loading) {
+      return;
+    }
     if (this.#pathHasInteractiveBeforeRow(event)) {
       return;
     }
@@ -49,6 +59,9 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   };
 
   #onRowKeydown = (event: KeyboardEvent, row: T, index: number): void => {
+    if (this.loading) {
+      return;
+    }
     if (event.key !== 'Enter' && event.key !== ' ') {
       return;
     }
@@ -101,31 +114,45 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
         part="header-cell"
         scope="col"
         class=${`align-${align}`}
-        aria-sort=${this.#ariaSort(column) ?? nothing}
+        aria-sort=${ifDefined(this.#ariaSort(column))}
       >
         <slot name=${`header-${column.name}`}>${column.label}</slot>
       </th>
     `;
   }
 
-  #renderRow(row: T, index: number): TemplateResult {
-    const clickable = this.clickableRows;
+  #renderClickableRow(row: T, index: number): TemplateResult {
     return html`
       <tr
-        part=${clickable ? 'row row-clickable' : 'row'}
-        class=${clickable ? 'clickable' : ''}
-        role=${clickable ? 'button' : nothing}
-        tabindex=${clickable ? 0 : nothing}
-        @click=${clickable ? (e: MouseEvent) => this.#onRowClick(e, row, index) : nothing}
-        @keydown=${clickable ? (e: KeyboardEvent) => this.#onRowKeydown(e, row, index) : nothing}
+        part="row row-clickable"
+        class="clickable"
+        role="button"
+        tabindex="0"
+        @click=${(e: MouseEvent) => this.#onRowClick(e, row, index)}
+        @keydown=${(e: KeyboardEvent) => this.#onRowKeydown(e, row, index)}
       >
-        ${this.columns.map(column => html`
-          <td part="cell" class=${`align-${column.align ?? 'left'}`}>
-            ${this.#renderCell(column, row, index)}
-          </td>
-        `)}
+        ${this.#renderCells(row, index)}
       </tr>
     `;
+  }
+
+  #renderRow(row: T, index: number): TemplateResult {
+    if (this.clickableRows) {
+      return this.#renderClickableRow(row, index);
+    }
+    return html`
+      <tr part="row">
+        ${this.#renderCells(row, index)}
+      </tr>
+    `;
+  }
+
+  #renderCells(row: T, index: number): TemplateResult[] {
+    return this.columns.map(column => html`
+      <td part="cell" class=${`align-${column.align ?? 'left'}`}>
+        ${this.#renderCell(column, row, index)}
+      </td>
+    `);
   }
 
   #renderBody(): TemplateResult {
@@ -141,20 +168,41 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     return html`${this.rows.map((row, i) => this.#renderRow(row, i))}`;
   }
 
+  #renderLoading(): TemplateResult | null {
+    if (!this.loading || this.columns.length === 0) {
+      return null;
+    }
+    return html`
+      <div class="loading" part="loading" role="status" aria-live="polite">
+        <span>Loading...</span>
+      </div>
+    `;
+  }
+
+  #renderTable(): TemplateResult {
+    if (this.columns.length === 0) {
+      return renderTableSkeleton(this.skeletonRows, this.skeletonColumns);
+    }
+    return html`
+      <table part="table" aria-busy=${ifDefined(this.loading ? 'true' : undefined)}>
+        <caption part="caption"><slot name="caption"></slot></caption>
+        <colgroup>
+          ${this.columns.map(col => html`<col style=${col.width ? `width: ${col.width}` : ''}>`)}
+        </colgroup>
+        <thead part="thead">
+          <tr>${this.columns.map(col => this.#renderHeader(col))}</tr>
+        </thead>
+        <tbody part="tbody">${this.#renderBody()}</tbody>
+      </table>
+    `;
+  }
+
   override render(): TemplateResult {
     return html`
       <div class="toolbar" part="toolbar"><slot name="toolbar"></slot></div>
       <div class="scroll">
-        <table part="table">
-          <caption part="caption"><slot name="caption"></slot></caption>
-          <colgroup>
-            ${this.columns.map(col => html`<col style=${col.width ? `width: ${col.width}` : ''} />`)}
-          </colgroup>
-          <thead part="thead">
-            <tr>${this.columns.map(col => this.#renderHeader(col))}</tr>
-          </thead>
-          <tbody part="tbody">${this.#renderBody()}</tbody>
-        </table>
+        ${this.#renderTable()}
+        ${this.#renderLoading()}
       </div>
       <div class="footer" part="footer"><slot name="footer"></slot></div>
     `;

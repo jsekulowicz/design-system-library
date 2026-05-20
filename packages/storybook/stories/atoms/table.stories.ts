@@ -218,6 +218,20 @@ export const WithCaptionAndToolbar: Story = {
 `,
 };
 
+export const Loading: Story = {
+  render: () => html`
+<ds-table loading .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
+  <span slot="caption">Refreshing team roster</span>
+</ds-table>
+`,
+};
+
+export const UninitializedSkeleton: Story = {
+  render: () => html`
+<ds-table skeleton-rows="5" skeleton-columns="4"></ds-table>
+`,
+};
+
 export const Paginated: Story = {
   render: () => {
     let page = 1;

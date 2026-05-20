@@ -177,6 +177,13 @@
     "./badge/define": {
       "import": "./dist/atoms/badge/define.js"
     },
+    "./skeleton": {
+      "types": "./dist/atoms/skeleton/index.d.ts",
+      "import": "./dist/atoms/skeleton/index.js"
+    },
+    "./skeleton/define": {
+      "import": "./dist/atoms/skeleton/define.js"
+    },
     "./link": {
       "types": "./dist/atoms/link/index.d.ts",
       "import": "./dist/atoms/link/index.js"

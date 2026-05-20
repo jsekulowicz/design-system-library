@@ -111,6 +111,22 @@ describe('<ds-table>', () => {
     expect(col.getAttribute('style')).toContain('width: 140px');
   });
 
+  it('renders a skeleton table before columns are initialized', async () => {
+    const el = await mountTable({ rows: [], columns: [], skeletonRows: 2, skeletonColumns: 3 });
+    expect(el.shadowRoot!.querySelector('table.skeleton-table')).not.toBeNull();
+    expect(el.shadowRoot!.querySelectorAll('tbody tr')).toHaveLength(2);
+    expect(el.shadowRoot!.querySelectorAll('thead th')).toHaveLength(3);
+  });
+
+  it('shows a loading overlay over initialized data', async () => {
+    const el = await mountTable({ loading: true });
+    const table = el.shadowRoot!.querySelector('table') as HTMLTableElement;
+    const loading = el.shadowRoot!.querySelector('[part="loading"]') as HTMLElement;
+    expect(table.getAttribute('aria-busy')).toBe('true');
+    expect(loading.getAttribute('role')).toBe('status');
+    expect(loading.textContent).toContain('Loading...');
+  });
+
   describe('clickable rows', () => {
     it('fires ds-row-click on click when clickable-rows is set', async () => {
       const el = await mountTable({ clickableRows: true });

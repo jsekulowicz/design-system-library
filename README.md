@@ -16,7 +16,7 @@ Live Storybook docs: https://jsekulowicz.github.io/design-system-library
 
 ## Components
 
-**Atoms** — `ds-badge`, `ds-breadcrumb`, `ds-button`, `ds-checkbox`, `ds-checkbox-group`, `ds-icon`, `ds-link`, `ds-nav-item`, `ds-nav-group`, `ds-radio`, `ds-radio-group`, `ds-searchable-select`, `ds-select`, `ds-table`, `ds-tabs`, `ds-text-field`, `ds-tooltip`
+**Atoms** — `ds-badge`, `ds-breadcrumb`, `ds-button`, `ds-checkbox`, `ds-checkbox-group`, `ds-icon`, `ds-link`, `ds-nav-item`, `ds-nav-group`, `ds-radio`, `ds-radio-group`, `ds-searchable-select`, `ds-select`, `ds-skeleton`, `ds-table`, `ds-tabs`, `ds-text-field`, `ds-tooltip`
 
 **Molecules** — `ds-alert`, `ds-bar-chart`, `ds-card`, `ds-field`
 

@@ -31,6 +31,7 @@ export { SearchableSelect } from './ds-searchable-select.js';
 export { Select } from './ds-select.js';
 export { SettingsPage } from './ds-settings-page.js';
 export { Sidenav } from './ds-sidenav.js';
+export { Skeleton } from './ds-skeleton.js';
 export { Tab } from './ds-tab.js';
 export { TabPanel } from './ds-tab-panel.js';
 export { Table } from './ds-table.js';
