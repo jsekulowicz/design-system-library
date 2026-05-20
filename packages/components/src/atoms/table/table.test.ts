@@ -127,6 +127,16 @@ describe('<ds-table>', () => {
     expect(loading.textContent).toContain('Loading...');
   });
 
+  it('renders slotted loading content', async () => {
+    const el = await mountWithProps<DsTable<Person>>(
+      '<ds-table><span slot="loading">Chargement...</span></ds-table>',
+      { rows: ROWS, columns: COLUMNS, loading: true },
+    );
+    const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="loading"]')!;
+    const assigned = slot.assignedElements();
+    expect(assigned[0].textContent).toBe('Chargement...');
+  });
+
   describe('clickable rows', () => {
     it('fires ds-row-click on click when clickable-rows is set', async () => {
       const el = await mountTable({ clickableRows: true });

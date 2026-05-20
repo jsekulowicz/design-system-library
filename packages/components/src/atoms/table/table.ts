@@ -21,6 +21,7 @@ const INTERACTIVE_TAGS = new Set([
  * @slot toolbar - Content placed above the table (filter, search).
  * @slot footer - Content placed below the table (pagination).
  * @slot empty - Shown when `rows` is empty.
+ * @slot loading - Shown inside the loading overlay when `loading` is true.
  * @slot header-{columnName} - Per-column header override (e.g. inject a ds-table-sort-button).
  * @event ds-row-click - Emitted when `clickable-rows` is set and a row is activated. Detail: `{ row, index }`.
  * @csspart table - The internal `<table>` element.
@@ -174,7 +175,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     }
     return html`
       <div class="loading" part="loading" role="status" aria-live="polite">
-        <span>Loading...</span>
+        <span><slot name="loading">Loading...</slot></span>
       </div>
     `;
   }
@@ -186,9 +187,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     return html`
       <table part="table" aria-busy=${ifDefined(this.loading ? 'true' : undefined)}>
         <caption part="caption"><slot name="caption"></slot></caption>
-        <colgroup>
-          ${this.columns.map(col => html`<col style=${col.width ? `width: ${col.width}` : ''}>`)}
-        </colgroup>
+        <colgroup>${this.columns.map(col => html`<col style=${col.width ? `width: ${col.width}` : ''}>`)}</colgroup>
         <thead part="thead">
           <tr>${this.columns.map(col => this.#renderHeader(col))}</tr>
         </thead>

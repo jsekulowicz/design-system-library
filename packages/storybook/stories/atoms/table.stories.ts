@@ -222,6 +222,7 @@ export const Loading: Story = {
   render: () => html`
 <ds-table loading .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
   <span slot="caption">Refreshing team roster</span>
+  <span slot="loading">Refreshing...</span>
 </ds-table>
 `,
 };
