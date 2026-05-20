@@ -27,7 +27,7 @@ export class DsIcon extends DsElement {
 
   @property() name?: string;
   @property() label?: string;
-  @property({ reflect: true }) size: IconSize = 'md';
+  @property({ reflect: true }) size: IconSize = 'lg';
   @state() private svg: SVGTemplateResult | null = null;
 
   override willUpdate(): void {

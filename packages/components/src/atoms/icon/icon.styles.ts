@@ -3,19 +3,23 @@ import { css } from 'lit';
 export const iconStyles = css`
   :host {
     display: inline-flex;
-    width: 1em;
-    height: 1em;
+    width: 1.125rem;
+    height: 1.125rem;
     color: currentColor;
     vertical-align: middle;
     flex-shrink: 0;
   }
   :host([size='sm']) {
-    width: 0.875em;
-    height: 0.875em;
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+  :host([size='md']) {
+    width: 1rem;
+    height: 1rem;
   }
   :host([size='lg']) {
-    width: 1.25em;
-    height: 1.25em;
+    width: 1.125rem;
+    height: 1.125rem;
   }
   :host([size='xl']) {
     width: 1.25rem;

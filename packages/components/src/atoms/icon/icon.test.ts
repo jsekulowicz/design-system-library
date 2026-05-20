@@ -63,10 +63,19 @@ describe('<ds-icon>', () => {
     expect(el.shadowRoot!.innerHTML).toContain('rect');
   });
 
-  it('supports xl, 2xl, and 3xl icon sizes', () => {
+  it('uses lg as the default icon size', () => {
+    const icon = new DsIcon();
+    expect(icon.size).toBe('lg');
+  });
+
+  it('supports the full icon size scale', () => {
     const css = (DsIcon as unknown as { styles: { cssText: string }[] }).styles
       .map((s) => s.cssText)
       .join('\n');
+    expect(css).toMatch(/:host\s*{[^}]*width:\s*1\.125rem/);
+    expect(css).toMatch(/:host\(\[size='sm'\]\)\s*{[^}]*width:\s*0\.875rem/);
+    expect(css).toMatch(/:host\(\[size='md'\]\)\s*{[^}]*width:\s*1rem/);
+    expect(css).toMatch(/:host\(\[size='lg'\]\)\s*{[^}]*width:\s*1\.125rem/);
     expect(css).toMatch(/:host\(\[size='xl'\]\)\s*{[^}]*width:\s*1\.25rem/);
     expect(css).toMatch(/:host\(\[size='2xl'\]\)\s*{[^}]*width:\s*1\.5rem/);
     expect(css).toMatch(/:host\(\[size='3xl'\]\)\s*{[^}]*width:\s*1\.75rem/);

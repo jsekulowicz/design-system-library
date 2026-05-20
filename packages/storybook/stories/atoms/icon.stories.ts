@@ -13,7 +13,7 @@ const meta: Meta = {
     },
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl'] },
   },
-  args: { name: 'check', size: 'md', label: '' },
+  args: { name: 'check', size: 'lg', label: '' },
 };
 
 export default meta;
@@ -27,13 +27,30 @@ export const Playground: Story = {
 
 export const Sizes: Story = {
   render: () => html`
-<div style="display:flex;gap:var(--ds-space-3);align-items:center">
-  <ds-icon name="arrow-right" size="sm"></ds-icon>
-  <ds-icon name="arrow-right" size="md"></ds-icon>
-  <ds-icon name="arrow-right" size="lg"></ds-icon>
-  <ds-icon name="arrow-right" size="xl"></ds-icon>
-  <ds-icon name="arrow-right" size="2xl"></ds-icon>
-  <ds-icon name="arrow-right" size="3xl"></ds-icon>
+<div style="
+  display:grid;
+  grid-template-columns:repeat(6, minmax(4rem, 1fr));
+  gap:var(--ds-space-4);
+  align-items:end;
+  max-width:34rem;
+">
+  ${(['sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const).map((size) => html`
+    <figure style="
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:var(--ds-space-2);
+      margin:0;
+    ">
+      <ds-icon name="arrow-right" size=${size}></ds-icon>
+      <figcaption style="
+        color:var(--ds-color-fg-muted);
+        font-family:var(--ds-font-body);
+        font-size:var(--ds-font-size-xs);
+        font-weight:var(--ds-font-weight-medium);
+      ">${size}</figcaption>
+    </figure>
+  `)}
 </div>
   `,
 };
