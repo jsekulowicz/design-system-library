@@ -36,7 +36,7 @@ export const skeletonStyles = css`
         var(--ds-color-bg-muted) 90%
       );
     background-size: 240% 100%;
-    animation: ds-skeleton-shimmer var(--ds-skeleton-duration, 14s) ease-in-out infinite;
+    animation: ds-skeleton-shimmer var(--ds-skeleton-duration, 4s) ease-in-out infinite;
   }
 
   :host([variant='text']) .item {
