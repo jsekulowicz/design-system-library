@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.8.0
+
+### Minor Changes
+
+- acde301: Generate and export all Heroicons outline icons as `@jsekulowicz/ds-components/icon/<name>` modules, with `icon/all` and `icon/names` helper exports.
+
 ## 0.7.2
 
 ### Patch Changes
