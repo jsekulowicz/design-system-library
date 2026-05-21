@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.9.4
+
+### Patch Changes
+
+- 4d01634: - Move nested `ds-nav-group` item indentation onto each child nav control and add spacing between the group heading and its nested items.
+
 ## 0.9.3
 
 ### Patch Changes
