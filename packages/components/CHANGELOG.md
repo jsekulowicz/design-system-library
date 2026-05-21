@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.9.3
+
+### Patch Changes
+
+- 84314fc: - Stretch `ds-nav-item` controls to full width when rendered inside `ds-nav-group`.
+- 1dcaf00: - Move nested `ds-nav-group` item indentation onto each slotted `ds-nav-item` and add spacing between the group heading and its nested items.
+
 ## 0.9.2
 
 ### Patch Changes
