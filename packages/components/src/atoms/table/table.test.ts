@@ -72,6 +72,21 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelector('[part="empty"]')?.textContent).toContain('No data');
   });
 
+  it('does not render a caption element without caption slot content', async () => {
+    const el = await mountTable();
+    expect(el.shadowRoot!.querySelector('caption')).toBeNull();
+  });
+
+  it('renders caption element when caption slot content is provided', async () => {
+    const el = await mountWithProps<DsTable<Person>>(
+      '<ds-table><span slot="caption">Team roster</span></ds-table>',
+      { rows: ROWS, columns: COLUMNS },
+    );
+    const caption = el.shadowRoot!.querySelector('caption') as HTMLTableCaptionElement;
+    expect(caption).not.toBeNull();
+    expect(caption.querySelector('slot[name="caption"]')).not.toBeNull();
+  });
+
   it('sets aria-sort from sortState on sortable columns', async () => {
     const sortState: TableSortState = { name: 'name', direction: 'asc' };
     const el = await mountTable({ sortState });

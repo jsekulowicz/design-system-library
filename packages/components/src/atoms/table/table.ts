@@ -1,5 +1,5 @@
 import { html, type TemplateResult } from 'lit';
-import { property } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../skeleton/define.js';
@@ -58,6 +58,31 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ type: Number, attribute: 'skeleton-rows' }) skeletonRows = 5;
   @property({ type: Number, attribute: 'skeleton-columns' }) skeletonColumns = 4;
   @property({ attribute: 'row-key' }) rowKey?: string;
+  @state() private _hasCaption = false;
+
+  #captionObserver: MutationObserver | null = null;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    this.#syncCaptionPresence();
+    this.#captionObserver = new MutationObserver(this.#syncCaptionPresence);
+    this.#captionObserver.observe(this, {
+      attributeFilter: ['slot'],
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  override disconnectedCallback(): void {
+    this.#captionObserver?.disconnect();
+    this.#captionObserver = null;
+    super.disconnectedCallback();
+  }
+
+  #syncCaptionPresence = (): void => {
+    this._hasCaption = this.querySelector('[slot="caption"]') !== null;
+  };
 
   #onRowClick = (event: MouseEvent, row: T, index: number): void => {
     if (this.loading) {
@@ -190,6 +215,13 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     `;
   }
 
+  #renderCaption(): TemplateResult | null {
+    if (!this._hasCaption) {
+      return null;
+    }
+    return html`<caption part="caption"><slot name="caption"></slot></caption>`;
+  }
+
   #skeletonColumnCount(): number {
     return this.columns.length || this.skeletonColumns;
   }
@@ -204,7 +236,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     }
     return html`
       <table part="table" aria-busy=${ifDefined(this.loading ? 'true' : undefined)}>
-        <caption part="caption"><slot name="caption"></slot></caption>
+        ${this.#renderCaption()}
         <colgroup>${this.columns.map(col => html`<col style=${col.width ? `width: ${col.width}` : ''}>`)}</colgroup>
         <thead part="thead">
           <tr>${this.columns.map(col => this.#renderHeader(col))}</tr>
