@@ -5,7 +5,8 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import '../skeleton/define.js';
 import { tableStyles } from './table.styles.js';
 import { renderTableSkeleton } from './table-skeleton.js';
-import type { TableColumn, TableRow, TableSortState } from './types.js';
+import { renderTableBody, renderTableHeader } from './table-rendering.js';
+import type { TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
 
 const INTERACTIVE_TAGS = new Set([
   'a', 'button', 'input', 'select', 'textarea', 'label',
@@ -33,6 +34,7 @@ const booleanAttributeConverter = {
  * @slot empty - Shown when `rows` is empty.
  * @slot loading - Shown inside the loading overlay when `loading` is true.
  * @slot header-{columnName} - Per-column header override (e.g. inject a ds-table-sort-button).
+ * @attr responsive - `stack` stacks cells on small screens; `scroll` preserves horizontal scrolling.
  * @event ds-row-click - Emitted when `clickable-rows` is set and a row is activated. Detail: `{ row, index }`.
  * @csspart table - The internal `<table>` element.
  * @csspart thead - The `<thead>` element.
@@ -58,6 +60,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ type: Number, attribute: 'skeleton-rows' }) skeletonRows = 5;
   @property({ type: Number, attribute: 'skeleton-columns' }) skeletonColumns = 4;
   @property({ attribute: 'row-key' }) rowKey?: string;
+  @property({ reflect: true }) responsive: TableResponsiveMode = 'stack';
   @state() private _hasCaption = false;
 
   #captionObserver: MutationObserver | null = null;
@@ -135,75 +138,6 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     return this.sortState.direction === 'asc' ? 'ascending' : 'descending';
   }
 
-  #renderCell(column: TableColumn<T>, row: T, index: number): unknown {
-    if (column.render) {
-      return column.render(row, index);
-    }
-    const value = row[column.field];
-    return value == null ? '' : String(value);
-  }
-
-  #renderHeader(column: TableColumn<T>): TemplateResult {
-    const align = column.align ?? 'left';
-    return html`
-      <th
-        part="header-cell"
-        scope="col"
-        class=${`align-${align}`}
-        aria-sort=${ifDefined(this.#ariaSort(column))}
-      >
-        <slot name=${`header-${column.name}`}>${column.label}</slot>
-      </th>
-    `;
-  }
-
-  #renderClickableRow(row: T, index: number): TemplateResult {
-    return html`
-      <tr
-        part="row row-clickable"
-        class="clickable"
-        role="button"
-        tabindex="0"
-        @click=${(e: MouseEvent) => this.#onRowClick(e, row, index)}
-        @keydown=${(e: KeyboardEvent) => this.#onRowKeydown(e, row, index)}
-      >
-        ${this.#renderCells(row, index)}
-      </tr>
-    `;
-  }
-
-  #renderRow(row: T, index: number): TemplateResult {
-    if (this.clickableRows) {
-      return this.#renderClickableRow(row, index);
-    }
-    return html`
-      <tr part="row">
-        ${this.#renderCells(row, index)}
-      </tr>
-    `;
-  }
-
-  #renderCells(row: T, index: number): TemplateResult[] {
-    return this.columns.map(column => html`
-      <td part="cell" class=${`align-${column.align ?? 'left'}`}>
-        ${this.#renderCell(column, row, index)}
-      </td>
-    `);
-  }
-
-  #renderBody(): TemplateResult {
-    if (this.rows.length === 0) {
-      return html`
-        <tr>
-          <td part="empty" class="empty" colspan=${this.columns.length || 1}>
-            <slot name="empty">No data</slot>
-          </td>
-        </tr>
-      `;
-    }
-    return html`${this.rows.map((row, i) => this.#renderRow(row, i))}`;
-  }
-
   #renderLoading(): TemplateResult | null {
     if (!this.loading || this.rows.length === 0) {
       return null;
@@ -239,9 +173,15 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
         ${this.#renderCaption()}
         <colgroup>${this.columns.map(col => html`<col style=${col.width ? `width: ${col.width}` : ''}>`)}</colgroup>
         <thead part="thead">
-          <tr>${this.columns.map(col => this.#renderHeader(col))}</tr>
+          <tr>${renderTableHeader(this.columns, column => this.#ariaSort(column))}</tr>
         </thead>
-        <tbody part="tbody">${this.#renderBody()}</tbody>
+        <tbody part="tbody">${renderTableBody({
+          rows: this.rows,
+          columns: this.columns,
+          clickableRows: this.clickableRows,
+          onRowClick: this.#onRowClick,
+          onRowKeydown: this.#onRowKeydown,
+        })}</tbody>
       </table>
     `;
   }

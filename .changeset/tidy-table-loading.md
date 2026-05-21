@@ -3,3 +3,4 @@
 ---
 
 - Render the internal `<caption>` element only when `slot="caption"` content is provided.
+- Add `responsive="stack" | "scroll"` to `ds-table`, defaulting to stacked rows in narrow containers.

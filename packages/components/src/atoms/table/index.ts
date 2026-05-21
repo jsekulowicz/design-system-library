@@ -4,6 +4,7 @@ export { DsTablePagination } from './table-pagination.js';
 export type {
   TableColumn,
   TableColumnAlign,
+  TableResponsiveMode,
   TableRow,
   TableSortDirection,
   TableSortState,

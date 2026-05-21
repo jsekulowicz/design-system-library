@@ -147,6 +147,26 @@ table.rows = rows;`,
 `,
 };
 
+export const ResponsiveStack: Story = {
+  render: () => html`
+<div style="max-width: 24rem;">
+  <ds-table .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
+    <span slot="caption">Narrow container using the default stacked layout</span>
+  </ds-table>
+</div>
+`,
+};
+
+export const ResponsiveScroll: Story = {
+  render: () => html`
+<div style="max-width: 24rem;">
+  <ds-table responsive="scroll" .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
+    <span slot="caption">Narrow container preserving horizontal scroll</span>
+  </ds-table>
+</div>
+`,
+};
+
 export const Sortable: Story = {
   render: () => {
     let state: TableSortState = { name: 'name', direction: null };

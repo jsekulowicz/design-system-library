@@ -51,6 +51,28 @@ describe('<ds-table>', () => {
     expect(cells[1].classList.contains('align-right')).toBe(true);
   });
 
+  it('defaults to stacked responsive mode', async () => {
+    const el = await mountTable();
+    expect(el.responsive).toBe('stack');
+    expect(el.getAttribute('responsive')).toBe('stack');
+  });
+
+  it('supports horizontal scroll responsive mode', async () => {
+    const el = await mountWithProps<DsTable<Person>>(
+      '<ds-table responsive="scroll"></ds-table>',
+      { rows: ROWS, columns: COLUMNS },
+    );
+    expect(el.responsive).toBe('scroll');
+    expect(el.getAttribute('responsive')).toBe('scroll');
+  });
+
+  it('adds column labels to cells for stacked mobile layout', async () => {
+    const el = await mountTable();
+    const cells = el.shadowRoot!.querySelectorAll('tbody tr:first-child td');
+    expect(cells[0].getAttribute('data-label')).toBe('Name');
+    expect(cells[1].getAttribute('data-label')).toBe('Salary');
+  });
+
   it('calls column.render(row, index) when provided', async () => {
     const received: { name: string; index: number }[] = [];
     const columns: TableColumn<Person>[] = [

@@ -2,6 +2,8 @@ import type { TemplateResult } from 'lit';
 
 export type TableColumnAlign = 'left' | 'right' | 'center';
 
+export type TableResponsiveMode = 'stack' | 'scroll';
+
 export type TableSortDirection = 'asc' | 'desc' | null;
 
 export type TableRow = Record<string, unknown>;

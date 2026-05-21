@@ -11,7 +11,7 @@ Semantic data table driven by `rows` + `columns` props. Cell content is fully cu
 
 ## Anatomy
 
-A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
+A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls. On narrow containers, the default `responsive="stack"` mode turns each row into a labelled stack using column labels; use `responsive="scroll"` to keep the classic horizontally scrollable table. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
 
 ### Column render as scoped-slot equivalent
 
@@ -66,6 +66,7 @@ The `render` function receives the full row object and index — any component, 
         <li>Keep sorting and pagination state in the parent — pass <code>sortState</code> and paging props in, handle events to update.</li>
         <li>Right-align numeric columns via <code>align: 'right'</code>.</li>
         <li>Mark columns sortable only when <code>sortable: true</code> — this wires <code>aria-sort</code>.</li>
+        <li>Use <code>responsive="scroll"</code> only when horizontal comparison across columns matters on small screens.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
