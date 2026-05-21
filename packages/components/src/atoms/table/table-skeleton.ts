@@ -11,9 +11,19 @@ function range(length: number): number[] {
   return Array.from({ length }, (_, index) => index);
 }
 
-function cellWidth(index: number): string {
+function headerWidth(index: number): string {
   const widths = ['70%', '52%', '62%', '44%', '58%'];
   return widths[index % widths.length] ?? '60%';
+}
+
+function labelWidth(index: number): string {
+  const widths = ['52%', '68%', '46%', '60%', '42%'];
+  return widths[index % widths.length] ?? '56%';
+}
+
+function valueWidth(rowIndex: number, columnIndex: number): string {
+  const widths = ['74%', '58%', '86%', '48%', '66%', '92%', '54%'];
+  return widths[(rowIndex + columnIndex) % widths.length] ?? '70%';
 }
 
 export function renderTableSkeleton(rowCount: number, columnCount: number): TemplateResult {
@@ -27,17 +37,18 @@ export function renderTableSkeleton(rowCount: number, columnCount: number): Temp
         <tr>
           ${columns.map(index => html`
             <th part="header-cell" scope="col">
-              <ds-skeleton width=${cellWidth(index)}></ds-skeleton>
+              <ds-skeleton width=${headerWidth(index)}></ds-skeleton>
             </th>
           `)}
         </tr>
       </thead>
       <tbody part="tbody">
-        ${rows.map(() => html`
+        ${rows.map(rowIndex => html`
           <tr part="row">
-            ${columns.map(index => html`
+            ${columns.map(columnIndex => html`
               <td part="cell">
-                <ds-skeleton width=${cellWidth(index)}></ds-skeleton>
+                <ds-skeleton class="skeleton-label" width=${labelWidth(columnIndex)}></ds-skeleton>
+                <ds-skeleton class="skeleton-value" width=${valueWidth(rowIndex, columnIndex)}></ds-skeleton>
               </td>
             `)}
           </tr>

@@ -84,6 +84,9 @@ export const tableStyles = css`
   .skeleton-table {
     min-width: 32rem;
   }
+  .skeleton-label {
+    display: none;
+  }
 
   .loading {
     position: absolute;

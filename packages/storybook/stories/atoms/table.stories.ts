@@ -56,6 +56,27 @@ const RICH_COLUMNS: readonly TableColumn<Person>[] = [
   },
 ];
 
+const LONG_CONTENT_ROWS = [
+  {
+    id: 1,
+    metricName: 'north-america-enterprise-account-renewal-risk-score-with-exception-review',
+    owner: 'Data Platform Reliability and Governance',
+    lastUpdate: 'Awaiting final approval from regional compliance and operations leadership',
+  },
+  {
+    id: 2,
+    metricName: 'Customer onboarding path with a very long readable description',
+    owner: 'Customer Experience',
+    lastUpdate: 'Backlog grooming completed; implementation can start after design review',
+  },
+];
+
+const LONG_CONTENT_COLUMNS: readonly TableColumn<(typeof LONG_CONTENT_ROWS)[number]>[] = [
+  { name: 'metricName', field: 'metricName', label: 'Long metric or record name' },
+  { name: 'owner', field: 'owner', label: 'Responsible team or business capability' },
+  { name: 'lastUpdate', field: 'lastUpdate', label: 'Latest status update' },
+];
+
 function sortBy<T extends Record<string, unknown>>(rows: readonly T[], field: string, direction: TableSortDirection): T[] {
   if (!direction) {
     return [...rows];
@@ -162,6 +183,16 @@ export const ResponsiveScroll: Story = {
 <div style="max-width: 24rem;">
   <ds-table responsive="scroll" .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
     <span slot="caption">Narrow container preserving horizontal scroll</span>
+  </ds-table>
+</div>
+`,
+};
+
+export const ResponsiveLongContent: Story = {
+  render: () => html`
+<div style="max-width: 24rem;">
+  <ds-table .rows=${LONG_CONTENT_ROWS} .columns=${LONG_CONTENT_COLUMNS}>
+    <span slot="caption">Long labels and values wrap in stacked rows</span>
   </ds-table>
 </div>
 `,

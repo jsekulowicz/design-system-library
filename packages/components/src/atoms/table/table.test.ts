@@ -155,6 +155,16 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelectorAll('thead th')).toHaveLength(3);
   });
 
+  it('renders label and value skeletons for stacked mobile layout', async () => {
+    const el = await mountTable({ rows: [], columns: [], skeletonRows: 2, skeletonColumns: 3 });
+    const firstCell = el.shadowRoot!.querySelector('tbody td') as HTMLTableCellElement;
+    expect(firstCell.querySelector('.skeleton-label')).not.toBeNull();
+    expect(firstCell.querySelector('.skeleton-value')).not.toBeNull();
+    expect(firstCell.querySelector('.skeleton-label')?.getAttribute('width')).not.toBe(
+      firstCell.querySelector('.skeleton-value')?.getAttribute('width'),
+    );
+  });
+
   it('renders a skeleton instead of the loading overlay when loading without rows', async () => {
     const el = await mountTable({ rows: [], columns: COLUMNS, loading: true });
     expect(el.shadowRoot!.querySelector('table.skeleton-table')).not.toBeNull();
@@ -170,6 +180,7 @@ describe('<ds-table>', () => {
     expect(css).toContain('.skeleton-table');
     expect(css).toContain('min-width: 0');
     expect(css).toContain('content: none');
+    expect(css).toContain('overflow-wrap: anywhere');
   });
 
   it('shows a loading overlay over initialized data', async () => {

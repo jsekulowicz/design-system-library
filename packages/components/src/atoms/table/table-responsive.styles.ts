@@ -64,6 +64,8 @@ export const tableResponsiveStyles = css`
       grid-template-columns: minmax(7rem, 38%) minmax(0, 1fr);
       gap: var(--ds-space-3);
       align-items: start;
+      min-width: 0;
+      overflow-wrap: anywhere;
       text-align: left;
     }
 
@@ -71,6 +73,8 @@ export const tableResponsiveStyles = css`
       content: attr(data-label);
       color: var(--ds-color-fg-muted);
       font-weight: var(--ds-font-weight-medium);
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     :host(:not([responsive="scroll"])) tbody td[data-label=""],
@@ -85,10 +89,13 @@ export const tableResponsiveStyles = css`
     }
 
     :host(:not([responsive="scroll"])) .skeleton-table tbody td {
-      display: block;
       padding: 0;
       border-bottom: 0;
       background: transparent;
+    }
+
+    :host(:not([responsive="scroll"])) .skeleton-label {
+      display: block;
     }
   }
 `;
