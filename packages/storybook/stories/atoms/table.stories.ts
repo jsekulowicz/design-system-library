@@ -227,6 +227,12 @@ export const Loading: Story = {
 `,
 };
 
+export const InitialLoading: Story = {
+  render: () => html`
+<ds-table .loading=${true} .rows=${[]} .columns=${RICH_COLUMNS}></ds-table>
+`,
+};
+
 export const UninitializedSkeleton: Story = {
   render: () => html`
 <ds-table skeleton-rows="5" skeleton-columns="4"></ds-table>

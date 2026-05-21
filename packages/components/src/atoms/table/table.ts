@@ -180,7 +180,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   }
 
   #renderLoading(): TemplateResult | null {
-    if (!this.loading || this.columns.length === 0) {
+    if (!this.loading || this.rows.length === 0) {
       return null;
     }
     return html`
@@ -190,9 +190,17 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     `;
   }
 
+  #skeletonColumnCount(): number {
+    return this.columns.length || this.skeletonColumns;
+  }
+
+  #shouldRenderSkeleton(): boolean {
+    return this.columns.length === 0 || (this.loading && this.rows.length === 0);
+  }
+
   #renderTable(): TemplateResult {
-    if (this.columns.length === 0) {
-      return renderTableSkeleton(this.skeletonRows, this.skeletonColumns);
+    if (this.#shouldRenderSkeleton()) {
+      return renderTableSkeleton(this.skeletonRows, this.#skeletonColumnCount());
     }
     return html`
       <table part="table" aria-busy=${ifDefined(this.loading ? 'true' : undefined)}>

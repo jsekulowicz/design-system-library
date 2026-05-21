@@ -118,6 +118,14 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelectorAll('thead th')).toHaveLength(3);
   });
 
+  it('renders a skeleton instead of the loading overlay when loading without rows', async () => {
+    const el = await mountTable({ rows: [], columns: COLUMNS, loading: true });
+    expect(el.shadowRoot!.querySelector('table.skeleton-table')).not.toBeNull();
+    expect(el.shadowRoot!.querySelectorAll('thead th')).toHaveLength(COLUMNS.length);
+    expect(el.shadowRoot!.querySelector('[part="loading"]')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="empty"]')).toBeNull();
+  });
+
   it('shows a loading overlay over initialized data', async () => {
     const el = await mountTable({ loading: true });
     const table = el.shadowRoot!.querySelector('table') as HTMLTableElement;
