@@ -70,10 +70,9 @@ describe('<ds-nav-item>', () => {
     const css = (DsNavItem as unknown as { styles: { cssText: string }[] }).styles
       .map(style => style.cssText)
       .join('\n');
-    expect(css).toContain(':host-context(ds-nav-group)');
-    expect(css).toContain('padding-inline: var(--ds-space-2)');
-    expect(css).toContain(':host-context(ds-nav-group) .nav-control');
-    expect(css).toContain('width: 100%');
+    expect(css).toMatch(
+      /:host-context\(ds-nav-group\) \.nav-control\s*{[^}]*width: 100%;[^}]*padding-inline: var\(--ds-space-2\);/s,
+    );
   });
 
   it('reflects the compact attribute on the host', async () => {
