@@ -163,6 +163,15 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelector('[part="empty"]')).toBeNull();
   });
 
+  it('includes stacked skeleton styles for narrow containers', () => {
+    const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
+      .map(style => style.cssText)
+      .join('\n');
+    expect(css).toContain('.skeleton-table');
+    expect(css).toContain('min-width: 0');
+    expect(css).toContain('content: none');
+  });
+
   it('shows a loading overlay over initialized data', async () => {
     const el = await mountTable({ loading: true });
     const table = el.shadowRoot!.querySelector('table') as HTMLTableElement;

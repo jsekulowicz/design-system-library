@@ -4,6 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../skeleton/define.js';
 import { tableStyles } from './table.styles.js';
+import { tableResponsiveStyles } from './table-responsive.styles.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
 import type { TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
@@ -50,7 +51,7 @@ const booleanAttributeConverter = {
  * @csspart loading - Loading overlay rendered when `loading` is true.
  */
 export class DsTable<T extends TableRow = TableRow> extends DsElement {
-  static override styles = [...DsElement.styles, tableStyles];
+  static override styles = [...DsElement.styles, tableStyles, tableResponsiveStyles];
 
   @property({ attribute: false }) rows: readonly T[] = [];
   @property({ attribute: false }) columns: readonly TableColumn<T>[] = [];

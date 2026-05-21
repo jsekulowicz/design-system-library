@@ -259,6 +259,14 @@ export const UninitializedSkeleton: Story = {
 `,
 };
 
+export const ResponsiveSkeleton: Story = {
+  render: () => html`
+<div style="max-width: 24rem;">
+  <ds-table skeleton-rows="4" skeleton-columns="4"></ds-table>
+</div>
+`,
+};
+
 export const Paginated: Story = {
   render: () => {
     let page = 1;
