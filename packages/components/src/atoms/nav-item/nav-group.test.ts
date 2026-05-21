@@ -123,8 +123,7 @@ describe('<ds-nav-group>', () => {
       .join('\n');
     expect(css).not.toContain('padding-left: var(--ds-space-2)');
     expect(css).toContain('margin-top: var(--ds-space-1)');
-    expect(css).toContain('padding-inline: var(--ds-space-2)');
-    expect(css).toContain('::slotted(ds-nav-item)');
+    expect(css).not.toContain('::slotted(ds-nav-item)');
   });
 
   it('does not render the icon wrapper when no icon is assigned', async () => {

@@ -31,10 +31,6 @@ export const navGroupStyles = [
     gap: var(--ds-space-1);
     margin-top: var(--ds-space-1);
   }
-  :host(:not([compact])) ::slotted(ds-nav-item) {
-    box-sizing: border-box;
-    padding-inline: var(--ds-space-2);
-  }
   .items[hidden] {
     display: none;
   }

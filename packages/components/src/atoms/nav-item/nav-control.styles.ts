@@ -62,9 +62,16 @@ export const navControlStyles = css`
     display: flex;
     width: 100%;
   }
+  :host-context(ds-nav-group) {
+    box-sizing: border-box;
+    padding-inline: var(--ds-space-2);
+  }
   :host-context(ds-nav-group) .nav-control {
     display: flex;
     width: 100%;
+  }
+  :host-context(ds-nav-group):host([compact]) {
+    padding-inline: 0;
   }
   :host([compact]) .label {
     max-width: 0;
