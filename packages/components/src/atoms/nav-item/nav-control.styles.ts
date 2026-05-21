@@ -62,6 +62,10 @@ export const navControlStyles = css`
     display: flex;
     width: 100%;
   }
+  :host-context(ds-nav-group) .nav-control {
+    display: flex;
+    width: 100%;
+  }
   :host([compact]) .label {
     max-width: 0;
     opacity: 0;

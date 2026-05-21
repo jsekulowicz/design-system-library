@@ -66,6 +66,14 @@ describe('<ds-nav-item>', () => {
     expect(el.shadowRoot!.querySelector('[part="label"] slot:not([name])')).not.toBeNull();
   });
 
+  it('stretches the control when rendered inside a nav group', () => {
+    const css = (DsNavItem as unknown as { styles: { cssText: string }[] }).styles
+      .map(style => style.cssText)
+      .join('\n');
+    expect(css).toContain(':host-context(ds-nav-group) .nav-control');
+    expect(css).toContain('width: 100%');
+  });
+
   it('reflects the compact attribute on the host', async () => {
     const el = await mount<DsNavItem>(
       '<ds-nav-item href="/" compact><ds-icon slot="icon" name="home"></ds-icon>Home</ds-nav-item>',
