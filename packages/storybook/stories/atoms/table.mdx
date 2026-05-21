@@ -11,7 +11,7 @@ Semantic data table driven by `rows` + `columns` props. Cell content is fully cu
 
 ## Anatomy
 
-A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls. Use `loading` when refreshing known data, and customize the overlay with `slot="loading"`. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
+A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
 
 ### Column render as scoped-slot equivalent
 

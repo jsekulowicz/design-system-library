@@ -14,6 +14,16 @@ const INTERACTIVE_TAGS = new Set([
   'ds-table-pagination',
 ]);
 
+const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
+
+function parseBooleanAttribute(value: string | null): boolean {
+  return value !== null && !FALSE_BOOLEAN_ATTRIBUTES.has(value.trim().toLowerCase());
+}
+
+const booleanAttributeConverter = {
+  fromAttribute: parseBooleanAttribute,
+};
+
 /**
  * @tag ds-table
  * @summary Data table driven by `rows` + `columns` props with optional clickable rows and header slots.
@@ -44,7 +54,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ attribute: false }) columns: readonly TableColumn<T>[] = [];
   @property({ attribute: false }) sortState: TableSortState | null = null;
   @property({ type: Boolean, reflect: true, attribute: 'clickable-rows' }) clickableRows = false;
-  @property({ type: Boolean, reflect: true }) loading = false;
+  @property({ converter: booleanAttributeConverter }) loading = false;
   @property({ type: Number, attribute: 'skeleton-rows' }) skeletonRows = 5;
   @property({ type: Number, attribute: 'skeleton-columns' }) skeletonColumns = 4;
   @property({ attribute: 'row-key' }) rowKey?: string;

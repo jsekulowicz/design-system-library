@@ -123,8 +123,18 @@ describe('<ds-table>', () => {
     const table = el.shadowRoot!.querySelector('table') as HTMLTableElement;
     const loading = el.shadowRoot!.querySelector('[part="loading"]') as HTMLElement;
     expect(table.getAttribute('aria-busy')).toBe('true');
+    expect(el.hasAttribute('loading')).toBe(false);
     expect(loading.getAttribute('role')).toBe('status');
     expect(loading.textContent).toContain('Loading...');
+  });
+
+  it('treats loading="false" as false for string-based integrations', async () => {
+    const el = await mountWithProps<DsTable<Person>>(
+      '<ds-table loading="false"></ds-table>',
+      { rows: ROWS, columns: COLUMNS },
+    );
+    expect(el.loading).toBe(false);
+    expect(el.shadowRoot!.querySelector('[part="loading"]')).toBeNull();
   });
 
   it('renders slotted loading content', async () => {
