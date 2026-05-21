@@ -71,7 +71,7 @@ describe('<ds-nav-item>', () => {
       .map(style => style.cssText)
       .join('\n');
     expect(css).toMatch(
-      /:host-context\(ds-nav-group\) \.nav-control\s*{[^}]*width: 100%;[^}]*padding-inline: var\(--ds-space-2\);/s,
+      /:host\(\[role='listitem'\]\):host-context\(ds-nav-group\) \.nav-control\s*{[^}]*width: 100%;[^}]*padding-inline-start: var\(--ds-space-5\);/s,
     );
   });
 
