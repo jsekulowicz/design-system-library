@@ -29,7 +29,11 @@ export const navGroupStyles = [
     display: flex;
     flex-direction: column;
     gap: var(--ds-space-1);
-    padding-left: var(--ds-space-2);
+    margin-top: var(--ds-space-1);
+  }
+  :host(:not([compact])) ::slotted(ds-nav-item) {
+    box-sizing: border-box;
+    padding-inline: var(--ds-space-2);
   }
   .items[hidden] {
     display: none;
@@ -46,9 +50,6 @@ export const navGroupStyles = [
   :host([compact]) .chevron svg {
     width: 0.75rem;
     height: 0.75rem;
-  }
-  :host([compact]) .items {
-    padding-left: 0;
   }
   .icon-probe {
     display: none;

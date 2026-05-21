@@ -117,6 +117,16 @@ describe('<ds-nav-group>', () => {
     expect(heading.getAttribute('aria-label')).toBe('Workspace');
   });
 
+  it('spaces nested nav items with item padding and a heading gap', () => {
+    const css = (DsNavGroup as unknown as { styles: { cssText: string }[] }).styles
+      .map(style => style.cssText)
+      .join('\n');
+    expect(css).not.toContain('padding-left: var(--ds-space-2)');
+    expect(css).toContain('margin-top: var(--ds-space-1)');
+    expect(css).toContain('padding-inline: var(--ds-space-2)');
+    expect(css).toContain('::slotted(ds-nav-item)');
+  });
+
   it('does not render the icon wrapper when no icon is assigned', async () => {
     const el = await mount<DsNavGroup>('<ds-nav-group label="Workspace"></ds-nav-group>');
     expect(el.shadowRoot!.querySelector('[part="icon"]')).toBeNull();
