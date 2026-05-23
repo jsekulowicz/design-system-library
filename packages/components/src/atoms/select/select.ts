@@ -50,11 +50,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @query('#trigger') private _triggerEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
 
-  // Listeners installed while the dropdown is open so the popover
-  // tracks viewport changes. Stored so we can detach them on close
-  // without recreating closures.
-  #onAncestorScroll?: () => void;
-  #onWindowResize?: () => void;
+  #reposition = (): void => this.#positionListbox();
+  #listenersInstalled = false;
 
   #dropdown = new DropdownController(this, {
     getOptions: () => this.options,
@@ -104,37 +101,21 @@ export class DsSelect extends FormControlMixin(DsElement) {
   }
 
   // The listbox uses `popover="manual"` so the browser hoists it to the
-  // top layer when shown — that's how it escapes the `overflow: hidden`
-  // / `overflow: auto` ancestors a ds-select might find itself inside
-  // (dialogs, scroll containers, etc.). Without the top layer those
-  // ancestors clip or grow to fit the menu, both of which feel broken.
-  //
-  // The top layer doesn't get anchor positioning yet across browsers,
-  // so we set `position: fixed` and compute coordinates from the
-  // trigger's bounding rect. Re-positions on scroll/resize keep the
-  // menu glued to its trigger while open.
+  // top layer when shown, escaping any `overflow: hidden` / `overflow:
+  // auto` ancestor (dialogs, scroll containers). Top-layer elements
+  // don't get cross-browser anchor positioning yet, so we set
+  // `position: fixed` from the trigger's bounding rect and re-position
+  // on scroll/resize while open.
   #syncListboxPopover(): void {
     const listbox = this._listboxEl;
-    const open = this.#dropdown.open;
-    if (!listbox) {
-      if (!open) this.#teardownPopoverListeners();
-      return;
-    }
-    if (typeof (listbox as HTMLElement & { showPopover?: () => void }).showPopover !== 'function') {
-      // No Popover API — fall back to the in-flow `position: absolute`
-      // styling already on `.listbox`. Behaviour matches pre-popover
-      // builds; clipping in dialogs is then a known limitation.
-      return;
-    }
-    if (open) {
-      if (!listbox.matches(':popover-open')) {
-        try { listbox.showPopover(); } catch { /* already shown by a previous tick */ }
-      }
-      this.#positionListbox();
-      this.#installPopoverListeners();
-    } else {
+    if (!listbox || !this.#dropdown.open) {
       this.#teardownPopoverListeners();
+      return;
     }
+    if (typeof listbox.showPopover !== 'function') return;
+    if (!listbox.matches(':popover-open')) listbox.showPopover();
+    this.#positionListbox();
+    this.#installPopoverListeners();
   }
 
   #positionListbox(): void {
@@ -143,19 +124,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (!trigger || !listbox) return;
     const rect = trigger.getBoundingClientRect();
     const gap = 4;
-    const viewportHeight = window.innerHeight;
-    const spaceBelow = viewportHeight - rect.bottom - gap;
-    const spaceAbove = rect.top - gap;
-    const naturalHeight = Math.min(listbox.scrollHeight || 0, 240);
-    const openUp = spaceBelow < Math.min(naturalHeight, 160) && spaceAbove > spaceBelow;
-    listbox.style.position = 'fixed';
-    listbox.style.margin = '0';
-    listbox.style.inset = '';
+    const viewport = window.innerHeight;
+    const naturalHeight = Math.min(listbox.scrollHeight, 240);
+    const openUp = viewport - rect.bottom - gap < naturalHeight && rect.top > viewport - rect.bottom;
     listbox.style.left = `${Math.max(0, rect.left)}px`;
     listbox.style.minWidth = `${rect.width}px`;
     if (openUp) {
       listbox.style.top = '';
-      listbox.style.bottom = `${viewportHeight - rect.top + gap}px`;
+      listbox.style.bottom = `${viewport - rect.top + gap}px`;
     } else {
       listbox.style.bottom = '';
       listbox.style.top = `${rect.bottom + gap}px`;
@@ -163,24 +139,19 @@ export class DsSelect extends FormControlMixin(DsElement) {
   }
 
   #installPopoverListeners(): void {
-    if (this.#onAncestorScroll) return;
-    this.#onAncestorScroll = () => this.#positionListbox();
-    this.#onWindowResize = () => this.#positionListbox();
-    // Capture so we catch scroll on any scrollable ancestor — dialogs,
-    // page-shell main, etc. — not just window.
-    window.addEventListener('scroll', this.#onAncestorScroll, { capture: true, passive: true });
-    window.addEventListener('resize', this.#onWindowResize);
+    if (this.#listenersInstalled) return;
+    // Capture mode so scroll on any ancestor (dialog body, page-shell
+    // main, etc.) keeps the menu glued to the trigger, not just window.
+    window.addEventListener('scroll', this.#reposition, { capture: true, passive: true });
+    window.addEventListener('resize', this.#reposition);
+    this.#listenersInstalled = true;
   }
 
   #teardownPopoverListeners(): void {
-    if (this.#onAncestorScroll) {
-      window.removeEventListener('scroll', this.#onAncestorScroll, { capture: true });
-      this.#onAncestorScroll = undefined;
-    }
-    if (this.#onWindowResize) {
-      window.removeEventListener('resize', this.#onWindowResize);
-      this.#onWindowResize = undefined;
-    }
+    if (!this.#listenersInstalled) return;
+    window.removeEventListener('scroll', this.#reposition, { capture: true });
+    window.removeEventListener('resize', this.#reposition);
+    this.#listenersInstalled = false;
   }
 
   override connectedCallback(): void {

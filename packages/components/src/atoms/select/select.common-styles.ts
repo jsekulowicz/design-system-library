@@ -154,12 +154,13 @@ export const selectCommonStyles = css`
     box-shadow: var(--ds-shadow-md);
   }
 
-  /* Neutralise the UA default inset:0 + margin:auto on open popovers
-     so they don't override the inline coordinates set in
-     #positionListbox. Everything else (background, border, shadow,
-     max-height, overflow) is inherited from the .listbox rule above. */
+  /* Reset the UA defaults that the popover spec applies to shown
+     popovers (inset:0, margin:auto, padding:0.25em). The inline coords
+     from #positionListbox take care of placement; padding would just
+     visually pad the listbox content. */
   .listbox[popover]:popover-open {
     inset: unset;
     margin: 0;
+    padding: 0;
   }
 `;
