@@ -121,4 +121,25 @@ describe('<ds-table-pagination>', () => {
     const el = await mountPagination({ total: 0 });
     expect(el.shadowRoot!.textContent).toContain('No results');
   });
+
+  it('keeps the prev/next label slot wrapped in a styleable span', async () => {
+    const el = await mountPagination();
+    // The label wrapper is always present so ::part(prev-next-label)
+    // and the internal [compact] visibility rule have something to
+    // target. Slot fallback text "Previous" / "Next" still resolves
+    // through the slot.
+    const labels = el.shadowRoot!.querySelectorAll('span.label');
+    expect(labels.length).toBe(2);
+  });
+
+  it('falls back to the compact page range when forced into compact mode', async () => {
+    const el = await mountPagination({ page: 50, pageSize: 10, total: 1000 });
+    el.compact = true;
+    await el.updateComplete;
+    // Compact mode caps the range at three items + first/last: with
+    // currentPage = 50 we expect [1, …, 50, …, 100].
+    const pageButtons = Array.from(el.shadowRoot!.querySelectorAll('button[aria-label^="Page "]'));
+    const pages = pageButtons.map(b => Number(b.getAttribute('aria-label')!.replace('Page ', '')));
+    expect(pages).toEqual([1, 50, 100]);
+  });
 });

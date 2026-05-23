@@ -16,7 +16,11 @@ export function buildPaginationRange({
   const total = Math.max(1, Math.floor(totalPages));
   const current = clamp(Math.floor(currentPage), 1, total);
   const siblings = Math.max(0, Math.floor(siblingCount));
-  const maxVisible = Math.max(5, Math.floor(maxVisiblePages));
+  // Floor at 3 so callers (e.g. ds-table-pagination's compact mode)
+  // can opt into "first … current … last" — five visible items
+  // including the two ellipses — without us silently bumping back to
+  // the historical 5-page minimum.
+  const maxVisible = Math.max(3, Math.floor(maxVisiblePages));
 
   if (total <= maxVisible) {
     return range(1, total);

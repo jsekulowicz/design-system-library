@@ -4,6 +4,13 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { tablePaginationStyles } from './table-pagination.styles.js';
 import { buildPaginationRange, type PaginationRangeItem } from './pagination-range.js';
 
+// Width threshold (px) below which the component switches into compact
+// mode: prev/next collapse to icon-only, fewer page buttons render, and
+// the siblingCount is forced to 0. Matches breakpoint.sm so it lines
+// up with ds-table's own stack breakpoint.
+const COMPACT_WIDTH_PX = 480;
+const COMPACT_MAX_VISIBLE = 3;
+
 const ICON_PREV = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4l-4 4 4 4"/></svg>`;
 const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>`;
 
@@ -23,8 +30,10 @@ const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
  * @csspart button - Any `<button>` inside the nav.
  * @csspart button-prev - The Previous button.
  * @csspart button-next - The Next button.
+ * @csspart prev-next-label - The text label inside the Previous / Next buttons. Hidden by default below 480px (compact mode); style this part to override.
  * @csspart size-selector - The size `<select>` wrapper.
  * @csspart summary - The summary region.
+ * @attr compact - Reflected boolean attribute toggled automatically when the component is narrower than 480px. In compact mode the prev/next labels collapse to icons, the visible page count drops to "first … current … last", and `sibling-count` is forced to 0.
  */
 export class DsTablePagination extends DsElement {
   static override styles = [...DsElement.styles, tablePaginationStyles];
@@ -36,6 +45,30 @@ export class DsTablePagination extends DsElement {
   @property({ type: Number, reflect: true, attribute: 'max-visible-pages' }) maxVisiblePages = 7;
   @property({ type: Number, reflect: true, attribute: 'sibling-count' }) siblingCount = 1;
   @property({ type: Boolean, reflect: true, attribute: 'hide-page-numbers' }) hidePageNumbers = false;
+
+  // `compact` is reflected so consumer styles can react to it (e.g.
+  // tighten surrounding layout) without re-deriving the breakpoint.
+  @property({ type: Boolean, reflect: true }) compact = false;
+
+  #resizeObserver: ResizeObserver | null = null;
+
+  override connectedCallback(): void {
+    super.connectedCallback();
+    if (typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    this.#resizeObserver = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect.width ?? this.clientWidth;
+      this.compact = width > 0 && width < COMPACT_WIDTH_PX;
+    });
+    this.#resizeObserver.observe(this);
+  }
+
+  override disconnectedCallback(): void {
+    this.#resizeObserver?.disconnect();
+    this.#resizeObserver = null;
+    super.disconnectedCallback();
+  }
 
   get #totalPages(): number {
     return Math.max(1, Math.ceil(this.total / Math.max(1, this.pageSize)));
@@ -68,8 +101,8 @@ export class DsTablePagination extends DsElement {
     return buildPaginationRange({
       totalPages: this.#totalPages,
       currentPage: this.#currentPage,
-      maxVisiblePages: this.maxVisiblePages,
-      siblingCount: this.siblingCount,
+      maxVisiblePages: this.compact ? COMPACT_MAX_VISIBLE : this.maxVisiblePages,
+      siblingCount: this.compact ? 0 : this.siblingCount,
     });
   }
 
@@ -105,7 +138,9 @@ export class DsTablePagination extends DsElement {
         @click=${() => this.#emitPage(target)}
       >
         ${part === 'button-prev' ? icon : nothing}
-        <slot name=${slotName}>${defaultText}</slot>
+        <span class="label" part="prev-next-label">
+          <slot name=${slotName}>${defaultText}</slot>
+        </span>
         ${part === 'button-next' ? icon : nothing}
       </button>
     `;

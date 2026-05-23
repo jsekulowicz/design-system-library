@@ -92,4 +92,16 @@ export const tablePaginationStyles = css`
     width: 1em;
     height: 1em;
   }
+
+  /* Compact mode is driven by the host's [compact] attribute, which
+     ds-table-pagination toggles automatically via ResizeObserver when
+     the host is narrower than ~480px. We hide the Previous / Next
+     text label here so the buttons collapse to icons; the page-number
+     range shrinks via the JS path (maxVisiblePages → 3, siblingCount
+     → 0). The slot itself stays in the DOM so consumer overrides via
+     ::part(prev-next-label) still work if labels are wanted even when
+     compact. */
+  :host([compact]) .label {
+    display: none;
+  }
 `;
