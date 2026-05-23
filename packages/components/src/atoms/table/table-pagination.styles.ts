@@ -60,6 +60,15 @@ export const tablePaginationStyles = css`
     color: var(--ds-color-accent-fg);
     border-color: var(--ds-color-accent);
   }
+  /* Without this override the generic button:hover:not(:disabled)
+     rule wins on specificity (it carries an extra :not pseudo-class)
+     and the current-page button briefly flashes back to the muted
+     surface colour on hover. Keep the active button on-brand by
+     stepping to the accent-hover token instead. */
+  button[aria-current="page"]:hover:not(:disabled) {
+    background: var(--ds-color-accent-hover);
+    border-color: var(--ds-color-accent-hover);
+  }
 
   .ellipsis {
     display: inline-flex;
