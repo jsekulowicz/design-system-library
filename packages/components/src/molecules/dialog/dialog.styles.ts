@@ -57,6 +57,15 @@ export const dialogStyles = css`
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }
+  /* Slotted heading tags (h1-h6, etc.) carry UA defaults that
+     compound on top of .title-text — a bigger font-size and large
+     vertical margins. Normalise them so 'Foo', '<h2 slot="title">Foo</h2>'
+     and '<span slot="title">Foo</span>' all render identically. */
+  .title-text ::slotted(*) {
+    font: inherit;
+    margin: 0;
+    letter-spacing: inherit;
+  }
   .close-btn {
     display: inline-flex;
     align-items: center;
