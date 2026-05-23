@@ -94,6 +94,11 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelector('[part="empty"]')?.textContent).toContain('No data');
   });
 
+  it('exposes the scroll wrapper via the `scroll` csspart so consumers can delegate vertical scrolling to it', async () => {
+    const el = await mountTable();
+    expect(el.shadowRoot!.querySelector('[part="scroll"]')).not.toBeNull();
+  });
+
   it('does not render a caption element without caption slot content', async () => {
     const el = await mountTable();
     expect(el.shadowRoot!.querySelector('caption')).toBeNull();

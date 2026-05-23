@@ -46,6 +46,7 @@ const booleanAttributeConverter = {
  * @csspart header-cell - Each header `<th>`.
  * @csspart caption - The `<caption>` wrapper.
  * @csspart toolbar - The toolbar wrapper.
+ * @csspart scroll - The wrapper around the `<table>` that owns horizontal scroll. Consumers can override its overflow / height to delegate vertical scrolling to it (e.g. fixed-header + scrolling tbody patterns).
  * @csspart footer - The footer wrapper.
  * @csspart empty - The empty-state wrapper.
  * @csspart loading - Loading overlay rendered when `loading` is true.
@@ -190,7 +191,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   override render(): TemplateResult {
     return html`
       <div class="toolbar" part="toolbar"><slot name="toolbar"></slot></div>
-      <div class="scroll">
+      <div class="scroll" part="scroll">
         ${this.#renderTable()}
         ${this.#renderLoading()}
       </div>
