@@ -64,14 +64,16 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ attribute: 'row-key' }) rowKey?: string;
   @property({ reflect: true }) responsive: TableResponsiveMode = 'stack';
   @state() private _hasCaption = false;
+  @state() private _hasToolbar = false;
+  @state() private _hasFooter = false;
 
-  #captionObserver: MutationObserver | null = null;
+  #slotObserver: MutationObserver | null = null;
 
   override connectedCallback(): void {
     super.connectedCallback();
-    this.#syncCaptionPresence();
-    this.#captionObserver = new MutationObserver(this.#syncCaptionPresence);
-    this.#captionObserver.observe(this, {
+    this.#syncSlotPresence();
+    this.#slotObserver = new MutationObserver(this.#syncSlotPresence);
+    this.#slotObserver.observe(this, {
       attributeFilter: ['slot'],
       attributes: true,
       childList: true,
@@ -80,13 +82,15 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   }
 
   override disconnectedCallback(): void {
-    this.#captionObserver?.disconnect();
-    this.#captionObserver = null;
+    this.#slotObserver?.disconnect();
+    this.#slotObserver = null;
     super.disconnectedCallback();
   }
 
-  #syncCaptionPresence = (): void => {
+  #syncSlotPresence = (): void => {
     this._hasCaption = this.querySelector('[slot="caption"]') !== null;
+    this._hasToolbar = this.querySelector('[slot="toolbar"]') !== null;
+    this._hasFooter = this.querySelector('[slot="footer"]') !== null;
   };
 
   #onRowClick = (event: MouseEvent, row: T, index: number): void => {
@@ -188,14 +192,28 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     `;
   }
 
+  #renderToolbar(): TemplateResult | null {
+    if (!this._hasToolbar) {
+      return null;
+    }
+    return html`<div class="toolbar" part="toolbar"><slot name="toolbar"></slot></div>`;
+  }
+
+  #renderFooter(): TemplateResult | null {
+    if (!this._hasFooter) {
+      return null;
+    }
+    return html`<div class="footer" part="footer"><slot name="footer"></slot></div>`;
+  }
+
   override render(): TemplateResult {
     return html`
-      <div class="toolbar" part="toolbar"><slot name="toolbar"></slot></div>
+      ${this.#renderToolbar()}
       <div class="scroll" part="scroll">
         ${this.#renderTable()}
         ${this.#renderLoading()}
       </div>
-      <div class="footer" part="footer"><slot name="footer"></slot></div>
+      ${this.#renderFooter()}
     `;
   }
 }

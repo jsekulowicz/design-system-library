@@ -13,9 +13,6 @@ export const tableStyles = css`
   .toolbar {
     padding: var(--ds-space-3) 0;
   }
-  .toolbar:empty {
-    display: none;
-  }
 
   .scroll {
     position: relative;
@@ -116,8 +113,5 @@ export const tableStyles = css`
 
   .footer {
     padding: var(--ds-space-3) 0;
-  }
-  .footer:empty {
-    display: none;
   }
 `;

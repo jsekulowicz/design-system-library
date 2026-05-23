@@ -99,6 +99,28 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelector('[part="scroll"]')).not.toBeNull();
   });
 
+  it('omits the toolbar and footer wrappers when nothing is slotted into them', async () => {
+    const el = await mountTable();
+    expect(el.shadowRoot!.querySelector('[part="toolbar"]')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="footer"]')).toBeNull();
+  });
+
+  it('renders the toolbar wrapper once content is slotted in', async () => {
+    const el = await mountWithProps<DsTable<Person>>(
+      '<ds-table><div slot="toolbar">filters</div></ds-table>',
+      { rows: ROWS, columns: COLUMNS },
+    );
+    expect(el.shadowRoot!.querySelector('[part="toolbar"]')).not.toBeNull();
+  });
+
+  it('renders the footer wrapper once content is slotted in', async () => {
+    const el = await mountWithProps<DsTable<Person>>(
+      '<ds-table><div slot="footer">pagination</div></ds-table>',
+      { rows: ROWS, columns: COLUMNS },
+    );
+    expect(el.shadowRoot!.querySelector('[part="footer"]')).not.toBeNull();
+  });
+
   it('does not render a caption element without caption slot content', async () => {
     const el = await mountTable();
     expect(el.shadowRoot!.querySelector('caption')).toBeNull();
