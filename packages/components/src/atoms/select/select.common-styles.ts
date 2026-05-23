@@ -136,6 +136,13 @@ export const selectCommonStyles = css`
     transition: transform var(--ds-duration-fast) var(--ds-easing-standard);
   }
   .listbox {
+    /* Default in-flow positioning is the fallback for browsers that
+       don't support the Popover API. When the API is available the
+       listbox is shown via showPopover() and JS sets inline
+       position/top/left/min-width — see DsSelect.#positionListbox.
+       That escapes any overflow:hidden / overflow:auto ancestor
+       (dialogs, scroll containers) by placing the listbox in the
+       browser's top layer. */
     position: absolute;
     inset: calc(100% + var(--ds-space-1)) 0 auto;
     z-index: 100;
@@ -145,5 +152,14 @@ export const selectCommonStyles = css`
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-sm);
     box-shadow: var(--ds-shadow-md);
+  }
+
+  /* Neutralise the UA default inset:0 + margin:auto on open popovers
+     so they don't override the inline coordinates set in
+     #positionListbox. Everything else (background, border, shadow,
+     max-height, overflow) is inherited from the .listbox rule above. */
+  .listbox[popover]:popover-open {
+    inset: unset;
+    margin: 0;
   }
 `;

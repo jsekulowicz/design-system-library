@@ -47,7 +47,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @property({ type: Number }) maxLines?: number;
 
   @query('.listbox') private _listboxEl?: HTMLElement;
+  @query('#trigger') private _triggerEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
+
+  // Listeners installed while the dropdown is open so the popover
+  // tracks viewport changes. Stored so we can detach them on close
+  // without recreating closures.
+  #onAncestorScroll?: () => void;
+  #onWindowResize?: () => void;
 
   #dropdown = new DropdownController(this, {
     getOptions: () => this.options,
@@ -87,17 +94,99 @@ export class DsSelect extends FormControlMixin(DsElement) {
       this.#dropdown.queueOverflowCheck();
     }
     this.#dropdown.syncScrollTop();
+    this.#syncListboxPopover();
+  }
+
+  override disconnectedCallback(): void {
+    this.#teardownPopoverListeners();
+    super.disconnectedCallback();
+    this.#dropdown.close();
+  }
+
+  // The listbox uses `popover="manual"` so the browser hoists it to the
+  // top layer when shown — that's how it escapes the `overflow: hidden`
+  // / `overflow: auto` ancestors a ds-select might find itself inside
+  // (dialogs, scroll containers, etc.). Without the top layer those
+  // ancestors clip or grow to fit the menu, both of which feel broken.
+  //
+  // The top layer doesn't get anchor positioning yet across browsers,
+  // so we set `position: fixed` and compute coordinates from the
+  // trigger's bounding rect. Re-positions on scroll/resize keep the
+  // menu glued to its trigger while open.
+  #syncListboxPopover(): void {
+    const listbox = this._listboxEl;
+    const open = this.#dropdown.open;
+    if (!listbox) {
+      if (!open) this.#teardownPopoverListeners();
+      return;
+    }
+    if (typeof (listbox as HTMLElement & { showPopover?: () => void }).showPopover !== 'function') {
+      // No Popover API — fall back to the in-flow `position: absolute`
+      // styling already on `.listbox`. Behaviour matches pre-popover
+      // builds; clipping in dialogs is then a known limitation.
+      return;
+    }
+    if (open) {
+      if (!listbox.matches(':popover-open')) {
+        try { listbox.showPopover(); } catch { /* already shown by a previous tick */ }
+      }
+      this.#positionListbox();
+      this.#installPopoverListeners();
+    } else {
+      this.#teardownPopoverListeners();
+    }
+  }
+
+  #positionListbox(): void {
+    const trigger = this._triggerEl;
+    const listbox = this._listboxEl;
+    if (!trigger || !listbox) return;
+    const rect = trigger.getBoundingClientRect();
+    const gap = 4;
+    const viewportHeight = window.innerHeight;
+    const spaceBelow = viewportHeight - rect.bottom - gap;
+    const spaceAbove = rect.top - gap;
+    const naturalHeight = Math.min(listbox.scrollHeight || 0, 240);
+    const openUp = spaceBelow < Math.min(naturalHeight, 160) && spaceAbove > spaceBelow;
+    listbox.style.position = 'fixed';
+    listbox.style.margin = '0';
+    listbox.style.inset = '';
+    listbox.style.left = `${Math.max(0, rect.left)}px`;
+    listbox.style.minWidth = `${rect.width}px`;
+    if (openUp) {
+      listbox.style.top = '';
+      listbox.style.bottom = `${viewportHeight - rect.top + gap}px`;
+    } else {
+      listbox.style.bottom = '';
+      listbox.style.top = `${rect.bottom + gap}px`;
+    }
+  }
+
+  #installPopoverListeners(): void {
+    if (this.#onAncestorScroll) return;
+    this.#onAncestorScroll = () => this.#positionListbox();
+    this.#onWindowResize = () => this.#positionListbox();
+    // Capture so we catch scroll on any scrollable ancestor — dialogs,
+    // page-shell main, etc. — not just window.
+    window.addEventListener('scroll', this.#onAncestorScroll, { capture: true, passive: true });
+    window.addEventListener('resize', this.#onWindowResize);
+  }
+
+  #teardownPopoverListeners(): void {
+    if (this.#onAncestorScroll) {
+      window.removeEventListener('scroll', this.#onAncestorScroll, { capture: true });
+      this.#onAncestorScroll = undefined;
+    }
+    if (this.#onWindowResize) {
+      window.removeEventListener('resize', this.#onWindowResize);
+      this.#onWindowResize = undefined;
+    }
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
     if (!this.label)
       console.warn('<ds-select>: the `label` property is required for accessibility.');
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.#dropdown.close();
   }
 
   #selectOption = (option: SelectOption): void => {
@@ -235,6 +324,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
               class="listbox"
               part="listbox"
               role="listbox"
+              popover="manual"
               aria-multiselectable=${this.multiple ? 'true' : 'false'}
               @scroll=${this.#dropdown.onScroll}
               @ds-activate=${(event: Event) => event.stopPropagation()}
