@@ -1,6 +1,18 @@
 import { css } from 'lit';
 
 export const dialogStyles = css`
+  /* Interpolatable colors so the scroll-driven keyframes can crossfade
+     the gradient stops instead of jumping between values. */
+  @property --ds-dialog-body-top-fade {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: rgb(0 0 0);
+  }
+  @property --ds-dialog-body-bottom-fade {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: rgb(0 0 0);
+  }
   :host {
     display: contents;
   }
@@ -58,26 +70,47 @@ export const dialogStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     padding-inline: var(--ds-space-2);
-    padding-block: var(--ds-space-8);
     margin-inline: calc(var(--ds-space-2) * -1);
-    /* Hide the native scrollbar and indicate overflow with a soft top
-       / bottom fade. The mask is always applied; the padding-block
-       above keeps content out of the fade zone when nothing overflows,
-       so edges look sharp at rest. When content scrolls past the
-       padding buffer it fades into transparency, signalling that
-       there's more above or below. Fade height tracks padding-block
-       so the gradient covers the full buffer (~one line of text). */
+    /* Hide the native scrollbar. Overflow is indicated by a fade mask
+       at the top and bottom of the scrollport, driven by an actual
+       scroll-progress timeline so the fades only appear when there's
+       content to scroll into / out of view. No padding-block buffer
+       is needed — the top fade stays opaque (no fade) at scroll-top
+       and only switches to transparent (fade visible) once the user
+       has scrolled even one pixel; mirror for the bottom. */
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
-      transparent 0,
-      black var(--ds-space-8),
-      black calc(100% - var(--ds-space-8)),
-      transparent 100%
+      var(--ds-dialog-body-top-fade, rgb(0 0 0)) 0,
+      rgb(0 0 0) var(--ds-space-6),
+      rgb(0 0 0) calc(100% - var(--ds-space-6)),
+      var(--ds-dialog-body-bottom-fade, rgb(0 0 0)) 100%
     );
+    animation: ds-dialog-body-scroll-fade linear;
+    animation-timeline: scroll(self);
   }
   ds-card::part(body)::-webkit-scrollbar {
     display: none;
+  }
+  @keyframes ds-dialog-body-scroll-fade {
+    /* At scroll-top: keep the top stop opaque (no fade above), reveal
+       the bottom fade so the user knows there's more below. The two
+       near-instant transitions at 0.001% and 99.999% flip each stop
+       on / off as soon as scroll actually progresses, so the fades
+       are binary (present / absent), not interpolated as the user
+       drags through the range. */
+    0% {
+      --ds-dialog-body-top-fade: rgb(0 0 0);
+      --ds-dialog-body-bottom-fade: rgb(0 0 0 / 0);
+    }
+    0.001%, 99.999% {
+      --ds-dialog-body-top-fade: rgb(0 0 0 / 0);
+      --ds-dialog-body-bottom-fade: rgb(0 0 0 / 0);
+    }
+    100% {
+      --ds-dialog-body-top-fade: rgb(0 0 0 / 0);
+      --ds-dialog-body-bottom-fade: rgb(0 0 0);
+    }
   }
   .title-row {
     display: flex;

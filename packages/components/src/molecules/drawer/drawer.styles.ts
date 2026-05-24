@@ -1,6 +1,18 @@
 import { css } from 'lit';
 
 export const drawerStyles = css`
+  /* Interpolatable colors so the scroll-driven keyframes can crossfade
+     the gradient stops instead of jumping between values. */
+  @property --ds-drawer-body-top-fade {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: rgb(0 0 0);
+  }
+  @property --ds-drawer-body-bottom-fade {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: rgb(0 0 0);
+  }
   :host {
     display: contents;
   }
@@ -85,26 +97,37 @@ export const drawerStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     padding-inline: var(--ds-space-2);
-    padding-block: var(--ds-space-8);
     margin-inline: calc(var(--ds-space-2) * -1);
-    /* Hide the native scrollbar and indicate overflow with a soft top
-       / bottom fade. The mask is always applied; the padding-block
-       above keeps content out of the fade zone when nothing overflows,
-       so edges look sharp at rest. When content scrolls past the
-       padding buffer it fades into transparency, signalling that
-       there's more above or below. Fade height tracks padding-block
-       so the gradient covers the full buffer (~one line of text). */
+    /* Same scroll-driven fade trick as ds-dialog — see comments
+       there. No padding-block buffer; the fades only kick in once
+       there's actual scroll progress to drive them. */
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
-      transparent 0,
-      black var(--ds-space-8),
-      black calc(100% - var(--ds-space-8)),
-      transparent 100%
+      var(--ds-drawer-body-top-fade, rgb(0 0 0)) 0,
+      rgb(0 0 0) var(--ds-space-6),
+      rgb(0 0 0) calc(100% - var(--ds-space-6)),
+      var(--ds-drawer-body-bottom-fade, rgb(0 0 0)) 100%
     );
+    animation: ds-drawer-body-scroll-fade linear;
+    animation-timeline: scroll(self);
   }
   ds-card::part(body)::-webkit-scrollbar {
     display: none;
+  }
+  @keyframes ds-drawer-body-scroll-fade {
+    0% {
+      --ds-drawer-body-top-fade: rgb(0 0 0);
+      --ds-drawer-body-bottom-fade: rgb(0 0 0 / 0);
+    }
+    0.001%, 99.999% {
+      --ds-drawer-body-top-fade: rgb(0 0 0 / 0);
+      --ds-drawer-body-bottom-fade: rgb(0 0 0 / 0);
+    }
+    100% {
+      --ds-drawer-body-top-fade: rgb(0 0 0 / 0);
+      --ds-drawer-body-bottom-fade: rgb(0 0 0);
+    }
   }
   .title-row {
     display: flex;

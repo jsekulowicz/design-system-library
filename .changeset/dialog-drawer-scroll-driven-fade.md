@@ -1,0 +1,5 @@
+---
+"@jsekulowicz/ds-components": patch
+---
+
+- `ds-dialog` and `ds-drawer` no longer rely on a `padding-block` buffer to keep their body edges sharp at rest. The fade-mask is now driven by an actual scroll-progress timeline (`animation-timeline: scroll(self)`), so the top fade only appears once the user has scrolled and the bottom fade flips off as you reach the end of the content. With no scroll progress = no top fade and no bottom fade, content sits sharp against the body edges. The `padding-block: var(--ds-space-8)` (32px) buffer that v0.9.x added has been removed entirely, recovering ~64px of vertical real estate per modal. Implementation uses two `@property`-declared color custom properties (`--ds-{dialog,drawer}-body-top-fade` / `-bottom-fade`) so the keyframes can crossfade gradient stops instead of jumping. Falls back gracefully on browsers without `animation-timeline` support: the initial-values render both stops opaque (no fades), so older browsers just see a hidden scrollbar with natural content truncation.
