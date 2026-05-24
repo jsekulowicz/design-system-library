@@ -11,10 +11,6 @@ export const drawerStyles = css`
     color: inherit;
     box-shadow: var(--ds-shadow-lg);
     overflow: visible;
-    /* Flex column so ds-card resolves a definite height from the
-       drawer's height cap, same fix as ds-dialog. */
-    display: flex;
-    flex-direction: column;
     height: 100vh;
     height: 100dvh;
     max-height: 100%;
@@ -25,6 +21,15 @@ export const drawerStyles = css`
       transform var(--ds-duration-slow) var(--ds-easing-standard),
       display var(--ds-duration-slow) allow-discrete,
       overlay var(--ds-duration-slow) allow-discrete;
+  }
+  /* Scope flex-column to the open state so the UA's display:none
+     keeps the closed dialog out of layout. Same fix and rationale as
+     ds-dialog — the flex column is needed for the body's height cap to
+     propagate, but unscoped it makes the closed drawer render inline
+     alongside its opener. */
+  dialog[open] {
+    display: flex;
+    flex-direction: column;
   }
   :host([side='start']) dialog {
     margin: 0;
@@ -80,7 +85,7 @@ export const drawerStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     padding-inline: var(--ds-space-2);
-    padding-block: var(--ds-space-5);
+    padding-block: var(--ds-space-7);
     margin-inline: calc(var(--ds-space-2) * -1);
     /* Hide the native scrollbar and indicate overflow with a soft top
        / bottom fade. The mask is always applied; the padding-block
@@ -93,8 +98,8 @@ export const drawerStyles = css`
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      black var(--ds-space-5),
-      black calc(100% - var(--ds-space-5)),
+      black var(--ds-space-7),
+      black calc(100% - var(--ds-space-7)),
       transparent 100%
     );
   }

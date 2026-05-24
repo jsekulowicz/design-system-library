@@ -14,12 +14,16 @@ export const dialogStyles = css`
     border-radius: var(--ds-radius-sm);
     box-shadow: var(--ds-shadow-md);
     overflow: visible;
-    /* Flex column so ds-card resolves a definite height from the
-       dialog's max-height cap. Without this, ds-card's height: 100%
-       below resolves to auto (percentages only resolve against an
-       explicit parent height, not max-height), the body never gets a
-       height to scroll against, and overflowing content paints past
-       the dialog edge — most visibly on short mobile viewports. */
+  }
+  /* Scope flex-column to the open state so the UA's display:none
+     keeps the closed dialog out of layout. Without this scope, our
+     display:flex wins unconditionally and the closed dialog renders
+     inline alongside its opener. The flex column itself is needed so
+     ds-card resolves a definite height from the dialog's max-height
+     cap (percentages only resolve against an explicit parent height,
+     not max-height) — otherwise the body never gets a height to
+     scroll against on short viewports. */
+  dialog[open] {
     display: flex;
     flex-direction: column;
   }
@@ -54,7 +58,7 @@ export const dialogStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     padding-inline: var(--ds-space-2);
-    padding-block: var(--ds-space-5);
+    padding-block: var(--ds-space-7);
     margin-inline: calc(var(--ds-space-2) * -1);
     /* Hide the native scrollbar and indicate overflow with a soft top
        / bottom fade. The mask is always applied; the padding-block
@@ -67,8 +71,8 @@ export const dialogStyles = css`
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      black var(--ds-space-5),
-      black calc(100% - var(--ds-space-5)),
+      black var(--ds-space-7),
+      black calc(100% - var(--ds-space-7)),
       transparent 100%
     );
   }
