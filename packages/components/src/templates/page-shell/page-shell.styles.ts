@@ -175,7 +175,12 @@ export const pageShellStyles = css`
     align-items: center;
     justify-content: space-between;
     gap: var(--ds-space-3);
-    padding: var(--ds-space-2) var(--ds-space-4);
+    box-sizing: border-box;
+    min-height: var(--ds-page-shell-drawer-header-height, 48px);
+    padding: 0 var(--ds-space-4);
+    background: var(--ds-page-shell-drawer-header-bg, transparent);
+    color: var(--ds-page-shell-drawer-header-fg, inherit);
+    border-bottom: 1px solid var(--ds-page-shell-drawer-header-border-color, transparent);
   }
   :host([mobile-layout]) .drawer-brand {
     display: inline-flex;
@@ -193,6 +198,12 @@ export const pageShellStyles = css`
     display: inline-flex;
     flex: 0 0 auto;
     margin: 0;
+  }
+  :host([mobile-layout]) .drawer-close::part(button) {
+    color: var(--ds-page-shell-drawer-header-fg, inherit);
+  }
+  :host([mobile-layout]) .drawer-close::part(button):hover {
+    background: var(--ds-page-shell-drawer-close-hover-bg, var(--ds-color-bg-subtle));
   }
   :host([mobile-layout]) aside[part="aside"] ::slotted(ds-sidenav) {
     width: 100% !important;

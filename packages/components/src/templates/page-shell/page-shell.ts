@@ -187,12 +187,13 @@ export class DsPageShell extends DsElement {
           aria-label=${this.menuLabel}
           @click=${this.#onAsideClick}
         >
-          <div class="drawer-header">
-            <div class="drawer-brand">
+          <div class="drawer-header" part="drawer-header">
+            <div class="drawer-brand" part="drawer-brand">
               <slot name="drawer-brand">${this.brand}</slot>
             </div>
             <ds-button
               class="drawer-close"
+              part="drawer-close"
               variant="ghost"
               size="sm"
               label="Close navigation"

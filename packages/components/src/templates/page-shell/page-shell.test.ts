@@ -386,13 +386,14 @@ describe('<ds-page-shell>', () => {
       expect(css).toContain('padding-inline: var(--ds-space-4)');
     });
 
-    it('aligns mobile drawer header padding with sidenav chrome', () => {
+    it('exposes mobile drawer header chrome hooks', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      expect(css).toMatch(
-        /:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*padding:\s*var\(--ds-space-2\)\s+var\(--ds-space-4\)/,
-      );
+      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*padding:\s*0\s+var\(--ds-space-4\)/);
+      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*background:\s*var\(--ds-page-shell-drawer-header-bg, transparent\)/);
+      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*color:\s*var\(--ds-page-shell-drawer-header-fg, inherit\)/);
+      expect(css).toMatch(/\.drawer-close::part\(button\)\s*{[^}]*color:\s*var\(--ds-page-shell-drawer-header-fg, inherit\)/);
     });
 
     it('places drawer brand content before the mobile drawer close button', async () => {
@@ -409,6 +410,9 @@ describe('<ds-page-shell>', () => {
       const children = Array.from(drawerHeader.children);
       expect(children[0]?.classList.contains('drawer-brand')).toBe(true);
       expect(children[1]?.classList.contains('drawer-close')).toBe(true);
+      expect(drawerHeader.getAttribute('part')).toBe('drawer-header');
+      expect(children[0]?.getAttribute('part')).toBe('drawer-brand');
+      expect(children[1]?.getAttribute('part')).toBe('drawer-close');
       expect(drawerHeader.querySelector('slot[name="drawer-brand"]')).not.toBeNull();
     });
 
