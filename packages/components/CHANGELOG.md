@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.9.9
+
+### Patch Changes
+
+- a317876: - `ds-dialog` normalises any element slotted into the `title` slot. Previously a consumer who wrote `<h2 slot="title">Foo</h2>` (a perfectly reasonable semantic choice) got the inner heading's UA defaults applied on top of the dialog's own `.title-text` styling — a `font-size: 1.5em` compound that made the title visibly larger than `--ds-font-size-xl`, plus large UA `margin-block` that pushed the dialog body down. Added a scoped `.title-text ::slotted(*) { font: inherit; margin: 0; letter-spacing: inherit; }` so plain text, spans, and h1-h6 all render at the dialog's intended size with no extra spacing.
+- 81e2db9: - `ds-select` now renders its dropdown via the Popover API. Browsers that support `HTMLElement.prototype.showPopover` hoist the listbox into the top layer, so it escapes any `overflow: hidden` / `overflow: auto` ancestor (dialogs, scroll containers, fixed-height panels) instead of being clipped or expanding the container. JS positions the popover under the trigger via `position: fixed` and the trigger's bounding rect, flipping above when there isn't enough room below. Scroll and resize listeners re-position the popover while it's open, and the listeners self-clean on close / disconnect. Browsers without Popover API support keep the existing in-flow `position: absolute` behaviour so they still work — they just clip in dialogs as before.
+
 ## 0.9.8
 
 ### Patch Changes
