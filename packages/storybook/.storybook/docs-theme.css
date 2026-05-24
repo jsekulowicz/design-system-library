@@ -84,7 +84,8 @@ p {
   border: 1px solid var(--ds-color-border) !important;
   border-radius: var(--ds-radius-md) !important;
   box-shadow: none !important;
-  overflow: hidden !important;
+  overflow: clip !important;
+  overflow-clip-margin: var(--ds-space-2) !important;
   width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
   max-width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
   margin-left: 0 !important;
