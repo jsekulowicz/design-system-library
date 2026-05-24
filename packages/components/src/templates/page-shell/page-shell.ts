@@ -5,16 +5,16 @@ import { pageShellStyles } from './page-shell.styles.js';
 import '../../atoms/button/define.js';
 import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/bars-3.js';
-import '../../atoms/icon/icons/x-mark.js';
+import '../../molecules/drawer/define.js';
 import '../../organisms/top-bar/define.js';
 
 /**
  * @tag ds-page-shell
  * @summary Application frame: header + aside + main + optional footer with responsive collapse.
  * @slot brand - Top-left brand/logo.
- * @slot drawer-brand - Brand/logo shown at the start of the mobile navigation drawer.
+ * @slot drawer-brand - Brand/logo shown in the mobile navigation drawer's title row. Falls back to the `brand` prop.
  * @slot header-actions - Top-right actions.
- * @slot aside - Primary side navigation (inline-start). When empty, the column and hamburger toggle are not rendered.
+ * @slot aside - Primary side navigation (inline-start). On mobile, rendered inside a `ds-drawer` opened by the hamburger toggle. When empty, the column and hamburger toggle are not rendered.
  * @slot aside-end - Secondary side region (inline-end), e.g. table of contents, contextual help. Hidden on mobile.
  * @slot default - Main content.
  * @slot footer - Footer content.
@@ -28,6 +28,7 @@ export class DsPageShell extends DsElement {
   @property() brand = '';
   @property({ attribute: 'menu-label' }) menuLabel = 'Navigation menu';
   @property({ attribute: 'end-label' }) endLabel = 'Secondary navigation';
+  @state() private _mobileLayout = false;
   @state() private _mobileNavOpen = false;
   @state() private _hasAside = false;
   @state() private _hasAsideEnd = false;
@@ -46,7 +47,6 @@ export class DsPageShell extends DsElement {
       subtree: true,
     });
     this.#setMobileNav(false);
-    document.addEventListener('keydown', this.#onDocumentKeydown);
     this.#resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (!entry) {
@@ -60,7 +60,6 @@ export class DsPageShell extends DsElement {
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    document.removeEventListener('keydown', this.#onDocumentKeydown);
     this.#resizeObserver?.disconnect();
     this.#slotObserver?.disconnect();
     this.#resizeObserver = null;
@@ -84,15 +83,9 @@ export class DsPageShell extends DsElement {
   };
 
   #syncLayout = (width: number): void => {
-    const isMobileLayout = width < 768;
-    this.toggleAttribute('mobile-layout', isMobileLayout);
-    if (!isMobileLayout && this._mobileNavOpen) {
-      this.#setMobileNav(false);
-    }
-  };
-
-  #onDocumentKeydown = (event: KeyboardEvent): void => {
-    if (event.key === 'Escape' && this._mobileNavOpen) {
+    this._mobileLayout = width < 768;
+    this.toggleAttribute('mobile-layout', this._mobileLayout);
+    if (!this._mobileLayout && this._mobileNavOpen) {
       this.#setMobileNav(false);
     }
   };
@@ -114,7 +107,7 @@ export class DsPageShell extends DsElement {
   };
 
   #onAsideClick = (event: Event): void => {
-    if (!this.hasAttribute('mobile-layout')) {
+    if (!this._mobileLayout) {
       return;
     }
     const clickedNavItem = event
@@ -173,38 +166,8 @@ export class DsPageShell extends DsElement {
             : null}
         </ds-top-bar>
       </header>
-      <button
-        class="mobile-backdrop"
-        type="button"
-        aria-label="Close navigation"
-        ?hidden=${!this._mobileNavOpen}
-        @click=${this.#closeMobileNav}
-      ></button>
       <div class="shell-body" part="body">
-        <aside
-          id="mobile-aside"
-          part="aside"
-          aria-label=${this.menuLabel}
-          @click=${this.#onAsideClick}
-        >
-          <div class="drawer-header" part="drawer-header">
-            <div class="drawer-brand" part="drawer-brand">
-              <slot name="drawer-brand">${this.brand}</slot>
-            </div>
-            <ds-button
-              class="drawer-close"
-              part="drawer-close"
-              variant="ghost"
-              size="sm"
-              label="Close navigation"
-              aria-label="Close navigation"
-              @click=${this.#closeMobileNav}
-            >
-              <ds-icon slot="leading" name="x-mark" size="xl"></ds-icon>
-            </ds-button>
-          </div>
-          <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
-        </aside>
+        ${this._mobileLayout ? this.#renderMobileAside() : this.#renderDesktopAside()}
         <main part="main">
           <slot></slot>
         </main>
@@ -221,6 +184,34 @@ export class DsPageShell extends DsElement {
             <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
           </footer>`
         : null}`;
+  }
+
+  #renderDesktopAside(): TemplateResult {
+    return html`<aside
+      id="mobile-aside"
+      part="aside"
+      aria-label=${this.menuLabel}
+      @click=${this.#onAsideClick}
+    >
+      <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
+    </aside>`;
+  }
+
+  #renderMobileAside(): TemplateResult {
+    return html`<ds-drawer
+      id="mobile-aside"
+      part="aside"
+      side="start"
+      size="sm"
+      ?open=${this._mobileNavOpen}
+      label=${this.menuLabel}
+      @ds-close=${this.#closeMobileNav}
+      @ds-cancel=${this.#closeMobileNav}
+      @click=${this.#onAsideClick}
+    >
+      <slot name="drawer-brand" slot="title">${this.brand}</slot>
+      <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
+    </ds-drawer>`;
   }
 }
 

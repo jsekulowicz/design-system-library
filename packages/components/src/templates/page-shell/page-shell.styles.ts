@@ -86,7 +86,7 @@ export const pageShellStyles = css`
   }
 
   :host([aside-empty]) aside[part="aside"],
-  :host([aside-empty]) .mobile-backdrop {
+  :host([aside-empty]) ds-drawer[part="aside"] {
     display: none;
   }
 
@@ -119,8 +119,7 @@ export const pageShellStyles = css`
   .menu-toggle {
     display: none;
   }
-  .menu-toggle::part(button),
-  .drawer-close::part(button) {
+  .menu-toggle::part(button) {
     min-width: var(--ds-size-sm);
     width: var(--ds-size-sm);
     padding: 0;
@@ -129,98 +128,27 @@ export const pageShellStyles = css`
     display: inline-flex;
   }
 
-  .mobile-backdrop {
-    display: none;
-  }
-  .drawer-header {
-    display: none;
-  }
-  .drawer-brand {
-    display: none;
-  }
-  .drawer-close {
-    display: none;
-  }
-
+  /* In mobile layout the inline-start column collapses — the drawer
+     overlays in the top layer (via ds-drawer's native <dialog>) so it
+     doesn't take grid space — and the inline-end column hides since
+     v1 doesn't surface it in the drawer. */
   :host([mobile-layout]) .shell-body {
     grid-template-columns: 1fr;
   }
   :host([mobile-layout]) aside[part="aside-end"] {
-    /* Secondary inline-end region is not surfaced in the mobile drawer in v1.
-       Consumers can opt back in by overriding via ::part(aside-end). */
     display: none;
   }
-  :host([mobile-layout]) aside[part="aside"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 16rem;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background: var(--ds-color-bg);
-    border-right: 0;
-    z-index: var(--ds-z-index-modal);
-    transform: translateX(-100%);
-    transition: transform var(--ds-duration-slow) var(--ds-easing-standard);
-    scrollbar-gutter: auto;
-    overflow: hidden;
-    box-sizing: border-box;
+  :host([mobile-layout]) ds-drawer[part="aside"] {
+    /* ds-drawer is a top-layer modal; remove it from the grid so it
+       doesn't reserve a column when closed. */
+    display: contents;
   }
-  :host([mobile-layout][data-mobile-nav-open]) aside[part="aside"] {
-    transform: translateX(0);
-  }
-  :host([mobile-layout]) .drawer-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ds-space-3);
-    box-sizing: border-box;
-    min-height: var(--ds-page-shell-drawer-header-height, 48px);
-    padding: 0 var(--ds-space-4);
-    background: var(--ds-page-shell-drawer-header-bg, transparent);
-    color: var(--ds-page-shell-drawer-header-fg, inherit);
-    border-bottom: 1px solid var(--ds-page-shell-drawer-header-border-color, transparent);
-  }
-  :host([mobile-layout]) .drawer-brand {
-    display: inline-flex;
-    align-items: center;
-    flex: 1;
-    min-width: 0;
-    font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-lg);
-    letter-spacing: var(--ds-letter-spacing-display);
-  }
-  :host([mobile-layout]) slot[name='drawer-brand']::slotted(*) {
-    max-width: 100%;
-  }
-  :host([mobile-layout]) .drawer-close {
-    display: inline-flex;
-    flex: 0 0 auto;
-    margin: 0;
-  }
-  :host([mobile-layout]) .drawer-close::part(button) {
-    color: var(--ds-page-shell-drawer-header-fg, inherit);
-  }
-  :host([mobile-layout]) .drawer-close::part(button):hover {
-    background: var(--ds-page-shell-drawer-close-hover-bg, var(--ds-color-bg-subtle));
-  }
-  :host([mobile-layout]) aside[part="aside"] ::slotted(ds-sidenav) {
+  :host([mobile-layout]) ds-drawer[part="aside"] ::slotted(ds-sidenav) {
     width: 100% !important;
     max-width: 100% !important;
     flex: 1 1 auto;
     min-width: 0;
     min-height: 0;
     height: auto !important;
-  }
-  :host([mobile-layout][data-mobile-nav-open]) .mobile-backdrop {
-    display: block;
-    position: absolute;
-    inset: 0;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    background: color-mix(in oklab, var(--ds-color-fg) 26%, transparent);
-    z-index: var(--ds-z-index-overlay);
   }
 `;

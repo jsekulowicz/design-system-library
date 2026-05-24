@@ -58,6 +58,28 @@ beforeAll(() => {
     customElements.define('ds-page-shell', DsPageShell);
   }
   globalThis.ResizeObserver = ResizeObserverMock as never;
+
+  // The mobile drawer renders a <ds-drawer>, which uses a native <dialog>
+  // under the hood. jsdom's HTMLDialogElement lacks showModal/close, so
+  // shim them the same way the dialog/drawer test files do.
+  const proto = HTMLDialogElement.prototype as unknown as {
+    showModal?: () => void;
+    close?: (returnValue?: string) => void;
+  };
+  if (typeof proto.showModal !== 'function') {
+    proto.showModal = function showModal(this: HTMLDialogElement) {
+      this.setAttribute('open', '');
+    };
+  }
+  if (typeof proto.close !== 'function') {
+    proto.close = function close(this: HTMLDialogElement, returnValue?: string) {
+      if (returnValue !== undefined) {
+        (this as unknown as { returnValue: string }).returnValue = returnValue;
+      }
+      this.removeAttribute('open');
+      this.dispatchEvent(new Event('close'));
+    };
+  }
 });
 
 afterAll(() => {
@@ -68,6 +90,21 @@ beforeEach(() => {
   resetTestDom();
   ResizeObserverMock.instances = [];
 });
+
+async function forceMobileLayout(el: DsPageShell): Promise<void> {
+  const observer = ResizeObserverMock.instances[0];
+  observer.callback([{ contentRect: { width: 360 } } as ResizeObserverEntry], observer as never);
+  await el.updateComplete;
+}
+
+// jsdom gives every element a 0×0 bounding rect, so the resize observer's
+// initial layout snapshot lands on mobile. Tests that exercise the desktop
+// branch need to bump the observed width past the mobile breakpoint first.
+async function forceDesktopLayout(el: DsPageShell): Promise<void> {
+  const observer = ResizeObserverMock.instances[0];
+  observer.callback([{ contentRect: { width: 1024 } } as ResizeObserverEntry], observer as never);
+  await el.updateComplete;
+}
 
 describe('<ds-page-shell>', () => {
   it('starts with closed mobile navigation', async () => {
@@ -103,34 +140,25 @@ describe('<ds-page-shell>', () => {
     expect(icon.getAttribute('size')).toBe('3xl');
   });
 
-  it('closes navigation on Escape', async () => {
+  it('closes navigation when the mobile drawer emits ds-close (Escape, backdrop, etc.)', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
+    expect(menuToggle.getAttribute('aria-expanded')).toBe('true');
 
-    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    const drawer = el.shadowRoot!.querySelector('ds-drawer')!;
+    drawer.dispatchEvent(new CustomEvent('ds-close'));
     await el.updateComplete;
 
     expect(menuToggle.getAttribute('aria-expanded')).toBe('false');
     expect(el.hasAttribute('data-mobile-nav-open')).toBe(false);
   });
 
-  it('keeps navigation open for non-Escape key presses', async () => {
-    const el = await mount<DsPageShell>(pageShellTemplate());
-    const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
-    menuToggle.click();
-    await el.updateComplete;
-
-    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
-    await el.updateComplete;
-
-    expect(menuToggle.getAttribute('aria-expanded')).toBe('true');
-    expect(el.hasAttribute('data-mobile-nav-open')).toBe(true);
-  });
-
   it('closes mobile navigation when clicking a nav link inside aside', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
@@ -145,18 +173,18 @@ describe('<ds-page-shell>', () => {
 
   it('closes mobile navigation when composed path includes ds-nav-item', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
-    el.setAttribute('mobile-layout', '');
 
-    const aside = el.shadowRoot!.querySelector('aside') as HTMLElement;
+    const drawer = el.shadowRoot!.querySelector('ds-drawer') as HTMLElement;
     const fakeNavItem = document.createElement('ds-nav-item');
     const event = new Event('click', { bubbles: true, composed: true });
     Object.defineProperty(event, 'composedPath', {
-      value: () => [fakeNavItem, aside],
+      value: () => [fakeNavItem, drawer],
     });
-    aside.dispatchEvent(event);
+    drawer.dispatchEvent(event);
     await el.updateComplete;
 
     expect(menuToggle.getAttribute('aria-expanded')).toBe('false');
@@ -164,19 +192,19 @@ describe('<ds-page-shell>', () => {
 
   it('closes mobile navigation when composed path contains an element with href attribute', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
-    el.setAttribute('mobile-layout', '');
 
-    const aside = el.shadowRoot!.querySelector('aside') as HTMLElement;
+    const drawer = el.shadowRoot!.querySelector('ds-drawer') as HTMLElement;
     const fakeLinkLike = document.createElement('span');
     fakeLinkLike.setAttribute('href', '#settings');
     const event = new Event('click', { bubbles: true, composed: true });
     Object.defineProperty(event, 'composedPath', {
-      value: () => [fakeLinkLike, aside],
+      value: () => [fakeLinkLike, drawer],
     });
-    aside.dispatchEvent(event);
+    drawer.dispatchEvent(event);
     await el.updateComplete;
 
     expect(menuToggle.getAttribute('aria-expanded')).toBe('false');
@@ -184,11 +212,11 @@ describe('<ds-page-shell>', () => {
 
   it('does not close navigation on aside click when not in mobile layout', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceDesktopLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
 
-    el.removeAttribute('mobile-layout');
     const navLink = el.querySelector('[slot="aside"] a') as HTMLAnchorElement;
     navLink.click();
     await el.updateComplete;
@@ -199,18 +227,18 @@ describe('<ds-page-shell>', () => {
 
   it('keeps mobile navigation open when aside click path is not a nav target', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
-    el.setAttribute('mobile-layout', '');
 
-    const aside = el.shadowRoot!.querySelector('aside') as HTMLElement;
+    const drawer = el.shadowRoot!.querySelector('ds-drawer') as HTMLElement;
     const plainNode = document.createElement('span');
     const event = new Event('click', { bubbles: true, composed: true });
     Object.defineProperty(event, 'composedPath', {
-      value: () => [plainNode, aside],
+      value: () => [plainNode, drawer],
     });
-    aside.dispatchEvent(event);
+    drawer.dispatchEvent(event);
     await el.updateComplete;
 
     expect(menuToggle.getAttribute('aria-expanded')).toBe('true');
@@ -219,6 +247,7 @@ describe('<ds-page-shell>', () => {
 
   it('closes open mobile navigation when layout resizes to desktop', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
@@ -251,9 +280,9 @@ describe('<ds-page-shell>', () => {
 
     it('keeps aside markup when content is slotted', async () => {
       const el = await mount<DsPageShell>(pageShellTemplate());
-      await el.updateComplete;
+      await forceDesktopLayout(el);
       expect(el.hasAttribute('aside-empty')).toBe(false);
-      expect(el.shadowRoot!.querySelector('aside')).not.toBeNull();
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')).not.toBeNull();
       expect(el.shadowRoot!.querySelector('ds-button.menu-toggle')).not.toBeNull();
     });
   });
@@ -288,10 +317,6 @@ describe('<ds-page-shell>', () => {
       await el.updateComplete;
       const footer = el.shadowRoot!.querySelector('footer')!;
       expect(footer).not.toBeNull();
-      // No .shell-inner wrapper: ds-footer (or whatever the consumer slots
-      // here) already owns its own padding and border-top, and adding an
-      // outer .shell-inner clipped that chrome inside extra horizontal
-      // padding so the footer's border-top stopped reaching the page edges.
       expect(footer.querySelector('.shell-inner')).toBeNull();
       expect(footer.querySelector('slot[name="footer"]')).not.toBeNull();
     });
@@ -305,12 +330,10 @@ describe('<ds-page-shell>', () => {
       const topBar = root.querySelector('header > ds-top-bar');
       const body = root.querySelector('.shell-body');
       expect(topBar).not.toBeNull();
-      // brand and header-actions slots are forwarded into ds-top-bar's slots.
       expect(root.querySelector('slot[name="brand"][slot="brand"]')).not.toBeNull();
       expect(root.querySelector('slot[name="header-actions"][slot="actions"]')).not.toBeNull();
-      // body wraps aside + main as siblings of the same column
       expect(body).not.toBeNull();
-      expect(body!.querySelector('aside')).not.toBeNull();
+      expect(body!.querySelector('aside[part="aside"], ds-drawer[part="aside"]')).not.toBeNull();
       expect(body!.querySelector('main')).not.toBeNull();
     });
 
@@ -367,8 +390,6 @@ describe('<ds-page-shell>', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      // The base aside selector intentionally omits scrollbar-gutter so that
-      // <main>'s padding solely owns the horizontal gap between aside and main.
       const baseAsideRule = css.match(/(?<![\w-\]"])aside\s*{[^}]*}/)?.[0];
       expect(baseAsideRule).toBeTruthy();
       expect(baseAsideRule).not.toMatch(/scrollbar-gutter:\s*stable/);
@@ -378,8 +399,6 @@ describe('<ds-page-shell>', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      // Both-edges keeps content horizontally centred regardless of whether
-      // main's overflow scrollbar is currently present.
       expect(css).toMatch(/main\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/);
     });
 
@@ -392,18 +411,29 @@ describe('<ds-page-shell>', () => {
       expect(css).toContain('padding-block: var(--ds-space-4)');
       expect(css).toContain('padding-inline: var(--ds-space-4)');
     });
+  });
 
-    it('exposes mobile drawer header chrome hooks', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
-      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*padding:\s*0\s+var\(--ds-space-4\)/);
-      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*background:\s*var\(--ds-page-shell-drawer-header-bg, transparent\)/);
-      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.drawer-header\s*{[^}]*color:\s*var\(--ds-page-shell-drawer-header-fg, inherit\)/);
-      expect(css).toMatch(/\.drawer-close::part\(button\)\s*{[^}]*color:\s*var\(--ds-page-shell-drawer-header-fg, inherit\)/);
+  describe('mobile drawer (ds-drawer integration)', () => {
+    it('renders a ds-drawer with part="aside" in mobile layout, plain <aside> in desktop', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await forceDesktopLayout(el);
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')).not.toBeNull();
+      expect(el.shadowRoot!.querySelector('ds-drawer[part="aside"]')).toBeNull();
+
+      await forceMobileLayout(el);
+      expect(el.shadowRoot!.querySelector('ds-drawer[part="aside"]')).not.toBeNull();
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')).toBeNull();
     });
 
-    it('places drawer brand content before the mobile drawer close button', async () => {
+    it('anchors the mobile drawer at the inline start as a small drawer', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await forceMobileLayout(el);
+      const drawer = el.shadowRoot!.querySelector('ds-drawer')!;
+      expect(drawer.getAttribute('side')).toBe('start');
+      expect(drawer.getAttribute('size')).toBe('sm');
+    });
+
+    it('forwards the drawer-brand slot into ds-drawer\'s title slot', async () => {
       const el = await mount<DsPageShell>(`
         <ds-page-shell brand="Brand">
           <span slot="drawer-brand">Wide Brand</span>
@@ -411,25 +441,28 @@ describe('<ds-page-shell>', () => {
           <div>Content</div>
         </ds-page-shell>
       `);
-      await el.updateComplete;
-
-      const drawerHeader = el.shadowRoot!.querySelector('.drawer-header')!;
-      const children = Array.from(drawerHeader.children);
-      expect(children[0]?.classList.contains('drawer-brand')).toBe(true);
-      expect(children[1]?.classList.contains('drawer-close')).toBe(true);
-      expect(drawerHeader.getAttribute('part')).toBe('drawer-header');
-      expect(children[0]?.getAttribute('part')).toBe('drawer-brand');
-      expect(children[1]?.getAttribute('part')).toBe('drawer-close');
-      expect(drawerHeader.querySelector('slot[name="drawer-brand"]')).not.toBeNull();
+      await forceMobileLayout(el);
+      const brandSlot = el.shadowRoot!.querySelector(
+        'ds-drawer slot[name="drawer-brand"][slot="title"]',
+      ) as HTMLSlotElement | null;
+      expect(brandSlot).not.toBeNull();
+      expect(brandSlot!.assignedElements()[0]?.textContent).toBe('Wide Brand');
     });
 
-    it('uses larger menu icons while keeping the drawer close icon at xl', async () => {
+    it('opens and closes the ds-drawer in sync with mobile nav state', async () => {
       const el = await mount<DsPageShell>(pageShellTemplate());
+      await forceMobileLayout(el);
+      const drawer = el.shadowRoot!.querySelector('ds-drawer')! as HTMLElement & { open: boolean };
+      expect(drawer.open).toBe(false);
+
+      const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
+      menuToggle.click();
       await el.updateComplete;
-      const menuIcon = el.shadowRoot!.querySelector('.menu-toggle ds-icon')!;
-      const drawerCloseIcon = el.shadowRoot!.querySelector('.drawer-close ds-icon')!;
-      expect(menuIcon.getAttribute('size')).toBe('3xl');
-      expect(drawerCloseIcon.getAttribute('size')).toBe('xl');
+      expect(drawer.open).toBe(true);
+
+      menuToggle.click();
+      await el.updateComplete;
+      expect(drawer.open).toBe(false);
     });
   });
 
