@@ -1,0 +1,56 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as DrawerStories from './drawer.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={DrawerStories} />
+
+# Drawer
+
+Edge-anchored modal panel built on the native `<dialog>` element. Use it for secondary surfaces that sit alongside the main content — filter panels, navigation, settings sheets, contextual details — when you want the body to stay visible behind a translucent backdrop while the user works in the panel.
+
+## Anatomy
+
+A pinned header with the title and close affordance, a scrolling body, and an optional sticky footer for actions. Slides in from the inline start or end with a transform; the native `<dialog>` handles top-layer rendering, focus trap and Escape-to-close. Composes `ds-card` for the visual frame and `ds-button` in the footer slot — same chrome as `ds-dialog`, just pinned to an edge.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={DrawerStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={DrawerStories.Playground} />
+      <ComponentApi tag="ds-drawer" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Reach for a drawer when a side surface needs to coexist with the main view — filters, contextual settings, mobile navigation.</li>
+        <li>Use <code>side="end"</code> for filter / inspector panels (reads as "this configures the thing on the left") and <code>side="start"</code> for primary navigation.</li>
+        <li>Keep the title noun-led and specific (e.g. "Filters", "Notifications", not "Options").</li>
+        <li>Put Reset / Cancel and the primary action in the footer; let the body scroll on tall content.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use a drawer for a focused, blocking decision — that's <code>ds-dialog</code>'s job.</li>
+        <li>Don't open drawers automatically from non-user actions — they trap focus and steal attention.</li>
+        <li>Don't nest drawers or stack a drawer on top of a dialog. Pick one surface per task.</li>
+        <li>Don't disable <code>dismissible</code> unless the panel commits state on every interaction — Escape and backdrop are users' main escape hatches on touch devices.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders a native <code>&lt;dialog&gt;</code> opened with <code>showModal()</code>: focus is trapped inside the panel, the rest of the page becomes inert, and Escape closes by default.</li>
+        <li>The drawer is labelled by the slotted <code>title</code> via <code>aria-labelledby</code>; pass the <code>label</code> prop to override with a plain string.</li>
+        <li>Focus returns to the element that opened the drawer when it closes.</li>
+        <li>The header close button is a native <code>&lt;button&gt;</code> with <code>aria-label="Close"</code>, sized as a square `sm` ghost button to match `ds-dialog`.</li>
+        <li><code>dismissible={false}</code> cancels the native <code>cancel</code> event, blocking Escape and backdrop dismissal — use sparingly.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
