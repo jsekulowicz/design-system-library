@@ -54,20 +54,21 @@ export const dialogStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     padding-inline: var(--ds-space-2);
-    padding-block: var(--ds-space-3);
+    padding-block: var(--ds-space-5);
     margin-inline: calc(var(--ds-space-2) * -1);
     /* Hide the native scrollbar and indicate overflow with a soft top
        / bottom fade. The mask is always applied; the padding-block
        above keeps content out of the fade zone when nothing overflows,
        so edges look sharp at rest. When content scrolls past the
        padding buffer it fades into transparency, signalling that
-       there's more above or below. */
+       there's more above or below. Fade height tracks padding-block
+       so the gradient covers the full buffer (~one line of text). */
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      black var(--ds-space-3),
-      black calc(100% - var(--ds-space-3)),
+      black var(--ds-space-5),
+      black calc(100% - var(--ds-space-5)),
       transparent 100%
     );
   }
