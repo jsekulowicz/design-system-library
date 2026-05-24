@@ -20,6 +20,7 @@ import './atoms/nav-item/define.js';
 import './atoms/menu/define.js';
 import './molecules/card/define.js';
 import './molecules/dialog/define.js';
+import './molecules/drawer/define.js';
 import './molecules/toast/define.js';
 import './molecules/color-picker/define.js';
 import './molecules/menu-button/define.js';

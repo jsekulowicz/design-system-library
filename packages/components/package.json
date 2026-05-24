@@ -207,6 +207,13 @@
     "./dialog/define": {
       "import": "./dist/molecules/dialog/define.js"
     },
+    "./drawer": {
+      "types": "./dist/molecules/drawer/index.d.ts",
+      "import": "./dist/molecules/drawer/index.js"
+    },
+    "./drawer/define": {
+      "import": "./dist/molecules/drawer/define.js"
+    },
     "./toast": {
       "types": "./dist/molecules/toast/index.d.ts",
       "import": "./dist/molecules/toast/index.js"
