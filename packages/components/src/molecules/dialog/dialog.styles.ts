@@ -14,6 +14,14 @@ export const dialogStyles = css`
     border-radius: var(--ds-radius-sm);
     box-shadow: var(--ds-shadow-md);
     overflow: visible;
+    /* Flex column so ds-card resolves a definite height from the
+       dialog's max-height cap. Without this, ds-card's height: 100%
+       below resolves to auto (percentages only resolve against an
+       explicit parent height, not max-height), the body never gets a
+       height to scroll against, and overflowing content paints past
+       the dialog edge — most visibly on short mobile viewports. */
+    display: flex;
+    flex-direction: column;
   }
   :host([size='sm']) dialog {
     max-width: 400px;
@@ -29,7 +37,9 @@ export const dialogStyles = css`
     backdrop-filter: blur(2px);
   }
   ds-card {
-    height: 100%;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
   }
   ds-card::part(card) {
     height: 100%;
