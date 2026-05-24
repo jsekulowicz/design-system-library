@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.9.12
+
+### Patch Changes
+
+- ff033eb: - `ds-dialog`'s body now actually lets focus outlines escape its inline padding edge. The previous fix added `overflow-clip-margin` but kept `overflow-y: auto`, and per spec `overflow-clip-margin` only applies when `overflow` is `clip` — so it was a no-op and a focused `ds-select` or `ds-text-field` still had its left/right outline shaved off. Switched to `overflow-x: clip; overflow-y: auto` with `overflow-clip-margin-inline`, which gives outlines ~8px of breathing room on the inline axis while preserving block-axis scrolling.
+- 05278e7: - `ds-page-shell`'s `aside` and `main` regions no longer clip focus outlines on the inline axis. The aside already used `overflow-x: clip; overflow-y: auto;` so a focused `ds-nav-item` near the inline edge had its left/right outline shaved off; added `overflow-clip-margin-inline: var(--ds-space-2)` to let outlines escape while preserving the vertical scroll. `main` was `overflow: auto` (both axes scroll), where `overflow-clip-margin` has no effect by spec — switched it to `overflow-x: clip; overflow-y: auto` so the inline axis stops being a scrollport and outlines get the same breathing room. Consumers who relied on horizontal page scrolling now need to enable it on their own wrapper.
+
 ## 0.9.11
 
 ### Patch Changes
