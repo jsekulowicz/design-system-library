@@ -2,6 +2,8 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/dialog/define';
 import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/select/define';
+import '@jsekulowicz/ds-components/text-field/define';
 
 const meta: Meta = {
   title: 'Molecules/Dialog',
@@ -69,6 +71,71 @@ export const ScrollingBody: Story = {
           Accept
         </ds-button>
       </ds-dialog>
+    </div>
+  `,
+};
+
+const sampleOptions = [
+  { value: 'any', label: 'Any difficulty' },
+  { value: 'easy', label: 'Easy' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'hard', label: 'Hard' },
+];
+
+const sampleSizes = [
+  { value: 'any', label: 'Any size' },
+  { value: 'small', label: 'Small' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'large', label: 'Large' },
+];
+
+export const WithFormFields: Story = {
+  name: 'With form fields (focus-ring sanity check)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Selects and text fields fill the dialog body inline-wise, so their focus rings sit right at the body clip edge. Tab through the controls — the ring must paint fully on all sides. If the left/right sides are shaved off, the body clip-overflow fix has regressed.',
+      },
+    },
+  },
+  render: () => html`
+    <div>
+      <ds-button @ds-click=${openDialog}>Open form dialog</ds-button>
+      <ds-dialog size="sm" label="Pick a crossword for me">
+        <span slot="title">Pick for me</span>
+        <p>Give us a few hints and we'll pick a puzzle that fits.</p>
+        <div class="form">
+          <ds-select
+            label="Difficulty"
+            .options=${sampleOptions}
+            value="any"
+          ></ds-select>
+          <ds-select
+            label="Size"
+            .options=${sampleSizes}
+            value="any"
+          ></ds-select>
+          <ds-text-field
+            label="Theme"
+            description="Optional — leave blank for any theme"
+            placeholder="e.g. food, travel"
+          ></ds-text-field>
+        </div>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}>
+          Cancel
+        </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
+          Pick a crossword
+        </ds-button>
+      </ds-dialog>
+      <style>
+        .form {
+          display: flex;
+          flex-direction: column;
+          gap: var(--ds-space-3);
+        }
+      </style>
     </div>
   `,
 };
