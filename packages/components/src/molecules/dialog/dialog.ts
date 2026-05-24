@@ -3,6 +3,8 @@ import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../card/define.js';
+import '../../atoms/button/define.js';
+import '../../atoms/icon/icons/x-mark.js';
 import { dialogStyles } from './dialog.styles.js';
 
 export type DialogSize = 'sm' | 'md' | 'lg';
@@ -95,22 +97,21 @@ export class DsDialog extends DsElement {
       <ds-card elevation="md" part="card">
         <div slot="title" class="title-row">
           <h2 id=${titleId} class="title-text"><slot name="title"></slot></h2>
-          <button
+          <ds-button
             class="close-btn"
             part="close-button"
-            type="button"
-            aria-label="Close"
+            variant="ghost"
+            size="sm"
+            square
+            label="Close"
             @click=${this.#onCloseButtonClick}
           >
-            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true">
-              <path
-                d="M4 4l8 8M12 4l-8 8"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>
+            <ds-icon
+              slot="leading"
+              name="x-mark"
+              size="2xl"
+            ></ds-icon>
+          </ds-button>
         </div>
         <slot></slot>
         <div slot="footer" class="footer"><slot name="footer"></slot></div>

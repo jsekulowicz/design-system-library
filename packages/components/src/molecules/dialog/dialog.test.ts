@@ -98,7 +98,7 @@ describe('<ds-dialog>', () => {
 
   it('closes when the header close button is clicked', async () => {
     const el = await mountWithProps<DsDialog>(TEMPLATE, { open: true });
-    const button = el.shadowRoot!.querySelector('button.close-btn') as HTMLButtonElement;
+    const button = el.shadowRoot!.querySelector('ds-button.close-btn') as HTMLElement;
     button.click();
     await el.updateComplete;
     expect(el.open).toBe(false);

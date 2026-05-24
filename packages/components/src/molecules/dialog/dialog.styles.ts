@@ -66,23 +66,13 @@ export const dialogStyles = css`
     margin: 0;
     letter-spacing: inherit;
   }
+  /* Pull the close button up and to the right so it sits near the
+     card's top-right corner instead of indented by ds-card's full
+     ds-space-6 padding. Its own visual chrome (size, hover, focus
+     ring, square shape) comes from ds-button. */
   .close-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    margin: calc(var(--ds-space-1) * -1);
-    border: 0;
-    border-radius: var(--ds-radius-sm);
-    background: transparent;
-    color: var(--ds-color-fg-subtle, var(--ds-color-fg));
-    cursor: pointer;
-    transition: background-color var(--ds-duration-fast) var(--ds-easing-standard);
-  }
-  .close-btn:hover {
-    background: var(--ds-color-bg-subtle, rgb(0 0 0 / 0.05));
-    color: var(--ds-color-fg);
+    margin-block-start: calc(var(--ds-space-3) * -1);
+    margin-inline-end: calc(var(--ds-space-3) * -1);
   }
   .footer {
     display: flex;
