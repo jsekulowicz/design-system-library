@@ -58,7 +58,7 @@ export const dialogStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     padding-inline: var(--ds-space-2);
-    padding-block: var(--ds-space-7);
+    padding-block: var(--ds-space-8);
     margin-inline: calc(var(--ds-space-2) * -1);
     /* Hide the native scrollbar and indicate overflow with a soft top
        / bottom fade. The mask is always applied; the padding-block
@@ -71,8 +71,8 @@ export const dialogStyles = css`
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
-      black var(--ds-space-7),
-      black calc(100% - var(--ds-space-7)),
+      black var(--ds-space-8),
+      black calc(100% - var(--ds-space-8)),
       transparent 100%
     );
   }
