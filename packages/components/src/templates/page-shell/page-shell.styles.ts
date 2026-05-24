@@ -76,6 +76,7 @@ export const pageShellStyles = css`
     display: flex;
     overflow-x: clip;
     overflow-y: auto;
+    overflow-clip-margin-inline: var(--ds-space-2);
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
@@ -95,7 +96,9 @@ export const pageShellStyles = css`
 
   main {
     padding: var(--ds-space-5);
-    overflow: auto;
+    overflow-x: clip;
+    overflow-y: auto;
+    overflow-clip-margin-inline: var(--ds-space-2);
     min-width: 0;
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;

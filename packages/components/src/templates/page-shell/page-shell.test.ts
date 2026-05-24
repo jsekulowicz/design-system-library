@@ -352,7 +352,8 @@ describe('<ds-page-shell>', () => {
         .map((s) => s.cssText)
         .join('\n');
       expect(css).toMatch(/main\s*{[^}]*min-width:\s*0/);
-      expect(css).toMatch(/main\s*{[^}]*overflow:\s*auto/);
+      expect(css).toMatch(/main\s*{[^}]*overflow-x:\s*clip/);
+      expect(css).toMatch(/main\s*{[^}]*overflow-y:\s*auto/);
     });
 
     it('keeps the desktop aside flush with its column edge (no scrollbar gutter)', () => {
