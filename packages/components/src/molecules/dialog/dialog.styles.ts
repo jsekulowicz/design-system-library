@@ -43,7 +43,8 @@ export const dialogStyles = css`
     min-height: 0;
     overflow-x: clip;
     overflow-y: auto;
-    overflow-clip-margin-inline: var(--ds-space-2);
+    padding-inline: var(--ds-space-2);
+    margin-inline: calc(var(--ds-space-2) * -1);
   }
   .title-row {
     display: flex;
