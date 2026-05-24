@@ -50,21 +50,15 @@ export class DsDrawer extends DsElement {
     if (!changed.has('open') || !this._dialogEl) return;
     if (this.open && !this._dialogEl.open) {
       this._dialogEl.showModal();
-      this._dialogEl.addEventListener('wheel', this.#onBackdropScroll, { passive: false });
-      this._dialogEl.addEventListener('touchmove', this.#onBackdropScroll, { passive: false });
       this.emit('ds-open', { detail: null });
     } else if (!this.open && this._dialogEl.open) {
       this._dialogEl.close();
-      this._dialogEl.removeEventListener('wheel', this.#onBackdropScroll);
-      this._dialogEl.removeEventListener('touchmove', this.#onBackdropScroll);
     }
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     if (this._dialogEl?.open) this._dialogEl.close();
-    this._dialogEl?.removeEventListener('wheel', this.#onBackdropScroll);
-    this._dialogEl?.removeEventListener('touchmove', this.#onBackdropScroll);
   }
 
   #onBackdropClick = (event: MouseEvent): void => {
@@ -89,15 +83,6 @@ export class DsDrawer extends DsElement {
 
   #onCloseButtonClick = (): void => {
     this.close();
-  };
-
-  // Cancel wheel / touchmove events that target the dialog itself so
-  // backdrop scrolling can't bubble up and shift whatever ancestor
-  // scroll container the drawer happens to sit in. Events bubbled up
-  // from the body proceed normally — its overscroll-behavior:contain
-  // handles the inside-boundary case.
-  #onBackdropScroll = (event: Event): void => {
-    if (event.target === this._dialogEl) event.preventDefault();
   };
 
   override render(): TemplateResult {

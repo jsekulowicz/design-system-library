@@ -76,7 +76,6 @@ export const drawerStyles = css`
   }
   dialog::backdrop {
     background: rgb(15 23 42 / 0.55);
-    backdrop-filter: blur(2px);
   }
   ds-card {
     flex: 1;
