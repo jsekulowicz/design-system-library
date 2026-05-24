@@ -72,7 +72,7 @@ p {
   border-color: var(--ds-color-border);
 }
 
-/* Story canvas — keep a single border/radius on the outer preview only.
+/* Story canvas - keep a single border/radius on the outer preview only.
    Inner docs-story border causes doubled edges and corner artifacts.
    The wrapper shrinks to the active viewport width (plus 2px for its
    border) so the canvas matches the iframe / inline story content size.
@@ -84,8 +84,7 @@ p {
   border: 1px solid var(--ds-color-border) !important;
   border-radius: var(--ds-radius-md) !important;
   box-shadow: none !important;
-  overflow: clip !important;
-  overflow-clip-margin: var(--ds-space-2) !important;
+  overflow: hidden !important;
   width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
   max-width: min(100%, calc(var(--ds-docs-viewport-width, 100%) + 2px)) !important;
   margin-left: 0 !important;
@@ -121,14 +120,25 @@ p {
 /* Source toolbar (Show code + copy) — kill contrasting backgrounds and the
    top-left border-radius that creates a dot behind each action button. */
 .sbdocs .sb-bar,
+.sbdocs-preview-actions,
 .sbdocs .sbdocs-preview .os-host,
 .sbdocs .docblock-code-toggle,
+.sbdocs .sb-bar button,
+.sbdocs-preview-actions button,
 .sbdocs .sbdocs-preview button {
   background: var(--ds-color-bg-subtle) !important;
   color: var(--ds-color-fg) !important;
   border-color: var(--ds-color-border) !important;
   box-shadow: none !important;
   border-radius: 0 !important;
+}
+
+.sbdocs .docblock-code-toggle:focus-visible,
+.sbdocs .sb-bar button:focus-visible,
+.sbdocs-preview-actions button:focus-visible,
+.sbdocs .sbdocs-preview button:focus-visible {
+  outline: 2px solid var(--ds-color-focus) !important;
+  outline-offset: -2px !important;
 }
 
 /* ===== Storybook ArgsTable (Props) ===== */
