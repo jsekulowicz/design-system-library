@@ -142,6 +142,17 @@ export const pageShellStyles = css`
     /* ds-drawer is a top-layer modal; remove it from the grid so it
        doesn't reserve a column when closed. */
     display: contents;
+    /* Strip ds-drawer's default ds-card chrome padding so slotted
+       sidenav items reach the drawer's edge, and theme the title row
+       through to xwords-style overrides via the existing
+       --ds-page-shell-drawer-header-* contract preserved from the
+       pre-refactor page-shell. Consumer apps set those vars on the
+       page-shell host and they cascade through to ds-drawer here. */
+    --ds-drawer-card-padding: 0;
+    --ds-drawer-title-padding: var(--ds-space-3) var(--ds-space-4);
+    --ds-drawer-title-bg: var(--ds-page-shell-drawer-header-bg, transparent);
+    --ds-drawer-title-fg: var(--ds-page-shell-drawer-header-fg, inherit);
+    --ds-drawer-title-border-color: var(--ds-page-shell-drawer-header-border-color, transparent);
   }
   :host([mobile-layout]) ds-drawer[part="aside"] ::slotted(ds-sidenav) {
     width: 100% !important;

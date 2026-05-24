@@ -89,6 +89,11 @@ export const drawerStyles = css`
     border-color: transparent;
     border-radius: 0;
     gap: var(--ds-space-3);
+    /* Consumers (notably ds-page-shell when wrapping a sidenav) can
+       override to 0 so slotted body content reaches the drawer edges
+       and the title-row chrome — when themed via the vars below —
+       paints edge-to-edge. */
+    padding: var(--ds-drawer-card-padding, var(--ds-space-6));
   }
   ds-card::part(body) {
     flex: 1;
@@ -134,9 +139,21 @@ export const drawerStyles = css`
   }
   .title-row {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: var(--ds-space-3);
+    /* Themeable chrome for consumers that need the title row to read
+       as a distinct surface (e.g. ds-page-shell's mobile-nav drawer
+       wants xwords' blue topbar look). All default to transparent /
+       inherit, so the title row stays invisible by default. */
+    background: var(--ds-drawer-title-bg, transparent);
+    color: var(--ds-drawer-title-fg, inherit);
+    border-bottom: 1px solid var(--ds-drawer-title-border-color, transparent);
+    /* Inline / block padding only kicks in when the consumer asks for
+       it — useful when --ds-drawer-card-padding is set to 0 so the
+       title row carries its own breathing room. Default 0 preserves
+       the existing card-padded look for dialogs and standalone drawers. */
+    padding: var(--ds-drawer-title-padding, 0);
   }
   .title-text {
     margin: 0;
@@ -154,6 +171,13 @@ export const drawerStyles = css`
   .close-btn {
     margin-block-start: calc(var(--ds-space-3) * -1);
     margin-inline-end: calc(var(--ds-space-3) * -1);
+  }
+  /* When the title row is themed (via --ds-drawer-title-fg), pull the
+     close button into the same colour. The button's ghost variant
+     normally inherits ds-color-fg; this lets a coloured title row keep
+     icon contrast against its custom background. */
+  .close-btn::part(button) {
+    color: var(--ds-drawer-title-fg, inherit);
   }
   .footer {
     display: flex;
