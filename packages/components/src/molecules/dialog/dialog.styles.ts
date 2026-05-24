@@ -42,6 +42,12 @@ export const dialogStyles = css`
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    /* The body's overflow:auto clips at the padding-box edge on both
+       axes — that catches focus outlines, popover shadows and any
+       ring decoration that extends a few pixels beyond a child's
+       border-box. overflow-clip-margin lets those non-scrolling
+       overflows escape without re-enabling scrolling. */
+    overflow-clip-margin: var(--ds-space-2);
   }
   .title-row {
     display: flex;
