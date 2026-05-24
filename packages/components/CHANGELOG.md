@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.9.10
+
+### Patch Changes
+
+- 89ba94e: - `ds-card`'s `.body` now grows to fill leftover height (`flex: 1`) regardless of orientation. Previously this only applied to horizontal cards, which meant that when a parent grid or flex container stretched several vertical cards to a common height, their bodies stayed content-sized and their actions / footer rows ended up at different Y positions — `Card A` footer halfway down, `Card B` footer at the bottom, etc. With body growing, the bottom block (actions, footer) is anchored to the card's bottom edge so footers line up across rows. Cards in an auto-height context are unchanged — body still wraps its content because there's no leftover space to absorb. The narrow-container override that resets body back to `flex: unset` for horizontal cards is unchanged.
+- 3537373: - `ds-dialog`'s header close button is now a `ds-button` (variant=ghost, size=md, square) with the `x-mark` icon instead of a hand-rolled `<button>` + inline SVG. Same `part="close-button"` exposure, same `Close` aria-label, and clicks still emit `ds-close` with `{ returnValue: 'close' }`. Visual upshot: the hit area grows from 32px to ds-button's sm size, hover / focus / disabled states match every other action in the system, and the button sits closer to the card's top-right corner via negative margin offsets that absorb part of `ds-card`'s padding instead of leaving the X stranded mid-padding. The X icon's size is now 2xl.
+
 ## 0.9.9
 
 ### Patch Changes
