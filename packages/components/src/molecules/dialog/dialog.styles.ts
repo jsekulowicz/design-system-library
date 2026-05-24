@@ -69,6 +69,11 @@ export const dialogStyles = css`
     min-height: 0;
     overflow-x: clip;
     overflow-y: auto;
+    /* Don't chain scroll up to the page when the body reaches its
+       top/bottom boundary or has no overflow. The dialog/drawer is
+       modal — the page behind it shouldn't twitch when the user
+       wheel-scrolls inside the modal. */
+    overscroll-behavior: contain;
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
     /* Hide the native scrollbar. Overflow is indicated by a fade mask

@@ -96,6 +96,10 @@ export const drawerStyles = css`
     min-height: 0;
     overflow-x: clip;
     overflow-y: auto;
+    /* Don't chain scroll up to the page when the body reaches its
+       top/bottom boundary or has no overflow. Same rationale as
+       ds-dialog — modal surfaces shouldn't let scroll leak through. */
+    overscroll-behavior: contain;
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
     /* Same scroll-driven fade trick as ds-dialog — see comments
