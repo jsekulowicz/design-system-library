@@ -19,8 +19,8 @@ import '../../organisms/top-bar/define.js';
  * @slot default - Main content.
  * @slot footer - Footer content.
  * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
- *   content and the aside + main row centre at this width and align vertically. Defaults to `90rem`
- *   (1440px). Header chrome remains full-bleed.
+ *   content and the aside + main row centre at this width and align vertically. Defaults to `none`.
+ *   Header chrome remains full-bleed.
  */
 export class DsPageShell extends DsElement {
   static override styles = [...DsElement.styles, pageShellStyles];

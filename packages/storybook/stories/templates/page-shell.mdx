@@ -7,13 +7,13 @@ import '@jsekulowicz/ds-components/tabs/define';
 
 # Page Shell
 
-Application frame that arranges a sticky header, a scrollable aside, a main content region, and an optional footer. Header chrome stretches to the viewport edges; the *content column* (header inner content and the aside + main row) caps at `--ds-page-shell-max-width` and centres in the viewport, so brand, sidenav, and main all align vertically on wide screens.
+Application frame that arranges a sticky header, a scrollable aside, a main content region, and an optional footer. Header chrome stretches to the viewport edges; the *content column* (header inner content and the aside + main row) can be capped with `--ds-page-shell-max-width` and centred in the viewport, so brand, sidenav, and main all align vertically on wide screens when a cap is set.
 
 ## Anatomy
 
-- **header** — sticky top bar with full-bleed border + backdrop blur. Inner content (`brand` slot left, `header-actions` slot right) sits inside a centred column capped at `--ds-page-shell-max-width`.
+- **header** — sticky top bar with full-bleed border + backdrop blur. Inner content (`brand` slot left, `header-actions` slot right) follows the same `--ds-page-shell-max-width` as the body.
 - **aside** — side column; collapses below the header under the tablet breakpoint. When the slot is empty the column, hamburger toggle, and drawer are not rendered (single-section apps).
-- **main** — grows to fill remaining vertical space within the centred column.
+- **main** — grows to fill remaining vertical space within the shell body.
 - **footer** — optional bare slot beneath the body. Slot `ds-footer` directly when the page needs footer chrome; when the slot is empty PageShell renders no footer markup.
 
 ```html
@@ -27,15 +27,15 @@ Application frame that arranges a sticky header, a scrollable aside, a main cont
 
 ### Content cap
 
-The shell exposes `--ds-page-shell-max-width` (default `90rem` / 1440 px) so consumers can widen or tighten the column without forking the component:
+The shell exposes `--ds-page-shell-max-width` (default `none`) so consumers can opt into a centred content column without forking the component:
 
 ```css
 ds-page-shell {
-  --ds-page-shell-max-width: 96rem; /* a touch wider for dashboards */
+  --ds-page-shell-max-width: 90rem; /* cap wide application frames */
 }
 ```
 
-Below the cap, layout is identical to the viewport edges — the cap only kicks in once the viewport exceeds it.
+The constrained PageShell story shows the capped layout. The other PageShell and SettingsPage stories use the default fluid width.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>

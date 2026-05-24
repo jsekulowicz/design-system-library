@@ -45,6 +45,7 @@ type Story = StoryObj;
 const FRAME_HEIGHT = 480;
 const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
 const TABLET_BREAKPOINT = breakpoint.md;
+const PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:none';
 
 const timezones = [
   { label: 'UTC', value: 'utc' },
@@ -118,7 +119,7 @@ function renderPage(withSidenav: boolean) {
       }
     </style>
     <div style=${frameStyle()}>
-      <ds-page-shell brand="Brand" style="min-height:0;height:100%">
+      <ds-page-shell brand="Brand" style=${PAGE_SHELL_STYLE}>
         ${withSidenav ? renderSidenav() : null}
         ${renderBreadcrumb()}
         ${renderSettingsPage()}

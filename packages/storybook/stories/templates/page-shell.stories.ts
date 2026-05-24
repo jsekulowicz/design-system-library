@@ -31,10 +31,12 @@ type Story = StoryObj;
 const FRAME_HEIGHT = 360;
 const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
 const TABLET_BREAKPOINT = breakpoint.md;
+const FLUID_PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:none';
+const CAPPED_PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:90rem';
 
-function pageShellStory(inner: ReturnType<typeof html>) {
+function pageShellStory(inner: ReturnType<typeof html>, style = FLUID_PAGE_SHELL_STYLE) {
   return html`<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
-    <ds-page-shell brand="Brand" style="min-height:0;height:100%"> ${inner} </ds-page-shell>
+    <ds-page-shell brand="Brand" style=${style}> ${inner} </ds-page-shell>
   </div>`;
 }
 
@@ -84,7 +86,7 @@ export const NoAside: Story = {
     html`<div
       style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)"
     >
-      <ds-page-shell brand="Brand" style="min-height:0;height:100%">
+      <ds-page-shell brand="Brand" style=${FLUID_PAGE_SHELL_STYLE}>
         <div slot="header-actions">
           <ds-button variant="primary" size="sm">New session</ds-button>
         </div>
@@ -101,6 +103,39 @@ export const NoAside: Story = {
         </article>
       </ds-page-shell>
     </div>`,
+};
+
+export const ConstrainedWidth: Story = {
+  parameters: { docs: { story: { height: STORY_HEIGHT } } },
+  render: () =>
+    pageShellStory(
+      html`
+        <div slot="header-actions">
+          <ds-button variant="secondary" size="sm">Export</ds-button>
+        </div>
+        <ds-sidenav slot="aside">
+          <ds-nav-item href="#" current>
+            <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+            Overview
+          </ds-nav-item>
+          <ds-nav-item href="#">
+            <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+            Activity
+          </ds-nav-item>
+        </ds-sidenav>
+        <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+            Capped shell
+          </h1>
+          <p>
+            This story opts into <code>--ds-page-shell-max-width: 90rem</code> to show the
+            centred column cap. The default PageShell stories use the fluid <code>none</code>
+            value.
+          </p>
+        </article>
+      `,
+      CAPPED_PAGE_SHELL_STYLE,
+    ),
 };
 
 export const CollapsedSidenav: Story = {

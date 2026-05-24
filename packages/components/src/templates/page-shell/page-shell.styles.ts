@@ -5,7 +5,7 @@ const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
 
 export const pageShellStyles = css`
   :host {
-    --ds-page-shell-max-width: 90rem;
+    --ds-page-shell-max-width: none;
 
     display: flex;
     flex-direction: column;

@@ -337,6 +337,13 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/:host\s*{[^}]*height:\s*100dvh/);
     });
 
+    it('defaults the page content column to fluid width', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/:host\s*{[^}]*--ds-page-shell-max-width:\s*none/);
+    });
+
     it('hides the drawer toggle by default and shows it only in mobile-layout', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
