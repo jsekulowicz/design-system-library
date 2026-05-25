@@ -1,5 +1,22 @@
 # @jsekulowicz/ds-components
 
+## 0.11.0
+
+### Minor Changes
+
+- 3040b76: - `ds-drawer` now exposes CSS custom properties so consumers can theme the title-row chrome and remove the default card padding when the drawer's content (e.g. a navigation list) wants to reach the panel edges. New vars:
+  - `--ds-drawer-card-padding` (default `var(--ds-space-6)`) — controls the inset of all drawer content inside the underlying `ds-card`. Set to `0` to let slotted body content go full-width and let the title-row chrome paint edge-to-edge.
+  - `--ds-drawer-title-bg` (default `transparent`) — title-row background.
+  - `--ds-drawer-title-fg` (default `inherit`) — title-row foreground; also applied to the close button so the icon keeps contrast against a coloured background.
+  - `--ds-drawer-title-border-color` (default `transparent`) — bottom border on the title row.
+  - `--ds-drawer-title-padding` (default `0`) — inline / block padding on the title row, useful when `--ds-drawer-card-padding` is `0` so the title row carries its own breathing room.
+  - `ds-page-shell`'s mobile-nav drawer now wires those vars through from the existing `--ds-page-shell-drawer-header-bg` / `-fg` / `-border-color` contract that was preserved from the pre-0.10.0 page-shell. Consumer apps that set those vars on the page-shell host (e.g. xwords' `AppShell.vue` mapping them to its topbar colours) get the same blue-header / themed drawer look back without any app-side changes. The card padding is force-set to `0` for the page-shell drawer use case so sidenav items reach the drawer's inline edges.
+
+### Patch Changes
+
+- 6919eae: - `ds-dialog` and `ds-drawer` body now scrolls when content overflows the modal's height cap. The previous `ds-card::part(card) { height: 100%; max-height: 100% }` chain didn't resolve reliably through `ds-card`'s `display: block` host — when the percentage broke, `.card` sized to its content, the body's `flex: 1 + overflow-y: auto` had no height to scroll against, and overflowing content painted outside the dialog. Replaced both percentages with an explicit viewport-based cap (`min(90vh, 720px)` for dialog, `100dvh` for drawer) so the body always has a constrained parent height to flex inside of.
+  - `ds-dialog` now also has an 8px minimum horizontal gutter on narrow viewports. Switched `width: 100%` to `width: calc(100% - var(--ds-space-4))` — native `margin: auto` continues to centre the dialog within whatever space remains after `max-width` caps it, so wider viewports are unchanged.
+
 ## 0.10.0
 
 ### Minor Changes
