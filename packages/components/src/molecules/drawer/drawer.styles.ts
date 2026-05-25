@@ -1,8 +1,8 @@
 import { css } from 'lit';
 
 export const drawerStyles = css`
-  /* Interpolatable colors so the scroll-driven keyframes can crossfade
-     the gradient stops instead of jumping between values. */
+  /* @property registration so the scroll-driven keyframes can
+     interpolate these as colors. */
   @property --ds-drawer-body-top-fade {
     syntax: '<color>';
     inherits: false;
@@ -26,19 +26,14 @@ export const drawerStyles = css`
     height: 100vh;
     height: 100dvh;
     max-height: 100%;
-    /* Slide in on open, slide out on close. allow-discrete lets the
-       display/overlay properties (which can't normally transition)
-       hold their open values for the duration. */
+    /* allow-discrete lets display/overlay hold their open values for
+       the slide-in / slide-out duration. */
     transition:
       transform var(--ds-duration-slow) var(--ds-easing-standard),
       display var(--ds-duration-slow) allow-discrete,
       overlay var(--ds-duration-slow) allow-discrete;
   }
-  /* Scope flex-column to the open state so the UA's display:none
-     keeps the closed dialog out of layout. Same fix and rationale as
-     ds-dialog — the flex column is needed for the body's height cap to
-     propagate, but unscoped it makes the closed drawer render inline
-     alongside its opener. */
+  /* Scope to [open] so closed dialogs stay display:none per UA. */
   dialog[open] {
     display: flex;
     flex-direction: column;
@@ -83,16 +78,14 @@ export const drawerStyles = css`
     min-width: 0;
   }
   ds-card::part(card) {
-    height: 100%;
-    max-height: 100%;
+    /* Explicit cap; percentage heights don't resolve reliably through
+       ds-card's display:block host. */
+    max-height: 100vh;
+    max-height: 100dvh;
     box-shadow: none;
     border-color: transparent;
     border-radius: 0;
     gap: var(--ds-space-3);
-    /* Consumers (notably ds-page-shell when wrapping a sidenav) can
-       override to 0 so slotted body content reaches the drawer edges
-       and the title-row chrome — when themed via the vars below —
-       paints edge-to-edge. */
     padding: var(--ds-drawer-card-padding, var(--ds-space-6));
   }
   ds-card::part(body) {
@@ -100,15 +93,11 @@ export const drawerStyles = css`
     min-height: 0;
     overflow-x: clip;
     overflow-y: auto;
-    /* Don't chain scroll up to the page when the body reaches its
-       top/bottom boundary or has no overflow. Same rationale as
-       ds-dialog — modal surfaces shouldn't let scroll leak through. */
     overscroll-behavior: contain;
+    /* Inline padding + negative margin lets focus rings on full-width
+       children paint outside the body's clip box. */
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
-    /* Same scroll-driven fade trick as ds-dialog — see comments
-       there. No padding-block buffer; the fades only kick in once
-       there's actual scroll progress to drive them. */
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
@@ -142,17 +131,9 @@ export const drawerStyles = css`
     align-items: center;
     justify-content: space-between;
     gap: var(--ds-space-3);
-    /* Themeable chrome for consumers that need the title row to read
-       as a distinct surface (e.g. ds-page-shell's mobile-nav drawer
-       wants xwords' blue topbar look). All default to transparent /
-       inherit, so the title row stays invisible by default. */
     background: var(--ds-drawer-title-bg, transparent);
     color: var(--ds-drawer-title-fg, inherit);
     border-bottom: 1px solid var(--ds-drawer-title-border-color, transparent);
-    /* Inline / block padding only kicks in when the consumer asks for
-       it — useful when --ds-drawer-card-padding is set to 0 so the
-       title row carries its own breathing room. Default 0 preserves
-       the existing card-padded look for dialogs and standalone drawers. */
     padding: var(--ds-drawer-title-padding, 0);
   }
   .title-text {
@@ -172,10 +153,6 @@ export const drawerStyles = css`
     margin-block-start: calc(var(--ds-space-3) * -1);
     margin-inline-end: calc(var(--ds-space-3) * -1);
   }
-  /* When the title row is themed (via --ds-drawer-title-fg), pull the
-     close button into the same colour. The button's ghost variant
-     normally inherits ds-color-fg; this lets a coloured title row keep
-     icon contrast against its custom background. */
   .close-btn::part(button) {
     color: var(--ds-drawer-title-fg, inherit);
   }

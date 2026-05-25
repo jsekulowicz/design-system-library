@@ -128,10 +128,6 @@ export const pageShellStyles = css`
     display: inline-flex;
   }
 
-  /* In mobile layout the inline-start column collapses — the drawer
-     overlays in the top layer (via ds-drawer's native <dialog>) so it
-     doesn't take grid space — and the inline-end column hides since
-     v1 doesn't surface it in the drawer. */
   :host([mobile-layout]) .shell-body {
     grid-template-columns: 1fr;
   }
@@ -139,15 +135,8 @@ export const pageShellStyles = css`
     display: none;
   }
   :host([mobile-layout]) ds-drawer[part="aside"] {
-    /* ds-drawer is a top-layer modal; remove it from the grid so it
-       doesn't reserve a column when closed. */
+    /* Top-layer modal; don't reserve a grid column when closed. */
     display: contents;
-    /* Strip ds-drawer's default ds-card chrome padding so slotted
-       sidenav items reach the drawer's edge, and theme the title row
-       through to xwords-style overrides via the existing
-       --ds-page-shell-drawer-header-* contract preserved from the
-       pre-refactor page-shell. Consumer apps set those vars on the
-       page-shell host and they cascade through to ds-drawer here. */
     --ds-drawer-card-padding: 0;
     --ds-drawer-title-padding: var(--ds-space-3) var(--ds-space-4);
     --ds-drawer-title-bg: var(--ds-page-shell-drawer-header-bg, transparent);

@@ -1,8 +1,8 @@
 import { css } from 'lit';
 
 export const dialogStyles = css`
-  /* Interpolatable colors so the scroll-driven keyframes can crossfade
-     the gradient stops instead of jumping between values. */
+  /* @property registration so the scroll-driven keyframes can
+     interpolate these as colors. */
   @property --ds-dialog-body-top-fade {
     syntax: '<color>';
     inherits: false;
@@ -21,20 +21,13 @@ export const dialogStyles = css`
     border: 0;
     background: transparent;
     color: inherit;
-    width: 100%;
+    width: calc(100% - var(--ds-space-4));
     max-height: min(90vh, 720px);
     border-radius: var(--ds-radius-sm);
     box-shadow: var(--ds-shadow-md);
     overflow: visible;
   }
-  /* Scope flex-column to the open state so the UA's display:none
-     keeps the closed dialog out of layout. Without this scope, our
-     display:flex wins unconditionally and the closed dialog renders
-     inline alongside its opener. The flex column itself is needed so
-     ds-card resolves a definite height from the dialog's max-height
-     cap (percentages only resolve against an explicit parent height,
-     not max-height) — otherwise the body never gets a height to
-     scroll against on short viewports. */
+  /* Scope to [open] so closed dialogs stay display:none per UA. */
   dialog[open] {
     display: flex;
     flex-direction: column;
@@ -57,8 +50,10 @@ export const dialogStyles = css`
     min-width: 0;
   }
   ds-card::part(card) {
-    height: 100%;
-    max-height: 100%;
+    /* Match the dialog's cap explicitly; percentage heights don't
+       resolve reliably through ds-card's display:block host, so body
+       scroll breaks when content overflows. */
+    max-height: min(90vh, 720px);
     box-shadow: none;
     border-color: transparent;
     gap: var(--ds-space-3);
@@ -68,20 +63,13 @@ export const dialogStyles = css`
     min-height: 0;
     overflow-x: clip;
     overflow-y: auto;
-    /* Don't chain scroll up to the page when the body reaches its
-       top/bottom boundary or has no overflow. The dialog/drawer is
-       modal — the page behind it shouldn't twitch when the user
-       wheel-scrolls inside the modal. */
     overscroll-behavior: contain;
+    /* Inline padding + negative margin lets focus rings on full-width
+       children paint outside the body's clip box. */
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
-    /* Hide the native scrollbar. Overflow is indicated by a fade mask
-       at the top and bottom of the scrollport, driven by an actual
-       scroll-progress timeline so the fades only appear when there's
-       content to scroll into / out of view. No padding-block buffer
-       is needed — the top fade stays opaque (no fade) at scroll-top
-       and only switches to transparent (fade visible) once the user
-       has scrolled even one pixel; mirror for the bottom. */
+    /* Scrollbar hidden; overflow is signalled by the scroll-driven
+       fade mask defined in the keyframes below. */
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
@@ -96,13 +84,10 @@ export const dialogStyles = css`
   ds-card::part(body)::-webkit-scrollbar {
     display: none;
   }
+  /* Top fade hidden at scroll-top, bottom fade hidden at scroll-end.
+     Near-instant flips at 0.001% / 99.999% keep the transitions
+     binary instead of interpolating across the scroll range. */
   @keyframes ds-dialog-body-scroll-fade {
-    /* At scroll-top: keep the top stop opaque (no fade above), reveal
-       the bottom fade so the user knows there's more below. The two
-       near-instant transitions at 0.001% and 99.999% flip each stop
-       on / off as soon as scroll actually progresses, so the fades
-       are binary (present / absent), not interpolated as the user
-       drags through the range. */
     0% {
       --ds-dialog-body-top-fade: rgb(0 0 0);
       --ds-dialog-body-bottom-fade: rgb(0 0 0 / 0);
@@ -130,19 +115,15 @@ export const dialogStyles = css`
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }
-  /* Slotted heading tags (h1-h6, etc.) carry UA defaults that
-     compound on top of .title-text — a bigger font-size and large
-     vertical margins. Normalise them so 'Foo', '<h2 slot="title">Foo</h2>'
-     and '<span slot="title">Foo</span>' all render identically. */
+  /* Normalise slotted headings (h1-h6) so UA defaults don't compound
+     with .title-text styles. */
   .title-text ::slotted(*) {
     font: inherit;
     margin: 0;
     letter-spacing: inherit;
   }
-  /* Pull the close button up and to the right so it sits near the
-     card's top-right corner instead of indented by ds-card's full
-     ds-space-6 padding. Its own visual chrome (size, hover, focus
-     ring, square shape) comes from ds-button. */
+  /* Pull the close button toward the card's top-right corner; the
+     card's own padding would otherwise indent it. */
   .close-btn {
     margin-block-start: calc(var(--ds-space-3) * -1);
     margin-inline-end: calc(var(--ds-space-3) * -1);
