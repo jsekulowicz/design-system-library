@@ -78,8 +78,10 @@ export const drawerStyles = css`
     min-width: 0;
   }
   ds-card::part(card) {
-    /* Explicit cap; percentage heights don't resolve reliably through
-       ds-card's display:block host. */
+    /* Fill the dialog explicitly; percentage heights don't resolve
+       reliably through ds-card's display:block host. */
+    height: 100vh;
+    height: 100dvh;
     max-height: 100vh;
     max-height: 100dvh;
     box-shadow: none;
@@ -135,6 +137,7 @@ export const drawerStyles = css`
     color: var(--ds-drawer-title-fg, inherit);
     border-bottom: 1px solid var(--ds-drawer-title-border-color, transparent);
     padding: var(--ds-drawer-title-padding, 0);
+    min-height: var(--ds-drawer-title-min-height, auto);
   }
   .title-text {
     margin: 0;

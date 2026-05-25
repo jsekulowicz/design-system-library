@@ -138,7 +138,9 @@ export const pageShellStyles = css`
     /* Top-layer modal; don't reserve a grid column when closed. */
     display: contents;
     --ds-drawer-card-padding: 0;
-    --ds-drawer-title-padding: var(--ds-space-3) var(--ds-space-4);
+    /* Match ds-top-bar's 48px chrome height with inline-only padding. */
+    --ds-drawer-title-padding: 0 var(--ds-space-4);
+    --ds-drawer-title-min-height: 48px;
     --ds-drawer-title-bg: var(--ds-page-shell-drawer-header-bg, transparent);
     --ds-drawer-title-fg: var(--ds-page-shell-drawer-header-fg, inherit);
     --ds-drawer-title-border-color: var(--ds-page-shell-drawer-header-border-color, transparent);
