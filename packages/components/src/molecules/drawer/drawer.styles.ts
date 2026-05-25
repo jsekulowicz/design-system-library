@@ -159,10 +159,6 @@ export const drawerStyles = css`
     margin: 0;
     letter-spacing: inherit;
   }
-  .close-btn {
-    margin-block-start: calc(var(--ds-space-3) * -1);
-    margin-inline-end: calc(var(--ds-space-3) * -1);
-  }
   .close-btn::part(button) {
     color: var(--ds-drawer-title-fg, inherit);
   }
