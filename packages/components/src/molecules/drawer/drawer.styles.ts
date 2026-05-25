@@ -85,7 +85,9 @@ export const drawerStyles = css`
     max-height: 100vh;
     max-height: 100dvh;
     box-shadow: none;
-    border-color: transparent;
+    /* border: 0 not transparent — a 1px transparent border still fills
+       with the card's own background (background-clip: border-box). */
+    border: 0;
     border-radius: 0;
     gap: var(--ds-space-3);
     padding: var(--ds-drawer-card-padding, var(--ds-space-6));
@@ -142,6 +144,11 @@ export const drawerStyles = css`
   .title-text {
     margin: 0;
     flex: 1;
+    /* Flex-centre the slotted content; otherwise the h2's line-height
+       inflates the title-row height and content sits at the baseline. */
+    display: flex;
+    align-items: center;
+    line-height: 1;
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-xl);
     font-weight: var(--ds-font-weight-semibold);
