@@ -15,9 +15,9 @@ export const radioStyles = css`
     opacity: 0.5;
   }
   .dot {
-    width: 1.1rem;
-    height: 1.1rem;
-    border: 1.5px solid var(--ds-color-border-strong);
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--ds-color-border-strong);
     border-radius: 50%;
     background: var(--ds-color-bg);
     display: inline-flex;
@@ -31,8 +31,9 @@ export const radioStyles = css`
   }
   .dot::after {
     content: '';
-    width: 0.55rem;
-    height: 0.55rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
     border-radius: 50%;
     background: var(--ds-color-accent);
     transform: scale(0);
@@ -57,5 +58,6 @@ export const radioStyles = css`
     align-items: center;
     gap: var(--ds-space-2);
     cursor: inherit;
+    line-height: 1;
   }
 `;

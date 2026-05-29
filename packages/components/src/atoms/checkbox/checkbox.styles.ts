@@ -17,11 +17,12 @@ export const checkboxStyles = css`
     display: inline-flex;
     align-items: center;
     gap: var(--ds-space-2);
+    line-height: 1;
   }
   .box {
     width: 1rem;
     height: 1rem;
-    border: 1.5px solid var(--ds-color-border-strong);
+    border: 2px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg);
     display: inline-flex;
@@ -43,8 +44,9 @@ export const checkboxStyles = css`
     border-color: var(--ds-color-danger);
   }
   .check {
-    width: 0.7rem;
-    height: 0.7rem;
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
     color: var(--ds-color-bg);
     visibility: hidden;
     opacity: 0;
