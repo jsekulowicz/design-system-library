@@ -186,6 +186,13 @@
     "./skeleton/define": {
       "import": "./dist/atoms/skeleton/define.js"
     },
+    "./progress-bar": {
+      "types": "./dist/atoms/progress-bar/index.d.ts",
+      "import": "./dist/atoms/progress-bar/index.js"
+    },
+    "./progress-bar/define": {
+      "import": "./dist/atoms/progress-bar/define.js"
+    },
     "./link": {
       "types": "./dist/atoms/link/index.d.ts",
       "import": "./dist/atoms/link/index.js"

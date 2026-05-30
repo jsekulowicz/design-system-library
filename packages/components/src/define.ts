@@ -2,6 +2,7 @@ import './atoms/button/define.js';
 import './atoms/tooltip/define.js';
 import './atoms/badge/define.js';
 import './atoms/skeleton/define.js';
+import './atoms/progress-bar/define.js';
 import './atoms/divider/define.js';
 import './atoms/list/define.js';
 import './atoms/icon/define.js';

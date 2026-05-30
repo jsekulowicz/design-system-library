@@ -1,0 +1,61 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ProgressBarStories from './progress-bar.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={ProgressBarStories} />
+
+# Progress Bar
+
+Determinate horizontal progress indicator. `value` and `max` drive the fill, and an optional label rides on a small chip centred over the bar so it stays legible against any fill colour.
+
+## Anatomy
+
+A `track` containing a coloured `indicator` (the fill) and a centred `label` chip. The track carries `role="progressbar"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow`, so the value is announced without any extra markup.
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+  <ds-tab-panel value="api">
+    <Canvas of={ProgressBarStories.Playground} />
+    <h3>Props</h3>
+    <Controls of={ProgressBarStories.Playground} />
+    <ComponentApi tag="ds-progress-bar" />
+    <h3>Styling</h3>
+    <p>The bar is <code>1.5rem</code> tall and filled with <code>--ds-color-success</code> by default. Override via CSS parts:</p>
+    <ul>
+      <li><code>::part(track)</code> — height, track background and radius.</li>
+      <li><code>::part(indicator)</code> — the fill colour.</li>
+      <li><code>::part(label)</code> — the centred label chip.</li>
+    </ul>
+    <pre><code>{`ds-progress-bar::part(track) { height: 2.25rem; }
+ds-progress-bar::part(indicator) { background: var(--ds-color-accent); }`}</code></pre>
+  </ds-tab-panel>
+
+  <ds-tab-panel value="examples">
+    <Stories includePrimary={false} />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Do</h3>
+    <ul>
+      <li>Use it for determinate progress where the share complete is known (levels, quotas, uploads).</li>
+      <li>Put the readout in the label slot (e.g. <code>3 / 7</code> or <code>60%</code>) instead of repeating it nearby.</li>
+      <li>Recolour the fill with <code>::part(indicator)</code> to carry meaning — e.g. a warning tone near a limit.</li>
+    </ul>
+    <h3>Don't</h3>
+    <ul>
+      <li>Don't use it for indeterminate work with no measurable progress.</li>
+      <li>Don't rely on the fill colour alone to convey state — keep the label informative.</li>
+      <li>Don't put long text in the label; the chip is sized for a short readout.</li>
+    </ul>
+    <h3>Accessibility</h3>
+    <ul>
+      <li>The track already exposes <code>role="progressbar"</code> and the ARIA value range.</li>
+      <li>Set the <code>label</code> attribute to give the bar an accessible name when the surrounding context doesn't.</li>
+      <li>The label chip has its own background and foreground, so it meets contrast regardless of the fill behind it.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>
