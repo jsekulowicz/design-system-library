@@ -18,14 +18,17 @@ export const tableScrollBodyStyles = css`
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
+    /* No overscroll bounce — the rubber-band at the top/bottom looks glitchy
+       against the pinned header and the offset scroll-fade. */
+    overscroll-behavior: none;
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
       rgb(0 0 0) 0,
       rgb(0 0 0) var(--ds-table-header-height),
       var(--ds-scroll-fade-top, rgb(0 0 0)) var(--ds-table-header-height),
-      rgb(0 0 0) calc(var(--ds-table-header-height) * 1.5),
-      rgb(0 0 0) calc(100% - var(--ds-table-header-height) / 2),
+      rgb(0 0 0) calc(var(--ds-table-header-height) * 2),
+      rgb(0 0 0) calc(100% - var(--ds-table-header-height)),
       var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
     );
     animation: ds-scroll-fade linear;
