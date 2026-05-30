@@ -49,12 +49,9 @@ export const tableStyles = css`
     font-weight: var(--ds-font-weight-medium);
     padding: var(--ds-space-2) var(--ds-space-3);
     border-bottom: 1px solid var(--ds-color-border);
-    /* Headers never wrap, so the row height stays constant. When a column
-       is width-capped, a long header truncates with an ellipsis (and a
-       native title tooltip) instead of widening the table. */
+    /* Headers never wrap, so the header row keeps a constant height (a long
+       header widens its column / scrolls rather than growing taller). */
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   tbody td {

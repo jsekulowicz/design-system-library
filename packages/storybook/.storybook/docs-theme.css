@@ -16,6 +16,10 @@
      previews on big monitors. Lift the cap so the preview canvas (and
      thus the iframe-rendered story) can fill the whole docs panel. */
   max-width: none !important;
+  /* Each section heading carries an absolutely-positioned anchor link 30px to
+     its left (margin-left: -30px). With content flush against the panel edge
+     that link is clipped, so reserve inline padding to keep it on-screen. */
+  padding-inline: 2.5rem !important;
 }
 
 .sbdocs h1,

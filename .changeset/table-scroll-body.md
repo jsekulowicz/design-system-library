@@ -8,11 +8,10 @@ overflow is signalled by scroll-driven top and bottom fades (about half a row
 deep so the cue stays visible), with the top fade offset below the header so it
 dims the body, not the header. The header pins to a fixed, CSS-configurable
 `--ds-table-header-height` (no JS measurement), and natural `table-layout: auto`
-column widths are preserved. Headers never wrap; a width-capped column
-truncates a long header with an ellipsis and a native title tooltip. The
-overscroll bounce is suppressed so the rubber-band does not glitch against the
-pinned header and scroll-fade. The host must be given a bounded height by its
-container (e.g. `flex: 1` in a flex column).
+column widths are preserved, and headers never wrap so the header row keeps a
+constant height. The overscroll bounce is suppressed so the rubber-band does
+not glitch against the pinned header and scroll-fade. The host must be given a
+bounded height by its container (e.g. `flex: 1` in a flex column).
 
 Header and body cell padding is slightly reduced (`--ds-space-2 --ds-space-3`)
 for denser rows. The scroll-driven fade used by `ds-dialog`, `ds-drawer` and

@@ -216,33 +216,6 @@ export const ScrollBodyWithPagination: Story = {
   },
 };
 
-export const TruncatedHeader: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Headers never wrap, so the header row keeps a constant height. When a column sets a ' +
-          '`width`, a long header truncates with an ellipsis and exposes the full text via a ' +
-          'native title tooltip (hover the "Annual compensation…" header).',
-      },
-    },
-  },
-  render: () => html`
-<div style="width: 30rem; max-width: 100%;">
-  <ds-table
-    .rows=${PEOPLE.slice(0, 5)}
-    .columns=${[
-      { name: 'name', field: 'name', label: 'Name', width: '8rem' },
-      { name: 'role', field: 'role', label: 'Role', width: '7rem' },
-      { name: 'status', field: 'status', label: 'Status', width: '7rem' },
-      { name: 'joined', field: 'joined', label: 'Joined', width: '7rem' },
-      { name: 'salary', field: 'salary', label: 'Annual compensation in US dollars', width: '11rem', align: 'right', render: (row: Person) => money.format(row.salary) },
-    ] satisfies TableColumn<Person>[]}
-  ></ds-table>
-</div>
-`,
-};
-
 export const ResponsiveStack: Story = {
   render: () => html`
 <div style="max-width: 24rem;">
