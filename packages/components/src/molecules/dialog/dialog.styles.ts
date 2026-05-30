@@ -56,14 +56,20 @@ export const dialogStyles = css`
        children paint outside the body's clip box. */
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
+    /* Inset content vertically so it never sits inside the top/bottom
+       scroll-fade band. A scroll-progress timeline on a non-scrollable body
+       parks at an extreme keyframe on some engines (e.g. Chrome parks at
+       100% → a top fade) instead of deactivating; this padding keeps the
+       content clear of that parked fade without any scroll-state JS. */
+    padding-block: var(--ds-space-3);
     /* Scrollbar hidden; overflow is signalled by the shared scroll-driven
        fade (see shared/scroll-fade.styles). */
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
       var(--ds-scroll-fade-top, rgb(0 0 0)) 0,
-      rgb(0 0 0) var(--ds-space-6),
-      rgb(0 0 0) calc(100% - var(--ds-space-6)),
+      rgb(0 0 0) var(--ds-space-3),
+      rgb(0 0 0) calc(100% - var(--ds-space-3)),
       var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
     );
     animation: ds-scroll-fade linear;
