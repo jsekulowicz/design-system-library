@@ -1,4 +1,7 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const mobileBreakpoint = unsafeCSS(breakpoint.sm);
 
 // `scroll-body`: the body scrolls under a pinned header. The scrollbar is
 // hidden and overflow is signalled by the shared scroll-driven fade (see
@@ -43,5 +46,20 @@ export const tableScrollBodyStyles = css`
     z-index: 1;
     box-sizing: border-box;
     block-size: var(--ds-table-header-height);
+  }
+
+  /* Stacked (mobile) layout hides the header and renders rows as cards, so the
+     top fade must NOT be offset by the header height — fade from the very top
+     like ds-dialog / ds-drawer. */
+  @container (max-width: ${mobileBreakpoint}) {
+    :host([scroll-body]:not([responsive='scroll'])) .scroll {
+      mask-image: linear-gradient(
+        to bottom,
+        var(--ds-scroll-fade-top, rgb(0 0 0)) 0,
+        rgb(0 0 0) var(--ds-table-header-height),
+        rgb(0 0 0) calc(100% - var(--ds-table-header-height)),
+        var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
+      );
+    }
   }
 `;
