@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-react
 
+## 0.13.2
+
+### Patch Changes
+
+- Updated dependencies [db10aec]
+  - @jsekulowicz/ds-components@0.13.2
+
 ## 0.13.1
 
 ### Patch Changes
