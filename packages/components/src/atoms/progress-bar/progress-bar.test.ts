@@ -18,6 +18,11 @@ function indicatorWidth(el: DsProgressBar): string {
   return indicator.style.width;
 }
 
+function indicatorIsFull(el: DsProgressBar): boolean {
+  const indicator = el.shadowRoot!.querySelector<HTMLElement>('[part="indicator"]')!;
+  return indicator.classList.contains('indicator--full');
+}
+
 describe('<ds-progress-bar>', () => {
   it('exposes progressbar semantics', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="30" max="120"></ds-progress-bar>');
@@ -44,6 +49,14 @@ describe('<ds-progress-bar>', () => {
   it('renders zero fill when max is not positive', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="10" max="0"></ds-progress-bar>');
     expect(indicatorWidth(el)).toBe('0%');
+  });
+
+  it('rounds the trailing end only when value reaches max', async () => {
+    const el = await mount<DsProgressBar>('<ds-progress-bar value="40" max="100"></ds-progress-bar>');
+    expect(indicatorIsFull(el)).toBe(false);
+    el.value = 100;
+    await el.updateComplete;
+    expect(indicatorIsFull(el)).toBe(true);
   });
 
   it('shows the label chip only when slotted content exists', async () => {

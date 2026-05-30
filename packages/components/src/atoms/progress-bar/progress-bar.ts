@@ -28,6 +28,10 @@ export class DsProgressBar extends DsElement {
     return Math.min(100, Math.max(0, (this.value / this.max) * 100));
   }
 
+  private get isFull(): boolean {
+    return this.max > 0 && this.value >= this.max;
+  }
+
   private onSlotChange(event: Event): void {
     const slot = event.target as HTMLSlotElement;
     this.hasLabel = slot
@@ -46,7 +50,11 @@ export class DsProgressBar extends DsElement {
         aria-valuemax=${this.max}
         aria-valuenow=${this.value}
       >
-        <div class="indicator" part="indicator" style=${styleMap({ width: `${this.percent}%` })}></div>
+        <div
+          class="indicator ${this.isFull ? 'indicator--full' : ''}"
+          part="indicator"
+          style=${styleMap({ width: `${this.percent}%` })}
+        ></div>
         <div class="label-layer">
           <span class="label ${this.hasLabel ? '' : 'label--empty'}" part="label">
             <slot @slotchange=${this.onSlotChange}></slot>

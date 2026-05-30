@@ -19,8 +19,12 @@ export const progressBarStyles = css`
     inset-inline-start: 0;
     width: 0;
     background: var(--ds-color-success);
-    border-radius: inherit;
+    border-start-start-radius: var(--ds-radius-full);
+    border-end-start-radius: var(--ds-radius-full);
     transition: width 240ms ease;
+  }
+  .indicator--full {
+    border-radius: var(--ds-radius-full);
   }
   .label-layer {
     position: absolute;
