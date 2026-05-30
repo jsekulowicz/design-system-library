@@ -168,6 +168,81 @@ table.rows = rows;`,
 `,
 };
 
+export const ScrollBodyWithPagination: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With the `scroll-body` attribute, only the body scrolls — the header row and the ' +
+          'pagination footer stay pinned. The scrollbar is hidden and overflow is signalled by ' +
+          'top/bottom fades (the top fade is offset below the header). The host needs a bounded ' +
+          'height; here the table fills a 13rem flex column.',
+      },
+    },
+  },
+  render: () => {
+    let page = 1;
+    let pageSize = 5;
+    const sync = () => {
+      const table = document.getElementById('scrollBodyTable') as HTMLElement & { rows: readonly Person[] };
+      const start = (page - 1) * pageSize;
+      table.rows = PEOPLE.slice(start, start + pageSize);
+    };
+    return html`
+<div style="height: 13rem; display: flex; flex-direction: column;">
+  <ds-table
+    scroll-body
+    id="scrollBodyTable"
+    style="flex: 1; min-height: 0;"
+    .rows=${PEOPLE.slice(0, pageSize)}
+    .columns=${RICH_COLUMNS}
+  >
+    <ds-table-pagination
+      slot="footer"
+      page=${page}
+      page-size=${pageSize}
+      total=${PEOPLE.length}
+      .pageSizeOptions=${[5, 8]}
+      @ds-page-change=${(e: CustomEvent<{ page: number }>) => { page = e.detail.page; sync(); }}
+      @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
+        pageSize = e.detail.pageSize;
+        page = e.detail.page;
+        sync();
+      }}
+    ></ds-table-pagination>
+  </ds-table>
+</div>
+`;
+  },
+};
+
+export const TruncatedHeader: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Headers never wrap, so the header row keeps a constant height. When a column sets a ' +
+          '`width`, a long header truncates with an ellipsis and exposes the full text via a ' +
+          'native title tooltip (hover the "Annual compensation…" header).',
+      },
+    },
+  },
+  render: () => html`
+<div style="width: 30rem; max-width: 100%;">
+  <ds-table
+    .rows=${PEOPLE.slice(0, 5)}
+    .columns=${[
+      { name: 'name', field: 'name', label: 'Name', width: '8rem' },
+      { name: 'role', field: 'role', label: 'Role', width: '7rem' },
+      { name: 'status', field: 'status', label: 'Status', width: '7rem' },
+      { name: 'joined', field: 'joined', label: 'Joined', width: '7rem' },
+      { name: 'salary', field: 'salary', label: 'Annual compensation in US dollars', width: '11rem', align: 'right', render: (row: Person) => money.format(row.salary) },
+    ] satisfies TableColumn<Person>[]}
+  ></ds-table>
+</div>
+`,
+};
+
 export const ResponsiveStack: Story = {
   render: () => html`
 <div style="max-width: 24rem;">

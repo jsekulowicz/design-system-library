@@ -1,18 +1,6 @@
 import { css } from 'lit';
 
 export const drawerStyles = css`
-  /* @property registration so the scroll-driven keyframes can
-     interpolate these as colors. */
-  @property --ds-drawer-body-top-fade {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: rgb(0 0 0);
-  }
-  @property --ds-drawer-body-bottom-fade {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: rgb(0 0 0);
-  }
   :host {
     display: contents;
   }
@@ -105,30 +93,16 @@ export const drawerStyles = css`
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
-      var(--ds-drawer-body-top-fade, rgb(0 0 0)) 0,
+      var(--ds-scroll-fade-top, rgb(0 0 0)) 0,
       rgb(0 0 0) var(--ds-space-6),
       rgb(0 0 0) calc(100% - var(--ds-space-6)),
-      var(--ds-drawer-body-bottom-fade, rgb(0 0 0)) 100%
+      var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
     );
-    animation: ds-drawer-body-scroll-fade linear;
+    animation: ds-scroll-fade linear;
     animation-timeline: scroll(self);
   }
   ds-card::part(body)::-webkit-scrollbar {
     display: none;
-  }
-  @keyframes ds-drawer-body-scroll-fade {
-    0% {
-      --ds-drawer-body-top-fade: rgb(0 0 0);
-      --ds-drawer-body-bottom-fade: rgb(0 0 0 / 0);
-    }
-    0.001%, 99.999% {
-      --ds-drawer-body-top-fade: rgb(0 0 0 / 0);
-      --ds-drawer-body-bottom-fade: rgb(0 0 0 / 0);
-    }
-    100% {
-      --ds-drawer-body-top-fade: rgb(0 0 0 / 0);
-      --ds-drawer-body-bottom-fade: rgb(0 0 0);
-    }
   }
   .title-row {
     display: flex;

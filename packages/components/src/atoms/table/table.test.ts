@@ -44,6 +44,11 @@ describe('<ds-table>', () => {
     expect(rows[0].textContent).toContain('100');
   });
 
+  it('reflects the scroll-body attribute', async () => {
+    const el = await mountTable({ scrollBody: true });
+    expect(el.hasAttribute('scroll-body')).toBe(true);
+  });
+
   it('applies align class to cells', async () => {
     const el = await mountTable();
     const cells = el.shadowRoot!.querySelectorAll('tbody tr:first-child td');

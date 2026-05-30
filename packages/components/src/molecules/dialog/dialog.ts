@@ -6,6 +6,7 @@ import '../card/define.js';
 import '../../atoms/button/define.js';
 import '../../atoms/icon/icons/x-mark.js';
 import { dialogStyles } from './dialog.styles.js';
+import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 
 export type DialogSize = 'sm' | 'md' | 'lg';
 
@@ -24,7 +25,7 @@ export type DialogSize = 'sm' | 'md' | 'lg';
  * @event ds-cancel - Fires when the dialog is dismissed via Escape or backdrop click.
  */
 export class DsDialog extends DsElement {
-  static override styles = [...DsElement.styles, dialogStyles];
+  static override styles = [...DsElement.styles, scrollFadeStyles, dialogStyles];
 
   @property({ type: Boolean, reflect: true }) open = false;
   @property() label = '';

@@ -85,6 +85,7 @@ export function renderTableHeader<T extends TableRow>(
       scope="col"
       class=${`align-${column.align ?? 'left'}`}
       aria-sort=${ifDefined(ariaSort(column))}
+      title=${ifDefined(column.width ? column.label : undefined)}
     >
       <slot name=${`header-${column.name}`}>${column.label}</slot>
     </th>

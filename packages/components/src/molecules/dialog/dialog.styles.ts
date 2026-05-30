@@ -1,18 +1,6 @@
 import { css } from 'lit';
 
 export const dialogStyles = css`
-  /* @property registration so the scroll-driven keyframes can
-     interpolate these as colors. */
-  @property --ds-dialog-body-top-fade {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: rgb(0 0 0);
-  }
-  @property --ds-dialog-body-bottom-fade {
-    syntax: '<color>';
-    inherits: false;
-    initial-value: rgb(0 0 0);
-  }
   :host {
     display: contents;
   }
@@ -68,38 +56,21 @@ export const dialogStyles = css`
        children paint outside the body's clip box. */
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
-    /* Scrollbar hidden; overflow is signalled by the scroll-driven
-       fade mask defined in the keyframes below. */
+    /* Scrollbar hidden; overflow is signalled by the shared scroll-driven
+       fade (see shared/scroll-fade.styles). */
     scrollbar-width: none;
     mask-image: linear-gradient(
       to bottom,
-      var(--ds-dialog-body-top-fade, rgb(0 0 0)) 0,
+      var(--ds-scroll-fade-top, rgb(0 0 0)) 0,
       rgb(0 0 0) var(--ds-space-6),
       rgb(0 0 0) calc(100% - var(--ds-space-6)),
-      var(--ds-dialog-body-bottom-fade, rgb(0 0 0)) 100%
+      var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
     );
-    animation: ds-dialog-body-scroll-fade linear;
+    animation: ds-scroll-fade linear;
     animation-timeline: scroll(self);
   }
   ds-card::part(body)::-webkit-scrollbar {
     display: none;
-  }
-  /* Top fade hidden at scroll-top, bottom fade hidden at scroll-end.
-     Near-instant flips at 0.001% / 99.999% keep the transitions
-     binary instead of interpolating across the scroll range. */
-  @keyframes ds-dialog-body-scroll-fade {
-    0% {
-      --ds-dialog-body-top-fade: rgb(0 0 0);
-      --ds-dialog-body-bottom-fade: rgb(0 0 0 / 0);
-    }
-    0.001%, 99.999% {
-      --ds-dialog-body-top-fade: rgb(0 0 0 / 0);
-      --ds-dialog-body-bottom-fade: rgb(0 0 0 / 0);
-    }
-    100% {
-      --ds-dialog-body-top-fade: rgb(0 0 0 / 0);
-      --ds-dialog-body-bottom-fade: rgb(0 0 0);
-    }
   }
   .title-row {
     display: flex;

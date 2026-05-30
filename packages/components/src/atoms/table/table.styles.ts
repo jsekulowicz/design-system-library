@@ -8,6 +8,9 @@ export const tableStyles = css`
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-sm);
+    /* Header row height (used as the top scroll-fade offset in scroll-body
+       mode). Single-line by construction; override to taste. */
+    --ds-table-header-height: calc(var(--ds-space-2) * 2 + var(--ds-font-size-sm) * 1.5 + 1px);
   }
 
   .toolbar {
@@ -44,13 +47,18 @@ export const tableStyles = css`
     background: var(--ds-color-bg-subtle);
     color: var(--ds-color-fg);
     font-weight: var(--ds-font-weight-medium);
-    padding: var(--ds-space-3);
+    padding: var(--ds-space-2) var(--ds-space-3);
     border-bottom: 1px solid var(--ds-color-border);
+    /* Headers never wrap, so the row height stays constant. When a column
+       is width-capped, a long header truncates with an ellipsis (and a
+       native title tooltip) instead of widening the table. */
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   tbody td {
-    padding: var(--ds-space-3);
+    padding: var(--ds-space-2) var(--ds-space-3);
     border-bottom: 1px solid var(--ds-color-border-subtle);
     vertical-align: middle;
   }
