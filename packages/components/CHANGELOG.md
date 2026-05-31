@@ -1,5 +1,26 @@
 # @jsekulowicz/ds-components
 
+## 0.13.3
+
+### Patch Changes
+
+- 0829ac5: `ds-dialog`, `ds-drawer`: the body scroll fade is now driven by a small
+  `ScrollFadeController` (a `scroll` listener + `ResizeObserver` + `MutationObserver`,
+  rAF-throttled) instead of a scroll-progress timeline. It sets
+  `--ds-scroll-fade-top` / `--ds-scroll-fade-bottom` from the real scroll position,
+  so the content mask fades the bottom edge while more is below, the top edge once
+  scrolled, and NOTHING when the content fits — fading content into the background
+  (theme-aware, works in light and dark) with no phantom fade on non-scrollable
+  content, including a dialog whose scrollable form is swapped for a short
+  confirmation. `ds-table` keeps its existing fade.
+- 5b3ae65: Share the scroll-fade across `ds-dialog`, `ds-drawer` and `ds-table`. The
+  gradient is now defined once as `--ds-scroll-fade-mask` (tunable via
+  `--ds-scroll-fade-depth` and `--ds-scroll-fade-offset`), the identical card-body
+  scroll styles live in one place, and all three are driven by the same
+  `ScrollFadeController` — the table no longer uses a scroll-progress timeline, so
+  a short, non-scrolling table no longer shows a phantom fade either. The fade is
+  also deeper now (`--ds-space-8`) for a more obvious cue.
+
 ## 0.13.2
 
 ### Patch Changes
