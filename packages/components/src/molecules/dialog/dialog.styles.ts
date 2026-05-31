@@ -56,6 +56,14 @@ export const dialogStyles = css`
        children paint outside the body's clip box. */
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
+    /* Inset content vertically by the fade depth so it sits in the opaque
+       middle of the mask. While scrolling, the leading/trailing edges of the
+       viewport still show content (so the fade reads as the usual cue); only
+       at the scroll extremes do the edges meet this padding. This also keeps
+       short, non-scrolling content clear of the fade on engines that park an
+       inactive scroll-progress timeline at an extreme keyframe (e.g. Chrome
+       parks at 100% when a body shrinks from scrollable to non-scrollable). */
+    padding-block: var(--ds-space-6);
     /* Scrollbar hidden; overflow is signalled by the shared scroll-driven
        fade (see shared/scroll-fade.styles). */
     scrollbar-width: none;
