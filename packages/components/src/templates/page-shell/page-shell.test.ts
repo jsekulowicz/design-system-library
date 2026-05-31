@@ -9,14 +9,15 @@ class ResizeObserverMock {
   static instances: ResizeObserverMock[] = [];
 
   readonly callback: ResizeObserverCallback;
+  target?: Element;
 
   constructor(callback: ResizeObserverCallback) {
     this.callback = callback;
     ResizeObserverMock.instances.push(this);
   }
 
-  observe(): void {
-    // no-op
+  observe(target?: Element): void {
+    if (target) this.target = target;
   }
 
   disconnect(): void {
@@ -26,6 +27,15 @@ class ResizeObserverMock {
   unobserve(): void {
     // no-op
   }
+}
+
+// Other components (e.g. the mobile-nav ds-drawer) also create ResizeObservers,
+// so pick the one observing the page shell itself rather than instances[0].
+function shellResizeObserver(el: Element): ResizeObserverMock {
+  return (
+    ResizeObserverMock.instances.find((o) => o.target === el) ??
+    ResizeObserverMock.instances[0]
+  );
 }
 
 const OriginalResizeObserver = globalThis.ResizeObserver;
@@ -92,7 +102,7 @@ beforeEach(() => {
 });
 
 async function forceMobileLayout(el: DsPageShell): Promise<void> {
-  const observer = ResizeObserverMock.instances[0];
+  const observer = shellResizeObserver(el);
   observer.callback([{ contentRect: { width: 360 } } as ResizeObserverEntry], observer as never);
   await el.updateComplete;
 }
@@ -101,7 +111,7 @@ async function forceMobileLayout(el: DsPageShell): Promise<void> {
 // initial layout snapshot lands on mobile. Tests that exercise the desktop
 // branch need to bump the observed width past the mobile breakpoint first.
 async function forceDesktopLayout(el: DsPageShell): Promise<void> {
-  const observer = ResizeObserverMock.instances[0];
+  const observer = shellResizeObserver(el);
   observer.callback([{ contentRect: { width: 1024 } } as ResizeObserverEntry], observer as never);
   await el.updateComplete;
 }
@@ -252,7 +262,7 @@ describe('<ds-page-shell>', () => {
     menuToggle.click();
     await el.updateComplete;
 
-    const observer = ResizeObserverMock.instances[0];
+    const observer = shellResizeObserver(el);
     observer.callback([{ contentRect: { width: 1024 } } as ResizeObserverEntry], observer as never);
     await el.updateComplete;
 
