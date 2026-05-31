@@ -6,6 +6,7 @@ import '../card/define.js';
 import '../../atoms/button/define.js';
 import '../../atoms/icon/icons/x-mark.js';
 import { drawerStyles } from './drawer.styles.js';
+import { cardBodyScrollFadeStyles, scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
 
 export type DrawerSize = 'sm' | 'md' | 'lg';
@@ -26,7 +27,12 @@ export type DrawerSide = 'start' | 'end';
  * @event ds-cancel - Fires when the drawer is dismissed via Escape or backdrop click.
  */
 export class DsDrawer extends DsElement {
-  static override styles = [...DsElement.styles, drawerStyles];
+  static override styles = [
+    ...DsElement.styles,
+    scrollFadeStyles,
+    cardBodyScrollFadeStyles,
+    drawerStyles,
+  ];
 
   @property({ type: Boolean, reflect: true }) open = false;
   @property() label = '';

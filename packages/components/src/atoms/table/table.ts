@@ -7,6 +7,7 @@ import { tableStyles } from './table.styles.js';
 import { tableResponsiveStyles } from './table-responsive.styles.js';
 import { tableScrollBodyStyles } from './table-scroll-body.styles.js';
 import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
+import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
 import type { TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
@@ -77,6 +78,11 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @state() private _hasCaption = false;
   @state() private _hasToolbar = false;
   @state() private _hasFooter = false;
+
+  private readonly _scrollFade = new ScrollFadeController(
+    this,
+    () => this.shadowRoot?.querySelector('.scroll') as HTMLElement | null,
+  );
 
   #slotObserver: MutationObserver | null = null;
 

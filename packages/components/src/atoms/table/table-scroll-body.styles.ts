@@ -4,12 +4,12 @@ import { breakpoint } from '@jsekulowicz/ds-tokens';
 const mobileBreakpoint = unsafeCSS(breakpoint.sm);
 
 // `scroll-body`: the body scrolls under a pinned header. The scrollbar is
-// hidden and overflow is signalled by the shared scroll-driven fade (see
-// shared/scroll-fade.styles). The header is pinned to a fixed
-// `--ds-table-header-height`, and the top fade is offset by that same height so
-// it dims the body just below the header rather than the header itself — no
-// measurement needed. The fade depth is about half a row so the cue stays
-// visible. Natural `table-layout: auto` column widths are preserved; the host
+// hidden and overflow is signalled by the shared scroll-fade mask (see
+// shared/scroll-fade.styles), whose edges are driven by ScrollFadeController.
+// The header is pinned to a fixed `--ds-table-header-height`, and the top fade
+// is offset by that same height (via `--ds-scroll-fade-offset`) so it dims the
+// body just below the header rather than the header itself — no measurement
+// needed. Natural `table-layout: auto` column widths are preserved; the host
 // needs a bounded height (e.g. `flex: 1` in a flex column).
 export const tableScrollBodyStyles = css`
   :host([scroll-body]) {
@@ -25,17 +25,10 @@ export const tableScrollBodyStyles = css`
        against the pinned header and the offset scroll-fade. */
     overscroll-behavior: none;
     scrollbar-width: none;
-    mask-image: linear-gradient(
-      to bottom,
-      rgb(0 0 0) 0,
-      rgb(0 0 0) var(--ds-table-header-height),
-      var(--ds-scroll-fade-top, rgb(0 0 0)) var(--ds-table-header-height),
-      rgb(0 0 0) calc(var(--ds-table-header-height) * 2),
-      rgb(0 0 0) calc(100% - var(--ds-table-header-height)),
-      var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
-    );
-    animation: ds-scroll-fade linear;
-    animation-timeline: scroll(self);
+    /* Shared scroll-fade mask (driven by ScrollFadeController), offset below
+       the sticky header so it dims the body rather than the header. */
+    --ds-scroll-fade-offset: var(--ds-table-header-height);
+    mask-image: var(--ds-scroll-fade-mask);
   }
   :host([scroll-body]) .scroll::-webkit-scrollbar {
     display: none;
@@ -53,13 +46,7 @@ export const tableScrollBodyStyles = css`
      like ds-dialog / ds-drawer. */
   @container (max-width: ${mobileBreakpoint}) {
     :host([scroll-body]:not([responsive='scroll'])) .scroll {
-      mask-image: linear-gradient(
-        to bottom,
-        var(--ds-scroll-fade-top, rgb(0 0 0)) 0,
-        rgb(0 0 0) var(--ds-table-header-height),
-        rgb(0 0 0) calc(100% - var(--ds-table-header-height)),
-        var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
-      );
+      --ds-scroll-fade-offset: 0px;
     }
   }
 `;

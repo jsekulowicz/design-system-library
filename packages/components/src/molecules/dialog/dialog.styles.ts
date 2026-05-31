@@ -46,32 +46,8 @@ export const dialogStyles = css`
     border-color: transparent;
     gap: var(--ds-space-3);
   }
-  ds-card::part(body) {
-    flex: 1;
-    min-height: 0;
-    overflow-x: clip;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    /* Inline padding + negative margin lets focus rings on full-width
-       children paint outside the body's clip box. */
-    padding-inline: var(--ds-space-2);
-    margin-inline: calc(var(--ds-space-2) * -1);
-    /* Scrollbar hidden; overflow is signalled by a content mask fade whose
-       edges are driven by ScrollFadeController (real scroll state, no scroll
-       timeline). The fade dissolves content into the background, so it reads
-       in any theme and shows nothing when content fits. */
-    scrollbar-width: none;
-    mask-image: linear-gradient(
-      to bottom,
-      var(--ds-scroll-fade-top, rgb(0 0 0)) 0,
-      rgb(0 0 0) var(--ds-space-6),
-      rgb(0 0 0) calc(100% - var(--ds-space-6)),
-      var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
-    );
-  }
-  ds-card::part(body)::-webkit-scrollbar {
-    display: none;
-  }
+  /* The scrolling body (ds-card::part(body)) + its scroll fade come from the
+     shared cardBodyScrollFadeStyles. */
   .title-row {
     display: flex;
     align-items: flex-start;
