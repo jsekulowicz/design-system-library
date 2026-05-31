@@ -56,26 +56,23 @@ export const dialogStyles = css`
        children paint outside the body's clip box. */
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
-    /* Inset content vertically by the fade depth so it sits in the opaque
-       middle of the mask. While scrolling, the leading/trailing edges of the
-       viewport still show content (so the fade reads as the usual cue); only
-       at the scroll extremes do the edges meet this padding. This also keeps
-       short, non-scrolling content clear of the fade on engines that park an
-       inactive scroll-progress timeline at an extreme keyframe (e.g. Chrome
-       parks at 100% when a body shrinks from scrollable to non-scrollable). */
-    padding-block: var(--ds-space-6);
-    /* Scrollbar hidden; overflow is signalled by the shared scroll-driven
-       fade (see shared/scroll-fade.styles). */
+    /* Scrollbar hidden; overflow is signalled by CSS scroll shadows (see
+       shared/scroll-shadow.styles) that auto-hide when the content fits — no
+       scroll timeline, so nothing to mis-park on non-scrollable content. */
     scrollbar-width: none;
-    mask-image: linear-gradient(
-      to bottom,
-      var(--ds-scroll-fade-top, rgb(0 0 0)) 0,
-      rgb(0 0 0) var(--ds-space-6),
-      rgb(0 0 0) calc(100% - var(--ds-space-6)),
-      var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
-    );
-    animation: ds-scroll-fade linear;
-    animation-timeline: scroll(self);
+    background:
+      linear-gradient(var(--ds-scroll-shadow-cover) 35%, rgb(0 0 0 / 0)) center top,
+      linear-gradient(rgb(0 0 0 / 0), var(--ds-scroll-shadow-cover) 65%) center bottom,
+      radial-gradient(farthest-side at 50% 0, var(--ds-scroll-shadow-color), rgb(0 0 0 / 0)) center top,
+      radial-gradient(farthest-side at 50% 100%, var(--ds-scroll-shadow-color), rgb(0 0 0 / 0)) center bottom;
+    background-repeat: no-repeat;
+    background-size:
+      100% var(--ds-scroll-shadow-cover-size),
+      100% var(--ds-scroll-shadow-cover-size),
+      100% var(--ds-scroll-shadow-size),
+      100% var(--ds-scroll-shadow-size);
+    background-attachment: local, local, scroll, scroll;
+    background-color: var(--ds-scroll-shadow-cover);
   }
   ds-card::part(body)::-webkit-scrollbar {
     display: none;
