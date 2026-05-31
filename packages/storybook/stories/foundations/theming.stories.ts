@@ -18,7 +18,7 @@ const meta: Meta = {
   args: {
     accent: '#4A72CC',
     accentHover: '#3860B8',
-    radius: 4,
+    radius: 8,
     hairline: 'rgba(11, 11, 12, 0.12)',
     displayFont: "'Source Serif 4', Georgia, ui-serif, serif",
   },
@@ -79,9 +79,9 @@ export const BrandPresets: Story = {
         --ds-color-accent-hover:#166666;
         --ds-color-accent-active:#0D5252;
         --ds-color-accent-subtle:rgba(31,122,122,0.1);
-        --ds-radius-sm:8px;
-        --ds-radius-md:16px;
-        --ds-radius-lg:24px`)}
+        --ds-radius-sm:12px;
+        --ds-radius-md:24px;
+        --ds-radius-lg:32px`)}
     </div>
   </div>
 </section>`,

@@ -8,7 +8,7 @@ import * as ThemingStories from './theming.stories';
 The system uses a **three-layer token architecture**. Override only the layer you need — you never touch component source code.
 
 ```
-Primitive layer   —  raw values: #4A72CC, 1rem, 4px, 120ms
+Primitive layer   —  raw values: #4A72CC, 1rem, 8px, 120ms
        ↓
 Semantic layer    —  roles: --ds-color-accent, --ds-radius-sm, --ds-duration-fast
        ↓
@@ -39,13 +39,13 @@ Set overrides on any ancestor element. They cascade into every shadow root via C
 :root {
   --ds-color-accent: #E2341D;
   --ds-color-accent-hover: #C12613;
-  --ds-radius-sm: 8px;
+  --ds-radius-sm: 12px;
 }
 ```
 
 **Scoped to a region** — targets one section or component:
 ```html
-<div style="--ds-color-accent: #1F7A7A; --ds-radius-md: 16px;">
+<div style="--ds-color-accent: #1F7A7A; --ds-radius-md: 24px;">
   <ds-button variant="primary">Scoped theme</ds-button>
 </div>
 ```

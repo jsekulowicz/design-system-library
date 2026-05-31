@@ -96,8 +96,8 @@ Override semantic CSS custom properties on any ancestor to retheme all child com
 :root {
   --ds-color-accent: #e2341d;
   --ds-color-accent-hover: #c12613;
-  --ds-radius-sm: 8px;
-  --ds-radius-md: 16px;
+  --ds-radius-sm: 12px;
+  --ds-radius-md: 24px;
 }
 ```
 
