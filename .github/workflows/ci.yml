@@ -53,10 +53,6 @@ jobs:
       - name: Playwright (e2e + a11y)
         run: pnpm --filter @ds/tests test:e2e
 
-      - name: Playwright visual
-        if: ${{ hashFiles('tests/visual/__screenshots__/*.png') != '' }}
-        run: pnpm --filter @ds/tests test:visual
-
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -64,6 +60,34 @@ jobs:
           name: playwright-report
           path: tests/playwright-report
           retention-days: 7
+
+  visual:
+    # Runs inside the pinned Playwright image so CI rendering is byte-identical to
+    # local `pnpm test:visual:docker`. Browsers and fonts ship with the image, so no
+    # `playwright install` is needed and the environment cannot drift with ubuntu-latest.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Build Storybook
+        run: pnpm --filter @ds/storybook build
+
+      - name: Playwright visual
+        if: ${{ hashFiles('tests/visual/__screenshots__/*.png') != '' }}
+        run: pnpm --filter @ds/tests test:visual
 
       - name: Upload Playwright visual report
         if: always()
