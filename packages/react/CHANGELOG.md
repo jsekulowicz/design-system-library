@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-react
 
+## 0.15.0
+
+### Minor Changes
+
+- 922ac10: Add React wrappers for `ds-drawer`, `ds-progress-bar`, and `ds-segmented-control`,
+  keeping the React package in sync with the component library.
+
 ## 0.14.0
 
 ### Patch Changes
