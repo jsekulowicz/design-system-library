@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as SegmentedControlStories from './segmented-control.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={SegmentedControlStories} />
+
+# SegmentedControl
+
+Single-select control rendering a connected row of mutually-exclusive options, each with an optional leading icon. An inline, token-styled alternative to a dropdown when there are only a few choices.
+
+## Anatomy
+
+A shadow-DOM `radiogroup` of segment buttons. Exposes a single `value`, takes its choices from the `options` array, and emits `ds-change` when the selection changes.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={SegmentedControlStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={SegmentedControlStories.Playground} />
+      <ComponentApi tag="ds-segmented-control" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Always provide a <code>label</code> — it becomes the group's accessible name.</li>
+        <li>Keep options to a small, scannable set — 2–5 is ideal.</li>
+        <li>Pre-select a sensible default so users aren't forced into an arbitrary choice.</li>
+        <li>Use short, parallel option labels; add an <code>icon</code> only when it aids recognition.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for long option lists — prefer <code>ds-select</code>.</li>
+        <li>Don't use for independent toggles — compose checkboxes in a <code>ds-checkbox-group</code>.</li>
+        <li>Don't put destructive or irreversible actions on a segment; it's a value picker, not a button row.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Rendered as a <code>role="radiogroup"</code> whose segments are <code>role="radio"</code> with <code>aria-checked</code>.</li>
+        <li>The <code>label</code> is applied as the group's <code>aria-label</code>.</li>
+        <li>Icon-only meaning is avoided — each segment keeps a visible text label.</li>
+        <li>When an option provides an <code>icon</code>, import its glyph in the host (e.g. <code>@jsekulowicz/ds-components/icon/sparkles</code>).</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>
