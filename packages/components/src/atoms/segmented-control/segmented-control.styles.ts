@@ -16,7 +16,7 @@ export const segmentedControlStyles = css`
     padding: var(--ds-space-1);
     background: var(--ds-color-bg-subtle);
     border: 1px solid var(--ds-color-border-subtle);
-    border-radius: var(--ds-radius-md);
+    border-radius: var(--ds-radius-sm);
     max-width: 100%;
   }
   .segment {
