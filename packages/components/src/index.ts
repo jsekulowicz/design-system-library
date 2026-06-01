@@ -17,6 +17,10 @@ export { DsCheckbox } from './atoms/checkbox/index.js';
 export { DsCheckboxGroup } from './atoms/checkbox-group/index.js';
 export { DsRadio } from './atoms/radio/index.js';
 export { DsRadioGroup } from './atoms/radio-group/index.js';
+export {
+  DsSegmentedControl,
+  type SegmentedControlOption,
+} from './atoms/segmented-control/index.js';
 export { DsSelect, type SelectOption } from './atoms/select/index.js';
 export { DsSearchableSelect } from './atoms/searchable-select/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './atoms/tabs/index.js';

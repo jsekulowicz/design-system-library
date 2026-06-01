@@ -12,6 +12,7 @@ import './atoms/checkbox/define.js';
 import './atoms/checkbox-group/define.js';
 import './atoms/radio/define.js';
 import './atoms/radio-group/define.js';
+import './atoms/segmented-control/define.js';
 import './atoms/select/define.js';
 import './atoms/searchable-select/define.js';
 import './atoms/tabs/define.js';

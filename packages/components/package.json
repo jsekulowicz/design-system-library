@@ -48,6 +48,13 @@
     "./button/define": {
       "import": "./dist/atoms/button/define.js"
     },
+    "./segmented-control": {
+      "types": "./dist/atoms/segmented-control/index.d.ts",
+      "import": "./dist/atoms/segmented-control/index.js"
+    },
+    "./segmented-control/define": {
+      "import": "./dist/atoms/segmented-control/define.js"
+    },
     "./tooltip": {
       "types": "./dist/atoms/tooltip/index.d.ts",
       "import": "./dist/atoms/tooltip/index.js"
