@@ -1,5 +1,13 @@
 # @jsekulowicz/ds-tokens
 
+## 0.14.0
+
+### Minor Changes
+
+- 6a809dd: Increase the default radius scale so `--ds-radius-sm` is 8px, giving cards,
+  buttons, inputs, menus, dialogs, and other baseline surfaces a rounder default
+  while preserving token-based radius usage.
+
 ## 0.5.0
 
 ### Minor Changes

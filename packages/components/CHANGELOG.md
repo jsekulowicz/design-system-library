@@ -1,5 +1,20 @@
 # @jsekulowicz/ds-components
 
+## 0.14.0
+
+### Minor Changes
+
+- 7aff821: Add `ds-segmented-control`: a single-select segmented control rendering a
+  connected row of mutually-exclusive options, each with an optional leading
+  icon. Token-styled (no hardcoded colors or radii) and theme-aware, it's an
+  inline alternative to a dropdown for a small set of choices and emits
+  `ds-change` with `{ value }`.
+
+### Patch Changes
+
+- Updated dependencies [6a809dd]
+  - @jsekulowicz/ds-tokens@0.14.0
+
 ## 0.13.3
 
 ### Patch Changes
