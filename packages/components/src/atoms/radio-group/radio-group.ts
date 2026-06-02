@@ -2,9 +2,15 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
+import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { radioGroupStyles } from './radio-group.styles.js';
 
-type RadioEl = HTMLElement & { checked?: boolean; radioValue?: string };
+type RadioEl = HTMLElement & {
+  checked?: boolean;
+  radioValue?: string;
+  tabStop?: boolean;
+  focus(options?: FocusOptions): void;
+};
 
 /**
  * @tag ds-radio-group
@@ -47,8 +53,23 @@ export class DsRadioGroup extends DsElement {
     this.#wireRadios(this.value !== '');
   };
 
+  #radioValueOf(radio: RadioEl): string {
+    return radio.radioValue ?? radio.getAttribute('radiovalue') ?? '';
+  }
+
+  #isRadioDisabledAt = (index: number): boolean => {
+    const radio = this._radios[index];
+    return radio ? radio.hasAttribute('disabled') : true;
+  };
+
   #wireRadios = (syncChecked: boolean): void => {
-    this._radios.forEach(radio => {
+    const radios = this._radios;
+    const selectedIndex = radios.findIndex(radio => this.#radioValueOf(radio) === this.value);
+    const firstEnabled = radios.findIndex(radio => !radio.hasAttribute('disabled'));
+    // Exactly one radio stays in the tab order: the selected one, or the first
+    // enabled radio when nothing is selected yet (roving tabindex).
+    const tabStopIndex = selectedIndex >= 0 ? selectedIndex : firstEnabled;
+    radios.forEach((radio, index) => {
       if (this.name) radio.setAttribute('name', this.name);
       if (this.required) {
         radio.setAttribute('required', '');
@@ -60,15 +81,46 @@ export class DsRadioGroup extends DsElement {
       } else {
         radio.removeAttribute('disabled');
       }
+      radio.tabStop = index === tabStopIndex;
       if (syncChecked) {
-        const rv = radio.radioValue ?? radio.getAttribute('radiovalue') ?? '';
-        if (rv === this.value) {
+        if (this.#radioValueOf(radio) === this.value) {
           radio.setAttribute('checked', '');
         } else {
           radio.removeAttribute('checked');
         }
       }
     });
+  };
+
+  #onKeydown = (event: KeyboardEvent): void => {
+    if (this.disabled) {
+      return;
+    }
+    const radios = this._radios;
+    const target = resolveRovingTarget({
+      key: event.key,
+      currentIndex: radios.findIndex(radio => this.#radioValueOf(radio) === this.value),
+      count: radios.length,
+      isDisabled: this.#isRadioDisabledAt,
+    });
+    if (target === null) {
+      return;
+    }
+    const radio = radios[target];
+    if (!radio) {
+      return;
+    }
+    event.preventDefault();
+    // Selection follows focus, as the radiogroup pattern prescribes.
+    const value = this.#radioValueOf(radio);
+    if (value !== this.value) {
+      this.value = value;
+      this.invalid = false;
+      this.dispatchEvent(
+        new CustomEvent('ds-change', { bubbles: true, composed: true, detail: { value } }),
+      );
+    }
+    void this.updateComplete.then(() => radio.focus());
   };
 
   #onRadioChange = (event: Event): void => {
@@ -84,7 +136,7 @@ export class DsRadioGroup extends DsElement {
 
   override render(): TemplateResult {
     return html`
-      <fieldset class="fieldset" part="fieldset">
+      <fieldset class="fieldset" part="fieldset" @keydown=${this.#onKeydown}>
         <legend class="label" part="legend">
           ${this.label}
           ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}

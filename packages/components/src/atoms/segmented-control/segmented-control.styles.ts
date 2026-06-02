@@ -3,6 +3,8 @@ import { css } from 'lit';
 export const segmentedControlStyles = css`
   :host {
     display: inline-flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
     max-width: 100%;
   }
   :host([disabled]) {
@@ -10,55 +12,49 @@ export const segmentedControlStyles = css`
     opacity: 0.6;
   }
   .group {
-    display: inline-flex;
-    align-items: stretch;
-    gap: var(--ds-space-1);
-    padding: var(--ds-space-1);
-    background: var(--ds-color-bg-subtle);
-    border: 1px solid var(--ds-color-border-subtle);
+    /* Equal columns that all size to the widest segment: with a shrink-to-fit
+       track, equal 1fr columns each resolve to the widest cell's content, so
+       no segment ends up narrower than its label needs. When the host is given
+       an explicit width they simply share it evenly. */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    /* The track colour shows through the 1px padding and gaps as a hairline
+       frame and dividers between the otherwise borderless segments. */
+    gap: 1px;
+    padding: 1px;
+    background: var(--ds-color-border-subtle);
     border-radius: var(--ds-radius-sm);
     max-width: 100%;
   }
   .segment {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--ds-space-2);
     min-width: 0;
-    padding: var(--ds-space-2) var(--ds-space-3);
-    border: 0;
-    background: transparent;
-    color: var(--ds-color-fg-muted);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-medium);
-    line-height: 1;
-    white-space: nowrap;
-    border-radius: var(--ds-radius-sm);
-    cursor: pointer;
-    transition:
-      background var(--ds-duration-fast) var(--ds-easing-standard),
-      color var(--ds-duration-fast) var(--ds-easing-standard),
-      box-shadow var(--ds-duration-fast) var(--ds-easing-standard);
   }
-  .segment:hover:not([disabled]):not([aria-checked='true']) {
-    color: var(--ds-color-fg);
+  /* Give unselected segments a surface that's distinct from the track so each
+     option reads as its own tile; the selected one keeps the accent fill from
+     the primary button variant. Drop the button min-width floor so the grid
+     drives sizing. */
+  .segment::part(button) {
+    min-width: 0;
+    border-radius: calc(var(--ds-radius-sm) - 1px);
   }
-  .segment[aria-checked='true'] {
+  .segment[variant='ghost']::part(button) {
     background: var(--ds-color-bg);
-    color: var(--ds-color-fg);
-    box-shadow: var(--ds-shadow-sm);
   }
-  .segment:focus-visible {
-    outline: none;
-    box-shadow: var(--ds-shadow-focus);
+  .segment[variant='ghost']::part(button):hover {
+    background: var(--ds-color-bg-subtle);
   }
-  .segment[disabled] {
-    cursor: not-allowed;
-    opacity: 0.5;
+  /* Square off the inner edges so the row reads as one connected control,
+     rounding only the outer corners of the first and last segments. */
+  .segment:first-child:not(:last-child)::part(button) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
-  .label {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .segment:last-child:not(:first-child)::part(button) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .segment:not(:first-child):not(:last-child)::part(button) {
+    border-radius: 0;
   }
 `;

@@ -10,11 +10,13 @@ const meta: Meta = {
   component: 'ds-segmented-control',
   argTypes: {
     label: { control: 'text' },
+    description: { control: 'text' },
     value: { control: 'text' },
     disabled: { control: 'boolean' },
   },
   args: {
     label: 'Voice',
+    description: 'How should clues be read aloud?',
     value: 'light',
     disabled: false,
   },
@@ -39,6 +41,7 @@ export const Playground: Story = {
   render: args => html`
     <ds-segmented-control
       label=${args['label']}
+      description=${args['description']}
       .value=${args['value']}
       .options=${OPTIONS}
       ?disabled=${args['disabled']}
