@@ -30,6 +30,12 @@ export const segmentedControlStyles = css`
   .segment {
     min-width: 0;
   }
+  /* Lift the focused segment above its neighbours so the full focus ring is
+     visible instead of being painted over by the adjacent segment. */
+  .segment:focus-within {
+    position: relative;
+    z-index: 1;
+  }
   /* Give unselected segments a surface that's distinct from the track so each
      option reads as its own tile; the selected one keeps the accent fill from
      the primary button variant. Drop the button min-width floor so the grid
