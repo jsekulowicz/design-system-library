@@ -43,6 +43,16 @@ function checkedStates(el: DsSegmentedControl): (string | null)[] {
   return segments(el).map(s => nativeButton(s).getAttribute('aria-checked'));
 }
 
+function tabIndexes(el: DsSegmentedControl): (string | null)[] {
+  return segments(el).map(s => nativeButton(s).getAttribute('tabindex'));
+}
+
+function pressKey(el: DsSegmentedControl, key: string): void {
+  el.shadowRoot!.querySelector('.group')!.dispatchEvent(
+    new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }),
+  );
+}
+
 describe('<ds-segmented-control>', () => {
   it('warns when label is missing', async () => {
     const warnings: unknown[][] = [];
@@ -122,5 +132,73 @@ describe('<ds-segmented-control>', () => {
     await el.updateComplete;
 
     expect(el.shadowRoot!.querySelector('ds-icon')).not.toBeNull();
+  });
+
+  it('keeps a single tab stop on the selected segment (roving tabindex)', async () => {
+    const el = await mountControl('light');
+    expect(tabIndexes(el)).toEqual(['-1', '0', '-1']);
+  });
+
+  it('falls back the tab stop to the first option when nothing is selected', async () => {
+    const el = await mountControl('');
+    expect(tabIndexes(el)).toEqual(['0', '-1', '-1']);
+  });
+
+  it('moves selection and the tab stop with ArrowRight (selection follows focus)', async () => {
+    const el = await mountControl('light');
+    const events: CustomEvent[] = [];
+    el.addEventListener('ds-change', e => events.push(e as CustomEvent));
+
+    pressKey(el, 'ArrowRight');
+    await el.updateComplete;
+
+    expect(el.value).toBe('natural');
+    expect(events.at(-1)?.detail).toEqual({ value: 'natural' });
+    expect(tabIndexes(el)).toEqual(['-1', '-1', '0']);
+    expect(checkedStates(el)).toEqual(['false', 'false', 'true']);
+  });
+
+  it('wraps to the last option with ArrowLeft from the first', async () => {
+    const el = await mountControl('off');
+    pressKey(el, 'ArrowLeft');
+    await el.updateComplete;
+    expect(el.value).toBe('natural');
+  });
+
+  it('jumps to first/last with Home and End', async () => {
+    const el = await mountControl('light');
+    pressKey(el, 'End');
+    await el.updateComplete;
+    expect(el.value).toBe('natural');
+    pressKey(el, 'Home');
+    await el.updateComplete;
+    expect(el.value).toBe('off');
+  });
+
+  it('skips disabled options while arrowing', async () => {
+    const el = await mount<DsSegmentedControl>(
+      '<ds-segmented-control label="Voice"></ds-segmented-control>',
+    );
+    el.options = [
+      { value: 'off', label: 'Off' },
+      { value: 'light', label: 'Light', disabled: true },
+      { value: 'natural', label: 'Natural' },
+    ];
+    el.value = 'off';
+    await el.updateComplete;
+
+    pressKey(el, 'ArrowRight');
+    await el.updateComplete;
+    expect(el.value).toBe('natural');
+  });
+
+  it('ignores arrow keys when the whole control is disabled', async () => {
+    const el = await mountControl('light');
+    el.disabled = true;
+    await el.updateComplete;
+
+    pressKey(el, 'ArrowRight');
+    await el.updateComplete;
+    expect(el.value).toBe('light');
   });
 });

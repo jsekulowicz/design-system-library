@@ -14,6 +14,14 @@ export class DsRadio extends FormControlMixin(DsElement) {
 
   @property({ type: Boolean, reflect: true }) checked = false;
   @property() radioValue = '';
+  // Roving tabindex within a ds-radio-group: only the active radio stays in the
+  // page tab order, the rest are reachable with arrow keys. Defaults to a
+  // normal tab stop so a standalone radio still works on its own.
+  @property({ type: Boolean, attribute: 'tab-stop' }) tabStop = true;
+
+  override focus(options?: FocusOptions): void {
+    this.renderRoot.querySelector<HTMLInputElement>('input')?.focus(options);
+  }
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('checked')) {
@@ -71,6 +79,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
         name=${this.name || ''}
         .checked=${this.checked}
         value=${this.radioValue}
+        tabindex=${this.tabStop ? '0' : '-1'}
         ?required=${this.required}
         @click=${this.#onInputClick}
       />

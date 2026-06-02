@@ -46,6 +46,7 @@ A visible field `label` (with an optional `description`) above a shadow-DOM `rad
       <h3>Accessibility</h3>
       <ul>
         <li>Rendered as a <code>role="radiogroup"</code> whose <code>ds-button</code> segments expose <code>role="radio"</code> with <code>aria-checked</code> on the focusable element.</li>
+        <li>Follows the radiogroup keyboard pattern: <code>Tab</code> moves focus in and out of the control as a single stop (landing on the selected segment), and <code>←/→/↑/↓</code> plus <code>Home/End</code> move between options — selection follows focus. Disabled options are skipped and movement wraps at the ends.</li>
         <li>The <code>label</code> renders as a visible field label and is also applied as the group's <code>aria-label</code>.</li>
         <li>Icon-only meaning is avoided — each segment keeps a visible text label.</li>
         <li>When an option provides an <code>icon</code>, import its glyph in the host (e.g. <code>@jsekulowicz/ds-components/icon/sparkles</code>).</li>

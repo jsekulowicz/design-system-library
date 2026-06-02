@@ -2,6 +2,7 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { segmentedControlStyles } from './segmented-control.styles.js';
 import '../button/define.js';
 import '../icon/define.js';
@@ -41,6 +42,16 @@ export class DsSegmentedControl extends DsElement {
     }
   }
 
+  // The single tab stop: the selected option, or the first enabled one when
+  // nothing is selected yet. Arrow keys move focus (and selection) from here.
+  get #tabStopIndex(): number {
+    const selected = this.options.findIndex(option => option.value === this.value);
+    if (selected >= 0) {
+      return selected;
+    }
+    return this.options.findIndex(option => !option.disabled);
+  }
+
   #select(option: SegmentedControlOption): void {
     if (this.disabled || option.disabled || option.value === this.value) {
       return;
@@ -49,7 +60,35 @@ export class DsSegmentedControl extends DsElement {
     this.emit('ds-change', { detail: { value: option.value } });
   }
 
-  #renderSegment(option: SegmentedControlOption): TemplateResult {
+  #focusSegment(index: number): void {
+    const segments = this.renderRoot.querySelectorAll<HTMLElement>('.segment');
+    segments[index]?.focus();
+  }
+
+  #onKeydown = (event: KeyboardEvent): void => {
+    if (this.disabled) {
+      return;
+    }
+    const target = resolveRovingTarget({
+      key: event.key,
+      currentIndex: this.#tabStopIndex,
+      count: this.options.length,
+      isDisabled: index => this.options[index]?.disabled === true,
+    });
+    if (target === null) {
+      return;
+    }
+    const option = this.options[target];
+    if (!option) {
+      return;
+    }
+    event.preventDefault();
+    // Selection follows focus, as the radiogroup pattern prescribes.
+    this.#select(option);
+    void this.updateComplete.then(() => this.#focusSegment(target));
+  };
+
+  #renderSegment(option: SegmentedControlOption, index: number): TemplateResult {
     const selected = option.value === this.value;
     return html`
       <ds-button
@@ -60,6 +99,7 @@ export class DsSegmentedControl extends DsElement {
         full-width
         .roleAttr=${'radio'}
         .ariaCheckedAttr=${selected ? 'true' : 'false'}
+        .tabIndexAttr=${index === this.#tabStopIndex ? 0 : -1}
         ?disabled=${this.disabled || option.disabled}
         @ds-click=${() => this.#select(option)}
       >
@@ -74,8 +114,15 @@ export class DsSegmentedControl extends DsElement {
   override render(): TemplateResult {
     return html`
       ${this.label ? renderFieldLabel(this.label, false, 'group') : nothing}
-      <div class="group" id="group" role="radiogroup" aria-label=${this.label} part="group">
-        ${this.options.map(option => this.#renderSegment(option))}
+      <div
+        class="group"
+        id="group"
+        role="radiogroup"
+        aria-label=${this.label}
+        part="group"
+        @keydown=${this.#onKeydown}
+      >
+        ${this.options.map((option, index) => this.#renderSegment(option, index))}
       </div>
       ${renderSubtext(this.description, '', false)}
     `;

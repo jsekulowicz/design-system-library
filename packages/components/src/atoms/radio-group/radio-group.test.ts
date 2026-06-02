@@ -109,6 +109,89 @@ describe('<ds-radio-group>', () => {
     expect(el.value).toBe('basic');
   });
 
+  async function mountGroup(value = ''): Promise<DsRadioGroup> {
+    const el = await mount<DsRadioGroup>(`
+      <ds-radio-group label="Plan" name="plan">
+        <ds-radio radiovalue="basic">Basic</ds-radio>
+        <ds-radio radiovalue="pro">Pro</ds-radio>
+        <ds-radio radiovalue="team">Team</ds-radio>
+      </ds-radio-group>
+    `);
+    if (value) el.value = value;
+    await el.updateComplete;
+    el.shadowRoot!.querySelector('slot')!.dispatchEvent(new Event('slotchange'));
+    await settle(el);
+    return el;
+  }
+
+  async function settle(el: DsRadioGroup): Promise<void> {
+    await el.updateComplete;
+    await Promise.all(
+      Array.from(el.querySelectorAll<DsRadio>('ds-radio')).map((radio) => radio.updateComplete),
+    );
+  }
+
+  function tabIndexes(el: DsRadioGroup): (string | null)[] {
+    return Array.from(el.querySelectorAll<DsRadio>('ds-radio')).map((radio) =>
+      radio.shadowRoot!.querySelector('input')!.getAttribute('tabindex'),
+    );
+  }
+
+  function pressKey(el: DsRadioGroup, key: string): void {
+    el.shadowRoot!.querySelector('.fieldset')!.dispatchEvent(
+      new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }),
+    );
+  }
+
+  it('keeps a single tab stop on the selected radio (roving tabindex)', async () => {
+    const el = await mountGroup('pro');
+    expect(tabIndexes(el)).toEqual(['-1', '0', '-1']);
+  });
+
+  it('falls back the tab stop to the first radio when nothing is selected', async () => {
+    const el = await mountGroup('');
+    expect(tabIndexes(el)).toEqual(['0', '-1', '-1']);
+  });
+
+  it('moves selection and the tab stop with ArrowDown (selection follows focus)', async () => {
+    const el = await mountGroup('basic');
+    const events: CustomEvent[] = [];
+    el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
+
+    pressKey(el, 'ArrowDown');
+    await settle(el);
+
+    expect(el.value).toBe('pro');
+    expect(events.at(-1)?.detail).toEqual({ value: 'pro' });
+    expect(tabIndexes(el)).toEqual(['-1', '0', '-1']);
+  });
+
+  it('wraps to the last radio with ArrowUp from the first', async () => {
+    const el = await mountGroup('basic');
+    pressKey(el, 'ArrowUp');
+    await settle(el);
+    expect(el.value).toBe('team');
+  });
+
+  it('jumps to first/last with Home and End', async () => {
+    const el = await mountGroup('pro');
+    pressKey(el, 'End');
+    await settle(el);
+    expect(el.value).toBe('team');
+    pressKey(el, 'Home');
+    await settle(el);
+    expect(el.value).toBe('basic');
+  });
+
+  it('ignores arrow keys when the group is disabled', async () => {
+    const el = await mountGroup('pro');
+    el.disabled = true;
+    await settle(el);
+    pressKey(el, 'ArrowDown');
+    await settle(el);
+    expect(el.value).toBe('pro');
+  });
+
   it('handles slotchange with empty value and undefined radio metadata', async () => {
     const el = await mount<DsRadioGroup>(`
       <ds-radio-group label="Plan">
