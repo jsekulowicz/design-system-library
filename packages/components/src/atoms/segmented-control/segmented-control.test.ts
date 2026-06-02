@@ -29,8 +29,18 @@ async function mountControl(value = 'light'): Promise<DsSegmentedControl> {
   return el;
 }
 
-function segments(el: DsSegmentedControl): HTMLButtonElement[] {
-  return Array.from(el.shadowRoot!.querySelectorAll<HTMLButtonElement>('.segment'));
+function segments(el: DsSegmentedControl): HTMLElement[] {
+  return Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('.segment'));
+}
+
+// Each segment is a <ds-button>; its focusable element carries the radio role
+// and checked state, and a native click on it is what triggers ds-click.
+function nativeButton(segment: HTMLElement): HTMLButtonElement {
+  return segment.shadowRoot!.querySelector<HTMLButtonElement>('button')!;
+}
+
+function checkedStates(el: DsSegmentedControl): (string | null)[] {
+  return segments(el).map(s => nativeButton(s).getAttribute('aria-checked'));
 }
 
 describe('<ds-segmented-control>', () => {
@@ -48,13 +58,8 @@ describe('<ds-segmented-control>', () => {
 
   it('renders one segment per option and marks the selected one', async () => {
     const el = await mountControl('light');
-    const buttons = segments(el);
-    expect(buttons).toHaveLength(3);
-    expect(buttons.map(b => b.getAttribute('aria-checked'))).toEqual([
-      'false',
-      'true',
-      'false',
-    ]);
+    expect(segments(el)).toHaveLength(3);
+    expect(checkedStates(el)).toEqual(['false', 'true', 'false']);
   });
 
   it('emits ds-change and updates value on click', async () => {
@@ -62,12 +67,12 @@ describe('<ds-segmented-control>', () => {
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', e => events.push(e as CustomEvent));
 
-    segments(el)[2].click();
+    nativeButton(segments(el)[2]).click();
     await el.updateComplete;
 
     expect(el.value).toBe('natural');
     expect(events.at(-1)?.detail).toEqual({ value: 'natural' });
-    expect(segments(el)[2].getAttribute('aria-checked')).toBe('true');
+    expect(checkedStates(el)[2]).toBe('true');
   });
 
   it('does not emit when the selected option is clicked again', async () => {
@@ -75,7 +80,7 @@ describe('<ds-segmented-control>', () => {
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', e => events.push(e as CustomEvent));
 
-    segments(el)[1].click();
+    nativeButton(segments(el)[1]).click();
     await el.updateComplete;
 
     expect(events).toHaveLength(0);
@@ -88,11 +93,24 @@ describe('<ds-segmented-control>', () => {
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', e => events.push(e as CustomEvent));
 
-    segments(el)[2].click();
+    nativeButton(segments(el)[2]).click();
     await el.updateComplete;
 
     expect(events).toHaveLength(0);
     expect(el.value).toBe('light');
+  });
+
+  it('renders a visible label and description', async () => {
+    const el = await mount<DsSegmentedControl>(
+      '<ds-segmented-control label="Voice" description="Pick a reading voice"></ds-segmented-control>',
+    );
+    el.options = OPTIONS;
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.label')?.textContent).toContain('Voice');
+    expect(el.shadowRoot!.querySelector('.description')?.textContent).toContain(
+      'Pick a reading voice',
+    );
   });
 
   it('renders a leading icon when an option provides one', async () => {

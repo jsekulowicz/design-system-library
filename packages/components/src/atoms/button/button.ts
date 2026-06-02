@@ -32,6 +32,11 @@ export class DsButton extends DsElement {
   @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: string;
   @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: string;
   @property({ attribute: 'aria-invalid' }) ariaInvalidAttr?: string;
+  // Let a parent repurpose the focusable element as a radio/tab/menuitem
+  // (e.g. ds-segmented-control). Bound as properties so the role/state land
+  // on the inner <button>, never duplicated onto the host.
+  @property({ attribute: 'role' }) roleAttr?: string;
+  @property({ attribute: 'aria-checked' }) ariaCheckedAttr?: string;
 
   #handleClick = (event: MouseEvent): void => {
     if (this.disabled || this.loading) {
@@ -68,8 +73,10 @@ export class DsButton extends DsElement {
         part="button"
         class="btn ds-focus-ring"
         type=${this.type}
+        role=${this.roleAttr ?? nothing}
         aria-disabled=${this.disabled || this.loading ? 'true' : 'false'}
         aria-busy=${this.loading ? 'true' : 'false'}
+        aria-checked=${this.ariaCheckedAttr ?? nothing}
         aria-controls=${this.ariaControlsAttr ?? nothing}
         aria-expanded=${this.ariaExpandedAttr ?? nothing}
         aria-haspopup=${this.ariaHasPopupAttr ?? nothing}

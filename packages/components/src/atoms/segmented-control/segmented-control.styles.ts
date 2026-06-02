@@ -3,6 +3,8 @@ import { css } from 'lit';
 export const segmentedControlStyles = css`
   :host {
     display: inline-flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
     max-width: 100%;
   }
   :host([disabled]) {
@@ -10,7 +12,7 @@ export const segmentedControlStyles = css`
     opacity: 0.6;
   }
   .group {
-    display: inline-flex;
+    display: flex;
     align-items: stretch;
     gap: var(--ds-space-1);
     padding: var(--ds-space-1);
@@ -20,45 +22,12 @@ export const segmentedControlStyles = css`
     max-width: 100%;
   }
   .segment {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--ds-space-2);
+    flex: 1 1 auto;
     min-width: 0;
-    padding: var(--ds-space-2) var(--ds-space-3);
-    border: 0;
-    background: transparent;
-    color: var(--ds-color-fg-muted);
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
-    font-weight: var(--ds-font-weight-medium);
-    line-height: 1;
-    white-space: nowrap;
-    border-radius: var(--ds-radius-sm);
-    cursor: pointer;
-    transition:
-      background var(--ds-duration-fast) var(--ds-easing-standard),
-      color var(--ds-duration-fast) var(--ds-easing-standard),
-      box-shadow var(--ds-duration-fast) var(--ds-easing-standard);
   }
-  .segment:hover:not([disabled]):not([aria-checked='true']) {
-    color: var(--ds-color-fg);
-  }
-  .segment[aria-checked='true'] {
-    background: var(--ds-color-bg);
-    color: var(--ds-color-fg);
-    box-shadow: var(--ds-shadow-sm);
-  }
-  .segment:focus-visible {
-    outline: none;
-    box-shadow: var(--ds-shadow-focus);
-  }
-  .segment[disabled] {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-  .label {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  /* Drop the button min-width floor so segments share the track evenly and
+     can shrink without overflowing on narrow containers. */
+  .segment::part(button) {
+    min-width: 0;
   }
 `;
