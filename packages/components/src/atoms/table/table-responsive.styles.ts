@@ -61,7 +61,7 @@ export const tableResponsiveStyles = css`
       background: var(--ds-color-bg);
     }
 
-    :host(:not([responsive="scroll"])) tbody tr.clickable:focus-within {
+    :host(:not([responsive="scroll"])) tbody tr.clickable:has(.row-action:focus-visible) {
       box-shadow: var(--ds-shadow-focus);
     }
 

@@ -218,11 +218,11 @@ describe('<ds-table>', () => {
     expect(css).toContain('box-shadow: var(--ds-shadow-focus)');
   });
 
-  it('draws clickable row focus on cells in table layout', () => {
+  it('draws clickable row focus only from the row action in table layout', () => {
     const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
       .map(style => style.cssText)
       .join('\n');
-    expect(css).toContain('tbody tr.clickable:focus-within td');
+    expect(css).toContain('tbody tr.clickable:has(.row-action:focus-visible) td');
     expect(css).toContain('inset 0 2px 0 var(--ds-color-focus)');
     expect(css).toContain('inset 2px 0 0 var(--ds-color-focus)');
   });
