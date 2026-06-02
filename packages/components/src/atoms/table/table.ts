@@ -19,6 +19,12 @@ const INTERACTIVE_TAGS = new Set([
   'ds-table-pagination',
 ]);
 
+const INTERACTIVE_ROLES = new Set([
+  'button', 'checkbox', 'link', 'menuitem', 'menuitemcheckbox',
+  'menuitemradio', 'option', 'radio', 'searchbox', 'slider',
+  'spinbutton', 'switch', 'textbox',
+]);
+
 const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
 
 function parseBooleanAttribute(value: string | null): boolean {
@@ -47,6 +53,7 @@ const booleanAttributeConverter = {
  * @csspart tbody - The `<tbody>` element.
  * @csspart row - Each body `<tr>`.
  * @csspart row-clickable - Each body `<tr>` when `clickable-rows` is set.
+ * @csspart row-action - The native row action button rendered in the first cell when `clickable-rows` is set.
  * @csspart cell - Each body `<td>`.
  * @csspart header-cell - Each header `<th>`.
  * @csspart caption - The `<caption>` wrapper.
@@ -68,6 +75,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ attribute: false }) rows: readonly T[] = [];
   @property({ attribute: false }) columns: readonly TableColumn<T>[] = [];
   @property({ attribute: false }) sortState: TableSortState | null = null;
+  @property({ attribute: false }) rowActionLabel?: (row: T, index: number) => string;
   @property({ type: Boolean, reflect: true, attribute: 'clickable-rows' }) clickableRows = false;
   @property({ converter: booleanAttributeConverter }) loading = false;
   @property({ type: Number, attribute: 'skeleton-rows' }) skeletonRows = 5;
@@ -120,14 +128,10 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     this.emit('ds-row-click', { detail: { row, index } });
   };
 
-  #onRowKeydown = (event: KeyboardEvent, row: T, index: number): void => {
+  #onRowAction = (row: T, index: number): void => {
     if (this.loading) {
       return;
     }
-    if (event.key !== 'Enter' && event.key !== ' ') {
-      return;
-    }
-    event.preventDefault();
     this.emit('ds-row-click', { detail: { row, index } });
   };
 
@@ -144,30 +148,36 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
       if (INTERACTIVE_TAGS.has(tag)) {
         return true;
       }
-      if (node.getAttribute('role') === 'button') {
+      const role = node.getAttribute('role');
+      if (role && INTERACTIVE_ROLES.has(role)) {
         return true;
       }
     }
     return false;
   }
 
-  #ariaSort(column: TableColumn<T>): 'ascending' | 'descending' | 'none' | undefined {
-    if (!column.sortable) {
+  #ariaSort(column: TableColumn<T>): 'ascending' | 'descending' | undefined {
+    if (!column.sortable || this.sortState?.name !== column.name || !this.sortState.direction) {
       return undefined;
-    }
-    if (this.sortState?.name !== column.name || !this.sortState.direction) {
-      return 'none';
     }
     return this.sortState.direction === 'asc' ? 'ascending' : 'descending';
   }
 
+  #rowActionLabel = (row: T, index: number): string => {
+    return this.rowActionLabel?.(row, index) ?? `Activate row ${index + 1}`;
+  };
+
   #renderLoading(): TemplateResult | null {
-    if (!this.loading || this.rows.length === 0) {
+    if (!this.loading) {
       return null;
+    }
+    const content = html`<slot name="loading">Loading...</slot>`;
+    if (this.rows.length === 0) {
+      return html`<div class="loading-status" role="status" aria-live="polite">${content}</div>`;
     }
     return html`
       <div class="loading" part="loading" role="status" aria-live="polite">
-        <span><slot name="loading">Loading...</slot></span>
+        <span>${content}</span>
       </div>
     `;
   }
@@ -202,8 +212,10 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
           rows: this.rows,
           columns: this.columns,
           clickableRows: this.clickableRows,
+          rowActionsDisabled: this.loading,
+          rowActionLabel: this.#rowActionLabel,
           onRowClick: this.#onRowClick,
-          onRowKeydown: this.#onRowKeydown,
+          onRowAction: this.#onRowAction,
         })}</tbody>
       </table>
     `;

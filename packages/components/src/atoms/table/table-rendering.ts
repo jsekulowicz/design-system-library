@@ -1,15 +1,17 @@
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { TableColumn, TableRow } from './types.js';
 
-type AriaSort = 'ascending' | 'descending' | 'none' | undefined;
+type AriaSort = 'ascending' | 'descending' | undefined;
 
 type TableBodyOptions<T extends TableRow> = {
   rows: readonly T[];
   columns: readonly TableColumn<T>[];
   clickableRows: boolean;
+  rowActionsDisabled: boolean;
+  rowActionLabel: (row: T, index: number) => string;
   onRowClick: (event: MouseEvent, row: T, index: number) => void;
-  onRowKeydown: (event: KeyboardEvent, row: T, index: number) => void;
+  onRowAction: (row: T, index: number) => void;
 };
 
 function renderCell<T extends TableRow>(column: TableColumn<T>, row: T, index: number): unknown {
@@ -20,14 +22,55 @@ function renderCell<T extends TableRow>(column: TableColumn<T>, row: T, index: n
   return value == null ? '' : String(value);
 }
 
+function renderCellLabel<T extends TableRow>(column: TableColumn<T>): TemplateResult | typeof nothing {
+  if (!column.label) {
+    return nothing;
+  }
+  return html`<span class="cell-label" aria-hidden="true">${column.label}</span>`;
+}
+
+function renderRowAction<T extends TableRow>(
+  options: TableBodyOptions<T>,
+  row: T,
+  index: number,
+): TemplateResult {
+  return html`
+    <button
+      class="row-action"
+      part="row-action"
+      type="button"
+      aria-label=${options.rowActionLabel(row, index)}
+      ?disabled=${options.rowActionsDisabled}
+      @click=${() => options.onRowAction(row, index)}
+    ></button>
+  `;
+}
+
+function renderCellContent<T extends TableRow>(
+  options: TableBodyOptions<T>,
+  column: TableColumn<T>,
+  row: T,
+  rowIndex: number,
+  columnIndex: number,
+): TemplateResult {
+  return html`
+    <span class="cell-content">
+      ${options.clickableRows && columnIndex === 0 ? renderRowAction(options, row, rowIndex) : nothing}
+      ${renderCell(column, row, rowIndex)}
+    </span>
+  `;
+}
+
 function renderCells<T extends TableRow>(
+  options: TableBodyOptions<T>,
   columns: readonly TableColumn<T>[],
   row: T,
   index: number,
 ): TemplateResult[] {
-  return columns.map(column => html`
+  return columns.map((column, columnIndex) => html`
     <td part="cell" class=${`align-${column.align ?? 'left'}`} data-label=${column.label}>
-      ${renderCell(column, row, index)}
+      ${renderCellLabel(column)}
+      ${renderCellContent(options, column, row, index, columnIndex)}
     </td>
   `);
 }
@@ -41,12 +84,9 @@ function renderClickableRow<T extends TableRow>(
     <tr
       part="row row-clickable"
       class="clickable"
-      role="button"
-      tabindex="0"
       @click=${(e: MouseEvent) => options.onRowClick(e, row, index)}
-      @keydown=${(e: KeyboardEvent) => options.onRowKeydown(e, row, index)}
     >
-      ${renderCells(options.columns, row, index)}
+      ${renderCells(options, options.columns, row, index)}
     </tr>
   `;
 }
@@ -57,7 +97,7 @@ function renderRow<T extends TableRow>(options: TableBodyOptions<T>, row: T, ind
   }
   return html`
     <tr part="row">
-      ${renderCells(options.columns, row, index)}
+      ${renderCells(options, options.columns, row, index)}
     </tr>
   `;
 }

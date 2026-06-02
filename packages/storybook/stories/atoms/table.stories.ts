@@ -271,16 +271,17 @@ export const ClickableRows: Story = {
   render: () => html`
 <div>
   <p id="clickLog" style="margin: 0 0 var(--ds-space-3); color: var(--ds-color-fg-muted); font-family: var(--ds-font-body);">
-    Click or press Enter on a row.
+    Click a row, or tab to its row action and press Enter.
   </p>
   <ds-table
     clickable-rows
     .rows=${PEOPLE.slice(0, 5)}
+    .rowActionLabel=${(row: Person) => `Open ${row.name}`}
     .columns=${[
       ...RICH_COLUMNS,
       {
         name: 'action', field: 'id', label: '',
-        render: (row: Person) => html`<ds-button size="sm" variant="ghost" @ds-click=${(e: Event) => e.stopPropagation()}>Edit ${row.name.split(' ')[0]}</ds-button>`,
+        render: (row: Person) => html`<ds-button size="sm" variant="ghost">Edit ${row.name.split(' ')[0]}</ds-button>`,
       },
     ]}
     @ds-row-click=${(e: CustomEvent<{ row: Person }>) => {

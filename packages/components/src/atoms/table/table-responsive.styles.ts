@@ -32,9 +32,21 @@ export const tableResponsiveStyles = css`
       padding-inline: 0;
     }
 
-    :host(:not([responsive="scroll"])) colgroup,
-    :host(:not([responsive="scroll"])) thead {
+    :host(:not([responsive="scroll"])) colgroup {
       display: none;
+    }
+
+    :host(:not([responsive="scroll"])) thead {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      clip-path: inset(50%);
+      border: 0;
+      white-space: nowrap;
     }
 
     :host(:not([responsive="scroll"])) tbody {
@@ -49,7 +61,7 @@ export const tableResponsiveStyles = css`
       background: var(--ds-color-bg);
     }
 
-    :host(:not([responsive="scroll"])) tbody tr.clickable:focus-visible {
+    :host(:not([responsive="scroll"])) tbody tr.clickable:focus-within {
       box-shadow: 0 0 0 2px var(--ds-color-focus);
     }
 
@@ -69,8 +81,8 @@ export const tableResponsiveStyles = css`
       text-align: left;
     }
 
-    :host(:not([responsive="scroll"])) tbody td::before {
-      content: attr(data-label);
+    :host(:not([responsive="scroll"])) .cell-label {
+      display: block;
       color: var(--ds-color-fg-muted);
       font-weight: var(--ds-font-weight-medium);
       min-width: 0;
@@ -82,10 +94,10 @@ export const tableResponsiveStyles = css`
       display: block;
     }
 
-    :host(:not([responsive="scroll"])) tbody td[data-label=""]::before,
-    :host(:not([responsive="scroll"])) tbody td.empty::before,
-    :host(:not([responsive="scroll"])) .skeleton-table tbody td::before {
-      content: none;
+    :host(:not([responsive="scroll"])) tbody td[data-label=""] .cell-label,
+    :host(:not([responsive="scroll"])) tbody td.empty .cell-label,
+    :host(:not([responsive="scroll"])) .skeleton-table .cell-label {
+      display: none;
     }
 
     :host(:not([responsive="scroll"])) .skeleton-table tbody td {

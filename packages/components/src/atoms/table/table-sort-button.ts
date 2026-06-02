@@ -64,7 +64,6 @@ export class DsTableSortButton extends DsElement {
         part="button"
         type="button"
         aria-label=${this.#ariaLabel()}
-        aria-pressed=${this.direction !== null ? 'true' : 'false'}
         @click=${this.#onClick}
       >
         <slot></slot>

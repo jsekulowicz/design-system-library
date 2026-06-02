@@ -149,10 +149,10 @@ describe('<ds-table>', () => {
     expect(headers[1].hasAttribute('aria-sort')).toBe(false);
   });
 
-  it('sets aria-sort="none" on sortable columns when no sort state matches', async () => {
+  it('omits aria-sort on sortable columns when no sort state matches', async () => {
     const el = await mountTable();
     const headers = el.shadowRoot!.querySelectorAll('thead th');
-    expect(headers[0].getAttribute('aria-sort')).toBe('none');
+    expect(headers[0].hasAttribute('aria-sort')).toBe(false);
   });
 
   it('sets aria-sort="descending" for desc sort direction', async () => {
@@ -166,8 +166,8 @@ describe('<ds-table>', () => {
     const rows = [{ id: 1, name: null, salary: 100 }] as unknown as readonly Person[];
     const columns: TableColumn<Person>[] = [{ name: 'name', field: 'name', label: 'Name' }];
     const el = await mountTable({ rows, columns });
-    const cell = el.shadowRoot!.querySelector('tbody td') as HTMLTableCellElement;
-    expect(cell.textContent?.trim()).toBe('');
+    const content = el.shadowRoot!.querySelector('.cell-content') as HTMLElement;
+    expect(content.textContent?.trim()).toBe('');
   });
 
   it('applies column width style when width is provided', async () => {
@@ -202,6 +202,7 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelector('table.skeleton-table')).not.toBeNull();
     expect(el.shadowRoot!.querySelectorAll('thead th')).toHaveLength(COLUMNS.length);
     expect(el.shadowRoot!.querySelector('[part="loading"]')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[role="status"]')?.textContent).toContain('Loading...');
     expect(el.shadowRoot!.querySelector('[part="empty"]')).toBeNull();
   });
 
@@ -211,8 +212,9 @@ describe('<ds-table>', () => {
       .join('\n');
     expect(css).toContain('.skeleton-table');
     expect(css).toContain('min-width: 0');
-    expect(css).toContain('content: none');
+    expect(css).toContain('.cell-label');
     expect(css).toContain('overflow-wrap: anywhere');
+    expect(css).toContain('clip-path: inset(50%)');
   });
 
   it('shows a loading overlay over initialized data', async () => {
@@ -264,22 +266,37 @@ describe('<ds-table>', () => {
       expect(events).toHaveLength(0);
     });
 
-    it('fires on Enter and Space keydown', async () => {
+    it('renders a native row action button for keyboard activation', async () => {
+      const el = await mountTable({ clickableRows: true });
+      const button = el.shadowRoot!.querySelector('tbody tr .row-action') as HTMLButtonElement;
+      expect(button.type).toBe('button');
+      expect(button.getAttribute('aria-label')).toBe('Activate row 1');
+    });
+
+    it('supports custom row action labels', async () => {
+      const el = await mountTable({
+        clickableRows: true,
+        rowActionLabel: row => `Open ${row.name}`,
+      });
+      const button = el.shadowRoot!.querySelector('tbody tr .row-action') as HTMLButtonElement;
+      expect(button.getAttribute('aria-label')).toBe('Open Ada');
+    });
+
+    it('fires from the native row action button', async () => {
+      const el = await mountTable({ clickableRows: true });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      const button = el.shadowRoot!.querySelector('tbody tr .row-action') as HTMLButtonElement;
+      button.click();
+      expect(events[0]?.detail).toEqual({ row: ROWS[0], index: 0 });
+    });
+
+    it('does not fire on row keydown', async () => {
       const el = await mountTable({ clickableRows: true });
       const events: CustomEvent[] = [];
       el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
       const tr = el.shadowRoot!.querySelector('tbody tr')!;
       tr.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
-      tr.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true }));
-      expect(events).toHaveLength(2);
-    });
-
-    it('does not fire on non-activation keydown', async () => {
-      const el = await mountTable({ clickableRows: true });
-      const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
-      const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      tr.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
     });
 
@@ -345,11 +362,11 @@ describe('<ds-table>', () => {
       expect(events).toHaveLength(1);
     });
 
-    it('sets role=button and tabindex=0 on rows when clickable', async () => {
+    it('keeps clickable rows as native table rows', async () => {
       const el = await mountTable({ clickableRows: true });
       const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      expect(tr.getAttribute('role')).toBe('button');
-      expect(tr.getAttribute('tabindex')).toBe('0');
+      expect(tr.hasAttribute('role')).toBe(false);
+      expect(tr.hasAttribute('tabindex')).toBe(false);
     });
   });
 });

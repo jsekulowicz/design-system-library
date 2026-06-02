@@ -60,6 +60,15 @@ export const tableStyles = css`
     vertical-align: middle;
   }
 
+  .cell-label {
+    display: none;
+  }
+
+  .cell-content {
+    display: block;
+    min-width: 0;
+  }
+
   tbody tr:last-child td {
     border-bottom: 0;
   }
@@ -73,14 +82,28 @@ export const tableStyles = css`
   .align-center { text-align: center; }
 
   tbody tr.clickable {
+    position: relative;
     cursor: pointer;
     outline: none;
   }
   tbody tr.clickable:hover td {
     background: var(--ds-color-bg-muted);
   }
-  tbody tr.clickable:focus-visible {
+  tbody tr.clickable:focus-within {
     box-shadow: inset 0 0 0 2px var(--ds-color-focus);
+  }
+
+  .row-action {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    border: 0;
+    white-space: nowrap;
   }
 
   .skeleton-table {
@@ -108,6 +131,19 @@ export const tableStyles = css`
     background: var(--ds-color-bg);
     box-shadow: var(--ds-shadow-sm, 0 1px 2px rgba(15, 23, 42, 0.12));
     font-weight: var(--ds-font-weight-medium);
+  }
+
+  .loading-status {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    border: 0;
+    white-space: nowrap;
   }
 
   .empty {

@@ -11,7 +11,7 @@ Semantic data table driven by `rows` + `columns` props. Cell content is fully cu
 
 ## Anatomy
 
-A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls. On narrow containers, the default `responsive="stack"` mode turns each row into a labelled stack using column labels; long labels and values wrap instead of forcing horizontal overflow. Use `responsive="scroll"` to keep the classic horizontally scrollable table. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
+A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls. On narrow containers, the default `responsive="stack"` mode turns each row into a labelled stack using column labels; long labels and values wrap instead of forcing horizontal overflow while the table headers stay available to assistive technology. Use `responsive="scroll"` to keep the classic horizontally scrollable table. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state plus a screen-reader status; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
 
 ### Column render as scoped-slot equivalent
 
@@ -66,21 +66,23 @@ The `render` function receives the full row object and index — any component, 
         <li>Keep sorting and pagination state in the parent — pass <code>sortState</code> and paging props in, handle events to update.</li>
         <li>Right-align numeric columns via <code>align: 'right'</code>.</li>
         <li>Mark columns sortable only when <code>sortable: true</code> — this wires <code>aria-sort</code>.</li>
+        <li>Provide <code>.rowActionLabel</code> for clickable rows so the keyboard action names the row, e.g. <code>Open Ada Lovelace</code>.</li>
         <li>Use <code>responsive="scroll"</code> only when horizontal comparison across columns matters on small screens.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
         <li>Don't expect the table to sort or paginate on its own — it's data-driven and presentation-only.</li>
-        <li>Don't nest interactive controls in rows without <code>event.stopPropagation()</code> if the row is also clickable.</li>
+        <li>Don't use clickable rows when every row contains many competing primary actions — add a dedicated action column instead.</li>
         <li>Don't use tables for layout — use CSS grid instead.</li>
       </ul>
       <h3>Accessibility</h3>
       <ul>
         <li>Renders real <code>&lt;table&gt;</code>/<code>&lt;thead&gt;</code>/<code>&lt;tbody&gt;</code>/<code>&lt;th scope="col"&gt;</code> markup.</li>
-        <li>Sortable headers reflect <code>aria-sort</code> ("ascending", "descending", "none") from <code>sortState</code>.</li>
-        <li>Clickable rows are keyboard-focusable, activate on <kbd>Enter</kbd>/<kbd>Space</kbd>, and expose <code>role="button"</code>.</li>
+        <li>The active sorted column reflects <code>aria-sort</code> ("ascending" or "descending") from <code>sortState</code>; unsorted columns omit it.</li>
+        <li>Clickable rows keep native row semantics and expose a native button in the first cell for keyboard activation.</li>
         <li>Clicks on interactive children (buttons, links, form controls) do not trigger row activation.</li>
         <li>Pagination summary is a live region so screen readers announce page changes.</li>
+        <li>Loading states set <code>aria-busy</code> for existing data and expose a live status for initial skeleton loading.</li>
       </ul>
     </ds-tab-panel>
   </ds-tabs>

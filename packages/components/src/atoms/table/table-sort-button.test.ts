@@ -52,15 +52,6 @@ describe('<ds-table-sort-button>', () => {
     expect(el.hasAttribute('direction')).toBe(false);
   });
 
-  it('sets aria-pressed based on direction', async () => {
-    const el = await mount<DsTableSortButton>('<ds-table-sort-button></ds-table-sort-button>');
-    const btn = el.shadowRoot!.querySelector('button')!;
-    expect(btn.getAttribute('aria-pressed')).toBe('false');
-    el.direction = 'asc';
-    await el.updateComplete;
-    expect(btn.getAttribute('aria-pressed')).toBe('true');
-  });
-
   it('includes column in aria-label', async () => {
     const el = await mount<DsTableSortButton>('<ds-table-sort-button column="Name"></ds-table-sort-button>');
     const btn = el.shadowRoot!.querySelector('button')!;
