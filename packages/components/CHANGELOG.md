@@ -1,5 +1,14 @@
 # @jsekulowicz/ds-components
 
+## 0.16.2
+
+### Patch Changes
+
+- 5fcde03: Improve `ds-table` keyboard and screen reader behavior for clickable rows, sorting, responsive stack layout, and loading states.
+- 3a29037: Improve visible focus rings for table sort controls, pagination controls, and clickable rows.
+- 3dd1dda: Round table last-row edge cells so focused clickable rows follow the table container shape.
+- 7bb55e3: Limit clickable row focus styling to the row action itself so focused child controls do not receive duplicate row rings.
+
 ## 0.16.1
 
 ### Patch Changes
