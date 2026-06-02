@@ -215,6 +215,16 @@ describe('<ds-table>', () => {
     expect(css).toContain('.cell-label');
     expect(css).toContain('overflow-wrap: anywhere');
     expect(css).toContain('clip-path: inset(50%)');
+    expect(css).toContain('box-shadow: var(--ds-shadow-focus)');
+  });
+
+  it('draws clickable row focus on cells in table layout', () => {
+    const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
+      .map(style => style.cssText)
+      .join('\n');
+    expect(css).toContain('tbody tr.clickable:focus-within td');
+    expect(css).toContain('inset 0 2px 0 var(--ds-color-focus)');
+    expect(css).toContain('inset 2px 0 0 var(--ds-color-focus)');
   });
 
   it('shows a loading overlay over initialized data', async () => {

@@ -62,7 +62,7 @@ export const tableResponsiveStyles = css`
     }
 
     :host(:not([responsive="scroll"])) tbody tr.clickable:focus-within {
-      box-shadow: 0 0 0 2px var(--ds-color-focus);
+      box-shadow: var(--ds-shadow-focus);
     }
 
     :host(:not([responsive="scroll"])) .skeleton-table tbody tr {

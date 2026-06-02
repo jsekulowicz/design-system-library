@@ -6,20 +6,22 @@ export const tableSortButtonStyles = css`
   }
 
   button {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: var(--ds-space-1);
     background: transparent;
     color: inherit;
     border: 0;
-    padding: 0;
+    padding: var(--ds-space-1);
     font: inherit;
     cursor: pointer;
     border-radius: var(--ds-radius-sm);
   }
   button:focus-visible {
-    outline: 2px solid var(--ds-color-focus);
-    outline-offset: 2px;
+    outline: none;
+    background: var(--ds-color-bg);
+    box-shadow: var(--ds-shadow-focus);
   }
   button:hover {
     color: var(--ds-color-accent);

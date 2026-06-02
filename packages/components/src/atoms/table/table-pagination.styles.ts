@@ -29,6 +29,7 @@ export const tablePaginationStyles = css`
   }
 
   button {
+    position: relative;
     min-width: 2rem;
     height: 2rem;
     padding: 0 var(--ds-space-2);
@@ -47,8 +48,10 @@ export const tablePaginationStyles = css`
     background: var(--ds-color-bg-muted);
   }
   button:focus-visible {
-    outline: 2px solid var(--ds-color-focus);
-    outline-offset: 2px;
+    outline: none;
+    border-color: var(--ds-color-focus);
+    box-shadow: var(--ds-shadow-focus);
+    z-index: 1;
   }
   button:disabled {
     color: var(--ds-color-fg-subtle);
@@ -91,6 +94,11 @@ export const tablePaginationStyles = css`
     border: 1px solid var(--ds-color-border);
     border-radius: var(--ds-radius-sm);
     font: inherit;
+  }
+  select:focus-visible {
+    outline: none;
+    border-color: var(--ds-color-focus);
+    box-shadow: var(--ds-shadow-focus);
   }
 
   .summary {

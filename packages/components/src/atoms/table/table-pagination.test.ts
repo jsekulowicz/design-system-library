@@ -142,4 +142,13 @@ describe('<ds-table-pagination>', () => {
     const pages = pageButtons.map(b => Number(b.getAttribute('aria-label')!.replace('Page ', '')));
     expect(pages).toEqual([1, 50, 100]);
   });
+
+  it('uses the shared focus shadow for buttons and the page size select', () => {
+    const css = (DsTablePagination as unknown as { styles: { cssText: string }[] }).styles
+      .map(style => style.cssText)
+      .join('\n');
+    expect(css).toContain('button:focus-visible');
+    expect(css).toContain('select:focus-visible');
+    expect(css).toContain('box-shadow: var(--ds-shadow-focus)');
+  });
 });

@@ -89,7 +89,25 @@ export const tableStyles = css`
   tbody tr.clickable:hover td {
     background: var(--ds-color-bg-muted);
   }
-  tbody tr.clickable:focus-within {
+  tbody tr.clickable:focus-within td {
+    background: var(--ds-color-bg-muted);
+    box-shadow:
+      inset 0 2px 0 var(--ds-color-focus),
+      inset 0 -2px 0 var(--ds-color-focus);
+  }
+  tbody tr.clickable:focus-within td:first-child {
+    box-shadow:
+      inset 2px 0 0 var(--ds-color-focus),
+      inset 0 2px 0 var(--ds-color-focus),
+      inset 0 -2px 0 var(--ds-color-focus);
+  }
+  tbody tr.clickable:focus-within td:last-child {
+    box-shadow:
+      inset -2px 0 0 var(--ds-color-focus),
+      inset 0 2px 0 var(--ds-color-focus),
+      inset 0 -2px 0 var(--ds-color-focus);
+  }
+  tbody tr.clickable:focus-within td:first-child:last-child {
     box-shadow: inset 0 0 0 2px var(--ds-color-focus);
   }
 
