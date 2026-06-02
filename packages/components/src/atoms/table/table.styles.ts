@@ -72,6 +72,12 @@ export const tableStyles = css`
   tbody tr:last-child td {
     border-bottom: 0;
   }
+  tbody tr:last-child td:first-child {
+    border-bottom-left-radius: calc(var(--ds-radius-md) - 1px);
+  }
+  tbody tr:last-child td:last-child {
+    border-bottom-right-radius: calc(var(--ds-radius-md) - 1px);
+  }
 
   tbody tr:nth-child(even) td {
     background: var(--ds-color-bg-subtle);

@@ -227,6 +227,15 @@ describe('<ds-table>', () => {
     expect(css).toContain('inset 2px 0 0 var(--ds-color-focus)');
   });
 
+  it('rounds the last row edge cells to match the table container', () => {
+    const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
+      .map(style => style.cssText)
+      .join('\n');
+    expect(css).toContain('tbody tr:last-child td:first-child');
+    expect(css).toContain('border-bottom-left-radius');
+    expect(css).toContain('border-bottom-right-radius');
+  });
+
   it('shows a loading overlay over initialized data', async () => {
     const el = await mountTable({ loading: true });
     const table = el.shadowRoot!.querySelector('table') as HTMLTableElement;
