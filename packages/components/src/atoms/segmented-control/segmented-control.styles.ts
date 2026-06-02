@@ -12,8 +12,13 @@ export const segmentedControlStyles = css`
     opacity: 0.6;
   }
   .group {
-    display: flex;
-    align-items: stretch;
+    /* Equal columns that all size to the widest segment: with a shrink-to-fit
+       track, equal 1fr columns each resolve to the widest cell's content, so
+       no segment ends up narrower than its label needs. When the host is given
+       an explicit width they simply share it evenly. */
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
     gap: var(--ds-space-1);
     padding: var(--ds-space-1);
     background: var(--ds-color-bg-subtle);
@@ -22,11 +27,9 @@ export const segmentedControlStyles = css`
     max-width: 100%;
   }
   .segment {
-    flex: 1 1 auto;
     min-width: 0;
   }
-  /* Drop the button min-width floor so segments share the track evenly and
-     can shrink without overflowing on narrow containers. */
+  /* Drop the button min-width floor so the grid, not the button, drives sizing. */
   .segment::part(button) {
     min-width: 0;
   }
