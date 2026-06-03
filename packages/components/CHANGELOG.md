@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.18.0
+
+### Minor Changes
+
+- d3ca1fd: Generate Heroicons 24/solid variants for every glyph, available under the `<name>-solid` icon name.
+
+### Patch Changes
+
+- 63c0ebd: Use `--ds-radius-sm` instead of `--ds-radius-full` for the progress bar track and fill, keeping the right side of the fill square until progress reaches 100%.
+
 ## 0.16.2
 
 ### Patch Changes
