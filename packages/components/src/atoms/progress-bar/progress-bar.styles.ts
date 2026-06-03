@@ -9,7 +9,7 @@ export const progressBarStyles = css`
     position: relative;
     width: 100%;
     height: 1.5rem;
-    border-radius: var(--ds-radius-full);
+    border-radius: var(--ds-radius-sm);
     background: var(--ds-color-bg-subtle);
     overflow: hidden;
   }
@@ -19,12 +19,12 @@ export const progressBarStyles = css`
     inset-inline-start: 0;
     width: 0;
     background: var(--ds-color-success);
-    border-start-start-radius: var(--ds-radius-full);
-    border-end-start-radius: var(--ds-radius-full);
+    border-start-start-radius: var(--ds-radius-sm);
+    border-end-start-radius: var(--ds-radius-sm);
     transition: width 240ms ease;
   }
   .indicator--full {
-    border-radius: var(--ds-radius-full);
+    border-radius: var(--ds-radius-sm);
   }
   .label-layer {
     position: absolute;
