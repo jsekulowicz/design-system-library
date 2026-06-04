@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.18.1
+
+### Patch Changes
+
+- 15fb39c: Render breadcrumb items without an href as non-link text.
+
 ## 0.18.0
 
 ### Minor Changes
