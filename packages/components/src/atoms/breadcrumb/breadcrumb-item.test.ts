@@ -39,12 +39,31 @@ describe('<ds-breadcrumb-item>', () => {
     expect(link.getAttribute('referrerpolicy')).toBe('no-referrer');
   });
 
-  it('renders a <span aria-current="page"> instead of an <a> when current', async () => {
+  it('renders an <a> when current and href is present', async () => {
     const el = await mount<DsBreadcrumbItem>('<ds-breadcrumb-item href="/x" current>Here</ds-breadcrumb-item>');
+    const link = el.shadowRoot!.querySelector('a')!;
+    expect(link).not.toBeNull();
+    expect(link.getAttribute('href')).toBe('/x');
+  });
+
+  it('renders a non-link <span> when href is missing', async () => {
+    const el = await mount<DsBreadcrumbItem>('<ds-breadcrumb-item>Here</ds-breadcrumb-item>');
     expect(el.shadowRoot!.querySelector('a')).toBeNull();
-    const current = el.shadowRoot!.querySelector('[aria-current="page"]')!;
-    expect(current).not.toBeNull();
-    expect(current.tagName).toBe('SPAN');
+    const text = el.shadowRoot!.querySelector('[part="current"]')!;
+    expect(text.tagName).toBe('SPAN');
+    expect(text.getAttribute('aria-current')).toBeNull();
+  });
+
+  it('sets aria-current="page" on a non-link current item', async () => {
+    const el = await mount<DsBreadcrumbItem>('<ds-breadcrumb-item current>Here</ds-breadcrumb-item>');
+    const text = el.shadowRoot!.querySelector('[part="current"]')!;
+    expect(text.getAttribute('aria-current')).toBe('page');
+  });
+
+  it('renders a non-link <span> when href is empty', async () => {
+    const el = await mount<DsBreadcrumbItem>('<ds-breadcrumb-item href="">Here</ds-breadcrumb-item>');
+    expect(el.shadowRoot!.querySelector('a')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="current"]')).not.toBeNull();
   });
 
   it('renders the chevron separator when not last', async () => {

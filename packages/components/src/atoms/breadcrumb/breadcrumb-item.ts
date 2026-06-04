@@ -7,7 +7,7 @@ import '../icon/icons/chevron-right.js';
 
 /**
  * @tag ds-breadcrumb-item
- * @summary A single crumb in a ds-breadcrumb trail. Renders as `<a>` when not current, `<span>` when current.
+ * @summary A single crumb in a ds-breadcrumb trail. Renders as `<a>` when it has an href, `<span>` otherwise.
  * @slot default - The crumb label.
  * @slot leading - Optional icon rendered before the label (e.g. home icon on the first crumb).
  * @csspart link - The internal `<a>` element on non-current items.
@@ -54,9 +54,10 @@ export class DsBreadcrumbItem extends DsElement {
     `;
   }
 
-  #renderCurrent(): TemplateResult {
+  #renderText(): TemplateResult {
+    const ariaCurrent = this.current ? 'page' : nothing;
     return html`
-      <span part="current" class="current" aria-current="page"> ${this.#renderLabel()} </span>
+      <span part="current" class="current" aria-current=${ariaCurrent}> ${this.#renderLabel()} </span>
     `;
   }
 
@@ -73,7 +74,7 @@ export class DsBreadcrumbItem extends DsElement {
 
   override render(): TemplateResult {
     return html`
-      ${this.current ? this.#renderCurrent() : this.#renderAnchor()} ${this.#renderSeparator()}
+      ${this.href ? this.#renderAnchor() : this.#renderText()} ${this.#renderSeparator()}
     `;
   }
 }
