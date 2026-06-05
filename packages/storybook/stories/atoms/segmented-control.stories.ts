@@ -13,12 +13,14 @@ const meta: Meta = {
     description: { control: 'text' },
     value: { control: 'text' },
     disabled: { control: 'boolean' },
+    small: { control: 'boolean' },
   },
   args: {
     label: 'Voice',
     description: 'How should clues be read aloud?',
     value: 'light',
     disabled: false,
+    small: false,
   },
 };
 
@@ -45,6 +47,7 @@ export const Playground: Story = {
       .value=${args['value']}
       .options=${OPTIONS}
       ?disabled=${args['disabled']}
+      ?small=${args['small']}
     ></ds-segmented-control>
   `,
 };

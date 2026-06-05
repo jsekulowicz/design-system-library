@@ -33,6 +33,10 @@ function segments(el: DsSegmentedControl): HTMLElement[] {
   return Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('.segment'));
 }
 
+function segmentSizes(el: DsSegmentedControl): (string | null)[] {
+  return segments(el).map(s => s.getAttribute('size'));
+}
+
 // Each segment is a <ds-button>; its focusable element carries the radio role
 // and checked state, and a native click on it is what triggers ds-click.
 function nativeButton(segment: HTMLElement): HTMLButtonElement {
@@ -70,6 +74,18 @@ describe('<ds-segmented-control>', () => {
     const el = await mountControl('light');
     expect(segments(el)).toHaveLength(3);
     expect(checkedStates(el)).toEqual(['false', 'true', 'false']);
+  });
+
+  it('uses regular sized buttons by default', async () => {
+    const el = await mountControl('light');
+    expect(segmentSizes(el)).toEqual(['md', 'md', 'md']);
+  });
+
+  it('uses small buttons when small is true', async () => {
+    const el = await mountControl('light');
+    el.small = true;
+    await el.updateComplete;
+    expect(segmentSizes(el)).toEqual(['sm', 'sm', 'sm']);
   });
 
   it('emits ds-change and updates value on click', async () => {

@@ -32,6 +32,7 @@ export class DsSegmentedControl extends DsElement {
   @property() value = '';
   @property({ type: Array }) options: SegmentedControlOption[] = [];
   @property({ type: Boolean, reflect: true }) disabled = false;
+  @property({ type: Boolean, reflect: true }) small = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -94,7 +95,7 @@ export class DsSegmentedControl extends DsElement {
       <ds-button
         class="segment"
         part="segment"
-        size="sm"
+        size=${this.small ? 'sm' : 'md'}
         variant=${selected ? 'primary' : 'ghost'}
         full-width
         .roleAttr=${'radio'}
