@@ -14,7 +14,8 @@ import { css } from 'lit';
 // inherit, so a host can override them.
 export const scrollFadeStyles = css`
   ds-card::part(body),
-  .scroll {
+  .scroll,
+  .scroll-fade {
     --ds-scroll-fade-mask: linear-gradient(
       to bottom,
       rgb(0 0 0) 0,

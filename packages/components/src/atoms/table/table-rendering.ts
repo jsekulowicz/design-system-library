@@ -11,6 +11,8 @@ type TableBodyOptions<T extends TableRow> = {
   rowActionsDisabled: boolean;
   rowActionLabel: (row: T, index: number) => string;
   onRowClick: (event: MouseEvent, row: T, index: number) => void;
+  onRowPointerDown: (event: PointerEvent) => void;
+  onRowPointerMove: (event: PointerEvent) => void;
   onRowAction: (row: T, index: number) => void;
 };
 
@@ -84,6 +86,8 @@ function renderClickableRow<T extends TableRow>(
     <tr
       part="row row-clickable"
       class="clickable"
+      @pointerdown=${options.onRowPointerDown}
+      @pointermove=${options.onRowPointerMove}
       @click=${(e: MouseEvent) => options.onRowClick(e, row, index)}
     >
       ${renderCells(options, options.columns, row, index)}

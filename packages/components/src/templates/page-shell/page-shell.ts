@@ -1,12 +1,20 @@
-import { html, type TemplateResult } from 'lit';
+import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { pageShellStyles } from './page-shell.styles.js';
+import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
+import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
 import '../../atoms/button/define.js';
 import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/bars-3.js';
+import '../../atoms/icon/icons/chevron-left.js';
+import '../../atoms/icon/icons/chevron-right.js';
 import '../../molecules/drawer/define.js';
 import '../../organisms/top-bar/define.js';
+
+export type PageShellAsideState = 'visible' | 'compact' | 'hidden';
+export type PageShellAsideEndState = 'visible' | 'hidden';
+export type PageShellAsideSide = 'start' | 'end';
 
 /**
  * @tag ds-page-shell
@@ -21,13 +29,19 @@ import '../../organisms/top-bar/define.js';
  * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
  *   content and the aside + main row centre at this width and align vertically. Defaults to `none`.
  *   Header chrome remains full-bleed.
+ * @event ds-aside-state-change - Emitted when an opt-in desktop aside toggle changes state.
+ *   Detail: `{ side, state, previousState }`.
  */
 export class DsPageShell extends DsElement {
-  static override styles = [...DsElement.styles, pageShellStyles];
+  static override styles = [...DsElement.styles, scrollFadeStyles, pageShellStyles];
 
   @property() brand = '';
   @property({ attribute: 'menu-label' }) menuLabel = 'Navigation menu';
   @property({ attribute: 'end-label' }) endLabel = 'Secondary navigation';
+  @property({ type: Boolean, reflect: true, attribute: 'aside-toggle' }) asideToggle = false;
+  @property({ type: Boolean, reflect: true, attribute: 'aside-end-toggle' }) asideEndToggle = false;
+  @property({ reflect: true, attribute: 'aside-state' }) asideState: PageShellAsideState = 'visible';
+  @property({ reflect: true, attribute: 'aside-end-state' }) asideEndState: PageShellAsideEndState = 'visible';
   @state() private _mobileLayout = false;
   @state() private _mobileNavOpen = false;
   @state() private _hasAside = false;
@@ -35,6 +49,16 @@ export class DsPageShell extends DsElement {
   @state() private _hasFooter = false;
   #resizeObserver: ResizeObserver | null = null;
   #slotObserver: MutationObserver | null = null;
+
+  private readonly _asideScrollFade = new ScrollFadeController(
+    this,
+    () => this.shadowRoot?.querySelector('aside[part="aside"]'),
+  );
+
+  private readonly _asideEndScrollFade = new ScrollFadeController(
+    this,
+    () => this.shadowRoot?.querySelector('aside[part="aside-end"]'),
+  );
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -68,6 +92,16 @@ export class DsPageShell extends DsElement {
 
   override firstUpdated(): void {
     this.#syncSlotPresence();
+  }
+
+  override updated(changed: PropertyValues): void {
+    if (
+      changed.has('asideState') ||
+      changed.has('_mobileLayout') ||
+      changed.has('_hasAside')
+    ) {
+      this.#syncSlottedAsideCollapsed();
+    }
   }
 
   #syncSlotPresence = (): void => {
@@ -128,6 +162,7 @@ export class DsPageShell extends DsElement {
     const slot = event.target as HTMLSlotElement;
     this._hasAside = hasAssignedContent(slot);
     this.toggleAttribute('aside-empty', !this._hasAside);
+    this.#syncSlottedAsideCollapsed();
   };
 
   #onAsideEndSlotChange = (event: Event): void => {
@@ -140,6 +175,69 @@ export class DsPageShell extends DsElement {
     const slot = event.target as HTMLSlotElement;
     this._hasFooter = hasAssignedContent(slot);
     this.toggleAttribute('footer-empty', !this._hasFooter);
+  };
+
+  #syncSlottedAsideCollapsed(): void {
+    const aside = this.querySelector<HTMLElement>('[slot="aside"]');
+    if (!aside || this._mobileLayout) {
+      return;
+    }
+    if (!this.asideToggle && this.asideState === 'visible') {
+      return;
+    }
+    aside.toggleAttribute('collapsed', this.asideState === 'compact');
+  }
+
+  #showStartToggle(): boolean {
+    return this.asideToggle && this._hasAside && !this._mobileLayout;
+  }
+
+  #showEndToggle(): boolean {
+    return this.asideEndToggle && this._hasAsideEnd && !this._mobileLayout;
+  }
+
+  #nextAsideState(): PageShellAsideState {
+    if (this.asideState === 'visible') {
+      return 'compact';
+    }
+    if (this.asideState === 'compact') {
+      return 'hidden';
+    }
+    return 'visible';
+  }
+
+  #nextAsideEndState(): PageShellAsideEndState {
+    return this.asideEndState === 'visible' ? 'hidden' : 'visible';
+  }
+
+  #setAsideState(state: PageShellAsideState): void {
+    const previousState = this.asideState;
+    if (state === previousState) {
+      return;
+    }
+    this.asideState = state;
+    this.emit('ds-aside-state-change', {
+      detail: { side: 'start' as const, state, previousState },
+    });
+  }
+
+  #setAsideEndState(state: PageShellAsideEndState): void {
+    const previousState = this.asideEndState;
+    if (state === previousState) {
+      return;
+    }
+    this.asideEndState = state;
+    this.emit('ds-aside-state-change', {
+      detail: { side: 'end' as const, state, previousState },
+    });
+  }
+
+  #toggleAsideState = (): void => {
+    this.#setAsideState(this.#nextAsideState());
+  };
+
+  #toggleAsideEndState = (): void => {
+    this.#setAsideEndState(this.#nextAsideEndState());
   };
 
   override render(): TemplateResult {
@@ -167,17 +265,11 @@ export class DsPageShell extends DsElement {
         </ds-top-bar>
       </header>
       <div class="shell-body" part="body">
-        ${this._mobileLayout ? this.#renderMobileAside() : this.#renderDesktopAside()}
+        ${this._mobileLayout ? this.#renderMobileAside() : this.#renderDesktopStartCluster()}
         <main part="main">
           <slot></slot>
         </main>
-        <aside
-          part="aside-end"
-          aria-label=${this.endLabel}
-          ?hidden=${!this._hasAsideEnd}
-        >
-          <slot name="aside-end" @slotchange=${this.#onAsideEndSlotChange}></slot>
-        </aside>
+        ${this._mobileLayout ? this.#renderMobileAsideEnd() : this.#renderDesktopEndCluster()}
       </div>
       ${hasFooter
         ? html`<footer part="footer">
@@ -186,15 +278,93 @@ export class DsPageShell extends DsElement {
         : null}`;
   }
 
-  #renderDesktopAside(): TemplateResult {
-    return html`<aside
-      id="mobile-aside"
-      part="aside"
-      aria-label=${this.menuLabel}
-      @click=${this.#onAsideClick}
-    >
-      <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
-    </aside>`;
+  #renderDesktopStartCluster(): TemplateResult {
+    if (!this._hasAside && !this.#showStartToggle()) {
+      return html`<slot name="aside" class="presence-slot" @slotchange=${this.#onAsideSlotChange}></slot>`;
+    }
+    return html`<div class="aside-start-cluster" part="aside-start-cluster">
+      <aside
+        id="desktop-aside"
+        class="scroll-fade"
+        part="aside"
+        aria-label=${this.menuLabel}
+        ?hidden=${!this._hasAside || this.asideState === 'hidden'}
+        @click=${this.#onAsideClick}
+      >
+        <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
+      </aside>
+      ${this.#renderStartToggle()}
+    </div>`;
+  }
+
+  #renderDesktopEndCluster(): TemplateResult {
+    if (!this._hasAsideEnd && !this.#showEndToggle()) {
+      return html`<slot name="aside-end" class="presence-slot" @slotchange=${this.#onAsideEndSlotChange}></slot>`;
+    }
+    return html`<div class="aside-end-cluster" part="aside-end-cluster">
+      ${this.#renderEndToggle()}
+      <aside
+        id="desktop-aside-end"
+        class="scroll-fade"
+        part="aside-end"
+        aria-label=${this.endLabel}
+        ?hidden=${!this._hasAsideEnd || this.asideEndState === 'hidden'}
+      >
+        <slot name="aside-end" @slotchange=${this.#onAsideEndSlotChange}></slot>
+      </aside>
+    </div>`;
+  }
+
+  #renderStartToggle(): TemplateResult | null {
+    if (!this.#showStartToggle()) {
+      return null;
+    }
+    const hidden = this.asideState === 'hidden';
+    const label = this.asideState === 'visible'
+      ? 'Collapse primary navigation'
+      : hidden
+        ? 'Show primary navigation'
+        : 'Hide primary navigation';
+    return html`<div class="aside-toggle-rail aside-toggle-start-rail" part="aside-toggle-rail aside-toggle-start-rail">
+      <ds-button
+        class="aside-toggle aside-toggle-start"
+        part="aside-toggle aside-toggle-start"
+        variant="secondary"
+        size="sm"
+        square
+        label=${label}
+        aria-label=${label}
+        aria-controls="desktop-aside"
+        aria-expanded=${hidden ? 'false' : 'true'}
+        @click=${this.#toggleAsideState}
+      >
+        <ds-icon slot="leading" name=${hidden ? 'chevron-right' : 'chevron-left'} size="lg"></ds-icon>
+      </ds-button>
+    </div>`;
+  }
+
+  #renderEndToggle(): TemplateResult | null {
+    if (!this.#showEndToggle()) {
+      return null;
+    }
+    const hidden = this.asideEndState === 'hidden';
+    const label = hidden ? 'Show secondary navigation' : 'Hide secondary navigation';
+    return html`<div class="aside-toggle-rail aside-toggle-end-rail" part="aside-toggle-rail aside-toggle-end-rail">
+      <ds-button
+        class="aside-toggle aside-toggle-end"
+        part="aside-toggle aside-toggle-end"
+        variant="secondary"
+        size="sm"
+        square
+        label=${label}
+        aria-label=${label}
+        aria-controls="desktop-aside-end"
+        aria-expanded=${hidden ? 'false' : 'true'}
+        @click=${this.#toggleAsideEndState}
+      >
+        <ds-icon slot="leading" name=${hidden ? 'chevron-left' : 'chevron-right'} size="lg"></ds-icon>
+      </ds-button>
+    </div>`;
   }
 
   #renderMobileAside(): TemplateResult {
@@ -212,6 +382,16 @@ export class DsPageShell extends DsElement {
       <slot name="drawer-brand" slot="title">${this.brand}</slot>
       <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
     </ds-drawer>`;
+  }
+
+  #renderMobileAsideEnd(): TemplateResult {
+    return html`<aside
+      part="aside-end"
+      aria-label=${this.endLabel}
+      ?hidden=${!this._hasAsideEnd}
+    >
+      <slot name="aside-end" @slotchange=${this.#onAsideEndSlotChange}></slot>
+    </aside>`;
   }
 }
 

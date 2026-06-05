@@ -26,6 +26,12 @@ const INTERACTIVE_ROLES = new Set([
 ]);
 
 const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
+const ROW_DRAG_THRESHOLD = 4;
+
+type RowPointerStart = {
+  x: number;
+  y: number;
+};
 
 function parseBooleanAttribute(value: string | null): boolean {
   return value !== null && !FALSE_BOOLEAN_ATTRIBUTES.has(value.trim().toLowerCase());
@@ -93,6 +99,8 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   );
 
   #slotObserver: MutationObserver | null = null;
+  #rowPointerStart: RowPointerStart | null = null;
+  #rowPointerDragged = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -122,10 +130,30 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     if (this.loading) {
       return;
     }
-    if (this.#pathHasInteractiveBeforeRow(event)) {
+    if (this.#rowPointerDragged || this.#hasSelection()) {
+      this.#resetRowPointer();
       return;
     }
+    if (this.#pathHasInteractiveBeforeRow(event)) {
+      this.#resetRowPointer();
+      return;
+    }
+    this.#resetRowPointer();
     this.emit('ds-row-click', { detail: { row, index } });
+  };
+
+  #onRowPointerDown = (event: PointerEvent): void => {
+    this.#rowPointerStart = { x: event.clientX, y: event.clientY };
+    this.#rowPointerDragged = false;
+  };
+
+  #onRowPointerMove = (event: PointerEvent): void => {
+    if (!this.#rowPointerStart) {
+      return;
+    }
+    const deltaX = Math.abs(event.clientX - this.#rowPointerStart.x);
+    const deltaY = Math.abs(event.clientY - this.#rowPointerStart.y);
+    this.#rowPointerDragged ||= deltaX > ROW_DRAG_THRESHOLD || deltaY > ROW_DRAG_THRESHOLD;
   };
 
   #onRowAction = (row: T, index: number): void => {
@@ -154,6 +182,16 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
       }
     }
     return false;
+  }
+
+  #hasSelection(): boolean {
+    const selection = this.ownerDocument.defaultView?.getSelection();
+    return selection ? !selection.isCollapsed : false;
+  }
+
+  #resetRowPointer(): void {
+    this.#rowPointerStart = null;
+    this.#rowPointerDragged = false;
   }
 
   #ariaSort(column: TableColumn<T>): 'ascending' | 'descending' | undefined {
@@ -215,6 +253,8 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
           rowActionsDisabled: this.loading,
           rowActionLabel: this.#rowActionLabel,
           onRowClick: this.#onRowClick,
+          onRowPointerDown: this.#onRowPointerDown,
+          onRowPointerMove: this.#onRowPointerMove,
           onRowAction: this.#onRowAction,
         })}</tbody>
       </table>

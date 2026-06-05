@@ -5,6 +5,7 @@ export const sidenavStyles = css`
     --ds-sidenav-item-height: var(--ds-space-10, 2.5rem);
     --ds-sidenav-item-compact-size: var(--ds-space-12, 3rem);
     --ds-sidenav-width: var(--ds-space-64, 16rem);
+    --ds-sidenav-collapsed-width: var(--ds-space-16, 4rem);
 
     display: block;
     width: var(--ds-sidenav-width);
@@ -12,13 +13,12 @@ export const sidenavStyles = css`
     transition: width var(--ds-duration-slow) var(--ds-easing-standard);
   }
   :host([collapsed]) {
-    --ds-sidenav-collapsed-width: var(--ds-space-14, 3.5rem);
     justify-items: flex-start;
     width: var(--ds-sidenav-collapsed-width);
 
     nav {
       width: var(--ds-sidenav-collapsed-width);
-      padding: var(--ds-space-4) var(--ds-space-1);
+      padding: var(--ds-space-3);
       scrollbar-width: none;
     }
   }
@@ -30,8 +30,11 @@ export const sidenavStyles = css`
     background: var(--ds-color-bg);
     overflow-x: clip;
     overflow-y: auto;
-    scrollbar-color: var(--ds-color-fg-subtle) transparent;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    mask-image: var(--ds-scroll-fade-mask);
+  }
+  nav::-webkit-scrollbar {
+    display: none;
   }
   .header {
     padding: 0 var(--ds-space-3);
@@ -60,8 +63,5 @@ export const sidenavStyles = css`
   }
   :host-context(ds-page-shell[mobile-layout]) nav {
     padding-block: var(--ds-space-2);
-  }
-  :host-context(ds-page-shell:not([mobile-layout])) nav {
-    border-right: 1px solid var(--ds-color-border);
   }
 `;

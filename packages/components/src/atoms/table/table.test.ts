@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
 import { html } from 'lit';
 import { DsTable } from './table.js';
 import './define.js';
@@ -33,6 +33,10 @@ async function mountTable(props: Partial<DsTable<Person>> = {}): Promise<DsTable
 
 beforeEach(() => {
   resetTestDom();
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
 describe('<ds-table>', () => {
@@ -332,6 +336,33 @@ describe('<ds-table>', () => {
       el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
       const button = el.shadowRoot!.querySelector('button[data-id]') as HTMLButtonElement;
       button.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      expect(events).toHaveLength(0);
+    });
+
+    it('does not fire when pointer movement indicates a drag', async () => {
+      const el = await mountTable({ clickableRows: true });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      const tr = el.shadowRoot!.querySelector('tbody tr')!;
+      tr.dispatchEvent(new MouseEvent('pointerdown', {
+        bubbles: true, composed: true, clientX: 10, clientY: 10,
+      }));
+      tr.dispatchEvent(new MouseEvent('pointermove', {
+        bubbles: true, composed: true, clientX: 18, clientY: 10,
+      }));
+      tr.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      expect(events).toHaveLength(0);
+    });
+
+    it('does not fire when text is selected', async () => {
+      const el = await mountTable({ clickableRows: true });
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      const tr = el.shadowRoot!.querySelector('tbody tr')!;
+      vi.spyOn(window, 'getSelection').mockReturnValue({ isCollapsed: false } as Selection);
+
+      tr.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+
       expect(events).toHaveLength(0);
     });
 

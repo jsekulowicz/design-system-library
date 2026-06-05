@@ -405,6 +405,15 @@ describe('<ds-page-shell>', () => {
       expect(baseAsideRule).not.toMatch(/scrollbar-gutter:\s*stable/);
     });
 
+    it('hides aside scrollbars and applies the shared scroll fade mask', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/aside\s*{[^}]*scrollbar-width:\s*none/);
+      expect(css).toMatch(/aside\s*{[^}]*mask-image:\s*var\(--ds-scroll-fade-mask\)/);
+      expect(css).toMatch(/aside::-webkit-scrollbar\s*{[^}]*display:\s*none/);
+    });
+
     it('reserves scrollbar gutters on both inline edges of main for symmetric content', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
@@ -420,6 +429,143 @@ describe('<ds-page-shell>', () => {
       expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
       expect(css).toContain('padding-block: var(--ds-space-4)');
       expect(css).toContain('padding-inline: var(--ds-space-4)');
+    });
+  });
+
+  describe('desktop aside toggles', () => {
+    it('does not render aside toggles without opt-in attributes', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand">
+          <div slot="aside">Navigation</div>
+          <div slot="aside-end">TOC</div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await forceDesktopLayout(el);
+      expect(el.shadowRoot!.querySelector('.aside-toggle-start')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.aside-toggle-end')).toBeNull();
+    });
+
+    it('does not override consumer-owned collapsed state without aside-toggle', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand">
+          <ds-sidenav slot="aside" collapsed>Navigation</ds-sidenav>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await forceDesktopLayout(el);
+      expect(el.querySelector<HTMLElement>('[slot="aside"]')?.hasAttribute('collapsed')).toBe(true);
+    });
+
+    it('cycles start aside through visible, compact, hidden, and visible', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand" aside-toggle>
+          <ds-sidenav slot="aside">Navigation</ds-sidenav>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await forceDesktopLayout(el);
+      const toggle = el.shadowRoot!.querySelector('.aside-toggle-start') as HTMLElement;
+      const aside = el.querySelector<HTMLElement>('[slot="aside"]')!;
+      expect(toggle.getAttribute('variant')).toBe('secondary');
+      expect(toggle.getAttribute('size')).toBe('md');
+      expect(toggle.hasAttribute('square')).toBe(true);
+      expect(toggle.querySelector('ds-icon')?.getAttribute('size')).toBe('lg');
+
+      toggle.click();
+      await el.updateComplete;
+      expect(el.asideState).toBe('compact');
+      expect(el.getAttribute('aside-state')).toBe('compact');
+      expect(aside.hasAttribute('collapsed')).toBe(true);
+      expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-left');
+
+      toggle.click();
+      await el.updateComplete;
+      expect(el.asideState).toBe('hidden');
+      expect(aside.hasAttribute('collapsed')).toBe(false);
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('hidden')).toBe(true);
+      expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-right');
+
+      toggle.click();
+      await el.updateComplete;
+      expect(el.asideState).toBe('visible');
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('hidden')).toBe(false);
+    });
+
+    it('cycles end aside between visible and hidden', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand" aside-end-toggle>
+          <div slot="aside-end">Table of contents</div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await forceDesktopLayout(el);
+      const toggle = el.shadowRoot!.querySelector('.aside-toggle-end') as HTMLElement;
+      expect(toggle.getAttribute('variant')).toBe('secondary');
+      expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-right');
+
+      toggle.click();
+      await el.updateComplete;
+      expect(el.asideEndState).toBe('hidden');
+      expect(el.getAttribute('aside-end-state')).toBe('hidden');
+      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.hasAttribute('hidden')).toBe(true);
+      expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-left');
+
+      toggle.click();
+      await el.updateComplete;
+      expect(el.asideEndState).toBe('visible');
+      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.hasAttribute('hidden')).toBe(false);
+    });
+
+    it('emits aside state changes with side and previous state', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand" aside-toggle>
+          <div slot="aside">Navigation</div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await forceDesktopLayout(el);
+      const events: CustomEvent[] = [];
+      el.addEventListener('ds-aside-state-change', (event) => events.push(event as CustomEvent));
+      const toggle = el.shadowRoot!.querySelector('.aside-toggle-start') as HTMLElement;
+
+      toggle.click();
+      await el.updateComplete;
+
+      expect(events[0]?.detail).toEqual({
+        side: 'start',
+        state: 'compact',
+        previousState: 'visible',
+      });
+    });
+
+    it('does not render desktop aside toggles in mobile layout', async () => {
+      const el = await mount<DsPageShell>(`
+        <ds-page-shell brand="Brand" aside-toggle aside-end-toggle>
+          <div slot="aside">Navigation</div>
+          <div slot="aside-end">TOC</div>
+          <div>Content</div>
+        </ds-page-shell>
+      `);
+      await forceMobileLayout(el);
+      expect(el.shadowRoot!.querySelector('.aside-toggle-start')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.aside-toggle-end')).toBeNull();
+    });
+
+    it('positions controls over aside borders without reserving a full rail', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(/\.aside-toggle-rail\s*{[^}]*position:\s*absolute/);
+      expect(css).toMatch(
+        /\.aside-toggle-start-rail\s*{[^}]*inset-inline-end:\s*calc\(var\(--ds-size-md\)\s*\/\s*-2\)/,
+      );
+      expect(css).toMatch(
+        /:host\(\[aside-toggle\]\)\s*aside\[part="aside"\]\s*{[^}]*padding-inline-end:/,
+      );
+      expect(css).toMatch(
+        /:host\(\[aside-end-toggle\]\)\s*aside\[part="aside-end"\]\s*{[^}]*padding-inline-start:/,
+      );
     });
   });
 

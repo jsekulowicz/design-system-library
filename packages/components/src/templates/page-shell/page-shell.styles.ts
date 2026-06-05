@@ -6,6 +6,8 @@ const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
 export const pageShellStyles = css`
   :host {
     --ds-page-shell-max-width: none;
+    --ds-page-shell-aside-toggle-clearance:
+      calc(var(--ds-size-sm) / 2);
 
     display: flex;
     flex-direction: column;
@@ -56,33 +58,58 @@ export const pageShellStyles = css`
     max-width: var(--ds-page-shell-max-width);
     margin-inline: auto;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     min-height: 0;
   }
 
-  :host([aside-empty]) .shell-body {
-    grid-template-columns: 1fr auto;
+  .presence-slot {
+    display: none;
   }
 
-  :host([aside-end-empty]) .shell-body {
-    grid-template-columns: auto 1fr;
+  .aside-start-cluster {
+    grid-column: 1;
+    display: flex;
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    border-inline-end: 1px solid var(--ds-color-border);
   }
 
-  :host([aside-empty][aside-end-empty]) .shell-body {
-    grid-template-columns: 1fr;
+  .aside-end-cluster {
+    grid-column: 3;
+    display: flex;
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    border-inline-start: 1px solid var(--ds-color-border);
+  }
+
+  main {
+    grid-column: 2;
   }
 
   aside {
     display: flex;
+    box-sizing: border-box;
     overflow-x: clip;
     overflow-y: auto;
     overflow-clip-margin-inline: var(--ds-space-2);
     min-height: 0;
-    scrollbar-color: var(--ds-color-fg-subtle) transparent;
-    scrollbar-width: thin;
-    /* No scrollbar-gutter reservation: the aside sits flush with its column
-       edge so the consumer's <main> solely owns the gap. The scrollbar
-       appears on demand when the aside genuinely overflows. */
+    --ds-scroll-fade-depth: var(--ds-space-12, 3rem);
+    scrollbar-width: none;
+    mask-image: var(--ds-scroll-fade-mask);
+  }
+
+  aside::-webkit-scrollbar {
+    display: none;
+  }
+
+  :host([aside-toggle]) aside[part="aside"] {
+    padding-inline-end: var(--ds-page-shell-aside-toggle-clearance);
+  }
+
+  :host([aside-end-toggle]) aside[part="aside-end"] {
+    padding-inline-start: var(--ds-page-shell-aside-toggle-clearance);
   }
 
   :host([aside-empty]) aside[part="aside"],
@@ -92,6 +119,46 @@ export const pageShellStyles = css`
 
   :host([aside-end-empty]) aside[part="aside-end"] {
     display: none;
+  }
+
+  aside[hidden] {
+    display: none;
+  }
+
+  :host([aside-state='compact']) aside[part="aside"] ::slotted(ds-sidenav) {
+    width: var(--ds-sidenav-collapsed-width, var(--ds-space-14, 3.5rem)) !important;
+  }
+
+  :host([aside-state='hidden']) .aside-start-cluster,
+  :host([aside-end-state='hidden']) .aside-end-cluster {
+    width: calc(var(--ds-size-md) / 2);
+  }
+
+  .aside-toggle-rail {
+    position: absolute;
+    inset-block-start: var(--ds-space-5);
+    z-index: 1;
+    width: var(--ds-size-sm);
+    min-width: var(--ds-size-sm);
+    height: var(--ds-size-sm);
+  }
+
+  .aside-toggle-start-rail {
+    inset-inline-end: calc(var(--ds-size-sm) / -2);
+  }
+
+  .aside-toggle-end-rail {
+    inset-inline-start: calc(var(--ds-size-sm) / -2);
+  }
+
+  .aside-toggle::part(button) {
+    flex-shrink: 0;
+    background: var(--ds-color-bg);
+    border-color: var(--ds-color-border);
+  }
+
+  .aside-toggle:hover::part(button) {
+    background: var(--ds-color-bg-subtle);
   }
 
   main {
@@ -130,6 +197,9 @@ export const pageShellStyles = css`
 
   :host([mobile-layout]) .shell-body {
     grid-template-columns: 1fr;
+  }
+  :host([mobile-layout]) main {
+    grid-column: 1;
   }
   :host([mobile-layout]) aside[part="aside-end"] {
     display: none;

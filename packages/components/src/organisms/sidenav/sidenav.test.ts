@@ -90,6 +90,18 @@ describe('<ds-sidenav>', () => {
     expect(css).not.toMatch(/\.footer\s*{[^}]*padding-inline/);
   });
 
+  it('hides the native scrollbar and applies the shared scroll fade', async () => {
+    const el = await mount<DsSidenav>('<ds-sidenav><a href="/">Home</a></ds-sidenav>');
+    const nav = el.shadowRoot!.querySelector('nav')!;
+    const css = (DsSidenav as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
+    expect(nav.classList.contains('scroll-fade')).toBe(true);
+    expect(css).toMatch(/nav\s*{[^}]*scrollbar-width:\s*none/);
+    expect(css).toMatch(/nav\s*{[^}]*mask-image:\s*var\(--ds-scroll-fade-mask\)/);
+    expect(css).toMatch(/nav::-webkit-scrollbar\s*{[^}]*display:\s*none/);
+  });
+
   it('propagates collapsed -> compact to ds-nav-item and ds-nav-group children', async () => {
     const el = await mount<DsSidenav>(`
       <ds-sidenav>

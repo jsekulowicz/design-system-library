@@ -26,7 +26,7 @@ Vertical sidebar navigation. Hosts `ds-nav-item` and `ds-nav-group` children, wi
 </ds-sidenav>
 ```
 
-The `collapsed` attribute is consumer-owned. Toggle it from outside (a button, a media query, your store) — the sidenav reflects it down to its children via CSS.
+The `collapsed` attribute is consumer-owned. Toggle it from outside (a button, a media query, your store) — the sidenav reflects it down to its children via CSS. When a sidenav is slotted into `ds-page-shell` with `aside-toggle`, PageShell owns that collapsed state as part of its full, compact, and hidden aside cycle.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -48,6 +48,7 @@ The `collapsed` attribute is consumer-owned. Toggle it from outside (a button, a
         <li>Provide an icon on every nav-item if the sidenav can be collapsed — labels disappear when collapsed.</li>
         <li>Group related items with <code>ds-nav-group</code>; keep groups to 2–6 items each.</li>
         <li>Persist the user's collapsed preference in app state if you offer the toggle.</li>
+        <li>Prefer <code>ds-page-shell aside-toggle</code> for application sidenavs that should have a built-in compact/hide control.</li>
       </ul>
       <h3>Don't</h3>
       <ul>

@@ -1,6 +1,5 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import { breakpoint } from '@jsekulowicz/ds-tokens';
 import '@jsekulowicz/ds-components/page-shell/define';
 import '@jsekulowicz/ds-components/sidenav/define';
 import '@jsekulowicz/ds-components/nav-item/define';
@@ -18,7 +17,6 @@ import '@jsekulowicz/ds-components/icon/home';
 import '@jsekulowicz/ds-components/icon/cog-6-tooth';
 import '@jsekulowicz/ds-components/icon/clock';
 import '@jsekulowicz/ds-components/icon/magnifying-glass';
-import '@jsekulowicz/ds-components/icon/chevron-right';
 import '@jsekulowicz/ds-components/icon/briefcase';
 import '@jsekulowicz/ds-components/icon/user';
 import '@jsekulowicz/ds-components/icon/users';
@@ -44,7 +42,6 @@ type Story = StoryObj;
 
 const FRAME_HEIGHT = 480;
 const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
-const TABLET_BREAKPOINT = breakpoint.md;
 const PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:none';
 
 const timezones = [
@@ -78,48 +75,12 @@ export const PageWithoutSidenav: Story = {
 function renderPage(withSidenav: boolean) {
   return html`
     <style>
-      .collapse-toggle {
-        display: block;
-        width: calc(100% + 2 * var(--ds-space-3));
-        margin-inline: calc(-1 * var(--ds-space-3));
-      }
-      .collapse-toggle::part(button) {
-        width: 100%;
-        justify-content: flex-start;
-        padding: var(--ds-space-2) var(--ds-space-3);
-      }
-      .collapse-toggle ds-icon {
-        transition: transform var(--ds-duration-slow) var(--ds-easing-standard);
-      }
-      ds-sidenav:not([collapsed]) .collapse-toggle ds-icon {
-        transform: rotate(180deg);
-      }
-      ds-sidenav[collapsed] .collapse-toggle::part(button) {
-        width: var(--ds-sidenav-item-compact-size);
-        min-width: var(--ds-sidenav-item-compact-size);
-        justify-content: center;
-        padding: var(--ds-space-2);
-      }
-      ds-sidenav[collapsed] .collapse-toggle-label {
-        display: none;
-      }
-      @media (width < ${TABLET_BREAKPOINT}) {
-        .collapse-toggle {
-          display: none;
-        }
-      }
-      ds-page-shell[mobile-layout] .collapse-toggle {
-        display: none;
-      }
-      ds-page-shell[mobile-layout] ds-sidenav::part(header) {
-        display: none;
-      }
       [id^='story--pages-settingspage--'] {
         overflow: hidden;
       }
     </style>
     <div style=${frameStyle()}>
-      <ds-page-shell brand="Brand" style=${PAGE_SHELL_STYLE}>
+      <ds-page-shell brand="Brand" style=${PAGE_SHELL_STYLE} ?aside-toggle=${withSidenav}>
         ${withSidenav ? renderSidenav() : null}
         ${renderBreadcrumb()}
         ${renderSettingsPage()}
@@ -132,19 +93,6 @@ function renderPage(withSidenav: boolean) {
 function renderSidenav() {
   return html`
         <ds-sidenav slot="aside">
-          <ds-button
-            class="collapse-toggle"
-            slot="header"
-            variant="ghost"
-            aria-label="Toggle navigation"
-            @click=${(e: Event) => {
-              const sidenav = (e.currentTarget as HTMLElement).closest('ds-sidenav');
-              sidenav?.toggleAttribute('collapsed');
-            }}
-          >
-            <ds-icon slot="leading" name="chevron-right" size="sm"></ds-icon>
-            <span class="collapse-toggle-label">Collapse</span>
-          </ds-button>
           <ds-nav-item href="#">
             <ds-icon slot="icon" name="home" size="lg"></ds-icon>
             Overview

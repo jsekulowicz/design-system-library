@@ -12,12 +12,13 @@ Application frame that arranges a sticky header, a scrollable aside, a main cont
 ## Anatomy
 
 - **header** — sticky top bar with full-bleed border + backdrop blur. Inner content (`brand` slot left, `header-actions` slot right) follows the same `--ds-page-shell-max-width` as the body.
-- **aside** — side column; collapses below the header under the tablet breakpoint. When the slot is empty the column, hamburger toggle, and drawer are not rendered (single-section apps).
+- **aside** — side column; collapses below the header under the tablet breakpoint. When the slot is empty the column, hamburger toggle, and drawer are not rendered (single-section apps). Add `aside-toggle` to render a desktop-only control that cycles the start aside through full, compact, and hidden states.
 - **main** — grows to fill remaining vertical space within the shell body.
+- **aside-end** — optional inline-end region. Add `aside-end-toggle` to render a desktop-only control that hides or shows it.
 - **footer** — optional bare slot beneath the body. Slot `ds-footer` directly when the page needs footer chrome; when the slot is empty PageShell renders no footer markup.
 
 ```html
-<ds-page-shell brand="Brand">
+<ds-page-shell brand="Brand" aside-toggle>
   <div slot="header-actions">...</div>
   <ds-sidenav slot="aside">...</ds-sidenav>
   <article><!-- page content --></article>
@@ -37,6 +38,9 @@ ds-page-shell {
 
 The constrained PageShell story shows the capped layout. The other PageShell and SettingsPage stories use the default fluid width.
 
+The collapsible-asides story shows the mirrored start/end controls together. Desktop asides hide
+native scrollbars and use the shared top/bottom content fade when more content is available.
+
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
     <ds-tab slot="tab" value="examples">Examples</ds-tab>
@@ -55,6 +59,8 @@ The constrained PageShell story shows the capped layout. The other PageShell and
       <h3>Do</h3>
       <ul>
         <li>Slot a <code>ds-sidenav</code> into <code>aside</code> — it handles collapsed mode, icons-only state, and keyboard navigation.</li>
+        <li>Use <code>aside-toggle</code> on <code>ds-page-shell</code> when users should be able to compact or hide the start aside.</li>
+        <li>Use <code>aside-end-toggle</code> when users should be able to hide a secondary inline-end aside.</li>
         <li>Slot a <code>ds-footer</code> into <code>footer</code> for a consistent bottom strip across pages.</li>
         <li>Constrain main content width (e.g. <code>max-width: 68ch</code> or <code>72rem</code>) inside the default slot for comfortable line lengths.</li>
       </ul>

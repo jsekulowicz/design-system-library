@@ -2,6 +2,8 @@ import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { sidenavStyles } from './sidenav.styles.js';
+import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
+import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
 
 const COMPACT_TARGETS = 'ds-nav-item, ds-nav-group';
 
@@ -17,13 +19,18 @@ const COMPACT_TARGETS = 'ds-nav-item, ds-nav-group';
  * @csspart footer - The footer wrapper.
  */
 export class DsSidenav extends DsElement {
-  static override styles = [...DsElement.styles, sidenavStyles];
+  static override styles = [...DsElement.styles, scrollFadeStyles, sidenavStyles];
 
   @property() label = 'Secondary';
   @property({ type: Boolean, reflect: true }) collapsed = false;
 
   @state() private _hasHeader = false;
   @state() private _hasFooter = false;
+
+  private readonly _scrollFade = new ScrollFadeController(
+    this,
+    () => this.shadowRoot?.querySelector('nav'),
+  );
 
   override updated(changed: PropertyValues): void {
     if (changed.has('collapsed')) {
@@ -53,7 +60,7 @@ export class DsSidenav extends DsElement {
   };
 
   override render(): TemplateResult {
-    return html`<nav part="nav" aria-label=${this.label}>
+    return html`<nav class="scroll-fade" part="nav" aria-label=${this.label}>
       <div class="header" part="header" ?hidden=${!this._hasHeader}>
         <slot name="header" @slotchange=${this.#onHeaderSlotChange}></slot>
       </div>
