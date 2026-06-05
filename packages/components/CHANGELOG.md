@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.18.2
+
+### Patch Changes
+
+- 73112b5: Make `ds-segmented-control` use regular buttons by default and add a `small` property for compact buttons.
+
 ## 0.18.1
 
 ### Patch Changes
