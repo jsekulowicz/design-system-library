@@ -75,7 +75,7 @@ describe('<ds-sidenav>', () => {
       .join('\n');
     expect(css).toMatch(/nav\s*{[^}]*padding:\s*var\(--ds-space-4\)/);
     expect(css).toMatch(
-      /:host\(\[collapsed\]\)\s*{[^}]*nav\s*{[^}]*padding:\s*var\(--ds-space-4\)\s+var\(--ds-space-1\)/,
+      /:host\(\[collapsed\]\)\s*{[^}]*nav\s*{[^}]*padding:\s*var\(--ds-space-3\)/,
     );
     expect(css).toMatch(
       /:host-context\(ds-page-shell\[mobile-layout\]\)\s*nav\s*{[^}]*padding-block:\s*var\(--ds-space-2\)/,

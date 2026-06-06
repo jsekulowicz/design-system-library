@@ -66,21 +66,23 @@ export const pageShellStyles = css`
     display: none;
   }
 
-  .aside-start-cluster {
-    grid-column: 1;
-    display: flex;
+  .aside-start-cluster,
+  .aside-end-cluster {
+    display: grid;
+    grid-template-columns: 1fr;
     position: relative;
     min-width: 0;
     min-height: 0;
+    transition: grid-template-columns var(--ds-duration-slow) var(--ds-easing-standard);
+  }
+
+  .aside-start-cluster {
+    grid-column: 1;
     border-inline-end: 1px solid var(--ds-color-border);
   }
 
   .aside-end-cluster {
     grid-column: 3;
-    display: flex;
-    position: relative;
-    min-width: 0;
-    min-height: 0;
     border-inline-start: 1px solid var(--ds-color-border);
   }
 
@@ -94,10 +96,12 @@ export const pageShellStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     overflow-clip-margin-inline: var(--ds-space-2);
+    min-width: 0;
     min-height: 0;
     --ds-scroll-fade-depth: var(--ds-space-12, 3rem);
     scrollbar-width: none;
     mask-image: var(--ds-scroll-fade-mask);
+    transition: opacity var(--ds-duration-slow) var(--ds-easing-standard);
   }
 
   aside::-webkit-scrollbar {
@@ -125,13 +129,33 @@ export const pageShellStyles = css`
     display: none;
   }
 
+  /* Collapsing to 0fr animates the grid track from its content width to zero
+     without measuring it in JS; the aside clips via overflow + min-width: 0.
+     The cluster keeps a small min-width so the toggle button that straddles
+     its edge never touches the viewport edge. */
+  :host([aside-state='hidden']) .aside-start-cluster,
+  :host([aside-end-state='hidden']) .aside-end-cluster {
+    grid-template-columns: 0fr;
+    min-width: calc(var(--ds-size-sm) / 2 + var(--ds-space-2));
+  }
+
+  :host([aside-state='hidden']) aside[part="aside"],
+  :host([aside-end-state='hidden']) aside[part="aside-end"] {
+    padding-inline: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
   :host([aside-state='compact']) aside[part="aside"] ::slotted(ds-sidenav) {
     width: var(--ds-sidenav-collapsed-width, var(--ds-space-14, 3.5rem)) !important;
   }
 
-  :host([aside-state='hidden']) .aside-start-cluster,
-  :host([aside-end-state='hidden']) .aside-end-cluster {
-    width: calc(var(--ds-size-md) / 2);
+  @media (prefers-reduced-motion: reduce) {
+    .aside-start-cluster,
+    .aside-end-cluster,
+    aside {
+      transition: none;
+    }
   }
 
   .aside-toggle-rail {

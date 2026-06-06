@@ -468,7 +468,7 @@ describe('<ds-page-shell>', () => {
       const toggle = el.shadowRoot!.querySelector('.aside-toggle-start') as HTMLElement;
       const aside = el.querySelector<HTMLElement>('[slot="aside"]')!;
       expect(toggle.getAttribute('variant')).toBe('secondary');
-      expect(toggle.getAttribute('size')).toBe('md');
+      expect(toggle.getAttribute('size')).toBe('sm');
       expect(toggle.hasAttribute('square')).toBe(true);
       expect(toggle.querySelector('ds-icon')?.getAttribute('size')).toBe('lg');
 
@@ -482,14 +482,16 @@ describe('<ds-page-shell>', () => {
       toggle.click();
       await el.updateComplete;
       expect(el.asideState).toBe('hidden');
-      expect(aside.hasAttribute('collapsed')).toBe(false);
-      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('hidden')).toBe(true);
+      expect(aside.hasAttribute('collapsed')).toBe(true);
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.getAttribute('aria-hidden')).toBe('true');
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('inert')).toBe(true);
       expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-right');
 
       toggle.click();
       await el.updateComplete;
       expect(el.asideState).toBe('visible');
-      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('hidden')).toBe(false);
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.getAttribute('aria-hidden')).toBe('false');
+      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('inert')).toBe(false);
     });
 
     it('cycles end aside between visible and hidden', async () => {
@@ -508,13 +510,15 @@ describe('<ds-page-shell>', () => {
       await el.updateComplete;
       expect(el.asideEndState).toBe('hidden');
       expect(el.getAttribute('aside-end-state')).toBe('hidden');
-      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.hasAttribute('hidden')).toBe(true);
+      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.getAttribute('aria-hidden')).toBe('true');
+      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.hasAttribute('inert')).toBe(true);
       expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-left');
 
       toggle.click();
       await el.updateComplete;
       expect(el.asideEndState).toBe('visible');
-      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.hasAttribute('hidden')).toBe(false);
+      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.getAttribute('aria-hidden')).toBe('false');
+      expect(el.shadowRoot!.querySelector('aside[part="aside-end"]')?.hasAttribute('inert')).toBe(false);
     });
 
     it('emits aside state changes with side and previous state', async () => {
@@ -558,13 +562,25 @@ describe('<ds-page-shell>', () => {
         .join('\n');
       expect(css).toMatch(/\.aside-toggle-rail\s*{[^}]*position:\s*absolute/);
       expect(css).toMatch(
-        /\.aside-toggle-start-rail\s*{[^}]*inset-inline-end:\s*calc\(var\(--ds-size-md\)\s*\/\s*-2\)/,
+        /\.aside-toggle-start-rail\s*{[^}]*inset-inline-end:\s*calc\(var\(--ds-size-sm\)\s*\/\s*-2\)/,
       );
       expect(css).toMatch(
         /:host\(\[aside-toggle\]\)\s*aside\[part="aside"\]\s*{[^}]*padding-inline-end:/,
       );
       expect(css).toMatch(
         /:host\(\[aside-end-toggle\]\)\s*aside\[part="aside-end"\]\s*{[^}]*padding-inline-start:/,
+      );
+    });
+
+    it('collapses asides with an animatable grid track and keeps toggle clearance', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(
+        /\.aside-start-cluster,\s*\.aside-end-cluster\s*{[^}]*grid-template-columns:\s*1fr[^}]*transition:\s*grid-template-columns/s,
+      );
+      expect(css).toMatch(
+        /:host\(\[aside-state='hidden'\]\)\s*\.aside-start-cluster,[^{]*{[^}]*grid-template-columns:\s*0fr;[^}]*min-width:\s*calc\(var\(--ds-size-sm\)\s*\/\s*2\s*\+\s*var\(--ds-space-2\)\)/s,
       );
     });
   });

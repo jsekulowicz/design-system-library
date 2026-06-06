@@ -185,7 +185,7 @@ export class DsPageShell extends DsElement {
     if (!this.asideToggle && this.asideState === 'visible') {
       return;
     }
-    aside.toggleAttribute('collapsed', this.asideState === 'compact');
+    aside.toggleAttribute('collapsed', this.asideState !== 'visible');
   }
 
   #showStartToggle(): boolean {
@@ -288,7 +288,9 @@ export class DsPageShell extends DsElement {
         class="scroll-fade"
         part="aside"
         aria-label=${this.menuLabel}
-        ?hidden=${!this._hasAside || this.asideState === 'hidden'}
+        aria-hidden=${this.asideState === 'hidden' ? 'true' : 'false'}
+        ?hidden=${!this._hasAside}
+        ?inert=${this.asideState === 'hidden'}
         @click=${this.#onAsideClick}
       >
         <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
@@ -308,7 +310,9 @@ export class DsPageShell extends DsElement {
         class="scroll-fade"
         part="aside-end"
         aria-label=${this.endLabel}
-        ?hidden=${!this._hasAsideEnd || this.asideEndState === 'hidden'}
+        aria-hidden=${this.asideEndState === 'hidden' ? 'true' : 'false'}
+        ?hidden=${!this._hasAsideEnd}
+        ?inert=${this.asideEndState === 'hidden'}
       >
         <slot name="aside-end" @slotchange=${this.#onAsideEndSlotChange}></slot>
       </aside>
