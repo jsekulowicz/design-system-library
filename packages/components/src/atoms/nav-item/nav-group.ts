@@ -2,6 +2,7 @@ import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { navGroupStyles } from './nav-group.styles.js';
+import '../../atoms/icon/icons/chevron-down.js';
 import '../tooltip/define.js';
 
 const HOVER_TOOLTIP_DELAY_MS = 2000;
@@ -93,16 +94,7 @@ export class DsNavGroup extends DsElement {
       ${this.#renderIcon()}
       <span class="label">${this.label}</span>
       ${this.collapsible
-        ? html`<span class="chevron" part="chevron" aria-hidden="true">
-            <!-- Heroicons 2.2.0 — 16/solid: chevron-down -->
-            <svg viewBox="0 0 16 16" fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </span>`
+        ? html`<ds-icon class="chevron" name="chevron-down" size="lg"></ds-icon>`
         : null}
     </button>`;
   }

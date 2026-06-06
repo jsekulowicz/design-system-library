@@ -18,10 +18,6 @@ export const navGroupStyles = [
     flex: none;
     transition: transform var(--ds-duration-fast) var(--ds-easing-standard);
   }
-  .chevron svg {
-    width: 1rem;
-    height: 1rem;
-  }
   :host([expanded]) .chevron {
     transform: rotate(180deg);
   }
@@ -42,10 +38,6 @@ export const navGroupStyles = [
   }
   :host([compact]) .heading {
     gap: var(--ds-space-1);
-  }
-  :host([compact]) .chevron svg {
-    width: 0.75rem;
-    height: 0.75rem;
   }
   .icon-probe {
     display: none;
