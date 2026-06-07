@@ -44,6 +44,13 @@ describe('<ds-select> extra coverage', () => {
     }
   });
 
+  it('pins the open popover listbox to position:fixed so viewport coords map correctly', () => {
+    const css = (DsSelect as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
+    expect(css).toMatch(/\.listbox\[popover\]:popover-open\s*{[^}]*position:\s*fixed/s);
+  });
+
   it('closes on outside click and on disconnect', async () => {
     const el = await mountSelect();
     const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;

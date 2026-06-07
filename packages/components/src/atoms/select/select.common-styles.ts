@@ -156,9 +156,13 @@ export const selectCommonStyles = css`
 
   /* Reset the UA defaults that the popover spec applies to shown
      popovers (inset:0, margin:auto, padding:0.25em). The inline coords
-     from #positionListbox take care of placement; padding would just
-     visually pad the listbox content. */
+     from #positionListbox are viewport-relative (from getBoundingClientRect),
+     so the shown listbox must stay position:fixed — the base .listbox rule
+     above sets position:absolute as the no-popover fallback, which would
+     otherwise win over the UA stylesheet's fixed and anchor the menu to the
+     document instead of the viewport (menu jumps off-screen once scrolled). */
   .listbox[popover]:popover-open {
+    position: fixed;
     inset: unset;
     margin: 0;
     padding: 0;
