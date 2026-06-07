@@ -62,7 +62,7 @@ export const navControlStyles = css`
     display: flex;
     width: 100%;
   }
-  :host([role='listitem']):not([compact]):host-context(ds-nav-group) .nav-control {
+  :host([role='listitem']:not([compact])):host-context(ds-nav-group) .nav-control {
     display: flex;
     width: 100%;
     padding-inline-start: var(--ds-space-5);
