@@ -152,6 +152,12 @@ export const selectCommonStyles = css`
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-sm);
     box-shadow: var(--ds-shadow-md);
+    /* Thin, subtle scrollbar with a transparent track (matching the shell's
+       main content) instead of the wide, bright default that painted over
+       the listbox's rounded corners. No scrollbar-gutter: the dropdown
+       shouldn't reserve a permanent track when it doesn't overflow. */
+    scrollbar-color: var(--ds-color-fg-subtle) transparent;
+    scrollbar-width: thin;
   }
 
   /* Reset the UA defaults that the popover spec applies to shown

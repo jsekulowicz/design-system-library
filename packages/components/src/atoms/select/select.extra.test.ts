@@ -51,6 +51,15 @@ describe('<ds-select> extra coverage', () => {
     expect(css).toMatch(/\.listbox\[popover\]:popover-open\s*{[^}]*position:\s*fixed/s);
   });
 
+  it('styles the listbox scrollbar thin and subtle with a transparent track', () => {
+    const css = (DsSelect as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
+    expect(css).toMatch(
+      /\.listbox\s*{[^}]*scrollbar-color:\s*var\(--ds-color-fg-subtle\)\s+transparent;[^}]*scrollbar-width:\s*thin/s,
+    );
+  });
+
   it('closes on outside click and on disconnect', async () => {
     const el = await mountSelect();
     const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
