@@ -193,10 +193,33 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     ) {
       return;
     }
-    if (!this.#dropdown.open && event.key === 'ArrowDown') {
+    if (this.#dropdown.open || this.loading) return;
+    if (event.key === 'ArrowDown') {
       this.#dropdown.openDropdown();
+      return;
+    }
+    if (this.#isSearchInitiatingKey(event)) {
+      this.#beginSearchFromClosed(event);
     }
   };
+
+  // A printable character or Backspace pressed while the dropdown is closed
+  // should re-enter search mode (Backspace from an empty query, a character
+  // from that character) — not be swallowed by the collapsed input.
+  #isSearchInitiatingKey(event: KeyboardEvent): boolean {
+    if (event.ctrlKey || event.metaKey || event.altKey) return false;
+    return event.key === 'Backspace' || event.key.length === 1;
+  }
+
+  #beginSearchFromClosed(event: KeyboardEvent): void {
+    // Clear any selected-label text so search starts fresh, then open (which
+    // resets _search to ''). A printable key's default insertion then lands in
+    // the empty input and #onSearchInput picks it up; Space and Backspace open
+    // with an empty query.
+    if (this._inputEl) this._inputEl.value = '';
+    this.#dropdown.openDropdown();
+    if (event.key === ' ') event.preventDefault();
+  }
 
   #renderTiles = (): TemplateResult =>
     renderSelectedTiles({

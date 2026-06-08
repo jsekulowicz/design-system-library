@@ -322,3 +322,65 @@ describe('<ds-searchable-select> label, size and icons', () => {
     expect(slot.hasAttribute('hidden')).toBe(true);
   });
 });
+
+describe('<ds-searchable-select> re-enters search mode while focused-but-closed', () => {
+  function keydown(el: HTMLElement, key: string): void {
+    el.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+  }
+
+  it('reopens and searches when typing after Escape closed the dropdown', async () => {
+    const el = await mountSearchable();
+    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
+    await el.updateComplete;
+    expect((el as unknown as { _open: boolean })._open).toBe(true);
+
+    keydown(input, 'Escape');
+    await el.updateComplete;
+    expect((el as unknown as { _open: boolean })._open).toBe(false);
+
+    keydown(input, 'a');
+    await el.updateComplete;
+    expect((el as unknown as { _open: boolean })._open).toBe(true);
+    // Simulate the browser inserting the character into the (cleared) input.
+    input.value = 'a';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    expect(input.value).toBe('a');
+  });
+
+  it('reopens with an empty query on Backspace after selecting an option', async () => {
+    const el = await mountSearchable({ value: 'react' });
+    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
+    expect((el as unknown as { _open: boolean })._open).toBe(false);
+    expect(input.value).toBe('React');
+
+    keydown(input, 'Backspace');
+    await el.updateComplete;
+    expect((el as unknown as { _open: boolean })._open).toBe(true);
+    expect(input.value).toBe('');
+  });
+
+  it('reopens with the typed character after selecting an option', async () => {
+    const el = await mountSearchable({ value: 'react' });
+    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
+
+    keydown(input, 'v');
+    await el.updateComplete;
+    expect((el as unknown as { _open: boolean })._open).toBe(true);
+    input.value = 'v';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+    expect(input.value).toBe('v');
+  });
+
+  it('does not reopen for modifier-key combos', async () => {
+    const el = await mountSearchable({ value: 'react' });
+    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'a', metaKey: true, bubbles: true, cancelable: true }),
+    );
+    await el.updateComplete;
+    expect((el as unknown as { _open: boolean })._open).toBe(false);
+  });
+});
