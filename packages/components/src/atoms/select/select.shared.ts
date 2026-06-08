@@ -1,5 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import type { IconSize } from '../icon/icon.js';
 import '../icon/define.js';
 import '../icon/icons/x-mark.js';
 
@@ -12,7 +13,7 @@ export interface OptionIcon {
 
 interface OptionIconOptions {
   slot?: string;
-  size?: string;
+  size?: IconSize;
 }
 
 export function renderOptionIcon(
