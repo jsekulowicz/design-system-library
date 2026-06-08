@@ -7,17 +7,22 @@ import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
+  renderOptionIcon,
   renderSelectedTiles,
 } from './select.shared.js';
+import '../icon/define.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
 import { selectCommonStyles } from './select.common-styles.js';
 import { selectStyles } from './select.styles.js';
 
+export type SelectSize = 'sm' | 'md' | 'lg';
+
 export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
+  icon?: { name: string; color?: string };
 }
 
 /**
@@ -36,6 +41,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   };
 
   @property({ type: Array }) options: SelectOption[] = [];
+  @property({ reflect: true }) size: SelectSize = 'md';
   @property() placeholder = '';
   @property() label = '';
   @property() description = '';
@@ -224,6 +230,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       overflowCount: this.#dropdown.overflowCount,
       maxLines: this.maxLines,
       labelFor: (value) => this.options.find((option) => option.value === value)?.label ?? value,
+      iconFor: (value) => this.options.find((option) => option.value === value)?.icon,
       onRemove: this.#dropdown.removeTile,
     });
 
@@ -242,13 +249,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${option.label}</ds-select-option
+      >${renderOptionIcon(option.icon, { slot: 'leading' })}${option.label}</ds-select-option
     >`;
   };
 
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
     const selectedOption = this.options.find((option) => option.value === current);
+    const selectedIcon = this.multiple ? undefined : selectedOption?.icon;
     const open = this.#dropdown.open;
     const activeDesc =
       open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
@@ -256,7 +264,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const hasClearBtn =
       (this.clearable || this.required) &&
       (this.multiple ? this.values.length > 0 : current !== '');
-    return html` ${renderFieldLabel(this.label, this.required, 'trigger')}
+    return html` ${this.label ? renderFieldLabel(this.label, this.required, 'trigger') : nothing}
       <div class="control-wrap">
         <div
           id="trigger"
@@ -273,12 +281,17 @@ export class DsSelect extends FormControlMixin(DsElement) {
           @click=${this.#toggle}
           @keydown=${this.#onTriggerKeydown}
         >
-          <span class="leading" ?hidden=${!this.#dropdown.hasLeading}>
-            <slot name="leading" @slotchange=${this.#dropdown.onLeadingChange}></slot>
+          <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>
+            ${selectedIcon ? renderOptionIcon(selectedIcon) : nothing}
+            <slot
+              name="leading"
+              ?hidden=${Boolean(selectedIcon)}
+              @slotchange=${this.#dropdown.onLeadingChange}
+            ></slot>
           </span>
           ${hasTiles
             ? this.#renderTiles()
-            : html` <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
+            : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
                 ${selectedOption?.label ?? this.placeholder}
               </span>`}
           ${hasClearBtn

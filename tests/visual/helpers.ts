@@ -19,7 +19,7 @@ export async function prepareScenario(
   viewport: ViewportName,
   theme: ThemeName,
 ): Promise<void> {
-  await page.setViewportSize(visualViewports[viewport]);
+  await page.setViewportSize(scenario.viewportSize ?? visualViewports[viewport]);
   await seedStorybookState(page, viewport, theme);
   await page.goto(`/iframe.html?id=${scenario.storyId}&viewMode=story`);
   await assertStorybookReady(page, scenario);

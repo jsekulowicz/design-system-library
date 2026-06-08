@@ -254,3 +254,67 @@ describe('<ds-select> extra coverage', () => {
     expect((el as unknown as { _overflowCheckQueued: boolean })._overflowCheckQueued).toBe(true);
   });
 });
+
+const ICON_OPTIONS = [
+  { value: 'design', label: 'Design', icon: { name: 'paint-brush', color: '#db2777' } },
+  { value: 'engineering', label: 'Engineering', icon: { name: 'wrench' } },
+];
+
+describe('<ds-select> label, size and icons', () => {
+  it('omits the label element when label is empty', async () => {
+    const el = await mountWithProps<DsSelect>('<ds-select></ds-select>', {
+      options: OPTIONS,
+    }, 'ds-select');
+    expect(el.shadowRoot!.querySelector('.label')).toBeNull();
+  });
+
+  it('renders the label element when label is set', async () => {
+    const el = await mountSelect({ label: 'Framework' });
+    expect(el.shadowRoot!.querySelector('.label')).not.toBeNull();
+  });
+
+  it('reflects the size attribute and drives trigger height via --ds-select-size', async () => {
+    const el = await mountSelect({ size: 'sm' });
+    expect(el.getAttribute('size')).toBe('sm');
+    const css = (DsSelect as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
+    expect(css).toMatch(/--ds-select-size/);
+    expect(css).toMatch(/:host\(\[size='sm'\]\)\s*{[^}]*--ds-select-size:\s*var\(--ds-size-sm\)/s);
+    expect(css).toMatch(/\.trigger\s*{[^}]*height:\s*var\(--ds-select-size\)/s);
+  });
+
+  it('renders option icons into the leading slot', async () => {
+    const el = await mountSelect({ options: ICON_OPTIONS });
+    el.shadowRoot!.querySelector<HTMLElement>('.trigger')!.click();
+    await el.updateComplete;
+    const icon = el.shadowRoot!.querySelector('ds-select-option ds-icon[slot="leading"]');
+    expect(icon).not.toBeNull();
+    expect(icon!.getAttribute('name')).toBe('paint-brush');
+    expect(icon!.getAttribute('style')).toContain('color:#db2777');
+  });
+
+  it('renders the selected option icon in the trigger and overrides the leading slot', async () => {
+    const el = await mountWithProps<DsSelect>(
+      '<ds-select label="Discipline"><span slot="leading">L</span></ds-select>',
+      { options: ICON_OPTIONS, value: 'design' },
+      'ds-select',
+    );
+    const leadingIcon = el.shadowRoot!.querySelector('.leading ds-icon');
+    expect(leadingIcon).not.toBeNull();
+    expect(leadingIcon!.getAttribute('name')).toBe('paint-brush');
+    const slot = el.shadowRoot!.querySelector('.leading slot[name="leading"]') as HTMLElement;
+    expect(slot.hasAttribute('hidden')).toBe(true);
+  });
+
+  it('renders option icons and a ds-icon x-mark remove button on multiple-select tiles', async () => {
+    const el = await mountSelect({ options: ICON_OPTIONS, multiple: true, values: ['design'] });
+    const tile = el.shadowRoot!.querySelector('.tile[data-value="design"]')!;
+    const tileIcon = tile.querySelector('ds-icon:not([name="x-mark"])');
+    expect(tileIcon!.getAttribute('name')).toBe('paint-brush');
+    expect(tileIcon!.getAttribute('size')).toBe('md');
+    const removeIcon = tile.querySelector('.tile-remove ds-icon');
+    expect(removeIcon!.getAttribute('name')).toBe('x-mark');
+    expect(removeIcon!.getAttribute('size')).toBe('sm');
+  });
+});

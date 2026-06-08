@@ -9,6 +9,7 @@ export type VisualScenario = {
   selector?: string;
   themes?: ThemeName[];
   viewports?: ViewportName[];
+  viewportSize?: { width: number; height: number };
   fullPage?: boolean;
   beforeCapture?: (page: Page) => Promise<void>;
 };

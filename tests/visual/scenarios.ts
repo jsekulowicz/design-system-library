@@ -12,12 +12,22 @@ export const visualScenarios: VisualScenario[] = [
   staticStory('textfield-states', 'atoms-textfield--required'),
   staticStory('select-invalid', 'atoms-select--invalid'),
   {
-    name: 'select-open',
-    storyId: 'atoms-select--countries',
+    name: 'select-leading-icon-open',
+    storyId: 'atoms-select--with-description',
     themes,
     viewports: desktop,
+    viewportSize: { width: 1280, height: 315 },
     beforeCapture: openSelect,
   },
+  {
+    name: 'select-selected-icon-open',
+    storyId: 'atoms-select--preselected',
+    themes,
+    viewports: desktop,
+    viewportSize: { width: 1280, height: 315 },
+    beforeCapture: openSelect,
+  },
+  staticStory('select-multiple-icons', 'atoms-select--multiple-with-icons'),
   {
     name: 'searchable-select-open',
     storyId: 'atoms-searchableselect--countries',
@@ -67,8 +77,8 @@ function responsiveStory(name: string, storyId: string): VisualScenario {
 }
 
 async function openSelect(page: Page): Promise<void> {
-  await page.getByRole('combobox', { name: 'Country' }).click();
-  await page.getByRole('option', { name: 'Poland' }).waitFor();
+  await page.getByRole('combobox', { name: 'Discipline' }).click();
+  await page.getByRole('option', { name: 'Design' }).waitFor();
 }
 
 async function openSearchableSelect(page: Page): Promise<void> {
