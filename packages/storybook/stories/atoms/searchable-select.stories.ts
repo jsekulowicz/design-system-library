@@ -379,6 +379,12 @@ export const Playground: Story = {
       ?clearable=${args['clearable']}
       ?loading=${args['loading']}
       .options=${DISCIPLINES}
+      @ds-search=${(e: CustomEvent<{ query: string }>) => {
+        const q = e.detail.query.toLowerCase();
+        (e.currentTarget as HTMLElement & { options: SelectOption[] }).options = q
+          ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q))
+          : DISCIPLINES;
+      }}
     >
       <ds-icon slot="leading" name="squares-2x2"></ds-icon>
     </ds-searchable-select>

@@ -16,6 +16,7 @@ export const visualScenarios: VisualScenario[] = [
     storyId: 'atoms-select--with-description',
     themes,
     viewports: desktop,
+    viewportSize: { width: 1280, height: 315 },
     beforeCapture: openSelect,
   },
   {
@@ -23,6 +24,7 @@ export const visualScenarios: VisualScenario[] = [
     storyId: 'atoms-select--preselected',
     themes,
     viewports: desktop,
+    viewportSize: { width: 1280, height: 315 },
     beforeCapture: openSelect,
   },
   staticStory('select-multiple-icons', 'atoms-select--multiple-with-icons'),
