@@ -5,6 +5,10 @@ import type { SelectOption } from '@jsekulowicz/ds-components/select';
 import '@jsekulowicz/ds-components/searchable-select/define';
 import '@jsekulowicz/ds-components/icon/define';
 import '@jsekulowicz/ds-components/icon/magnifying-glass';
+import '@jsekulowicz/ds-components/icon/paint-brush';
+import '@jsekulowicz/ds-components/icon/wrench';
+import '@jsekulowicz/ds-components/icon/cube';
+import '@jsekulowicz/ds-components/icon/cog-6-tooth';
 
 const COUNTRIES: SelectOption[] = [
   { value: 'af', label: '🇦🇫 Afghanistan' },
@@ -196,6 +200,107 @@ if (!customElements.get('sb-country-search')) {
   customElements.define('sb-country-search', SbCountrySearch);
 }
 
+const DISCIPLINES: SelectOption[] = [
+  { label: 'Design', value: 'design', icon: { name: 'paint-brush', color: '#db2777' } },
+  { label: 'Engineering', value: 'engineering', icon: { name: 'wrench', color: '#2563eb' } },
+  { label: 'Product', value: 'product', icon: { name: 'cube', color: '#7c3aed' } },
+  { label: 'Operations', value: 'ops', disabled: true, icon: { name: 'cog-6-tooth', color: '#0891b2' } },
+];
+
+class SbDisciplineSearch extends LitElement {
+  @state() private _options = DISCIPLINES;
+  @state() private _value = '';
+
+  #onSearch = (e: CustomEvent<{ query: string }>): void => {
+    const q = e.detail.query.toLowerCase();
+    this._options = q ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q)) : DISCIPLINES;
+  };
+
+  #onChange = (e: CustomEvent<{ value: string }>): void => {
+    this._value = e.detail.value;
+  };
+
+  override render() {
+    return html`
+      <ds-searchable-select
+        label="Discipline"
+        placeholder="Pick a discipline"
+        search-placeholder="Search disciplines…"
+        .options=${this._options}
+        .value=${this._value}
+        @ds-search=${this.#onSearch}
+        @ds-change=${this.#onChange}
+      ></ds-searchable-select>
+    `;
+  }
+}
+
+if (!customElements.get('sb-discipline-search')) {
+  customElements.define('sb-discipline-search', SbDisciplineSearch);
+}
+
+const DISCIPLINE_SOURCE = `import '@jsekulowicz/ds-components/searchable-select/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/paint-brush';
+import '@jsekulowicz/ds-components/icon/wrench';
+import '@jsekulowicz/ds-components/icon/cube';
+import '@jsekulowicz/ds-components/icon/cog-6-tooth';
+
+const DISCIPLINES = [
+  { label: 'Design', value: 'design', icon: { name: 'paint-brush', color: '#db2777' } },
+  { label: 'Engineering', value: 'engineering', icon: { name: 'wrench', color: '#2563eb' } },
+  { label: 'Product', value: 'product', icon: { name: 'cube', color: '#7c3aed' } },
+  { label: 'Operations', value: 'ops', disabled: true, icon: { name: 'cog-6-tooth', color: '#0891b2' } },
+];
+
+// ds-searchable-select emits ds-search on every keystroke; the consumer owns filtering.
+let options = DISCIPLINES;
+function onSearch(e) {
+  const q = e.detail.query.toLowerCase();
+  options = q ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q)) : DISCIPLINES;
+}
+
+html\`
+  <ds-searchable-select
+    label="Discipline"
+    placeholder="Pick a discipline"
+    search-placeholder="Search disciplines…"
+    .options=\${options}
+    @ds-search=\${onSearch}
+    @ds-change=\${(e) => (value = e.detail.value)}
+  ></ds-searchable-select>
+\`;`;
+
+const COUNTRY_SOURCE = `import '@jsekulowicz/ds-components/searchable-select/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/magnifying-glass';
+
+const COUNTRIES = [
+  { value: 'af', label: '🇦🇫 Afghanistan' },
+  { value: 'al', label: '🇦🇱 Albania' },
+  // …160+ countries
+  { value: 'us', label: '🇺🇸 United States' },
+];
+
+let options = COUNTRIES;
+function onSearch(e) {
+  const q = e.detail.query.toLowerCase();
+  options = q ? COUNTRIES.filter((c) => c.label.toLowerCase().includes(q)) : COUNTRIES;
+}
+
+html\`
+  <ds-searchable-select
+    label="Country"
+    placeholder="Select a country"
+    search-placeholder="Search countries…"
+    .options=\${options}
+    @ds-search=\${onSearch}
+    @ds-change=\${(e) => (value = e.detail.value)}
+  >
+    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+  </ds-searchable-select>
+\`;`;
+
 const meta: Meta = {
   title: 'Atoms/SearchableSelect',
   component: 'ds-searchable-select',
@@ -211,6 +316,7 @@ const meta: Meta = {
     error: { control: 'text' },
     placeholder: { control: 'text' },
     searchPlaceholder: { control: 'text' },
+    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -223,6 +329,7 @@ const meta: Meta = {
     error: 'Please select an option.',
     placeholder: 'Select a framework',
     searchPlaceholder: 'Search…',
+    size: 'md',
     disabled: false,
     required: false,
     invalid: false,
@@ -234,6 +341,17 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+export const Disciplines: Story = {
+  name: 'Pick a discipline (with search + icons)',
+  parameters: {
+    docs: {
+      story: { height: '270px' },
+      source: { code: DISCIPLINE_SOURCE },
+    },
+  },
+  render: () => html`<sb-discipline-search></sb-discipline-search>`,
+};
+
 const PLAYGROUND_OPTIONS: SelectOption[] = [
   { value: 'react', label: 'React' },
   { value: 'vue', label: 'Vue' },
@@ -242,8 +360,25 @@ const PLAYGROUND_OPTIONS: SelectOption[] = [
   { value: 'solid', label: 'Solid' },
 ];
 
+const PLAYGROUND_SOURCE = `const options = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'angular', label: 'Angular' },
+  { value: 'solid', label: 'Solid' },
+];
+
+html\`
+  <ds-searchable-select label="Framework" placeholder="Select a framework" .options=\${options}></ds-searchable-select>
+\`;`;
+
 export const Playground: Story = {
-  parameters: { docs: { story: { height: '270px' } } },
+  parameters: {
+    docs: {
+      story: { height: '270px' },
+      source: { code: PLAYGROUND_SOURCE },
+    },
+  },
   render: (args) => html`
     <ds-searchable-select
       label=${args['label']}
@@ -251,6 +386,7 @@ export const Playground: Story = {
       error=${args['error'] || ''}
       placeholder=${args['placeholder']}
       search-placeholder=${args['searchPlaceholder']}
+      size=${args['size']}
       ?disabled=${args['disabled']}
       ?required=${args['required']}
       ?invalid=${args['invalid']}
@@ -263,11 +399,23 @@ export const Playground: Story = {
 
 export const Countries: Story = {
   name: 'Countries (virtualized, 160+ items)',
+  parameters: { docs: { source: { code: COUNTRY_SOURCE } } },
   render: () => html`<sb-country-search></sb-country-search>`,
 };
 
 export const Loading: Story = {
-  parameters: { docs: { story: { height: '80px' } } },
+  parameters: {
+    docs: {
+      story: { height: '80px' },
+      source: {
+        code: `html\`
+  <ds-searchable-select label="Country" placeholder="Loading options…" loading>
+    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+  </ds-searchable-select>
+\`;`,
+      },
+    },
+  },
   render: () => html`
     <ds-searchable-select label="Country" placeholder="Loading options…" ?loading=${true}>
       <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
@@ -356,12 +504,70 @@ if (!customElements.get('sb-required-framework-search')) {
 }
 
 export const Required: Story = {
-  parameters: { docs: { story: { height: '270px' } } },
+  parameters: {
+    docs: {
+      story: { height: '270px' },
+      source: {
+        code: `const options = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'angular', label: 'Angular' },
+  { value: 'solid', label: 'Solid' },
+];
+
+let value = 'react';
+function onSearch(e) {
+  const q = e.detail.query.toLowerCase();
+  options = q ? options.filter((f) => f.label.toLowerCase().includes(q)) : options;
+}
+
+html\`
+  <ds-searchable-select
+    label="Framework"
+    placeholder="Select a framework"
+    search-placeholder="Search frameworks…"
+    description="This field is required."
+    required
+    .options=\${options}
+    .value=\${value}
+    @ds-search=\${onSearch}
+    @ds-change=\${(e) => (value = e.detail.value)}
+  >
+    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+  </ds-searchable-select>
+\`;`,
+      },
+    },
+  },
   render: () => html`<sb-required-framework-search></sb-required-framework-search>`,
 };
 
 export const MultipleCountries: Story = {
   name: 'Multiple — Countries (maxLines=2)',
-  parameters: { docs: { story: { height: '330px' } } },
+  parameters: {
+    docs: {
+      story: { height: '330px' },
+      source: {
+        code: `${COUNTRY_SOURCE.split('html`')[0]}let values = [];
+
+html\`
+  <ds-searchable-select
+    label="Countries"
+    placeholder="Select countries"
+    search-placeholder="Search countries…"
+    multiple
+    .maxLines=\${2}
+    .options=\${options}
+    .values=\${values}
+    @ds-search=\${onSearch}
+    @ds-change=\${(e) => (values = e.detail.values)}
+  >
+    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+  </ds-searchable-select>
+\`;`,
+      },
+    },
+  },
   render: () => html`<sb-country-multi-search></sb-country-multi-search>`,
 };
