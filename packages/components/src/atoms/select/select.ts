@@ -7,17 +7,22 @@ import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
+  renderOptionIcon,
   renderSelectedTiles,
 } from './select.shared.js';
+import '../icon/define.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
 import { selectCommonStyles } from './select.common-styles.js';
 import { selectStyles } from './select.styles.js';
 
+export type SelectSize = 'sm' | 'md' | 'lg';
+
 export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
+  icon?: { name: string; color?: string };
 }
 
 /**
@@ -36,6 +41,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   };
 
   @property({ type: Array }) options: SelectOption[] = [];
+  @property({ reflect: true }) size: SelectSize = 'md';
   @property() placeholder = '';
   @property() label = '';
   @property() description = '';
@@ -242,7 +248,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${option.label}</ds-select-option
+      >${renderOptionIcon(option.icon, 'leading')}${option.label}</ds-select-option
     >`;
   };
 
@@ -256,7 +262,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const hasClearBtn =
       (this.clearable || this.required) &&
       (this.multiple ? this.values.length > 0 : current !== '');
-    return html` ${renderFieldLabel(this.label, this.required, 'trigger')}
+    return html` ${this.label ? renderFieldLabel(this.label, this.required, 'trigger') : nothing}
       <div class="control-wrap">
         <div
           id="trigger"
@@ -278,9 +284,10 @@ export class DsSelect extends FormControlMixin(DsElement) {
           </span>
           ${hasTiles
             ? this.#renderTiles()
-            : html` <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
-                ${selectedOption?.label ?? this.placeholder}
-              </span>`}
+            : html` ${renderOptionIcon(selectedOption?.icon)}
+                <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
+                  ${selectedOption?.label ?? this.placeholder}
+                </span>`}
           ${hasClearBtn
             ? renderClearButton((event: Event) => {
                 event.stopPropagation();

@@ -23,6 +23,12 @@ export const searchableSelectStyles = css`
     min-width: 0;
     cursor: pointer;
   }
+  :host([size='sm']) .search-input {
+    font-size: var(--ds-font-size-xs);
+  }
+  :host([size='lg']) .search-input {
+    font-size: var(--ds-font-size-md);
+  }
   .search-input::placeholder {
     color: var(--ds-color-fg-muted);
   }

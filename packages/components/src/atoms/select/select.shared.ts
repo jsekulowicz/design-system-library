@@ -1,6 +1,21 @@
 import { html, nothing, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const TILE_ROW_HEIGHT = 28;
+
+export interface OptionIcon {
+  name: string;
+  color?: string;
+}
+
+export function renderOptionIcon(icon?: OptionIcon, slot?: string): TemplateResult | typeof nothing {
+  if (!icon) return nothing;
+  return html`<ds-icon
+    slot=${ifDefined(slot)}
+    name=${icon.name}
+    style=${ifDefined(icon.color ? `color:${icon.color}` : undefined)}
+  ></ds-icon>`;
+}
 
 type TileDirection = 'left' | 'right';
 

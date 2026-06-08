@@ -2,10 +2,23 @@ import { css } from 'lit';
 
 export const selectCommonStyles = css`
   :host {
+    --ds-select-size: var(--ds-size-md);
     display: inline-flex;
     flex-direction: column;
     gap: var(--ds-space-1);
     width: 100%;
+  }
+  :host([size='sm']) {
+    --ds-select-size: var(--ds-size-sm);
+  }
+  :host([size='lg']) {
+    --ds-select-size: var(--ds-size-lg);
+  }
+  :host([size='sm']) .trigger {
+    font-size: var(--ds-font-size-xs);
+  }
+  :host([size='lg']) .trigger {
+    font-size: var(--ds-font-size-md);
   }
   .control-wrap {
     position: relative;
@@ -16,7 +29,7 @@ export const selectCommonStyles = css`
     align-items: center;
     gap: var(--ds-space-2);
     width: 100%;
-    height: var(--ds-size-md);
+    height: var(--ds-select-size);
     padding: 0 var(--ds-space-3);
     background: var(--ds-color-bg);
     border: 1px solid var(--ds-color-border-strong);
@@ -42,7 +55,7 @@ export const selectCommonStyles = css`
   }
   .trigger-multiple {
     height: auto;
-    min-height: var(--ds-size-md);
+    min-height: var(--ds-select-size);
     padding: 6px var(--ds-space-3);
     flex-wrap: wrap;
     align-items: center;

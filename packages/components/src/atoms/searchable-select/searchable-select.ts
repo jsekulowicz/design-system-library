@@ -8,6 +8,7 @@ import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
+  renderOptionIcon,
   renderSelectedTiles,
 } from '../select/select.shared.js';
 import { DropdownController } from '../select/dropdown-controller.js';
@@ -15,7 +16,8 @@ import { clearKeydown, dropdownKeydown } from '../select/dropdown-keydown.js';
 import { selectCommonStyles } from '../select/select.common-styles.js';
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import { highlightMatch } from './highlight-match.js';
-import type { SelectOption } from '../select/select.js';
+import type { SelectOption, SelectSize } from '../select/select.js';
+import '../icon/define.js';
 
 /**
  * @tag ds-searchable-select
@@ -39,6 +41,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   };
 
   @property({ type: Array }) options: SelectOption[] = [];
+  @property({ reflect: true }) size: SelectSize = 'md';
   @property() placeholder = '';
   @property({ attribute: 'search-placeholder' }) searchPlaceholder = 'Search…';
   @property() label = '';
@@ -54,6 +57,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @state() private _search = '';
 
   private _labelMap = new Map<string, string>();
+  private _iconMap = new Map<string, SelectOption['icon']>();
 
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
@@ -97,7 +101,10 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('options')) {
-      for (const o of this.options) this._labelMap.set(o.value, o.label);
+      for (const o of this.options) {
+        this._labelMap.set(o.value, o.label);
+        if (o.icon) this._iconMap.set(o.value, o.icon);
+      }
     }
   }
 
@@ -216,7 +223,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${highlightMatch(option.label, this._search)}</ds-select-option
+      >${renderOptionIcon(option.icon, 'leading')}${highlightMatch(option.label, this._search)}</ds-select-option
     >`;
   };
 
@@ -234,7 +241,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
         : '';
     const activeDesc =
       open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
-    return html` ${renderFieldLabel(this.label, this.required, 'search-input')}
+    const selectedIcon =
+      !open && !this.multiple && current ? this._iconMap.get(current) : undefined;
+    return html` ${this.label ? renderFieldLabel(this.label, this.required, 'search-input') : nothing}
       <div class="control-wrap">
         <div
           class="trigger${this.multiple ? ' trigger-multiple' : ''} ${open ? 'open' : ''}"
@@ -243,8 +252,13 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             if (!this.disabled) this.#dropdown.openDropdown();
           }}
         >
-          <span class="leading" ?hidden=${!this.#dropdown.hasLeading}>
-            <slot name="leading" @slotchange=${this.#dropdown.onLeadingChange}></slot>
+          <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>
+            ${selectedIcon ? renderOptionIcon(selectedIcon) : nothing}
+            <slot
+              name="leading"
+              ?hidden=${Boolean(selectedIcon)}
+              @slotchange=${this.#dropdown.onLeadingChange}
+            ></slot>
           </span>
           ${hasTiles ? this.#renderTiles() : nothing}
           <input
