@@ -205,6 +205,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       overflowCount: this.#dropdown.overflowCount,
       maxLines: this.maxLines,
       labelFor: (value) => this._labelMap.get(value) ?? value,
+      iconFor: (value) => this._iconMap.get(value),
       onRemove: this.#dropdown.removeTile,
     });
 
@@ -223,7 +224,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${renderOptionIcon(option.icon, 'leading')}${highlightMatch(option.label, this._search)}</ds-select-option
+      >${renderOptionIcon(option.icon, { slot: 'leading' })}${highlightMatch(option.label, this._search)}</ds-select-option
     >`;
   };
 

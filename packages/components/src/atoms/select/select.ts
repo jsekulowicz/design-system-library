@@ -230,6 +230,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       overflowCount: this.#dropdown.overflowCount,
       maxLines: this.maxLines,
       labelFor: (value) => this.options.find((option) => option.value === value)?.label ?? value,
+      iconFor: (value) => this.options.find((option) => option.value === value)?.icon,
       onRemove: this.#dropdown.removeTile,
     });
 
@@ -248,13 +249,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${renderOptionIcon(option.icon, 'leading')}${option.label}</ds-select-option
+      >${renderOptionIcon(option.icon, { slot: 'leading' })}${option.label}</ds-select-option
     >`;
   };
 
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
     const selectedOption = this.options.find((option) => option.value === current);
+    const selectedIcon = this.multiple ? undefined : selectedOption?.icon;
     const open = this.#dropdown.open;
     const activeDesc =
       open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
@@ -279,15 +281,19 @@ export class DsSelect extends FormControlMixin(DsElement) {
           @click=${this.#toggle}
           @keydown=${this.#onTriggerKeydown}
         >
-          <span class="leading" ?hidden=${!this.#dropdown.hasLeading}>
-            <slot name="leading" @slotchange=${this.#dropdown.onLeadingChange}></slot>
+          <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>
+            ${selectedIcon ? renderOptionIcon(selectedIcon) : nothing}
+            <slot
+              name="leading"
+              ?hidden=${Boolean(selectedIcon)}
+              @slotchange=${this.#dropdown.onLeadingChange}
+            ></slot>
           </span>
           ${hasTiles
             ? this.#renderTiles()
-            : html` ${renderOptionIcon(selectedOption?.icon)}
-                <span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
-                  ${selectedOption?.label ?? this.placeholder}
-                </span>`}
+            : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
+                ${selectedOption?.label ?? this.placeholder}
+              </span>`}
           ${hasClearBtn
             ? renderClearButton((event: Event) => {
                 event.stopPropagation();

@@ -1,5 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import '../icon/define.js';
+import '../icon/icons/x-mark.js';
 
 export const TILE_ROW_HEIGHT = 28;
 
@@ -8,10 +10,19 @@ export interface OptionIcon {
   color?: string;
 }
 
-export function renderOptionIcon(icon?: OptionIcon, slot?: string): TemplateResult | typeof nothing {
+interface OptionIconOptions {
+  slot?: string;
+  size?: string;
+}
+
+export function renderOptionIcon(
+  icon?: OptionIcon,
+  { slot, size }: OptionIconOptions = {},
+): TemplateResult | typeof nothing {
   if (!icon) return nothing;
   return html`<ds-icon
     slot=${ifDefined(slot)}
+    size=${ifDefined(size)}
     name=${icon.name}
     style=${ifDefined(icon.color ? `color:${icon.color}` : undefined)}
   ></ds-icon>`;
@@ -31,12 +42,14 @@ interface TileListTemplateOptions {
   overflowCount: number;
   maxLines?: number;
   labelFor: (value: string) => string;
+  iconFor?: (value: string) => OptionIcon | undefined;
   onRemove: (value: string) => void;
 }
 
 interface TileTemplateOptions {
   value: string;
   label: string;
+  icon?: OptionIcon;
   isFocused: boolean;
   onRemove: (value: string) => void;
 }
@@ -84,6 +97,7 @@ export function queueTaskOnce(options: QueueTaskOptions): void {
 
 function renderTile(options: TileTemplateOptions): TemplateResult {
   return html` <span class="tile${options.isFocused ? ' tile-focused' : ''}" data-value=${options.value}>
+    ${renderOptionIcon(options.icon, { size: 'md' })}
     <span class="tile-label">${options.label}</span>
     <button
       class="tile-remove"
@@ -96,7 +110,7 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
         options.onRemove(options.value);
       }}
     >
-      ${renderXMarkIcon()}
+      <ds-icon name="x-mark" size="sm"></ds-icon>
     </button>
   </span>`;
 }
@@ -115,6 +129,7 @@ export function renderSelectedTiles(options: TileListTemplateOptions): TemplateR
       renderTile({
         value,
         label: options.labelFor(value),
+        icon: options.iconFor?.(value),
         isFocused: options.focusedTileIndex === index,
         onRemove: options.onRemove,
       }),
