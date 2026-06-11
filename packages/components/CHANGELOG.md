@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.21.0
+
+### Minor Changes
+
+- 1a0aa68: ds-select and ds-searchable-select emit `ds-scroll-end` once each time their option listbox is scrolled near the bottom (re-armed after scrolling away or reopening). Hook for consumers that paginate options with infinite scroll.
+
 ## 0.20.0
 
 ### Minor Changes
