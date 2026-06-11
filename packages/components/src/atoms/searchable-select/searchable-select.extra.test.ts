@@ -383,4 +383,32 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(false);
   });
+  it('emits ds-scroll-end once per approach of the listbox bottom', async () => {
+    const el = await mountSearchable({ options: MANY_OPTIONS });
+    let fired = 0;
+    el.addEventListener('ds-scroll-end', () => {
+      fired += 1;
+    });
+
+    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
+    input.dispatchEvent(new Event('focus'));
+    await el.updateComplete;
+    const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
+    Object.defineProperty(listbox, 'scrollHeight', { configurable: true, value: 432 });
+    Object.defineProperty(listbox, 'clientHeight', { configurable: true, value: 240 });
+
+    listbox.scrollTop = 40;
+    listbox.dispatchEvent(new Event('scroll'));
+    expect(fired).toBe(0);
+
+    listbox.scrollTop = 160;
+    listbox.dispatchEvent(new Event('scroll'));
+    expect(fired).toBe(1);
+
+    listbox.scrollTop = 30;
+    listbox.dispatchEvent(new Event('scroll'));
+    listbox.scrollTop = 160;
+    listbox.dispatchEvent(new Event('scroll'));
+    expect(fired).toBe(2);
+  });
 });
