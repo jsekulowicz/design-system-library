@@ -29,6 +29,7 @@ export interface SelectOption {
  * @tag ds-select
  * @summary Custom dropdown selector with label, description and validation feedback.
  * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
+ * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
  * @csspart trigger - The trigger button element.
  * @csspart listbox - The dropdown listbox container.
  * @csspart option - Each individual option item.

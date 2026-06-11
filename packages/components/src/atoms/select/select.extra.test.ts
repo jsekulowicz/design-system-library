@@ -317,4 +317,38 @@ describe('<ds-select> label, size and icons', () => {
     expect(removeIcon!.getAttribute('name')).toBe('x-mark');
     expect(removeIcon!.getAttribute('size')).toBe('sm');
   });
+  it('emits ds-scroll-end once per approach of the listbox bottom', async () => {
+    const el = await mountSelect({ options: MANY_OPTIONS });
+    let fired = 0;
+    el.addEventListener('ds-scroll-end', () => {
+      fired += 1;
+    });
+
+    const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
+    trigger.click();
+    await el.updateComplete;
+    const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
+    // jsdom has no layout: simulate a 432px tall list in a 240px viewport.
+    Object.defineProperty(listbox, 'scrollHeight', { configurable: true, value: 432 });
+    Object.defineProperty(listbox, 'clientHeight', { configurable: true, value: 240 });
+
+    listbox.scrollTop = 40;
+    listbox.dispatchEvent(new Event('scroll'));
+    expect(fired).toBe(0);
+
+    listbox.scrollTop = 150;
+    listbox.dispatchEvent(new Event('scroll'));
+    expect(fired).toBe(1);
+
+    // Still at the bottom: no repeat until the user scrolls away.
+    listbox.scrollTop = 180;
+    listbox.dispatchEvent(new Event('scroll'));
+    expect(fired).toBe(1);
+
+    listbox.scrollTop = 20;
+    listbox.dispatchEvent(new Event('scroll'));
+    listbox.scrollTop = 170;
+    listbox.dispatchEvent(new Event('scroll'));
+    expect(fired).toBe(2);
+  });
 });

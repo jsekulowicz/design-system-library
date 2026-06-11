@@ -24,6 +24,11 @@ export interface DropdownConfig {
 
 type DropdownHost = ReactiveControllerHost & HTMLElement;
 
+// How close (px) to the listbox bottom counts as "scrolled to the end".
+// Two rows of slack lets consumers fetch the next page before the user
+// actually hits the hard end.
+const SCROLL_END_THRESHOLD = ITEM_HEIGHT * 2;
+
 export class DropdownController implements ReactiveController {
   #host: DropdownHost;
   #config: DropdownConfig;
@@ -34,6 +39,7 @@ export class DropdownController implements ReactiveController {
   #focusedTileIndex = -1;
   #overflowCount = 0;
   #hasLeading = false;
+  #scrollEndArmed = true;
 
   #docClickHandler?: (event: MouseEvent) => void;
   #overflowCheckQueued = false;
@@ -94,6 +100,7 @@ export class DropdownController implements ReactiveController {
     if (this.#open) return;
     if (this.#config.canOpen && !this.#config.canOpen()) return;
     this.#open = true;
+    this.#scrollEndArmed = true;
     this.#config.onOpen?.();
     this.#focusedTileIndex = -1;
     const options = this.#config.getOptions();
@@ -138,7 +145,25 @@ export class DropdownController implements ReactiveController {
   onScroll = (): void => {
     const el = this.#config.getListboxEl();
     this.#scrollTop = el?.scrollTop ?? 0;
+    if (el) this.#notifyScrollEnd(el);
     this.#host.requestUpdate();
+  };
+
+  // Emits `ds-scroll-end` once per approach of the listbox bottom (the
+  // infinite-scroll hook). Scrolling back up re-arms it, as does
+  // reopening the dropdown; appended options push the bottom away so the
+  // next approach fires again.
+  #notifyScrollEnd = (el: HTMLElement): void => {
+    const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - SCROLL_END_THRESHOLD;
+    if (!nearEnd) {
+      this.#scrollEndArmed = true;
+      return;
+    }
+    if (!this.#scrollEndArmed) return;
+    this.#scrollEndArmed = false;
+    this.#host.dispatchEvent(
+      new CustomEvent('ds-scroll-end', { bubbles: true, composed: true }),
+    );
   };
 
   onLeadingChange = (event: Event): void => {

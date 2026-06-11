@@ -24,6 +24,7 @@ import '../icon/define.js';
  * @summary Combobox with a text search input. Emits ds-search so the consumer can filter options.
  * @event ds-search - Fires on every keystroke. Detail: `{ query: string }`.
  * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
+ * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
  * @csspart trigger - The trigger container element.
  * @csspart listbox - The dropdown listbox container.
  * @csspart option - Each individual option item.
