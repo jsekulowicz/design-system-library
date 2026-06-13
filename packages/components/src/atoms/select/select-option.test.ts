@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { DsSelectOption } from './select-option.js';
+import { selectOptionStyles } from './select-option.styles.js';
 import { mount, mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 beforeEach(() => {
@@ -89,6 +90,15 @@ describe('<ds-select-option>', () => {
       '<ds-select-option id="option-7">X</ds-select-option>',
     );
     expect(el.id).toBe('option-7');
+  });
+
+  it('wraps long primary text instead of truncating with an ellipsis', () => {
+    const css = selectOptionStyles.cssText;
+    expect(css).toContain('white-space: normal');
+    expect(css).toContain('overflow-wrap: anywhere');
+    expect(css).not.toContain('text-overflow: ellipsis');
+    // The single-line baseline stays at the virtual-list ITEM_HEIGHT.
+    expect(css).toContain('min-height: 36px');
   });
 
   it('reflects active to attribute (drives keyboard highlight without DOM focus)', async () => {

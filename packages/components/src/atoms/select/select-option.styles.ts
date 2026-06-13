@@ -5,9 +5,12 @@ export const selectOptionStyles = css`
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
-    height: 36px; /* must match ITEM_HEIGHT constant in virtual-list.ts */
+    /* ITEM_HEIGHT (virtual-list.ts) baseline for single-line options; an
+       option whose primary text wraps grows past it. Virtualization stays
+       accurate while options fit one line. */
+    min-height: 36px;
     box-sizing: border-box;
-    padding: 0 var(--ds-space-3);
+    padding: var(--ds-space-2) var(--ds-space-3);
     cursor: pointer;
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-sm);
@@ -47,9 +50,8 @@ export const selectOptionStyles = css`
   }
   .primary {
     display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .description {
     display: block;
