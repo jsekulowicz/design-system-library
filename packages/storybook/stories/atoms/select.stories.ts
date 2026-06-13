@@ -381,3 +381,47 @@ ${LEADING}
   </ds-select>
 `,
 };
+
+// Long, sentence-like labels (e.g. crossword clues) to show option wrapping.
+const longOptions = [
+  {
+    label: 'Líquido transparente, incoloro e inodoro que forma ríos, lagos y mares',
+    value: 'agua',
+  },
+  { label: 'Conjunto de pasos y técnicas para preparar un plato de comida', value: 'receta' },
+  { label: 'Persona que se dedica a escribir obras literarias', value: 'autor' },
+];
+
+const LONG_OPTIONS_SRC = `import '@jsekulowicz/ds-components/select/define';
+
+const options = [
+  {
+    label: 'Líquido transparente, incoloro e inodoro que forma ríos, lagos y mares',
+    value: 'agua',
+  },
+  { label: 'Conjunto de pasos y técnicas para preparar un plato de comida', value: 'receta' },
+  { label: 'Persona que se dedica a escribir obras literarias', value: 'autor' },
+];`;
+
+export const LongOptionsWrap: Story = {
+  name: 'Long options wrap',
+  parameters: {
+    docs: {
+      story: { height: '360px' },
+      description: {
+        story:
+          'Dropdown options wrap onto multiple lines instead of truncating with an ellipsis, so long labels (such as full crossword clues) can be read in full. Open the select to see the wrapped options; an option keeps its single-line height as a baseline and grows only when its text wraps, and the closed trigger still truncates the selected value to one line. `ds-searchable-select` shares the same option and wraps identically.',
+      },
+      source: {
+        code: `${LONG_OPTIONS_SRC}\n\nhtml\`\n  <ds-select label="Clue" placeholder="Pick a clue" .options=\${options}></ds-select>\n\`;`,
+      },
+    },
+  },
+  render: () => html`
+  <ds-select
+    label="Clue"
+    placeholder="Pick a clue"
+    .options=${longOptions}
+  ></ds-select>
+`,
+};
