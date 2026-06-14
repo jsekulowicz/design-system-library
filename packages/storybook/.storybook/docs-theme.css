@@ -18,8 +18,10 @@
   max-width: none !important;
   /* Each section heading carries an absolutely-positioned anchor link 30px to
      its left (margin-left: -30px). With content flush against the panel edge
-     that link is clipped, so reserve inline padding to keep it on-screen. */
-  padding-inline: 2.5rem !important;
+     that link is clipped, so reserve inline padding to keep it on-screen on
+     desktop. Scale the padding down on narrow/mobile panels (where the hover
+     anchor isn't usable anyway) so examples aren't crammed by 80px of rails. */
+  padding-inline: clamp(var(--ds-space-4), 5vw, 2.5rem) !important;
 }
 
 .sbdocs h1,

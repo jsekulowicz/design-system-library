@@ -133,19 +133,18 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const gap = 4;
     const margin = 8;
     const vw = window.innerWidth;
-    // At least the trigger's width, but never wider than the viewport — so a
-    // long option wraps (see select-option styles) instead of pushing the
-    // menu off-screen on a narrow viewport.
-    const maxWidth = Math.max(0, vw - margin * 2);
-    listbox.style.maxWidth = `${maxWidth}px`;
-    listbox.style.minWidth = `${Math.min(rect.width, maxWidth)}px`;
+    // Match the trigger's width (capped to the viewport) rather than growing
+    // to the widest option — so a long option wraps onto multiple lines (see
+    // select-option styles) and the menu never extends past the trigger or
+    // off the side of a narrow viewport.
+    const width = Math.min(rect.width, Math.max(0, vw - margin * 2));
+    listbox.style.width = `${width}px`;
 
     const viewport = window.innerHeight;
     const naturalHeight = Math.min(listbox.scrollHeight, 240);
     const openUp = viewport - rect.bottom - gap < naturalHeight && rect.top > viewport - rect.bottom;
-    // Clamp the left edge using the now-constrained width so the right side
-    // stays on-screen even when the trigger sits near the viewport edge.
-    const width = listbox.offsetWidth;
+    // Clamp the left edge so the right side stays on-screen even when the
+    // trigger sits near the viewport edge.
     listbox.style.left = `${Math.min(Math.max(margin, rect.left), Math.max(margin, vw - margin - width))}px`;
     if (openUp) {
       listbox.style.top = '';

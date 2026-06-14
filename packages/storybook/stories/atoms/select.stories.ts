@@ -407,7 +407,7 @@ export const LongOptionsWrap: Story = {
   name: 'Long options wrap',
   parameters: {
     docs: {
-      story: { height: '360px' },
+      story: { height: '240px' },
       description: {
         story:
           'Dropdown options wrap onto multiple lines instead of truncating with an ellipsis, so long labels (such as full crossword clues) can be read in full. Open the select to see the wrapped options; an option keeps its single-line height as a baseline and grows only when its text wraps, and the closed trigger still truncates the selected value to one line. `ds-searchable-select` shares the same option and wraps identically.',
