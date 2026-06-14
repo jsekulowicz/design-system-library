@@ -5,8 +5,6 @@ import { tooltipStyles } from './tooltip.styles.js';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
-const GAP = 6;
-
 interface PopoverElement extends HTMLElement {
   showPopover(): void;
   hidePopover(): void;
@@ -22,7 +20,7 @@ function isPopoverElement(el: Element | null): el is PopoverElement {
  * @slot default - The trigger element that the tooltip is anchored to.
  * @slot tip - The tooltip content (can be any HTML).
  * @csspart anchor - The wrapper around the trigger element.
- * @csspart tooltip - The tooltip bubble. Rendered in the Popover API top layer so it escapes ancestor overflow; positioned via JS using getBoundingClientRect of the trigger.
+ * @csspart tooltip - The tooltip bubble. Rendered in the Popover API top layer so it escapes ancestor overflow; positioned with CSS anchor positioning relative to the trigger.
  */
 export class DsTooltip extends DsElement {
   static override styles = [...DsElement.styles, tooltipStyles];
@@ -110,7 +108,6 @@ export class DsTooltip extends DsElement {
         // ignore — possibly unsupported
       }
     }
-    this.#updatePosition();
   };
 
   #hide = (): void => {
@@ -123,54 +120,6 @@ export class DsTooltip extends DsElement {
     } catch {
       // ignore
     }
-  };
-
-  #updatePosition = (): void => {
-    const tooltip = this.#tooltipEl();
-    if (!tooltip) {
-      return;
-    }
-    const anchorRect = this.shadowRoot?.querySelector('.anchor')?.getBoundingClientRect();
-    const rect = anchorRect ?? this.getBoundingClientRect();
-    let top = 0;
-    let left = 0;
-    let transform = '';
-    switch (this.placement) {
-      case 'top':
-        top = rect.top - GAP;
-        left = rect.left + rect.width / 2;
-        transform = 'translate(-50%, -100%)';
-        break;
-      case 'right':
-        top = rect.top + rect.height / 2;
-        left = rect.right + GAP;
-        transform = 'translateY(-50%)';
-        break;
-      case 'bottom':
-        top = rect.bottom + GAP;
-        left = rect.left + rect.width / 2;
-        transform = 'translateX(-50%)';
-        break;
-      case 'left':
-        top = rect.top + rect.height / 2;
-        left = rect.left - GAP;
-        transform = 'translate(-100%, -50%)';
-        break;
-    }
-    tooltip.style.top = `${top}px`;
-    tooltip.style.transform = transform;
-    // For the horizontally-centered placements, keep the bubble within the
-    // viewport so a trigger near an edge doesn't push it off-screen (the
-    // bubble is in the top layer, so nothing else would clip/scroll it).
-    const viewportWidth = document.documentElement.clientWidth;
-    if ((this.placement === 'top' || this.placement === 'bottom') && viewportWidth > 0) {
-      const margin = 8;
-      const half = tooltip.offsetWidth / 2;
-      const min = margin + half;
-      const max = viewportWidth - margin - half;
-      left = min <= max ? Math.min(Math.max(left, min), max) : viewportWidth / 2;
-    }
-    tooltip.style.left = `${left}px`;
   };
 
   override render(): TemplateResult {

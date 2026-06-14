@@ -25,6 +25,9 @@ export const selectCommonStyles = css`
     width: 100%;
   }
   .trigger {
+    /* The popover listbox positions itself against this via CSS anchor
+       positioning (scoped to this shadow root, so instances don't clash). */
+    anchor-name: --ds-select-trigger;
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
@@ -149,13 +152,10 @@ export const selectCommonStyles = css`
     transition: transform var(--ds-duration-fast) var(--ds-easing-standard);
   }
   .listbox {
-    /* Default in-flow positioning is the fallback for browsers that
-       don't support the Popover API. When the API is available the
-       listbox is shown via showPopover() and JS sets inline
-       position/top/left/min-width — see DsSelect.#positionListbox.
-       That escapes any overflow:hidden / overflow:auto ancestor
-       (dialogs, scroll containers) by placing the listbox in the
-       browser's top layer. */
+    /* In-flow fallback for browsers without the Popover API. When the API is
+       available the listbox is shown via showPopover() (top layer, so it
+       escapes any overflow:hidden / scroll ancestor) and positioned with CSS
+       anchor positioning — see .listbox[popover]:popover-open below. */
     position: absolute;
     inset: calc(100% + var(--ds-space-1)) 0 auto;
     z-index: 100;
@@ -173,17 +173,19 @@ export const selectCommonStyles = css`
     scrollbar-width: thin;
   }
 
-  /* Reset the UA defaults that the popover spec applies to shown
-     popovers (inset:0, margin:auto, padding:0.25em). The inline coords
-     from #positionListbox are viewport-relative (from getBoundingClientRect),
-     so the shown listbox must stay position:fixed — the base .listbox rule
-     above sets position:absolute as the no-popover fallback, which would
-     otherwise win over the UA stylesheet's fixed and anchor the menu to the
-     document instead of the viewport (menu jumps off-screen once scrolled). */
+  /* Shown in the top layer: position it under the trigger with CSS anchor
+     positioning — matching the trigger's width (so long options wrap rather
+     than widening the menu) and flipping above when there's no room below.
+     The browser keeps it glued to the trigger on scroll, so no JS. */
   .listbox[popover]:popover-open {
     position: fixed;
-    inset: unset;
+    position-anchor: --ds-select-trigger;
+    inset: auto;
+    top: calc(anchor(bottom) + var(--ds-space-1));
+    left: anchor(left);
+    width: anchor-size(width);
     margin: 0;
     padding: 0;
+    position-try-fallbacks: flip-block;
   }
 `;

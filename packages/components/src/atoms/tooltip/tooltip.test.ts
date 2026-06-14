@@ -86,23 +86,18 @@ describe('<ds-tooltip>', () => {
     expect(el.shadowRoot!.querySelector('.tooltip')).not.toBeNull();
   });
 
-  it('shows, positions and hides tooltip for every placement', async () => {
+  it('shows and hides the tooltip, reflecting each placement', async () => {
     const el = await mount<DsTooltip>('<ds-tooltip><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
     const harness = setupPopoverHarness(el);
 
-    const expected = new Map<string, string>([
-      ['top', 'translate(-50%, -100%)'],
-      ['right', 'translateY(-50%)'],
-      ['bottom', 'translateX(-50%)'],
-      ['left', 'translate(-100%, -50%)'],
-    ]);
-
-    for (const [placement, transform] of expected) {
+    // Placement is reflected to the host attribute, which drives the CSS
+    // anchor positioning (position-area) — there's no JS positioning anymore.
+    for (const placement of ['top', 'right', 'bottom', 'left'] as const) {
       harness.setOpenState(false);
-      el.placement = placement as 'top' | 'right' | 'bottom' | 'left';
+      el.placement = placement;
       el.open = true;
       await el.updateComplete;
-      expect(harness.tooltip.style.transform).toBe(transform);
+      expect(el.getAttribute('placement')).toBe(placement);
     }
 
     el.open = false;
@@ -205,36 +200,6 @@ describe('<ds-tooltip>', () => {
     await el.updateComplete;
 
     expect(harness.showCalls).toBe(0);
-  });
-
-  it('uses host rect when anchor lookup is unavailable', async () => {
-    const el = await mount<DsTooltip>('<ds-tooltip><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
-    const root = el.shadowRoot as ShadowRoot & { querySelector: (selectors: string) => Element | null };
-    const originalQuerySelector = root.querySelector.bind(root);
-    const tooltip = root.querySelector('.tooltip') as HTMLElement & { showPopover: () => void };
-    let openState = false;
-
-    tooltip.showPopover = () => {
-      openState = true;
-    };
-    Object.defineProperty(tooltip, 'matches', {
-      configurable: true,
-      value: (selector: string) => selector === ':popover-open' && openState,
-    });
-
-    root.querySelector = ((selectors: string) => {
-      if (selectors === '.anchor') {
-        return null;
-      }
-      return originalQuerySelector(selectors);
-    }) as never;
-    el.getBoundingClientRect = () => domRect(50, 60, 100, 40);
-
-    el.open = true;
-    await el.updateComplete;
-
-    expect(tooltip.style.top).toBe('44px');
-    expect(tooltip.style.left).toBe('110px');
   });
 
   it('stays safe when tooltip node is missing', async () => {
