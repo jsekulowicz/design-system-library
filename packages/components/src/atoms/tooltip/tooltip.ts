@@ -158,8 +158,19 @@ export class DsTooltip extends DsElement {
         break;
     }
     tooltip.style.top = `${top}px`;
-    tooltip.style.left = `${left}px`;
     tooltip.style.transform = transform;
+    // For the horizontally-centered placements, keep the bubble within the
+    // viewport so a trigger near an edge doesn't push it off-screen (the
+    // bubble is in the top layer, so nothing else would clip/scroll it).
+    const viewportWidth = document.documentElement.clientWidth;
+    if ((this.placement === 'top' || this.placement === 'bottom') && viewportWidth > 0) {
+      const margin = 8;
+      const half = tooltip.offsetWidth / 2;
+      const min = margin + half;
+      const max = viewportWidth - margin - half;
+      left = min <= max ? Math.min(Math.max(left, min), max) : viewportWidth / 2;
+    }
+    tooltip.style.left = `${left}px`;
   };
 
   override render(): TemplateResult {
