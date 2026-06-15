@@ -22,6 +22,9 @@ export const searchableSelectStyles = css`
     font-size: var(--ds-font-size-sm);
     min-width: 0;
     cursor: pointer;
+    /* Show a long selected value truncated rather than hard-clipped; the
+       input still scrolls normally while focused and typing. */
+    text-overflow: ellipsis;
   }
   :host([size='sm']) .search-input {
     font-size: var(--ds-font-size-xs);
