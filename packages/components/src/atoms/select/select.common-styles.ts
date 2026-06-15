@@ -75,6 +75,10 @@ export const selectCommonStyles = css`
     display: inline-flex;
     align-items: center;
     gap: var(--ds-space-1);
+    /* Grow with the label up to the full row width, then the label
+       ellipsizes — rather than hard-capping every tile to a narrow width
+       and wasting the rest of the row. */
+    max-width: 100%;
     height: 24px;
     padding: 0 var(--ds-space-1) 0 var(--ds-space-2);
     background: var(--ds-color-bg-subtle);
@@ -96,7 +100,7 @@ export const selectCommonStyles = css`
     font-weight: var(--ds-font-weight-medium);
   }
   .tile-label {
-    max-width: 120px;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
   }
