@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.23.1
+
+### Patch Changes
+
+- 270fe6a: ds-searchable-select now truncates a long selected value with an ellipsis instead of hard-clipping it (the input still scrolls normally while focused and typing).
+- fe44fc7: Selected tiles in a multiple ds-select (and ds-searchable-select) now grow to the full row width before ellipsizing, instead of being hard-capped to a narrow fixed width that wrapped early and wasted the rest of the row. Long labels still truncate with an ellipsis, preserved whether the dropdown is open or closed.
+
 ## 0.23.0
 
 ### Minor Changes
