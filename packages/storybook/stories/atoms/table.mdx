@@ -1,4 +1,4 @@
-import { Meta, Canvas, Stories } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
 import * as TableStories from './table.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
 import '@jsekulowicz/ds-components/table/define';
@@ -38,6 +38,8 @@ The `render` function receives the full row object and index — any component, 
 
     <ds-tab-panel value="api">
       <Canvas of={TableStories.Basic} />
+      <h3>Props</h3>
+      <Controls of={TableStories.Basic} />
       <ds-tabs value="ds-table">
         <ds-tab slot="tab" value="ds-table">ds-table</ds-tab>
         <ds-tab slot="tab" value="ds-table-sort-button">ds-table-sort-button</ds-tab>

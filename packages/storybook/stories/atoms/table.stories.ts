@@ -95,6 +95,33 @@ function sortBy<T extends Record<string, unknown>>(rows: readonly T[], field: st
 const meta: Meta = {
   title: 'Atoms/Table',
   component: 'ds-table',
+  argTypes: {
+    rows: { control: 'object' },
+    columns: { control: 'object' },
+    sortState: { control: 'object' },
+    rowActionLabel: { control: false },
+    clickableRows: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    skeletonRows: { control: { type: 'number', min: 1 } },
+    skeletonColumns: { control: { type: 'number', min: 1 } },
+    rowKey: { control: 'text' },
+    responsive: {
+      control: { type: 'inline-radio' },
+      options: ['stack', 'scroll'],
+    },
+    scrollBody: { control: 'boolean' },
+  },
+  args: {
+    rows: PEOPLE.slice(0, 4),
+    columns: BASIC_COLUMNS,
+    sortState: null,
+    clickableRows: false,
+    loading: false,
+    skeletonRows: 5,
+    skeletonColumns: 4,
+    responsive: 'stack',
+    scrollBody: false,
+  },
 };
 
 export default meta;
@@ -123,8 +150,20 @@ table.rows = rows;`,
       },
     },
   },
-  render: () => html`
-<ds-table .rows=${PEOPLE.slice(0, 4)} .columns=${BASIC_COLUMNS}></ds-table>
+  render: (args) => html`
+<ds-table
+  .rows=${args['rows']}
+  .columns=${args['columns']}
+  .sortState=${args['sortState']}
+  .rowActionLabel=${args['rowActionLabel']}
+  .clickableRows=${args['clickableRows']}
+  .loading=${args['loading']}
+  .skeletonRows=${args['skeletonRows']}
+  .skeletonColumns=${args['skeletonColumns']}
+  .rowKey=${args['rowKey']}
+  .responsive=${args['responsive']}
+  .scrollBody=${args['scrollBody']}
+></ds-table>
 `,
 };
 
