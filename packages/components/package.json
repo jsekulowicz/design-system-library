@@ -88,6 +88,13 @@
     "./text-field/define": {
       "import": "./dist/atoms/text-field/define.js"
     },
+    "./range-input": {
+      "types": "./dist/atoms/range-input/index.d.ts",
+      "import": "./dist/atoms/range-input/index.js"
+    },
+    "./range-input/define": {
+      "import": "./dist/atoms/range-input/define.js"
+    },
     "./checkbox": {
       "types": "./dist/atoms/checkbox/index.d.ts",
       "import": "./dist/atoms/checkbox/index.js"

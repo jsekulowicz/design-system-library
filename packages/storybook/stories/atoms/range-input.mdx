@@ -1,0 +1,55 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as RangeInputStories from './range-input.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={RangeInputStories} />
+
+# RangeInput
+
+Slider for picking a numeric value within a min/max range. Backed by a native `<input type="range">`, so keyboard and assistive-technology support come built in.
+
+## Anatomy
+
+A native range `<input>` in shadow DOM with a token-styled track and thumb. Label, description, error, and an optional current-value output are part of the component.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={RangeInputStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={RangeInputStories.Playground} />
+      <ComponentApi tag="ds-range-input" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use for selecting an approximate value from a continuous range where precision isn't critical.</li>
+        <li>Pick a <code>step</code> that matches the meaningful granularity — coarse steps are easier to hit.</li>
+        <li>Enable <code>show-value</code> when the exact number matters to the user.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use a slider when an exact value is required — a number field is more reliable.</li>
+        <li>Don't use for a min–max range with two handles — that's out of scope for this component.</li>
+        <li>Don't rely on color alone to signal the invalid state; pair it with <code>error</code> copy.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Native slider semantics expose <code>role="slider"</code> with <code>aria-valuenow</code>/<code>aria-valuemin</code>/<code>aria-valuemax</code>.</li>
+        <li>Keyboard: arrow keys nudge by <code>step</code>; Home/End jump to min/max; Page Up/Down move in larger increments.</li>
+        <li>For non-numeric scales, provide an <code>aria-valuetext</code> via a future enhancement so the announced value reads naturally.</li>
+        <li>Use <code>label</code> for a visible label, or <code>input-label</code> for an accessible name when no visible label is shown.</li>
+        <li>When <code>disabled</code>, the control stays focusable and exposes <code>aria-disabled="true"</code> so assistive tech can find and announce it, while keyboard and pointer interaction are blocked.</li>
+        <li>Focus ring uses <code>:focus-visible</code> on the thumb; never suppressed.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

@@ -8,6 +8,7 @@ import './atoms/list/define.js';
 import './atoms/icon/define.js';
 import './atoms/link/define.js';
 import './atoms/text-field/define.js';
+import './atoms/range-input/define.js';
 import './atoms/checkbox/define.js';
 import './atoms/checkbox-group/define.js';
 import './atoms/radio/define.js';

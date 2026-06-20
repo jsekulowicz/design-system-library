@@ -13,6 +13,7 @@ export { DsList, DsListItem, type ListVariant, type ListDensity } from './atoms/
 export { DsIcon, registerIcon, getIcon, type IconSize } from './atoms/icon/index.js';
 export { DsLink, type LinkVariant } from './atoms/link/index.js';
 export { DsTextField, type TextFieldType, type TextFieldSize } from './atoms/text-field/index.js';
+export { DsRangeInput, type RangeInputSize } from './atoms/range-input/index.js';
 export { DsCheckbox } from './atoms/checkbox/index.js';
 export { DsCheckboxGroup } from './atoms/checkbox-group/index.js';
 export { DsRadio } from './atoms/radio/index.js';

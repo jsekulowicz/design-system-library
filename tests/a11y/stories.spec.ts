@@ -6,6 +6,8 @@ const stories = [
   'atoms-badge--tones',
   'atoms-link--variants',
   'atoms-textfield--playground',
+  'atoms-rangeinput--playground',
+  'atoms-rangeinput--with-value',
   'atoms-checkbox--states',
   'atoms-radio--group',
   'atoms-select--playground',
