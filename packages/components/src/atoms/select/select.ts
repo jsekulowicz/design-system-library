@@ -45,6 +45,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @property({ reflect: true }) size: SelectSize = 'md';
   @property() placeholder = '';
   @property() label = '';
+  /** Accessible name used when no visible `label` is set (renders no stacked label). */
+  @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
@@ -85,7 +87,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
   set _overflowCheckQueued(value: boolean) { this.#dropdown.overflowCheckQueued = value; }
 
   override updated(changed: PropertyValues): void {
-    if (changed.has('label')) this.setAriaLabel(this.label || null);
+    if (changed.has('label') || changed.has('inputLabel'))
+      this.setAriaLabel(this.label || this.inputLabel || null);
     if (changed.has('description')) this.setAriaDescription(this.description || null);
     if (
       (changed.has('values') || changed.has('maxLines') || changed.has('multiple')) &&
@@ -116,8 +119,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.label)
-      console.warn('<ds-select>: the `label` property is required for accessibility.');
+    if (!this.label && !this.inputLabel)
+      console.warn('<ds-select>: a `label` or `input-label` is required for accessibility.');
   }
 
   #selectOption = (option: SelectOption): void => {
@@ -229,7 +232,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           aria-haspopup="listbox"
           aria-expanded=${open ? 'true' : 'false'}
           aria-controls="listbox"
-          aria-label=${ifDefined(this.label || undefined)}
+          aria-label=${ifDefined(this.label || this.inputLabel || undefined)}
           aria-activedescendant=${ifDefined(activeDesc)}
           aria-disabled=${this.disabled ? 'true' : 'false'}
           @click=${this.#toggle}
