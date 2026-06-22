@@ -41,6 +41,9 @@ export class DsMenuButton extends DsElement {
   @state() private _hasTriggerSlot = false;
 
   @query('#trigger') private triggerEl?: HTMLElement;
+  @query(`#${PANEL_ID}`) private panelEl?: HTMLElement & {
+    showPopover?: () => void;
+  };
 
   #popover = new MenuButtonPopover(this, {
     focusTrigger: () => this.#focusTrigger(),
@@ -83,6 +86,24 @@ export class DsMenuButton extends DsElement {
 
   override updated(): void {
     this.#slottedTrigger.syncAria(PANEL_ID);
+    this.#syncPanelPopover();
+  }
+
+  // `popover="manual"` hoists the panel to the top layer, escaping overflow ancestors.
+  #syncPanelPopover(): void {
+    const panel = this.panelEl;
+
+    if (!panel || !this.#popover.open) {
+      return;
+    }
+
+    if (typeof panel.showPopover !== 'function') {
+      return;
+    }
+
+    if (!panel.matches(':popover-open')) {
+      panel.showPopover();
+    }
   }
 
   #focusTrigger(): void {
@@ -139,7 +160,7 @@ export class DsMenuButton extends DsElement {
   }
 
   #renderPanel(): TemplateResult {
-    return html`<div id=${PANEL_ID} class="panel" part="panel">
+    return html`<div id=${PANEL_ID} class="panel" part="panel" popover="manual">
       <ds-menu
         part="menu"
         label=${this.menuLabel || this.label || nothing}

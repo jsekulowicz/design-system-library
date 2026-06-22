@@ -10,12 +10,17 @@ export const menuButtonStyles = css`
     display: inline-block;
   }
   .trigger-wrap {
+    anchor-name: --ds-menu-button-trigger;
     display: inline-flex;
   }
   .panel {
     position: absolute;
     z-index: 100;
     min-width: max-content;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background: transparent;
   }
   :host([placement='bottom-start']) .panel {
     inset-inline-start: 0;
@@ -36,5 +41,28 @@ export const menuButtonStyles = css`
     inset-inline-end: 0;
     inset-block-end: 100%;
     margin-block-end: var(--ds-space-1);
+  }
+
+  .panel[popover]:popover-open {
+    position: fixed;
+    position-anchor: --ds-menu-button-trigger;
+    inset: auto;
+    position-try-fallbacks: flip-block, flip-inline;
+  }
+  :host([placement='bottom-start']) .panel[popover]:popover-open {
+    top: calc(anchor(bottom) + var(--ds-space-1));
+    left: anchor(left);
+  }
+  :host([placement='bottom-end']) .panel[popover]:popover-open {
+    top: calc(anchor(bottom) + var(--ds-space-1));
+    right: anchor(right);
+  }
+  :host([placement='top-start']) .panel[popover]:popover-open {
+    bottom: calc(anchor(top) + var(--ds-space-1));
+    left: anchor(left);
+  }
+  :host([placement='top-end']) .panel[popover]:popover-open {
+    bottom: calc(anchor(top) + var(--ds-space-1));
+    right: anchor(right);
   }
 `;
