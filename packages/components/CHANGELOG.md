@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.25.0
+
+### Minor Changes
+
+- d37e755: Add `input-label` to `ds-select`, mirroring `ds-text-field`. It sets the trigger's accessible name without rendering a visible stacked label, so a select can carry a compact inline label (e.g. alongside its own text) instead of the stacked one. The no-label accessibility warning now accepts either `label` or `input-label`.
+
+### Patch Changes
+
+- a78aeb3: Fix `ds-menu-button` dropdown clipping and overflowing the viewport. The panel is now shown via the Popover API (`popover="manual"`), so it renders in the top layer and escapes `overflow: hidden`/scroll ancestors, and it is positioned with CSS anchor positioning that flips into view near a viewport edge — mirroring `ds-select`. UA popover defaults (border, padding, background, margin) are reset on the panel so only the inner `ds-menu` surface shows.
+
 ## 0.24.0
 
 ### Minor Changes
