@@ -29,6 +29,7 @@ export { PageShell } from './ds-page-shell.js';
 export { ProgressBar } from './ds-progress-bar.js';
 export { Radio } from './ds-radio.js';
 export { RadioGroup } from './ds-radio-group.js';
+export { RangeInput } from './ds-range-input.js';
 export { SearchableSelect } from './ds-searchable-select.js';
 export { SegmentedControl } from './ds-segmented-control.js';
 export { Select } from './ds-select.js';

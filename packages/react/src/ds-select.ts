@@ -9,6 +9,7 @@ export const Select = createComponent({
   react: React,
   events: {
     'onDsChange': 'ds-change' as EventName<CustomEvent>,
+    'onDsScrollEnd': 'ds-scroll-end' as EventName<CustomEvent>,
   },
   displayName: 'Select',
 });
