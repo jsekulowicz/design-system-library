@@ -21,6 +21,8 @@ export const menuButtonStyles = css`
     border: 0;
     padding: 0;
     background: transparent;
+    /* The popover UA default is overflow: auto, which clips the menu's drop shadow. */
+    overflow: visible;
   }
   :host([placement='bottom-start']) .panel {
     inset-inline-start: 0;
