@@ -20,6 +20,10 @@ export interface DropdownConfig {
   canOpen?: () => boolean;
   onOpen?: () => void;
   onClose?: () => void;
+  // The element that keeps the dropdown open while focused (the combobox
+  // trigger/input). Focus moving anywhere else — clear button, another field —
+  // closes it.
+  getComboboxEl?: () => Element | null | undefined;
 }
 
 type DropdownHost = ReactiveControllerHost & HTMLElement;
@@ -42,6 +46,7 @@ export class DropdownController implements ReactiveController {
   #scrollEndArmed = true;
 
   #docClickHandler?: (event: MouseEvent) => void;
+  #focusOutHandler?: () => void;
   #overflowCheckQueued = false;
 
   constructor(host: DropdownHost, config: DropdownConfig) {
@@ -113,6 +118,15 @@ export class DropdownController implements ReactiveController {
       if (!event.composedPath().includes(this.#host)) this.close();
     };
     document.addEventListener('click', this.#docClickHandler);
+    this.#focusOutHandler = () => {
+      queueMicrotask(() => {
+        if (!this.#open) return;
+        const active = this.#host.shadowRoot?.activeElement ?? null;
+        if (active && active === this.#config.getComboboxEl?.()) return;
+        this.close();
+      });
+    };
+    this.#host.addEventListener('focusout', this.#focusOutHandler);
     this.#host.requestUpdate();
   };
 
@@ -124,6 +138,10 @@ export class DropdownController implements ReactiveController {
     if (this.#docClickHandler) {
       document.removeEventListener('click', this.#docClickHandler);
       this.#docClickHandler = undefined;
+    }
+    if (this.#focusOutHandler) {
+      this.#host.removeEventListener('focusout', this.#focusOutHandler);
+      this.#focusOutHandler = undefined;
     }
     this.#host.requestUpdate();
   };

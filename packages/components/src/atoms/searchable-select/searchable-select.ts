@@ -72,6 +72,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     getMaxLines: () => this.maxLines,
     getTilesEl: () => this._tilesEl,
     getListboxEl: () => this._listboxEl,
+    getComboboxEl: () => this._inputEl,
     applyValues: (next) => {
       this.values = next;
       this.value = next.join(',');
@@ -119,6 +120,16 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       this.#dropdown.queueOverflowCheck();
     }
     this.#dropdown.syncScrollTop();
+    this.#syncListboxPopover();
+  }
+
+  // Hoist the listbox to the top layer (escaping overflow/scroll ancestors),
+  // positioned in CSS via anchor positioning — see select.common-styles.
+  #syncListboxPopover(): void {
+    const listbox = this._listboxEl;
+    if (!listbox || !this.#dropdown.open) return;
+    if (typeof listbox.showPopover !== 'function') return;
+    if (!listbox.matches(':popover-open')) listbox.showPopover();
   }
 
   override connectedCallback(): void {
@@ -331,6 +342,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
               class="listbox"
               part="listbox"
               role="listbox"
+              popover="manual"
               aria-multiselectable=${this.multiple ? 'true' : 'false'}
               @scroll=${this.#dropdown.onScroll}
               @ds-activate=${(event: Event) => event.stopPropagation()}

@@ -86,6 +86,25 @@ describe('<ds-select>', () => {
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
+
+    it('closes when focus leaves the combobox', async () => {
+      const el = await mountSelect();
+      await openDropdown(el);
+      el.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+      await new Promise<void>((resolve) => queueMicrotask(resolve));
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
+    });
+
+    it('stays open while the combobox keeps focus', async () => {
+      const el = await mountSelect();
+      await openDropdown(el);
+      getTrigger(el).focus();
+      el.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+      await new Promise<void>((resolve) => queueMicrotask(resolve));
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
+    });
   });
 
   describe('single selection', () => {

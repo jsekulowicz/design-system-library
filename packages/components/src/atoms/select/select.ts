@@ -57,6 +57,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
 
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
+  @query('#trigger') private _triggerEl?: HTMLElement;
 
   #dropdown = new DropdownController(this, {
     getOptions: () => this.options,
@@ -66,6 +67,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     getMaxLines: () => this.maxLines,
     getTilesEl: () => this._tilesEl,
     getListboxEl: () => this._listboxEl,
+    getComboboxEl: () => this._triggerEl,
     applyValues: (next) => {
       this.values = next;
       this.value = next.join(',');
