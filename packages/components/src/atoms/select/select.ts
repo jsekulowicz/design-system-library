@@ -89,9 +89,12 @@ export class DsSelect extends FormControlMixin(DsElement) {
   set _overflowCheckQueued(value: boolean) { this.#dropdown.overflowCheckQueued = value; }
 
   override updated(changed: PropertyValues): void {
-    if (changed.has('label') || changed.has('inputLabel'))
+    if (changed.has('label') || changed.has('inputLabel')) {
       this.setAriaLabel(this.label || this.inputLabel || null);
-    if (changed.has('description')) this.setAriaDescription(this.description || null);
+    }
+    if (changed.has('description')) {
+      this.setAriaDescription(this.description || null);
+    }
     if (
       (changed.has('values') || changed.has('maxLines') || changed.has('multiple')) &&
       this.multiple
@@ -107,26 +110,32 @@ export class DsSelect extends FormControlMixin(DsElement) {
     this.#dropdown.close();
   }
 
-  // The listbox uses `popover="manual"` so the browser hoists it to the top
-  // layer when shown, escaping any `overflow: hidden` / `overflow: auto`
-  // ancestor (dialogs, scroll containers). It's positioned entirely in CSS
-  // via anchor positioning (see select.common-styles), which keeps it glued
-  // to the trigger on scroll without any JS.
+  // Show the listbox in the top layer so it escapes overflow/scroll ancestors;
+  // positioned in CSS via anchor positioning (see select.common-styles).
   #syncListboxPopover(): void {
     const listbox = this._listboxEl;
-    if (!listbox || !this.#dropdown.open) return;
-    if (typeof listbox.showPopover !== 'function') return;
-    if (!listbox.matches(':popover-open')) listbox.showPopover();
+    if (!listbox || !this.#dropdown.open) {
+      return;
+    }
+    if (typeof listbox.showPopover !== 'function') {
+      return;
+    }
+    if (!listbox.matches(':popover-open')) {
+      listbox.showPopover();
+    }
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.label && !this.inputLabel)
+    if (!this.label && !this.inputLabel) {
       console.warn('<ds-select>: a `label` or `input-label` is required for accessibility.');
+    }
   }
 
   #selectOption = (option: SelectOption): void => {
-    if (option.disabled) return;
+    if (option.disabled) {
+      return;
+    }
     if (this.multiple) {
       const next = this.values.includes(option.value)
         ? this.values.filter((v) => v !== option.value)
@@ -160,8 +169,12 @@ export class DsSelect extends FormControlMixin(DsElement) {
   #onClearKeydown = (event: KeyboardEvent): void => clearKeydown(event, this.#clear);
 
   #onTriggerKeydown = (event: KeyboardEvent): void => {
-    if (this.disabled) return;
-    if ((event.target as Element).classList.contains('clear-btn')) return;
+    if (this.disabled) {
+      return;
+    }
+    if ((event.target as Element).classList.contains('clear-btn')) {
+      return;
+    }
     if (
       dropdownKeydown(event, {
         controller: this.#dropdown,
@@ -282,7 +295,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
   }
 
   #toggle = (): void => {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
     this.#dropdown.toggle();
   };
 }

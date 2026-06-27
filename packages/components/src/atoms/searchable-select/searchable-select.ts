@@ -105,14 +105,20 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     if (changed.has('options')) {
       for (const o of this.options) {
         this._labelMap.set(o.value, o.label);
-        if (o.icon) this._iconMap.set(o.value, o.icon);
+        if (o.icon) {
+          this._iconMap.set(o.value, o.icon);
+        }
       }
     }
   }
 
   override updated(changed: PropertyValues): void {
-    if (changed.has('label')) this.setAriaLabel(this.label || null);
-    if (changed.has('description')) this.setAriaDescription(this.description || null);
+    if (changed.has('label')) {
+      this.setAriaLabel(this.label || null);
+    }
+    if (changed.has('description')) {
+      this.setAriaDescription(this.description || null);
+    }
     if (
       (changed.has('values') || changed.has('maxLines') || changed.has('multiple')) &&
       this.multiple
@@ -123,19 +129,26 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     this.#syncListboxPopover();
   }
 
-  // Hoist the listbox to the top layer (escaping overflow/scroll ancestors),
-  // positioned in CSS via anchor positioning — see select.common-styles.
+  // Show the listbox in the top layer so it escapes overflow/scroll ancestors;
+  // positioned in CSS via anchor positioning (see select.common-styles).
   #syncListboxPopover(): void {
     const listbox = this._listboxEl;
-    if (!listbox || !this.#dropdown.open) return;
-    if (typeof listbox.showPopover !== 'function') return;
-    if (!listbox.matches(':popover-open')) listbox.showPopover();
+    if (!listbox || !this.#dropdown.open) {
+      return;
+    }
+    if (typeof listbox.showPopover !== 'function') {
+      return;
+    }
+    if (!listbox.matches(':popover-open')) {
+      listbox.showPopover();
+    }
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.label)
+    if (!this.label) {
       console.warn('<ds-searchable-select>: the `label` property is required for accessibility.');
+    }
   }
 
   override disconnectedCallback(): void {
@@ -144,7 +157,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   }
 
   #onFocus = (): void => {
-    if (!this.disabled && !this.loading && !this.#dropdown.open) this.#dropdown.openDropdown();
+    if (!this.disabled && !this.loading && !this.#dropdown.open) {
+      this.#dropdown.openDropdown();
+    }
   };
 
   #onSearchInput = (event: Event): void => {
@@ -154,7 +169,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   };
 
   #selectOption = (option: SelectOption): void => {
-    if (option.disabled) return;
+    if (option.disabled) {
+      return;
+    }
     if (this.multiple) {
       const next = this.values.includes(option.value)
         ? this.values.filter((v) => v !== option.value)
@@ -192,7 +209,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   #onClearKeydown = (event: KeyboardEvent): void => clearKeydown(event, this.#clear);
 
   #onKeydown = (event: KeyboardEvent): void => {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
     if (
       dropdownKeydown(event, {
         controller: this.#dropdown,
@@ -205,7 +224,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     ) {
       return;
     }
-    if (this.#dropdown.open || this.loading) return;
+    if (this.#dropdown.open || this.loading) {
+      return;
+    }
     if (event.key === 'ArrowDown') {
       this.#dropdown.openDropdown();
       return;
@@ -219,7 +240,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   // should re-enter search mode (Backspace from an empty query, a character
   // from that character) — not be swallowed by the collapsed input.
   #isSearchInitiatingKey(event: KeyboardEvent): boolean {
-    if (event.ctrlKey || event.metaKey || event.altKey) return false;
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return false;
+    }
     return event.key === 'Backspace' || event.key.length === 1;
   }
 
@@ -228,9 +251,13 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     // resets _search to ''). A printable key's default insertion then lands in
     // the empty input and #onSearchInput picks it up; Space and Backspace open
     // with an empty query.
-    if (this._inputEl) this._inputEl.value = '';
+    if (this._inputEl) {
+      this._inputEl.value = '';
+    }
     this.#dropdown.openDropdown();
-    if (event.key === ' ') event.preventDefault();
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
   }
 
   #renderTiles = (): TemplateResult =>
@@ -285,7 +312,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
           class="trigger${this.multiple ? ' trigger-multiple' : ''} ${open ? 'open' : ''}"
           part="trigger"
           @click=${() => {
-            if (!this.disabled) this.#dropdown.openDropdown();
+            if (!this.disabled) {
+              this.#dropdown.openDropdown();
+            }
           }}
         >
           <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>

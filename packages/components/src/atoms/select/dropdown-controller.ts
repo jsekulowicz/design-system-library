@@ -20,9 +20,7 @@ export interface DropdownConfig {
   canOpen?: () => boolean;
   onOpen?: () => void;
   onClose?: () => void;
-  // The element that keeps the dropdown open while focused (the combobox
-  // trigger/input). Focus moving anywhere else — clear button, another field —
-  // closes it.
+  // Focus on this element keeps the dropdown open; focus elsewhere closes it.
   getComboboxEl?: () => Element | null | undefined;
 }
 
@@ -62,7 +60,9 @@ export class DropdownController implements ReactiveController {
     return this.#focusedIndex;
   }
   set focusedIndex(value: number) {
-    if (this.#focusedIndex === value) return;
+    if (this.#focusedIndex === value) {
+      return;
+    }
     this.#focusedIndex = value;
     this.#host.requestUpdate();
   }
@@ -70,7 +70,9 @@ export class DropdownController implements ReactiveController {
     return this.#scrollTop;
   }
   set scrollTop(value: number) {
-    if (this.#scrollTop === value) return;
+    if (this.#scrollTop === value) {
+      return;
+    }
     this.#scrollTop = value;
     this.#host.requestUpdate();
   }
@@ -78,7 +80,9 @@ export class DropdownController implements ReactiveController {
     return this.#focusedTileIndex;
   }
   set focusedTileIndex(value: number) {
-    if (this.#focusedTileIndex === value) return;
+    if (this.#focusedTileIndex === value) {
+      return;
+    }
     this.#focusedTileIndex = value;
     this.#host.requestUpdate();
   }
@@ -102,8 +106,12 @@ export class DropdownController implements ReactiveController {
   }
 
   openDropdown = (): void => {
-    if (this.#open) return;
-    if (this.#config.canOpen && !this.#config.canOpen()) return;
+    if (this.#open) {
+      return;
+    }
+    if (this.#config.canOpen && !this.#config.canOpen()) {
+      return;
+    }
     this.#open = true;
     this.#scrollEndArmed = true;
     this.#config.onOpen?.();
@@ -115,14 +123,20 @@ export class DropdownController implements ReactiveController {
     this.#focusedIndex = idx >= 0 ? idx : 0;
     this.#scrollTop = Math.max(0, (this.#focusedIndex - 2) * ITEM_HEIGHT);
     this.#docClickHandler = (event: MouseEvent) => {
-      if (!event.composedPath().includes(this.#host)) this.close();
+      if (!event.composedPath().includes(this.#host)) {
+        this.close();
+      }
     };
     document.addEventListener('click', this.#docClickHandler);
     this.#focusOutHandler = () => {
       queueMicrotask(() => {
-        if (!this.#open) return;
+        if (!this.#open) {
+          return;
+        }
         const active = this.#host.shadowRoot?.activeElement ?? null;
-        if (active && active === this.#config.getComboboxEl?.()) return;
+        if (active && active === this.#config.getComboboxEl?.()) {
+          return;
+        }
         this.close();
       });
     };
@@ -147,14 +161,18 @@ export class DropdownController implements ReactiveController {
   };
 
   toggle = (): void => {
-    if (this.#open) this.close();
+    if (this.#open) {
+      this.close();
+    }
     else this.openDropdown();
   };
 
   moveFocus = (direction: 1 | -1): void => {
     const next = this.#focusedIndex + direction;
     const total = this.#config.getOptions().length;
-    if (next < 0 || next >= total) return;
+    if (next < 0 || next >= total) {
+      return;
+    }
     this.#focusedIndex = next;
     this.#scrollFocusedIntoView();
     this.#host.requestUpdate();
@@ -163,7 +181,9 @@ export class DropdownController implements ReactiveController {
   onScroll = (): void => {
     const el = this.#config.getListboxEl();
     this.#scrollTop = el?.scrollTop ?? 0;
-    if (el) this.#notifyScrollEnd(el);
+    if (el) {
+      this.#notifyScrollEnd(el);
+    }
     this.#host.requestUpdate();
   };
 
@@ -177,7 +197,9 @@ export class DropdownController implements ReactiveController {
       this.#scrollEndArmed = true;
       return;
     }
-    if (!this.#scrollEndArmed) return;
+    if (!this.#scrollEndArmed) {
+      return;
+    }
     this.#scrollEndArmed = false;
     this.#host.dispatchEvent(
       new CustomEvent('ds-scroll-end', { bubbles: true, composed: true }),
@@ -186,7 +208,9 @@ export class DropdownController implements ReactiveController {
 
   onLeadingChange = (event: Event): void => {
     const next = (event.target as HTMLSlotElement).assignedElements().length > 0;
-    if (next === this.#hasLeading) return;
+    if (next === this.#hasLeading) {
+      return;
+    }
     this.#hasLeading = next;
     this.#host.requestUpdate();
   };
@@ -211,7 +235,9 @@ export class DropdownController implements ReactiveController {
 
   syncScrollTop = (): void => {
     const el = this.#config.getListboxEl();
-    if (el && el.scrollTop !== this.#scrollTop) el.scrollTop = this.#scrollTop;
+    if (el && el.scrollTop !== this.#scrollTop) {
+      el.scrollTop = this.#scrollTop;
+    }
   };
 
   #scrollFocusedIntoView = (): void => {
@@ -226,7 +252,9 @@ export class DropdownController implements ReactiveController {
 
   #checkOverflow = (): void => {
     const count = countOverflowTiles(this.#config.getTilesEl(), this.#config.getMaxLines());
-    if (count === this.#overflowCount) return;
+    if (count === this.#overflowCount) {
+      return;
+    }
     this.#overflowCount = count;
     this.#host.requestUpdate();
   };

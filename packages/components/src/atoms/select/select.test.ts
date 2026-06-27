@@ -32,7 +32,9 @@ function getTrigger(el: DsSelect): HTMLElement {
 function getOption(el: DsSelect, label: string): HTMLElement {
   const options = el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option');
   const found = Array.from(options).find((o) => (o.textContent ?? '').trim() === label);
-  if (!found) throw new Error(`Option "${label}" not found in listbox`);
+  if (!found) {
+    throw new Error(`Option "${label}" not found in listbox`);
+  }
   return found;
 }
 
