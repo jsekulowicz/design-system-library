@@ -23,6 +23,9 @@ export interface SelectOption {
   label: string;
   disabled?: boolean;
   icon?: { name: string; color?: string };
+  // Shown as a tooltip and announced to screen readers — e.g. why a disabled
+  // option can't be picked.
+  disabledReason?: string;
 }
 
 /**
@@ -217,6 +220,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
       ?selected=${isSelected}
       ?active=${this.#dropdown.focusedIndex === index}
       ?disabled=${option.disabled ?? false}
+      title=${ifDefined(option.disabledReason)}
+      aria-description=${ifDefined(option.disabledReason)}
       @click=${() => this.#selectOption(option)}
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;

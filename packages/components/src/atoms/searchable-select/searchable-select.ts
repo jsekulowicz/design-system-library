@@ -282,6 +282,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       ?selected=${isSelected}
       ?active=${this.#dropdown.focusedIndex === index}
       ?disabled=${option.disabled ?? false}
+      title=${ifDefined(option.disabledReason)}
+      aria-description=${ifDefined(option.disabledReason)}
       @click=${() => this.#selectOption(option)}
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;

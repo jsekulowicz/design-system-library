@@ -107,6 +107,19 @@ describe('<ds-select>', () => {
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
     });
+
+    it('exposes a disabled reason as a tooltip and aria description', async () => {
+      const el = await mountSelect({
+        options: [
+          { value: 'a', label: 'A' },
+          { value: 'b', label: 'B', disabled: true, disabledReason: 'Not yet' },
+        ],
+      });
+      await openDropdown(el);
+      const option = getOption(el, 'B');
+      expect(option.getAttribute('title')).toBe('Not yet');
+      expect(option.getAttribute('aria-description')).toBe('Not yet');
+    });
   });
 
   describe('single selection', () => {
