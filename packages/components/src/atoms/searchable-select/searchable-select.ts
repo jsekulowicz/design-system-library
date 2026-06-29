@@ -48,8 +48,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ attribute: 'search-placeholder' }) searchPlaceholder = 'Search…';
   @property() label = '';
   @property() description = '';
-  /** Optional note rendered above the options inside the open dropdown — e.g. to
-   * explain why an option is disabled. Purely informative; not an option. */
   @property() hint = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;

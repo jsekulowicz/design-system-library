@@ -52,8 +52,6 @@ export class DsSelect extends FormControlMixin(DsElement) {
   /** Accessible name used when no visible `label` is set (renders no stacked label). */
   @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
-  /** Optional note rendered above the options inside the open dropdown — e.g. to
-   * explain why an option is disabled. Purely informative; not an option. */
   @property() hint = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
