@@ -84,6 +84,20 @@ describe('<ds-searchable-select>', () => {
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
     });
+
+    it('renders a hint note above the options when set, and omits it otherwise', async () => {
+      const withHint = await mountSearchableSelect({ hint: 'Only verified items can be picked' });
+      await openDropdown(withHint);
+      const note = withHint.shadowRoot!.querySelector('.listbox-hint');
+      expect(note?.getAttribute('part')).toBe('hint');
+      expect(note?.getAttribute('role')).toBe('note');
+      expect(note?.textContent?.trim()).toBe('Only verified items can be picked');
+      expect(withHint.shadowRoot!.querySelector('.listbox')!.firstElementChild).toBe(note);
+
+      const withoutHint = await mountSearchableSelect();
+      await openDropdown(withoutHint);
+      expect(withoutHint.shadowRoot!.querySelector('.listbox-hint')).toBeNull();
+    });
   });
 
   describe('single selection', () => {

@@ -53,6 +53,7 @@ const meta: Meta = {
     label: { control: 'text' },
     placeholder: { control: 'text' },
     description: { control: 'text' },
+    hint: { control: 'text' },
     error: { control: 'text' },
     size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     invalid: { control: 'boolean' },
@@ -65,6 +66,7 @@ const meta: Meta = {
     label: 'Discipline',
     placeholder: 'Pick a discipline',
     description: '',
+    hint: '',
     error: 'Please select a discipline.',
     size: 'md',
     invalid: false,
@@ -94,6 +96,7 @@ ${LEADING}
     label=${args['label']}
     placeholder=${args['placeholder']}
     description=${args['description'] || ''}
+    hint=${args['hint'] || ''}
     error=${args['error'] || ''}
     size=${args['size']}
     ?invalid=${args['invalid']}
@@ -152,6 +155,40 @@ ${LEADING}
     label="Discipline"
     placeholder="Pick a discipline"
     description="Choose the team you primarily work with."
+    .options=${options}
+  >
+    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+  </ds-select>
+`,
+};
+
+export const WithHint: Story = {
+  name: 'With dropdown hint',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A `hint` renders a sticky note at the top of the open dropdown — use it to explain, for the whole menu, why a choice is unavailable (here, why "Operations" is disabled). It is visible the moment the dropdown opens, for mouse and keyboard users alike, rather than only on hovering the disabled option. Pair it with a per-option `disabledReason` for the screen-reader description on that option. Open the select to see it.',
+      },
+      source: {
+        code: src(
+          `  <ds-select
+    label="Discipline"
+    placeholder="Pick a discipline"
+    hint="Operations is managed by an admin and can't be picked here."
+    .options=\${options}
+  >
+${LEADING}
+  </ds-select>`,
+        ),
+      },
+    },
+  },
+  render: () => html`
+  <ds-select
+    label="Discipline"
+    placeholder="Pick a discipline"
+    hint="Operations is managed by an admin and can't be picked here."
     .options=${options}
   >
     <ds-icon slot="leading" name="squares-2x2"></ds-icon>

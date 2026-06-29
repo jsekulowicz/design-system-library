@@ -319,6 +319,7 @@ const meta: Meta = {
   argTypes: {
     label: { control: 'text' },
     description: { control: 'text' },
+    hint: { control: 'text' },
     error: { control: 'text' },
     placeholder: { control: 'text' },
     searchPlaceholder: { control: 'text' },
@@ -332,6 +333,7 @@ const meta: Meta = {
   args: {
     label: 'Discipline',
     description: '',
+    hint: '',
     error: 'Please select a discipline.',
     placeholder: 'Pick a discipline',
     searchPlaceholder: 'Search disciplines…',
@@ -369,6 +371,7 @@ export const Playground: Story = {
     <ds-searchable-select
       label=${args['label']}
       description=${args['description'] || ''}
+      hint=${args['hint'] || ''}
       error=${args['error'] || ''}
       placeholder=${args['placeholder']}
       search-placeholder=${args['searchPlaceholder']}
@@ -378,6 +381,42 @@ export const Playground: Story = {
       ?invalid=${args['invalid']}
       ?clearable=${args['clearable']}
       ?loading=${args['loading']}
+      .options=${DISCIPLINES}
+      @ds-search=${(e: CustomEvent<{ query: string }>) => {
+        const q = e.detail.query.toLowerCase();
+        (e.currentTarget as HTMLElement & { options: SelectOption[] }).options = q
+          ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q))
+          : DISCIPLINES;
+      }}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-searchable-select>
+  `,
+};
+
+export const WithHint: Story = {
+  name: 'With dropdown hint',
+  parameters: {
+    docs: {
+      story: { height: '270px' },
+      description: {
+        story:
+          'A `hint` renders a sticky note at the top of the open dropdown — visible the moment it opens, for mouse and keyboard users alike, rather than only on hovering a disabled option (here, why "Operations" is disabled). Pair it with a per-option `disabledReason` for the screen-reader description on that option. Open the field to see it.',
+      },
+      source: {
+        code: DISCIPLINE_SOURCE.replace(
+          '    search-placeholder="Search disciplines…"',
+          '    search-placeholder="Search disciplines…"\n    hint="Operations is set by an administrator."',
+        ),
+      },
+    },
+  },
+  render: () => html`
+    <ds-searchable-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      search-placeholder="Search disciplines…"
+      hint="Operations is set by an administrator."
       .options=${DISCIPLINES}
       @ds-search=${(e: CustomEvent<{ query: string }>) => {
         const q = e.detail.query.toLowerCase();
