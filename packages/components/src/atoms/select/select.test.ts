@@ -120,6 +120,21 @@ describe('<ds-select>', () => {
       expect(option.getAttribute('title')).toBe('Not yet');
       expect(option.getAttribute('aria-description')).toBe('Not yet');
     });
+
+    it('renders a hint note above the options when set, and omits it otherwise', async () => {
+      const withHint = await mountSelect({ hint: 'Fill all words first' });
+      await openDropdown(withHint);
+      const note = withHint.shadowRoot!.querySelector('.listbox-hint');
+      expect(note?.getAttribute('part')).toBe('hint');
+      expect(note?.getAttribute('role')).toBe('note');
+      expect(note?.textContent?.trim()).toBe('Fill all words first');
+      const listbox = withHint.shadowRoot!.querySelector('.listbox')!;
+      expect(listbox.firstElementChild).toBe(note);
+
+      const withoutHint = await mountSelect();
+      await openDropdown(withoutHint);
+      expect(withoutHint.shadowRoot!.querySelector('.listbox-hint')).toBeNull();
+    });
   });
 
   describe('single selection', () => {

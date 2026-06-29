@@ -35,6 +35,7 @@ export interface SelectOption {
  * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
  * @csspart trigger - The trigger button element.
  * @csspart listbox - The dropdown listbox container.
+ * @csspart hint - The optional note shown above the options inside the listbox.
  * @csspart option - Each individual option item.
  */
 export class DsSelect extends FormControlMixin(DsElement) {
@@ -51,6 +52,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
   /** Accessible name used when no visible `label` is set (renders no stacked label). */
   @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
+  /** Optional note rendered above the options inside the open dropdown — e.g. to
+   * explain why an option is disabled. Purely informative; not an option. */
+  @property() hint = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) multiple = false;
@@ -290,6 +294,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
               @scroll=${this.#dropdown.onScroll}
               @ds-activate=${(event: Event) => event.stopPropagation()}
             >
+              ${this.hint
+                ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>`
+                : nothing}
               ${renderVirtualItems(this.options, this.#dropdown.scrollTop, (option, index) =>
                 this.#renderOption(option, index, current),
               )}

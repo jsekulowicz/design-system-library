@@ -192,4 +192,18 @@ export const selectCommonStyles = css`
     padding: 0;
     position-try-fallbacks: flip-block;
   }
+
+  /* Informative note pinned to the top of the open dropdown (e.g. why an option
+     is disabled). Sticky so it stays visible while the options scroll. */
+  .listbox-hint {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: var(--ds-space-2) var(--ds-space-3);
+    background: var(--ds-color-bg);
+    border-bottom: 1px solid var(--ds-color-border-strong);
+    color: var(--ds-color-fg-muted);
+    font-size: var(--ds-font-size-xs);
+    line-height: 1.3;
+  }
 `;
