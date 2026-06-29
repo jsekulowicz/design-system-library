@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.27.0
+
+### Minor Changes
+
+- c3e2918: ds-select and ds-searchable-select accept a `hint` — an informative note rendered at the top of the open dropdown (sticky above the options, `part="hint"`, `role="note"`). Use it to explain, for the whole menu, why a choice is unavailable, so the reason is visible the moment the dropdown opens rather than only on hovering a disabled option.
+- 1a6f1c0: ds-select and ds-searchable-select options accept a `disabledReason` — shown as a hover tooltip and exposed to screen readers (announced when the option is reached by keyboard), so a disabled option can explain why it can't be picked.
+
 ## 0.26.0
 
 ### Minor Changes
