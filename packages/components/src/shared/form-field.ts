@@ -42,6 +42,24 @@ export const formFieldStyles: CSSResult = css`
     flex-shrink: 0;
     color: var(--ds-color-danger);
   }
+  .field-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--ds-space-2);
+  }
+  .field-footer .description,
+  .field-footer .error {
+    flex: 1;
+  }
+  .char-count {
+    margin: 0;
+    margin-left: auto;
+    color: var(--ds-color-fg-muted);
+    font-size: var(--ds-font-size-xs);
+    line-height: 1.4;
+    white-space: nowrap;
+  }
 `;
 
 export function renderFieldLabel(label: string, required: boolean, forId: string, optional = false): TemplateResult {
@@ -72,4 +90,35 @@ export function renderSubtext(description: string, error: string, invalid: boole
     return html`<p class="description">${description}</p>`;
   }
   return html``;
+}
+
+export function renderFieldFooter(
+  description: string,
+  error: string,
+  invalid: boolean,
+  currentLength: number,
+  maxLength?: number,
+  charCount = false,
+): TemplateResult {
+  const hasSubtext = Boolean((invalid && error) || description);
+  const hasCounter = charCount && maxLength !== undefined;
+  const counter = renderCharCount(currentLength, maxLength, charCount);
+  const subtext = renderSubtext(description, error, invalid);
+
+  if (!hasSubtext && !hasCounter) {
+    return html``;
+  }
+
+  return html`<div class="field-footer">${subtext}${counter}</div>`;
+}
+
+function renderCharCount(
+  currentLength: number,
+  maxLength?: number,
+  charCount = false,
+): TemplateResult | typeof nothing {
+  if (!charCount || maxLength === undefined) {
+    return nothing;
+  }
+  return html`<p class="char-count" aria-live="polite">${currentLength}/${maxLength}</p>`;
 }

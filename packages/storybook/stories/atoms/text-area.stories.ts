@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/text-area/define';
 
@@ -13,6 +13,8 @@ const meta: Meta = {
     description: { control: 'text' },
     error: { control: 'text' },
     placeholder: { control: 'text' },
+    maxLength: { control: { type: 'number', min: 1, max: 2000 } },
+    charCount: { control: 'boolean' },
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
   },
@@ -24,6 +26,8 @@ const meta: Meta = {
     description: '',
     error: 'This field is required.',
     placeholder: 'Tell us about yourself',
+    maxLength: undefined,
+    charCount: false,
     disabled: false,
     required: false,
   },
@@ -42,6 +46,8 @@ export const Playground: Story = {
   description=${args['description'] || ''}
   error=${args['error'] || ''}
   placeholder=${args['placeholder']}
+  max-length=${args['maxLength'] ?? nothing}
+  ?char-count=${args['charCount']}
   ?disabled=${args['disabled']}
   ?required=${args['required']}
 ></ds-text-area>

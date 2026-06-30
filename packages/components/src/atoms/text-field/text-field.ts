@@ -2,7 +2,7 @@ import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldFooter, renderFieldLabel } from '../../shared/form-field.js';
 import { textFieldStyles } from './text-field.styles.js';
 
 export type TextFieldType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
@@ -29,6 +29,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) readonly = false;
   @property({ attribute: 'min-length', type: Number }) minLength?: number;
   @property({ attribute: 'max-length', type: Number }) maxLength?: number;
+  @property({ attribute: 'char-count', type: Boolean, reflect: true }) charCount = false;
   @property() pattern?: string;
   @property() autocomplete?: string;
   @property() label = '';
@@ -52,7 +53,9 @@ export class DsTextField extends FormControlMixin(DsElement) {
   };
 
   #onInput = (event: Event): void => {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
     const target = event.target as HTMLInputElement;
     this.value = target.value;
     this.#syncValidity();
@@ -60,7 +63,9 @@ export class DsTextField extends FormControlMixin(DsElement) {
   };
 
   #onChange = (event: Event): void => {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
     const target = event.target as HTMLInputElement;
     this.value = target.value;
     this.#syncValidity();
@@ -109,7 +114,14 @@ export class DsTextField extends FormControlMixin(DsElement) {
           <slot name="trailing" @slotchange=${this.#onTrailingChange}></slot>
         </span>
       </span>
-      ${renderSubtext(this.description, this.error, this.invalid)}
+      ${renderFieldFooter(
+        this.description,
+        this.error,
+        this.invalid,
+        current.length,
+        this.maxLength,
+        this.charCount,
+      )}
     `;
   }
 }

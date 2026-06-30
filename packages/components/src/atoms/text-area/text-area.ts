@@ -2,7 +2,7 @@ import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldFooter, renderFieldLabel } from '../../shared/form-field.js';
 import { textAreaStyles } from './text-area.styles.js';
 
 export type TextAreaSize = 'sm' | 'md' | 'lg';
@@ -29,6 +29,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   @property({ type: Number }) rows = 3;
   @property({ attribute: 'min-length', type: Number }) minLength?: number;
   @property({ attribute: 'max-length', type: Number }) maxLength?: number;
+  @property({ attribute: 'char-count', type: Boolean, reflect: true }) charCount = false;
   @property() autocomplete?: string;
   @property() label = '';
   @property({ attribute: 'input-label' }) inputLabel = '';
@@ -92,7 +93,14 @@ export class DsTextArea extends FormControlMixin(DsElement) {
         @input=${this.#onInput}
         @change=${this.#onChange}
       ></textarea>
-      ${renderSubtext(this.description, this.error, this.invalid)}
+      ${renderFieldFooter(
+        this.description,
+        this.error,
+        this.invalid,
+        current.length,
+        this.maxLength,
+        this.charCount,
+      )}
     `;
   }
 }

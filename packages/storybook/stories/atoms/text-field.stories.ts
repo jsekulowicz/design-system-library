@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, nothing } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/text-field/define';
 import '@jsekulowicz/ds-components/icon/home';
@@ -16,6 +16,8 @@ const meta: Meta = {
     label: { control: 'text' },
     description: { control: 'text' },
     error: { control: 'text' },
+    maxLength: { control: { type: 'number', min: 1, max: 500 } },
+    charCount: { control: 'boolean' },
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
@@ -27,6 +29,8 @@ const meta: Meta = {
     description: '',
     error: 'This field is required.',
     placeholder: 'Your name',
+    maxLength: undefined,
+    charCount: false,
     disabled: false,
     required: false,
     invalid: false,
@@ -45,6 +49,8 @@ export const Playground: Story = {
   description=${args['description'] || ''}
   error=${args['error'] || ''}
   placeholder=${args['placeholder']}
+  max-length=${args['maxLength'] ?? nothing}
+  ?char-count=${args['charCount']}
   ?disabled=${args['disabled']}
   ?required=${args['required']}
   ?invalid=${args['invalid']}
