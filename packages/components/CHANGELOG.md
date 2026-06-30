@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.29.0
+
+### Minor Changes
+
+- 74a4eff: Add `char-count` support to text field and text area components.
+
 ## 0.28.0
 
 ### Minor Changes
