@@ -6,6 +6,7 @@ import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/f
 import { textAreaStyles } from './text-area.styles.js';
 
 export type TextAreaSize = 'sm' | 'md' | 'lg';
+export type TextAreaResize = 'none' | 'vertical';
 
 /**
  * @tag ds-text-area
@@ -22,6 +23,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   };
 
   @property({ reflect: true }) size: TextAreaSize = 'md';
+  @property({ reflect: true }) resize: TextAreaResize = 'none';
   @property() placeholder = '';
   @property({ type: Boolean, reflect: true }) readonly = false;
   @property({ type: Number }) rows = 3;

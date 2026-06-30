@@ -7,6 +7,7 @@ const meta: Meta = {
   component: 'ds-text-area',
   argTypes: {
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
+    resize: { control: { type: 'inline-radio' }, options: ['none', 'vertical'] },
     rows: { control: { type: 'number', min: 1, max: 20 } },
     label: { control: 'text' },
     description: { control: 'text' },
@@ -17,6 +18,7 @@ const meta: Meta = {
   },
   args: {
     size: 'md',
+    resize: 'none',
     rows: 3,
     label: 'Bio',
     description: '',
@@ -34,6 +36,7 @@ export const Playground: Story = {
   render: (args) => html`
 <ds-text-area
   size=${args['size']}
+  resize=${args['resize']}
   rows=${args['rows']}
   label=${args['label']}
   description=${args['description'] || ''}
@@ -70,6 +73,25 @@ export const Rows: Story = {
     <ds-text-area label="Compact (rows=2)" rows="2" placeholder="A short note"></ds-text-area>
     <ds-text-area label="Roomy (rows=6)" rows="6" placeholder="A longer description"></ds-text-area>
   </div>
+  `,
+};
+
+export const Resizable: Story = {
+  name: 'User-resizable',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'By default the field is not draggable (`resize="none"`). Set `resize="vertical"` to let people drag it taller.',
+      },
+    },
+  },
+  render: () => html`
+<ds-text-area
+  label="Feedback"
+  resize="vertical"
+  placeholder="Drag the bottom edge to grow this field"
+></ds-text-area>
   `,
 };
 

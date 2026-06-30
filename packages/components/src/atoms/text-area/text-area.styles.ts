@@ -18,9 +18,12 @@ export const textAreaStyles = css`
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-sm);
     line-height: 1.4;
-    resize: vertical;
+    resize: none;
     transition: border-color var(--ds-duration-fast) var(--ds-easing-standard),
       box-shadow var(--ds-duration-fast) var(--ds-easing-standard);
+  }
+  :host([resize='vertical']) textarea {
+    resize: vertical;
   }
   textarea:hover {
     border-color: var(--ds-color-fg-subtle);

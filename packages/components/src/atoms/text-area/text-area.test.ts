@@ -59,6 +59,16 @@ describe('<ds-text-area>', () => {
     expect(textarea(el).rows).toBe(6);
   });
 
+  it('is not resizable by default and reflects resize="vertical" when opted in', async () => {
+    const def = await mount<DsTextArea>('<ds-text-area></ds-text-area>');
+    expect(def.resize).toBe('none');
+    expect(def.getAttribute('resize')).toBe('none');
+
+    const el = await mount<DsTextArea>('<ds-text-area resize="vertical"></ds-text-area>');
+    expect(el.resize).toBe('vertical');
+    expect(el.getAttribute('resize')).toBe('vertical');
+  });
+
   it('reflects placeholder and readonly into the inner textarea; disabled maps to readonly', async () => {
     const el = await mount<DsTextArea>(
       '<ds-text-area placeholder="Write a reply" readonly disabled></ds-text-area>',

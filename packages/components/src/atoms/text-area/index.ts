@@ -1,1 +1,1 @@
-export { DsTextArea, type TextAreaSize } from './text-area.js';
+export { DsTextArea, type TextAreaSize, type TextAreaResize } from './text-area.js';

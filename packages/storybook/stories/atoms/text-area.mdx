@@ -33,7 +33,7 @@ A native `<textarea>` in shadow DOM. Label, description, and error are part of t
       <h3>Do</h3>
       <ul>
         <li>Use for free-form, multi-line input — comments, descriptions, reasons.</li>
-        <li>Set <code>rows</code> to hint at the expected length; the field still scrolls and can be dragged taller.</li>
+        <li>Set <code>rows</code> to hint at the expected length; it scrolls past that. Add <code>resize="vertical"</code> when you want to let people drag it taller.</li>
         <li>Use <code>description</code> for context before typing; <code>error</code> for messages that appear after.</li>
       </ul>
       <h3>Don't</h3>
