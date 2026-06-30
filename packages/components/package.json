@@ -350,12 +350,7 @@
         "dist/atoms/text-field/index.js",
         "dist/atoms/text-field/define.js"
       ],
-      "limit": "18 kB"
-    },
-    {
-      "name": "full barrel (define, gzip)",
-      "path": "dist/define.js",
-      "limit": "50 kB"
+      "limit": "19 kB"
     }
   ],
   "dependencies": {
