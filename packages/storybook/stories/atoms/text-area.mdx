@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as TextAreaStories from './text-area.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={TextAreaStories} />
+
+# TextArea
+
+Multi-line text input. Shares the look, label/description/error, and form participation of `ds-text-field`, with a `rows` prop that sets the height to exactly that many rows.
+
+## Anatomy
+
+A native `<textarea>` in shadow DOM. Label, description, and error are part of the component, and it participates in native forms via `ElementInternals`.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={TextAreaStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={TextAreaStories.Playground} />
+      <ComponentApi tag="ds-text-area" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use for free-form, multi-line input — comments, descriptions, reasons.</li>
+        <li>Set <code>rows</code> to hint at the expected length; the field still scrolls and can be dragged taller.</li>
+        <li>Use <code>description</code> for context before typing; <code>error</code> for messages that appear after.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for single-line values — use <code>ds-text-field</code>.</li>
+        <li>Don't rely on placeholder text in lieu of a label — placeholders vanish on input.</li>
+        <li>Don't set a tiny <code>rows</code> for content you expect to be long; give people room to read what they wrote.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Label, description, and error are wired to the underlying textarea.</li>
+        <li><code>required</code> and <code>invalid</code> reflect to ARIA on the underlying textarea.</li>
+        <li>Focus ring uses the standard focus shadow; never suppressed.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

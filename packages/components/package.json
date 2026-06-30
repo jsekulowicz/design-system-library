@@ -88,6 +88,13 @@
     "./text-field/define": {
       "import": "./dist/atoms/text-field/define.js"
     },
+    "./text-area": {
+      "types": "./dist/atoms/text-area/index.d.ts",
+      "import": "./dist/atoms/text-area/index.js"
+    },
+    "./text-area/define": {
+      "import": "./dist/atoms/text-area/define.js"
+    },
     "./range-input": {
       "types": "./dist/atoms/range-input/index.d.ts",
       "import": "./dist/atoms/range-input/index.js"
