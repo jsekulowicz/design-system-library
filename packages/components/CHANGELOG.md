@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.28.0
+
+### Minor Changes
+
+- cfafcce: New `ds-text-area`: a multi-line text input that shares the styling, label/description/error, and native form participation of `ds-text-field`. A `rows` prop sizes the field to exactly that many text rows, and a `resize` prop (`none` by default, or `vertical`) controls whether the user can drag it taller.
+
 ## 0.27.0
 
 ### Minor Changes
