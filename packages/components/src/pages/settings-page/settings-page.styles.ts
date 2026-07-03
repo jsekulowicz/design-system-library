@@ -15,7 +15,7 @@ export const settingsPageStyles = css`
     border-bottom: 1px solid var(--ds-color-border);
   }
   .hero .eyebrow {
-    font-size: var(--ds-font-size-2xs);
+    font-size: var(--ds-font-size-xs);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
     color: var(--ds-color-accent);

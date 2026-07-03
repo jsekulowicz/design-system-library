@@ -17,7 +17,7 @@ export const menuStyles = css`
     display: block;
     padding: var(--ds-space-2) var(--ds-space-3);
     color: var(--ds-color-fg-subtle, var(--ds-color-fg));
-    font-size: var(--ds-font-size-2xs);
+    font-size: var(--ds-font-size-xs);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
   }

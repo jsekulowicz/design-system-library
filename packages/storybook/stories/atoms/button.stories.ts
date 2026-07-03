@@ -82,7 +82,7 @@ export const Square: Story = {
     <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
   </ds-button>
   <ds-button square size="lg" label="Search">
-    <ds-icon slot="leading" name="magnifying-glass" size="md"></ds-icon>
+    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
   </ds-button>
 </div>
   `,

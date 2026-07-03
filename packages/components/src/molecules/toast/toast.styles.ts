@@ -18,7 +18,7 @@ export const toastStyles = css`
     color: var(--ds-color-fg);
     box-shadow: var(--ds-shadow-md);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     line-height: 1.5;
   }
   :host([tone='info']) .toast {
@@ -47,7 +47,7 @@ export const toastStyles = css`
   .title {
     font-family: var(--ds-font-display);
     font-weight: var(--ds-font-weight-semibold);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-lg);
     letter-spacing: var(--ds-letter-spacing-display);
   }
   ::slotted([slot='actions']) {

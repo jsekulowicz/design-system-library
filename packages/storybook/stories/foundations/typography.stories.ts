@@ -34,9 +34,9 @@ const SIZE_STEPS = Object.entries(fontSize) as [string, string][];
 export const TypeScale: Story = {
   render: () => html`
 <section style="display:grid;gap:var(--ds-space-5);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
-  ${sectionHeader('Type scale', html`Eleven steps from <code>3xs</code> (11 px) to <code>5xl</code> (64 px).
-    Body copy lives in <code>sm</code>–<code>lg</code>; headings in <code>xl</code>–<code>4xl</code>;
-    display pieces at <code>5xl</code>.`)}
+  ${sectionHeader('Type scale', html`Nine steps from <code>xs</code> (12 px) to <code>5xl</code> (64 px).
+    Body and control text live in <code>md</code>; labels and meta in <code>xs</code>–<code>sm</code>;
+    headings in <code>lg</code>–<code>4xl</code>; display pieces at <code>5xl</code>.`)}
   <div role="table" style="display:grid;gap:0">
     <div role="row" style="display:grid;grid-template-columns:9rem 4rem 3.5rem 1fr;gap:var(--ds-space-3);padding:var(--ds-space-2) var(--ds-space-2);border-bottom:1px solid var(--ds-color-border)">
       <strong role="columnheader" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">Token</strong>

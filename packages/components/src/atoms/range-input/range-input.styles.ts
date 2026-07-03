@@ -111,7 +111,7 @@ export const rangeInputStyles = css`
     min-width: 2.5ch;
     text-align: right;
     color: var(--ds-color-fg);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     font-variant-numeric: tabular-nums;
   }
 `;

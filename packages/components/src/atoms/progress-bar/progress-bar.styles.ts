@@ -45,7 +45,7 @@ export const progressBarStyles = css`
     box-shadow: var(--ds-shadow-sm);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-2xs);
+    font-size: var(--ds-font-size-xs);
     font-weight: var(--ds-font-weight-medium);
     line-height: 1.4;
     white-space: nowrap;

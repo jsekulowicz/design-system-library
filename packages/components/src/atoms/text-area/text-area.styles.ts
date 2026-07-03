@@ -16,7 +16,7 @@ export const textAreaStyles = css`
     border-radius: var(--ds-radius-sm);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     line-height: 1.4;
     resize: none;
     transition: border-color var(--ds-duration-fast) var(--ds-easing-standard),
@@ -54,6 +54,5 @@ export const textAreaStyles = css`
   }
   :host([size='lg']) textarea {
     padding: var(--ds-space-3) var(--ds-space-4);
-    font-size: var(--ds-font-size-md);
   }
 `;

@@ -20,7 +20,7 @@ export const navControlStyles = css`
     background: transparent;
     color: var(--ds-color-fg-muted);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     font-weight: var(--ds-font-weight-medium);
     text-align: left;
     text-decoration: none;

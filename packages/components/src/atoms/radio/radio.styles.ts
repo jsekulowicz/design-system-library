@@ -6,7 +6,7 @@ export const radioStyles = css`
     align-items: center;
     gap: var(--ds-space-2);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     color: var(--ds-color-fg);
     cursor: pointer;
   }
