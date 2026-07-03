@@ -211,8 +211,8 @@ export const pageShellStyles = css`
     display: none;
   }
   .menu-toggle::part(button) {
-    min-width: var(--ds-size-sm);
-    width: var(--ds-size-sm);
+    min-width: var(--ds-page-shell-menu-toggle-size, var(--ds-size-sm));
+    width: var(--ds-page-shell-menu-toggle-size, var(--ds-size-sm));
     padding: 0;
   }
   :host([mobile-layout]) .menu-toggle {

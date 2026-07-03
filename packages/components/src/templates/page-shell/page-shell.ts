@@ -15,13 +15,15 @@ import '../../organisms/top-bar/define.js';
 export type PageShellAsideState = 'visible' | 'compact' | 'hidden';
 export type PageShellAsideEndState = 'visible' | 'hidden';
 export type PageShellAsideSide = 'start' | 'end';
+export type PageShellMenuButtonPosition = 'start' | 'end';
 
 /**
  * @tag ds-page-shell
  * @summary Application frame: header + aside + main + optional footer with responsive collapse.
  * @slot brand - Top-left brand/logo.
  * @slot drawer-brand - Brand/logo shown in the mobile navigation drawer's title row. Falls back to the `brand` prop.
- * @slot header-actions - Top-right actions.
+ * @slot header-status - Top-right indicator widgets (e.g. points, balances) shown before the action buttons. Non-interactive status content that reads apart from the action buttons.
+ * @slot header-actions - Top-right action buttons (account menu, notifications, etc.). The mobile navigation toggle is rendered as a peer of these buttons; see `mobile-menu-button-position`.
  * @slot aside - Primary side navigation (inline-start). On mobile, rendered inside a `ds-drawer` opened by the hamburger toggle. When empty, the column and hamburger toggle are not rendered.
  * @slot aside-end - Secondary side region (inline-end), e.g. table of contents, contextual help. Hidden on mobile.
  * @slot default - Main content.
@@ -29,6 +31,9 @@ export type PageShellAsideSide = 'start' | 'end';
  * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
  *   content and the aside + main row centre at this width and align vertically. Defaults to `none`.
  *   Header chrome remains full-bleed.
+ * @cssprop --ds-page-shell-menu-toggle-size - Box size of the mobile navigation toggle button.
+ *   Defaults to `var(--ds-size-sm)`. Set to e.g. `var(--ds-size-md)` to match full-size action buttons.
+ * @csspart menu-toggle - The mobile navigation toggle button.
  * @event ds-aside-state-change - Emitted when an opt-in desktop aside toggle changes state.
  *   Detail: `{ side, state, previousState }`.
  */
@@ -42,6 +47,8 @@ export class DsPageShell extends DsElement {
   @property({ type: Boolean, reflect: true, attribute: 'aside-end-toggle' }) asideEndToggle = false;
   @property({ reflect: true, attribute: 'aside-state' }) asideState: PageShellAsideState = 'visible';
   @property({ reflect: true, attribute: 'aside-end-state' }) asideEndState: PageShellAsideEndState = 'visible';
+  @property({ reflect: true, attribute: 'mobile-menu-button-position' })
+  mobileMenuButtonPosition: PageShellMenuButtonPosition = 'end';
   @state() private _mobileLayout = false;
   @state() private _mobileNavOpen = false;
   @state() private _hasAside = false;
@@ -243,25 +250,14 @@ export class DsPageShell extends DsElement {
   override render(): TemplateResult {
     const ariaExpanded: 'true' | 'false' = this._mobileNavOpen ? 'true' : 'false';
     const hasFooter = this._hasFooter || hasNamedSlotContent(this, 'footer');
+    const menuAtStart = this.mobileMenuButtonPosition === 'start';
     return html`<header part="header">
         <ds-top-bar class="chrome" label=${this.menuLabel}>
           <slot name="brand" slot="brand">${this.brand}</slot>
+          <slot name="header-status" slot="actions"></slot>
+          ${menuAtStart ? this.#renderMenuToggle(ariaExpanded) : null}
           <slot name="header-actions" slot="actions"></slot>
-          ${this._hasAside
-            ? html`<ds-button
-                slot="actions"
-                class="menu-toggle"
-                variant="ghost"
-                size="sm"
-                label=${this.menuLabel}
-                aria-label=${this.menuLabel}
-                aria-expanded=${ariaExpanded}
-                aria-controls="mobile-aside"
-                @click=${this.#toggleMobileNav}
-              >
-                <ds-icon slot="leading" name="bars-3" size="3xl"></ds-icon>
-              </ds-button>`
-            : null}
+          ${menuAtStart ? null : this.#renderMenuToggle(ariaExpanded)}
         </ds-top-bar>
       </header>
       <div class="shell-body" part="body">
@@ -276,6 +272,26 @@ export class DsPageShell extends DsElement {
             <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
           </footer>`
         : null}`;
+  }
+
+  #renderMenuToggle(ariaExpanded: 'true' | 'false'): TemplateResult | null {
+    if (!this._hasAside) {
+      return null;
+    }
+    return html`<ds-button
+      slot="actions"
+      class="menu-toggle"
+      part="menu-toggle"
+      variant="ghost"
+      size="sm"
+      label=${this.menuLabel}
+      aria-label=${this.menuLabel}
+      aria-expanded=${ariaExpanded}
+      aria-controls="mobile-aside"
+      @click=${this.#toggleMobileNav}
+    >
+      <ds-icon slot="leading" name="bars-3" size="3xl"></ds-icon>
+    </ds-button>`;
   }
 
   #renderDesktopStartCluster(): TemplateResult {
