@@ -10,9 +10,13 @@ permissions:
   pages: write
   id-token: write
 
+# Allow one concurrent deployment; queue newer runs behind the one in
+# progress rather than cancelling it. Cancelling a run mid-deploy leaves
+# the github-pages environment with a stuck deployment, after which
+# actions/deploy-pages fails with "Deployment failed, try again later."
 concurrency:
   group: storybook-pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
