@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.30.0
+
+### Minor Changes
+
+- a1ff5f7: Add `4xl` icon size (1.875rem) to `ds-icon`.
+
 ## 0.29.0
 
 ### Minor Changes
