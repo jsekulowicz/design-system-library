@@ -43,6 +43,18 @@ const spacingRows: readonly UtilityRow[] = [
   { group: 'Row gap', classes: ['.ds-gap-y-{n}'], mapsTo: 'row-gap' },
 ];
 
+const sizingRows: readonly UtilityRow[] = [
+  { group: 'Width', classes: ['.ds-w-{n}'], mapsTo: 'width → --ds-space-{n}' },
+  { group: 'Height', classes: ['.ds-h-{n}'], mapsTo: 'height → --ds-space-{n}' },
+  { group: 'Square', classes: ['.ds-size-{n}'], mapsTo: 'width + height → --ds-space-{n}' },
+  { group: 'Width keywords', classes: ['.ds-w-auto', '.ds-w-full', '.ds-w-screen', '.ds-w-min', '.ds-w-max', '.ds-w-fit'], mapsTo: 'width' },
+  { group: 'Height keywords', classes: ['.ds-h-auto', '.ds-h-full', '.ds-h-screen', '.ds-h-min', '.ds-h-max', '.ds-h-fit'], mapsTo: 'height' },
+  { group: 'Min width', classes: ['.ds-min-w-0', '.ds-min-w-full', '.ds-min-w-min', '.ds-min-w-max'], mapsTo: 'min-width' },
+  { group: 'Min height', classes: ['.ds-min-h-0', '.ds-min-h-full', '.ds-min-h-screen'], mapsTo: 'min-height' },
+  { group: 'Max width', classes: ['.ds-max-w-full', '.ds-max-w-none', '.ds-max-w-min', '.ds-max-w-max'], mapsTo: 'max-width' },
+  { group: 'Max height', classes: ['.ds-max-h-full', '.ds-max-h-screen', '.ds-max-h-none'], mapsTo: 'max-height' },
+];
+
 const layoutRows: readonly UtilityRow[] = [
   { group: 'Display', classes: ['.ds-d-block', '.ds-d-inline-block', '.ds-d-flex', '.ds-d-inline-flex', '.ds-d-grid', '.ds-d-none'], mapsTo: 'display' },
   { group: 'Flex direction', classes: ['.ds-flex-row', '.ds-flex-column'], mapsTo: 'flex-direction' },
@@ -72,6 +84,10 @@ function renderTable(rows: readonly UtilityRow[]): TemplateResult {
 
 export const Spacing: Story = {
   render: () => renderTable(spacingRows),
+};
+
+export const Sizing: Story = {
+  render: () => renderTable(sizingRows),
 };
 
 export const Layout: Story = {

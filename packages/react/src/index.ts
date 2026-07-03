@@ -42,6 +42,7 @@ export { Table } from './ds-table.js';
 export { TablePagination } from './ds-table-pagination.js';
 export { TableSortButton } from './ds-table-sort-button.js';
 export { Tabs } from './ds-tabs.js';
+export { TextArea } from './ds-text-area.js';
 export { TextField } from './ds-text-field.js';
 export { Toast } from './ds-toast.js';
 export { ToastStack } from './ds-toast-stack.js';
