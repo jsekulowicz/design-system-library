@@ -232,9 +232,15 @@ export const pageShellStyles = css`
     /* Top-layer modal; don't reserve a grid column when closed. */
     display: contents;
     --ds-drawer-card-padding: 0;
+    /* No gap under the title row; the sidenav's own top padding is the only
+       breathing room, so the nav sits close under the header. */
+    --ds-drawer-card-gap: 0;
     /* Match ds-top-bar's 48px chrome height with inline-only padding. */
     --ds-drawer-title-padding: 0 var(--ds-space-4);
     --ds-drawer-title-min-height: 48px;
+    /* Match the top bar's brand size (ds-top-bar .brand) rather than the
+       drawer's larger default title. */
+    --ds-drawer-title-font-size: var(--ds-font-size-lg);
     --ds-drawer-title-bg: var(--ds-page-shell-drawer-header-bg, transparent);
     --ds-drawer-title-fg: var(--ds-page-shell-drawer-header-fg, inherit);
     --ds-drawer-title-border-color: var(--ds-page-shell-drawer-header-border-color, transparent);

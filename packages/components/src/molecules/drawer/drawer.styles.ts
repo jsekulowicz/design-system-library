@@ -77,7 +77,7 @@ export const drawerStyles = css`
        with the card's own background (background-clip: border-box). */
     border: 0;
     border-radius: 0;
-    gap: var(--ds-space-3);
+    gap: var(--ds-drawer-card-gap, var(--ds-space-3));
     padding: var(--ds-drawer-card-padding, var(--ds-space-6));
   }
   /* The scrolling body (ds-card::part(body)) + its scroll fade come from the
@@ -102,7 +102,7 @@ export const drawerStyles = css`
     align-items: center;
     line-height: 1;
     font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-xl);
+    font-size: var(--ds-drawer-title-font-size, var(--ds-font-size-xl));
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }
