@@ -14,12 +14,6 @@ export const selectCommonStyles = css`
   :host([size='lg']) {
     --ds-select-size: var(--ds-size-lg);
   }
-  :host([size='sm']) .trigger {
-    font-size: var(--ds-font-size-xs);
-  }
-  :host([size='lg']) .trigger {
-    font-size: var(--ds-font-size-md);
-  }
   .control-wrap {
     position: relative;
     width: 100%;

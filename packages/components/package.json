@@ -321,6 +321,7 @@
     },
     "./css/utilities.css": "./dist/css/utilities.css",
     "./css/utilities/spacing.css": "./dist/css/utilities/spacing.css",
+    "./css/utilities/sizing.css": "./dist/css/utilities/sizing.css",
     "./css/utilities/layout.css": "./dist/css/utilities/layout.css",
     "./css/utilities/typography.css": "./dist/css/utilities/typography.css"
   },

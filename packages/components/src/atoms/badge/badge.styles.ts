@@ -11,7 +11,7 @@ export const badgeStyles = css`
     padding: 2px var(--ds-space-2);
     border-radius: var(--ds-radius-xs);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-2xs);
+    font-size: var(--ds-font-size-xs);
     font-weight: var(--ds-font-weight-medium);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;

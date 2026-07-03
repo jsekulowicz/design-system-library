@@ -47,7 +47,7 @@ export const textFieldStyles = css`
     background: transparent;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     line-height: 1.4;
     padding: 0;
     min-width: 0;
@@ -62,7 +62,6 @@ export const textFieldStyles = css`
   :host([size='lg']) .wrap {
     height: var(--ds-size-lg);
     padding: 0 var(--ds-space-4);
-    font-size: var(--ds-font-size-md);
   }
   .adornment {
     display: inline-flex;

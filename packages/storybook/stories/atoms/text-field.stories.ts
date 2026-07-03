@@ -77,8 +77,8 @@ export const WithIcons: Story = {
     type="email"
     placeholder="you@studio.co"
   >
-    <ds-icon slot="leading" name="home" size="md"></ds-icon>
-    <ds-icon slot="trailing" name="clock" size="md"></ds-icon>
+    <ds-icon slot="leading" name="home"></ds-icon>
+    <ds-icon slot="trailing" name="clock"></ds-icon>
   </ds-text-field>
   `,
 };

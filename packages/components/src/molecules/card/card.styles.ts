@@ -85,7 +85,7 @@ export const cardStyles = css`
     margin: 0;
   }
   ::slotted([slot='eyebrow']) {
-    font-size: var(--ds-font-size-2xs);
+    font-size: var(--ds-font-size-xs);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
     color: var(--ds-color-accent);

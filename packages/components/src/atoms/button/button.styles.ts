@@ -18,7 +18,7 @@ export const buttonStyles = css`
     border-radius: var(--ds-radius-sm);
     border: 1px solid transparent;
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     font-weight: var(--ds-font-weight-medium);
     letter-spacing: var(--ds-letter-spacing-normal);
     line-height: 1;
@@ -94,12 +94,10 @@ export const buttonStyles = css`
   :host([size='sm']) .btn {
     --ds-button-size: var(--ds-size-sm);
     --ds-button-min-width: 4rem;
-    font-size: var(--ds-font-size-xs);
   }
   :host([size='lg']) .btn {
     --ds-button-size: var(--ds-size-lg);
     --ds-button-min-width: 5rem;
-    font-size: var(--ds-font-size-md);
   }
   :host([full-width]) {
     display: flex;

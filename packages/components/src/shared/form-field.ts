@@ -15,7 +15,7 @@ export const formFieldStyles: CSSResult = css`
     color: var(--ds-color-danger);
   }
   .optional {
-    font-size: var(--ds-font-size-2xs);
+    font-size: var(--ds-font-size-xs);
     color: var(--ds-color-fg-muted);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;

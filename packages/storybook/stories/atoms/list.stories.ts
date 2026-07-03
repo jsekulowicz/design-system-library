@@ -25,17 +25,17 @@ export const Playground: Story = {
   render: (args) => html`
     <ds-list variant=${args['variant']} style="max-width:32rem">
       <ds-list-item>
-        <span slot="leading"><ds-icon name="check" size="md"></ds-icon></span>
+        <span slot="leading"><ds-icon name="check"></ds-icon></span>
         Verify your email address
         <ds-badge slot="trailing" tone="success">Done</ds-badge>
       </ds-list-item>
       <ds-list-item>
-        <span slot="leading"><ds-icon name="check" size="md"></ds-icon></span>
+        <span slot="leading"><ds-icon name="check"></ds-icon></span>
         Add a profile photo
         <ds-badge slot="trailing" tone="warning">Pending</ds-badge>
       </ds-list-item>
       <ds-list-item>
-        <span slot="leading"><ds-icon name="check" size="md"></ds-icon></span>
+        <span slot="leading"><ds-icon name="check"></ds-icon></span>
         Invite a teammate
         <ds-badge slot="trailing" tone="neutral">Optional</ds-badge>
       </ds-list-item>
@@ -58,15 +58,15 @@ export const NavigationLinks: Story = {
     <ds-list style="max-width:32rem">
       <ds-list-item>
         <strong>Overview</strong>
-        <ds-icon slot="trailing" name="chevron-right" size="md"></ds-icon>
+        <ds-icon slot="trailing" name="chevron-right"></ds-icon>
       </ds-list-item>
       <ds-list-item>
         <strong>Activity</strong>
-        <ds-icon slot="trailing" name="chevron-right" size="md"></ds-icon>
+        <ds-icon slot="trailing" name="chevron-right"></ds-icon>
       </ds-list-item>
       <ds-list-item>
         <strong>Settings</strong>
-        <ds-icon slot="trailing" name="chevron-right" size="md"></ds-icon>
+        <ds-icon slot="trailing" name="chevron-right"></ds-icon>
       </ds-list-item>
     </ds-list>
   `,
