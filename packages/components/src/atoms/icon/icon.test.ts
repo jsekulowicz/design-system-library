@@ -79,6 +79,7 @@ describe('<ds-icon>', () => {
     expect(css).toMatch(/:host\(\[size='xl'\]\)\s*{[^}]*width:\s*1\.25rem/);
     expect(css).toMatch(/:host\(\[size='2xl'\]\)\s*{[^}]*width:\s*1\.5rem/);
     expect(css).toMatch(/:host\(\[size='3xl'\]\)\s*{[^}]*width:\s*1\.75rem/);
+    expect(css).toMatch(/:host\(\[size='4xl'\]\)\s*{[^}]*width:\s*1\.875rem/);
   });
 
   it('warns and falls back to slot when icon name is unknown', async () => {

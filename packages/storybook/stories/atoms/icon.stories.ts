@@ -11,7 +11,7 @@ const meta: Meta = {
       control: { type: 'text' },
       description: 'Heroicon name in kebab-case. Browse all icons at [heroicons.com](https://heroicons.com).',
     },
-    size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl'] },
+    size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] },
   },
   args: { name: 'check', size: 'lg', label: '' },
 };
@@ -29,12 +29,12 @@ export const Sizes: Story = {
   render: () => html`
 <div style="
   display:grid;
-  grid-template-columns:repeat(6, minmax(4rem, 1fr));
+  grid-template-columns:repeat(7, minmax(4rem, 1fr));
   gap:var(--ds-space-4);
   align-items:end;
-  max-width:34rem;
+  max-width:40rem;
 ">
-  ${(['sm', 'md', 'lg', 'xl', '2xl', '3xl'] as const).map((size) => html`
+  ${(['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const).map((size) => html`
     <figure style="
       display:flex;
       flex-direction:column;
