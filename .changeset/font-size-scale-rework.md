@@ -15,4 +15,4 @@ Rework the font-size scale for readability and consistency.
 - Body and control text now uses `md` (16px) by default. Buttons, text fields, text areas, selects, searchable selects, tabs, nav items, menu items and select options render at 16px regardless of `size` — the previous per-size font shrinking on controls is gone (a `size="sm"` button/input is no longer 12–13px).
 - Alert and toast titles bump to `lg` to stay above the larger body text.
 - Tooltip text goes from 12px to `sm` (14px).
-- Checkbox and radio labels stay at `sm` (14px), consistent with form-field labels. Labels, descriptions, helper/meta text, tables and breadcrumbs also keep their smaller sizes for density.
+- Checkbox and radio labels stay at `sm` (14px), consistent with form-field labels. Segmented control option labels also stay at `sm` (they are compact toggles, not primary buttons). Labels, descriptions, helper/meta text, tables and breadcrumbs also keep their smaller sizes for density.
