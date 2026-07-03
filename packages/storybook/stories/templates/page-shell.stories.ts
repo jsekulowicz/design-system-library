@@ -278,3 +278,47 @@ export const OverflowingMain: Story = {
       </ds-footer>
     `),
 };
+
+export const HeaderStatusAndMenuAtStart: Story = {
+  name: 'Header status + menu at start',
+  parameters: { docs: { story: { height: STORY_HEIGHT } } },
+  render: () =>
+    html`<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
+      <ds-page-shell
+        brand="Brand"
+        style="${FLUID_PAGE_SHELL_STYLE};--ds-page-shell-menu-toggle-size:var(--ds-size-md)"
+        mobile-menu-button-position="start"
+      >
+        <div slot="header-status" style="display:flex;align-items:center;gap:var(--ds-space-2);font-weight:var(--ds-font-weight-semibold)">
+          <span>1200 XP</span>
+          <span>·</span>
+          <span>10 credits</span>
+        </div>
+        <div slot="header-actions" style="display:flex;align-items:center;gap:var(--ds-space-2)">
+          <ds-button variant="ghost" square size="md" label="Notifications">
+            <ds-icon slot="leading" name="clock" size="3xl"></ds-icon>
+          </ds-button>
+          <ds-button variant="ghost" square size="md" label="Account">
+            <ds-icon slot="leading" name="cog-6-tooth" size="3xl"></ds-icon>
+          </ds-button>
+        </div>
+        <ds-sidenav slot="aside">
+          <ds-nav-item href="#" current>
+            <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+            Overview
+          </ds-nav-item>
+        </ds-sidenav>
+        <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+            Header status
+          </h1>
+          <p>
+            Indicator widgets go in the <code>header-status</code> slot and read apart from the
+            action buttons. Narrow the frame to see the mobile menu toggle appear as a peer of
+            the action buttons; <code>mobile-menu-button-position="start"</code> places it before
+            them, and <code>--ds-page-shell-menu-toggle-size</code> sizes it to match.
+          </p>
+        </article>
+      </ds-page-shell>
+    </div>`,
+};

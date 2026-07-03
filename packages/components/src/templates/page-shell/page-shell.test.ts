@@ -347,6 +347,57 @@ describe('<ds-page-shell>', () => {
       expect(body!.querySelector('main')).not.toBeNull();
     });
 
+    it('forwards a header-status slot into the top bar actions, before header-actions', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      const topBar = el.shadowRoot!.querySelector('header > ds-top-bar')!;
+      const actions = [...topBar.children].filter((c) => c.getAttribute('slot') === 'actions');
+      const statusIndex = actions.findIndex((c) => c.getAttribute('name') === 'header-status');
+      const actionsIndex = actions.findIndex((c) => c.getAttribute('name') === 'header-actions');
+      expect(statusIndex).toBeGreaterThanOrEqual(0);
+      expect(statusIndex).toBeLessThan(actionsIndex);
+    });
+
+    it('renders the menu toggle after header-actions by default (end)', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      const topBar = el.shadowRoot!.querySelector('header > ds-top-bar')!;
+      const actions = [...topBar.children].filter((c) => c.getAttribute('slot') === 'actions');
+      const actionsIndex = actions.findIndex((c) => c.getAttribute('name') === 'header-actions');
+      const toggleIndex = actions.findIndex((c) => c.classList.contains('menu-toggle'));
+      expect(el.mobileMenuButtonPosition).toBe('end');
+      expect(toggleIndex).toBeGreaterThan(actionsIndex);
+    });
+
+    it('renders the menu toggle before header-actions when position is start', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      el.mobileMenuButtonPosition = 'start';
+      await el.updateComplete;
+      const topBar = el.shadowRoot!.querySelector('header > ds-top-bar')!;
+      const actions = [...topBar.children].filter((c) => c.getAttribute('slot') === 'actions');
+      const statusIndex = actions.findIndex((c) => c.getAttribute('name') === 'header-status');
+      const toggleIndex = actions.findIndex((c) => c.classList.contains('menu-toggle'));
+      const actionsIndex = actions.findIndex((c) => c.getAttribute('name') === 'header-actions');
+      expect(statusIndex).toBeLessThan(toggleIndex);
+      expect(toggleIndex).toBeLessThan(actionsIndex);
+    });
+
+    it('exposes the menu toggle as a part', async () => {
+      const el = await mount<DsPageShell>(pageShellTemplate());
+      await el.updateComplete;
+      const toggle = el.shadowRoot!.querySelector('ds-button.menu-toggle')!;
+      expect(toggle.getAttribute('part')).toBe('menu-toggle');
+    });
+
+    it('lets consumers size the menu toggle via a custom property', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((s) => s.cssText)
+        .join('\n');
+      expect(css).toMatch(
+        /\.menu-toggle::part\(button\)\s*{[^}]*width:\s*var\(--ds-page-shell-menu-toggle-size,\s*var\(--ds-size-sm\)\)/,
+      );
+    });
+
     it('exposes a body part for consumer styling', async () => {
       const el = await mount<DsPageShell>(pageShellTemplate());
       await el.updateComplete;
