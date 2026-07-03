@@ -5,7 +5,7 @@ export const checkboxStyles = css`
     display: inline-flex;
     cursor: pointer;
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-sm);
     color: var(--ds-color-fg);
   }
   :host([disabled]) {
