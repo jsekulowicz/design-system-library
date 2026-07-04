@@ -207,6 +207,28 @@ table.rows = rows;`,
 `,
 };
 
+export const SlottedCells: Story = {
+  name: 'Per-cell slots',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With `row-key` set, project host/framework content into an individual cell via the `cell:{column}:{rowKey}` slot. Cells with nothing projected fall back to the column `render`/`field`.',
+      },
+    },
+  },
+  render: () => html`
+<ds-table .rows=${PEOPLE} .columns=${BASIC_COLUMNS} row-key="id">
+  ${PEOPLE.map(
+    (person) => html`<ds-badge
+      slot="cell:status:${person.id}"
+      tone=${statusTone[person.status]}
+    >${person.status}</ds-badge>`,
+  )}
+</ds-table>
+`,
+};
+
 export const ScrollBodyWithPagination: Story = {
   parameters: {
     docs: {

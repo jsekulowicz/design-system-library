@@ -11,7 +11,7 @@ Semantic data table driven by `rows` + `columns` props. Cell content is fully cu
 
 ## Anatomy
 
-A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls. On narrow containers, the default `responsive="stack"` mode turns each row into a labelled stack using column labels; long labels and values wrap instead of forcing horizontal overflow while the table headers stay available to assistive technology. Use `responsive="scroll"` to keep the classic horizontally scrollable table. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state plus a screen-reader status; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
+A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls, and — when `row-key` is set — per-cell slots (`cell:<name>:<rowKey>`) let you project framework-rendered content into individual cells (see below). On narrow containers, the default `responsive="stack"` mode turns each row into a labelled stack using column labels; long labels and values wrap instead of forcing horizontal overflow while the table headers stay available to assistive technology. Use `responsive="scroll"` to keep the classic horizontally scrollable table. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state plus a screen-reader status; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
 
 ### Column render as scoped-slot equivalent
 
@@ -30,6 +30,19 @@ const columns: TableColumn<Person>[] = [
 ```
 
 The `render` function receives the full row object and index — any component, markup, or formatting can go inside the cell.
+
+### Per-cell slots (projecting framework content)
+
+When `row-key` is set, every cell is also exposed as a named slot `cell:{columnName}:{rowKey}`, with the column's `render`/`field` value as **fallback**. This lets a framework (Vue, React, …) project real component instances — keeping their own reactivity, context, and event handlers — into a cell instead of returning Lit templates. Tables without `row-key`, or cells with nothing projected, render exactly as before.
+
+```html
+<ds-table .rows=${rows} .columns=${columns} row-key="id">
+  <!-- projected into the "status" cell of the row whose id === 1 -->
+  <my-status-chip slot="cell:status:1" status="active"></my-status-chip>
+</ds-table>
+```
+
+A wrapper (Vue `DataTable`, a React binding, …) typically renders one projected element per row for the columns that opt in, so callers write a scoped slot per column rather than wiring slot names by hand.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
