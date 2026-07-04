@@ -7,6 +7,7 @@ type AriaSort = 'ascending' | 'descending' | undefined;
 type TableBodyOptions<T extends TableRow> = {
   rows: readonly T[];
   columns: readonly TableColumn<T>[];
+  rowKey?: string;
   clickableRows: boolean;
   rowActionsDisabled: boolean;
   rowActionLabel: (row: T, index: number) => string;
@@ -48,6 +49,23 @@ function renderRowAction<T extends TableRow>(
   `;
 }
 
+// A per-cell slot lets consumers project framework-rendered content (keyed by
+// column + row key), falling back to `render`/`field` when nothing is slotted —
+// so existing tables are unaffected. Needs `row-key` set to be unique per cell.
+function renderCellValue<T extends TableRow>(
+  options: TableBodyOptions<T>,
+  column: TableColumn<T>,
+  row: T,
+  rowIndex: number,
+): unknown {
+  const fallback = renderCell(column, row, rowIndex);
+  if (!options.rowKey) {
+    return fallback;
+  }
+  const name = `cell:${column.name}:${String(row[options.rowKey] ?? '')}`;
+  return html`<slot name=${name}>${fallback}</slot>`;
+}
+
 function renderCellContent<T extends TableRow>(
   options: TableBodyOptions<T>,
   column: TableColumn<T>,
@@ -58,7 +76,7 @@ function renderCellContent<T extends TableRow>(
   return html`
     <span class="cell-content">
       ${options.clickableRows && columnIndex === 0 ? renderRowAction(options, row, rowIndex) : nothing}
-      ${renderCell(column, row, rowIndex)}
+      ${renderCellValue(options, column, row, rowIndex)}
     </span>
   `;
 }

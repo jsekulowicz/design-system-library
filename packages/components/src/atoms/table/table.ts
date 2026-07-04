@@ -50,6 +50,7 @@ const booleanAttributeConverter = {
  * @slot empty - Shown when `rows` is empty.
  * @slot loading - Shown inside the loading overlay when `loading` is true.
  * @slot header-{columnName} - Per-column header override (e.g. inject a ds-table-sort-button).
+ * @slot cell:{columnName}:{rowKey} - Per-cell content override; projects framework-rendered content into a cell, falling back to the column's `render`/`field`. Requires `row-key` to be set. Row key comes from `row[rowKey]`.
  * @attr responsive - `stack` stacks cells on small screens; `scroll` preserves horizontal scrolling.
  * @attr scroll-body - When set, the body scrolls under a pinned header (the footer slot stays pinned too). The scrollbar is hidden and overflow is signalled by top/bottom scroll-fades, matching ds-dialog/ds-drawer. Natural column widths are preserved; the host must be given a bounded height by its container.
  * @cssprop --ds-table-header-height - Header row height; in scroll-body mode it pins the header and offsets the top scroll-fade below it. Defaults to a single line of header text.
@@ -249,6 +250,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
         <tbody part="tbody">${renderTableBody({
           rows: this.rows,
           columns: this.columns,
+          rowKey: this.rowKey,
           clickableRows: this.clickableRows,
           rowActionsDisabled: this.loading,
           rowActionLabel: this.#rowActionLabel,

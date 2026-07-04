@@ -6,11 +6,12 @@ import { progressBarStyles } from './progress-bar.styles.js';
 
 /**
  * @tag ds-progress-bar
- * @summary Horizontal progress indicator with a centered label slot.
- * @slot default - Optional label rendered on a chip centered over the bar.
+ * @summary Horizontal progress indicator with a centered label.
+ * @slot default - Optional label rendered as outlined text centered over the bar.
+ * @cssprop --ds-progress-color - The bar colour (track border, filled indicator and label text). Defaults to `--ds-color-accent`.
  * @csspart track - The bar track; set `height` here to resize the bar.
- * @csspart indicator - The filled portion; set `background` here to recolor it.
- * @csspart label - The centered label chip.
+ * @csspart indicator - The filled portion.
+ * @csspart label - The centered label text.
  */
 export class DsProgressBar extends DsElement {
   static override styles = [...DsElement.styles, progressBarStyles];

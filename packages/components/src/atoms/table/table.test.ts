@@ -103,6 +103,29 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelector('[part="empty"]')?.textContent).toContain('No data');
   });
 
+  it('wraps each cell in a named slot when row-key is set, with the value as fallback', async () => {
+    const el = await mountTable({ rowKey: 'id' });
+    const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('tbody slot[name="cell:name:1"]');
+    expect(slot).not.toBeNull();
+    expect(slot!.textContent).toContain('Ada');
+  });
+
+  it('does not wrap cells in slots without a row-key', async () => {
+    const el = await mountTable();
+    expect(el.shadowRoot!.querySelector('tbody slot[name^="cell:"]')).toBeNull();
+    expect(el.shadowRoot!.querySelector('tbody tr td')?.textContent).toContain('Ada');
+  });
+
+  it('projects light-DOM content into a cell slot', async () => {
+    const el = await mountWithProps<DsTable<Person>>(
+      '<ds-table row-key="id"><span slot="cell:name:1">PROJECTED</span></ds-table>',
+      { rows: ROWS, columns: COLUMNS },
+    );
+    const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="cell:name:1"]')!;
+    const assigned = slot.assignedNodes({ flatten: true }).map((n) => n.textContent ?? '');
+    expect(assigned.join('')).toContain('PROJECTED');
+  });
+
   it('exposes the scroll wrapper via the `scroll` csspart so consumers can delegate vertical scrolling to it', async () => {
     const el = await mountTable();
     expect(el.shadowRoot!.querySelector('[part="scroll"]')).not.toBeNull();

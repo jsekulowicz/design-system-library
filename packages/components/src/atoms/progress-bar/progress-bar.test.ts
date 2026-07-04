@@ -59,7 +59,7 @@ describe('<ds-progress-bar>', () => {
     expect(indicatorIsFull(el)).toBe(true);
   });
 
-  it('shows the label chip only when slotted content exists', async () => {
+  it('shows the label only when slotted content exists', async () => {
     const empty = await mount<DsProgressBar>('<ds-progress-bar value="10"></ds-progress-bar>');
     expect(empty.shadowRoot!.querySelector('.label')!.classList.contains('label--empty')).toBe(true);
 
