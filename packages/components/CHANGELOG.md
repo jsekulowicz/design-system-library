@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.36.0
+
+### Minor Changes
+
+- c5940b0: Progress bar height change:
+  - `ds-progress-bar`: the label's font size increased to default --ds-font-size-md (1rem).
+
 ## 0.35.0
 
 ### Minor Changes
