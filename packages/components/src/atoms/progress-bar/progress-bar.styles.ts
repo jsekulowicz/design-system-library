@@ -66,9 +66,7 @@ export const progressBarStyles = css`
     -webkit-background-clip: text;
     background-clip: text;
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
     font-weight: var(--ds-font-weight-semibold);
-    line-height: 1.4;
     white-space: nowrap;
   }
   .label--empty {
