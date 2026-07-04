@@ -10,26 +10,32 @@ export const progressBarStyles = css`
   }
   .track {
     position: relative;
-    box-sizing: border-box;
     width: 100%;
     height: 1.5rem;
-    border: 1px solid var(--ds-progress-color);
     border-radius: var(--ds-radius-sm);
     background: var(--ds-color-bg);
     overflow: hidden;
   }
+  /* The border is painted on top of the fill (not on the clipping track) so the
+     fill reaches the rounded edge with no seam. A border on the track itself
+     would leave a subpixel gap at the corners between it and the fill. */
+  .track::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--ds-progress-color);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  /* No radius of its own: the track's overflow clips the leading corners while
+     partial (flat trailing edge), and every corner once it fills the track. */
   .indicator {
     position: absolute;
     inset-block: 0;
     inset-inline-start: 0;
     width: 0;
     background: var(--ds-progress-color);
-    border-start-start-radius: var(--ds-radius-sm);
-    border-end-start-radius: var(--ds-radius-sm);
     transition: width 240ms ease;
-  }
-  .indicator--full {
-    border-radius: var(--ds-radius-sm);
   }
   .label-layer {
     position: absolute;
