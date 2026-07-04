@@ -57,7 +57,11 @@ export class DsProgressBar extends DsElement {
           style=${styleMap({ width: `${this.percent}%` })}
         ></div>
         <div class="label-layer">
-          <span class="label ${this.hasLabel ? '' : 'label--empty'}" part="label">
+          <span
+            class="label ${this.hasLabel ? '' : 'label--empty'}"
+            part="label"
+            style=${styleMap({ '--ds-progress-fill': `${this.percent}%` })}
+          >
             <slot @slotchange=${this.onSlotChange}></slot>
           </span>
         </div>

@@ -42,22 +42,29 @@ export const progressBarStyles = css`
     inset: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
     pointer-events: none;
   }
-  /* Bare text (no chip) in the bar colour, with a crisp --ds-color-bg outline so
-     it stays legible over both the filled and the empty track. paint-order
-     draws the text-stroke behind the fill, so the glyphs keep their weight.
-     The stroke only outlines text — give inline icons their own contrast
-     (e.g. a badge/pill with its own background). */
+  /* No chip, no outline: the text flips colour at the fill boundary so it stays
+     legible over both the filled and the empty track. A hard-stop gradient —
+     --ds-color-bg up to the fill (--ds-progress-fill, set per value), then
+     --ds-progress-color — is painted through the glyphs via background-clip.
+     The label spans the whole track so the stop lines up with the indicator.
+     Inline icons keep their own colour (they set it explicitly), so give them
+     their own contrast (e.g. a badge with its own background). */
   .label {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    max-width: calc(100% - var(--ds-space-2));
-    padding: 0 var(--ds-space-1);
-    color: var(--ds-progress-color);
-    -webkit-text-stroke: 3px var(--ds-color-bg);
-    paint-order: stroke;
+    justify-content: center;
+    gap: var(--ds-space-1);
+    width: 100%;
+    color: transparent;
+    background: linear-gradient(
+      90deg,
+      var(--ds-color-bg) 0 var(--ds-progress-fill, 0%),
+      var(--ds-progress-color) var(--ds-progress-fill, 0%) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-sm);
     font-weight: var(--ds-font-weight-semibold);
