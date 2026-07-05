@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-react
 
+## 0.36.2
+
+### Patch Changes
+
+- Updated dependencies [90c90ff]
+  - @jsekulowicz/ds-components@0.36.2
+
 ## 0.36.1
 
 ### Patch Changes
