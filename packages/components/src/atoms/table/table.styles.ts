@@ -64,8 +64,13 @@ export const tableStyles = css`
     display: none;
   }
 
+  /* Flex (not block) so custom cell content (icon scales, badges, links)
+     centres vertically against text cells. justify-content mirrors the
+     column alignment for non-text items; text-align (below) still handles
+     wrapped text inside the item. */
   .cell-content {
-    display: block;
+    display: flex;
+    align-items: center;
     min-width: 0;
   }
 
@@ -86,6 +91,8 @@ export const tableStyles = css`
   .align-left { text-align: left; }
   .align-right { text-align: right; }
   .align-center { text-align: center; }
+  .align-right .cell-content { justify-content: flex-end; }
+  .align-center .cell-content { justify-content: center; }
 
   tbody tr.clickable {
     position: relative;
