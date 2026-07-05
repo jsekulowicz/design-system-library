@@ -7,7 +7,17 @@ import { iconStyles } from './icon.styles.js';
 
 export type IconSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
-const registry = new Map<string, string>();
+// The registry must be a single instance shared across every copy of this
+// module. Bundlers (notably Vite's dep pre-bundling during dev) can evaluate
+// this file more than once, and a per-module `new Map()` would let icon
+// registrations land in one copy while <ds-icon> reads another — surfacing as
+// `unknown icon "…"` warnings and blank icons. Anchoring it on globalThis with
+// a Symbol.for key guarantees one registry regardless of how many times the
+// module is instantiated.
+const REGISTRY_KEY = Symbol.for('@jsekulowicz/ds-components:icon-registry');
+type RegistryHost = { [REGISTRY_KEY]?: Map<string, string> };
+const host = globalThis as unknown as RegistryHost;
+const registry: Map<string, string> = (host[REGISTRY_KEY] ??= new Map<string, string>());
 
 export function registerIcon(name: string, svgMarkup: string): void {
   registry.set(name, svgMarkup);

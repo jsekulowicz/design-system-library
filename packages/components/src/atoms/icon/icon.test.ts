@@ -21,6 +21,20 @@ describe('<ds-icon>', () => {
     expect(getIcon('missing-icon')).toBeUndefined();
   });
 
+  it('anchors the registry on globalThis so duplicate module copies share it', () => {
+    // Bundlers can evaluate icon.js more than once; a per-module Map would let
+    // a registration land in a copy <ds-icon> never reads. Anchoring on
+    // globalThis under a Symbol.for key keeps every copy pointed at one Map.
+    const shared = (
+      globalThis as unknown as {
+        [k: symbol]: Map<string, string> | undefined;
+      }
+    )[Symbol.for('@jsekulowicz/ds-components:icon-registry')];
+    expect(shared).toBeInstanceOf(Map);
+    registerIcon('global-registry-icon', '<svg><path d="M0 0h1v1z"/></svg>');
+    expect(shared!.get('global-registry-icon')).toContain('<path');
+  });
+
   it('registers the user-circle icon by name', () => {
     expect(getIcon('user-circle')).toContain('17.982 18.725');
   });
