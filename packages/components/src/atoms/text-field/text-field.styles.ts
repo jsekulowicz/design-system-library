@@ -33,7 +33,7 @@ export const textFieldStyles = css`
     background: var(--ds-color-danger-subtle);
   }
   :host([invalid]) .wrap:focus-within {
-    box-shadow: 0 0 0 3px rgba(178, 26, 10, 0.3);
+    box-shadow: var(--ds-shadow-focus-danger);
   }
   :host([disabled]) .wrap {
     opacity: 0.5;

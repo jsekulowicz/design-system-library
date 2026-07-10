@@ -45,6 +45,7 @@ export const color = {
     paperHairline: 'rgba(242, 239, 234, 0.14)',
     paperSubtle: 'rgba(242, 239, 234, 0.06)',
     focusRing: 'rgba(74, 114, 204, 0.35)',
+    dangerFocusRing: 'rgba(178, 26, 10, 0.3)',
   },
 } as const;
 

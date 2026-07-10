@@ -23,7 +23,7 @@ export const focusVisibleStyles = css`
   }
   .ds-focus-ring:focus-visible {
     outline: 2px solid transparent;
-    box-shadow: var(--ds-shadow-focus, 0 0 0 3px rgba(226, 52, 29, 0.35));
+    box-shadow: var(--ds-shadow-focus, 0 0 0 3px rgba(74, 114, 204, 0.35));
   }
 `;
 

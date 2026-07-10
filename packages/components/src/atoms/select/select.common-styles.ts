@@ -42,7 +42,7 @@ export const selectCommonStyles = css`
     background: var(--ds-color-danger-subtle);
   }
   :host([invalid]) .trigger:is(:focus-visible, :focus-within) {
-    box-shadow: 0 0 0 3px rgba(178, 26, 10, 0.3);
+    box-shadow: var(--ds-shadow-focus-danger);
   }
   :host([disabled]) .trigger {
     opacity: 0.5;

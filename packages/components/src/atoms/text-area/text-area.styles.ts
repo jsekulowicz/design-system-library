@@ -41,7 +41,7 @@ export const textAreaStyles = css`
     background: var(--ds-color-danger-subtle);
   }
   :host([invalid]) textarea:focus {
-    box-shadow: 0 0 0 3px rgba(178, 26, 10, 0.3);
+    box-shadow: var(--ds-shadow-focus-danger);
   }
   :host([disabled]) textarea {
     opacity: 0.5;

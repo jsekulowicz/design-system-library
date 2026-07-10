@@ -59,7 +59,11 @@ export const semanticLight = {
   'letter-spacing': letterSpacing,
   radius,
   border,
-  shadow,
+  shadow: {
+    ...shadow,
+    focus: `0 0 0 3px ${color.alpha.focusRing}`,
+    'focus-danger': `0 0 0 3px ${color.alpha.dangerFocusRing}`,
+  },
   duration,
   easing,
   breakpoint,

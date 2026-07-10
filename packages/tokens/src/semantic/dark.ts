@@ -1,8 +1,14 @@
 import { color } from '../primitive/index.js';
 import { semanticLight } from './light.js';
 
+const focusColor = 'rgba(106, 149, 232, 0.45)';
+
 export const semanticDark = {
   ...semanticLight,
+  shadow: {
+    ...semanticLight.shadow,
+    focus: `0 0 0 3px ${focusColor}`,
+  },
   color: {
     ...semanticLight.color,
     bg: '#222425',
@@ -21,7 +27,7 @@ export const semanticDark = {
     border: color.alpha.paperHairline,
     'border-strong': color.ink[300],
     'border-subtle': color.alpha.paperSubtle,
-    focus: 'rgba(106, 149, 232, 0.45)',
+    focus: focusColor,
     'success-subtle': 'rgba(31, 122, 72, 0.22)',
     'warning-subtle': 'rgba(166, 98, 11, 0.25)',
     'danger-subtle': 'rgba(178, 26, 10, 0.22)',
