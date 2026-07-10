@@ -2,6 +2,7 @@ import { html, type TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { listItemStyles } from './list-item.styles.js';
+import { hasAssignedContent } from '../../shared/slots.js';
 
 /**
  * @tag ds-list-item
@@ -35,15 +36,4 @@ export class DsListItem extends DsElement {
       </div>
     </li>`;
   }
-}
-
-function hasAssignedContent(slot: HTMLSlotElement): boolean {
-  const nodes = slot.assignedNodes({ flatten: true });
-  return nodes.some((node) => {
-    if (node.nodeType === Node.ELEMENT_NODE) return true;
-    if (node.nodeType === Node.TEXT_NODE) {
-      return (node.textContent ?? '').trim().length > 0;
-    }
-    return false;
-  });
 }
