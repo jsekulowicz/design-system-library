@@ -3,6 +3,7 @@ import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldFooter, renderFieldLabel } from '../../shared/form-field.js';
+import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { textFieldStyles } from './text-field.styles.js';
 
 export type TextFieldType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
@@ -17,7 +18,7 @@ export type TextFieldSize = 'sm' | 'md' | 'lg';
  * @event ds-change - Fired when the value is committed.
  */
 export class DsTextField extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, formFieldStyles, textFieldStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, textFieldStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -88,7 +89,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
     const current = typeof this.value === 'string' ? this.value : '';
     return html`
       ${this.label ? renderFieldLabel(this.label, this.required, 'input', this.optional) : nothing}
-      <span class="wrap" part="wrap">
+      <span class="wrap field-control" part="wrap">
         <span class="adornment" ?hidden=${!this._hasLeading}>
           <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
         </span>

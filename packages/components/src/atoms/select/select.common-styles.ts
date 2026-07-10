@@ -28,26 +28,8 @@ export const selectCommonStyles = css`
     width: 100%;
     height: var(--ds-select-size);
     padding: 0 var(--ds-space-3);
-    background: var(--ds-color-bg);
-    border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
-    transition: border-color var(--ds-duration-fast) var(--ds-easing-standard),
-      box-shadow var(--ds-duration-fast) var(--ds-easing-standard);
-  }
-  .trigger:hover {
-    border-color: var(--ds-color-fg-subtle);
-  }
-  :host([invalid]) .trigger {
-    border-color: var(--ds-color-danger);
-    background: var(--ds-color-danger-subtle);
-  }
-  :host([invalid]) .trigger:is(:focus-visible, :focus-within) {
-    box-shadow: var(--ds-shadow-focus-danger);
   }
   :host([disabled]) .trigger {
-    opacity: 0.5;
-    background: var(--ds-color-bg-subtle);
-    cursor: not-allowed;
     pointer-events: none;
   }
   .trigger-multiple {

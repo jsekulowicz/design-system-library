@@ -15,30 +15,10 @@ export const textFieldStyles = css`
     height: var(--ds-size-md);
     padding: 0 var(--ds-space-3);
     gap: var(--ds-space-2);
-    background: var(--ds-color-bg);
-    border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
-    transition: border-color var(--ds-duration-fast) var(--ds-easing-standard),
-      box-shadow var(--ds-duration-fast) var(--ds-easing-standard);
-  }
-  .wrap:hover {
-    border-color: var(--ds-color-fg-subtle);
   }
   .wrap:focus-within {
     border-color: var(--ds-color-accent);
     box-shadow: var(--ds-shadow-focus);
-  }
-  :host([invalid]) .wrap {
-    border-color: var(--ds-color-danger);
-    background: var(--ds-color-danger-subtle);
-  }
-  :host([invalid]) .wrap:focus-within {
-    box-shadow: var(--ds-shadow-focus-danger);
-  }
-  :host([disabled]) .wrap {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background: var(--ds-color-bg-subtle);
   }
   input {
     flex: 1;

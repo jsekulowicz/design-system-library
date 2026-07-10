@@ -3,6 +3,7 @@ import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldFooter, renderFieldLabel } from '../../shared/form-field.js';
+import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { textAreaStyles } from './text-area.styles.js';
 
 export type TextAreaSize = 'sm' | 'md' | 'lg';
@@ -16,7 +17,7 @@ export type TextAreaResize = 'none' | 'vertical';
  * @csspart input - The inner textarea element.
  */
 export class DsTextArea extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, formFieldStyles, textAreaStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, textAreaStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -78,6 +79,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
       ${this.label ? renderFieldLabel(this.label, this.required, 'input', this.optional) : nothing}
       <textarea
         id="input"
+        class="field-control"
         part="input"
         .value=${live(current)}
         rows=${this.rows}

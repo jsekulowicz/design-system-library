@@ -4,6 +4,7 @@ import { live } from 'lit/directives/live.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
@@ -34,6 +35,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   static override styles = [
     ...DsElement.styles,
     formFieldStyles,
+    fieldControlStyles,
     selectCommonStyles,
     searchableSelectStyles,
   ];
@@ -313,7 +315,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     return html` ${this.label ? renderFieldLabel(this.label, this.required, 'search-input') : nothing}
       <div class="control-wrap">
         <div
-          class="trigger${this.multiple ? ' trigger-multiple' : ''} ${open ? 'open' : ''}"
+          class="trigger field-control${this.multiple ? ' trigger-multiple' : ''} ${open ? 'open' : ''}"
           part="trigger"
           @click=${() => {
             if (!this.disabled) {

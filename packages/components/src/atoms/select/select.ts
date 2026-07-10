@@ -3,6 +3,7 @@ import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
@@ -39,7 +40,7 @@ export interface SelectOption {
  * @csspart option - Each individual option item.
  */
 export class DsSelect extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, formFieldStyles, selectCommonStyles, selectStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, selectCommonStyles, selectStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -247,7 +248,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       <div class="control-wrap">
         <div
           id="trigger"
-          class="trigger${this.multiple ? ' trigger-multiple' : ''}"
+          class="trigger field-control${this.multiple ? ' trigger-multiple' : ''}"
           part="trigger"
           tabindex=${this.disabled ? '-1' : '0'}
           role="combobox"
