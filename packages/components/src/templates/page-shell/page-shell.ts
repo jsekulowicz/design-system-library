@@ -4,6 +4,22 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { pageShellStyles } from './page-shell.styles.js';
 import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
+import { hasAssignedContent, hasNamedSlotContent } from '../../shared/slots.js';
+import {
+  nextAsideState,
+  nextAsideEndState,
+  type PageShellAsideState,
+  type PageShellAsideEndState,
+  type PageShellMenuButtonPosition,
+} from './page-shell-state.js';
+import {
+  renderMenuToggle,
+  renderDesktopStartCluster,
+  renderDesktopEndCluster,
+  renderMobileAside,
+  renderMobileAsideEnd,
+  type PageShellRenderContext,
+} from './page-shell-rendering.js';
 import '../../atoms/button/define.js';
 import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/bars-3.js';
@@ -12,9 +28,7 @@ import '../../atoms/icon/icons/chevron-right.js';
 import '../../molecules/drawer/define.js';
 import '../../organisms/top-bar/define.js';
 
-export type PageShellAsideState = 'visible' | 'compact' | 'hidden';
-export type PageShellAsideEndState = 'visible' | 'hidden';
-export type PageShellMenuButtonPosition = 'start' | 'end';
+export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPosition };
 
 /**
  * @tag ds-page-shell
@@ -138,14 +152,6 @@ export class DsPageShell extends DsElement {
     }
   };
 
-  #toggleMobileNav = (): void => {
-    this.#setMobileNav(!this._mobileNavOpen);
-  };
-
-  #closeMobileNav = (): void => {
-    this.#setMobileNav(false);
-  };
-
   #onAsideClick = (event: Event): void => {
     if (!this._mobileLayout) {
       return;
@@ -160,7 +166,7 @@ export class DsPageShell extends DsElement {
             node.getAttribute('href') !== null),
       );
     if (clickedNavItem) {
-      this.#closeMobileNav();
+      this.#setMobileNav(false);
     }
   };
 
@@ -194,29 +200,7 @@ export class DsPageShell extends DsElement {
     aside.toggleAttribute('collapsed', this.asideState !== 'visible');
   }
 
-  #showStartToggle(): boolean {
-    return this.asideToggle && this._hasAside && !this._mobileLayout;
-  }
-
-  #showEndToggle(): boolean {
-    return this.asideEndToggle && this._hasAsideEnd && !this._mobileLayout;
-  }
-
-  #nextAsideState(): PageShellAsideState {
-    if (this.asideState === 'visible') {
-      return 'compact';
-    }
-    if (this.asideState === 'compact') {
-      return 'hidden';
-    }
-    return 'visible';
-  }
-
-  #nextAsideEndState(): PageShellAsideEndState {
-    return this.asideEndState === 'visible' ? 'hidden' : 'visible';
-  }
-
-  #setAsideState(state: PageShellAsideState): void {
+  #setAsideState = (state: PageShellAsideState): void => {
     const previousState = this.asideState;
     if (state === previousState) {
       return;
@@ -225,9 +209,9 @@ export class DsPageShell extends DsElement {
     this.emit('ds-aside-state-change', {
       detail: { side: 'start' as const, state, previousState },
     });
-  }
+  };
 
-  #setAsideEndState(state: PageShellAsideEndState): void {
+  #setAsideEndState = (state: PageShellAsideEndState): void => {
     const previousState = this.asideEndState;
     if (state === previousState) {
       return;
@@ -236,35 +220,49 @@ export class DsPageShell extends DsElement {
     this.emit('ds-aside-state-change', {
       detail: { side: 'end' as const, state, previousState },
     });
+  };
+
+  #renderContext(): PageShellRenderContext {
+    return {
+      brand: this.brand,
+      menuLabel: this.menuLabel,
+      endLabel: this.endLabel,
+      asideState: this.asideState,
+      asideEndState: this.asideEndState,
+      mobileNavOpen: this._mobileNavOpen,
+      hasAside: this._hasAside,
+      hasAsideEnd: this._hasAsideEnd,
+      showStartToggle: this.asideToggle && this._hasAside && !this._mobileLayout,
+      showEndToggle: this.asideEndToggle && this._hasAsideEnd && !this._mobileLayout,
+      onAsideClick: this.#onAsideClick,
+      onAsideSlotChange: this.#onAsideSlotChange,
+      onAsideEndSlotChange: this.#onAsideEndSlotChange,
+      toggleMobileNav: () => this.#setMobileNav(!this._mobileNavOpen),
+      closeMobileNav: () => this.#setMobileNav(false),
+      toggleAsideState: () => this.#setAsideState(nextAsideState(this.asideState)),
+      toggleAsideEndState: () => this.#setAsideEndState(nextAsideEndState(this.asideEndState)),
+    };
   }
 
-  #toggleAsideState = (): void => {
-    this.#setAsideState(this.#nextAsideState());
-  };
-
-  #toggleAsideEndState = (): void => {
-    this.#setAsideEndState(this.#nextAsideEndState());
-  };
-
   override render(): TemplateResult {
-    const ariaExpanded: 'true' | 'false' = this._mobileNavOpen ? 'true' : 'false';
+    const ctx = this.#renderContext();
     const hasFooter = this._hasFooter || hasNamedSlotContent(this, 'footer');
     const menuAtStart = this.mobileMenuButtonPosition === 'start';
     return html`<header part="header">
         <ds-top-bar class="chrome" label=${this.menuLabel}>
           <slot name="brand" slot="brand">${this.brand}</slot>
           <slot name="header-status" slot="actions"></slot>
-          ${menuAtStart ? this.#renderMenuToggle(ariaExpanded) : null}
+          ${menuAtStart ? renderMenuToggle(ctx) : null}
           <slot name="header-actions" slot="actions"></slot>
-          ${menuAtStart ? null : this.#renderMenuToggle(ariaExpanded)}
+          ${menuAtStart ? null : renderMenuToggle(ctx)}
         </ds-top-bar>
       </header>
       <div class="shell-body" part="body">
-        ${this._mobileLayout ? this.#renderMobileAside() : this.#renderDesktopStartCluster()}
+        ${this._mobileLayout ? renderMobileAside(ctx) : renderDesktopStartCluster(ctx)}
         <main part="main">
           <slot></slot>
         </main>
-        ${this._mobileLayout ? this.#renderMobileAsideEnd() : this.#renderDesktopEndCluster()}
+        ${this._mobileLayout ? renderMobileAsideEnd(ctx) : renderDesktopEndCluster(ctx)}
       </div>
       ${hasFooter
         ? html`<footer part="footer">
@@ -272,168 +270,4 @@ export class DsPageShell extends DsElement {
           </footer>`
         : null}`;
   }
-
-  #renderMenuToggle(ariaExpanded: 'true' | 'false'): TemplateResult | null {
-    if (!this._hasAside) {
-      return null;
-    }
-    return html`<ds-button
-      slot="actions"
-      class="menu-toggle"
-      part="menu-toggle"
-      variant="ghost"
-      size="sm"
-      label=${this.menuLabel}
-      aria-label=${this.menuLabel}
-      aria-expanded=${ariaExpanded}
-      aria-controls="mobile-aside"
-      @click=${this.#toggleMobileNav}
-    >
-      <ds-icon slot="leading" name="bars-3" size="3xl"></ds-icon>
-    </ds-button>`;
-  }
-
-  #renderDesktopStartCluster(): TemplateResult {
-    if (!this._hasAside && !this.#showStartToggle()) {
-      return html`<slot name="aside" class="presence-slot" @slotchange=${this.#onAsideSlotChange}></slot>`;
-    }
-    return html`<div class="aside-start-cluster" part="aside-start-cluster">
-      <aside
-        id="desktop-aside"
-        class="scroll-fade"
-        part="aside"
-        aria-label=${this.menuLabel}
-        aria-hidden=${this.asideState === 'hidden' ? 'true' : 'false'}
-        ?hidden=${!this._hasAside}
-        ?inert=${this.asideState === 'hidden'}
-        @click=${this.#onAsideClick}
-      >
-        <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
-      </aside>
-      ${this.#renderStartToggle()}
-    </div>`;
-  }
-
-  #renderDesktopEndCluster(): TemplateResult {
-    if (!this._hasAsideEnd && !this.#showEndToggle()) {
-      return html`<slot name="aside-end" class="presence-slot" @slotchange=${this.#onAsideEndSlotChange}></slot>`;
-    }
-    return html`<div class="aside-end-cluster" part="aside-end-cluster">
-      ${this.#renderEndToggle()}
-      <aside
-        id="desktop-aside-end"
-        class="scroll-fade"
-        part="aside-end"
-        aria-label=${this.endLabel}
-        aria-hidden=${this.asideEndState === 'hidden' ? 'true' : 'false'}
-        ?hidden=${!this._hasAsideEnd}
-        ?inert=${this.asideEndState === 'hidden'}
-      >
-        <slot name="aside-end" @slotchange=${this.#onAsideEndSlotChange}></slot>
-      </aside>
-    </div>`;
-  }
-
-  #renderStartToggle(): TemplateResult | null {
-    if (!this.#showStartToggle()) {
-      return null;
-    }
-    const hidden = this.asideState === 'hidden';
-    const label = this.asideState === 'visible'
-      ? 'Collapse primary navigation'
-      : hidden
-        ? 'Show primary navigation'
-        : 'Hide primary navigation';
-    return html`<div class="aside-toggle-rail aside-toggle-start-rail" part="aside-toggle-rail aside-toggle-start-rail">
-      <ds-button
-        class="aside-toggle aside-toggle-start"
-        part="aside-toggle aside-toggle-start"
-        variant="secondary"
-        size="sm"
-        square
-        label=${label}
-        aria-label=${label}
-        aria-controls="desktop-aside"
-        aria-expanded=${hidden ? 'false' : 'true'}
-        @click=${this.#toggleAsideState}
-      >
-        <ds-icon slot="leading" name=${hidden ? 'chevron-right' : 'chevron-left'} size="lg"></ds-icon>
-      </ds-button>
-    </div>`;
-  }
-
-  #renderEndToggle(): TemplateResult | null {
-    if (!this.#showEndToggle()) {
-      return null;
-    }
-    const hidden = this.asideEndState === 'hidden';
-    const label = hidden ? 'Show secondary navigation' : 'Hide secondary navigation';
-    return html`<div class="aside-toggle-rail aside-toggle-end-rail" part="aside-toggle-rail aside-toggle-end-rail">
-      <ds-button
-        class="aside-toggle aside-toggle-end"
-        part="aside-toggle aside-toggle-end"
-        variant="secondary"
-        size="sm"
-        square
-        label=${label}
-        aria-label=${label}
-        aria-controls="desktop-aside-end"
-        aria-expanded=${hidden ? 'false' : 'true'}
-        @click=${this.#toggleAsideEndState}
-      >
-        <ds-icon slot="leading" name=${hidden ? 'chevron-left' : 'chevron-right'} size="lg"></ds-icon>
-      </ds-button>
-    </div>`;
-  }
-
-  #renderMobileAside(): TemplateResult {
-    return html`<ds-drawer
-      id="mobile-aside"
-      part="aside"
-      side="start"
-      size="sm"
-      ?open=${this._mobileNavOpen}
-      label=${this.menuLabel}
-      @ds-close=${this.#closeMobileNav}
-      @ds-cancel=${this.#closeMobileNav}
-      @click=${this.#onAsideClick}
-    >
-      <slot name="drawer-brand" slot="title">${this.brand}</slot>
-      <slot name="aside" @slotchange=${this.#onAsideSlotChange}></slot>
-    </ds-drawer>`;
-  }
-
-  #renderMobileAsideEnd(): TemplateResult {
-    return html`<aside
-      part="aside-end"
-      aria-label=${this.endLabel}
-      ?hidden=${!this._hasAsideEnd}
-    >
-      <slot name="aside-end" @slotchange=${this.#onAsideEndSlotChange}></slot>
-    </aside>`;
-  }
-}
-
-function hasNamedSlotContent(
-  host: HTMLElement,
-  name: string,
-  slot?: HTMLSlotElement | null,
-): boolean {
-  if (slot) {
-    return hasAssignedContent(slot);
-  }
-  return Array.from(host.children).some((child) => child.slot === name);
-}
-
-function hasAssignedContent(slot: HTMLSlotElement): boolean {
-  const nodes = slot.assignedNodes({ flatten: true });
-  return nodes.some((node) => {
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      return true;
-    }
-    if (node.nodeType === Node.TEXT_NODE) {
-      return (node.textContent ?? '').trim().length > 0;
-    }
-    return false;
-  });
 }
