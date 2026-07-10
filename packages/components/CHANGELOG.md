@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.37.0
+
+### Minor Changes
+
+- e09d7a0: Toast: `actions` now accepts a data-driven `ToastAction[]` (label + onClick + optional variant) in addition to the existing lit render function. Callers can add action buttons without hand-writing lit templates; the toast renders `ds-button`s and passes the controller to each `onClick`.
+
 ## 0.36.2
 
 ### Patch Changes
