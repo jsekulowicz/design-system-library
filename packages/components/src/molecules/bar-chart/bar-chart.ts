@@ -1,26 +1,12 @@
-import { html, svg, type TemplateResult, type SVGTemplateResult, nothing } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { property, state, query } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { barChartStyles } from './bar-chart.styles.js';
 import { colorForIndex } from './colors.js';
-import {
-  niceMax,
-  generateTicks,
-  groupData,
-  computeGroupBands,
-  computeGroupedBars,
-  computeStackSegments,
-  type GroupBand,
-} from './layout.js';
-import type { BarChartGroup, BarChartRow, BarChartSeries } from './types.js';
-
-const MARGIN = { top: 16, right: 16, bottomBase: 36, leftBase: 44 } as const;
-const BAND_OUTER_GAP = 0.18;
-const BAR_INNER_GAP = 2;
-const MIN_SEGMENT_HEIGHT = 1;
-const FALLBACK_WIDTH = 640;
-const TOOLTIP_MAX_WIDTH = 220;
-const TOOLTIP_EDGE_GAP = 8;
+import { computeChartLayout, type ChartLayout } from './chart-layout.js';
+import { renderChartSvg } from './bar-chart-svg.js';
+import { renderTooltip, renderLegend, renderSrTable, rootAriaLabel, liveText } from './bar-chart-overlays.js';
+import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js';
 
 /**
  * @tag ds-bar-chart
@@ -88,67 +74,50 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     this.#resizeObserver.observe(this._frame);
   }
 
-  #seriesLabel(s: BarChartSeries): string {
-    return s.label ?? s.key;
-  }
-
-  #seriesColor(s: BarChartSeries, i: number): string {
-    return s.color ?? colorForIndex(i);
-  }
-
-  #formatValue(v: number): string {
-    return this.formatValue ? this.formatValue(v) : String(v);
-  }
-
-  #formatDomain(v: unknown): string {
-    return this.formatDomain ? this.formatDomain(v) : String(v ?? '');
-  }
-
-  #computeLayout() {
-    const groups = groupData(this.data, this.domain, this.series.map(s => s.key));
-    const maxValue = groups.reduce((acc, g) => {
-      const v = this.stacked ? g.total : Math.max(...Object.values(g.values), 0);
-      return Math.max(acc, v);
-    }, 0);
-    const yMax = niceMax(maxValue);
-    const ticks = generateTicks(yMax);
-    const margin = {
-      top: MARGIN.top,
-      right: MARGIN.right,
-      bottom: MARGIN.bottomBase + (this.xAxisLabel ? 18 : 0),
-      left: MARGIN.leftBase + (this.yAxisLabel ? 18 : 0),
+  #renderContext(): ChartRenderContext {
+    return {
+      uid: this.uid,
+      title: this.title,
+      domainKey: String(this.domain),
+      stacked: this.stacked,
+      series: this.series,
+      activeIndex: this._activeIndex,
+      focusMode: this._focusMode,
+      xAxisLabel: this.xAxisLabel,
+      yAxisLabel: this.yAxisLabel,
+      seriesLabel: (s) => s.label ?? s.key,
+      seriesColor: (s, i) => s.color ?? colorForIndex(i),
+      formatValue: (v) => (this.formatValue ? this.formatValue(v) : String(v)),
+      formatDomain: (v) => (this.formatDomain ? this.formatDomain(v) : String(v ?? '')),
     };
-    const width = this._width > 0 ? this._width : FALLBACK_WIDTH;
-    const innerWidth = Math.max(0, width - margin.left - margin.right);
-    const innerHeight = Math.max(0, this.height - margin.top - margin.bottom);
-    const bands = computeGroupBands(innerWidth, groups.length, BAND_OUTER_GAP);
-    return { groups, yMax, ticks, margin, width, innerWidth, innerHeight, bands };
   }
 
-  #xTickEvery(bandWidth: number): number {
-    if (bandWidth >= 24) return 1;
-    if (bandWidth >= 12) return 2;
-    if (bandWidth >= 6) return 4;
-    return Math.max(1, Math.ceil(32 / Math.max(1, bandWidth)));
-  }
-
-  #xLabelRotation(bandWidth: number): number {
-    return bandWidth < 48 ? -35 : 0;
+  #computeLayout(): ChartLayout<T> {
+    return computeChartLayout({
+      data: this.data,
+      domain: this.domain,
+      seriesKeys: this.series.map(s => s.key),
+      stacked: this.stacked,
+      measuredWidth: this._width,
+      height: this.height,
+      hasXAxisLabel: Boolean(this.xAxisLabel),
+      hasYAxisLabel: Boolean(this.yAxisLabel),
+    });
   }
 
   override render(): TemplateResult {
     const layout = this.#computeLayout();
-    const { groups, yMax, innerHeight, width, margin, bands, ticks } = layout;
-    if (groups.length === 0) {
+    if (layout.groups.length === 0) {
       return html`<div class="frame" style="height:${this.height}px" tabindex="0"></div>`;
     }
+    const ctx = this.#renderContext();
     return html`
       <div
         class="frame"
         style="height:${this.height}px"
         tabindex="0"
         role="application"
-        aria-label=${this.#rootAriaLabel(groups.length)}
+        aria-label=${rootAriaLabel(ctx, layout.groups.length)}
         aria-describedby="${this.uid}-desc"
         aria-activedescendant=${this._activeIndex == null ? nothing : `${this.uid}-group-${this._activeIndex}`}
         @keydown=${this.#onKeydown}
@@ -157,255 +126,12 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         @blur=${this.#onBlur}
         part="chart"
       >
-        <svg role="img" aria-hidden="true" viewBox="0 0 ${width} ${this.height}" width=${width} height=${this.height} preserveAspectRatio="none">
-          <g transform="translate(${margin.left}, ${margin.top})">
-            ${this.#renderGrid(ticks, innerHeight, layout.innerWidth, yMax)}
-            ${this.#renderYAxis(ticks, innerHeight, margin.left, yMax)}
-            ${this.#renderXAxis(groups, bands, innerHeight, margin)}
-            ${this.#renderBars(groups, bands, innerHeight, yMax)}
-            ${this.#renderFocusRing(bands, innerHeight, groups, yMax)}
-          </g>
-        </svg>
-        ${this.#renderTooltip(layout)}
-        ${this.#renderSrTable(groups)}
-        <div class="visually-hidden" id="${this.uid}-live" role="status" aria-live="polite">${this.#liveText(groups)}</div>
+        ${renderChartSvg(ctx, layout, this.height)}
+        ${renderTooltip(ctx, layout)}
+        ${renderSrTable(ctx, layout.groups)}
+        <div class="visually-hidden" id="${this.uid}-live" role="status" aria-live="polite">${liveText(ctx, layout.groups)}</div>
       </div>
-      ${this.showLegend ? this.#renderLegend() : nothing}
-    `;
-  }
-
-  #rootAriaLabel(groupCount: number): string {
-    const base = this.title || 'Bar chart';
-    const seriesLabels = this.series.map(s => this.#seriesLabel(s)).join(', ');
-    return `${base}: ${groupCount} ${this.stacked ? 'stacked ' : ''}groups, series: ${seriesLabels}. Use left and right arrow keys to move between groups.`;
-  }
-
-  #liveText(groups: BarChartGroup<T>[]): string {
-    if (this._activeIndex == null) {
-      return '';
-    }
-    const g = groups[this._activeIndex];
-    if (!g) {
-      return '';
-    }
-    const domain = this.#formatDomain(g.domain);
-    const parts = this.series.map((s) => {
-      return `${this.#seriesLabel(s)} ${this.#formatValue(g.values[s.key] ?? 0)}`;
-    });
-    const total = this.stacked ? `. Total ${this.#formatValue(g.total)}` : '';
-    return `${domain}: ${parts.join(', ')}${total}.`;
-  }
-
-  #renderGrid(ticks: number[], innerHeight: number, innerWidth: number, yMax: number): SVGTemplateResult {
-    return svg`
-      <g class="grid" aria-hidden="true">
-        ${ticks.map(tick => {
-          const y = innerHeight - (tick / yMax) * innerHeight;
-          return svg`<line x1="0" x2=${innerWidth} y1=${y} y2=${y}></line>`;
-        })}
-      </g>
-    `;
-  }
-
-  #renderYAxis(ticks: number[], innerHeight: number, marginLeft: number, yMax: number): SVGTemplateResult {
-    return svg`
-      <g class="axis axis-y" aria-hidden="true">
-        <line x1="0" x2="0" y1="0" y2=${innerHeight}></line>
-        ${ticks.map(tick => {
-          const y = innerHeight - (tick / yMax) * innerHeight;
-          return svg`
-            <g transform="translate(0, ${y})">
-              <line x1="-4" x2="0" y1="0" y2="0"></line>
-              <text x="-8" y="0" text-anchor="end" dominant-baseline="middle">${this.#formatValue(tick)}</text>
-            </g>
-          `;
-        })}
-        ${this.yAxisLabel
-          ? svg`<text class="axis-label" transform="translate(${-marginLeft + 12}, ${innerHeight / 2}) rotate(-90)" text-anchor="middle">${this.yAxisLabel}</text>`
-          : nothing}
-      </g>
-    `;
-  }
-
-  #renderXAxis(groups: BarChartGroup<T>[], bands: GroupBand[], innerHeight: number, margin: { bottom: number }): SVGTemplateResult {
-    const firstBand = bands[0]!;
-    const lastBand = bands[bands.length - 1]!;
-    const bandWidth = firstBand.bandWidth;
-    const every = this.#xTickEvery(bandWidth);
-    const rotation = this.#xLabelRotation(bandWidth);
-    return svg`
-      <g class="axis axis-x" aria-hidden="true" transform="translate(0, ${innerHeight})">
-        <line x1="0" x2=${lastBand.x + lastBand.bandWidth} y1="0" y2="0"></line>
-        ${groups.map((g, i) => {
-          if (i % every !== 0) {
-            return nothing;
-          }
-          const band = bands[i]!;
-          const cx = band.x + band.bandWidth / 2;
-          const text = this.#formatDomain(g.domain);
-          return svg`
-            <g transform="translate(${cx}, 0)">
-              <line x1="0" x2="0" y1="0" y2="4"></line>
-              <text y="18" text-anchor=${rotation ? 'end' : 'middle'} transform=${rotation ? `rotate(${rotation}) translate(-4, -6)` : ''}>${text}</text>
-            </g>
-          `;
-        })}
-        ${this.xAxisLabel
-          ? svg`<text class="axis-label" x=${lastBand.x / 2 + firstBand.bandWidth / 2} y=${margin.bottom - 8} text-anchor="middle">${this.xAxisLabel}</text>`
-          : nothing}
-      </g>
-    `;
-  }
-
-  #renderBars(groups: BarChartGroup<T>[], bands: GroupBand[], innerHeight: number, yMax: number): SVGTemplateResult {
-    return svg`${groups.map((g, gi) => {
-      const band = bands[gi]!;
-      const inactive = this._activeIndex != null && this._activeIndex !== gi ? 'inactive' : '';
-      const content = this.stacked
-        ? this.#renderStackedBars(g, band, innerHeight, yMax)
-        : this.#renderGroupedBars(g, band, innerHeight, yMax);
-      return svg`<g class="bar-group ${inactive}" id="${this.uid}-group-${gi}" data-index=${gi}>${content}</g>`;
-    })}`;
-  }
-
-  #renderStackedBars(g: BarChartGroup<T>, band: GroupBand, innerHeight: number, yMax: number): SVGTemplateResult {
-    const segments = computeStackSegments(g.values, this.series.map(s => s.key), innerHeight, yMax);
-    return svg`${segments.map((seg, si) => {
-      const s = this.series[si]!;
-      const height = seg.value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, seg.height) : 0;
-      const y = innerHeight - (segments.slice(0, si + 1).reduce((a, v) => a + Math.max(v.value > 0 ? MIN_SEGMENT_HEIGHT : 0, v.height), 0));
-      return svg`<rect class="bar" x=${band.innerX} y=${y} width=${band.innerWidth} height=${height} fill=${this.#seriesColor(s, si)}></rect>`;
-    })}`;
-  }
-
-  #renderGroupedBars(g: BarChartGroup<T>, band: GroupBand, innerHeight: number, yMax: number): SVGTemplateResult {
-    const bars = computeGroupedBars(band.innerX, band.innerWidth, this.series.length, BAR_INNER_GAP);
-    return svg`${this.series.map((s, si) => {
-      const bar = bars[si]!;
-      const value = g.values[s.key] ?? 0;
-      const h = yMax > 0 ? (value / yMax) * innerHeight : 0;
-      const drawH = value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, h) : 0;
-      const y = innerHeight - drawH;
-      return svg`<rect class="bar" x=${bar.x} y=${y} width=${bar.width} height=${drawH} fill=${this.#seriesColor(s, si)}></rect>`;
-    })}`;
-  }
-
-  #activeGroupMaxHeight(groups: BarChartGroup<T>[], innerHeight: number, yMax: number): number {
-    if (this._activeIndex == null || yMax <= 0) {
-      return 0;
-    }
-    const g = groups[this._activeIndex];
-    if (!g) {
-      return 0;
-    }
-    const value = this.stacked ? g.total : Math.max(...Object.values(g.values), 0);
-    return (value / yMax) * innerHeight;
-  }
-
-  #renderFocusRing(bands: GroupBand[], innerHeight: number, groups: BarChartGroup<T>[], yMax: number): SVGTemplateResult | typeof nothing {
-    if (this._activeIndex == null || this._focusMode !== 'keyboard') {
-      return nothing;
-    }
-    const band = bands[this._activeIndex];
-    if (!band) {
-      return nothing;
-    }
-    const maxHeight = this.#activeGroupMaxHeight(groups, innerHeight, yMax);
-    const drawHeight = Math.max(4, maxHeight);
-    const y = innerHeight - drawHeight - 2;
-    return svg`<rect class="focus-ring" x=${band.innerX - 2} y=${y} width=${band.innerWidth + 4} height=${drawHeight + 4} rx="4"></rect>`;
-  }
-
-  #renderTooltip(layout: ReturnType<typeof this.computeLayoutSnapshot>): TemplateResult {
-    const { bands, groups, margin, innerHeight, yMax } = layout;
-    const hidden = this._activeIndex == null;
-    const group = this._activeIndex != null ? groups[this._activeIndex] : undefined;
-    const band = this._activeIndex != null ? bands[this._activeIndex] : undefined;
-    const x = this.#tooltipLeft(band ? margin.left + band.innerX + band.innerWidth / 2 : 0, layout.width);
-    const maxHeight = this.#activeGroupMaxHeight(groups, innerHeight, yMax);
-    const barTopY = margin.top + (innerHeight - maxHeight);
-    const placeBelow = barTopY < 96;
-    const y = barTopY;
-    return html`
-      <div
-        class="tooltip"
-        part="tooltip"
-        role="tooltip"
-        data-position=${placeBelow ? 'below' : 'above'}
-        ?hidden=${hidden}
-        style="left:${x}px; top:${y}px"
-      >
-        ${group ? html`
-          <div class="tooltip-title">${this.#formatDomain(group.domain)}</div>
-          <ul class="tooltip-rows">
-            ${this.series.map((s, si) => html`
-              <li class="tooltip-row-label">
-                <span class="tooltip-swatch" style="background:${this.#seriesColor(s, si)}"></span>
-                ${this.#seriesLabel(s)}
-              </li>
-              <li class="tooltip-row-value">${this.#formatValue(group.values[s.key] ?? 0)}</li>
-            `)}
-            ${this.stacked ? html`
-              <li class="tooltip-row-label">Total</li>
-              <li class="tooltip-row-value">${this.#formatValue(group.total)}</li>
-            ` : nothing}
-          </ul>
-        ` : nothing}
-      </div>
-    `;
-  }
-
-  private computeLayoutSnapshot() {
-    return this.#computeLayout();
-  }
-
-  #tooltipLeft(x: number, width: number): number {
-    const tooltipWidth = Math.min(TOOLTIP_MAX_WIDTH, Math.max(0, width - TOOLTIP_EDGE_GAP * 2));
-    const half = tooltipWidth / 2;
-    if (half === 0) {
-      return x;
-    }
-    return Math.min(Math.max(x, half + TOOLTIP_EDGE_GAP), width - half - TOOLTIP_EDGE_GAP);
-  }
-
-  #renderLegend(): TemplateResult {
-    return html`
-      <div class="legend" part="legend">
-        ${this.series.map((s, i) => html`
-          <span class="legend-item">
-            <span class="legend-swatch" style="background:${this.#seriesColor(s, i)}"></span>
-            ${this.#seriesLabel(s)}
-          </span>
-        `)}
-      </div>
-    `;
-  }
-
-  #renderSrTable(groups: BarChartGroup<T>[]): TemplateResult {
-    return html`
-      <div class="visually-hidden" id="${this.uid}-desc">
-        <table>
-          <caption>${this.title || 'Bar chart data'}</caption>
-          <thead>
-            <tr>
-              <th scope="col">${this.xAxisLabel ?? String(this.domain)}</th>
-              ${this.series.map(s => html`<th scope="col">${this.#seriesLabel(s)}</th>`)}
-              ${this.stacked ? html`<th scope="col">Total</th>` : nothing}
-            </tr>
-          </thead>
-          <tbody>
-            ${groups.map(g => html`
-              <tr>
-                <th scope="row">${this.#formatDomain(g.domain)}</th>
-                ${this.series.map((s) => {
-                  return html`<td>${this.#formatValue(g.values[s.key] ?? 0)}</td>`;
-                })}
-                ${this.stacked ? html`<td>${this.#formatValue(g.total)}</td>` : nothing}
-              </tr>
-            `)}
-          </tbody>
-        </table>
-      </div>
+      ${this.showLegend ? renderLegend(ctx) : nothing}
     `;
   }
 
@@ -427,7 +153,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         domainValue: g.domain,
         values: this.series.map((s) => ({
           key: s.key,
-          label: this.#seriesLabel(s),
+          label: s.label ?? s.key,
           value: g.values[s.key] ?? 0,
         })),
       },

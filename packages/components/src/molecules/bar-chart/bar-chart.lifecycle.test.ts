@@ -34,7 +34,7 @@ beforeEach(() => {
 });
 
 describe('<ds-bar-chart> lifecycle coverage', () => {
-  it('exposes computeLayoutSnapshot with grouped data', async () => {
+  it('renders the svg at the observed width', async () => {
     const originalRo = globalThis.ResizeObserver;
     globalThis.ResizeObserver = class {
       constructor(private readonly cb: ResizeObserverCallback) {}
@@ -57,8 +57,9 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
       await Promise.resolve();
       await el.updateComplete;
       expect((el as unknown as { _width: number })._width).toBe(222);
-      const snapshot = (el as unknown as { computeLayoutSnapshot: () => { groups: unknown[] } }).computeLayoutSnapshot();
-      expect(snapshot.groups.length).toBeGreaterThan(0);
+      const svg = el.shadowRoot!.querySelector('svg')!;
+      expect(svg.getAttribute('viewBox')).toBe('0 0 222 320');
+      expect(el.shadowRoot!.querySelectorAll('.bar-group').length).toBeGreaterThan(0);
     } finally {
       globalThis.ResizeObserver = originalRo;
     }
