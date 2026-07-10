@@ -1,5 +1,13 @@
 # @jsekulowicz/ds-core
 
+## 0.37.0
+
+### Minor Changes
+
+- d6d8d57: New `visuallyHiddenStyles` export; `DsElement` base styles now include a `.visually-hidden` class, so every component can hide screen-reader-only content without hand-rolling the pattern.
+
+  Breaking: removed unused exports `ThemeController`, `ContainerSizeController`, `prefersDarkScheme`, `prefersReducedMotion` and `ensureId` (and the `Theme`/`BreakpointName` types). None had consumers, docs or tests.
+
 ## 0.5.0
 
 ### Minor Changes

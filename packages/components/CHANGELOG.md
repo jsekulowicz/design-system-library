@@ -1,5 +1,25 @@
 # @jsekulowicz/ds-components
 
+## 0.37.0
+
+### Minor Changes
+
+- e09d7a0: Toast: `actions` now accepts a data-driven `ToastAction[]` (label + onClick + optional variant) in addition to the existing lit render function. Callers can add action buttons without hand-writing lit templates; the toast renders `ds-button`s and passes the controller to each `onClick`.
+
+### Patch Changes
+
+- d6d8d57: Code-quality audit pass, no public API changes:
+  - Invalid form controls now use the `--ds-shadow-focus-danger` token instead of a hardcoded light-theme colour, fixing their focus ring in dark theme.
+  - Duplicated CSS collapsed into shared modules (field-control chrome, alert/toast notice surface, menu-item/select-option rows, checkbox/radio toggles, group fieldsets, visually-hidden).
+  - Shadow-DOM markup cleanup: wrapper spans that were restyled to block/flex are plain divs now; internal class names changed (`sr-only` → `visually-hidden`, checkbox `box` / radio `dot` → `control`, alert/toast root → `notice`). All `part` names are unchanged.
+  - z-index values map to `--ds-z-index-*` tokens instead of magic numbers.
+  - bar-chart and page-shell split into smaller modules; behaviour identical.
+
+- Updated dependencies [d6d8d57]
+- Updated dependencies [d6d8d57]
+  - @jsekulowicz/ds-core@0.37.0
+  - @jsekulowicz/ds-tokens@0.37.0
+
 ## 0.36.2
 
 ### Patch Changes
