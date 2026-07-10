@@ -1,6 +1,17 @@
 import { html, render, type TemplateResult } from 'lit';
+import type { ButtonVariant } from '../../atoms/button/button.js';
 import type { DsToast, ToastTone } from './toast.js';
 import type { DsToastStack, ToastPlacement } from './toast-stack.js';
+
+import '../../atoms/button/define.js';
+
+// Declarative action button: pass data, the toast renders the `ds-button`.
+// Avoids callers hand-writing lit templates for the common case.
+export interface ToastAction {
+  label: string;
+  onClick: (controller: ToastController) => void;
+  variant?: ButtonVariant;
+}
 
 export interface ToastOptions {
   tone?: ToastTone;
@@ -9,7 +20,8 @@ export interface ToastOptions {
   duration?: number;
   dismissible?: boolean;
   placement?: ToastPlacement;
-  actions?: (controller: ToastController) => TemplateResult;
+  // Either a render function (full control) or a list of action buttons.
+  actions?: ((controller: ToastController) => TemplateResult) | ToastAction[];
 }
 
 export interface ToastController {
@@ -38,6 +50,18 @@ function noopController(id: string): ToastController {
     dismiss() {},
     update() {},
   };
+}
+
+function renderActionButtons(actions: ToastAction[], controller: ToastController): TemplateResult {
+  return html`${actions.map(
+    (action) =>
+      html`<ds-button
+        size="sm"
+        variant=${action.variant ?? 'ghost'}
+        @ds-click=${() => action.onClick(controller)}
+        >${action.label}</ds-button
+      >`,
+  )}`;
 }
 
 function applyProps(el: DsToast, options: ToastOptions): void {
@@ -70,13 +94,17 @@ function toastFn(options: ToastOptions = {}): ToastController {
     },
   };
 
+  const renderActions = (): TemplateResult | '' => {
+    const { actions } = state;
+    if (!actions) {
+      return '';
+    }
+    const content = Array.isArray(actions) ? renderActionButtons(actions, controller) : actions(controller);
+    return html`<div slot="actions">${content}</div>`;
+  };
+
   const renderContent = (): void => {
-    const body = state.body ?? '';
-    const actions = state.actions?.(controller);
-    render(
-      html`${body}${actions ? html`<div slot="actions">${actions}</div>` : ''}`,
-      el,
-    );
+    render(html`${state.body ?? ''}${renderActions()}`, el);
   };
 
   applyProps(el, state);

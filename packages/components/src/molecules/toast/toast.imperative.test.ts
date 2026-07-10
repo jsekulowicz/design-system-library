@@ -76,6 +76,21 @@ describe('toast() imperative API', () => {
     expect(el.querySelector('[slot="actions"] .undo')).not.toBeNull();
   });
 
+  it('renders an actions array as ds-buttons and invokes onClick with the controller', () => {
+    let dismissedFrom: string | null = null;
+    const controller = toast({
+      heading: 'No more unapproved',
+      actions: [
+        { label: 'Ignore status', onClick: (c) => (dismissedFrom = c.id) },
+      ],
+    });
+    const el = document.querySelector('ds-toast') as DsToast;
+    const button = el.querySelector('[slot="actions"] ds-button');
+    expect(button?.textContent).toBe('Ignore status');
+    button?.dispatchEvent(new CustomEvent('ds-click', { bubbles: true }));
+    expect(dismissedFrom).toBe(controller.id);
+  });
+
   it('after the singleton stack is removed, the next call recreates it', () => {
     toast({ heading: 'A' });
     expect(getStacks()).toHaveLength(1);
