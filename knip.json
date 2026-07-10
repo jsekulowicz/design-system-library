@@ -1,0 +1,41 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreExportsUsedInFile": true,
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/*.mjs"],
+      "project": ["scripts/**"]
+    },
+    "packages/tokens": {
+      "entry": ["src/index.ts", "src/build.ts"],
+      "project": ["src/**"]
+    },
+    "packages/core": {
+      "entry": ["src/index.ts"],
+      "project": ["src/**"]
+    },
+    "packages/components": {
+      "entry": ["src/index.ts", "src/define.ts", "src/**/define.ts", "custom-elements-manifest.config.mjs"],
+      "project": ["src/**"],
+      "ignore": ["src/atoms/icon/icons/**"]
+    },
+    "packages/react": {
+      "entry": ["src/index.ts", "scripts/generate-wrappers.ts"],
+      "project": ["src/**", "scripts/**"]
+    },
+    "packages/storybook": {
+      "entry": [".storybook/**/*.{ts,tsx}", "stories/**/*.stories.ts"],
+      "project": ["stories/**", ".storybook/**"]
+    },
+    "tests": {
+      "entry": ["playwright.config.ts", "playwright.visual.config.ts", "{e2e,a11y,visual}/**/*.spec.ts"],
+      "project": ["**/*.ts"]
+    },
+    "apps/vue-demo": {
+      "entry": ["src/main.ts"]
+    },
+    "apps/ssr-demo": {
+      "entry": ["src/server.ts", "src/render.ts"]
+    }
+  }
+}

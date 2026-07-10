@@ -29,8 +29,14 @@ jobs:
       - name: Build packages
         run: pnpm build
 
+      - name: Generated code matches its generators
+        run: git diff --exit-code -- packages/components/src/atoms/icon/icons packages/react/src
+
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Dead code check
+        run: pnpm lint:dead-code
 
       - name: Lit static validation
         run: pnpm lint:lit
