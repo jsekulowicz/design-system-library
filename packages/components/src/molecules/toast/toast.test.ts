@@ -77,6 +77,28 @@ describe('<ds-toast>', () => {
     expect(document.body.contains(el)).toBe(false);
   });
 
+  it('returns focus to restoreFocusTo when dismissed while focus is inside', async () => {
+    const el = await mount<DsToast>('<ds-toast>Body</ds-toast>');
+    const trigger = document.createElement('button');
+    document.body.appendChild(trigger);
+    el.restoreFocusTo = trigger;
+    el.focus();
+    expect(el.contains(document.activeElement)).toBe(true);
+    el.dismiss();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('does not steal focus back when it has moved outside the toast', async () => {
+    const el = await mount<DsToast>('<ds-toast>Body</ds-toast>');
+    const trigger = document.createElement('button');
+    const elsewhere = document.createElement('button');
+    document.body.append(trigger, elsewhere);
+    el.restoreFocusTo = trigger;
+    elsewhere.focus();
+    el.dismiss();
+    expect(document.activeElement).toBe(elsewhere);
+  });
+
   it('dismiss() emits reason="programmatic" by default', async () => {
     const el = await mount<DsToast>('<ds-toast>Body</ds-toast>');
     const events: ToastDismissReason[] = [];

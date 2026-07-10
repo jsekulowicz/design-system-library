@@ -27,6 +27,8 @@ export interface ToastOptions {
   // the notification (and its buttons) instead of hunting for it. The toast
   // pauses its auto-dismiss timer while focused. Leave off for passive toasts.
   focusOnShow?: boolean;
+  // Dedup id: a repeat with the same key refreshes the live toast, not a copy.
+  key?: string;
 }
 
 export interface ToastController {
@@ -36,6 +38,8 @@ export interface ToastController {
 }
 
 let counter = 0;
+
+const keyedToasts = new Map<string, { el: DsToast; controller: ToastController }>();
 
 function ensureStack(placement: ToastPlacement): DsToastStack | null {
   if (typeof document === 'undefined') return null;
@@ -80,6 +84,16 @@ function toastFn(options: ToastOptions = {}): ToastController {
   const id = `ds-toast-${++counter}`;
   if (typeof document === 'undefined') return noopController(id);
 
+  const key = options.key;
+  if (key !== undefined) {
+    const existing = keyedToasts.get(key);
+    if (existing && existing.el.isConnected) {
+      existing.controller.update(options);
+      existing.el.resetTimer();
+      return existing.controller;
+    }
+  }
+
   const placement: ToastPlacement = options.placement ?? 'bottom-right';
   const stack = ensureStack(placement);
   if (!stack) return noopController(id);
@@ -114,10 +128,24 @@ function toastFn(options: ToastOptions = {}): ToastController {
 
   applyProps(el, state);
   renderContent();
+  if (key !== undefined) {
+    keyedToasts.set(key, { el, controller });
+    el.addEventListener(
+      'ds-dismiss',
+      () => {
+        if (keyedToasts.get(key)?.el === el) keyedToasts.delete(key);
+      },
+      { once: true },
+    );
+  }
   stack.push(el);
   if (options.focusOnShow) {
-    // Wait for the element to upgrade and lay out before moving focus.
-    requestAnimationFrame(() => el.focus());
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    // rAF so focus lands after the element upgrades and lays out.
+    requestAnimationFrame(() => {
+      el.restoreFocusTo = previouslyFocused;
+      el.focus();
+    });
   }
   return controller;
 }

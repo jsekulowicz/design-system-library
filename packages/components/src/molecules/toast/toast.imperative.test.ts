@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { toast } from './toast.imperative.js';
 import type { DsToast } from './toast.js';
 import './define.js';
@@ -7,6 +7,10 @@ import { resetTestDom } from '../../test-utils/mount.js';
 
 beforeEach(() => {
   resetTestDom();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 function getStacks(): NodeListOf<HTMLElement> {
@@ -89,6 +93,43 @@ describe('toast() imperative API', () => {
     expect(button?.textContent).toBe('Ignore status');
     button?.dispatchEvent(new CustomEvent('ds-click', { bubbles: true }));
     expect(dismissedFrom).toBe(controller.id);
+  });
+
+  it('deduplicates by key: refreshes the existing toast instead of stacking', () => {
+    const first = toast({ heading: 'First', key: 'dupe' });
+    const second = toast({ heading: 'Second', key: 'dupe' });
+    expect(document.querySelectorAll('ds-toast')).toHaveLength(1);
+    expect(second.id).toBe(first.id);
+    expect((document.querySelector('ds-toast') as DsToast).heading).toBe('Second');
+  });
+
+  it('frees a key once its toast is dismissed, so a later call is a fresh toast', () => {
+    const first = toast({ heading: 'First', key: 'dupe' });
+    first.dismiss();
+    const second = toast({ heading: 'Second', key: 'dupe' });
+    expect(document.querySelectorAll('ds-toast')).toHaveLength(1);
+    expect(second.id).not.toBe(first.id);
+  });
+
+  it('keeps toasts with different keys separate', () => {
+    toast({ heading: 'A', key: 'a' });
+    toast({ heading: 'B', key: 'b' });
+    expect(document.querySelectorAll('ds-toast')).toHaveLength(2);
+  });
+
+  it('restarts the auto-dismiss countdown when a keyed toast is re-raised', () => {
+    vi.useFakeTimers();
+    toast({ heading: 'A', key: 'dupe', tone: 'info', duration: 1000 });
+    const el = document.querySelector('ds-toast') as DsToast;
+    const events: string[] = [];
+    el.addEventListener('ds-dismiss', () => events.push('dismiss'));
+    vi.advanceTimersByTime(900);
+    toast({ heading: 'A again', key: 'dupe', duration: 1000 });
+    vi.advanceTimersByTime(900);
+    expect(events).toEqual([]);
+    vi.advanceTimersByTime(200);
+    expect(events).toEqual(['dismiss']);
+    vi.useRealTimers();
   });
 
   it('after the singleton stack is removed, the next call recreates it', () => {

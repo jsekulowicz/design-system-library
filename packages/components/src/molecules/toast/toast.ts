@@ -32,6 +32,9 @@ export class DsToast extends DsElement {
   @property({ type: Number }) duration?: number;
   @property({ type: Boolean, reflect: true }) dismissible = true;
 
+  /** Where to send focus when dismissed; set by `focusOnShow`. */
+  restoreFocusTo: HTMLElement | null = null;
+
   #timer = 0;
   #remaining = 0;
   #startedAt = 0;
@@ -73,12 +76,20 @@ export class DsToast extends DsElement {
     return this.duration ?? DEFAULT_DURATION_BY_TONE[this.tone];
   }
 
+  resetTimer(): void {
+    this.#startTimer();
+  }
+
   dismiss(reason: ToastDismissReason = 'programmatic'): void {
     if (this.#dismissed) return;
     this.#dismissed = true;
     this.#clearTimer();
+    // Don't pull focus back if the user has already moved it out of the toast.
+    const returnTo =
+      this.restoreFocusTo && this.contains(document.activeElement) ? this.restoreFocusTo : null;
     this.emit('ds-dismiss', { detail: { reason } });
     this.remove();
+    returnTo?.focus();
   }
 
   #startTimer = (): void => {
