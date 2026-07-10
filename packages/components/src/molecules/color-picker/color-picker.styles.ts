@@ -119,7 +119,7 @@ export const colorPickerStyles = css`
     position: absolute;
     inset-inline: 0;
     top: calc(100% + var(--ds-space-1));
-    z-index: 100;
+    z-index: var(--ds-z-index-dropdown);
     max-width: min(100%, calc(100vw - 2rem));
   }
   :host([compact]) .panel {

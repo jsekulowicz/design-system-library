@@ -34,7 +34,7 @@ export const segmentedControlStyles = css`
      visible instead of being painted over by the adjacent segment. */
   .segment:focus-within {
     position: relative;
-    z-index: 1;
+    z-index: var(--ds-z-index-raised);
   }
   /* Give unselected segments a surface that's distinct from the track so each
      option reads as its own tile; the selected one keeps the accent fill from

@@ -36,7 +36,7 @@ export const tableScrollBodyStyles = css`
   :host([scroll-body]) thead th {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: var(--ds-z-index-raised);
     box-sizing: border-box;
     block-size: var(--ds-table-header-height);
   }

@@ -138,7 +138,7 @@ export const selectCommonStyles = css`
        anchor positioning — see .listbox[popover]:popover-open below. */
     position: absolute;
     inset: calc(100% + var(--ds-space-1)) 0 auto;
-    z-index: 100;
+    z-index: var(--ds-z-index-dropdown);
     max-height: 240px;
     overflow-y: auto;
     background: var(--ds-color-bg);
@@ -174,7 +174,7 @@ export const selectCommonStyles = css`
   .listbox-hint {
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: var(--ds-z-index-raised);
     padding: var(--ds-space-2) var(--ds-space-3);
     background: var(--ds-color-bg);
     border-bottom: 1px solid var(--ds-color-border-strong);

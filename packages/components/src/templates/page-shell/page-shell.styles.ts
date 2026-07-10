@@ -161,7 +161,7 @@ export const pageShellStyles = css`
   .aside-toggle-rail {
     position: absolute;
     inset-block-start: var(--ds-space-4);
-    z-index: 1;
+    z-index: var(--ds-z-index-raised);
     width: var(--ds-size-sm);
     min-width: var(--ds-size-sm);
     height: var(--ds-size-sm);

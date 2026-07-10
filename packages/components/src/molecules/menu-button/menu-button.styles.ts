@@ -15,7 +15,7 @@ export const menuButtonStyles = css`
   }
   .panel {
     position: absolute;
-    z-index: 100;
+    z-index: var(--ds-z-index-dropdown);
     min-width: max-content;
     margin: 0;
     border: 0;

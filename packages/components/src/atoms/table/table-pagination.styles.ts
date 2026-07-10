@@ -51,7 +51,7 @@ export const tablePaginationStyles = css`
     outline: none;
     border-color: var(--ds-color-focus);
     box-shadow: var(--ds-shadow-focus);
-    z-index: 1;
+    z-index: var(--ds-z-index-raised);
   }
   button:disabled {
     color: var(--ds-color-fg-subtle);

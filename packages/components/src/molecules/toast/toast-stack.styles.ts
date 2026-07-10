@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const toastStackStyles = css`
   :host {
     position: fixed;
-    z-index: 9999;
+    z-index: var(--ds-z-index-toast);
     display: flex;
     flex-direction: column;
     gap: var(--ds-space-2);

@@ -101,7 +101,7 @@ export const barChartStyles = css`
     min-width: 120px;
     max-width: min(220px, calc(100% - 16px));
     box-sizing: border-box;
-    z-index: 1;
+    z-index: var(--ds-z-index-raised);
   }
 
   .tooltip[data-position="above"] {

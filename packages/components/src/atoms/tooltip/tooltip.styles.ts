@@ -36,7 +36,7 @@ export const tooltipStyles = css`
     width: max-content;
     height: auto;
     overflow: visible;
-    z-index: var(--ds-z-index-tooltip, 999);
+    z-index: var(--ds-z-index-tooltip);
     background: var(--ds-color-fg);
     color: var(--ds-color-bg);
     font-family: var(--ds-font-body);
