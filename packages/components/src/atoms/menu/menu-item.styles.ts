@@ -29,40 +29,9 @@ export const menuItemStyles = css`
     min-height: 36px;
     box-sizing: border-box;
   }
-  .leading,
-  .trailing {
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    color: var(--ds-color-fg-subtle, var(--ds-color-fg));
-  }
-  .leading:empty,
-  .trailing:empty {
-    display: none;
-  }
-  .content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
-  }
   .primary {
-    display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  .description {
-    display: block;
-    font-size: var(--ds-font-size-xs);
-    color: var(--ds-color-fg-subtle, var(--ds-color-fg));
-  }
-  .description:empty {
-    display: none;
-  }
-  .check {
-    width: 1rem;
-    height: 1rem;
-    color: var(--ds-color-accent);
   }
 `;

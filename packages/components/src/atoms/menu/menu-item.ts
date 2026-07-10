@@ -1,6 +1,7 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { optionRowStyles } from '../../shared/option-row.styles.js';
 import { menuItemStyles } from './menu-item.styles.js';
 
 /**
@@ -15,7 +16,7 @@ import { menuItemStyles } from './menu-item.styles.js';
  * @event ds-activate - Fires when the item is activated. Detail: `{ value, originalEvent }`.
  */
 export class DsMenuItem extends DsElement {
-  static override styles = [...DsElement.styles, menuItemStyles];
+  static override styles = [...DsElement.styles, optionRowStyles, menuItemStyles];
 
   @property() value = '';
   @property({ type: Boolean, reflect: true }) disabled = false;
@@ -67,15 +68,15 @@ export class DsMenuItem extends DsElement {
 
   override render(): TemplateResult {
     return html`<div class="item" part="item">
-      <span class="leading"><slot name="leading"></slot></span>
-      <span class="content">
-        <span class="primary"><slot></slot></span>
-        <span class="description"><slot name="description"></slot></span>
-      </span>
-      <span class="trailing">
+      <div class="leading"><slot name="leading"></slot></div>
+      <div class="content">
+        <div class="primary"><slot></slot></div>
+        <div class="description"><slot name="description"></slot></div>
+      </div>
+      <div class="trailing">
         ${this.selected ? this.#renderCheck() : nothing}
         <slot name="trailing"></slot>
-      </span>
+      </div>
     </div>`;
   }
 
