@@ -1,6 +1,7 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { noticeStyles } from '../../shared/notice.styles.js';
 import { toastStyles } from './toast.styles.js';
 
 export type ToastTone = 'info' | 'success' | 'warning' | 'danger';
@@ -22,7 +23,7 @@ const DEFAULT_DURATION_BY_TONE: Record<ToastTone, number> = {
  * @event ds-dismiss - Fires when the toast is removed. Detail: `{ reason: 'timeout' | 'user' | 'programmatic' }`.
  */
 export class DsToast extends DsElement {
-  static override styles = [...DsElement.styles, toastStyles];
+  static override styles = [...DsElement.styles, noticeStyles, toastStyles];
 
   @property({ reflect: true }) tone: ToastTone = 'info';
   @property() heading?: string;
@@ -127,7 +128,7 @@ export class DsToast extends DsElement {
   #onDismissClick = (): void => this.dismiss('user');
 
   override render(): TemplateResult {
-    return html`<div class="toast" part="toast">
+    return html`<div class="notice" part="toast">
       <div class="content">
         ${this.heading ? html`<div class="title" part="title">${this.heading}</div>` : nothing}
         <slot></slot>

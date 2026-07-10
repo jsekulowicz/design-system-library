@@ -1,6 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, announce } from '@jsekulowicz/ds-core';
+import { noticeStyles } from '../../shared/notice.styles.js';
 import { alertStyles } from './alert.styles.js';
 
 export type AlertTone = 'info' | 'success' | 'warning' | 'danger';
@@ -13,7 +14,7 @@ export type AlertTone = 'info' | 'success' | 'warning' | 'danger';
  * @event ds-dismiss - Fires when the close button is activated.
  */
 export class DsAlert extends DsElement {
-  static override styles = [...DsElement.styles, alertStyles];
+  static override styles = [...DsElement.styles, noticeStyles, alertStyles];
 
   @property({ reflect: true }) tone: AlertTone = 'info';
   @property() heading?: string;
@@ -34,7 +35,7 @@ export class DsAlert extends DsElement {
 
   override render(): TemplateResult {
     const role = this.tone === 'danger' ? 'alert' : 'status';
-    return html`<div class="alert" part="alert" role=${role}>
+    return html`<div class="notice" part="alert" role=${role}>
       <div class="content">
         ${this.heading ? html`<div class="title" part="title">${this.heading}</div>` : nothing}
         <slot></slot>
