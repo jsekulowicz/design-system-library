@@ -20,12 +20,4 @@ export const radioStyles = css`
   :host([checked]) .control::after {
     transform: scale(1);
   }
-  input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-  }
 `;

@@ -39,7 +39,7 @@ function renderRowAction<T extends TableRow>(
 ): TemplateResult {
   return html`
     <button
-      class="row-action"
+      class="row-action visually-hidden"
       part="row-action"
       type="button"
       aria-label=${options.rowActionLabel(row, index)}

@@ -64,7 +64,7 @@ describe('<ds-bar-chart> extra coverage', () => {
     expect(svgText).toContain('Turns');
     expect(svgText).toContain('Points');
 
-    const caption = el.shadowRoot!.querySelector('.sr-only table caption')?.textContent;
+    const caption = el.shadowRoot!.querySelector('.visually-hidden table caption')?.textContent;
     expect(caption).toContain('Bar chart data');
     expect(el.shadowRoot!.querySelector('.legend')).toBeNull();
   });

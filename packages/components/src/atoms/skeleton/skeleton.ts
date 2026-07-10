@@ -62,7 +62,7 @@ export class DsSkeleton extends DsElement {
           <span class="item" part="item" style=${this.#style(index)}></span>
         `)}
       </span>
-      <slot class="sr-only"></slot>
+      <slot class="visually-hidden"></slot>
     `;
   }
 }

@@ -6,5 +6,6 @@ export {
   resetStyles,
   focusVisibleStyles,
   reducedMotionStyles,
+  visuallyHiddenStyles,
 } from './reset-styles.js';
 export * from './utils/index.js';

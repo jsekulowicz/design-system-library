@@ -107,7 +107,7 @@ describe('<ds-bar-chart> edge coverage', () => {
     const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
     expect(tooltip.textContent).toContain('Ghost');
     expect(tooltip.textContent).toContain('0');
-    const srTable = el.shadowRoot!.querySelector('.sr-only table') as HTMLTableElement;
+    const srTable = el.shadowRoot!.querySelector('.visually-hidden table') as HTMLTableElement;
     expect(srTable.textContent).toContain('Ghost');
   });
 

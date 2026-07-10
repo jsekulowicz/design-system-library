@@ -50,6 +50,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   override render(): TemplateResult {
     return html`<label @keydown=${this.#onKey}>
       <input
+        class="visually-hidden"
         type="checkbox"
         name=${this.name || ''}
         .checked=${this.checked}

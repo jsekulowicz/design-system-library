@@ -168,7 +168,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         </svg>
         ${this.#renderTooltip(layout)}
         ${this.#renderSrTable(groups)}
-        <div class="sr-only" id="${this.uid}-live" role="status" aria-live="polite">${this.#liveText(groups)}</div>
+        <div class="visually-hidden" id="${this.uid}-live" role="status" aria-live="polite">${this.#liveText(groups)}</div>
       </div>
       ${this.showLegend ? this.#renderLegend() : nothing}
     `;
@@ -383,7 +383,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   #renderSrTable(groups: BarChartGroup<T>[]): TemplateResult {
     return html`
-      <div class="sr-only" id="${this.uid}-desc">
+      <div class="visually-hidden" id="${this.uid}-desc">
         <table>
           <caption>${this.title || 'Bar chart data'}</caption>
           <thead>

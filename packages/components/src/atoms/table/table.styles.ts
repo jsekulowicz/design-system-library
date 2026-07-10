@@ -124,18 +124,6 @@ export const tableStyles = css`
     box-shadow: inset 0 0 0 2px var(--ds-color-focus);
   }
 
-  .row-action {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    clip-path: inset(50%);
-    border: 0;
-    white-space: nowrap;
-  }
 
   .skeleton-table {
     min-width: 32rem;
@@ -164,18 +152,6 @@ export const tableStyles = css`
     font-weight: var(--ds-font-weight-medium);
   }
 
-  .loading-status {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    clip-path: inset(50%);
-    border: 0;
-    white-space: nowrap;
-  }
 
   .empty {
     padding: var(--ds-space-6);

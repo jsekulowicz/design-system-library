@@ -76,6 +76,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
   override render(): TemplateResult {
     return html`<label @click=${this.#select} @keydown=${this.#onKey}>
       <input
+        class="visually-hidden"
         type="radio"
         name=${this.name || ''}
         .checked=${this.checked}

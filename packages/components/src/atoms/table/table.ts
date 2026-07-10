@@ -212,7 +212,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     }
     const content = html`<slot name="loading">Loading...</slot>`;
     if (this.rows.length === 0) {
-      return html`<div class="loading-status" role="status" aria-live="polite">${content}</div>`;
+      return html`<div class="loading-status visually-hidden" role="status" aria-live="polite">${content}</div>`;
     }
     return html`
       <div class="loading" part="loading" role="status" aria-live="polite">
