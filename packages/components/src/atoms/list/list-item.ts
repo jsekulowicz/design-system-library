@@ -26,13 +26,13 @@ export class DsListItem extends DsElement {
 
   override render(): TemplateResult {
     return html`<li part="item">
-      <span class="leading" ?hidden=${!this._hasLeading}>
+      <div class="leading" ?hidden=${!this._hasLeading}>
         <slot name="leading" @slotchange=${this.#onLeadingSlotChange}></slot>
-      </span>
-      <span class="content"><slot></slot></span>
-      <span class="trailing" ?hidden=${!this._hasTrailing}>
+      </div>
+      <div class="content"><slot></slot></div>
+      <div class="trailing" ?hidden=${!this._hasTrailing}>
         <slot name="trailing" @slotchange=${this.#onTrailingSlotChange}></slot>
-      </span>
+      </div>
     </li>`;
   }
 }

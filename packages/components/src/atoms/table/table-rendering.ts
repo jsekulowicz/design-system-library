@@ -29,7 +29,7 @@ function renderCellLabel<T extends TableRow>(column: TableColumn<T>): TemplateRe
   if (!column.label) {
     return nothing;
   }
-  return html`<span class="cell-label" aria-hidden="true">${column.label}</span>`;
+  return html`<div class="cell-label" aria-hidden="true">${column.label}</div>`;
 }
 
 function renderRowAction<T extends TableRow>(
@@ -74,10 +74,10 @@ function renderCellContent<T extends TableRow>(
   columnIndex: number,
 ): TemplateResult {
   return html`
-    <span class="cell-content">
+    <div class="cell-content">
       ${options.clickableRows && columnIndex === 0 ? renderRowAction(options, row, rowIndex) : nothing}
       ${renderCellValue(options, column, row, rowIndex)}
-    </span>
+    </div>
   `;
 }
 

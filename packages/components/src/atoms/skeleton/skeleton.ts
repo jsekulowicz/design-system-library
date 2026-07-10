@@ -57,11 +57,11 @@ export class DsSkeleton extends DsElement {
 
   override render(): TemplateResult {
     return html`
-      <span class="stack" aria-hidden="true">
+      <div class="stack" aria-hidden="true">
         ${Array.from({ length: this.#count() }, (_, index) => html`
-          <span class="item" part="item" style=${this.#style(index)}></span>
+          <div class="item" part="item" style=${this.#style(index)}></div>
         `)}
-      </span>
+      </div>
       <slot class="visually-hidden"></slot>
     `;
   }

@@ -14,16 +14,11 @@ export const menuStyles = css`
   }
   .header,
   .footer {
-    display: block;
     padding: var(--ds-space-2) var(--ds-space-3);
     color: var(--ds-color-fg-subtle, var(--ds-color-fg));
     font-size: var(--ds-font-size-xs);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
-  }
-  .header[hidden],
-  .footer[hidden] {
-    display: none;
   }
   .header {
     border-bottom: 1px solid var(--ds-color-border);
@@ -32,7 +27,6 @@ export const menuStyles = css`
     border-top: 1px solid var(--ds-color-border);
   }
   .items {
-    display: block;
     padding: var(--ds-space-1);
     max-height: var(--ds-menu-max-height, 320px);
     overflow-y: auto;

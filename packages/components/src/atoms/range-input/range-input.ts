@@ -108,7 +108,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     const current = this.#numericValue();
     return html`
       ${this.label ? renderFieldLabel(this.label, this.required, 'input') : nothing}
-      <span class="wrap" part="wrap">
+      <div class="wrap" part="wrap">
         <input
           id="input"
           part="thumb"
@@ -132,7 +132,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
         ${this.showValue
           ? html`<output part="value" for="input">${current}</output>`
           : nothing}
-      </span>
+      </div>
       ${renderSubtext(this.description, this.error, this.invalid)}
     `;
   }

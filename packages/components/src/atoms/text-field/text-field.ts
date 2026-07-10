@@ -89,7 +89,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
     const current = typeof this.value === 'string' ? this.value : '';
     return html`
       ${this.label ? renderFieldLabel(this.label, this.required, 'input', this.optional) : nothing}
-      <span class="wrap field-control" part="wrap">
+      <div class="wrap field-control" part="wrap">
         <span class="adornment" ?hidden=${!this._hasLeading}>
           <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
         </span>
@@ -114,7 +114,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
         <span class="adornment" ?hidden=${!this._hasTrailing}>
           <slot name="trailing" @slotchange=${this.#onTrailingChange}></slot>
         </span>
-      </span>
+      </div>
       ${renderFieldFooter(
         this.description,
         this.error,

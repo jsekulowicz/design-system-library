@@ -18,7 +18,7 @@ export const listItemStyles = css`
   }
   .leading,
   .trailing {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     flex-shrink: 0;
   }

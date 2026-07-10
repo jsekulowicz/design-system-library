@@ -11,9 +11,7 @@ export const skeletonStyles = css`
     gap: var(--ds-skeleton-gap, var(--ds-space-2));
   }
 
-
   .item {
-    display: block;
     width: var(--ds-skeleton-item-width, 100%);
     height: var(--ds-skeleton-height, 1em);
     border-radius: var(--ds-skeleton-radius, var(--ds-radius-xs));
