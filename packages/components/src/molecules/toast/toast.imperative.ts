@@ -22,6 +22,11 @@ export interface ToastOptions {
   placement?: ToastPlacement;
   // Either a render function (full control) or a list of action buttons.
   actions?: ((controller: ToastController) => TemplateResult) | ToastAction[];
+  // Move keyboard focus to the toast when it appears. Use for actionable
+  // toasts raised in response to a user action, so a keyboard user lands on
+  // the notification (and its buttons) instead of hunting for it. The toast
+  // pauses its auto-dismiss timer while focused. Leave off for passive toasts.
+  focusOnShow?: boolean;
 }
 
 export interface ToastController {
@@ -57,7 +62,7 @@ function renderActionButtons(actions: ToastAction[], controller: ToastController
     (action) =>
       html`<ds-button
         size="sm"
-        variant=${action.variant ?? 'ghost'}
+        variant=${action.variant ?? 'secondary'}
         @ds-click=${() => action.onClick(controller)}
         >${action.label}</ds-button
       >`,
@@ -110,6 +115,10 @@ function toastFn(options: ToastOptions = {}): ToastController {
   applyProps(el, state);
   renderContent();
   stack.push(el);
+  if (options.focusOnShow) {
+    // Wait for the element to upgrade and lay out before moving focus.
+    requestAnimationFrame(() => el.focus());
+  }
   return controller;
 }
 

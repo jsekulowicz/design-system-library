@@ -1,6 +1,8 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import '../../atoms/button/define.js';
+import '../../atoms/icon/icons/x-mark.js';
 import { noticeStyles } from '../../shared/notice.styles.js';
 import { toastStyles } from './toast.styles.js';
 
@@ -39,10 +41,16 @@ export class DsToast extends DsElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
+    // Programmatically focusable (e.g. `focusOnShow`) but never in the tab
+    // sequence, so passive toasts don't add a stop for every keyboard user.
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '-1');
+    }
     this.addEventListener('mouseenter', this.#onMouseEnter);
     this.addEventListener('mouseleave', this.#onMouseLeave);
     this.addEventListener('focusin', this.#onFocusIn);
     this.addEventListener('focusout', this.#onFocusOut);
+    this.addEventListener('keydown', this.#onKeydown);
   }
 
   override disconnectedCallback(): void {
@@ -127,25 +135,35 @@ export class DsToast extends DsElement {
 
   #onDismissClick = (): void => this.dismiss('user');
 
+  // Escape dismisses the toast while it (or a control inside it) has focus —
+  // the keyboard counterpart to the close button, matching dialog behaviour.
+  #onKeydown = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape' && this.dismissible) {
+      event.stopPropagation();
+      this.dismiss('user');
+    }
+  };
+
   override render(): TemplateResult {
     return html`<div class="notice" part="toast">
-      <div class="content">
+      <div class="header">
         ${this.heading ? html`<div class="title" part="title">${this.heading}</div>` : nothing}
-        <slot></slot>
+        ${this.dismissible
+          ? html`<ds-button
+              class="close-btn"
+              part="close-button"
+              variant="ghost"
+              size="sm"
+              square
+              label="Dismiss"
+              @click=${this.#onDismissClick}
+            >
+              <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>
+            </ds-button>`
+          : nothing}
       </div>
+      <div class="body"><slot></slot></div>
       <slot name="actions"></slot>
-      ${this.dismissible
-        ? html`<button class="close" type="button" aria-label="Dismiss" @click=${this.#onDismissClick}>
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
-              <path
-                d="M4 4l8 8M12 4l-8 8"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>`
-        : nothing}
     </div>`;
   }
 }

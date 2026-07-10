@@ -44,9 +44,14 @@ describe('<ds-toast>', () => {
     expect(actionsSlot.assignedElements()[0]?.tagName.toLowerCase()).toBe('ds-button');
   });
 
+  it('is programmatically focusable but out of the tab sequence', async () => {
+    const el = await mount<DsToast>('<ds-toast>Body</ds-toast>');
+    expect(el.getAttribute('tabindex')).toBe('-1');
+  });
+
   it('hides the dismiss button when not dismissible', async () => {
     const el = await mountWithProps<DsToast>('<ds-toast>Body</ds-toast>', { dismissible: false });
-    expect(el.shadowRoot!.querySelector('button.close')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.close-btn')).toBeNull();
   });
 
   it('emits ds-dismiss with reason="user" and removes itself when the close button is clicked', async () => {
@@ -55,8 +60,19 @@ describe('<ds-toast>', () => {
     el.addEventListener('ds-dismiss', (event) =>
       events.push((event as CustomEvent<{ reason: ToastDismissReason }>).detail.reason),
     );
-    const button = el.shadowRoot!.querySelector('button.close') as HTMLButtonElement;
+    const button = el.shadowRoot!.querySelector('.close-btn') as HTMLElement;
     button.click();
+    expect(events).toEqual(['user']);
+    expect(document.body.contains(el)).toBe(false);
+  });
+
+  it('dismisses with reason="user" on Escape while focused', async () => {
+    const el = await mount<DsToast>('<ds-toast>Body</ds-toast>');
+    const events: ToastDismissReason[] = [];
+    el.addEventListener('ds-dismiss', (event) =>
+      events.push((event as CustomEvent<{ reason: ToastDismissReason }>).detail.reason),
+    );
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     expect(events).toEqual(['user']);
     expect(document.body.contains(el)).toBe(false);
   });
