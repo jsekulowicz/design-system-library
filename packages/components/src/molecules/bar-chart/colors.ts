@@ -1,4 +1,4 @@
-export const DEFAULT_CHART_COLORS: readonly string[] = [
+const DEFAULT_CHART_COLORS: readonly string[] = [
   'var(--ds-color-chart-1)',
   'var(--ds-color-chart-2)',
   'var(--ds-color-chart-3)',

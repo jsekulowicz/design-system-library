@@ -14,7 +14,6 @@ import '../../organisms/top-bar/define.js';
 
 export type PageShellAsideState = 'visible' | 'compact' | 'hidden';
 export type PageShellAsideEndState = 'visible' | 'hidden';
-export type PageShellAsideSide = 'start' | 'end';
 export type PageShellMenuButtonPosition = 'start' | 'end';
 
 /**

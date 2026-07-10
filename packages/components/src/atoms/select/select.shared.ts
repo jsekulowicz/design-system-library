@@ -4,7 +4,7 @@ import type { IconSize } from '../icon/icon.js';
 import '../icon/define.js';
 import '../icon/icons/x-mark.js';
 
-export const TILE_ROW_HEIGHT = 28;
+const TILE_ROW_HEIGHT = 28;
 
 export interface OptionIcon {
   name: string;

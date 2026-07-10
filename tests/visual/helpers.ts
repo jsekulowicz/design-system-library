@@ -58,7 +58,7 @@ async function seedStorybookState(
   );
 }
 
-export async function waitForRender(page: Page): Promise<void> {
+async function waitForRender(page: Page): Promise<void> {
   await page.locator('body').waitFor();
   await page.evaluate(async () => {
     await document.fonts.ready;
