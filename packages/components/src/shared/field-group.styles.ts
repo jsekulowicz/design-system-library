@@ -1,6 +1,7 @@
 import { css } from 'lit';
 
-export const checkboxGroupStyles = css`
+/* Fieldset layout shared by ds-radio-group and ds-checkbox-group. */
+export const fieldGroupStyles = css`
   :host {
     display: block;
     width: 100%;

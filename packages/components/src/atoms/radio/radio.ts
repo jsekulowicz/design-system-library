@@ -1,6 +1,7 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { radioStyles } from './radio.styles.js';
 
 /**
@@ -10,7 +11,7 @@ import { radioStyles } from './radio.styles.js';
  * @event ds-change - Fires when this radio becomes checked.
  */
 export class DsRadio extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, radioStyles];
+  static override styles = [...DsElement.styles, toggleControlStyles, radioStyles];
 
   @property({ type: Boolean, reflect: true }) checked = false;
   @property() radioValue = '';
@@ -83,7 +84,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
         ?required=${this.required}
         @click=${this.#onInputClick}
       />
-      <span class="dot" part="dot" aria-hidden="true"></span>
+      <span class="control" part="dot" aria-hidden="true"></span>
       <span part="label"><slot></slot></span>
     </label>`;
   }

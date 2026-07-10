@@ -3,7 +3,7 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
-import { radioGroupStyles } from './radio-group.styles.js';
+import { fieldGroupStyles } from '../../shared/field-group.styles.js';
 
 type RadioEl = HTMLElement & {
   checked?: boolean;
@@ -19,7 +19,7 @@ type RadioEl = HTMLElement & {
  * @event ds-change - Fires when the selected radio changes. Detail: `{ value: string }`.
  */
 export class DsRadioGroup extends DsElement {
-  static override styles = [...DsElement.styles, formFieldStyles, radioGroupStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, fieldGroupStyles];
 
   @property() label = '';
   @property() name = '';

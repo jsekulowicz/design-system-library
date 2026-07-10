@@ -2,7 +2,7 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
-import { checkboxGroupStyles } from './checkbox-group.styles.js';
+import { fieldGroupStyles } from '../../shared/field-group.styles.js';
 
 type CheckboxEl = HTMLElement & { checked?: boolean; checkboxValue?: string };
 
@@ -13,7 +13,7 @@ type CheckboxEl = HTMLElement & { checked?: boolean; checkboxValue?: string };
  * @event ds-change - Fires when any checkbox changes. Detail: `{ values: string[] }`.
  */
 export class DsCheckboxGroup extends DsElement {
-  static override styles = [...DsElement.styles, formFieldStyles, checkboxGroupStyles];
+  static override styles = [...DsElement.styles, formFieldStyles, fieldGroupStyles];
 
   @property() label = '';
   @property() name = '';

@@ -1,46 +1,15 @@
 import { css } from 'lit';
 
 export const checkboxStyles = css`
-  :host {
-    display: inline-flex;
-    cursor: pointer;
-    font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
-    color: var(--ds-color-fg);
-  }
-  :host([disabled]) {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-  label {
-    cursor: inherit;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ds-space-2);
-    line-height: 1;
-  }
-  .box {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid var(--ds-color-border-strong);
+  .control {
     border-radius: var(--ds-radius-xs);
-    background: var(--ds-color-bg);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: background var(--ds-duration-fast) var(--ds-easing-standard),
-      border-color var(--ds-duration-fast) var(--ds-easing-standard);
   }
-  :host(:focus-within) .box {
-    box-shadow: var(--ds-shadow-focus);
-  }
-  :host([checked]) .box,
-  :host([indeterminate]) .box {
+  :host([checked]) .control,
+  :host([indeterminate]) .control {
     background: var(--ds-color-accent);
     border-color: var(--ds-color-accent);
   }
-  :host([invalid]) .box {
+  :host([invalid]) .control {
     border-color: var(--ds-color-danger);
   }
   .check {

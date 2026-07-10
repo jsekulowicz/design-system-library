@@ -1,6 +1,7 @@
 import { html, svg, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { checkboxStyles } from './checkbox.styles.js';
 
 /**
@@ -10,7 +11,7 @@ import { checkboxStyles } from './checkbox.styles.js';
  * @event ds-change - Fires when the checked state changes.
  */
 export class DsCheckbox extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, checkboxStyles];
+  static override styles = [...DsElement.styles, toggleControlStyles, checkboxStyles];
 
   @property({ type: Boolean, reflect: true }) checked = false;
   @property({ type: Boolean, reflect: true }) indeterminate = false;
@@ -58,7 +59,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
         aria-invalid=${this.invalid ? 'true' : 'false'}
         @change=${this.#onInput}
       />
-      <span class="box" part="box" aria-hidden="true">
+      <span class="control" part="box" aria-hidden="true">
         <!-- Heroicons 2.2.0 — 16/solid: minus (indeterminate), check (checked) -->
         <svg class="check" viewBox="0 0 16 16" fill="currentColor">
           ${this.indeterminate
