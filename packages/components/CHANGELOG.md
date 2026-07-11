@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.40.0
+
+### Minor Changes
+
+- 6e65809: Button: split intent colour out of `variant` into a new `color` prop (`accent` | `success` | `danger`, default `accent`). `variant` is now just the emphasis — `primary` | `secondary` | `ghost` — and `color` tints it: background for `primary`, border + text for `secondary`, text for `ghost`. The `accent` default leaves `secondary`/`ghost` neutral, so existing quiet buttons are unchanged.
+
+  BREAKING: the `danger` and `success` **variants** are removed. Migrate `variant="danger"` → `variant="primary" color="danger"` (and likewise for `success`); use `secondary`/`ghost` with a `color` for outlined or text-only intent buttons.
+
+- feae3df: Table: default font size is now `--ds-font-size-md` (was `--ds-font-size-sm`), matching the base body size. Slotted cell content that inherits font size — including progress-bar labels — scales with it.
+
 ## 0.39.0
 
 ### Minor Changes
