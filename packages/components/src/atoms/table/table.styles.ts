@@ -7,10 +7,10 @@ export const tableStyles = css`
     width: 100%;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     /* Header row height (used as the top scroll-fade offset in scroll-body
        mode). Single-line by construction; override to taste. */
-    --ds-table-header-height: calc(var(--ds-space-2) * 2 + var(--ds-font-size-sm) * 1.5 + 1px);
+    --ds-table-header-height: calc(var(--ds-space-2) * 2 + var(--ds-font-size-md) * 1.5 + 1px);
   }
 
   .toolbar {
