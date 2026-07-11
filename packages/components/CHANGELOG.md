@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.41.0
+
+### Minor Changes
+
+- 32193e8: Segmented control: segment buttons no longer force `--ds-font-size-sm` via `::part(button)`; they now use the button's own `--ds-font-size-md`, consistent with `ds-button` and the table's md default.
+
 ## 0.40.0
 
 ### Minor Changes
