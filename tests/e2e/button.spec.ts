@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test('ds-button variants story renders all four variants', async ({ page }) => {
+test('ds-button variants story renders all variants', async ({ page }) => {
   await page.goto('/iframe.html?id=atoms-button--variants&viewMode=story');
+  const variants = ['primary', 'secondary', 'ghost', 'danger', 'success'];
   const buttons = page.locator('ds-button');
-  await expect(buttons).toHaveCount(4);
-  for (const variant of ['primary', 'secondary', 'ghost', 'danger']) {
+  await expect(buttons).toHaveCount(variants.length);
+  for (const variant of variants) {
     await expect(page.locator(`ds-button[variant="${variant}"]`)).toBeVisible();
   }
 });
