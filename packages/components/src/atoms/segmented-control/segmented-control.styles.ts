@@ -42,7 +42,6 @@ export const segmentedControlStyles = css`
      drives sizing. */
   .segment::part(button) {
     min-width: 0;
-    font-size: var(--ds-font-size-sm);
     border-radius: calc(var(--ds-radius-sm) - 1px);
   }
   .segment[variant='ghost']::part(button) {
