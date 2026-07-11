@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { buttonStyles } from './button.styles.js';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonType = 'button' | 'submit' | 'reset';
 

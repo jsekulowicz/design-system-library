@@ -86,6 +86,10 @@ export const buttonStyles = css`
     background: var(--ds-color-danger);
     color: var(--ds-color-accent-fg);
   }
+  :host([variant='success']) .btn {
+    background: var(--ds-color-success);
+    color: var(--ds-color-accent-fg);
+  }
   :host([square]) .btn {
     width: var(--ds-button-size);
     min-width: var(--ds-button-size);

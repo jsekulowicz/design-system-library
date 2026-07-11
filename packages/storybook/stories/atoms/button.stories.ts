@@ -10,7 +10,7 @@ const meta: Meta = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'ghost', 'danger'],
+      options: ['primary', 'secondary', 'ghost', 'danger', 'success'],
     },
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
     type: {
@@ -58,6 +58,7 @@ export const Variants: Story = {
   <ds-button variant="secondary">Secondary</ds-button>
   <ds-button variant="ghost">Ghost</ds-button>
   <ds-button variant="danger">Danger</ds-button>
+  <ds-button variant="success">Success</ds-button>
 </div>
   `,
 };
