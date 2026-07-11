@@ -3,7 +3,8 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { buttonStyles } from './button.styles.js';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+export type ButtonColor = 'accent' | 'success' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
@@ -21,6 +22,7 @@ export class DsButton extends DsElement {
   static override styles = [...DsElement.styles, buttonStyles];
 
   @property({ reflect: true }) variant: ButtonVariant = 'primary';
+  @property({ reflect: true }) color: ButtonColor = 'accent';
   @property({ reflect: true }) size: ButtonSize = 'md';
   @property({ reflect: true }) type: ButtonType = 'button';
   @property({ type: Boolean, reflect: true }) disabled = false;

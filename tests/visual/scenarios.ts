@@ -8,6 +8,7 @@ const storyRoot = '#storybook-root';
 
 export const visualScenarios: VisualScenario[] = [
   staticStory('button-variants', 'atoms-button--variants'),
+  staticStory('button-colors', 'atoms-button--colors'),
   staticStory('button-sizes', 'atoms-button--sizes'),
   staticStory('textfield-states', 'atoms-textfield--required'),
   staticStory('select-invalid', 'atoms-select--invalid'),

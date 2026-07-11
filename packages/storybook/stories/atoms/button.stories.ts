@@ -9,8 +9,12 @@ const meta: Meta = {
   component: 'ds-button',
   argTypes: {
     variant: {
-      control: { type: 'select' },
-      options: ['primary', 'secondary', 'ghost', 'danger', 'success'],
+      control: { type: 'inline-radio' },
+      options: ['primary', 'secondary', 'ghost'],
+    },
+    color: {
+      control: { type: 'inline-radio' },
+      options: ['accent', 'success', 'danger'],
     },
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
     type: {
@@ -24,6 +28,7 @@ const meta: Meta = {
   },
   args: {
     variant: 'primary',
+    color: 'accent',
     size: 'md',
     type: 'button',
     disabled: false,
@@ -40,6 +45,7 @@ export const Playground: Story = {
   render: (args) => html`
 <ds-button
   variant=${args['variant']}
+  color=${args['color']}
   size=${args['size']}
   type=${args['type']}
   ?disabled=${args['disabled']}
@@ -57,8 +63,22 @@ export const Variants: Story = {
   <ds-button variant="primary">Primary</ds-button>
   <ds-button variant="secondary">Secondary</ds-button>
   <ds-button variant="ghost">Ghost</ds-button>
-  <ds-button variant="danger">Danger</ds-button>
-  <ds-button variant="success">Success</ds-button>
+</div>
+  `,
+};
+
+export const Colors: Story = {
+  render: () => html`
+<div style="display:grid;grid-template-columns:repeat(3,max-content);gap:var(--ds-space-3)">
+  <ds-button variant="primary" color="accent">Accent</ds-button>
+  <ds-button variant="secondary" color="accent">Accent</ds-button>
+  <ds-button variant="ghost" color="accent">Accent</ds-button>
+  <ds-button variant="primary" color="success">Success</ds-button>
+  <ds-button variant="secondary" color="success">Success</ds-button>
+  <ds-button variant="ghost" color="success">Success</ds-button>
+  <ds-button variant="primary" color="danger">Danger</ds-button>
+  <ds-button variant="secondary" color="danger">Danger</ds-button>
+  <ds-button variant="ghost" color="danger">Danger</ds-button>
 </div>
   `,
 };

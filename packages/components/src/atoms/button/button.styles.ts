@@ -8,6 +8,11 @@ export const buttonStyles = css`
     vertical-align: middle;
   }
   .btn {
+    /* color picks the tint; the accent default keeps secondary/ghost neutral. */
+    --ds-btn-solid: var(--ds-color-accent);
+    --ds-btn-on: var(--ds-color-accent-fg);
+    --ds-btn-line: var(--ds-color-border-strong);
+    --ds-btn-text: var(--ds-color-fg);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -57,38 +62,40 @@ export const buttonStyles = css`
       transform: rotate(360deg);
     }
   }
-  :host([variant='primary']) .btn {
-    background: var(--ds-color-accent);
-    color: var(--ds-color-accent-fg);
+  :host([color='success']) .btn {
+    --ds-btn-solid: var(--ds-color-success);
+    --ds-btn-line: var(--ds-color-success);
+    --ds-btn-text: var(--ds-color-success);
   }
-  :host([variant='primary']) .btn:hover:not([aria-disabled='true']) {
+  :host([color='danger']) .btn {
+    --ds-btn-solid: var(--ds-color-danger);
+    --ds-btn-line: var(--ds-color-danger);
+    --ds-btn-text: var(--ds-color-danger);
+  }
+  :host([variant='primary']) .btn {
+    background: var(--ds-btn-solid);
+    color: var(--ds-btn-on);
+  }
+  :host([variant='primary'][color='accent']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-accent-hover);
   }
-  :host([variant='primary']) .btn:active:not([aria-disabled='true']) {
+  :host([variant='primary'][color='accent']) .btn:active:not([aria-disabled='true']) {
     background: var(--ds-color-accent-active);
   }
   :host([variant='secondary']) .btn {
     background: transparent;
-    color: var(--ds-color-fg);
-    border-color: var(--ds-color-border-strong);
+    color: var(--ds-btn-text);
+    border-color: var(--ds-btn-line);
   }
   :host([variant='secondary']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-bg-subtle);
   }
   :host([variant='ghost']) .btn {
     background: transparent;
-    color: var(--ds-color-fg);
+    color: var(--ds-btn-text);
   }
   :host([variant='ghost']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-bg-subtle);
-  }
-  :host([variant='danger']) .btn {
-    background: var(--ds-color-danger);
-    color: var(--ds-color-accent-fg);
-  }
-  :host([variant='success']) .btn {
-    background: var(--ds-color-success);
-    color: var(--ds-color-accent-fg);
   }
   :host([square]) .btn {
     width: var(--ds-button-size);

@@ -16,7 +16,7 @@ const meta: Meta = {
     label: { control: 'text' },
     variant: {
       control: { type: 'inline-radio' },
-      options: ['primary', 'secondary', 'ghost', 'danger'],
+      options: ['primary', 'secondary', 'ghost'],
     },
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
     placement: {
