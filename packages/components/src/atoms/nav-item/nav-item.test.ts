@@ -149,6 +149,22 @@ describe('<ds-nav-item>', () => {
     expect(tooltip!.getAttribute('delay')).toBe('250');
   });
 
+  it('renders rich compact tooltip content with the label as fallback', async () => {
+    const el = await mount<DsNavItem>(
+      '<ds-nav-item href="/" compact><span slot="icon">*</span>Quick play<span slot="tooltip"><strong>Quick play</strong><br>Uses saved preferences.</span></ds-nav-item>',
+    );
+    const slot = el.shadowRoot!.querySelector('slot[name="tooltip"]') as HTMLSlotElement;
+
+    expect(slot.assignedElements()[0]?.querySelector('strong')?.textContent).toBe('Quick play');
+    expect(slot.assignedElements()[0]?.textContent).toContain('Uses saved preferences.');
+
+    const fallback = await mount<DsNavItem>(
+      '<ds-nav-item href="/" compact><span slot="icon">*</span>Documentation</ds-nav-item>',
+    );
+    const fallbackSlot = fallback.shadowRoot!.querySelector('slot[name="tooltip"]')!;
+    expect(fallbackSlot.textContent).toBe('Documentation');
+  });
+
   it('logs a console.error when compact is set without an icon', async () => {
     const errors: unknown[][] = [];
     const original = console.error;

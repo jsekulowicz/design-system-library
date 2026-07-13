@@ -9,6 +9,7 @@ import '../tooltip/define.js';
  * @summary Interactive navigation link. Renders an `<a>` and reflects `current` state via `aria-current`.
  * @slot default - The label.
  * @slot icon - Optional leading icon (typically `<ds-icon>`). Required when `compact` is set.
+ * @slot tooltip - Optional rich compact-tooltip content. Defaults to the label text.
  * @csspart link - The internal `<a>`.
  * @csspart icon - The icon slot wrapper.
  * @csspart label - The label slot wrapper.
@@ -139,7 +140,7 @@ export class DsNavItem extends DsElement {
         delay=${this.compactHoverTooltipDelay}
       >
         ${this.#renderLink()}
-        <span slot="tip">${this._labelText}</span>
+        <span slot="tip"><slot name="tooltip">${this._labelText}</slot></span>
       </ds-tooltip>`;
     }
     return this.#renderLink();

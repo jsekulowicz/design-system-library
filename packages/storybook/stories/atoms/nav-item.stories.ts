@@ -117,3 +117,18 @@ export const Compact: Story = {
     </p>
   `,
 };
+
+export const RichCompactTooltip: Story = {
+  render: () => html`
+    <div style="width:64px">
+      <ds-nav-item href="/quick-play" compact compact-hover-tooltip-delay="0">
+        <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+        Quick play
+        <span slot="tooltip">
+          <strong>Quick play</strong><br />
+          Starts immediately with your saved preferences.
+        </span>
+      </ds-nav-item>
+    </div>
+  `,
+};
