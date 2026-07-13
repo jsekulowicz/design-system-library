@@ -13,7 +13,7 @@ export const colorPickerSwatchGroupStyles = css`
 
   .section-label {
     color: var(--ds-color-fg);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     font-weight: var(--ds-font-weight-medium);
   }
 

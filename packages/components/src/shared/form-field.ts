@@ -5,7 +5,7 @@ export const formFieldStyles: CSSResult = css`
     display: inline-flex;
     align-items: baseline;
     gap: var(--ds-space-2);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     font-weight: var(--ds-font-weight-medium);
     color: var(--ds-color-fg);
     line-height: 1.4;
@@ -15,7 +15,7 @@ export const formFieldStyles: CSSResult = css`
     color: var(--ds-color-danger);
   }
   .optional {
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
@@ -23,7 +23,7 @@ export const formFieldStyles: CSSResult = css`
   }
   .description {
     margin: 0;
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
     line-height: 1.4;
   }
@@ -32,7 +32,7 @@ export const formFieldStyles: CSSResult = css`
     display: flex;
     align-items: center;
     gap: var(--ds-space-1);
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
     line-height: 1.4;
   }
@@ -56,7 +56,7 @@ export const formFieldStyles: CSSResult = css`
     margin: 0;
     margin-left: auto;
     color: var(--ds-color-fg-muted);
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     line-height: 1.4;
     white-space: nowrap;
   }

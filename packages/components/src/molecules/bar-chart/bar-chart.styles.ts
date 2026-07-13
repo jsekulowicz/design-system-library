@@ -7,7 +7,7 @@ export const barChartStyles = css`
     width: 100%;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
   }
 
   .frame {
@@ -96,7 +96,7 @@ export const barChartStyles = css`
     border: 1px solid var(--ds-color-border);
     border-radius: var(--ds-radius-md);
     padding: var(--ds-space-2) var(--ds-space-3);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
     min-width: 120px;
     width: max-content;

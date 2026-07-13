@@ -6,15 +6,16 @@ export const fontFamily = {
 } as const;
 
 export const fontSize = {
-  xs: '0.75rem',
-  sm: '0.875rem',
-  md: '1rem',
-  lg: '1.25rem',
-  xl: '1.5rem',
-  '2xl': '1.75rem',
-  '3xl': '2rem',
-  '4xl': '3rem',
-  '5xl': '4rem',
+  'body-sm': '0.75rem',
+  'body-md': '0.875rem',
+  'body-lg': '1rem',
+  'heading-xs': '1.125rem',
+  'heading-sm': '1.25rem',
+  'heading-md': '1.5rem',
+  'heading-lg': '1.75rem',
+  'heading-xl': '2rem',
+  'heading-2xl': '3rem',
+  'heading-3xl': '4rem',
 } as const;
 
 export const fontWeight = {

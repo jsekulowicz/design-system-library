@@ -15,7 +15,7 @@ export const settingsPageStyles = css`
     border-bottom: 1px solid var(--ds-color-border);
   }
   .hero .eyebrow {
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
     color: var(--ds-color-accent);
@@ -27,7 +27,7 @@ export const settingsPageStyles = css`
   }
   .hero p {
     color: var(--ds-color-fg-muted);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     max-width: 52ch;
     margin: 0;
   }
@@ -57,7 +57,7 @@ export const settingsPageStyles = css`
     color: var(--ds-color-fg-muted);
     text-decoration: none;
     border-radius: var(--ds-radius-xs);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
   }
   nav a[aria-current='true'] {
     color: var(--ds-color-fg);

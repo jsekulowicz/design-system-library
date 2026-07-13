@@ -110,7 +110,7 @@ export const Compact: Story = {
       </ds-nav-item>
     </div>
     <p
-      style="margin-top:var(--ds-space-4);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-sm)"
+      style="margin-top:var(--ds-space-4);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)"
     >
       Hover an item for ~1s to see the tooltip with the original label. Customize the delay with
       <code>compactHoverTooltipDelay</code>.

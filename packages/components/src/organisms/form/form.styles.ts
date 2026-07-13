@@ -35,7 +35,7 @@ export const formStyles = css`
   .title {
     margin: 0 0 var(--ds-space-4);
     font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-xl);
+    font-size: var(--ds-font-size-heading-md);
     letter-spacing: var(--ds-letter-spacing-display);
     color: var(--ds-color-fg);
   }

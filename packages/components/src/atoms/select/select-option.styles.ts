@@ -13,7 +13,7 @@ export const selectOptionStyles = css`
     padding: var(--ds-space-2) var(--ds-space-3);
     cursor: pointer;
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     color: var(--ds-color-fg);
   }
   :host(:hover),

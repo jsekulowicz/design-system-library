@@ -20,7 +20,7 @@ function remToPx(rem: string): number {
 function sectionHeader(title: string, description: TemplateResult): TemplateResult {
   return html`
     <header style="display:grid;gap:var(--ds-space-1)">
-      <h2 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-2xl)">${title}</h2>
+      <h2 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-lg)">${title}</h2>
       <p style="margin:0;color:var(--ds-color-fg-muted);max-width:68ch">${description}</p>
     </header>`;
 }
@@ -34,21 +34,21 @@ const SIZE_STEPS = Object.entries(fontSize) as [string, string][];
 export const TypeScale: Story = {
   render: () => html`
 <section style="display:grid;gap:var(--ds-space-5);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
-  ${sectionHeader('Type scale', html`Nine steps from <code>xs</code> (12 px) to <code>5xl</code> (64 px).
-    Body and control text live in <code>md</code>; labels and meta in <code>xs</code>–<code>sm</code>;
-    headings in <code>lg</code>–<code>4xl</code>; display pieces at <code>5xl</code>.`)}
+  ${sectionHeader('Type scale', html`Two role-based scales: <code>body-sm</code> through <code>body-lg</code>
+    for interface and prose text, and <code>heading-xs</code> through <code>heading-3xl</code>
+    for section headings, page titles, and display text.`)}
   <div role="table" style="display:grid;gap:0">
     <div role="row" style="display:grid;grid-template-columns:9rem 4rem 3.5rem 1fr;gap:var(--ds-space-3);padding:var(--ds-space-2) var(--ds-space-2);border-bottom:1px solid var(--ds-color-border)">
-      <strong role="columnheader" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">Token</strong>
-      <strong role="columnheader" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">rem</strong>
-      <strong role="columnheader" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">px</strong>
-      <strong role="columnheader" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">Preview</strong>
+      <strong role="columnheader" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">Token</strong>
+      <strong role="columnheader" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">rem</strong>
+      <strong role="columnheader" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">px</strong>
+      <strong role="columnheader" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">Preview</strong>
     </div>
     ${SIZE_STEPS.map(([name, rem], i) => html`
       <div role="row" style="display:grid;grid-template-columns:9rem 4rem 3.5rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs)">font-size-${name}</code>
-        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-xs)">${rem}</span>
-        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-xs)">${remToPx(rem)}px</span>
+        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">font-size-${name}</code>
+        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${rem}</span>
+        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${remToPx(rem)}px</span>
         <span role="cell" style="font-size:var(--ds-font-size-${name});line-height:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">The quick brown fox</span>
       </div>
     `)}
@@ -72,10 +72,10 @@ export const FontFamilies: Story = {
       <figure style="margin:0;padding:var(--ds-space-5);border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);display:grid;gap:var(--ds-space-3)">
         <figcaption style="display:grid;gap:4px">
           <strong>${f.label} — ${f.name}</strong>
-          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">${f.token}</code>
-          <p style="margin:0;font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">${f.note}</p>
+          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${f.token}</code>
+          <p style="margin:0;font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${f.note}</p>
         </figcaption>
-        <p style="margin:0;font-family:var(${f.token});font-size:var(--ds-font-size-lg);line-height:var(--ds-line-height-normal)">${f.sample}</p>
+        <p style="margin:0;font-family:var(${f.token});font-size:var(--ds-font-size-heading-sm);line-height:var(--ds-line-height-normal)">${f.sample}</p>
       </figure>`)}
   </div>
 </section>`,
@@ -92,8 +92,8 @@ export const FontWeights: Story = {
   <div role="table" style="display:grid;gap:0">
     ${WEIGHT_STEPS.map(([name, val], i) => html`
       <div role="row" style="display:grid;grid-template-columns:10rem 4rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs)">weight-${name}</code>
-        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-xs)">${val}</span>
+        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">weight-${name}</code>
+        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${val}</span>
         <span role="cell" style="font-weight:${val}">${SAMPLE}</span>
       </div>`)}
   </div>
@@ -113,10 +113,10 @@ export const LineHeights: Story = {
     ${LINE_HEIGHT_STEPS.map(([name, val]) => html`
       <div style="padding:var(--ds-space-4);border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);display:grid;gap:var(--ds-space-3)">
         <div>
-          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-sm)">line-height-${name}</code>
-          <span style="display:block;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-xs);margin-top:2px">${val}</span>
+          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">line-height-${name}</code>
+          <span style="display:block;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm);margin-top:2px">${val}</span>
         </div>
-        <p style="margin:0;font-size:var(--ds-font-size-sm);line-height:${val}">${PROSE}</p>
+        <p style="margin:0;font-size:var(--ds-font-size-body-md);line-height:${val}">${PROSE}</p>
       </div>`)}
   </div>
 </section>`,
@@ -132,9 +132,9 @@ export const LetterSpacing: Story = {
   <div role="table" style="display:grid;gap:0">
     ${TRACKING_STEPS.map(([name, val], i) => html`
       <div role="row" style="display:grid;grid-template-columns:11rem 5.5rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs)">letter-spacing-${name}</code>
-        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-xs)">${val || '0'}</span>
-        <span role="cell" style="letter-spacing:${val};font-size:var(--ds-font-size-md);${name === 'wide' ? 'text-transform:uppercase;font-size:var(--ds-font-size-xs);font-weight:600' : ''}">
+        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">letter-spacing-${name}</code>
+        <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${val || '0'}</span>
+        <span role="cell" style="letter-spacing:${val};font-size:var(--ds-font-size-body-lg);${name === 'wide' ? 'text-transform:uppercase;font-size:var(--ds-font-size-body-sm);font-weight:600' : ''}">
           ${name === 'wide' ? 'Section heading label' : 'The quick brown fox jumps'}
         </span>
       </div>`)}

@@ -61,7 +61,7 @@ export const selectCommonStyles = css`
     border: 1px solid var(--ds-color-border);
     border-radius: var(--ds-radius-xs);
     color: var(--ds-color-fg);
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     white-space: nowrap;
   }
   .tile-focused {
@@ -179,7 +179,7 @@ export const selectCommonStyles = css`
     background: var(--ds-color-bg);
     border-bottom: 1px solid var(--ds-color-border-strong);
     color: var(--ds-color-fg-muted);
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     line-height: 1.3;
   }
 `;

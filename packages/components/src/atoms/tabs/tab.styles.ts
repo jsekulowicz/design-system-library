@@ -15,7 +15,7 @@ export const tabStyles = css`
     padding: var(--ds-space-3) var(--ds-space-2);
     color: var(--ds-color-fg-muted);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     font-weight: var(--ds-font-weight-medium);
     line-height: 1;
     cursor: pointer;

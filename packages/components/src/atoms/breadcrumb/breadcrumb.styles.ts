@@ -5,7 +5,7 @@ export const breadcrumbStyles = css`
     display: block;
     color: var(--ds-color-fg-muted);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
   }
 
   nav {

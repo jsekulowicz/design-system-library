@@ -7,7 +7,7 @@ export const menuItemStyles = css`
     border-radius: var(--ds-radius-sm);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     user-select: none;
   }
   :host([disabled]) {

@@ -27,7 +27,7 @@ export const textFieldStyles = css`
     background: transparent;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     line-height: 1.4;
     padding: 0;
     min-width: 0;
@@ -47,7 +47,7 @@ export const textFieldStyles = css`
     display: inline-flex;
     align-items: center;
     color: var(--ds-color-fg-muted);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
   }
   .adornment[hidden] {
     display: none;

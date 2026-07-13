@@ -61,11 +61,11 @@ export const BrandPresets: Story = {
   </p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--ds-space-5)">
     <div>
-      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-xs);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Cobalt (default)</p>
+      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Cobalt (default)</p>
       ${componentShowcase('')}
     </div>
     <div>
-      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-xs);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Vermilion</p>
+      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Vermilion</p>
       ${componentShowcase(`
         --ds-color-accent:#E2341D;
         --ds-color-accent-hover:#C12613;
@@ -73,7 +73,7 @@ export const BrandPresets: Story = {
         --ds-color-accent-subtle:rgba(226,52,29,0.1)`)}
     </div>
     <div>
-      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-xs);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Rounded Teal</p>
+      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Rounded Teal</p>
       ${componentShowcase(`
         --ds-color-accent:#1F7A7A;
         --ds-color-accent-hover:#166666;

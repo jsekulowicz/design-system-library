@@ -19,7 +19,7 @@ export const searchableSelectStyles = css`
     background: transparent;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     min-width: 0;
     cursor: pointer;
     /* Show a long selected value truncated rather than hard-clipped; the
@@ -53,7 +53,7 @@ export const searchableSelectStyles = css`
   .empty {
     margin: 0;
     padding: var(--ds-space-3);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     color: var(--ds-color-fg-muted);
     text-align: center;
   }

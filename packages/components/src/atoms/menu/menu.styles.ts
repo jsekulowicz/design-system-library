@@ -16,7 +16,7 @@ export const menuStyles = css`
   .footer {
     padding: var(--ds-space-2) var(--ds-space-3);
     color: var(--ds-color-fg-subtle, var(--ds-color-fg));
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
   }

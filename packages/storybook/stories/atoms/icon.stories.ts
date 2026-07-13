@@ -46,7 +46,7 @@ export const Sizes: Story = {
       <figcaption style="
         color:var(--ds-color-fg-muted);
         font-family:var(--ds-font-body);
-        font-size:var(--ds-font-size-xs);
+        font-size:var(--ds-font-size-body-sm);
         font-weight:var(--ds-font-weight-medium);
       ">${size}</figcaption>
     </figure>

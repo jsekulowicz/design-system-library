@@ -6,7 +6,7 @@ export const heatmapCalendarStyles = css`
     width: 100%;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
   }
 
   .frame {
@@ -97,7 +97,7 @@ export const heatmapCalendarStyles = css`
 
   .tooltip span {
     color: inherit;
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
   }
 
   .legend {
@@ -106,7 +106,7 @@ export const heatmapCalendarStyles = css`
     justify-content: flex-end;
     gap: var(--ds-space-1);
     color: var(--ds-color-fg-muted);
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
   }
 
   .legend-cell {

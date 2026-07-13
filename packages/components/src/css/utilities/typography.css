@@ -11,13 +11,13 @@
     font-family: var(--ds-font-family-mono, var(--ds-font-mono));
   }
 
-  .ds-text-xs { font-size: var(--ds-font-size-xs); }
-  .ds-text-sm { font-size: var(--ds-font-size-sm); }
-  .ds-text-md { font-size: var(--ds-font-size-md); }
-  .ds-text-lg { font-size: var(--ds-font-size-lg); }
-  .ds-text-xl { font-size: var(--ds-font-size-xl); }
-  .ds-text-2xl { font-size: var(--ds-font-size-2xl); }
-  .ds-text-3xl { font-size: var(--ds-font-size-3xl); }
+  .ds-text-xs { font-size: var(--ds-font-size-body-sm); }
+  .ds-text-sm { font-size: var(--ds-font-size-body-md); }
+  .ds-text-md { font-size: var(--ds-font-size-body-lg); }
+  .ds-text-lg { font-size: var(--ds-font-size-heading-sm); }
+  .ds-text-xl { font-size: var(--ds-font-size-heading-md); }
+  .ds-text-2xl { font-size: var(--ds-font-size-heading-lg); }
+  .ds-text-3xl { font-size: var(--ds-font-size-heading-xl); }
 
   .ds-font-normal { font-weight: var(--ds-font-weight-regular); }
   .ds-font-medium { font-weight: var(--ds-font-weight-medium); }

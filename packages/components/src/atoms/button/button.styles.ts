@@ -23,7 +23,7 @@ export const buttonStyles = css`
     border-radius: var(--ds-radius-sm);
     border: 1px solid transparent;
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     font-weight: var(--ds-font-weight-medium);
     letter-spacing: var(--ds-letter-spacing-normal);
     line-height: 1;

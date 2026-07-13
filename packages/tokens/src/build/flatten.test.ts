@@ -21,7 +21,7 @@ describe('flatten', () => {
   });
 
   it('preserves hyphenated keys without duplication', () => {
-    const result = flatten({ 'font-size': { sm: '14px' } });
-    expect(result['--ds-font-size-sm']).toBe('14px');
+    const result = flatten({ 'font-size': { 'body-sm': '14px' } });
+    expect(result['--ds-font-size-body-sm']).toBe('14px');
   });
 });

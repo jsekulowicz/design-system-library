@@ -79,13 +79,13 @@ export const cardStyles = css`
   }
   ::slotted([slot='title']) {
     font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-xl);
+    font-size: var(--ds-font-size-heading-md);
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
     margin: 0;
   }
   ::slotted([slot='eyebrow']) {
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     letter-spacing: var(--ds-letter-spacing-wide);
     text-transform: uppercase;
     color: var(--ds-color-accent);

@@ -87,9 +87,9 @@ function swatchCard(s: Swatch): TemplateResult {
     <figure style="margin:0;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);overflow:hidden">
       <div style="height:56px;background:var(${s.token})" aria-hidden="true"></div>
       <figcaption style="padding:var(--ds-space-3);display:grid;gap:2px;background:var(--ds-color-bg-subtle)">
-        <strong style="font-size:var(--ds-font-size-sm)">${s.label}</strong>
-        <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted)">${s.token}</code>
-        <p style="margin:0;font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle);margin-top:var(--ds-space-1)">${s.desc}</p>
+        <strong style="font-size:var(--ds-font-size-body-md)">${s.label}</strong>
+        <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${s.token}</code>
+        <p style="margin:0;font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle);margin-top:var(--ds-space-1)">${s.desc}</p>
       </figcaption>
     </figure>`;
 }
@@ -99,7 +99,7 @@ export const SemanticPalette: Story = {
 <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
   ${GROUPS.map(g => html`
     <div style="display:grid;gap:var(--ds-space-3)">
-      <h3 style="margin:0;font-size:var(--ds-font-size-xs);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">${g.name}</h3>
+      <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">${g.name}</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:var(--ds-space-3)">
         ${g.swatches.map(swatchCard)}
       </div>
@@ -121,14 +121,14 @@ export const UsagePairings: Story = {
   ${PAIRINGS.map(p => html`
     <div style="border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);overflow:hidden">
       <div style="padding:var(--ds-space-5);background:var(${p.bg});color:var(${p.fg})">
-        <p style="margin:0;font-size:var(--ds-font-size-md)">${p.sample}</p>
+        <p style="margin:0;font-size:var(--ds-font-size-body-lg)">${p.sample}</p>
       </div>
       <div style="padding:var(--ds-space-2) var(--ds-space-4);background:var(--ds-color-bg-subtle);display:flex;align-items:center;gap:var(--ds-space-4);flex-wrap:wrap;border-top:1px solid var(--ds-color-border)">
-        <span style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-muted);min-width:14rem">${p.label}</span>
+        <span style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted);min-width:14rem">${p.label}</span>
         <div style="display:flex;align-items:center;gap:var(--ds-space-2)">
-          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs)">${p.bg}</code>
-          <span style="color:var(--ds-color-fg-subtle);font-size:var(--ds-font-size-xs)">+</span>
-          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-xs)">${p.fg}</code>
+          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">${p.bg}</code>
+          <span style="color:var(--ds-color-fg-subtle);font-size:var(--ds-font-size-body-sm)">+</span>
+          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">${p.fg}</code>
         </div>
       </div>
     </div>`)}

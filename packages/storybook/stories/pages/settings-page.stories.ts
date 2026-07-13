@@ -210,7 +210,7 @@ function renderSettingsPage() {
                 value="billing@example.com"
                 type="email"
               ></ds-text-field>
-              <p style="margin:0;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-sm)">
+              <p style="margin:0;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)">
                 Studio plan · renews 30 April 2027.
               </p>
               <div slot="actions" style="display:flex;gap:var(--ds-space-2)">

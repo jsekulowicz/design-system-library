@@ -13,7 +13,7 @@ export const textAreaStyles = css`
     padding: var(--ds-space-2) var(--ds-space-3);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     line-height: 1.4;
     resize: none;
   }

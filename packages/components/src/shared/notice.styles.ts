@@ -11,7 +11,7 @@ export const noticeStyles = css`
     border-left: 3px solid var(--ds-color-accent);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     line-height: 1.5;
   }
   :host([tone='info']) .notice {
@@ -39,7 +39,7 @@ export const noticeStyles = css`
   .title {
     font-family: var(--ds-font-display);
     font-weight: var(--ds-font-weight-semibold);
-    font-size: var(--ds-font-size-lg);
+    font-size: var(--ds-font-size-heading-sm);
     letter-spacing: var(--ds-letter-spacing-display);
   }
   .close {

@@ -199,7 +199,7 @@ export const WithShortcuts: Story = {
         New
         <span
           slot="trailing"
-          style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle)"
+          style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)"
           >⌘N</span
         >
       </ds-menu-item>
@@ -207,7 +207,7 @@ export const WithShortcuts: Story = {
         Open
         <span
           slot="trailing"
-          style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle)"
+          style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)"
           >⌘O</span
         >
       </ds-menu-item>
@@ -215,7 +215,7 @@ export const WithShortcuts: Story = {
         Save
         <span
           slot="trailing"
-          style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle)"
+          style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)"
           >⌘S</span
         >
       </ds-menu-item>

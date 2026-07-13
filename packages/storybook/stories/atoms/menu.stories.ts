@@ -119,19 +119,19 @@ export const WithTrailingShortcut: Story = {
     <ds-menu label="File" @ds-select=${logSelect}>
       <ds-menu-item value="new">
         New
-        <span slot="trailing" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle)">⌘N</span>
+        <span slot="trailing" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)">⌘N</span>
       </ds-menu-item>
       <ds-menu-item value="open">
         Open
-        <span slot="trailing" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle)">⌘O</span>
+        <span slot="trailing" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)">⌘O</span>
       </ds-menu-item>
       <ds-menu-item value="save">
         Save
-        <span slot="trailing" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle)">⌘S</span>
+        <span slot="trailing" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)">⌘S</span>
       </ds-menu-item>
       <ds-menu-item value="save-as">
         Save As
-        <span slot="trailing" style="font-size:var(--ds-font-size-xs);color:var(--ds-color-fg-subtle)">⇧⌘S</span>
+        <span slot="trailing" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)">⇧⌘S</span>
       </ds-menu-item>
     </ds-menu>
   `,

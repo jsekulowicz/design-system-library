@@ -15,7 +15,7 @@ export const footerStyles = css`
     border-top: 1px solid var(--ds-color-border);
     color: var(--ds-color-fg-muted);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     box-sizing: border-box;
   }
   .inner {
@@ -49,7 +49,7 @@ export const footerStyles = css`
   @container (max-width: ${mobileBreakpoint}) {
     .inner {
       gap: var(--ds-space-2);
-      font-size: var(--ds-font-size-xs);
+      font-size: var(--ds-font-size-body-sm);
     }
     .start,
     .middle,

@@ -40,7 +40,7 @@ export const tooltipStyles = css`
     background: var(--ds-color-fg);
     color: var(--ds-color-bg);
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     line-height: 1.4;
     padding: var(--ds-space-1) var(--ds-space-3);
     border-radius: var(--ds-radius-xs);

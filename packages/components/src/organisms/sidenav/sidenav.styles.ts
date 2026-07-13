@@ -40,7 +40,7 @@ export const sidenavStyles = css`
     padding: 0 var(--ds-space-3);
     margin-bottom: var(--ds-space-3);
     font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-lg);
+    font-size: var(--ds-font-size-heading-sm);
     color: var(--ds-color-fg);
   }
   .header[hidden],

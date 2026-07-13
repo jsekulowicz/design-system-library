@@ -240,7 +240,7 @@ export const pageShellStyles = css`
     --ds-drawer-title-min-height: 48px;
     /* Match the top bar's brand size (ds-top-bar .brand) rather than the
        drawer's larger default title. */
-    --ds-drawer-title-font-size: var(--ds-font-size-lg);
+    --ds-drawer-title-font-size: var(--ds-font-size-heading-sm);
     --ds-drawer-title-bg: var(--ds-page-shell-drawer-header-bg, transparent);
     --ds-drawer-title-fg: var(--ds-page-shell-drawer-header-fg, inherit);
     --ds-drawer-title-border-color: var(--ds-page-shell-drawer-header-border-color, transparent);

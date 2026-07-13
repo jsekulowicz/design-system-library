@@ -87,7 +87,7 @@ export const WithSidenav: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
           Overview
         </h1>
         <p>
@@ -115,7 +115,7 @@ export const NoAside: Story = {
           <ds-button variant="primary" size="sm">New session</ds-button>
         </div>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
             Single-section app
           </h1>
           <p>
@@ -148,7 +148,7 @@ export const ConstrainedWidth: Story = {
           </ds-nav-item>
         </ds-sidenav>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
             Capped shell
           </h1>
           <p>
@@ -185,7 +185,7 @@ export const CollapsedSidenav: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
           Collapsed navigation
         </h1>
         <p>
@@ -215,7 +215,7 @@ export const CollapsibleAsides: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
           Two-sided shell
         </h1>
         <p>
@@ -255,7 +255,7 @@ export const OverflowingMain: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
           Overflowing main
         </h1>
         <p>
@@ -309,7 +309,7 @@ export const HeaderStatusAndMenuAtStart: Story = {
           </ds-nav-item>
         </ds-sidenav>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
             Header status
           </h1>
           <p>

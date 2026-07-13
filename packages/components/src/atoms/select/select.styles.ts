@@ -5,7 +5,7 @@ export const selectStyles = css`
     cursor: pointer;
     text-align: left;
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-md);
+    font-size: var(--ds-font-size-body-lg);
     color: var(--ds-color-fg);
   }
   .trigger:focus-visible {

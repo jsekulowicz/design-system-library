@@ -110,7 +110,7 @@ export const colorPickerStyles = css`
   }
   .trigger-value {
     color: var(--ds-color-fg-muted);
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
   }
   .placeholder {
     color: var(--ds-color-fg-muted);
@@ -137,7 +137,7 @@ export const colorPickerStyles = css`
     gap: var(--ds-space-3);
   }
   .panel-title {
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     font-weight: var(--ds-font-weight-semibold);
   }
   .section {
@@ -146,7 +146,7 @@ export const colorPickerStyles = css`
   }
   .section-label {
     color: var(--ds-color-fg);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-body-md);
     font-weight: var(--ds-font-weight-medium);
   }
   .custom-row {

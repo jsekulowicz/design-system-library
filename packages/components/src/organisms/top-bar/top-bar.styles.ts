@@ -37,7 +37,7 @@ export const topBarStyles = css`
     gap: var(--ds-space-2);
     min-width: 0;
     font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-lg);
+    font-size: var(--ds-font-size-heading-sm);
     color: var(--ds-color-fg);
   }
   .actions {

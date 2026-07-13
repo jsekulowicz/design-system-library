@@ -58,7 +58,7 @@ export const dialogStyles = css`
     margin: 0;
     flex: 1;
     font-family: var(--ds-font-display);
-    font-size: var(--ds-font-size-xl);
+    font-size: var(--ds-font-size-heading-md);
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }

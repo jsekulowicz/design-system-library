@@ -102,7 +102,7 @@ export const drawerStyles = css`
     align-items: center;
     line-height: 1;
     font-family: var(--ds-font-display);
-    font-size: var(--ds-drawer-title-font-size, var(--ds-font-size-xl));
+    font-size: var(--ds-drawer-title-font-size, var(--ds-font-size-heading-md));
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }

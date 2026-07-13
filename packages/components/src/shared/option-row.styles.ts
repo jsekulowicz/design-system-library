@@ -20,7 +20,7 @@ export const optionRowStyles = css`
     min-width: 0;
   }
   .description {
-    font-size: var(--ds-font-size-xs);
+    font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-subtle, var(--ds-color-fg));
   }
   .description:empty {

@@ -27,7 +27,7 @@ export const Scale: Story = {
   style="display:grid;gap:var(--ds-space-3);max-width:780px;font-family:var(--ds-font-body);color:var(--ds-color-fg)"
 >
   <header style="display:grid;gap:var(--ds-space-1)">
-    <h2 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-2xl)">
+    <h2 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-lg)">
       Spacing scale
     </h2>
     <p style="margin:0;color:var(--ds-color-fg-muted)">
@@ -45,7 +45,7 @@ export const Scale: Story = {
     <strong role="columnheader">Preview</strong>
     ${STEPS.map(
       (s) => html`
-        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-sm)">
+        <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">
           space-${s.name}
         </code>
         <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted)">
@@ -85,7 +85,7 @@ export const PaddingExamples: Story = {
           style="border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-sm);background:var(--ds-color-bg-subtle);padding:var(--ds-space-${n})"
         >
           <div
-            style="background:var(--ds-color-accent-subtle);border:1px dashed var(--ds-color-accent);padding:var(--ds-space-1) var(--ds-space-2);font-family:var(--ds-font-mono);font-size:var(--ds-font-size-sm)"
+            style="background:var(--ds-color-accent-subtle);border:1px dashed var(--ds-color-accent);padding:var(--ds-space-1) var(--ds-space-2);font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)"
           >
             Content
           </div>
