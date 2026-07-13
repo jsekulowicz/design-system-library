@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.44.0
+
+### Minor Changes
+
+- 678533e: NavItem: keep disabled links keyboard-focusable and add a focusable `loading` state with busy semantics and a spinner. Disabled standalone controls now consistently remain keyboard-focusable and expose `aria-disabled`.
+- 4ccd140: NavItem: add a `tooltip` slot for rich compact-mode tooltip content, with the item label retained as the default.
+
 ## 0.43.0
 
 ### Minor Changes
