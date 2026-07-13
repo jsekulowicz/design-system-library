@@ -1,0 +1,46 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as HeatmapCalendarStories from './heatmap-calendar.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/heatmap-calendar/define';
+
+<Meta of={HeatmapCalendarStories} />
+
+# HeatmapCalendar
+
+A rolling calendar heatmap for showing activity intensity by date. Dates use `YYYY-MM-DD` strings and are laid out without local-time parsing.
+
+```html
+<ds-heatmap-calendar
+  title="Crosswords played"
+  .data=${[{ date: '2026-07-13', value: 4 }]}
+  end-date="2026-07-13"
+  months="12"
+></ds-heatmap-calendar>
+```
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+<ds-tab-panel value="api">
+  <Canvas of={HeatmapCalendarStories.Activity} />
+  <h3>Props</h3>
+  <Controls of={HeatmapCalendarStories.Activity} />
+  <ComponentApi tag="ds-heatmap-calendar" />
+</ds-tab-panel>
+
+<ds-tab-panel value="examples">
+  <Stories includePrimary={false} />
+</ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Accessibility</h3>
+    <ul>
+      <li><kbd>↑</kbd> / <kbd>↓</kbd> move one day and <kbd>←</kbd> / <kbd>→</kbd> move one week.</li>
+      <li><kbd>Home</kbd> / <kbd>End</kbd> jump to the first / last visible date; <kbd>Esc</kbd> clears the active date.</li>
+      <li>A hidden table exposes every visible date and value independently of color.</li>
+      <li>Use <code>formatValue</code> to include the unit in tooltips and screen-reader output.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>

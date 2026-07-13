@@ -16,6 +16,7 @@ export { Divider } from './ds-divider.js';
 export { Drawer } from './ds-drawer.js';
 export { Footer } from './ds-footer.js';
 export { Form } from './ds-form.js';
+export { HeatmapCalendar } from './ds-heatmap-calendar.js';
 export { Icon } from './ds-icon.js';
 export { Link } from './ds-link.js';
 export { List } from './ds-list.js';

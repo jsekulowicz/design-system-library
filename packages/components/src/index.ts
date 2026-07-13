@@ -72,6 +72,15 @@ export {
   type BarChartGroup,
   type BarChartFocusDetail,
 } from './molecules/bar-chart/index.js';
+export {
+  DsHeatmapCalendar,
+  type HeatmapDay,
+  type HeatmapFocusDetail,
+  type HeatmapWeekStart,
+  type HeatmapCell,
+  type HeatmapLayout,
+  type HeatmapMonthLabel,
+} from './molecules/heatmap-calendar/index.js';
 export { DsAlert, type AlertTone } from './molecules/alert/index.js';
 export { DsForm } from './organisms/form/index.js';
 export { DsTopBar } from './organisms/top-bar/index.js';

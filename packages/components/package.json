@@ -270,6 +270,13 @@
     "./bar-chart/define": {
       "import": "./dist/molecules/bar-chart/define.js"
     },
+    "./heatmap-calendar": {
+      "types": "./dist/molecules/heatmap-calendar/index.d.ts",
+      "import": "./dist/molecules/heatmap-calendar/index.js"
+    },
+    "./heatmap-calendar/define": {
+      "import": "./dist/molecules/heatmap-calendar/define.js"
+    },
     "./alert": {
       "types": "./dist/molecules/alert/index.d.ts",
       "import": "./dist/molecules/alert/index.js"
