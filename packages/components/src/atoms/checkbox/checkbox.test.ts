@@ -79,4 +79,19 @@ describe('<ds-checkbox>', () => {
     expect(el.checked).toBe(false);
     expect(events.map((event) => event.detail)).toEqual([{ checked: true }, { checked: false }]);
   });
+
+  it('stays focusable and blocks interaction when disabled', async () => {
+    const el = await mount<DsCheckbox>('<ds-checkbox disabled>Accept</ds-checkbox>');
+    const input = el.shadowRoot!.querySelector('input')!;
+    const label = el.shadowRoot!.querySelector('label')!;
+
+    expect(input.disabled).toBe(false);
+    expect(input.getAttribute('aria-disabled')).toBe('true');
+    input.focus();
+    expect(el.shadowRoot!.activeElement).toBe(input);
+
+    label.click();
+    label.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    expect(el.checked).toBe(false);
+  });
 });

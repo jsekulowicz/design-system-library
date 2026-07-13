@@ -83,6 +83,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
         value=${this.radioValue}
         tabindex=${this.tabStop ? '0' : '-1'}
         ?required=${this.required}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
         @click=${this.#onInputClick}
       />
       <span class="control" part="dot" aria-hidden="true"></span>

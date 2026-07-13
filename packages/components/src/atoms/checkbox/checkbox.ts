@@ -33,6 +33,9 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   }
 
   #onInput = (event: Event): void => {
+    if (this.disabled) {
+      return;
+    }
     const target = event.target as HTMLInputElement;
     this.checked = target.checked;
     this.indeterminate = false;
@@ -42,13 +45,22 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   #onKey = (event: KeyboardEvent): void => {
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
+      if (this.disabled) {
+        return;
+      }
       this.checked = !this.checked;
       this.emit('ds-change', { detail: { checked: this.checked } });
     }
   };
 
+  #blockClickWhenDisabled = (event: MouseEvent): void => {
+    if (this.disabled) {
+      event.preventDefault();
+    }
+  };
+
   override render(): TemplateResult {
-    return html`<label @keydown=${this.#onKey}>
+    return html`<label @click=${this.#blockClickWhenDisabled} @keydown=${this.#onKey}>
       <input
         class="visually-hidden"
         type="checkbox"
@@ -56,7 +68,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
         .checked=${this.checked}
         .indeterminate=${this.indeterminate}
         ?required=${this.required}
-        ?disabled=${this.disabled}
+        aria-disabled=${this.disabled ? 'true' : 'false'}
         aria-invalid=${this.invalid ? 'true' : 'false'}
         @change=${this.#onInput}
       />

@@ -17,6 +17,7 @@ const meta: Meta = {
     rel: { control: 'text' },
     current: { control: 'boolean' },
     disabled: { control: 'boolean' },
+    loading: { control: 'boolean' },
     compact: { control: 'boolean' },
     compactHoverTooltipDelay: {
       control: { type: 'number', min: 0, step: 100 },
@@ -26,6 +27,7 @@ const meta: Meta = {
     href: '/docs',
     current: false,
     disabled: false,
+    loading: false,
     compact: false,
     compactHoverTooltipDelay: 1000,
   },
@@ -43,6 +45,7 @@ export const Basic: Story = {
         .rel=${args['rel']}
         ?current=${args['current']}
         ?disabled=${args['disabled']}
+        ?loading=${args['loading']}
         ?compact=${args['compact']}
         .compactHoverTooltipDelay=${args['compactHoverTooltipDelay']}
       >

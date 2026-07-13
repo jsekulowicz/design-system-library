@@ -38,12 +38,17 @@ describe('<ds-nav-item>', () => {
     expect(el.hasAttribute('current')).toBe(true);
   });
 
-  it('renders a non-interactive <span> when disabled', async () => {
+  it('keeps the link focusable and blocks navigation when disabled', async () => {
     const el = await mount<DsNavItem>('<ds-nav-item href="/" disabled>Home</ds-nav-item>');
-    expect(el.shadowRoot!.querySelector('a')).toBeNull();
-    const link = el.shadowRoot!.querySelector('[part="link"]')!;
-    expect(link.tagName).toBe('SPAN');
+    const link = el.shadowRoot!.querySelector('a')!;
     expect(link.getAttribute('aria-disabled')).toBe('true');
+
+    el.focus();
+    expect(el.shadowRoot!.activeElement).toBe(link);
+
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+    link.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(true);
   });
 
   it('forwards target and rel to the <a>', async () => {
@@ -100,6 +105,23 @@ describe('<ds-nav-item>', () => {
     await el.updateComplete;
     const link = el.shadowRoot!.querySelector('[part="link"]') as HTMLElement;
     expect(link.getAttribute('aria-label')).toBe('Documentation');
+  });
+
+  it('renders a focusable loading state and blocks navigation', async () => {
+    const el = await mount<DsNavItem>(
+      '<ds-nav-item href="/" loading><span slot="icon">*</span>Documentation</ds-nav-item>',
+    );
+    const link = el.shadowRoot!.querySelector('a')!;
+
+    expect(link.getAttribute('aria-disabled')).toBe('true');
+    expect(link.getAttribute('aria-busy')).toBe('true');
+    expect(el.shadowRoot!.querySelector('.spinner')).not.toBeNull();
+
+    el.focus();
+    expect(el.shadowRoot!.activeElement).toBe(link);
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+    link.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(true);
   });
 
   it('does not set aria-label in non-compact mode', async () => {

@@ -77,6 +77,9 @@ describe('<ds-text-area>', () => {
     expect(input.placeholder).toBe('Write a reply');
     expect(input.readOnly).toBe(true);
     expect(input.disabled).toBe(false);
+    expect(input.getAttribute('aria-disabled')).toBe('true');
+    input.focus();
+    expect(el.shadowRoot!.activeElement).toBe(input);
   });
 
   it('supports an accessible input label without rendering a visible label', async () => {

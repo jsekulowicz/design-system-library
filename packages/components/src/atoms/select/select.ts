@@ -250,7 +250,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           id="trigger"
           class="trigger field-control${this.multiple ? ' trigger-multiple' : ''}"
           part="trigger"
-          tabindex=${this.disabled ? '-1' : '0'}
+          tabindex="0"
           role="combobox"
           aria-haspopup="listbox"
           aria-expanded=${open ? 'true' : 'false'}

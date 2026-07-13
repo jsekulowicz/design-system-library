@@ -103,6 +103,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
           aria-label=${this.label ? nothing : this.inputLabel || nothing}
           ?required=${this.required}
           ?readonly=${this.disabled || this.readonly}
+          aria-disabled=${this.disabled ? 'true' : 'false'}
           minlength=${this.minLength ?? nothing}
           maxlength=${this.maxLength ?? nothing}
           pattern=${this.pattern ?? nothing}

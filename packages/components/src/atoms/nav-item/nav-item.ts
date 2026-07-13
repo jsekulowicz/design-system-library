@@ -9,7 +9,7 @@ import '../tooltip/define.js';
  * @summary Interactive navigation link. Renders an `<a>` and reflects `current` state via `aria-current`.
  * @slot default - The label.
  * @slot icon - Optional leading icon (typically `<ds-icon>`). Required when `compact` is set.
- * @csspart link - The internal `<a>` (or `<span>` when disabled).
+ * @csspart link - The internal `<a>`.
  * @csspart icon - The icon slot wrapper.
  * @csspart label - The label slot wrapper.
  */
@@ -21,6 +21,7 @@ export class DsNavItem extends DsElement {
   @property() rel?: string;
   @property({ type: Boolean, reflect: true }) current = false;
   @property({ type: Boolean, reflect: true }) disabled = false;
+  @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Boolean, reflect: true }) compact = false;
   @property({
     type: Number,
@@ -38,9 +39,13 @@ export class DsNavItem extends DsElement {
   }
 
   override updated(changed: PropertyValues): void {
-    if (changed.has('compact') || changed.has('_hasIcon')) {
+    if (changed.has('compact') || changed.has('loading') || changed.has('_hasIcon')) {
       this.#warnIfMissingIcon();
     }
+  }
+
+  override focus(options?: FocusOptions): void {
+    this.renderRoot.querySelector<HTMLAnchorElement>('a')?.focus(options);
   }
 
   #hasAssignedIcon(): boolean {
@@ -53,7 +58,7 @@ export class DsNavItem extends DsElement {
   }
 
   #warnIfMissingIcon(): void {
-    if (this.compact && !this.#hasAssignedIcon()) {
+    if (this.compact && !this.loading && !this.#hasAssignedIcon()) {
       console.error(
         '[ds-nav-item] compact mode requires a child element with slot="icon".',
         this,
@@ -75,9 +80,34 @@ export class DsNavItem extends DsElement {
       .trim();
   };
 
+  #onClick = (event: MouseEvent): void => {
+    if (this.disabled || this.loading) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  };
+
+  #renderIcon(): TemplateResult {
+    if (this.loading) {
+      return html`<svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-dasharray="56.55"
+          stroke-dashoffset="14.14"
+        />
+      </svg>`;
+    }
+    return html`<slot name="icon" @slotchange=${this.#onIconSlotChange}></slot>`;
+  }
+
   #renderInner(): TemplateResult {
-    return html`<span class="icon" part="icon" ?hidden=${!this._hasIcon}>
-        <slot name="icon" @slotchange=${this.#onIconSlotChange}></slot>
+    return html`<span class="icon" part="icon" ?hidden=${!this._hasIcon && !this.loading}>
+        ${this.#renderIcon()}
       </span>
       <span class="label" part="label">
         <slot @slotchange=${this.#onLabelSlotChange}></slot>
@@ -85,15 +115,6 @@ export class DsNavItem extends DsElement {
   }
 
   #renderLink(): TemplateResult {
-    if (this.disabled) {
-      return html`<span
-        class="link nav-control"
-        part="link"
-        aria-disabled="true"
-        aria-label=${this.compact && this._labelText ? this._labelText : nothing}
-        >${this.#renderInner()}</span
-      >`;
-    }
     return html`<a
       class="link nav-control"
       part="link"
@@ -101,7 +122,10 @@ export class DsNavItem extends DsElement {
       target=${this.target ?? nothing}
       rel=${this.rel ?? nothing}
       aria-current=${this.current ? 'page' : nothing}
+      aria-disabled=${this.disabled || this.loading ? 'true' : nothing}
+      aria-busy=${this.loading ? 'true' : nothing}
       aria-label=${this.compact && this._labelText ? this._labelText : nothing}
+      @click=${this.#onClick}
     >
       ${this.#renderInner()}
     </a>`;

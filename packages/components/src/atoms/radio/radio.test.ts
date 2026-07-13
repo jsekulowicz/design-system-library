@@ -58,6 +58,15 @@ describe('<ds-radio>', () => {
     expect(el.checked).toBe(true);
   });
 
+  it('keeps a disabled radio focusable and announces its state', async () => {
+    const el = await mount<DsRadio>('<ds-radio radiovalue="a" disabled>A</ds-radio>');
+    const input = el.shadowRoot!.querySelector('input')!;
+
+    expect(input.getAttribute('aria-disabled')).toBe('true');
+    input.focus();
+    expect(el.shadowRoot!.activeElement).toBe(input);
+  });
+
   it('handles key selection for Space and Enter only', async () => {
     const el = await mount<DsRadio>('<ds-radio radiovalue="a">A</ds-radio>');
     const label = el.shadowRoot!.querySelector('label')!;

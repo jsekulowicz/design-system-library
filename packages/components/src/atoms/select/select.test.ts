@@ -323,6 +323,16 @@ describe('<ds-select>', () => {
   });
 
   describe('disabled', () => {
+    it('keeps the trigger focusable and announces its state', async () => {
+      const el = await mountSelect({ disabled: true });
+      const trigger = getTrigger(el);
+
+      expect(trigger.getAttribute('tabindex')).toBe('0');
+      expect(trigger.getAttribute('aria-disabled')).toBe('true');
+      trigger.focus();
+      expect(el.shadowRoot!.activeElement).toBe(trigger);
+    });
+
     it('does not open on trigger click', async () => {
       const el = await mountSelect({ disabled: true });
       getTrigger(el).click();
