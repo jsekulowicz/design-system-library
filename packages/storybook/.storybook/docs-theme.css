@@ -160,6 +160,7 @@ p {
   background-color: transparent !important;
   color: var(--ds-color-fg) !important;
   border-color: var(--ds-color-border-subtle) !important;
+  border-radius: 0 !important;
   box-shadow: none !important;
 }
 
