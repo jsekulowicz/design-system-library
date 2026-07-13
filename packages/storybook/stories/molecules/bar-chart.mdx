@@ -1,4 +1,4 @@
-import { Meta, Canvas, Stories } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
 import * as BarChartStories from './bar-chart.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
 import '@jsekulowicz/ds-components/bar-chart/define';
@@ -40,6 +40,8 @@ Setting `stacked` collapses each group into a single bar of stacked segments (su
 
     <ds-tab-panel value="api">
       <Canvas of={BarChartStories.Grouped} />
+      <h3>Props</h3>
+      <Controls of={BarChartStories.Grouped} />
       <ComponentApi tag="ds-bar-chart" />
     </ds-tab-panel>
 

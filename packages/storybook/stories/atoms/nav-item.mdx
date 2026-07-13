@@ -1,4 +1,4 @@
-import { Meta, Canvas, Stories } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
 import * as NavItemStories from './nav-item.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
 import '@jsekulowicz/ds-components/nav-item/define';
@@ -29,7 +29,9 @@ Items live in `ds-sidenav` as a flex column. When the closest ancestor is a `ds-
     <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
 
     <ds-tab-panel value="api">
-      <Canvas of={NavItemStories.Current} />
+      <Canvas of={NavItemStories.Basic} />
+      <h3>Props</h3>
+      <Controls of={NavItemStories.Basic} />
       <ComponentApi tag="ds-nav-item" />
     </ds-tab-panel>
 

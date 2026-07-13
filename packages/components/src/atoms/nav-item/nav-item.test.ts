@@ -115,7 +115,16 @@ describe('<ds-nav-item>', () => {
     const tooltip = el.shadowRoot!.querySelector('ds-tooltip');
     expect(tooltip).not.toBeNull();
     expect(tooltip!.hasAttribute('hover-only')).toBe(true);
-    expect(tooltip!.getAttribute('delay')).toBe('2000');
+    expect(tooltip!.getAttribute('delay')).toBe('1000');
+  });
+
+  it('configures the compact tooltip delay', async () => {
+    const el = await mount<DsNavItem>(
+      '<ds-nav-item href="/" compact compact-hover-tooltip-delay="250"><span slot="icon">*</span>Documentation</ds-nav-item>',
+    );
+    const tooltip = el.shadowRoot!.querySelector('ds-tooltip');
+    expect(el.compactHoverTooltipDelay).toBe(250);
+    expect(tooltip!.getAttribute('delay')).toBe('250');
   });
 
   it('logs a console.error when compact is set without an icon', async () => {

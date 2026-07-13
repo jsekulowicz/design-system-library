@@ -70,23 +70,54 @@ function chartSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
 const meta: Meta = {
   title: 'Molecules/BarChart',
   component: 'ds-bar-chart',
+  argTypes: {
+    data: { control: 'object' },
+    domain: { control: 'text' },
+    series: { control: 'object' },
+    stacked: { control: 'boolean' },
+    xAxisLabel: { control: 'text' },
+    yAxisLabel: { control: 'text' },
+    title: { control: 'text' },
+    height: { control: { type: 'number', min: 160, step: 10 } },
+    showLegend: { control: 'boolean' },
+    formatValue: { control: false },
+    formatDomain: { control: false },
+  },
+  args: {
+    data: TURNS,
+    domain: 'turnOrdinalNumber',
+    series: THREE_PLAYERS,
+    stacked: false,
+    xAxisLabel: 'Turn',
+    yAxisLabel: 'Score',
+    title: 'Game turns — scores',
+    height: 320,
+    showLegend: true,
+    formatDomain: (value: unknown) => `Turn ${value}`,
+  },
 };
 
 export default meta;
 type Story = StoryObj;
 
 export const Grouped: Story = {
-  render: () => html`
+  render: function render(args) {
+    return html`
 <ds-bar-chart
-  title="Game turns — scores"
-  .data=${TURNS}
-  domain="turnOrdinalNumber"
-  .series=${THREE_PLAYERS}
-  x-axis-label="Turn"
-  y-axis-label="Score"
-  .formatDomain=${(v: unknown) => `Turn ${v}`}
+  .title=${args['title']}
+  .data=${args['data']}
+  .domain=${args['domain']}
+  .series=${args['series']}
+  ?stacked=${args['stacked']}
+  .xAxisLabel=${args['xAxisLabel']}
+  .yAxisLabel=${args['yAxisLabel']}
+  .height=${args['height']}
+  .showLegend=${args['showLegend']}
+  .formatValue=${args['formatValue']}
+  .formatDomain=${args['formatDomain']}
 ></ds-bar-chart>
-  `,
+  `;
+  },
   parameters: {
     docs: {
       source: {

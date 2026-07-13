@@ -4,8 +4,6 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { navItemStyles } from './nav-item.styles.js';
 import '../tooltip/define.js';
 
-const HOVER_TOOLTIP_DELAY_MS = 2000;
-
 /**
  * @tag ds-nav-item
  * @summary Interactive navigation link. Renders an `<a>` and reflects `current` state via `aria-current`.
@@ -24,6 +22,12 @@ export class DsNavItem extends DsElement {
   @property({ type: Boolean, reflect: true }) current = false;
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) compact = false;
+  @property({
+    type: Number,
+    reflect: true,
+    attribute: 'compact-hover-tooltip-delay',
+  })
+  compactHoverTooltipDelay = 1000;
 
   @state() private _hasIcon = false;
   @state() private _labelText = '';
@@ -108,7 +112,7 @@ export class DsNavItem extends DsElement {
       return html`<ds-tooltip
         class="tooltip-wrapper"
         placement="right"
-        delay=${HOVER_TOOLTIP_DELAY_MS}
+        delay=${this.compactHoverTooltipDelay}
         ?hover-only=${true}
       >
         ${this.#renderLink()}

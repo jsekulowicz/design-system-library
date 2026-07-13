@@ -9,15 +9,33 @@ import '@jsekulowicz/ds-components/icon/users';
 const meta: Meta = {
   title: 'Atoms/NavGroup',
   component: 'ds-nav-group',
+  argTypes: {
+    label: { control: 'text' },
+    expanded: { control: 'boolean' },
+    collapsible: { control: 'boolean' },
+    compact: { control: 'boolean' },
+  },
+  args: {
+    label: 'Workspace',
+    expanded: true,
+    collapsible: true,
+    compact: false,
+  },
 };
 
 export default meta;
 type Story = StoryObj;
 
 export const Basic: Story = {
-  render: () => html`
-    <div style="display:flex;flex-direction:column;gap:var(--ds-space-1);width:240px">
-      <ds-nav-group label="Workspace" expanded>
+  render: function render(args) {
+    return html`
+    <div style="display:flex;flex-direction:column;gap:var(--ds-space-1);width:${args['compact'] ? '64px' : '240px'}">
+      <ds-nav-group
+        .label=${args['label']}
+        ?expanded=${args['expanded']}
+        .collapsible=${args['collapsible']}
+        ?compact=${args['compact']}
+      >
         <ds-nav-item href="/settings">
           <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
           General
@@ -28,7 +46,8 @@ export const Basic: Story = {
         </ds-nav-item>
       </ds-nav-group>
     </div>
-  `,
+  `;
+  },
 };
 
 export const WithIcon: Story = {

@@ -1,4 +1,4 @@
-import { Meta, Canvas, Stories } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
 import * as NavGroupStories from './nav-group.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
 import '@jsekulowicz/ds-components/nav-item/define';
@@ -29,6 +29,8 @@ The heading uses the same interaction styling as `ds-nav-item`. The chevron is t
 
   <ds-tab-panel value="api">
     <Canvas of={NavGroupStories.Basic} />
+    <h3>Props</h3>
+    <Controls of={NavGroupStories.Basic} />
     <ComponentApi tag="ds-nav-group" />
   </ds-tab-panel>
 

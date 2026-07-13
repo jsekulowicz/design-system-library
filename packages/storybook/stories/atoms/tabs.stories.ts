@@ -15,8 +15,18 @@ export default meta;
 type Story = StoryObj;
 
 export const Playground: Story = {
-  render: () => html`
-<ds-tabs value="overview">
+  argTypes: {
+    value: {
+      control: 'inline-radio',
+      options: ['overview', 'activity', 'settings'],
+    },
+  },
+  args: {
+    value: 'overview',
+  },
+  render: function render(args) {
+    return html`
+<ds-tabs .value=${args['value']}>
   <ds-tab slot="tab" value="overview">Overview</ds-tab>
   <ds-tab slot="tab" value="activity">Activity</ds-tab>
   <ds-tab slot="tab" value="settings">Settings</ds-tab>
@@ -30,7 +40,55 @@ export const Playground: Story = {
     <p style="margin: 0;">Per-account preferences and integrations.</p>
   </ds-tab-panel>
 </ds-tabs>
-  `,
+  `;
+  },
+};
+
+export const TabPlayground: Story = {
+  argTypes: {
+    value: { control: 'text', table: { type: { summary: 'string' } } },
+    selected: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+    disabled: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+  },
+  args: {
+    value: 'overview',
+    selected: true,
+    disabled: false,
+  },
+  render: function render(args) {
+    return html`
+      <ds-tab .value=${args['value']} ?selected=${args['selected']} ?disabled=${args['disabled']}>
+        Overview
+      </ds-tab>
+    `;
+  },
+};
+
+export const TabPanelPlayground: Story = {
+  argTypes: {
+    value: { control: 'text', table: { type: { summary: 'string' } } },
+    active: {
+      control: 'boolean',
+      table: { type: { summary: 'boolean' }, defaultValue: { summary: 'false' } },
+    },
+  },
+  args: {
+    value: 'overview',
+    active: true,
+  },
+  render: function render(args) {
+    return html`
+      <ds-tab-panel .value=${args['value']} ?active=${args['active']}>
+        <p style="margin: 0;">Summary of the account and recent highlights.</p>
+      </ds-tab-panel>
+    `;
+  },
 };
 
 export const WithIcons: Story = {
