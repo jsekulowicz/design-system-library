@@ -5,8 +5,6 @@ import { navGroupStyles } from './nav-group.styles.js';
 import '../../atoms/icon/icons/chevron-down.js';
 import '../tooltip/define.js';
 
-const HOVER_TOOLTIP_DELAY_MS = 2000;
-
 /**
  * @tag ds-nav-group
  * @summary Collapsible heading + nested ds-nav-item children. Uses the disclosure pattern.
@@ -24,6 +22,12 @@ export class DsNavGroup extends DsElement {
   @property({ type: Boolean, reflect: true }) expanded = false;
   @property({ type: Boolean }) collapsible = true;
   @property({ type: Boolean, reflect: true }) compact = false;
+  @property({
+    type: Number,
+    reflect: true,
+    attribute: 'compact-hover-tooltip-delay',
+  })
+  compactHoverTooltipDelay = 1000;
 
   @state() private _hasIcon = false;
 
@@ -107,7 +111,7 @@ export class DsNavGroup extends DsElement {
       ? html`<ds-tooltip
           class="tooltip-wrapper"
           placement="right"
-          delay=${HOVER_TOOLTIP_DELAY_MS}
+          delay=${this.compactHoverTooltipDelay}
           ?hover-only=${true}
         >
           ${this.#renderHeading()}

@@ -14,12 +14,16 @@ const meta: Meta = {
     expanded: { control: 'boolean' },
     collapsible: { control: 'boolean' },
     compact: { control: 'boolean' },
+    compactHoverTooltipDelay: {
+      control: { type: 'number', min: 0, step: 100 },
+    },
   },
   args: {
     label: 'Workspace',
     expanded: true,
     collapsible: true,
     compact: false,
+    compactHoverTooltipDelay: 1000,
   },
 };
 
@@ -35,6 +39,7 @@ export const Basic: Story = {
         ?expanded=${args['expanded']}
         .collapsible=${args['collapsible']}
         ?compact=${args['compact']}
+        .compactHoverTooltipDelay=${args['compactHoverTooltipDelay']}
       >
         <ds-nav-item href="/settings">
           <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
@@ -85,7 +90,7 @@ export const Collapsed: Story = {
 export const Compact: Story = {
   render: () => html`
     <div style="display:flex;flex-direction:column;gap:var(--ds-space-1);width:64px">
-      <ds-nav-group label="Workspace" compact expanded>
+      <ds-nav-group label="Workspace" compact expanded compact-hover-tooltip-delay="1000">
         <ds-icon slot="icon" name="briefcase" size="lg"></ds-icon>
         <ds-nav-item href="/settings" compact>
           <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
