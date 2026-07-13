@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.45.0
+
+### Minor Changes
+
+- 13b7d0e: Add the accessible `ds-heatmap-calendar` molecule with responsive rendering, keyboard navigation, tooltips, a legend, and a screen-reader data table.
+
 ## 0.44.0
 
 ### Minor Changes
