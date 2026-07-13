@@ -43,6 +43,42 @@ describe('<ds-heatmap-calendar>', () => {
     );
   });
 
+  it('keeps the tooltip and legend outside the horizontal scroller', async () => {
+    const element = await mountCalendar();
+    const frame = element.shadowRoot!.querySelector('.frame')!;
+    const scroller = element.shadowRoot!.querySelector('.scroller')!;
+    const tooltip = element.shadowRoot!.querySelector('.tooltip')!;
+    const legend = element.shadowRoot!.querySelector('.legend')!;
+
+    expect(frame.contains(tooltip)).toBe(true);
+    expect(frame.contains(legend)).toBe(true);
+    expect(scroller.contains(tooltip)).toBe(false);
+    expect(scroller.contains(legend)).toBe(false);
+  });
+
+  it('positions top-row tooltips below their cells', async () => {
+    const element = await mountCalendar();
+    const frame = element.shadowRoot!.querySelector('.frame')!;
+    frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    await element.updateComplete;
+
+    expect(element.shadowRoot!.querySelector('.tooltip')?.getAttribute('data-position')).toBe(
+      'below',
+    );
+  });
+
+  it('keeps tooltip coordinates in sync with horizontal scrolling', async () => {
+    const element = await mountCalendar();
+    const frame = element.shadowRoot!.querySelector<HTMLElement>('.frame')!;
+    const scroller = element.shadowRoot!.querySelector<HTMLElement>('.scroller')!;
+    Object.defineProperty(scroller, 'scrollLeft', { configurable: true, value: 48 });
+
+    scroller.dispatchEvent(new Event('scroll'));
+    await element.updateComplete;
+
+    expect(frame.style.getPropertyValue('--heatmap-scroll-left')).toBe('48px');
+  });
+
   it('navigates by day and week and emits focus details', async () => {
     const element = await mountCalendar();
     const events: CustomEvent[] = [];

@@ -99,6 +99,7 @@ export const barChartStyles = css`
     font-size: var(--ds-font-size-sm);
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
     min-width: 120px;
+    width: max-content;
     max-width: min(220px, calc(100% - 16px));
     box-sizing: border-box;
     z-index: var(--ds-z-index-raised);
@@ -136,10 +137,12 @@ export const barChartStyles = css`
     display: inline-flex;
     align-items: center;
     gap: var(--ds-space-1);
+    white-space: nowrap;
   }
 
   .tooltip-swatch {
     display: inline-block;
+    flex: 0 0 auto;
     width: 0.625em;
     height: 0.625em;
     border-radius: 2px;

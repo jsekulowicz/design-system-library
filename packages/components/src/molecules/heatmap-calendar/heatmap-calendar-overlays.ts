@@ -22,15 +22,17 @@ export function renderHeatmapTooltip(
 ): TemplateResult {
   const cell = activeCell(ctx, layout);
   const step = ctx.cellSize + ctx.cellGap;
+  const placeBelow = Boolean(cell && cell.row < 2);
   const left = cell ? HEATMAP_LEFT + cell.column * step + ctx.cellSize / 2 : 0;
-  const top = cell ? HEATMAP_TOP + cell.row * step : 0;
+  const top = cell ? HEATMAP_TOP + cell.row * step + (placeBelow ? ctx.cellSize : 0) : 0;
   return html`
     <div
       class="tooltip"
       part="tooltip"
       role="tooltip"
+      data-position=${placeBelow ? 'below' : 'above'}
       ?hidden=${!cell}
-      style="left:${left}px; top:${top}px"
+      style="--heatmap-tooltip-x:${left}px; --heatmap-tooltip-y:${top}px"
     >
       ${cell
         ? html`<strong>${ctx.formatValue(cell.value)}</strong

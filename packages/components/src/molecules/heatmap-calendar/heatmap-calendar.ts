@@ -24,7 +24,8 @@ import type { HeatmapDay, HeatmapLayout, HeatmapRenderContext, HeatmapWeekStart 
  * @tag ds-heatmap-calendar
  * @summary Calendar heatmap with accessible data table, tooltips, and keyboard navigation.
  * @event ds-heatmap-focus - Emitted when the active day changes. Detail: `{ date, value, level }`.
- * @csspart chart - The scrollable calendar frame.
+ * @csspart chart - The focusable calendar frame, including the legend.
+ * @csspart scroller - The horizontally scrollable calendar viewport.
  * @csspart tooltip - The floating tooltip container.
  * @csspart legend - The value intensity legend.
  */
@@ -45,9 +46,10 @@ export class DsHeatmapCalendar extends DsElement {
   @property() locale?: string;
 
   @state() private _width = 0;
+  @state() private _scrollLeft = 0;
   @state() private _activeIndex: number | null = null;
   @state() private _focusMode: 'keyboard' | 'pointer' | null = null;
-  @query('.frame') private _frame!: HTMLElement;
+  @query('.scroller') private _scroller!: HTMLElement;
   #resizeObserver?: ResizeObserver;
 
   override firstUpdated(): void {
@@ -70,6 +72,7 @@ export class DsHeatmapCalendar extends DsElement {
       <div
         class="frame"
         part="chart"
+        style="--heatmap-scroll-left:${this._scrollLeft}px"
         tabindex="0"
         role="application"
         aria-label=${heatmapAriaLabel(ctx, layout)}
@@ -78,19 +81,26 @@ export class DsHeatmapCalendar extends DsElement {
           ? nothing
           : `${this.uid}-day-${this._activeIndex}`}
         @keydown=${this.#onKeydown}
-        @pointermove=${this.#onPointerMove}
-        @pointerleave=${this.#clearPointer}
         @blur=${this.#clearActive}
       >
-        <div class="canvas" style="--heatmap-viewport-width:${this._width}px">
-          ${renderHeatmapSvg(ctx, layout)} ${renderHeatmapTooltip(ctx, layout)}
+        <div
+          class="scroller"
+          part="scroller"
+          @scroll=${this.#onScroll}
+          @pointermove=${this.#onPointerMove}
+          @pointerleave=${this.#clearPointer}
+        >
+          <div class="canvas" style="--heatmap-viewport-width:${this._width}px">
+            ${renderHeatmapSvg(ctx, layout)}
+          </div>
         </div>
+        ${renderHeatmapTooltip(ctx, layout)}
+        ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
         ${renderHeatmapSrTable(ctx, layout)}
         <div class="visually-hidden" role="status" aria-live="polite">
           ${heatmapLiveText(ctx, layout)}
         </div>
       </div>
-      ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
     `;
   }
 
@@ -162,25 +172,29 @@ export class DsHeatmapCalendar extends DsElement {
     }
   };
 
+  #onScroll = (): void => {
+    this._scrollLeft = this._scroller.scrollLeft;
+  };
+
   #clearActive = (): void => {
     this._focusMode = null;
     this.#setActive(null);
   };
 
   #measure(): void {
-    const width = this._frame?.clientWidth ?? 0;
+    const width = this._scroller?.clientWidth ?? 0;
     if (width > 0) {
       this._width = width;
     }
   }
 
   #observeResize(): void {
-    if (!this._frame || typeof ResizeObserver === 'undefined') {
+    if (!this._scroller || typeof ResizeObserver === 'undefined') {
       return;
     }
     this.#resizeObserver = new ResizeObserver((entries) => {
       this._width = Math.max(0, entries[0]?.contentRect.width ?? 0);
     });
-    this.#resizeObserver.observe(this._frame);
+    this.#resizeObserver.observe(this._scroller);
   }
 }

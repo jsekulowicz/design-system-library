@@ -12,13 +12,22 @@ export const heatmapCalendarStyles = css`
   .frame {
     position: relative;
     width: 100%;
-    overflow-x: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-2);
+    padding: var(--ds-space-2);
     outline: none;
     border-radius: var(--ds-radius-md);
   }
 
   .frame:focus-visible {
     box-shadow: var(--ds-shadow-focus);
+  }
+
+  .scroller {
+    width: 100%;
+    overflow-x: auto;
   }
 
   .canvas {
@@ -56,7 +65,12 @@ export const heatmapCalendarStyles = css`
     display: grid;
     gap: 2px;
     pointer-events: none;
-    transform: translate(-50%, calc(-100% - 6px));
+    left: clamp(
+      calc(4rem + var(--ds-space-2)),
+      calc(var(--heatmap-tooltip-x) - var(--heatmap-scroll-left) + var(--ds-space-2)),
+      calc(100% - 4rem - var(--ds-space-2))
+    );
+    top: calc(var(--heatmap-tooltip-y) + var(--ds-space-2));
     min-width: 8rem;
     padding: var(--ds-space-2) var(--ds-space-3);
     background: var(--ds-color-bg-inverse);
@@ -66,6 +80,14 @@ export const heatmapCalendarStyles = css`
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgb(0 0 0 / 18%));
     text-align: center;
     z-index: var(--ds-z-index-raised);
+  }
+
+  .tooltip[data-position='above'] {
+    transform: translate(-50%, calc(-100% - 6px));
+  }
+
+  .tooltip[data-position='below'] {
+    transform: translate(-50%, 6px);
   }
 
   .tooltip[hidden] {
@@ -82,7 +104,6 @@ export const heatmapCalendarStyles = css`
     align-items: center;
     justify-content: flex-end;
     gap: var(--ds-space-1);
-    margin-top: var(--ds-space-2);
     color: var(--ds-color-fg-muted);
     font-size: var(--ds-font-size-xs);
   }
