@@ -1,5 +1,16 @@
 # @jsekulowicz/ds-components
 
+## 0.46.0
+
+### Minor Changes
+
+- f360b77: Replace the generic font-size scale with non-overlapping body and heading scales, including a 1.125rem small-heading step.
+
+### Patch Changes
+
+- Updated dependencies [f360b77]
+  - @jsekulowicz/ds-tokens@0.46.0
+
 ## 0.45.1
 
 ### Patch Changes

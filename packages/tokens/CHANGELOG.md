@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-tokens
 
+## 0.46.0
+
+### Minor Changes
+
+- f360b77: Replace the generic font-size scale with non-overlapping body and heading scales, including a 1.125rem small-heading step.
+
 ## 0.37.0
 
 ### Minor Changes
