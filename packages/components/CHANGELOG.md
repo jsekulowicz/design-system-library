@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.43.0
+
+### Minor Changes
+
+- a5be4b2: NavGroup: add the `compactHoverTooltipDelay` prop and `compact-hover-tooltip-delay` attribute for configuring the compact-mode hover tooltip delay.
+
+### Patch Changes
+
+- bfd8856: Compact NavItem and NavGroup tooltips now open on keyboard focus as well as pointer hover.
+
 ## 0.42.0
 
 ### Minor Changes
