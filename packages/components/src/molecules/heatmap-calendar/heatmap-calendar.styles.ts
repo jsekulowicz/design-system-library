@@ -11,7 +11,8 @@ export const heatmapCalendarStyles = css`
 
   .frame {
     position: relative;
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

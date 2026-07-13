@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
-import type { DsHeatmapCalendar } from './heatmap-calendar.js';
+import { DsHeatmapCalendar } from './heatmap-calendar.js';
 import './define.js';
 
 beforeAll(() => {
@@ -26,6 +26,13 @@ async function mountCalendar(props: Partial<DsHeatmapCalendar> = {}): Promise<Ds
 }
 
 describe('<ds-heatmap-calendar>', () => {
+  it('keeps the focus frame aligned to the calendar without overflowing its host', () => {
+    const css = DsHeatmapCalendar.styles.map((style) => style.cssText).join('\n');
+
+    expect(css).toMatch(/\.frame\s*{[^}]*width: fit-content/s);
+    expect(css).toMatch(/\.frame\s*{[^}]*max-width: 100%/s);
+  });
+
   it('renders empty input as level-zero cells', async () => {
     const element = await mountCalendar({ data: [] });
     const cells = element.shadowRoot!.querySelectorAll('rect.cell');
