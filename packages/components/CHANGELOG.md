@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.42.0
+
+### Minor Changes
+
+- 5cdc68b: NavItem: add the `compactHoverTooltipDelay` prop and `compact-hover-tooltip-delay` attribute for configuring the compact-mode hover tooltip delay. Storybook API pages now show Props tables for NavItem, NavGroup, Breadcrumb, Tabs, and BarChart components.
+
+### Patch Changes
+
+- f0944bd: Checkbox and radio option labels now use `--ds-font-size-md`; labels above grouped fields continue to use `--ds-font-size-sm`.
+
 ## 0.41.0
 
 ### Minor Changes
