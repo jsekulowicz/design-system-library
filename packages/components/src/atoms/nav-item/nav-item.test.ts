@@ -108,13 +108,13 @@ describe('<ds-nav-item>', () => {
     expect(link.getAttribute('aria-label')).toBeNull();
   });
 
-  it('enables hover-only tooltip mode in compact variant', async () => {
+  it('allows the compact tooltip to open on keyboard focus', async () => {
     const el = await mount<DsNavItem>(
       '<ds-nav-item href="/" compact><span slot="icon">*</span>Documentation</ds-nav-item>',
     );
     const tooltip = el.shadowRoot!.querySelector('ds-tooltip');
     expect(tooltip).not.toBeNull();
-    expect(tooltip!.hasAttribute('hover-only')).toBe(true);
+    expect(tooltip!.hasAttribute('hover-only')).toBe(false);
     expect(tooltip!.getAttribute('delay')).toBe('1000');
   });
 

@@ -131,13 +131,13 @@ describe('<ds-nav-group>', () => {
     expect(el.shadowRoot!.querySelector('[part="icon"]')).toBeNull();
   });
 
-  it('enables hover-only tooltip mode in compact variant', async () => {
+  it('allows the compact tooltip to open on keyboard focus', async () => {
     const el = await mount<DsNavGroup>(
       '<ds-nav-group label="Workspace" compact><span slot="icon">*</span></ds-nav-group>',
     );
     const tooltip = el.shadowRoot!.querySelector('ds-tooltip');
     expect(tooltip).not.toBeNull();
-    expect(tooltip!.hasAttribute('hover-only')).toBe(true);
+    expect(tooltip!.hasAttribute('hover-only')).toBe(false);
     expect(tooltip!.getAttribute('delay')).toBe('1000');
   });
 

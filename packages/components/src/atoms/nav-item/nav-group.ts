@@ -112,7 +112,6 @@ export class DsNavGroup extends DsElement {
           class="tooltip-wrapper"
           placement="right"
           delay=${this.compactHoverTooltipDelay}
-          ?hover-only=${true}
         >
           ${this.#renderHeading()}
           <span slot="tip">${this.label}</span>
