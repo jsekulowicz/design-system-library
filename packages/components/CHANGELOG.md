@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.45.1
+
+### Patch Changes
+
+- 5a27ef9: Keep heatmap tooltips visible outside the horizontal scroller, align the legend and padded focus frame with the calendar width, and prevent bar-chart tooltip labels from wrapping away from their series indicator.
+
 ## 0.45.0
 
 ### Minor Changes
