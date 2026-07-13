@@ -7,7 +7,7 @@ export const toggleControlStyles = css`
     display: inline-flex;
     cursor: pointer;
     font-family: var(--ds-font-body);
-    font-size: var(--ds-font-size-sm);
+    font-size: var(--ds-font-size-md);
     color: var(--ds-color-fg);
   }
   :host([disabled]) {
