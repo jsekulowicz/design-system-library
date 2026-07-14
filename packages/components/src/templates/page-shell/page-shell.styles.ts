@@ -200,6 +200,19 @@ export const pageShellStyles = css`
     scrollbar-gutter: stable both-edges;
   }
 
+  :host([scrollable-main]) main {
+    display: flex;
+    padding: 0;
+    overflow: hidden;
+    scrollbar-gutter: auto;
+  }
+
+  :host([scrollable-main]) main ::slotted(ds-scrollable-page) {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+  }
+
   @media (max-width: ${belowDesktopBreakpoint}) {
     main {
       padding-block: var(--ds-space-4);

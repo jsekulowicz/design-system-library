@@ -35,4 +35,5 @@ import './organisms/top-bar/define.js';
 import './organisms/sidenav/define.js';
 import './organisms/footer/define.js';
 import './templates/page-shell/define.js';
+import './templates/scrollable-page/define.js';
 import './pages/settings-page/define.js';

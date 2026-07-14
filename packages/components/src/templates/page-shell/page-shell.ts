@@ -39,7 +39,7 @@ export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPo
  * @slot header-actions - Top-right action buttons (account menu, notifications, etc.). The mobile navigation toggle is rendered as a peer of these buttons; see `mobile-menu-button-position`.
  * @slot aside - Primary side navigation (inline-start). On mobile, rendered inside a `ds-drawer` opened by the hamburger toggle. When empty, the column and hamburger toggle are not rendered.
  * @slot aside-end - Secondary side region (inline-end), e.g. table of contents, contextual help. Hidden on mobile.
- * @slot default - Main content.
+ * @slot default - Main content. A direct `ds-scrollable-page` child automatically owns main scrolling and padding.
  * @slot footer - Footer content.
  * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
  *   content and the aside + main row centre at this width and align vertically. Defaults to `none`.
@@ -128,12 +128,27 @@ export class DsPageShell extends DsElement {
     const aside = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside"]');
     const asideEnd = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside-end"]');
     const footer = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="footer"]');
+    const main = this.shadowRoot?.querySelector<HTMLSlotElement>('main slot:not([name])');
     this._hasAside = hasNamedSlotContent(this, 'aside', aside);
     this._hasAsideEnd = hasNamedSlotContent(this, 'aside-end', asideEnd);
     this._hasFooter = hasNamedSlotContent(this, 'footer', footer);
     this.toggleAttribute('aside-empty', !this._hasAside);
     this.toggleAttribute('aside-end-empty', !this._hasAsideEnd);
     this.toggleAttribute('footer-empty', !this._hasFooter);
+    this.#syncScrollableMain(main);
+  };
+
+  #syncScrollableMain(slot?: HTMLSlotElement | null): void {
+    const elements = slot
+      ? slot.assignedElements({ flatten: true })
+      : Array.from(this.children).filter((child) => !child.slot);
+    const hasScrollablePage =
+      elements.length === 1 && elements[0]?.tagName === 'DS-SCROLLABLE-PAGE';
+    this.toggleAttribute('scrollable-main', hasScrollablePage);
+  }
+
+  #onMainSlotChange = (event: Event): void => {
+    this.#syncScrollableMain(event.target as HTMLSlotElement);
   };
 
   #syncLayout = (width: number): void => {
@@ -260,7 +275,7 @@ export class DsPageShell extends DsElement {
       <div class="shell-body" part="body">
         ${this._mobileLayout ? renderMobileAside(ctx) : renderDesktopStartCluster(ctx)}
         <main part="main">
-          <slot></slot>
+          <slot @slotchange=${this.#onMainSlotChange}></slot>
         </main>
         ${this._mobileLayout ? renderMobileAsideEnd(ctx) : renderDesktopEndCluster(ctx)}
       </div>

@@ -117,6 +117,16 @@ async function forceDesktopLayout(el: DsPageShell): Promise<void> {
 }
 
 describe('<ds-page-shell>', () => {
+  it('delegates main scrolling to a direct scrollable page child', async () => {
+    const el = await mount<DsPageShell>(`
+      <ds-page-shell>
+        <ds-scrollable-page>Content</ds-scrollable-page>
+      </ds-page-shell>
+    `);
+
+    expect(el.hasAttribute('scrollable-main')).toBe(true);
+  });
+
   it('starts with closed mobile navigation', async () => {
     const el = await mount<DsPageShell>(pageShellTemplate());
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle');

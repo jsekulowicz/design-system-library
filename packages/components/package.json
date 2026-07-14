@@ -319,6 +319,13 @@
     "./page-shell/define": {
       "import": "./dist/templates/page-shell/define.js"
     },
+    "./scrollable-page": {
+      "types": "./dist/templates/scrollable-page/index.d.ts",
+      "import": "./dist/templates/scrollable-page/index.js"
+    },
+    "./scrollable-page/define": {
+      "import": "./dist/templates/scrollable-page/define.js"
+    },
     "./settings-page": {
       "types": "./dist/pages/settings-page/index.d.ts",
       "import": "./dist/pages/settings-page/index.js"

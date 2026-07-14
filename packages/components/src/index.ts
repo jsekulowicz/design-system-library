@@ -87,4 +87,5 @@ export { DsTopBar } from './organisms/top-bar/index.js';
 export { DsSidenav } from './organisms/sidenav/index.js';
 export { DsFooter } from './organisms/footer/index.js';
 export { DsPageShell } from './templates/page-shell/index.js';
+export { DsScrollablePage } from './templates/scrollable-page/index.js';
 export { DsSettingsPage, type SettingsSection } from './pages/settings-page/index.js';

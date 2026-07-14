@@ -1,0 +1,30 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as ScrollablePageStories from './scrollable-page.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+
+<Meta of={ScrollablePageStories} />
+
+# Scrollable Page
+
+Page region with an optional non-scrolling header and an edge-aligned content scrollbar. The header is structurally outside the scroller rather than sticky-positioned. It composes directly inside `ds-page-shell`, which automatically lets it own main padding and scrolling.
+
+```html
+<ds-scrollable-page>
+  <header slot="header">
+    <h1>Activity</h1>
+    <p>Recent workspace events.</p>
+  </header>
+  <section>...</section>
+</ds-scrollable-page>
+```
+
+<Canvas of={ScrollablePageStories.WithNonScrollingHeader} />
+
+<ComponentApi tag="ds-scrollable-page" />
+
+## Guidelines
+
+- Keep breadcrumbs, the page title, and closely related heading actions in the `header` slot.
+- Put every region that should move or rubber-band in the default slot.
+- Use the component as PageShell's only default-slot child so PageShell can delegate scrolling automatically.
+- Omit the header slot when the whole page should scroll.
