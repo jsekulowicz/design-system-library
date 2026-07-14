@@ -1,5 +1,16 @@
 # @jsekulowicz/ds-react
 
+## 0.47.0
+
+### Minor Changes
+
+- 2351d06: Add a scrollable page template with an optional non-scrolling header and automatic PageShell integration.
+
+### Patch Changes
+
+- Updated dependencies [2351d06]
+  - @jsekulowicz/ds-components@0.47.0
+
 ## 0.46.0
 
 ### Patch Changes
