@@ -493,11 +493,13 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/aside::-webkit-scrollbar\s*{[^}]*display:\s*none/);
     });
 
-    it('keeps the main scrollbar stable at the scroller edge', () => {
+    it('reserves balanced gutters around the edge-aligned main scroller', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      expect(css).toMatch(/\.main-scroller\s*{[^}]*scrollbar-gutter:\s*stable/);
+      expect(css).toMatch(
+        /\.main-scroller\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/,
+      );
     });
 
     it('pads the page header and content instead of the scroller', () => {
