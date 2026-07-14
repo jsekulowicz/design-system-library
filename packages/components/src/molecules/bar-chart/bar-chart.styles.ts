@@ -64,7 +64,7 @@ export const barChartStyles = css`
     stroke: var(--ds-color-accent);
     stroke-width: 2;
     pointer-events: none;
-    rx: 4;
+    rx: var(--ds-radius-xs);
   }
 
   .legend {

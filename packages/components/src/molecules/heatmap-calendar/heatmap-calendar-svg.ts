@@ -56,7 +56,6 @@ export function renderHeatmapSvg(
             y=${HEATMAP_TOP + cell.row * step}
             width=${ctx.cellSize}
             height=${ctx.cellSize}
-            rx="2"
             fill=${levelColor(ctx, cell.level)}
           ></rect>
         `,

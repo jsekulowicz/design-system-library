@@ -174,5 +174,5 @@ function renderFocusRing<T extends BarChartRow>(
   const maxHeight = activeGroupHeight(layout, ctx.activeIndex, ctx.stacked);
   const drawHeight = Math.max(4, maxHeight);
   const y = layout.innerHeight - drawHeight - 2;
-  return svg`<rect class="focus-ring" x=${band.innerX - 2} y=${y} width=${band.innerWidth + 4} height=${drawHeight + 4} rx="4"></rect>`;
+  return svg`<rect class="focus-ring" x=${band.innerX - 2} y=${y} width=${band.innerWidth + 4} height=${drawHeight + 4}></rect>`;
 }

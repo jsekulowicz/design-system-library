@@ -48,6 +48,7 @@ export const heatmapCalendarStyles = css`
   }
 
   .cell {
+    rx: var(--ds-radius-xs);
     stroke: transparent;
     stroke-width: 1;
   }
@@ -113,7 +114,7 @@ export const heatmapCalendarStyles = css`
     width: 0.75rem;
     height: 0.75rem;
     border: 1px solid transparent;
-    border-radius: 2px;
+    border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg-muted);
   }
 
