@@ -6,6 +6,9 @@ const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
 export const pageShellStyles = css`
   :host {
     --ds-page-shell-max-width: none;
+    --ds-page-shell-page-padding-block: var(--ds-space-5);
+    --ds-page-shell-page-padding-inline: var(--ds-space-5);
+    --ds-page-shell-page-header-gap: var(--ds-space-6);
     --ds-page-shell-aside-toggle-clearance:
       calc(var(--ds-size-sm) / 2);
 
@@ -186,37 +189,69 @@ export const pageShellStyles = css`
   }
 
   main {
-    padding: var(--ds-space-5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .page-header {
+    flex: none;
+    box-sizing: border-box;
+    padding-block-start: var(--ds-page-shell-page-padding-block);
+    padding-inline: var(--ds-page-shell-page-padding-inline);
+  }
+
+  .page-header[hidden] {
+    display: none;
+  }
+
+  .main-scroller {
+    flex: 1 1 auto;
     overflow-x: clip;
     overflow-y: auto;
-    overflow-clip-margin-inline: var(--ds-space-2);
     min-width: 0;
     min-height: 0;
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
-    /* Reserve scrollbar gutters on both inline sides so the inline-start
-       and inline-end visible empty bands stay equal in width whether the
-       vertical scrollbar is present or not. */
-    scrollbar-gutter: stable both-edges;
+    scrollbar-gutter: stable;
   }
 
-  :host([scrollable-main]) main {
-    display: flex;
-    padding: 0;
+  .main-content {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
+    padding: var(--ds-page-shell-page-padding-block) var(--ds-page-shell-page-padding-inline);
+  }
+
+  :host(:not([page-header-empty])) .main-content {
+    padding-block-start: var(--ds-page-shell-page-header-gap);
+  }
+
+  :host([scrollable-main]) .main-scroller {
     overflow: hidden;
     scrollbar-gutter: auto;
   }
 
-  :host([scrollable-main]) main ::slotted(ds-scrollable-page) {
+  :host([scrollable-main]) .main-content {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+  }
+
+  :host([scrollable-main]) .main-content ::slotted(ds-scrollable-page) {
     flex: 1 1 auto;
     min-width: 0;
     min-height: 0;
   }
 
   @media (max-width: ${belowDesktopBreakpoint}) {
-    main {
-      padding-block: var(--ds-space-4);
-      padding-inline: var(--ds-space-4);
+    :host {
+      --ds-page-shell-page-padding-block: var(--ds-space-4);
+      --ds-page-shell-page-padding-inline: var(--ds-space-4);
     }
   }
 

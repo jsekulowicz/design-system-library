@@ -39,14 +39,21 @@ export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPo
  * @slot header-actions - Top-right action buttons (account menu, notifications, etc.). The mobile navigation toggle is rendered as a peer of these buttons; see `mobile-menu-button-position`.
  * @slot aside - Primary side navigation (inline-start). On mobile, rendered inside a `ds-drawer` opened by the hamburger toggle. When empty, the column and hamburger toggle are not rendered.
  * @slot aside-end - Secondary side region (inline-end), e.g. table of contents, contextual help. Hidden on mobile.
- * @slot default - Main content. A direct `ds-scrollable-page` child automatically owns main scrolling and padding.
+ * @slot page-header - Optional non-scrolling heading region above the main content scroller.
+ * @slot default - Scrollable main content. A direct `ds-scrollable-page` child remains supported for standalone scrollable-page composition.
  * @slot footer - Footer content.
  * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
  *   content and the aside + main row centre at this width and align vertically. Defaults to `none`.
  *   Header chrome remains full-bleed.
  * @cssprop --ds-page-shell-menu-toggle-size - Box size of the mobile navigation toggle button.
  *   Defaults to `var(--ds-size-sm)`. Set to e.g. `var(--ds-size-md)` to match full-size action buttons.
+ * @cssprop --ds-page-shell-page-padding-block - Block padding for page header and content. Defaults to `var(--ds-space-5)` and `var(--ds-space-4)` below desktop.
+ * @cssprop --ds-page-shell-page-padding-inline - Inline padding for page header and content. Defaults to `var(--ds-space-5)` and `var(--ds-space-4)` below desktop.
+ * @cssprop --ds-page-shell-page-header-gap - Space between a populated page header and the scrolling content. Defaults to `var(--ds-space-6)`.
  * @csspart menu-toggle - The mobile navigation toggle button.
+ * @csspart page-header - Optional non-scrolling page header.
+ * @csspart main-scroller - Edge-aligned main scrolling region.
+ * @csspart main-content - Padded content region inside the main scroller.
  * @event ds-aside-state-change - Emitted when an opt-in desktop aside toggle changes state.
  *   Detail: `{ side, state, previousState }`.
  */
@@ -67,6 +74,7 @@ export class DsPageShell extends DsElement {
   @state() private _hasAside = false;
   @state() private _hasAsideEnd = false;
   @state() private _hasFooter = false;
+  @state() private _hasPageHeader = false;
   #resizeObserver: ResizeObserver | null = null;
   #slotObserver: MutationObserver | null = null;
 
@@ -128,14 +136,23 @@ export class DsPageShell extends DsElement {
     const aside = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside"]');
     const asideEnd = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="aside-end"]');
     const footer = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="footer"]');
+    const pageHeader = this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name="page-header"]');
     const main = this.shadowRoot?.querySelector<HTMLSlotElement>('main slot:not([name])');
     this._hasAside = hasNamedSlotContent(this, 'aside', aside);
     this._hasAsideEnd = hasNamedSlotContent(this, 'aside-end', asideEnd);
     this._hasFooter = hasNamedSlotContent(this, 'footer', footer);
+    this._hasPageHeader = hasNamedSlotContent(this, 'page-header', pageHeader);
     this.toggleAttribute('aside-empty', !this._hasAside);
     this.toggleAttribute('aside-end-empty', !this._hasAsideEnd);
     this.toggleAttribute('footer-empty', !this._hasFooter);
+    this.toggleAttribute('page-header-empty', !this._hasPageHeader);
     this.#syncScrollableMain(main);
+  };
+
+  #onPageHeaderSlotChange = (event: Event): void => {
+    const slot = event.target as HTMLSlotElement;
+    this._hasPageHeader = hasAssignedContent(slot);
+    this.toggleAttribute('page-header-empty', !this._hasPageHeader);
   };
 
   #syncScrollableMain(slot?: HTMLSlotElement | null): void {
@@ -275,7 +292,14 @@ export class DsPageShell extends DsElement {
       <div class="shell-body" part="body">
         ${this._mobileLayout ? renderMobileAside(ctx) : renderDesktopStartCluster(ctx)}
         <main part="main">
-          <slot @slotchange=${this.#onMainSlotChange}></slot>
+          <div class="page-header" part="page-header" ?hidden=${!this._hasPageHeader}>
+            <slot name="page-header" @slotchange=${this.#onPageHeaderSlotChange}></slot>
+          </div>
+          <div class="main-scroller" part="main-scroller">
+            <div class="main-content" part="main-content">
+              <slot @slotchange=${this.#onMainSlotChange}></slot>
+            </div>
+          </div>
         </main>
         ${this._mobileLayout ? renderMobileAsideEnd(ctx) : renderDesktopEndCluster(ctx)}
       </div>

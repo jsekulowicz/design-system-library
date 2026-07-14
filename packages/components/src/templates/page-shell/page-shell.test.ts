@@ -117,6 +117,23 @@ async function forceDesktopLayout(el: DsPageShell): Promise<void> {
 }
 
 describe('<ds-page-shell>', () => {
+  it('keeps the optional page header outside the main scroller', async () => {
+    const el = await mount<DsPageShell>(`
+      <ds-page-shell>
+        <header slot="page-header">Page heading</header>
+        <section>Page content</section>
+      </ds-page-shell>
+    `);
+
+    const pageHeader = el.shadowRoot!.querySelector('[part="page-header"]')!;
+    const scroller = el.shadowRoot!.querySelector('[part="main-scroller"]')!;
+    const content = el.shadowRoot!.querySelector('[part="main-content"]')!;
+    expect(pageHeader.hasAttribute('hidden')).toBe(false);
+    expect(pageHeader.parentElement).toBe(scroller.parentElement);
+    expect(content.parentElement).toBe(scroller);
+    expect(el.hasAttribute('page-header-empty')).toBe(false);
+  });
+
   it('delegates main scrolling to a direct scrollable page child', async () => {
     const el = await mount<DsPageShell>(`
       <ds-page-shell>
@@ -448,13 +465,14 @@ describe('<ds-page-shell>', () => {
       );
     });
 
-    it('lets the main grid track shrink below intrinsic content width and contains overflow', () => {
+    it('lets the main grid track shrink while its inner region owns scrolling', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
       expect(css).toMatch(/main\s*{[^}]*min-width:\s*0/);
-      expect(css).toMatch(/main\s*{[^}]*overflow-x:\s*clip/);
-      expect(css).toMatch(/main\s*{[^}]*overflow-y:\s*auto/);
+      expect(css).toMatch(/main\s*{[^}]*overflow:\s*hidden/);
+      expect(css).toMatch(/\.main-scroller\s*{[^}]*overflow-x:\s*clip/);
+      expect(css).toMatch(/\.main-scroller\s*{[^}]*overflow-y:\s*auto/);
     });
 
     it('keeps the desktop aside flush with its column edge (no scrollbar gutter)', () => {
@@ -475,21 +493,27 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/aside::-webkit-scrollbar\s*{[^}]*display:\s*none/);
     });
 
-    it('reserves scrollbar gutters on both inline edges of main for symmetric content', () => {
+    it('keeps the main scrollbar stable at the scroller edge', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      expect(css).toMatch(/main\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/);
+      expect(css).toMatch(/\.main-scroller\s*{[^}]*scrollbar-gutter:\s*stable/);
     });
 
-    it('uses real mobile main padding below desktop', () => {
+    it('pads the page header and content instead of the scroller', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
         .map((s) => s.cssText)
         .join('\n');
-      expect(css).toMatch(/main\s*{[^}]*padding:\s*var\(--ds-space-5\)/);
+      expect(css).toMatch(
+        /\.page-header\s*{[^}]*padding-inline:\s*var\(--ds-page-shell-page-padding-inline\)/,
+      );
+      expect(css).toMatch(
+        /\.main-content\s*{[^}]*padding:\s*var\(--ds-page-shell-page-padding-block\)/,
+      );
+      expect(css).not.toMatch(/main\s*{[^}]*padding:/);
       expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
-      expect(css).toContain('padding-block: var(--ds-space-4)');
-      expect(css).toContain('padding-inline: var(--ds-space-4)');
+      expect(css).toContain('--ds-page-shell-page-padding-block: var(--ds-space-4)');
+      expect(css).toContain('--ds-page-shell-page-padding-inline: var(--ds-space-4)');
     });
   });
 
@@ -626,10 +650,10 @@ describe('<ds-page-shell>', () => {
         /\.aside-toggle-start-rail\s*{[^}]*inset-inline-end:\s*calc\(var\(--ds-size-sm\)\s*\/\s*-2\)/,
       );
       expect(css).toMatch(
-        /:host\(\[aside-toggle\]\)\s*aside\[part="aside"\]\s*{[^}]*padding-inline-end:/,
+        /:host\(\[aside-toggle\]\)\s*aside\[part=['"]aside['"]\]\s*{[^}]*padding-inline-end:/,
       );
       expect(css).toMatch(
-        /:host\(\[aside-end-toggle\]\)\s*aside\[part="aside-end"\]\s*{[^}]*padding-inline-start:/,
+        /:host\(\[aside-end-toggle\]\)\s*aside\[part=['"]aside-end['"]\]\s*{[^}]*padding-inline-start:/,
       );
     });
 

@@ -1,7 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/page-shell/define';
-import '@jsekulowicz/ds-components/scrollable-page/define';
 import '@jsekulowicz/ds-components/link/define';
 import '@jsekulowicz/ds-components/button/define';
 import '@jsekulowicz/ds-components/nav-item/define';
@@ -23,7 +22,6 @@ const meta: Meta = {
     docs: { story: { inline: false } },
   },
 };
-
 export default meta;
 type Story = StoryObj;
 
@@ -295,27 +293,25 @@ export const NonScrollingPageHeader: Story = {
           Settings
         </ds-nav-item>
       </ds-sidenav>
-      <ds-scrollable-page style="--ds-scrollable-page-max-width:68rem">
-        <header slot="header" style="display:grid;gap:var(--ds-space-1)">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
-            Activity
-          </h1>
-          <p style="margin:0;color:var(--ds-color-fg-muted)">
-            The heading stays still while the edge-aligned content region scrolls.
-          </p>
-        </header>
-        ${Array.from(
-          { length: 24 },
-          (_, index) => html`
-            <section>
-              <h2 style="margin:0;font-size:var(--ds-font-size-heading-sm)">
-                Activity group ${index + 1}
-              </h2>
-              <p>Recent project and account events appear in this scrolling region.</p>
-            </section>
-          `,
-        )}
-      </ds-scrollable-page>
+      <header slot="page-header" style="display:grid;gap:var(--ds-space-1)">
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+          Activity
+        </h1>
+        <p style="margin:0;color:var(--ds-color-fg-muted)">
+          The heading stays still while the edge-aligned content region scrolls.
+        </p>
+      </header>
+      ${Array.from(
+        { length: 24 },
+        (_, index) => html`
+          <section style="max-width:68rem">
+            <h2 style="margin:0;font-size:var(--ds-font-size-heading-sm)">
+              Activity group ${index + 1}
+            </h2>
+            <p>Recent project and account events appear in this scrolling region.</p>
+          </section>
+        `,
+      )}
     `),
 };
 
