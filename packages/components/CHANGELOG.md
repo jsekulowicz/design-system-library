@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.47.1
+
+### Patch Changes
+
+- 6d6f007: Keep PageShell scrollbars edge-aligned by padding its optional page header and inner content instead of the scrolling region.
+
 ## 0.47.0
 
 ### Minor Changes
