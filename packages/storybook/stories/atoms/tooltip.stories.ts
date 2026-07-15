@@ -6,7 +6,10 @@ import '@jsekulowicz/ds-components/button/define';
 const meta: Meta = {
   title: 'Atoms/Tooltip',
   component: 'ds-tooltip',
-  parameters: { docs: { story: { inline: false, height: '180px' } } },
+  parameters: {
+    layout: 'fullscreen',
+    docs: { story: { inline: false, height: '180px' } },
+  },
   argTypes: {
     placement: {
       control: { type: 'inline-radio' },
@@ -20,9 +23,15 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+const CENTERED_FRAME_STYLE =
+  'box-sizing:border-box;height:100vh;display:flex;align-items:center;justify-content:center';
+const PLACEMENTS_FRAME_STYLE = `${CENTERED_FRAME_STYLE};padding:var(--ds-space-4);gap:var(--ds-space-4);flex-wrap:wrap`;
+const EDGE_FRAME_STYLE = `${CENTERED_FRAME_STYLE};padding:var(--ds-space-4);justify-content:flex-start`;
+const WRAPPING_FRAME_STYLE = `${CENTERED_FRAME_STYLE};text-align:right;white-space:nowrap`;
+
 export const Playground: Story = {
   render: (args) => html`
-<div style="padding: 3rem; display: flex; justify-content: center;">
+<div style=${CENTERED_FRAME_STYLE}>
   <ds-tooltip placement=${args['placement']} ?open=${args['open']}>
     <ds-button variant="secondary">Hover me</ds-button>
     <span slot="tip">Helpful context</span>
@@ -33,7 +42,7 @@ export const Playground: Story = {
 
 export const RichContent: Story = {
   render: () => html`
-<div style="padding: 3rem; display: flex; justify-content: center;">
+<div style=${CENTERED_FRAME_STYLE}>
   <ds-tooltip placement="top">
     <ds-button variant="ghost" size="sm">What's this?</ds-button>
     <span slot="tip">
@@ -46,7 +55,7 @@ export const RichContent: Story = {
 
 export const WrappingContent: Story = {
   render: () => html`
-<div style="padding: 3rem; display: flex; justify-content: center; text-align: right; white-space: nowrap;">
+<div style=${WRAPPING_FRAME_STYLE}>
   <ds-tooltip placement="bottom">
     <ds-button variant="ghost" size="sm">Contributions</ds-button>
     <span slot="tip">
@@ -57,10 +66,23 @@ export const WrappingContent: Story = {
   `,
 };
 
-export const Placements: Story = {
-  parameters: { docs: { story: { height: '280px' } } },
+export const ViewportConstraint: Story = {
   render: () => html`
-<div style="padding: 4rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+<div style=${EDGE_FRAME_STYLE}>
+  <ds-tooltip placement="right" open>
+    <ds-button variant="ghost" size="sm">Info</ds-button>
+    <span slot="tip">
+      This intentionally long tooltip demonstrates how content wraps before it can exceed the viewport,
+      even when its preferred placement is to the right.
+    </span>
+  </ds-tooltip>
+</div>
+  `,
+};
+
+export const Placements: Story = {
+  render: () => html`
+<div style=${PLACEMENTS_FRAME_STYLE}>
   <ds-tooltip placement="top">
     <ds-button variant="ghost" size="sm">Top</ds-button>
     <span slot="tip">Appears above</span>
