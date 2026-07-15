@@ -24,7 +24,12 @@ export class DsStatTile extends DsElement {
   @property() hint?: string;
   @property({ type: Boolean, reflect: true }) loading = false;
 
+  @state() private _hasLabel = false;
   @state() private _hasHint = false;
+
+  #onLabelSlotChange = (event: Event): void => {
+    this._hasLabel = hasAssignedContent(event.target as HTMLSlotElement);
+  };
 
   #onHintSlotChange = (event: Event): void => {
     this._hasHint = hasAssignedContent(event.target as HTMLSlotElement);
@@ -38,8 +43,10 @@ export class DsStatTile extends DsElement {
             ? html`<ds-skeleton width="4rem"></ds-skeleton>`
             : html`<slot name="value">${this.value}</slot>`}
         </div>
-        <div class="label" part="label"><slot name="label">${this.label}</slot></div>
-        <div class="hint" part="hint" ?hidden=${!this.hint && !this._hasHint}>
+        <div class="label" part="label" ?hidden=${!this.label.trim() && !this._hasLabel}>
+          <slot name="label" @slotchange=${this.#onLabelSlotChange}>${this.label}</slot>
+        </div>
+        <div class="hint" part="hint" ?hidden=${!this.hint?.trim() && !this._hasHint}>
           <slot name="hint" @slotchange=${this.#onHintSlotChange}>${this.hint}</slot>
         </div>
       </div>

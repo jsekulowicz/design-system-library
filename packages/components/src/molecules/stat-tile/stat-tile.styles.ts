@@ -2,15 +2,15 @@ import { css } from 'lit';
 
 export const statTileStyles = css`
   :host {
-    display: block;
+    display: flex;
     min-width: 0;
   }
 
   .tile {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: var(--ds-space-1);
-    min-height: 7.25rem;
     box-sizing: border-box;
     padding: var(--ds-space-4);
     background: var(--ds-color-bg);

@@ -35,4 +35,22 @@ describe('<ds-stat-tile>', () => {
 
     expect(element.shadowRoot!.querySelector('.hint')?.hasAttribute('hidden')).toBe(false);
   });
+
+  it('hides empty label and hint containers', async () => {
+    const element = await mountTile({ label: '   ', hint: '   ' });
+
+    expect(element.shadowRoot!.querySelector('.label')?.hasAttribute('hidden')).toBe(true);
+    expect(element.shadowRoot!.querySelector('.hint')?.hasAttribute('hidden')).toBe(true);
+  });
+
+  it('shows consumer-provided label content', async () => {
+    const element = await mountTile();
+    const label = document.createElement('span');
+    label.slot = 'label';
+    element.append(label);
+    element.shadowRoot!.querySelector('slot[name="label"]')!.dispatchEvent(new Event('slotchange'));
+    await element.updateComplete;
+
+    expect(element.shadowRoot!.querySelector('.label')?.hasAttribute('hidden')).toBe(false);
+  });
 });
