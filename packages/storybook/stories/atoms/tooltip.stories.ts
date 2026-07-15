@@ -6,6 +6,7 @@ import '@jsekulowicz/ds-components/button/define';
 const meta: Meta = {
   title: 'Atoms/Tooltip',
   component: 'ds-tooltip',
+  parameters: { docs: { story: { inline: false, height: '180px' } } },
   argTypes: {
     placement: {
       control: { type: 'inline-radio' },
@@ -57,6 +58,7 @@ export const WrappingContent: Story = {
 };
 
 export const Placements: Story = {
+  parameters: { docs: { story: { height: '280px' } } },
   render: () => html`
 <div style="padding: 4rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
   <ds-tooltip placement="top">
