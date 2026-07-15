@@ -26,7 +26,7 @@ async function mountCalendar(props: Partial<DsHeatmapCalendar> = {}): Promise<Ds
 }
 
 describe('<ds-heatmap-calendar>', () => {
-  it('renders a calendar-sized skeleton while loading', async () => {
+  it('uses the rendered calendar height for its loading skeleton', async () => {
     const element = await mountCalendar({ loading: true, cellSize: 12, cellGap: 3 });
     const frame = element.shadowRoot!.querySelector<HTMLElement>('.loading-frame')!;
     const skeleton = frame.querySelector('ds-skeleton')!;
@@ -34,6 +34,11 @@ describe('<ds-heatmap-calendar>', () => {
     expect(frame.getAttribute('aria-busy')).toBe('true');
     expect(skeleton.getAttribute('height')).toBe('126px');
     expect(element.shadowRoot!.querySelector('svg')).toBeNull();
+
+    element.loading = false;
+    await element.updateComplete;
+
+    expect(element.shadowRoot!.querySelector('svg')?.getAttribute('height')).toBe('126');
   });
 
   it('keeps the focus frame aligned to the calendar without overflowing its host', () => {

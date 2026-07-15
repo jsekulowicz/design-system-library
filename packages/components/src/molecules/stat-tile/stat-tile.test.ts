@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
-import type { DsStatTile } from './stat-tile.js';
+import { DsStatTile } from './stat-tile.js';
 import './define.js';
 
 beforeEach(() => resetTestDom());
@@ -23,6 +23,14 @@ describe('<ds-stat-tile>', () => {
 
     expect(element.shadowRoot!.querySelector('.value ds-skeleton')).not.toBeNull();
     expect(element.shadowRoot!.querySelector('.tile')?.getAttribute('aria-busy')).toBe('true');
+  });
+
+  it('uses the same reserved line box for loading and loaded values', () => {
+    const css = DsStatTile.styles.map((style) => style.cssText).join('\n');
+
+    expect(css).toMatch(/\.value\s*{[^}]*min-height: calc\([^}]*--ds-line-height-snug[^}]*\)/s);
+    expect(css).toMatch(/\.value\s*{[^}]*line-height: var\(--ds-line-height-snug\)/s);
+    expect(css).not.toMatch(/\.value ds-skeleton\s*{[^}]*padding/s);
   });
 
   it('shows consumer-provided hint content', async () => {

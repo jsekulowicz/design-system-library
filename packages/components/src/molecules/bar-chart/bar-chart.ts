@@ -1,4 +1,4 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state, query } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/skeleton/define.js';
@@ -45,6 +45,13 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     this.#remeasureNextFrame();
   }
 
+  override updated(changedProperties: PropertyValues<this>): void {
+    if (changedProperties.has('loading') && !this.loading) {
+      this.#observeResize();
+      this.#remeasureNextFrame();
+    }
+  }
+
   #remeasureNextFrame(): void {
     if (typeof requestAnimationFrame === 'undefined') {
       return;
@@ -67,6 +74,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     if (!this._frame || typeof ResizeObserver === 'undefined') {
       return;
     }
+    this.#resizeObserver?.disconnect();
     this.#resizeObserver = new ResizeObserver(entries => {
       const entry = entries[0];
       if (entry) {

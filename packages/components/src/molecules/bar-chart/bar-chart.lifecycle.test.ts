@@ -100,4 +100,40 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
       globalThis.ResizeObserver = originalRo;
     }
   });
+
+  it('observes the rendered chart frame after loading finishes', async () => {
+    const originalRo = globalThis.ResizeObserver;
+    const observedFrames: Element[] = [];
+    globalThis.ResizeObserver = class {
+      constructor(private readonly cb: ResizeObserverCallback) {}
+      observe(target: Element): void {
+        observedFrames.push(target);
+        const width = target.classList.contains('loading-frame') ? 640 : 960;
+        queueMicrotask(() => {
+          this.cb([{ contentRect: { width } } as ResizeObserverEntry], this as unknown as ResizeObserver);
+        });
+      }
+      disconnect(): void {}
+      unobserve(): void {}
+    } as unknown as typeof ResizeObserver;
+
+    try {
+      const el = await mountWithProps<DsBarChart<Turn>>('<ds-bar-chart></ds-bar-chart>', {
+        data: ROWS,
+        domain: 'turn',
+        series: SERIES,
+        loading: true,
+      }, 'ds-bar-chart');
+      el.loading = false;
+      await el.updateComplete;
+      await Promise.resolve();
+      await el.updateComplete;
+
+      const frame = el.shadowRoot!.querySelector('.frame')!;
+      expect(observedFrames.at(-1)).toBe(frame);
+      expect(el.shadowRoot!.querySelector('svg')?.getAttribute('viewBox')).toBe('0 0 960 320');
+    } finally {
+      globalThis.ResizeObserver = originalRo;
+    }
+  });
 });

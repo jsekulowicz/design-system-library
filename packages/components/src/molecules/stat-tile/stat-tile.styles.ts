@@ -20,10 +20,13 @@ export const statTileStyles = css`
   }
 
   .value {
-    min-height: 2.125rem;
+    display: flex;
+    align-items: center;
+    min-height: calc(var(--ds-font-size-heading-lg) * var(--ds-line-height-snug));
     font-size: var(--ds-font-size-heading-lg);
     font-weight: var(--ds-font-weight-bold);
     font-variant-numeric: tabular-nums;
+    line-height: var(--ds-line-height-snug);
   }
 
   .label {
@@ -38,7 +41,6 @@ export const statTileStyles = css`
 
   .value ds-skeleton {
     width: 4rem;
-    padding-block: 0.5rem;
   }
 
   [hidden] {
