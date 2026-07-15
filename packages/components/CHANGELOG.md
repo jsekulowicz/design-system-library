@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.48.2
+
+### Patch Changes
+
+- e6894a5: Ensure tooltip content wraps and uses logical start alignment even when the trigger inherits no-wrap or alignment styles.
+
 ## 0.48.1
 
 ### Patch Changes
