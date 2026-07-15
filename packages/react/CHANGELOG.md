@@ -1,5 +1,16 @@
 # @jsekulowicz/ds-react
 
+## 0.48.0
+
+### Minor Changes
+
+- ec038d6: Add `ds-stat-tile` with flexible sizing, optional label and hint content, and value loading. Add skeleton loading states to `ds-bar-chart` and `ds-heatmap-calendar`.
+
+### Patch Changes
+
+- Updated dependencies [ec038d6]
+  - @jsekulowicz/ds-components@0.48.0
+
 ## 0.47.2
 
 ### Patch Changes
