@@ -79,6 +79,14 @@ function setupPopoverHarness(el: DsTooltip): PopoverHarness {
 }
 
 describe('<ds-tooltip>', () => {
+  it('wraps content independently of the trigger context', () => {
+    const css = DsTooltip.styles.map((style) => style.cssText).join('\n');
+
+    expect(css).toContain('white-space: normal');
+    expect(css).toContain('overflow-wrap: anywhere');
+    expect(css).toContain('max-width: min(16rem, calc(100vw - var(--ds-space-4)))');
+  });
+
   it('stays safe when popover APIs are unavailable', async () => {
     const el = await mount<DsTooltip>('<ds-tooltip><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
     el.open = true;

@@ -43,6 +43,19 @@ export const RichContent: Story = {
   `,
 };
 
+export const WrappingContent: Story = {
+  render: () => html`
+<div style="padding: 3rem; display: flex; justify-content: center; white-space: nowrap;">
+  <ds-tooltip placement="bottom">
+    <ds-button variant="ghost" size="sm">Contributions</ds-button>
+    <span slot="tip">
+      Approved crosswords created by the player and accepted word or clue suggestions
+    </span>
+  </ds-tooltip>
+</div>
+  `,
+};
+
 export const Placements: Story = {
   render: () => html`
 <div style="padding: 4rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">

@@ -35,7 +35,9 @@ export const tooltipStyles = css`
     border: none;
     width: max-content;
     height: auto;
-    overflow: visible;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    white-space: normal;
     z-index: var(--ds-z-index-tooltip);
     background: var(--ds-color-fg);
     color: var(--ds-color-bg);
@@ -44,7 +46,7 @@ export const tooltipStyles = css`
     line-height: 1.4;
     padding: var(--ds-space-1) var(--ds-space-3);
     border-radius: var(--ds-radius-xs);
-    max-width: 16rem;
+    max-width: min(16rem, calc(100vw - var(--ds-space-4)));
     pointer-events: none;
   }
   :host([placement='bottom']) .tooltip {
