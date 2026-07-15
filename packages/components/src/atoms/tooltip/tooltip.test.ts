@@ -84,6 +84,7 @@ describe('<ds-tooltip>', () => {
 
     expect(css).toContain('white-space: normal');
     expect(css).toContain('overflow-wrap: anywhere');
+    expect(css).toContain('text-align: start');
     expect(css).toContain('max-width: min(16rem, calc(100vw - var(--ds-space-4)))');
   });
 

@@ -37,6 +37,7 @@ export const tooltipStyles = css`
     height: auto;
     overflow: hidden;
     overflow-wrap: anywhere;
+    text-align: start;
     white-space: normal;
     z-index: var(--ds-z-index-tooltip);
     background: var(--ds-color-fg);

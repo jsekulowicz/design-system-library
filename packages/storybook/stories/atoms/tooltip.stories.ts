@@ -45,7 +45,7 @@ export const RichContent: Story = {
 
 export const WrappingContent: Story = {
   render: () => html`
-<div style="padding: 3rem; display: flex; justify-content: center; white-space: nowrap;">
+<div style="padding: 3rem; display: flex; justify-content: center; text-align: right; white-space: nowrap;">
   <ds-tooltip placement="bottom">
     <ds-button variant="ghost" size="sm">Contributions</ds-button>
     <span slot="tip">
