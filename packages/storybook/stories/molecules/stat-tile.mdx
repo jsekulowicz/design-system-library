@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as StatTileStories from './stat-tile.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={StatTileStories} />
+
+# Stat tile
+
+A compact surface for one prominent metric, its label, and optional supporting detail.
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+  <ds-tab-panel value="api">
+    <Canvas of={StatTileStories.Playground} />
+    <h3>Props</h3>
+    <Controls of={StatTileStories.Playground} />
+    <ComponentApi tag="ds-stat-tile" />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="examples">
+    <Stories includePrimary={false} />
+  </ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Do</h3>
+    <ul>
+      <li>Use one tile for one quickly scannable metric.</li>
+      <li>Use <code>loading</code> when the value is pending.</li>
+      <li>Place a <code>ds-skeleton</code> in the <code>hint</code> slot when supporting detail also depends on fetched data.</li>
+    </ul>
+    <h3>Don't</h3>
+    <ul>
+      <li>Don't put long-form content or actions in a stat tile.</li>
+      <li>Don't replace a known label with a skeleton.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>

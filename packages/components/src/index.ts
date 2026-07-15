@@ -46,6 +46,7 @@ export {
   type PaginationRangeInput,
 } from './atoms/table/index.js';
 export { DsCard, type CardElevation, type CardOrientation } from './molecules/card/index.js';
+export { DsStatTile } from './molecules/stat-tile/index.js';
 export { DsDialog, type DialogSize } from './molecules/dialog/index.js';
 export {
   DsToast,

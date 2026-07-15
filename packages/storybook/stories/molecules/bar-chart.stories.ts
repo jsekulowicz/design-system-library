@@ -80,6 +80,7 @@ const meta: Meta = {
     title: { control: 'text' },
     height: { control: { type: 'number', min: 160, step: 10 } },
     showLegend: { control: 'boolean' },
+    loading: { control: 'boolean' },
     formatValue: { control: false },
     formatDomain: { control: false },
   },
@@ -93,6 +94,7 @@ const meta: Meta = {
     title: 'Game turns — scores',
     height: 320,
     showLegend: true,
+    loading: false,
     formatDomain: (value: unknown) => `Turn ${value}`,
   },
 };
@@ -113,6 +115,7 @@ export const Grouped: Story = {
   .yAxisLabel=${args['yAxisLabel']}
   .height=${args['height']}
   .showLegend=${args['showLegend']}
+  .loading=${args['loading']}
   .formatValue=${args['formatValue']}
   .formatDomain=${args['formatDomain']}
 ></ds-bar-chart>
@@ -136,6 +139,17 @@ export const Grouped: Story = {
       },
     },
   },
+};
+
+export const Loading: Story = {
+  render: () => html`
+<ds-bar-chart
+  loading
+  title="Game turns — scores"
+  height="320"
+  .series=${THREE_PLAYERS}
+></ds-bar-chart>
+  `,
 };
 
 export const Stacked: Story = {

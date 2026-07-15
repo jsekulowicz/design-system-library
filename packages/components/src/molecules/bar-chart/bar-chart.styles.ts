@@ -21,6 +21,10 @@ export const barChartStyles = css`
     box-shadow: var(--ds-shadow-focus);
   }
 
+  .loading-frame {
+    overflow: hidden;
+  }
+
   svg {
     display: block;
     width: 100%;

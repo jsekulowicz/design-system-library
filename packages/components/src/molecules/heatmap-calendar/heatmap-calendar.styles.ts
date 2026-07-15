@@ -26,6 +26,10 @@ export const heatmapCalendarStyles = css`
     box-shadow: var(--ds-shadow-focus);
   }
 
+  .loading-frame {
+    width: fit-content;
+  }
+
   .scroller {
     width: 100%;
     overflow-x: auto;

@@ -1,6 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, state, query } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import '../../atoms/skeleton/define.js';
 import { barChartStyles } from './bar-chart.styles.js';
 import { colorForIndex } from './colors.js';
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
@@ -28,6 +29,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   @property() override title = '';
   @property({ type: Number }) height = 320;
   @property({ type: Boolean, reflect: true, attribute: 'show-legend' }) showLegend = true;
+  @property({ type: Boolean, reflect: true }) loading = false;
   @property({ attribute: false }) formatValue?: (v: number) => string;
   @property({ attribute: false }) formatDomain?: (v: unknown) => string;
 
@@ -106,11 +108,24 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   }
 
   override render(): TemplateResult {
+    const ctx = this.#renderContext();
+    if (this.loading) {
+      return html`
+        <div
+          class="frame loading-frame"
+          style="height:${this.height}px"
+          aria-busy="true"
+          aria-label=${this.title || 'Bar chart'}
+        >
+          <ds-skeleton variant="rectangle" width="100%" height="100%"></ds-skeleton>
+        </div>
+        ${this.showLegend ? renderLegend(ctx) : nothing}
+      `;
+    }
     const layout = this.#computeLayout();
     if (layout.groups.length === 0) {
       return html`<div class="frame" style="height:${this.height}px" tabindex="0"></div>`;
     }
-    const ctx = this.#renderContext();
     return html`
       <div
         class="frame"

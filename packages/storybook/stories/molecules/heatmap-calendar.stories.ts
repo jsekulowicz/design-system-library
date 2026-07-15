@@ -26,6 +26,7 @@ const meta: Meta = {
     cellSize: { control: { type: 'number', min: 6, max: 24 } },
     cellGap: { control: { type: 'number', min: 0, max: 8 } },
     showLegend: { control: 'boolean' },
+    loading: { control: 'boolean' },
     color: { control: 'color' },
     locale: { control: 'text' },
     formatValue: { control: false },
@@ -40,6 +41,7 @@ const meta: Meta = {
     cellSize: 12,
     cellGap: 3,
     showLegend: true,
+    loading: false,
     color: 'var(--ds-color-chart-1)',
     locale: 'en',
     formatValue: (value: number) => `${value} ${value === 1 ? 'play' : 'plays'}`,
@@ -61,6 +63,7 @@ export const Activity: Story = {
         .cellSize=${args['cellSize']}
         .cellGap=${args['cellGap']}
         .showLegend=${args['showLegend']}
+        .loading=${args['loading']}
         .color=${args['color']}
         .locale=${args['locale']}
         .formatValue=${args['formatValue']}
@@ -68,6 +71,17 @@ export const Activity: Story = {
       ></ds-heatmap-calendar>
     `;
   },
+};
+
+export const Loading: Story = {
+  render: () => html`
+    <ds-heatmap-calendar
+      loading
+      end-date="2026-07-13"
+      months="6"
+      title="Crosswords played"
+    ></ds-heatmap-calendar>
+  `,
 };
 
 export const Empty: Story = {

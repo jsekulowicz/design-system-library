@@ -22,6 +22,7 @@ import './atoms/breadcrumb/define.js';
 import './atoms/nav-item/define.js';
 import './atoms/menu/define.js';
 import './molecules/card/define.js';
+import './molecules/stat-tile/define.js';
 import './molecules/dialog/define.js';
 import './molecules/drawer/define.js';
 import './molecules/toast/define.js';

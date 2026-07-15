@@ -1,6 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import '../../atoms/skeleton/define.js';
 import { heatmapCalendarStyles } from './heatmap-calendar.styles.js';
 import { computeHeatmapLayout, parseDate } from './heatmap-layout.js';
 import { actionForKey } from './heatmap-interaction.js';
@@ -10,7 +11,7 @@ import {
   todayDate,
   weekdayLabels,
 } from './heatmap-formatters.js';
-import { renderHeatmapSvg } from './heatmap-calendar-svg.js';
+import { heatmapDimensions, renderHeatmapSvg } from './heatmap-calendar-svg.js';
 import {
   heatmapAriaLabel,
   heatmapLiveText,
@@ -40,6 +41,7 @@ export class DsHeatmapCalendar extends DsElement {
   @property({ type: Number, attribute: 'cell-size' }) cellSize = 12;
   @property({ type: Number, attribute: 'cell-gap' }) cellGap = 3;
   @property({ type: Boolean, reflect: true, attribute: 'show-legend' }) showLegend = true;
+  @property({ type: Boolean, reflect: true }) loading = false;
   @property() color = 'var(--ds-color-chart-1)';
   @property({ attribute: false }) formatValue?: (value: number) => string;
   @property({ attribute: false }) formatDate?: (date: string) => string;
@@ -68,6 +70,26 @@ export class DsHeatmapCalendar extends DsElement {
   override render(): TemplateResult {
     const layout = this.#layout();
     const ctx = this.#context();
+    if (this.loading) {
+      const dimensions = heatmapDimensions(ctx, layout);
+      return html`
+        <div
+          class="frame loading-frame"
+          part="chart"
+          aria-busy="true"
+          aria-label=${this.title || 'Activity calendar'}
+        >
+          <div class="scroller" part="scroller">
+            <ds-skeleton
+              variant="rectangle"
+              width="${dimensions.width}px"
+              height="${dimensions.height}px"
+            ></ds-skeleton>
+          </div>
+          ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
+        </div>
+      `;
+    }
     return html`
       <div
         class="frame"

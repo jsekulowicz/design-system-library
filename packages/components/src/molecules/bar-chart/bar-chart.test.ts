@@ -60,6 +60,16 @@ function bars(el: DsBarChart<Turn>): SVGRectElement[] {
 }
 
 describe('<ds-bar-chart>', () => {
+  it('renders a height-preserving skeleton while loading', async () => {
+    const el = await mountBarChart({ height: 280, loading: true });
+    const frame = el.shadowRoot!.querySelector<HTMLElement>('.loading-frame')!;
+
+    expect(frame.style.height).toBe('280px');
+    expect(frame.getAttribute('aria-busy')).toBe('true');
+    expect(frame.querySelector('ds-skeleton')).not.toBeNull();
+    expect(groups(el)).toHaveLength(0);
+  });
+
   it('renders one bar-group per data row', async () => {
     const el = await mountBarChart();
     expect(groups(el)).toHaveLength(3);

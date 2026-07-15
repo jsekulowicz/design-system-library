@@ -228,6 +228,13 @@
     "./card/define": {
       "import": "./dist/molecules/card/define.js"
     },
+    "./stat-tile": {
+      "types": "./dist/molecules/stat-tile/index.d.ts",
+      "import": "./dist/molecules/stat-tile/index.js"
+    },
+    "./stat-tile/define": {
+      "import": "./dist/molecules/stat-tile/define.js"
+    },
     "./dialog": {
       "types": "./dist/molecules/dialog/index.d.ts",
       "import": "./dist/molecules/dialog/index.js"
