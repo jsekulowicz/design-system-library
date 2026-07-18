@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.48.3
+
+### Patch Changes
+
+- b497ca8: nav-item: dim an accent-coloured slotted icon (icons coloured with
+  `--ds-color-accent`) alongside the label when the item is `disabled`.
+
 ## 0.48.2
 
 ### Patch Changes
