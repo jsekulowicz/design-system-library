@@ -16,6 +16,12 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @slot trailing - Icon or adornment rendered after the label.
  * @attr {boolean} square - Forces an icon-sized square button and ignores the text-button min width.
  * @csspart button - The internal `<button>` element.
+ * @cssprop --ds-button-solid - Primary variant background.
+ * @cssprop --ds-button-solid-hover - Primary variant hover background.
+ * @cssprop --ds-button-solid-active - Primary variant active background.
+ * @cssprop --ds-button-on-solid - Text color on the solid background.
+ * @cssprop --ds-button-line - Secondary variant border color.
+ * @cssprop --ds-button-text - Secondary/ghost variant text color.
  * @event ds-click - Emitted when the button is activated.
  */
 export class DsButton extends DsElement {

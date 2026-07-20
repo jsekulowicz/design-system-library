@@ -4,15 +4,18 @@ export const buttonStyles = css`
   :host {
     --ds-button-size: var(--ds-size-md);
     --ds-button-min-width: 4.5rem;
+    /* Public tint knobs. The color attribute presets them; consumers may
+       override any of them per instance for custom palettes. */
+    --ds-button-solid: var(--ds-color-accent);
+    --ds-button-solid-hover: var(--ds-color-accent-hover);
+    --ds-button-solid-active: var(--ds-color-accent-active);
+    --ds-button-on-solid: var(--ds-color-accent-fg);
+    --ds-button-line: var(--ds-color-border-strong);
+    --ds-button-text: var(--ds-color-fg);
     display: inline-flex;
     vertical-align: middle;
   }
   .btn {
-    /* color picks the tint; the accent default keeps secondary/ghost neutral. */
-    --ds-btn-solid: var(--ds-color-accent);
-    --ds-btn-on: var(--ds-color-accent-fg);
-    --ds-btn-line: var(--ds-color-border-strong);
-    --ds-btn-text: var(--ds-color-fg);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -62,37 +65,42 @@ export const buttonStyles = css`
       transform: rotate(360deg);
     }
   }
-  :host([color='success']) .btn {
-    --ds-btn-solid: var(--ds-color-success);
-    --ds-btn-line: var(--ds-color-success);
-    --ds-btn-text: var(--ds-color-success);
+  :host([color='success']) {
+    /* No hover/active tokens exist for these colors; pin them to the solid. */
+    --ds-button-solid: var(--ds-color-success);
+    --ds-button-solid-hover: var(--ds-color-success);
+    --ds-button-solid-active: var(--ds-color-success);
+    --ds-button-line: var(--ds-color-success);
+    --ds-button-text: var(--ds-color-success);
   }
-  :host([color='danger']) .btn {
-    --ds-btn-solid: var(--ds-color-danger);
-    --ds-btn-line: var(--ds-color-danger);
-    --ds-btn-text: var(--ds-color-danger);
+  :host([color='danger']) {
+    --ds-button-solid: var(--ds-color-danger);
+    --ds-button-solid-hover: var(--ds-color-danger);
+    --ds-button-solid-active: var(--ds-color-danger);
+    --ds-button-line: var(--ds-color-danger);
+    --ds-button-text: var(--ds-color-danger);
   }
   :host([variant='primary']) .btn {
-    background: var(--ds-btn-solid);
-    color: var(--ds-btn-on);
+    background: var(--ds-button-solid);
+    color: var(--ds-button-on-solid);
   }
-  :host([variant='primary'][color='accent']) .btn:hover:not([aria-disabled='true']) {
-    background: var(--ds-color-accent-hover);
+  :host([variant='primary']) .btn:hover:not([aria-disabled='true']) {
+    background: var(--ds-button-solid-hover);
   }
-  :host([variant='primary'][color='accent']) .btn:active:not([aria-disabled='true']) {
-    background: var(--ds-color-accent-active);
+  :host([variant='primary']) .btn:active:not([aria-disabled='true']) {
+    background: var(--ds-button-solid-active);
   }
   :host([variant='secondary']) .btn {
     background: transparent;
-    color: var(--ds-btn-text);
-    border-color: var(--ds-btn-line);
+    color: var(--ds-button-text);
+    border-color: var(--ds-button-line);
   }
   :host([variant='secondary']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-bg-subtle);
   }
   :host([variant='ghost']) .btn {
     background: transparent;
-    color: var(--ds-btn-text);
+    color: var(--ds-button-text);
   }
   :host([variant='ghost']) .btn:hover:not([aria-disabled='true']) {
     background: var(--ds-color-bg-subtle);
