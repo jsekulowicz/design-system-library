@@ -65,9 +65,9 @@ Setting `stacked` collapses each group into a single bar of stacked segments (su
       </ul>
       <h3>Accessibility</h3>
       <ul>
-        <li>The chart is focusable (<code>tabindex=0</code>) with an <code>aria-label</code> summarizing group count, series, and keyboard usage.</li>
-        <li><kbd>←</kbd> / <kbd>→</kbd> move between groups; <kbd>Home</kbd> / <kbd>End</kbd> jump to first / last; <kbd>Esc</kbd> clears focus.</li>
-        <li>A visually-hidden <code>&lt;table&gt;</code> mirrors the full data — non-sighted users can read every cell directly.</li>
+        <li>Each bar group is a real focusable element (<code>role="graphics-symbol"</code>) with a roving tabindex, inside an SVG exposed as a <code>graphics-document</code>. There is no <code>role="application"</code>, so browse mode keeps working.</li>
+        <li><kbd>Tab</kbd> enters the chart at the active group; <kbd>←</kbd> / <kbd>→</kbd> move between groups; <kbd>Home</kbd> / <kbd>End</kbd> jump to first / last; <kbd>Esc</kbd> clears the active group.</li>
+        <li>A visually-hidden <code>&lt;table&gt;</code> sits outside the graphic and mirrors the full data, so it can be navigated with real table semantics.</li>
         <li>An <code>aria-live="polite"</code> region announces the active group and all its values when focus or hover changes.</li>
         <li>Palette colors come from <code>--ds-color-chart-1</code>…<code>--ds-color-chart-6</code>; override per-series via <code>color</code>.</li>
       </ul>

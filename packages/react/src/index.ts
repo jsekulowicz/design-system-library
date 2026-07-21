@@ -27,6 +27,7 @@ export { MenuItem } from './ds-menu-item.js';
 export { NavGroup } from './ds-nav-group.js';
 export { NavItem } from './ds-nav-item.js';
 export { PageShell } from './ds-page-shell.js';
+export { PieChart } from './ds-pie-chart.js';
 export { ProgressBar } from './ds-progress-bar.js';
 export { Radio } from './ds-radio.js';
 export { RadioGroup } from './ds-radio-group.js';

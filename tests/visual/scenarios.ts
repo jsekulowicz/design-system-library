@@ -29,6 +29,8 @@ export const visualScenarios: VisualScenario[] = [
     beforeCapture: openSelect,
   },
   staticStory('select-multiple-icons', 'atoms-select--multiple-with-icons'),
+  staticStory('pie-chart', 'molecules-piechart--playground'),
+  staticStory('pie-chart-donut', 'molecules-piechart--donut'),
   {
     name: 'searchable-select-open',
     storyId: 'atoms-searchableselect--countries',

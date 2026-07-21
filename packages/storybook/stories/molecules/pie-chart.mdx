@@ -1,0 +1,76 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as PieChartStories from './pie-chart.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/pie-chart/define';
+
+<Meta of={PieChartStories} />
+
+# PieChart
+
+Part-to-whole chart, rendered as a pie or a donut. Pass rows via `.data`; each row is a label, a value, and an optional color. Percentages are derived from the values, so consumers never pre-compute shares.
+
+## Anatomy
+
+```ts
+type PieChartDatum = {
+  label: string;   // slice name, used in the legend, tooltip and SR table
+  value: number;   // non-finite and negative values are dropped
+  color?: string;  // CSS color; defaults to a palette entry
+};
+```
+
+```html
+<ds-pie-chart
+  donut
+  title="Sessions by channel"
+  .data=${[
+    { label: 'Organic search', value: 4820 },
+    { label: 'Direct', value: 2410 },
+  ]}
+></ds-pie-chart>
+```
+
+Set `donut` to cut a hole in the middle (`inner-radius` controls how big). The hole shows the formatted total by default; the `center` slot replaces it.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={PieChartStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={PieChartStories.Playground} />
+      <ComponentApi tag="ds-pie-chart" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use a pie or donut only for parts of a single whole. For comparing categories over time or against each other, use <code>ds-bar-chart</code>.</li>
+        <li>Keep it to roughly six slices — set <code>max-slices</code> or <code>other-threshold</code> to roll the long tail into a single "Other" slice.</li>
+        <li>Format values with <code>.formatValue</code> — the legend, tooltip, SR table, and live region all share it.</li>
+        <li>Provide a <code>title</code>; it builds the chart's accessible name and the SR table caption.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use it for values that don't sum to a meaningful whole.</li>
+        <li>Don't hide the legend — it is the only place slice names appear without hovering or focusing.</li>
+        <li>Don't shrink the chart below ~200px with percentages on; turn <code>show-percentages</code> off instead of letting labels collide.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Each slice is a real focusable element (<code>role="graphics-symbol"</code>) with a roving tabindex, inside an SVG exposed as a <code>graphics-document</code>. There is no <code>role="application"</code>, so browse mode keeps working.</li>
+        <li><kbd>Tab</kbd> enters the chart at the active slice; arrow keys walk the ring in either direction and wrap; <kbd>Home</kbd> / <kbd>End</kbd> jump to first / last; <kbd>Esc</kbd> clears the active slice; <kbd>Enter</kbd> / <kbd>Space</kbd> emit <code>ds-slice-select</code>.</li>
+        <li>A visually-hidden <code>&lt;table&gt;</code> sits outside the graphic with label, value, share, and a total row — navigable with real table semantics.</li>
+        <li>An <code>aria-live="polite"</code> region announces the active slice; it stays empty until something is focused.</li>
+        <li>Color is never the only channel: slices are separated by a background-colored stroke, percentages are drawn outside the arc where contrast against the page is guaranteed, and the legend repeats value and share as text.</li>
+        <li>The donut centre is <code>aria-hidden</code> — it restates the total that the summary and SR table already provide. Put anything that must be announced outside the chart.</li>
+        <li>Palette colors come from <code>--ds-color-chart-1</code>…<code>--ds-color-chart-6</code>; override per slice via <code>color</code>.</li>
+      </ul>
+    </ds-tab-panel>
+  </ds-tabs>

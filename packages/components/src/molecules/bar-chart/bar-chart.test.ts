@@ -60,6 +60,25 @@ function bars(el: DsBarChart<Turn>): SVGRectElement[] {
 }
 
 describe('<ds-bar-chart>', () => {
+  it('exposes bar groups as focusable graphics symbols', async () => {
+    const el = await mountBarChart();
+    const all = groups(el);
+    expect(all.every(g => g.getAttribute('role') === 'graphics-symbol')).toBe(true);
+    expect(all.filter(g => g.getAttribute('tabindex') === '0')).toHaveLength(1);
+    expect(all[0]!.getAttribute('aria-label')).toBe('1: Jess 3, Marco 2, Andrew 4');
+
+    const svg = el.shadowRoot!.querySelector('svg')!;
+    expect(svg.getAttribute('role')).toBe('graphics-document');
+    expect(svg.getAttribute('aria-roledescription')).toBe('bar chart');
+    expect(el.shadowRoot!.querySelector('[role="application"]')).toBeNull();
+  });
+
+  it('renders the data table outside the chart frame', async () => {
+    const el = await mountBarChart();
+    const table = el.shadowRoot!.querySelector('table')!;
+    expect(el.shadowRoot!.querySelector('.frame')!.contains(table)).toBe(false);
+  });
+
   it('renders a height-preserving skeleton while loading', async () => {
     const el = await mountBarChart({ height: 280, loading: true });
     const frame = el.shadowRoot!.querySelector<HTMLElement>('.loading-frame')!;

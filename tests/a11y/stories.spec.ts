@@ -15,6 +15,10 @@ const stories = [
   'molecules-card--playground',
   'molecules-colorpicker--playground',
   'molecules-alert--tones',
+  'molecules-piechart--playground',
+  'molecules-piechart--donut',
+  'molecules-barchart--grouped',
+  'molecules-heatmapcalendar--activity',
   'organisms-form--account-details',
 ];
 

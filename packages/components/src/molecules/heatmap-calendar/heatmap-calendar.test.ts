@@ -26,6 +26,25 @@ async function mountCalendar(props: Partial<DsHeatmapCalendar> = {}): Promise<Ds
 }
 
 describe('<ds-heatmap-calendar>', () => {
+  it('exposes day cells as focusable graphics symbols', async () => {
+    const element = await mountCalendar();
+    const cells = [...element.shadowRoot!.querySelectorAll('.cell')];
+    expect(cells.every((cell) => cell.getAttribute('role') === 'graphics-symbol')).toBe(true);
+    expect(cells.filter((cell) => cell.getAttribute('tabindex') === '0')).toHaveLength(1);
+    expect(cells.at(-1)!.getAttribute('aria-label')).toContain('4');
+
+    const svg = element.shadowRoot!.querySelector('svg')!;
+    expect(svg.getAttribute('role')).toBe('graphics-document');
+    expect(svg.getAttribute('aria-roledescription')).toBe('activity calendar');
+    expect(element.shadowRoot!.querySelector('[role="application"]')).toBeNull();
+  });
+
+  it('renders the data table outside the chart frame', async () => {
+    const element = await mountCalendar();
+    const table = element.shadowRoot!.querySelector('table')!;
+    expect(element.shadowRoot!.querySelector('.frame')!.contains(table)).toBe(false);
+  });
+
   it('uses the rendered calendar height for its loading skeleton', async () => {
     const element = await mountCalendar({ loading: true, cellSize: 12, cellGap: 3 });
     const frame = element.shadowRoot!.querySelector<HTMLElement>('.loading-frame')!;

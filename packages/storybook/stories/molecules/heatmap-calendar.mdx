@@ -37,9 +37,10 @@ A rolling calendar heatmap for showing activity intensity by date. Dates use `YY
   <ds-tab-panel value="guidelines">
     <h3>Accessibility</h3>
     <ul>
+      <li>Each day cell is a real focusable element (<code>role="graphics-symbol"</code>) with a roving tabindex, inside an SVG exposed as a <code>graphics-document</code> — no <code>role="application"</code>, so browse mode keeps working. Focusing an off-screen week scrolls it into view.</li>
       <li><kbd>↑</kbd> / <kbd>↓</kbd> move one day and <kbd>←</kbd> / <kbd>→</kbd> move one week.</li>
       <li><kbd>Home</kbd> / <kbd>End</kbd> jump to the first / last visible date; <kbd>Esc</kbd> clears the active date.</li>
-      <li>A hidden table exposes every visible date and value independently of color.</li>
+      <li>A hidden table sits outside the graphic and exposes every visible date and value independently of color, with real table semantics.</li>
       <li>Use <code>formatValue</code> to include the unit in tooltips and screen-reader output.</li>
     </ul>
   </ds-tab-panel>
