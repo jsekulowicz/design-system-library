@@ -1,5 +1,33 @@
 # @jsekulowicz/ds-components
 
+## 0.50.0
+
+### Minor Changes
+
+- 18eb75a: Stable `ds-button` loading width and a spinner that actually spins.
+  - `ds-button` gains `loading-label`: while `loading`, it replaces the slotted label and pins the
+    button to the wider of the two labels, so toggling `loading` no longer reflows neighbouring
+    controls.
+  - Without `loading-label`, the leading slot now shares a grid cell with the spinner instead of
+    being swapped out, so entering the loading state can never shrink the button.
+  - Fixed the spinner arc: `stroke-dasharray` equalled the circle's circumference, so it drew a
+    closed ring and rotating it was a visual no-op. Extracted to a shared module reused by
+    `ds-button`, `ds-nav-item` and `ds-searchable-select`, all of which had the same bug.
+  - `reducedMotionStyles` now exempts elements marked `.ds-allow-motion`. Spinners are essential
+    status feedback, so they keep animating under `prefers-reduced-motion` at roughly half speed
+    instead of being frozen by the global clamp.
+
+- 4f324eb: Add `ds-pie-chart` (pie and donut) and move all charts to a shared accessibility pattern.
+
+  `ds-pie-chart` renders part-to-whole data with focusable slices, tooltips, an optional donut centre (`center` slot), long-tail grouping via `max-slices` / `other-threshold`, and `ds-slice-focus` / `ds-slice-select` events.
+
+  `ds-bar-chart` and `ds-heatmap-calendar` no longer use `role="application"` + `aria-activedescendant`. Each data point is now a real focusable element (`role="graphics-symbol"`, roving tabindex) inside an SVG exposed as a `graphics-document`, and the visually-hidden data table sits outside the graphic so browse mode can navigate it with real table semantics. No public API changes, but the rendered DOM and ARIA structure changed — consumers asserting on chart internals may need to update. Keyboard behaviour is unchanged apart from `Tab` now landing on a data point.
+
+### Patch Changes
+
+- Updated dependencies [18eb75a]
+  - @jsekulowicz/ds-core@0.50.0
+
 ## 0.49.0
 
 ### Minor Changes
