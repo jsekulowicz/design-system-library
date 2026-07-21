@@ -6,6 +6,7 @@ import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
+import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
@@ -30,6 +31,7 @@ import '../icon/define.js';
  * @csspart listbox - The dropdown listbox container.
  * @csspart hint - The optional note shown above the options inside the listbox.
  * @csspart option - Each individual option item.
+ * @csspart spinner - The loading spinner SVG shown in place of the chevron.
  */
 export class DsSearchableSelect extends FormControlMixin(DsElement) {
   static override styles = [
@@ -37,6 +39,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     formFieldStyles,
     fieldControlStyles,
     selectCommonStyles,
+    spinnerStyles,
     searchableSelectStyles,
   ];
   static override shadowRootOptions: ShadowRootInit = {
@@ -356,20 +359,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
                 this.#clear();
               }, this.#onClearKeydown)
             : nothing}
-          ${this.loading
-            ? html` <svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="9"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-dasharray="56.55"
-                  stroke-dashoffset="14.14"
-                />
-              </svg>`
-            : renderChevronDownIcon()}
+          ${this.loading ? spinnerTemplate() : renderChevronDownIcon()}
         </div>
         ${open
           ? html` <div

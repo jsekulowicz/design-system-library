@@ -1,6 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import { buttonStyles } from './button.styles.js';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
@@ -15,7 +16,11 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @slot leading - Icon or adornment rendered before the label.
  * @slot trailing - Icon or adornment rendered after the label.
  * @attr {boolean} square - Forces an icon-sized square button and ignores the text-button min width.
+ * @attr {string} loading-label - Text shown in place of the label while loading. Setting it
+ *   pins the button width to the wider of the two labels so toggling `loading` never reflows.
  * @csspart button - The internal `<button>` element.
+ * @csspart spinner - The loading spinner SVG.
+ * @cssprop --ds-spinner-size - Loading spinner diameter.
  * @cssprop --ds-button-solid - Primary variant background.
  * @cssprop --ds-button-solid-hover - Primary variant hover background.
  * @cssprop --ds-button-solid-active - Primary variant active background.
@@ -25,7 +30,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @event ds-click - Emitted when the button is activated.
  */
 export class DsButton extends DsElement {
-  static override styles = [...DsElement.styles, buttonStyles];
+  static override styles = [...DsElement.styles, spinnerStyles, buttonStyles];
 
   @property({ reflect: true }) variant: ButtonVariant = 'primary';
   @property({ reflect: true }) color: ButtonColor = 'accent';
@@ -36,6 +41,7 @@ export class DsButton extends DsElement {
   @property({ type: Boolean, reflect: true, attribute: 'full-width' }) fullWidth = false;
   @property({ type: Boolean, reflect: true }) square = false;
   @property() label?: string;
+  @property({ attribute: 'loading-label' }) loadingLabel?: string;
   @property({ attribute: 'aria-controls' }) ariaControlsAttr?: string;
   @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: string;
   @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: string;
@@ -99,23 +105,49 @@ export class DsButton extends DsElement {
         aria-label=${this.label ?? nothing}
         @click=${this.#handleClick}
       >
-        ${this.loading
-          ? html`<svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-dasharray="56.55"
-                stroke-dashoffset="14.14"
-              />
-            </svg>`
-          : html`<slot name="leading"></slot>`}
-        <slot></slot>
+        ${this.#renderAdornment()} ${this.#renderLabel()}
         <slot name="trailing"></slot>
       </button>
+    `;
+  }
+
+  // Idle buttons without a loading label render the bare slot, exactly as before, so
+  // they gain neither a flex item nor its gap. Once the spinner is in play the slot and
+  // the spinner share one grid cell, making the box as wide as the wider of the two --
+  // the state swap can then only grow the button, never shrink it.
+  #renderAdornment(): TemplateResult {
+    if (!this.loading && !this.loadingLabel) {
+      return html`<slot name="leading"></slot>`;
+    }
+    return html`
+      <span class="stack adornment">
+        <span class="stack-item ${this.loading ? 'is-hidden' : ''}">
+          <slot name="leading"></slot>
+        </span>
+        ${spinnerTemplate(this.loading ? '' : 'is-hidden')}
+      </span>
+    `;
+  }
+
+  #renderLabel(): TemplateResult {
+    if (!this.loadingLabel) {
+      return html`<slot></slot>`;
+    }
+    return html`
+      <span class="stack labels">
+        <span
+          class="stack-item ${this.loading ? 'is-hidden' : ''}"
+          aria-hidden=${this.loading ? 'true' : nothing}
+        >
+          <slot></slot>
+        </span>
+        <span
+          class="stack-item ${this.loading ? '' : 'is-hidden'}"
+          aria-hidden=${this.loading ? nothing : 'true'}
+        >
+          ${this.loadingLabel}
+        </span>
+      </span>
     `;
   }
 }

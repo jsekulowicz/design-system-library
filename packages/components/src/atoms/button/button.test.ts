@@ -103,4 +103,46 @@ describe('<ds-button>', () => {
     expect(button.getAttribute('aria-busy')).toBe('true');
     expect(el.shadowRoot!.querySelector('.spinner')).not.toBeNull();
   });
+
+  it('keeps the leading slot mounted while loading so the adornment box cannot shrink', async () => {
+    const el = await mount<DsButton>(
+      '<ds-button loading><span slot="leading">icon</span>Wait</ds-button>',
+    );
+
+    expect(el.shadowRoot!.querySelector('slot[name="leading"]')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('.adornment .stack-item')!.className).toContain(
+      'is-hidden',
+    );
+  });
+
+  it('reserves the spinner while idle once loading-label is set', async () => {
+    const el = await mount<DsButton>('<ds-button loading-label="Saving…">Save</ds-button>');
+    const spinner = el.shadowRoot!.querySelector('.spinner') as SVGElement;
+
+    expect(spinner).not.toBeNull();
+    expect(spinner.classList.contains('is-hidden')).toBe(true);
+  });
+
+  it('swaps to the loading label and hides the idle twin from assistive tech', async () => {
+    const el = await mount<DsButton>('<ds-button loading-label="Saving…">Save</ds-button>');
+    const twins = () => Array.from(el.shadowRoot!.querySelectorAll('.labels .stack-item'));
+
+    expect(twins()).toHaveLength(2);
+    expect(twins()[1]!.getAttribute('aria-hidden')).toBe('true');
+    expect(twins()[0]!.getAttribute('aria-hidden')).toBeNull();
+
+    el.loading = true;
+    await el.updateComplete;
+
+    expect(twins()[0]!.getAttribute('aria-hidden')).toBe('true');
+    expect(twins()[1]!.getAttribute('aria-hidden')).toBeNull();
+    expect(twins()[1]!.textContent).toContain('Saving…');
+  });
+
+  it('renders bare slots when no loading affordance is in play', async () => {
+    const el = await mount<DsButton>('<ds-button>Save</ds-button>');
+
+    expect(el.shadowRoot!.querySelector('.stack')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.spinner')).toBeNull();
+  });
 });

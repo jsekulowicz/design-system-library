@@ -42,10 +42,14 @@ export const visuallyHiddenStyles = css`
   }
 `;
 
+/**
+ * Elements carrying `.ds-allow-motion` opt out of the clamp: motion that conveys
+ * status (loading spinners) stays perceivable, just slower. Everything else stops.
+ */
 export const reducedMotionStyles = css`
   @media (prefers-reduced-motion: reduce) {
     :host,
-    :host * {
+    :host *:not(.ds-allow-motion) {
       animation-duration: 0.001ms !important;
       transition-duration: 0.001ms !important;
     }

@@ -1,6 +1,7 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { spinnerTemplate } from '../../shared/spinner.js';
 import { navItemStyles } from './nav-item.styles.js';
 import '../tooltip/define.js';
 
@@ -13,6 +14,7 @@ import '../tooltip/define.js';
  * @csspart link - The internal `<a>`.
  * @csspart icon - The icon slot wrapper.
  * @csspart label - The label slot wrapper.
+ * @csspart spinner - The loading spinner SVG.
  */
 export class DsNavItem extends DsElement {
   static override styles = [...DsElement.styles, ...navItemStyles];
@@ -90,18 +92,7 @@ export class DsNavItem extends DsElement {
 
   #renderIcon(): TemplateResult {
     if (this.loading) {
-      return html`<svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle
-          cx="12"
-          cy="12"
-          r="9"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-dasharray="56.55"
-          stroke-dashoffset="14.14"
-        />
-      </svg>`;
+      return spinnerTemplate();
     }
     return html`<slot name="icon" @slotchange=${this.#onIconSlotChange}></slot>`;
   }

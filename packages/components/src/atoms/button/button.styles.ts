@@ -54,16 +54,27 @@ export const buttonStyles = css`
   :host([loading]) .btn {
     cursor: wait;
   }
-  .spinner {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-    animation: ds-btn-spin 0.75s linear infinite;
+  .stack {
+    display: grid;
+    grid-template-areas: 'stack';
+    align-items: center;
+    justify-items: center;
+    min-width: 0;
   }
-  @keyframes ds-btn-spin {
-    to {
-      transform: rotate(360deg);
-    }
+  .stack > * {
+    grid-area: stack;
+    min-width: 0;
+  }
+  .stack-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+  }
+  .is-hidden {
+    visibility: hidden;
+  }
+  .spinner.is-hidden {
+    animation-play-state: paused;
   }
   :host([color='success']) {
     /* No hover/active tokens exist for these colors; pin them to the solid. */

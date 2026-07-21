@@ -37,15 +37,9 @@ export const searchableSelectStyles = css`
     pointer-events: none;
   }
   .spinner {
-    width: 1.2rem;
-    height: 1.2rem;
+    --ds-spinner-size: 1.2rem;
     margin-left: var(--ds-space-2);
     color: var(--ds-color-fg-muted);
-    flex-shrink: 0;
-    animation: spin 0.75s linear infinite;
-  }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
   }
   .trigger.open .caret {
     transform: rotate(180deg);

@@ -35,7 +35,7 @@ A native `<button>` lives in shadow DOM, styled via `::part(button)`. Slots for 
         <li>Use one <code>primary</code> per surface — the clearest next step for the user.</li>
         <li>Use <code>ghost</code> for low-emphasis actions that live among other content.</li>
         <li>Use <code>square</code> for icon-only buttons in toolbars, collapsed navigation, and compact controls.</li>
-        <li>Pair <code>loading</code> with optimistic copy ("Saving…") so the label still communicates progress.</li>
+        <li>Pair <code>loading</code> with <code>loading-label</code> ("Saving…") so the label still communicates progress. The button reserves the wider of the two labels, so toggling <code>loading</code> never reflows the row.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
@@ -47,6 +47,8 @@ A native `<button>` lives in shadow DOM, styled via `::part(button)`. Slots for 
       <h3>Accessibility</h3>
       <ul>
         <li><code>aria-busy</code> reflects <code>loading</code>.</li>
+        <li>The idle/loading label twins are mutually <code>aria-hidden</code>, so only one is ever announced.</li>
+        <li>The spinner keeps animating under <code>prefers-reduced-motion</code>, at roughly half speed — it is status feedback, not decoration.</li>
         <li>Disabled + loading prevent <code>ds-click</code> from firing.</li>
         <li>Focus ring uses <code>:focus-visible</code>; never suppressed.</li>
         <li>Keyboard: <code>Enter</code> and <code>Space</code> activate via native <code>&lt;button&gt;</code> semantics.</li>

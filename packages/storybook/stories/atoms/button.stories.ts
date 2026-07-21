@@ -23,6 +23,7 @@ const meta: Meta = {
     },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
+    loadingLabel: { control: 'text' },
     fullWidth: { control: 'boolean' },
     square: { control: 'boolean' },
   },
@@ -33,6 +34,7 @@ const meta: Meta = {
     type: 'button',
     disabled: false,
     loading: false,
+    loadingLabel: '',
     fullWidth: false,
     square: false,
   },
@@ -50,6 +52,7 @@ export const Playground: Story = {
   type=${args['type']}
   ?disabled=${args['disabled']}
   ?loading=${args['loading']}
+  loading-label=${args['loadingLabel']}
   ?full-width=${args['fullWidth']}
   ?square=${args['square']}
   >Ship it</ds-button
@@ -113,6 +116,36 @@ export const Loading: Story = {
   args: { loading: true },
   render: (args) => html`
 <ds-button ?loading=${args['loading']}>Saving…</ds-button>
+  `,
+};
+
+export const LoadingLabel: Story = {
+  render: () => html`
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;">
+  <ds-button
+    id="toggle"
+    variant="ghost"
+    @ds-click=${() => {
+      document
+        .querySelectorAll<HTMLElement & { loading: boolean }>('ds-button[data-demo]')
+        .forEach((button) => {
+          button.loading = !button.loading;
+        });
+    }}
+    >Toggle loading</ds-button
+  >
+  <ds-button data-demo loading-label="Playing…">
+    <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
+    Preview
+  </ds-button>
+  <ds-button data-demo variant="secondary">
+    <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
+    No loading label
+  </ds-button>
+  <div style="width: 22rem;">
+    <ds-button data-demo full-width loading-label="Saving…">Save changes</ds-button>
+  </div>
+</div>
   `,
 };
 
