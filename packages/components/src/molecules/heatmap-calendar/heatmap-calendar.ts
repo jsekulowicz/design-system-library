@@ -1,6 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import '../../atoms/skeleton/define.js';
 import { heatmapCalendarStyles } from './heatmap-calendar.styles.js';
 import { computeHeatmapLayout, parseDate } from './heatmap-layout.js';
@@ -95,15 +96,9 @@ export class DsHeatmapCalendar extends DsElement {
         class="frame"
         part="chart"
         style="--heatmap-scroll-left:${this._scrollLeft}px"
-        tabindex="0"
-        role="application"
-        aria-label=${heatmapAriaLabel(ctx, layout)}
-        aria-describedby="${this.uid}-desc"
-        aria-activedescendant=${this._activeIndex == null
-          ? nothing
-          : `${this.uid}-day-${this._activeIndex}`}
         @keydown=${this.#onKeydown}
-        @blur=${this.#clearActive}
+        @focusin=${this.#onFocusIn}
+        @focusout=${this.#onFocusOut}
       >
         <div
           class="scroller"
@@ -118,11 +113,10 @@ export class DsHeatmapCalendar extends DsElement {
         </div>
         ${renderHeatmapTooltip(ctx, layout)}
         ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
-        ${renderHeatmapSrTable(ctx, layout)}
-        <div class="visually-hidden" role="status" aria-live="polite">
-          ${heatmapLiveText(ctx, layout)}
-        </div>
       </div>
+      ${renderChartTitle(this.uid, heatmapAriaLabel(ctx, layout))}
+      ${renderHeatmapSrTable(ctx, layout)}
+      ${renderChartLiveRegion(heatmapLiveText(ctx, layout))}
     `;
   }
 
@@ -175,6 +169,23 @@ export class DsHeatmapCalendar extends DsElement {
     }
     this._focusMode = 'keyboard';
     this.#setActive(action.index);
+    void this.updateComplete.then(() => focusDatum(this.shadowRoot, this.uid, 'day', action.index));
+  };
+
+  #onFocusIn = (event: FocusEvent): void => {
+    const index = cellIndexFrom(event.target);
+    if (index == null) {
+      return;
+    }
+    this._focusMode = 'keyboard';
+    this.#setActive(index);
+  };
+
+  #onFocusOut = (event: FocusEvent): void => {
+    if (this.shadowRoot?.contains(event.relatedTarget as Node)) {
+      return;
+    }
+    this.#clearActive();
   };
 
   #onPointerMove = (event: PointerEvent): void => {
@@ -219,4 +230,10 @@ export class DsHeatmapCalendar extends DsElement {
     });
     this.#resizeObserver.observe(this._scroller);
   }
+}
+
+function cellIndexFrom(target: EventTarget | null): number | null {
+  const cell = target instanceof Element ? target.closest('.cell') : null;
+  const index = cell?.getAttribute('data-index');
+  return index == null ? null : Number(index);
 }

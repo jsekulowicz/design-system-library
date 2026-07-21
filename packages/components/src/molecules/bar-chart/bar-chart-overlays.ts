@@ -9,7 +9,16 @@ const TOOLTIP_FLIP_THRESHOLD = 96;
 export function rootAriaLabel(ctx: ChartRenderContext, groupCount: number): string {
   const base = ctx.title || 'Bar chart';
   const seriesLabels = ctx.series.map(s => ctx.seriesLabel(s)).join(', ');
-  return `${base}: ${groupCount} ${ctx.stacked ? 'stacked ' : ''}groups, series: ${seriesLabels}. Use left and right arrow keys to move between groups.`;
+  return `${base}: ${groupCount} ${ctx.stacked ? 'stacked ' : ''}groups, series: ${seriesLabels}.`;
+}
+
+export function groupAriaLabel<T extends BarChartRow>(
+  ctx: ChartRenderContext,
+  group: BarChartGroup<T>,
+): string {
+  const parts = ctx.series.map(s => `${ctx.seriesLabel(s)} ${ctx.formatValue(group.values[s.key] ?? 0)}`);
+  const total = ctx.stacked ? `, total ${ctx.formatValue(group.total)}` : '';
+  return `${ctx.formatDomain(group.domain)}: ${parts.join(', ')}${total}`;
 }
 
 export function liveText<T extends BarChartRow>(
@@ -23,12 +32,7 @@ export function liveText<T extends BarChartRow>(
   if (!g) {
     return '';
   }
-  const domain = ctx.formatDomain(g.domain);
-  const parts = ctx.series.map((s) => {
-    return `${ctx.seriesLabel(s)} ${ctx.formatValue(g.values[s.key] ?? 0)}`;
-  });
-  const total = ctx.stacked ? `. Total ${ctx.formatValue(g.total)}` : '';
-  return `${domain}: ${parts.join(', ')}${total}.`;
+  return `${groupAriaLabel(ctx, g)}.`;
 }
 
 function tooltipLeft(x: number, width: number): number {
@@ -99,7 +103,7 @@ export function renderSrTable<T extends BarChartRow>(
   groups: BarChartGroup<T>[],
 ): TemplateResult {
   return html`
-    <div class="visually-hidden" id="${ctx.uid}-desc">
+    <div class="visually-hidden">
       <table>
         <caption>${ctx.title || 'Bar chart data'}</caption>
         <thead>

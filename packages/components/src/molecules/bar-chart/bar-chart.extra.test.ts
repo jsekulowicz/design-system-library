@@ -88,7 +88,7 @@ describe('<ds-bar-chart> extra coverage', () => {
 
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await el.updateComplete;
-    frame.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+    frame.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
     await el.updateComplete;
     expect((el as unknown as { _activeIndex: number | null })._activeIndex).toBeNull();
   });

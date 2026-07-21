@@ -1,5 +1,5 @@
 import { parseDate } from './heatmap-layout.js';
-import type { HeatmapWeekStart } from './types.js';
+import type { HeatmapCell, HeatmapRenderContext, HeatmapWeekStart } from './types.js';
 
 export function todayDate(): string {
   const date = new Date();
@@ -31,4 +31,8 @@ export function weekdayLabels(locale: string | undefined, weekStart: HeatmapWeek
     formatter.format(new Date(monday + index * 86400000)),
   );
   return weekStart === 'sunday' ? [labels[6]!, ...labels.slice(0, 6)] : labels;
+}
+
+export function cellAriaLabel(ctx: HeatmapRenderContext, cell: HeatmapCell): string {
+  return `${ctx.formatDate(cell.date)}: ${ctx.formatValue(cell.value)}`;
 }

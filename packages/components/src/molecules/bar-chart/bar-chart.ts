@@ -4,6 +4,7 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/skeleton/define.js';
 import { barChartStyles } from './bar-chart.styles.js';
 import { colorForIndex } from '../../shared/chart-colors.js';
+import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
 import { renderChartSvg } from './bar-chart-svg.js';
 import { renderTooltip, renderLegend, renderSrTable, rootAriaLabel, liveText } from './bar-chart-overlays.js';
@@ -132,29 +133,26 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     }
     const layout = this.#computeLayout();
     if (layout.groups.length === 0) {
-      return html`<div class="frame" style="height:${this.height}px" tabindex="0"></div>`;
+      return html`<div class="frame" style="height:${this.height}px"></div>`;
     }
     return html`
       <div
         class="frame"
         style="height:${this.height}px"
-        tabindex="0"
-        role="application"
-        aria-label=${rootAriaLabel(ctx, layout.groups.length)}
-        aria-describedby="${this.uid}-desc"
-        aria-activedescendant=${this._activeIndex == null ? nothing : `${this.uid}-group-${this._activeIndex}`}
         @keydown=${this.#onKeydown}
+        @focusin=${this.#onFocusIn}
+        @focusout=${this.#onFocusOut}
         @pointermove=${this.#onPointerMove}
         @pointerleave=${this.#onPointerLeave}
-        @blur=${this.#onBlur}
         part="chart"
       >
         ${renderChartSvg(ctx, layout, this.height)}
         ${renderTooltip(ctx, layout)}
-        ${renderSrTable(ctx, layout.groups)}
-        <div class="visually-hidden" id="${this.uid}-live" role="status" aria-live="polite">${liveText(ctx, layout.groups)}</div>
       </div>
       ${this.showLegend ? renderLegend(ctx) : nothing}
+      ${renderChartTitle(this.uid, rootAriaLabel(ctx, layout.groups.length))}
+      ${renderSrTable(ctx, layout.groups)}
+      ${renderChartLiveRegion(liveText(ctx, layout.groups))}
     `;
   }
 
@@ -201,6 +199,24 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     event.preventDefault();
     this._focusMode = 'keyboard';
     this.#setActive(next);
+    void this.updateComplete.then(() => focusDatum(this.shadowRoot, this.uid, 'group', next));
+  };
+
+  #onFocusIn = (event: FocusEvent): void => {
+    const index = groupIndexFrom(event.target);
+    if (index == null) {
+      return;
+    }
+    this._focusMode = 'keyboard';
+    this.#setActive(index);
+  };
+
+  #onFocusOut = (event: FocusEvent): void => {
+    if (this.shadowRoot?.contains(event.relatedTarget as Node)) {
+      return;
+    }
+    this._focusMode = null;
+    this.#setActive(null);
   };
 
   #onPointerMove = (event: PointerEvent): void => {
@@ -226,8 +242,10 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     this.#setActive(null);
   };
 
-  #onBlur = (): void => {
-    this._focusMode = null;
-    this.#setActive(null);
-  };
+}
+
+function groupIndexFrom(target: EventTarget | null): number | null {
+  const group = target instanceof Element ? target.closest('.bar-group') : null;
+  const index = group?.getAttribute('data-index');
+  return index == null ? null : Number(index);
 }

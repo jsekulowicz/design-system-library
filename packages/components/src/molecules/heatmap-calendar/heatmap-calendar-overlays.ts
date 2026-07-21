@@ -1,5 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import { HEATMAP_LEFT, HEATMAP_TOP } from './heatmap-calendar-svg.js';
+import { cellAriaLabel } from './heatmap-formatters.js';
 import type { HeatmapCell, HeatmapLayout, HeatmapRenderContext } from './types.js';
 
 function activeCell(ctx: HeatmapRenderContext, layout: HeatmapLayout): HeatmapCell | undefined {
@@ -8,12 +9,13 @@ function activeCell(ctx: HeatmapRenderContext, layout: HeatmapLayout): HeatmapCe
 
 export function heatmapAriaLabel(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
   const title = ctx.title || 'Activity calendar';
-  return `${title}: ${layout.cells.length} days. Use arrow keys to move between days.`;
+  return `${title}: ${layout.cells.length} days.`;
 }
+
 
 export function heatmapLiveText(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
   const cell = activeCell(ctx, layout);
-  return cell ? `${ctx.formatDate(cell.date)}: ${ctx.formatValue(cell.value)}.` : '';
+  return cell ? `${cellAriaLabel(ctx, cell)}.` : '';
 }
 
 export function renderHeatmapTooltip(

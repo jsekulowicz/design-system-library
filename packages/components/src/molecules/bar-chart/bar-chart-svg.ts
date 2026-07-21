@@ -1,4 +1,6 @@
 import { html, svg, nothing, type TemplateResult, type SVGTemplateResult } from 'lit';
+import { chartTitleId, datumId, rovingTabIndex } from '../../shared/chart-a11y.js';
+import { groupAriaLabel } from './bar-chart-overlays.js';
 import { computeGroupedBars, computeStackSegments, type GroupBand } from './layout.js';
 import { activeGroupHeight, type ChartLayout } from './chart-layout.js';
 import type { BarChartGroup, BarChartRow, ChartRenderContext } from './types.js';
@@ -13,7 +15,15 @@ export function renderChartSvg<T extends BarChartRow>(
 ): TemplateResult {
   const { ticks, innerHeight, innerWidth, width, margin, bands, groups, yMax } = layout;
   return html`
-    <svg role="img" aria-hidden="true" viewBox="0 0 ${width} ${height}" width=${width} height=${height} preserveAspectRatio="none">
+    <svg
+      role="graphics-document"
+      aria-roledescription="bar chart"
+      aria-labelledby=${chartTitleId(ctx.uid)}
+      viewBox="0 0 ${width} ${height}"
+      width=${width}
+      height=${height}
+      preserveAspectRatio="none"
+    >
       <g transform="translate(${margin.left}, ${margin.top})">
         ${renderGrid(ticks, innerHeight, innerWidth, yMax)}
         ${renderYAxis(ctx, ticks, innerHeight, margin.left, yMax)}
@@ -122,7 +132,16 @@ function renderBars<T extends BarChartRow>(
     const content = ctx.stacked
       ? renderStackedBars(ctx, g, band, innerHeight, yMax)
       : renderGroupedBars(ctx, g, band, innerHeight, yMax);
-    return svg`<g class="bar-group ${inactive}" id="${ctx.uid}-group-${gi}" data-index=${gi}>${content}</g>`;
+    return svg`
+      <g
+        class="bar-group ${inactive}"
+        id=${datumId(ctx.uid, 'group', gi)}
+        data-index=${gi}
+        role="graphics-symbol"
+        tabindex=${rovingTabIndex(gi, ctx.activeIndex)}
+        aria-label=${groupAriaLabel(ctx, g)}
+      >${content}</g>
+    `;
   })}`;
 }
 

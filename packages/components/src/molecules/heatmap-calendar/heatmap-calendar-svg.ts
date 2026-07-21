@@ -1,4 +1,6 @@
 import { svg, type SVGTemplateResult } from 'lit';
+import { chartTitleId, datumId, rovingTabIndex } from '../../shared/chart-a11y.js';
+import { cellAriaLabel } from './heatmap-formatters.js';
 import type { HeatmapLayout, HeatmapRenderContext } from './types.js';
 
 export const HEATMAP_LEFT = 34;
@@ -30,15 +32,22 @@ export function renderHeatmapSvg(
   const { width, height } = heatmapDimensions(ctx, layout);
   const step = ctx.cellSize + ctx.cellGap;
   return svg`
-    <svg aria-hidden="true" role="img" width=${width} height=${height} viewBox="0 0 ${width} ${height}">
-      <g class="month-labels">
+    <svg
+      role="graphics-document"
+      aria-roledescription="activity calendar"
+      aria-labelledby=${chartTitleId(ctx.uid)}
+      width=${width}
+      height=${height}
+      viewBox="0 0 ${width} ${height}"
+    >
+      <g class="month-labels" aria-hidden="true">
         ${layout.monthLabels.map(
           (label) => svg`
           <text x=${HEATMAP_LEFT + label.column * step} y="12">${ctx.formatMonth(label.date)}</text>
         `,
         )}
       </g>
-      <g class="weekday-labels">
+      <g class="weekday-labels" aria-hidden="true">
         ${[0, 2, 4].map(
           (row) => svg`
           <text x="0" y=${HEATMAP_TOP + row * step + ctx.cellSize - 2}>${ctx.weekdayLabels[row]}</text>
@@ -49,9 +58,12 @@ export function renderHeatmapSvg(
         ${layout.cells.map(
           (cell, index) => svg`
           <rect
-            id="${ctx.uid}-day-${index}"
+            id=${datumId(ctx.uid, 'day', index)}
             class="cell level-${cell.level} ${ctx.activeIndex === index ? 'active' : ''}"
             data-index=${index}
+            role="graphics-symbol"
+            tabindex=${rovingTabIndex(index, ctx.activeIndex)}
+            aria-label=${cellAriaLabel(ctx, cell)}
             x=${HEATMAP_LEFT + cell.column * step}
             y=${HEATMAP_TOP + cell.row * step}
             width=${ctx.cellSize}
