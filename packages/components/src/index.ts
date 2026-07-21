@@ -74,6 +74,12 @@ export {
   type BarChartFocusDetail,
 } from './molecules/bar-chart/index.js';
 export {
+  DsPieChart,
+  type PieChartDatum,
+  type PieSlice,
+  type PieChartSliceDetail,
+} from './molecules/pie-chart/index.js';
+export {
   DsHeatmapCalendar,
   type HeatmapDay,
   type HeatmapFocusDetail,

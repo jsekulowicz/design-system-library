@@ -29,6 +29,7 @@ import './molecules/toast/define.js';
 import './molecules/color-picker/define.js';
 import './molecules/menu-button/define.js';
 import './molecules/bar-chart/define.js';
+import './molecules/pie-chart/define.js';
 import './molecules/heatmap-calendar/define.js';
 import './molecules/alert/define.js';
 import './organisms/form/define.js';

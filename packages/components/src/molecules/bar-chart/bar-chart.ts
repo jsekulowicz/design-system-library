@@ -3,7 +3,7 @@ import { property, state, query } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/skeleton/define.js';
 import { barChartStyles } from './bar-chart.styles.js';
-import { colorForIndex } from './colors.js';
+import { colorForIndex } from '../../shared/chart-colors.js';
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
 import { renderChartSvg } from './bar-chart-svg.js';
 import { renderTooltip, renderLegend, renderSrTable, rootAriaLabel, liveText } from './bar-chart-overlays.js';

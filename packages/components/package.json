@@ -277,6 +277,13 @@
     "./bar-chart/define": {
       "import": "./dist/molecules/bar-chart/define.js"
     },
+    "./pie-chart": {
+      "types": "./dist/molecules/pie-chart/index.d.ts",
+      "import": "./dist/molecules/pie-chart/index.js"
+    },
+    "./pie-chart/define": {
+      "import": "./dist/molecules/pie-chart/define.js"
+    },
     "./heatmap-calendar": {
       "types": "./dist/molecules/heatmap-calendar/index.d.ts",
       "import": "./dist/molecules/heatmap-calendar/index.js"
