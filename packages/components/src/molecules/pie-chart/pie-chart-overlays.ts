@@ -1,5 +1,5 @@
 import { html, nothing, type TemplateResult } from 'lit';
-import { LABEL_RADIUS, VIEWBOX_SIZE, midAngle, polarPoint } from './pie-geometry.js';
+import { CENTER, RADIUS, VIEWBOX_SIZE, midAngle, polarPoint } from './pie-geometry.js';
 import type { PieRenderContext, PieSlice } from './types.js';
 
 export function sliceAriaLabel(ctx: PieRenderContext, slice: PieSlice): string {
@@ -23,11 +23,16 @@ export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]):
   return `${sliceAriaLabel(ctx, slice)}.`;
 }
 
-function tooltipPosition(slice: PieSlice): { left: number; top: number } {
-  const point = polarPoint(LABEL_RADIUS, midAngle(slice));
+/* Anchored on the arc edge and pushed outward, so the tooltip never covers the
+   slice it describes. */
+function tooltipPosition(slice: PieSlice): { left: number; top: number; transform: string } {
+  const point = polarPoint(RADIUS + 2, midAngle(slice));
+  const horizontal = point.x < CENTER ? '-100%' : '0';
+  const vertical = point.y < CENTER ? '-100%' : '0';
   return {
     left: (point.x / VIEWBOX_SIZE) * 100,
     top: (point.y / VIEWBOX_SIZE) * 100,
+    transform: `translate(${horizontal}, ${vertical})`,
   };
 }
 
@@ -36,7 +41,7 @@ export function renderPieTooltip(
   slices: readonly PieSlice[],
 ): TemplateResult {
   const slice = ctx.activeIndex == null ? undefined : slices[ctx.activeIndex];
-  const position = slice ? tooltipPosition(slice) : { left: 50, top: 50 };
+  const position = slice ? tooltipPosition(slice) : { left: 50, top: 50, transform: 'none' };
   return html`
     <div
       class="tooltip"
@@ -44,7 +49,7 @@ export function renderPieTooltip(
       role="tooltip"
       aria-hidden="true"
       ?hidden=${!slice}
-      style="left:${position.left}%; top:${position.top}%"
+      style="left:${position.left}%; top:${position.top}%; transform:${position.transform}"
     >
       ${slice
         ? html`

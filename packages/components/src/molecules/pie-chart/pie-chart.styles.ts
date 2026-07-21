@@ -46,14 +46,10 @@ export const pieChartStyles = css`
 
   .slice-label {
     fill: var(--ds-color-fg);
-    font-size: 5px;
+    font-size: 4.5px;
     font-weight: var(--ds-font-weight-medium);
     font-variant-numeric: tabular-nums;
     pointer-events: none;
-  }
-
-  .slice-label.inside {
-    fill: var(--ds-color-fg-inverse);
   }
 
   .leader-line {
@@ -127,7 +123,6 @@ export const pieChartStyles = css`
   .tooltip {
     position: absolute;
     pointer-events: none;
-    transform: translate(-50%, -50%);
     background: var(--ds-color-bg-inverse);
     color: var(--ds-color-fg-inverse);
     border: 1px solid var(--ds-color-border);

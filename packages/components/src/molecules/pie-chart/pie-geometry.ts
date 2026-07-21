@@ -2,17 +2,15 @@ import type { PieSlice } from './types.js';
 
 export const VIEWBOX_SIZE = 100;
 export const CENTER = VIEWBOX_SIZE / 2;
-export const RADIUS = 38;
-export const LABEL_RADIUS = RADIUS + 7;
+export const RADIUS = 33;
+export const LABEL_RADIUS = RADIUS + 6;
 const FULL_CIRCLE = Math.PI * 2;
-const INSIDE_LABEL_MIN_PERCENT = 8;
-const OUTSIDE_LABEL_MIN_PERCENT = 3;
+const LABEL_MIN_PERCENT = 3;
 
 export type Point = { x: number; y: number };
 
 export type LabelPlacement =
   | { kind: 'none' }
-  | { kind: 'inside'; point: Point }
   | { kind: 'outside'; point: Point; anchor: Point; anchorEnd: 'start' | 'end' };
 
 export function polarPoint(radius: number, angle: number): Point {
@@ -69,12 +67,11 @@ export function midAngle(slice: PieSlice): number {
   return (slice.startAngle + slice.endAngle) / 2;
 }
 
-export function labelPlacement(slice: PieSlice, outer: number, inner: number): LabelPlacement {
+/* Labels always sit outside the arc: text over a slice fill cannot guarantee
+   4.5:1 across the palette, the page background can. */
+export function labelPlacement(slice: PieSlice, outer: number): LabelPlacement {
   const angle = midAngle(slice);
-  if (slice.percent >= INSIDE_LABEL_MIN_PERCENT) {
-    return { kind: 'inside', point: polarPoint((outer + inner) / 2, angle) };
-  }
-  if (slice.percent < OUTSIDE_LABEL_MIN_PERCENT) {
+  if (slice.percent < LABEL_MIN_PERCENT) {
     return { kind: 'none' };
   }
   const point = polarPoint(LABEL_RADIUS, angle);

@@ -45,7 +45,7 @@ function renderSlice(
       aria-label=${sliceAriaLabel(ctx, slice)}
     >
       <path class="slice-shape" d=${arcPath(slice, RADIUS, inner)} fill=${ctx.sliceColor(slice, index)}></path>
-      ${renderSliceLabel(ctx, slice, inner)}
+      ${renderSliceLabel(ctx, slice, index)}
     </g>
   `;
 }
@@ -53,28 +53,16 @@ function renderSlice(
 function renderSliceLabel(
   ctx: PieRenderContext,
   slice: PieSlice,
-  inner: number,
+  index: number,
 ): SVGTemplateResult | typeof nothing {
-  if (!ctx.showPercentages) {
+  if (!ctx.showPercentages || ctx.activeIndex === index) {
     return nothing;
   }
-  const placement = labelPlacement(slice, RADIUS, inner);
-  const text = ctx.formatPercent(slice.percent);
+  const placement = labelPlacement(slice, RADIUS);
   if (placement.kind === 'none') {
     return nothing;
   }
-  if (placement.kind === 'inside') {
-    return svg`
-      <text
-        class="slice-label inside"
-        aria-hidden="true"
-        x=${placement.point.x}
-        y=${placement.point.y}
-        text-anchor="middle"
-        dominant-baseline="middle"
-      >${text}</text>
-    `;
-  }
+  const text = ctx.formatPercent(slice.percent);
   const gap = placement.anchorEnd === 'end' ? -1.5 : 1.5;
   return svg`
     <line
@@ -86,7 +74,7 @@ function renderSliceLabel(
       y2=${placement.point.y}
     ></line>
     <text
-      class="slice-label outside"
+      class="slice-label"
       aria-hidden="true"
       x=${placement.point.x + gap}
       y=${placement.point.y}
