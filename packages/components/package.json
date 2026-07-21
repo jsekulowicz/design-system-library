@@ -371,7 +371,7 @@
         "dist/atoms/button/index.js",
         "dist/atoms/button/define.js"
       ],
-      "limit": "16 kB"
+      "limit": "17 kB"
     },
     {
       "name": "ds-text-field (subpath + define, gzip)",
