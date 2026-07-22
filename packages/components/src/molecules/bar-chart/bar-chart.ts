@@ -149,7 +149,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   override render(): TemplateResult {
     const ctx = this.#renderContext();
     const loadingContent = html`<slot name="loading">${this.loadingLabel}</slot>`;
-    if (this.loading && !this.#hasInitialized) {
+    if (this.loading && !this.#hasInitialized && this.data.length === 0) {
       return html`
         <div
           class="frame loading-frame"

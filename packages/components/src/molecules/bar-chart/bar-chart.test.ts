@@ -81,7 +81,12 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('renders a height-preserving skeleton while loading', async () => {
-    const el = await mountBarChart({ height: 280, loading: true, loadingLabel: 'Loading scores...' });
+    const el = await mountBarChart({
+      data: [],
+      height: 280,
+      loading: true,
+      loadingLabel: 'Loading scores...',
+    });
     const frame = el.shadowRoot!.querySelector<HTMLElement>('.loading-frame')!;
 
     expect(frame.style.height).toBe('280px');
@@ -89,6 +94,14 @@ describe('<ds-bar-chart>', () => {
     expect(frame.querySelector('ds-skeleton')?.getAttribute('height')).toBe('280px');
     expect(frame.querySelector('[role="status"]')?.textContent).toContain('Loading scores...');
     expect(groups(el)).toHaveLength(0);
+  });
+
+  it('shows the loading overlay when data is already available', async () => {
+    const el = await mountBarChart({ loading: true });
+
+    expect(el.shadowRoot!.querySelector('svg')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('ds-skeleton')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="loading"]')?.textContent).toContain('Loading...');
   });
 
   it('keeps an initialized chart visible beneath a loading overlay', async () => {

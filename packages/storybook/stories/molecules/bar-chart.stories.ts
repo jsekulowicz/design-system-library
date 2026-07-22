@@ -150,6 +150,22 @@ export const Loading: Story = {
   loading
   title="Game turns — scores"
   height="320"
+  .data=${TURNS}
+  domain="turnOrdinalNumber"
+  .series=${THREE_PLAYERS}
+  x-axis-label="Turn"
+  y-axis-label="Score"
+  .formatDomain=${(v: unknown) => `Turn ${v}`}
+></ds-bar-chart>
+  `,
+};
+
+export const InitialLoading: Story = {
+  render: () => html`
+<ds-bar-chart
+  loading
+  title="Game turns — scores"
+  height="320"
   .series=${THREE_PLAYERS}
 ></ds-bar-chart>
   `,

@@ -158,7 +158,11 @@ describe('<ds-pie-chart>', () => {
   });
 
   it('renders a skeleton while loading and a message when there is no data', async () => {
-    const loading = await mountPieChart({ loading: true, loadingLabel: 'Loading sessions...' });
+    const loading = await mountPieChart({
+      data: [],
+      loading: true,
+      loadingLabel: 'Loading sessions...',
+    });
     expect(loading.shadowRoot!.querySelector('ds-skeleton')).not.toBeNull();
     expect(loading.shadowRoot!.querySelector('.frame')!.getAttribute('aria-busy')).toBe('true');
     expect(loading.shadowRoot!.querySelector('[role="status"]')?.textContent).toContain('Loading sessions...');
@@ -166,6 +170,14 @@ describe('<ds-pie-chart>', () => {
     const empty = await mountPieChart({ data: [] });
     expect(empty.shadowRoot!.querySelector('.empty')!.textContent?.trim()).toBe('No data');
     expect(slices(empty)).toHaveLength(0);
+  });
+
+  it('shows the loading overlay when data is already available', async () => {
+    const el = await mountPieChart({ loading: true });
+
+    expect(el.shadowRoot!.querySelector('svg')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('ds-skeleton')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="loading"]')?.textContent).toContain('Loading...');
   });
 
   it('keeps an initialized pie visible beneath a loading overlay', async () => {

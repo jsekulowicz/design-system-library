@@ -96,7 +96,7 @@ export class DsPieChart extends DsElement {
     const slices = this.#slices();
     const ctx = this.#context(slices);
     const loadingContent = html`<slot name="loading">${this.loadingLabel}</slot>`;
-    if (this.loading && !this.#hasInitialized) {
+    if (this.loading && !this.#hasInitialized && slices.length === 0) {
       return this.#renderLoading(loadingContent);
     }
     if (slices.length === 0) {

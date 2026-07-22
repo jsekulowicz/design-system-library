@@ -227,6 +227,12 @@ export const SingleSlice: Story = {
 
 export const Loading: Story = {
   render: () => html`
+<ds-pie-chart loading title="Sessions by channel" .data=${TRAFFIC}></ds-pie-chart>
+  `,
+};
+
+export const InitialLoading: Story = {
+  render: () => html`
 <ds-pie-chart loading title="Sessions by channel"></ds-pie-chart>
   `,
 };
