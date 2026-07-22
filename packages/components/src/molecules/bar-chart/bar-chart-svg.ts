@@ -66,47 +66,16 @@ function renderYAxis(ctx: ChartRenderContext, ticks: number[], innerHeight: numb
   `;
 }
 
-const TICK_CHAR_WIDTH = 6.5;
-const TICK_LINE_HEIGHT = 12;
+const TICK_LABEL_HEIGHT = 29;
 
-/* Horizontal tick labels are confined to their own band: wrap once at a word
-   boundary, and ellipsize whatever still overflows the second line. The
-   tooltip title always carries the full text. */
-export function wrapTickLabel(text: string, maxChars: number): string[] {
-  if (text.length <= maxChars) {
-    return [text];
-  }
-  const head = breakAtWord(text, maxChars);
-  const rest = text.slice(head.length).trim();
-  return [head, truncateWithEllipsis(rest, maxChars)];
-}
-
-function breakAtWord(text: string, maxChars: number): string {
-  const slice = text.slice(0, maxChars + 1);
-  const space = slice.lastIndexOf(' ');
-  if (space > 0) {
-    return text.slice(0, space);
-  }
-  return text.slice(0, maxChars);
-}
-
-function truncateWithEllipsis(text: string, maxChars: number): string {
-  if (text.length <= maxChars) {
-    return text;
-  }
-  return `${text.slice(0, Math.max(1, maxChars - 1)).trimEnd()}…`;
-}
-
+/* Horizontal tick labels live in an HTML div (via foreignObject) sized to the
+   band, so plain CSS wraps them at word boundaries and line-clamps the rest
+   with an ellipsis. The tooltip title always carries the full text. */
 function renderTickText(text: string, bandWidth: number): SVGTemplateResult {
-  const maxChars = Math.max(4, Math.floor(bandWidth / TICK_CHAR_WIDTH));
-  const lines = wrapTickLabel(text, maxChars);
-  if (lines.length === 1) {
-    return svg`<text y="18" text-anchor="middle">${lines[0]}</text>`;
-  }
   return svg`
-    <text y="18" text-anchor="middle">
-      ${lines.map((line, i) => svg`<tspan x="0" dy=${i === 0 ? 0 : TICK_LINE_HEIGHT}>${line}</tspan>`)}
-    </text>
+    <foreignObject x=${-bandWidth / 2} y="7" width=${bandWidth} height=${TICK_LABEL_HEIGHT}>
+      <div class="tick-label">${text}</div>
+    </foreignObject>
   `;
 }
 

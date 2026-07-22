@@ -49,6 +49,19 @@ export const barChartStyles = css`
     font-size: 0.75rem;
   }
 
+  .axis-x .tick-label {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    text-align: center;
+    color: var(--ds-color-fg-muted);
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
   .axis-label {
     fill: var(--ds-color-fg-muted);
     font-size: 0.75rem;

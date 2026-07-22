@@ -234,14 +234,15 @@ describe('<ds-bar-chart>', () => {
     expect(table?.textContent).toContain('3 pts');
   });
 
-  it('wraps long horizontal tick labels and ellipsizes past two lines', async () => {
+  it('confines horizontal tick labels to their band inside a clamped div', async () => {
     const el = await mountBarChart({
-      formatDomain: (v: unknown) => `Extremely long category label number ${v} with far too many words to fit`,
+      formatDomain: (v: unknown) => `Extremely long category label number ${v}`,
     });
-    const tick = el.shadowRoot!.querySelector('.axis-x g text');
-    const tspans = tick!.querySelectorAll('tspan');
-    expect(tspans).toHaveLength(2);
-    expect(tspans[1]!.textContent!.endsWith('…')).toBe(true);
+    const label = el.shadowRoot!.querySelector('.axis-x .tick-label')!;
+    expect(label.textContent).toBe('Extremely long category label number 1');
+    const holder = label.parentElement!;
+    expect(holder.tagName.toLowerCase()).toBe('foreignobject');
+    expect(Number(holder.getAttribute('width'))).toBeGreaterThan(0);
   });
 
   it('colors bars per domain via barColor with a series fallback', async () => {
