@@ -81,6 +81,7 @@ const meta: Meta = {
     height: { control: { type: 'number', min: 160, step: 10 } },
     showLegend: { control: 'boolean' },
     loading: { control: 'boolean' },
+    loadingLabel: { control: 'text' },
     formatValue: { control: false },
     formatDomain: { control: false },
   },
@@ -95,6 +96,7 @@ const meta: Meta = {
     height: 320,
     showLegend: true,
     loading: false,
+    loadingLabel: 'Loading...',
     formatDomain: (value: unknown) => `Turn ${value}`,
   },
 };
@@ -116,6 +118,7 @@ export const Grouped: Story = {
   .height=${args['height']}
   .showLegend=${args['showLegend']}
   .loading=${args['loading']}
+  .loadingLabel=${args['loadingLabel']}
   .formatValue=${args['formatValue']}
   .formatDomain=${args['formatDomain']}
 ></ds-bar-chart>

@@ -4,7 +4,6 @@ import type { BarChartGroup, BarChartRow, ChartRenderContext } from './types.js'
 
 const TOOLTIP_MAX_WIDTH = 220;
 const TOOLTIP_EDGE_GAP = 8;
-const TOOLTIP_FLIP_THRESHOLD = 96;
 
 export function rootAriaLabel(ctx: ChartRenderContext, groupCount: number): string {
   const base = ctx.title || 'Bar chart';
@@ -55,13 +54,13 @@ export function renderTooltip<T extends BarChartRow>(
   const x = tooltipLeft(band ? margin.left + band.innerX + band.innerWidth / 2 : 0, layout.width);
   const maxHeight = activeGroupHeight(layout, ctx.activeIndex, ctx.stacked);
   const barTopY = margin.top + (innerHeight - maxHeight);
-  const placeBelow = barTopY < TOOLTIP_FLIP_THRESHOLD;
   return html`
     <div
       class="tooltip"
       part="tooltip"
       role="tooltip"
-      data-position=${placeBelow ? 'below' : 'above'}
+      data-anchor-top=${barTopY}
+      data-position="above"
       ?hidden=${hidden}
       style="left:${x}px; top:${barTopY}px"
     >

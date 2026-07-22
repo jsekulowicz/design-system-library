@@ -1,9 +1,11 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/skeleton/define.js';
 import { colorForIndex } from '../../shared/chart-colors.js';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
+import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
+import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-overlay.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { isKeyboardFocus, sliceIndexFrom } from './pie-focus.js';
 import { pieChartStyles } from './pie-chart.styles.js';
@@ -25,6 +27,8 @@ import type { PieChartDatum, PieRenderContext, PieSlice } from './types.js';
  * @event ds-slice-focus - Emitted when the active slice changes. Detail: `{ index, label, value, percent, isOther }`.
  * @event ds-slice-select - Emitted on click or Enter/Space. Detail: `{ index, label, value, percent, isOther }`.
  * @slot center - Replaces the default total shown inside a donut.
+ * @slot loading - Replaces the loading message shown during a data refresh.
+ * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
  * @csspart chart - The chart frame, including the legend.
  * @csspart slice - Each focusable slice group.
  * @csspart tooltip - The floating tooltip container.
@@ -32,7 +36,7 @@ import type { PieChartDatum, PieRenderContext, PieSlice } from './types.js';
  * @csspart center - The donut centre container.
  */
 export class DsPieChart extends DsElement {
-  static override styles = [...DsElement.styles, pieChartStyles];
+  static override styles = [...DsElement.styles, pieChartStyles, loadingOverlayStyles];
 
   @property({ attribute: false }) data: readonly PieChartDatum[] = [];
   @property() override title = '';
@@ -47,11 +51,19 @@ export class DsPieChart extends DsElement {
   @property({ type: Boolean, attribute: 'include-zero-slices' }) includeZeroSlices = false;
   @property({ type: Number, attribute: 'min-slice-percent' }) minSlicePercent = 1;
   @property({ type: Boolean, reflect: true }) loading = false;
+  @property({ attribute: 'loading-label' }) loadingLabel = 'Loading...';
   @property({ attribute: false }) formatValue?: (value: number) => string;
   @property({ attribute: false }) formatPercent?: (percent: number) => string;
 
   @state() private _activeIndex: number | null = null;
   @state() private _focusMode: 'keyboard' | 'pointer' | null = null;
+  #hasInitialized = false;
+
+  override updated(_changedProperties: PropertyValues<this>): void {
+    if (!this.loading && this.#slices().length > 0) {
+      this.#hasInitialized = true;
+    }
+  }
 
   #slices(): PieSlice[] {
     return preparePieSlices(this.data, {
@@ -83,8 +95,9 @@ export class DsPieChart extends DsElement {
   override render(): TemplateResult {
     const slices = this.#slices();
     const ctx = this.#context(slices);
-    if (this.loading) {
-      return this.#renderLoading();
+    const loadingContent = html`<slot name="loading">${this.loadingLabel}</slot>`;
+    if (this.loading && !this.#hasInitialized) {
+      return this.#renderLoading(loadingContent);
     }
     if (slices.length === 0) {
       return html`
@@ -101,6 +114,7 @@ export class DsPieChart extends DsElement {
         @focusin=${this.#onFocusIn}
         @focusout=${this.#onFocusOut}
         @click=${this.#onClick}
+        aria-busy=${this.loading ? 'true' : nothing}
       >
         <div
           class="canvas"
@@ -111,18 +125,20 @@ export class DsPieChart extends DsElement {
           ${renderPieSvg(ctx, slices)} ${renderDonutCenter(ctx)} ${renderPieTooltip(ctx, slices)}
         </div>
         ${this.showLegend ? renderPieLegend(ctx, slices) : nothing}
+        ${this.loading ? renderLoadingOverlay(loadingContent) : nothing}
       </div>
       ${renderChartTitle(this.uid, pieSummaryText(ctx, slices))} ${renderPieSrTable(ctx, slices)}
       ${renderChartLiveRegion(pieLiveText(ctx, slices))}
     `;
   }
 
-  #renderLoading(): TemplateResult {
+  #renderLoading(loadingContent: TemplateResult): TemplateResult {
     return html`
       <div class="frame" part="chart" aria-busy="true" aria-label=${this.title || 'Pie chart'}>
         <div class="canvas" style="--pie-size:${this.size}px">
-          <ds-skeleton variant="circle" width="100%" height="100%"></ds-skeleton>
+          <ds-skeleton variant="circle" width="100%"></ds-skeleton>
         </div>
+        ${renderLoadingStatus(loadingContent)}
       </div>
     `;
   }

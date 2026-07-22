@@ -8,6 +8,8 @@ import { tableResponsiveStyles } from './table-responsive.styles.js';
 import { tableScrollBodyStyles } from './table-scroll-body.styles.js';
 import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
+import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
+import { renderLoadingOverlay } from '../../shared/loading-overlay.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
 import type { TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
@@ -49,6 +51,7 @@ const booleanAttributeConverter = {
  * @slot footer - Content placed below the table (pagination).
  * @slot empty - Shown when `rows` is empty.
  * @slot loading - Shown inside the loading overlay when `loading` is true.
+ * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
  * @slot header-{columnName} - Per-column header override (e.g. inject a ds-table-sort-button).
  * @slot cell:{columnName}:{rowKey} - Per-cell content override; projects framework-rendered content into a cell, falling back to the column's `render`/`field`. Requires `row-key` to be set. Row key comes from `row[rowKey]`.
  * @attr responsive - `stack` stacks cells on small screens; `scroll` preserves horizontal scrolling.
@@ -77,6 +80,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     tableResponsiveStyles,
     scrollFadeStyles,
     tableScrollBodyStyles,
+    loadingOverlayStyles,
   ];
 
   @property({ attribute: false }) rows: readonly T[] = [];
@@ -85,6 +89,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ attribute: false }) rowActionLabel?: (row: T, index: number) => string;
   @property({ type: Boolean, reflect: true, attribute: 'clickable-rows' }) clickableRows = false;
   @property({ converter: booleanAttributeConverter }) loading = false;
+  @property({ attribute: 'loading-label' }) loadingLabel = 'Loading...';
   @property({ type: Number, attribute: 'skeleton-rows' }) skeletonRows = 5;
   @property({ type: Number, attribute: 'skeleton-columns' }) skeletonColumns = 4;
   @property({ attribute: 'row-key' }) rowKey?: string;
@@ -210,15 +215,11 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     if (!this.loading) {
       return null;
     }
-    const content = html`<slot name="loading">Loading...</slot>`;
+    const content = html`<slot name="loading">${this.loadingLabel}</slot>`;
     if (this.rows.length === 0) {
       return html`<div class="loading-status visually-hidden" role="status" aria-live="polite">${content}</div>`;
     }
-    return html`
-      <div class="loading" part="loading" role="status" aria-live="polite">
-        <span>${content}</span>
-      </div>
-    `;
+    return renderLoadingOverlay(content);
   }
 
   #renderCaption(): TemplateResult | null {

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsBarChart } from './bar-chart.js';
+import { tooltipPosition } from './bar-chart-tooltip-position.js';
 import type { BarChartSeries } from './types.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
@@ -80,13 +81,30 @@ describe('<ds-bar-chart>', () => {
   });
 
   it('renders a height-preserving skeleton while loading', async () => {
-    const el = await mountBarChart({ height: 280, loading: true });
+    const el = await mountBarChart({ height: 280, loading: true, loadingLabel: 'Loading scores...' });
     const frame = el.shadowRoot!.querySelector<HTMLElement>('.loading-frame')!;
 
     expect(frame.style.height).toBe('280px');
     expect(frame.getAttribute('aria-busy')).toBe('true');
-    expect(frame.querySelector('ds-skeleton')).not.toBeNull();
+    expect(frame.querySelector('ds-skeleton')?.getAttribute('height')).toBe('280px');
+    expect(frame.querySelector('[role="status"]')?.textContent).toContain('Loading scores...');
     expect(groups(el)).toHaveLength(0);
+  });
+
+  it('keeps an initialized chart visible beneath a loading overlay', async () => {
+    const el = await mountBarChart({ loadingLabel: 'Refreshing scores...' });
+    el.loading = true;
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('svg')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('ds-skeleton')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="loading"]')?.textContent).toContain('Refreshing scores...');
+    expect(el.shadowRoot!.querySelector('.frame')?.getAttribute('aria-busy')).toBe('true');
+  });
+
+  it('places a tall tooltip below a bar when it would overflow above the chart', () => {
+    expect(tooltipPosition(104, 144, 320)).toBe('below');
+    expect(tooltipPosition(240, 144, 320)).toBe('above');
   });
 
   it('renders one bar-group per data row', async () => {

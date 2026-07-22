@@ -264,13 +264,13 @@ describe('<ds-table>', () => {
   });
 
   it('shows a loading overlay over initialized data', async () => {
-    const el = await mountTable({ loading: true });
+    const el = await mountTable({ loading: true, loadingLabel: 'Refreshing people...' });
     const table = el.shadowRoot!.querySelector('table') as HTMLTableElement;
     const loading = el.shadowRoot!.querySelector('[part="loading"]') as HTMLElement;
     expect(table.getAttribute('aria-busy')).toBe('true');
     expect(el.hasAttribute('loading')).toBe(false);
     expect(loading.getAttribute('role')).toBe('status');
-    expect(loading.textContent).toContain('Loading...');
+    expect(loading.textContent).toContain('Refreshing people...');
   });
 
   it('treats loading="false" as false for string-based integrations', async () => {

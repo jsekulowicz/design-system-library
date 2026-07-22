@@ -132,6 +132,10 @@ export const barChartStyles = css`
     margin-top: 8px;
   }
 
+  .tooltip[data-position="contained"] {
+    transform: translateX(-50%);
+  }
+
   .tooltip[hidden] {
     display: none;
   }

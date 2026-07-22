@@ -43,7 +43,8 @@ export const skeletonStyles = css`
 
   :host([variant='circle']) .item {
     width: var(--ds-skeleton-item-width, var(--ds-skeleton-width, 2.5rem));
-    height: var(--ds-skeleton-height, var(--ds-skeleton-width, 2.5rem));
+    height: auto;
+    aspect-ratio: 1;
     border-radius: 999px;
   }
 

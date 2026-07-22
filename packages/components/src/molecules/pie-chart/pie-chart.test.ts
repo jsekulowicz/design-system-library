@@ -158,13 +158,25 @@ describe('<ds-pie-chart>', () => {
   });
 
   it('renders a skeleton while loading and a message when there is no data', async () => {
-    const loading = await mountPieChart({ loading: true });
+    const loading = await mountPieChart({ loading: true, loadingLabel: 'Loading sessions...' });
     expect(loading.shadowRoot!.querySelector('ds-skeleton')).not.toBeNull();
     expect(loading.shadowRoot!.querySelector('.frame')!.getAttribute('aria-busy')).toBe('true');
+    expect(loading.shadowRoot!.querySelector('[role="status"]')?.textContent).toContain('Loading sessions...');
 
     const empty = await mountPieChart({ data: [] });
     expect(empty.shadowRoot!.querySelector('.empty')!.textContent?.trim()).toBe('No data');
     expect(slices(empty)).toHaveLength(0);
+  });
+
+  it('keeps an initialized pie visible beneath a loading overlay', async () => {
+    const el = await mountPieChart({ loadingLabel: 'Refreshing sessions...' });
+    el.loading = true;
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('svg')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('ds-skeleton')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="loading"]')?.textContent).toContain('Refreshing sessions...');
+    expect(el.shadowRoot!.querySelector('.frame')?.getAttribute('aria-busy')).toBe('true');
   });
 
   it('groups the tail into Other and reports it in the event payload', async () => {

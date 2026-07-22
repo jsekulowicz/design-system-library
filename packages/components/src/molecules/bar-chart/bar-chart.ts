@@ -5,21 +5,32 @@ import '../../atoms/skeleton/define.js';
 import { barChartStyles } from './bar-chart.styles.js';
 import { colorForIndex } from '../../shared/chart-colors.js';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
+import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
+import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-overlay.js';
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
+import { positionTooltip } from './bar-chart-tooltip-position.js';
 import { renderChartSvg } from './bar-chart-svg.js';
-import { renderTooltip, renderLegend, renderSrTable, rootAriaLabel, liveText } from './bar-chart-overlays.js';
+import {
+  liveText,
+  renderLegend,
+  renderSrTable,
+  renderTooltip,
+  rootAriaLabel,
+} from './bar-chart-overlays.js';
 import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js';
 
 /**
  * @tag ds-bar-chart
  * @summary Responsive grouped or stacked bar chart with keyboard navigation and hover tooltips.
  * @event ds-bar-focus - Emitted when the active group changes by keyboard or pointer. Detail: `{ groupIndex, domainValue, values }`.
+ * @slot loading - Replaces the loading message shown during a data refresh.
+ * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
  * @csspart chart - The internal `<svg>` element.
  * @csspart tooltip - The floating tooltip container.
  * @csspart legend - The legend wrapper.
  */
 export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
-  static override styles = [...DsElement.styles, barChartStyles];
+  static override styles = [...DsElement.styles, barChartStyles, loadingOverlayStyles];
 
   @property({ attribute: false }) data: readonly T[] = [];
   @property() domain: keyof T & string = '' as keyof T & string;
@@ -31,6 +42,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   @property({ type: Number }) height = 320;
   @property({ type: Boolean, reflect: true, attribute: 'show-legend' }) showLegend = true;
   @property({ type: Boolean, reflect: true }) loading = false;
+  @property({ attribute: 'loading-label' }) loadingLabel = 'Loading...';
   @property({ attribute: false }) formatValue?: (v: number) => string;
   @property({ attribute: false }) formatDomain?: (v: unknown) => string;
   @property({ attribute: false }) formatTooltipTitle?: (v: unknown) => string;
@@ -44,6 +56,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   @query('.frame') private _frame!: HTMLElement;
   #resizeObserver?: ResizeObserver;
+  #hasInitialized = false;
 
   override firstUpdated(): void {
     this.#observeResize();
@@ -54,6 +67,12 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     if (changedProperties.has('loading') && !this.loading) {
       this.#observeResize();
       this.#remeasureNextFrame();
+    }
+    if (!this.loading) {
+      positionTooltip(this._frame);
+      if (this.data.length > 0 && this.series.length > 0) {
+        this.#hasInitialized = true;
+      }
     }
   }
 
@@ -129,7 +148,8 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   override render(): TemplateResult {
     const ctx = this.#renderContext();
-    if (this.loading) {
+    const loadingContent = html`<slot name="loading">${this.loadingLabel}</slot>`;
+    if (this.loading && !this.#hasInitialized) {
       return html`
         <div
           class="frame loading-frame"
@@ -137,7 +157,12 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
           aria-busy="true"
           aria-label=${this.title || 'Bar chart'}
         >
-          <ds-skeleton variant="rectangle" width="100%" height="100%"></ds-skeleton>
+          <ds-skeleton
+            variant="rectangle"
+            width="100%"
+            height="${this.height}px"
+          ></ds-skeleton>
+          ${renderLoadingStatus(loadingContent)}
         </div>
         ${this.showLegend ? renderLegend(ctx) : nothing}
       `;
@@ -156,9 +181,11 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         @pointermove=${this.#onPointerMove}
         @pointerleave=${this.#onPointerLeave}
         part="chart"
+        aria-busy=${this.loading ? 'true' : nothing}
       >
         ${renderChartSvg(ctx, layout, this.height)}
         ${renderTooltip(ctx, layout)}
+        ${this.loading ? renderLoadingOverlay(loadingContent) : nothing}
       </div>
       ${this.showLegend ? renderLegend(ctx) : nothing}
       ${renderChartTitle(this.uid, rootAriaLabel(ctx, layout.groups.length))}

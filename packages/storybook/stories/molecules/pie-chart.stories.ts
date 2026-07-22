@@ -47,6 +47,7 @@ const meta: Meta = {
     otherThreshold: { control: { type: 'number', min: 0, step: 1 } },
     otherLabel: { control: 'text' },
     loading: { control: 'boolean' },
+    loadingLabel: { control: 'text' },
     formatValue: { control: false },
     formatPercent: { control: false },
   },
@@ -62,6 +63,7 @@ const meta: Meta = {
     otherThreshold: 0,
     otherLabel: 'Other',
     loading: false,
+    loadingLabel: 'Loading...',
   },
 };
 
@@ -83,6 +85,7 @@ export const Playground: Story = {
   .otherThreshold=${args['otherThreshold']}
   .otherLabel=${args['otherLabel']}
   .loading=${args['loading']}
+  .loadingLabel=${args['loadingLabel']}
   .formatValue=${args['formatValue']}
   .formatPercent=${args['formatPercent']}
 ></ds-pie-chart>
