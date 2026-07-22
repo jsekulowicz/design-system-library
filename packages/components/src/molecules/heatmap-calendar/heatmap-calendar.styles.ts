@@ -3,6 +3,7 @@ import { css } from 'lit';
 export const heatmapCalendarStyles = css`
   :host {
     display: block;
+    position: relative;
     width: 100%;
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
