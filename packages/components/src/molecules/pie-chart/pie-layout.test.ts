@@ -94,6 +94,73 @@ describe('computeSliceAngles', () => {
   });
 });
 
+describe('minimum slice share', () => {
+  function sweepPercent(slice: { startAngle: number; endAngle: number }): number {
+    return ((slice.endAngle - slice.startAngle) / (Math.PI * 2)) * 100;
+  }
+
+  it('widens sub-minimum slivers for display while keeping the true percent', () => {
+    const slices = preparePieSlices(
+      [
+        { label: 'big', value: 9990 },
+        { label: 'sliver', value: 10 },
+      ],
+      { ...OPTIONS, minSlicePercent: 1 },
+    );
+    expect(slices[1]!.percent).toBeCloseTo(0.1);
+    expect(sweepPercent(slices[1]!)).toBeCloseTo(1);
+    expect(sweepPercent(slices[0]!)).toBeCloseTo(99);
+    expect(slices[1]!.endAngle).toBeCloseTo(-Math.PI / 2 + Math.PI * 2);
+  });
+
+  it('leaves slices at or above the minimum untouched', () => {
+    const slices = preparePieSlices(DATA, { ...OPTIONS, minSlicePercent: 1 });
+    expect(slices.map(sweepPercent).map(Math.round)).toEqual([50, 30, 20]);
+  });
+
+  it('falls back to true shares when every slice sits below the minimum', () => {
+    const data = Array.from({ length: 4 }, (_, i) => ({ label: `S${i}`, value: 1 }));
+    const slices = preparePieSlices(data, { ...OPTIONS, minSlicePercent: 30 });
+    for (const slice of slices) {
+      expect(sweepPercent(slice)).toBeCloseTo(25);
+    }
+  });
+});
+
+describe('zero-value slices', () => {
+  it('keeps zero-value entries visible without an arc when opted in', () => {
+    const slices = preparePieSlices(
+      [
+        { label: 'some', value: 5 },
+        { label: 'none', value: 0, color: 'grey' },
+      ],
+      { ...OPTIONS, includeZeroSlices: true },
+    );
+    expect(slices.map(s => s.label)).toEqual(['some', 'none']);
+    expect(slices[1]!.percent).toBe(0);
+    expect(slices[1]!.endAngle).toBe(slices[1]!.startAngle);
+    expect(slices[1]!.color).toBe('grey');
+  });
+
+  it('never folds zero-value entries into the Other slice', () => {
+    const slices = preparePieSlices(
+      [
+        { label: 'big', value: 90 },
+        { label: 'tiny', value: 5 },
+        { label: 'tinier', value: 5 },
+        { label: 'none', value: 0 },
+      ],
+      { ...OPTIONS, otherThreshold: 6, includeZeroSlices: true },
+    );
+    expect(slices.map(s => s.label)).toEqual(['big', 'Other', 'none']);
+  });
+
+  it('still reports no data when every value is zero', () => {
+    const options = { ...OPTIONS, includeZeroSlices: true };
+    expect(preparePieSlices([{ label: 'A', value: 0 }], options)).toEqual([]);
+  });
+});
+
 describe('pie geometry', () => {
   it('draws a wedge from the centre for a pie', () => {
     const [slice] = preparePieSlices(DATA, OPTIONS);

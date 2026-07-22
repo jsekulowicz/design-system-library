@@ -18,7 +18,7 @@ export function groupAriaLabel<T extends BarChartRow>(
 ): string {
   const parts = ctx.series.map(s => `${ctx.seriesLabel(s)} ${ctx.formatValue(group.values[s.key] ?? 0)}`);
   const total = ctx.stacked ? `, total ${ctx.formatValue(group.total)}` : '';
-  return `${ctx.formatDomain(group.domain)}: ${parts.join(', ')}${total}`;
+  return `${ctx.formatTooltipTitle(group.domain)}: ${parts.join(', ')}${total}`;
 }
 
 export function liveText<T extends BarChartRow>(
@@ -66,7 +66,7 @@ export function renderTooltip<T extends BarChartRow>(
       style="left:${x}px; top:${barTopY}px"
     >
       ${group ? html`
-        <div class="tooltip-title">${ctx.formatDomain(group.domain)}</div>
+        <div class="tooltip-title">${ctx.formatTooltipTitle(group.domain)}</div>
         <ul class="tooltip-rows">
           ${ctx.series.map((s, si) => html`
             <li class="tooltip-row-label">

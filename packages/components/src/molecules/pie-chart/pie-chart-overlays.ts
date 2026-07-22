@@ -55,7 +55,7 @@ export function renderPieTooltip(
         ? html`
             <div class="tooltip-title">${slice.label}</div>
             <div class="tooltip-row-value">
-              ${ctx.formatValue(slice.value)} · ${ctx.formatPercent(slice.percent)}
+              ${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})
             </div>
           `
         : nothing}
@@ -72,7 +72,7 @@ export function renderPieLegend(ctx: PieRenderContext, slices: readonly PieSlice
             <span class="legend-swatch" style="background:${ctx.sliceColor(slice, index)}"></span>
             <span class="legend-label">${slice.label}</span>
             <span class="legend-value">
-              ${ctx.formatValue(slice.value)} · ${ctx.formatPercent(slice.percent)}
+              ${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})
             </span>
           </span>
         `,

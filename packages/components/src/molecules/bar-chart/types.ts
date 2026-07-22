@@ -34,4 +34,5 @@ export type ChartRenderContext = {
   seriesColor(series: BarChartSeries, index: number): string;
   formatValue(value: number): string;
   formatDomain(value: unknown): string;
+  formatTooltipTitle(value: unknown): string;
 };

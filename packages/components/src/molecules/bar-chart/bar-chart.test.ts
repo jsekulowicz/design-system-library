@@ -233,4 +233,16 @@ describe('<ds-bar-chart>', () => {
     expect(table?.textContent).toContain('Turn 1');
     expect(table?.textContent).toContain('3 pts');
   });
+
+  it('titles the tooltip via formatTooltipTitle while the axis keeps formatDomain', async () => {
+    const el = await mountBarChart({
+      formatDomain: (v: unknown) => `T${v}`,
+      formatTooltipTitle: (v: unknown) => `Turn ${v} of 3`,
+    });
+    const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
+    frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home' }));
+    await el.updateComplete;
+    expect(el.shadowRoot!.querySelector('.tooltip-title')?.textContent).toBe('Turn 1 of 3');
+    expect(el.shadowRoot!.querySelector('.axis-x')?.textContent).toContain('T1');
+  });
 });

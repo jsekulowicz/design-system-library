@@ -192,4 +192,23 @@ describe('<ds-pie-chart>', () => {
     await el.updateComplete;
     expect(activeIndexOf(el)).toBeNull();
   });
+
+  it('keeps zero-value categories in the legend without drawing an arc', async () => {
+    const el = await mountPieChart({
+      data: [...DATA, { label: 'Paid', value: 0 }],
+      includeZeroSlices: true,
+    });
+    const groups = slices(el);
+    expect(groups).toHaveLength(4);
+    const zero = groups[3]!;
+    expect(zero.getAttribute('aria-label')).toBe('Paid: 0, 0%');
+    expect(zero.querySelector('path')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.legend')?.textContent).toContain('Paid');
+  });
+
+  it('formats legend values as value (percent)', async () => {
+    const el = await mountPieChart();
+    const value = el.shadowRoot!.querySelector('.legend-value');
+    expect(value?.textContent?.replace(/\s+/g, ' ').trim()).toBe('50 (50%)');
+  });
 });

@@ -33,6 +33,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ attribute: false }) formatValue?: (v: number) => string;
   @property({ attribute: false }) formatDomain?: (v: unknown) => string;
+  @property({ attribute: false }) formatTooltipTitle?: (v: unknown) => string;
 
   @state() private _width = 0;
   @state() private _activeIndex: number | null = null;
@@ -100,6 +101,12 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       seriesColor: (s, i) => s.color ?? colorForIndex(i),
       formatValue: (v) => (this.formatValue ? this.formatValue(v) : String(v)),
       formatDomain: (v) => (this.formatDomain ? this.formatDomain(v) : String(v ?? '')),
+      formatTooltipTitle: (v) => {
+        if (this.formatTooltipTitle) {
+          return this.formatTooltipTitle(v);
+        }
+        return this.formatDomain ? this.formatDomain(v) : String(v ?? '');
+      },
     };
   }
 

@@ -27,6 +27,10 @@ export function renderPieSvg(ctx: PieRenderContext, slices: readonly PieSlice[])
   `;
 }
 
+function hasSweep(slice: PieSlice): boolean {
+  return slice.endAngle > slice.startAngle;
+}
+
 function renderSlice(
   ctx: PieRenderContext,
   slice: PieSlice,
@@ -44,7 +48,9 @@ function renderSlice(
       tabindex=${rovingTabIndex(index, ctx.activeIndex)}
       aria-label=${sliceAriaLabel(ctx, slice)}
     >
-      <path class="slice-shape" d=${arcPath(slice, RADIUS, inner)} fill=${ctx.sliceColor(slice, index)}></path>
+      ${hasSweep(slice)
+        ? svg`<path class="slice-shape" d=${arcPath(slice, RADIUS, inner)} fill=${ctx.sliceColor(slice, index)}></path>`
+        : nothing}
       ${renderSliceLabel(ctx, slice, index)}
     </g>
   `;
@@ -93,7 +99,7 @@ function renderFocusRing(
     return nothing;
   }
   const slice = slices[ctx.activeIndex];
-  if (!slice) {
+  if (!slice || !hasSweep(slice)) {
     return nothing;
   }
   const outerRing = RADIUS + FOCUS_RING_OFFSET;

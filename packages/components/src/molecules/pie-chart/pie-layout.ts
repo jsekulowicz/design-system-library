@@ -4,6 +4,8 @@ export interface PieSliceOptions {
   maxSlices: number;
   otherThreshold: number;
   otherLabel: string;
+  includeZeroSlices?: boolean;
+  minSlicePercent?: number;
 }
 
 type Weighted = { datum: PieChartDatum; value: number; index: number };
@@ -12,6 +14,25 @@ function toWeighted(data: readonly PieChartDatum[]): Weighted[] {
   return data
     .map((datum, index) => ({ datum, index, value: normalizeValue(datum.value) }))
     .filter(entry => entry.value > 0);
+}
+
+/* Zero-value entries never join the pie math (no arc, no "Other" grouping),
+   but consumers can opt in to keeping them visible in the legend and the
+   screen-reader table so every possible category stays discoverable. */
+function toZeroSlices(
+  data: readonly PieChartDatum[],
+): Omit<PieSlice, 'startAngle' | 'endAngle'>[] {
+  return data
+    .map((datum, index) => ({ datum, index, value: normalizeValue(datum.value) }))
+    .filter(entry => entry.value === 0)
+    .map(entry => ({
+      label: entry.datum.label,
+      value: 0,
+      percent: 0,
+      ...(entry.datum.color === undefined ? {} : { color: entry.datum.color }),
+      isOther: false,
+      sourceIndices: [entry.index],
+    }));
 }
 
 function normalizeValue(value: number): number {
@@ -64,13 +85,41 @@ function toOtherSlice(tail: Weighted[], total: number, label: string): Omit<PieS
   };
 }
 
+/* Sweeps used for drawing only: slivers below minPercent are widened to stay
+   visible and the remaining slices shrink proportionally to compensate. The
+   true `percent` is untouched, so labels and tooltips keep the real share. */
+function displayShares(
+  slices: readonly Omit<PieSlice, 'startAngle' | 'endAngle'>[],
+  minPercent: number,
+): number[] {
+  const shares = slices.map(slice => slice.percent);
+  const boosted = shares.filter(percent => percent > 0 && percent < minPercent);
+  const restSum = shares.filter(percent => percent >= minPercent).reduce((sum, p) => sum + p, 0);
+  if (minPercent <= 0 || boosted.length === 0 || restSum <= 0) {
+    return shares;
+  }
+  const boostedSum = boosted.length * minPercent;
+  if (boostedSum >= 100) {
+    return shares;
+  }
+  const scale = (100 - boostedSum) / restSum;
+  return shares.map(percent => {
+    if (percent > 0 && percent < minPercent) {
+      return minPercent;
+    }
+    return percent * scale;
+  });
+}
+
 export function computeSliceAngles(
   slices: readonly Omit<PieSlice, 'startAngle' | 'endAngle'>[],
+  minSlicePercent = 0,
 ): PieSlice[] {
+  const shares = displayShares(slices, minSlicePercent);
   let cursor = -Math.PI / 2;
-  return slices.map(slice => {
+  return slices.map((slice, index) => {
     const startAngle = cursor;
-    const endAngle = startAngle + (slice.percent / 100) * Math.PI * 2;
+    const endAngle = startAngle + ((shares[index] ?? 0) / 100) * Math.PI * 2;
     cursor = endAngle;
     return { ...slice, startAngle, endAngle };
   });
@@ -90,7 +139,10 @@ export function preparePieSlices(
   if (tail.length > 0) {
     slices.push(toOtherSlice(tail, total, options.otherLabel));
   }
-  return computeSliceAngles(slices);
+  if (options.includeZeroSlices) {
+    slices.push(...toZeroSlices(data));
+  }
+  return computeSliceAngles(slices, options.minSlicePercent ?? 0);
 }
 
 export function sliceTotal(slices: readonly PieSlice[]): number {

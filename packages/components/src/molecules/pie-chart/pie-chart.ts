@@ -44,6 +44,8 @@ export class DsPieChart extends DsElement {
   @property({ type: Number, attribute: 'max-slices' }) maxSlices = 0;
   @property({ type: Number, attribute: 'other-threshold' }) otherThreshold = 0;
   @property({ attribute: 'other-label' }) otherLabel = 'Other';
+  @property({ type: Boolean, attribute: 'include-zero-slices' }) includeZeroSlices = false;
+  @property({ type: Number, attribute: 'min-slice-percent' }) minSlicePercent = 1;
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ attribute: false }) formatValue?: (value: number) => string;
   @property({ attribute: false }) formatPercent?: (percent: number) => string;
@@ -56,6 +58,8 @@ export class DsPieChart extends DsElement {
       maxSlices: this.maxSlices,
       otherThreshold: this.otherThreshold,
       otherLabel: this.otherLabel,
+      includeZeroSlices: this.includeZeroSlices,
+      minSlicePercent: this.minSlicePercent,
     });
   }
 
