@@ -66,6 +66,50 @@ function renderYAxis(ctx: ChartRenderContext, ticks: number[], innerHeight: numb
   `;
 }
 
+const TICK_CHAR_WIDTH = 6.5;
+const TICK_LINE_HEIGHT = 12;
+
+/* Horizontal tick labels are confined to their own band: wrap once at a word
+   boundary, and ellipsize whatever still overflows the second line. The
+   tooltip title always carries the full text. */
+export function wrapTickLabel(text: string, maxChars: number): string[] {
+  if (text.length <= maxChars) {
+    return [text];
+  }
+  const head = breakAtWord(text, maxChars);
+  const rest = text.slice(head.length).trim();
+  return [head, truncateWithEllipsis(rest, maxChars)];
+}
+
+function breakAtWord(text: string, maxChars: number): string {
+  const slice = text.slice(0, maxChars + 1);
+  const space = slice.lastIndexOf(' ');
+  if (space > 0) {
+    return text.slice(0, space);
+  }
+  return text.slice(0, maxChars);
+}
+
+function truncateWithEllipsis(text: string, maxChars: number): string {
+  if (text.length <= maxChars) {
+    return text;
+  }
+  return `${text.slice(0, Math.max(1, maxChars - 1)).trimEnd()}…`;
+}
+
+function renderTickText(text: string, bandWidth: number): SVGTemplateResult {
+  const maxChars = Math.max(4, Math.floor(bandWidth / TICK_CHAR_WIDTH));
+  const lines = wrapTickLabel(text, maxChars);
+  if (lines.length === 1) {
+    return svg`<text y="18" text-anchor="middle">${lines[0]}</text>`;
+  }
+  return svg`
+    <text y="18" text-anchor="middle">
+      ${lines.map((line, i) => svg`<tspan x="0" dy=${i === 0 ? 0 : TICK_LINE_HEIGHT}>${line}</tspan>`)}
+    </text>
+  `;
+}
+
 function xTickEvery(bandWidth: number): number {
   if (bandWidth >= 24) {
     return 1;
@@ -108,7 +152,9 @@ function renderXAxis<T extends BarChartRow>(
         return svg`
           <g transform="translate(${cx}, 0)">
             <line x1="0" x2="0" y1="0" y2="4"></line>
-            <text y="18" text-anchor=${rotation ? 'end' : 'middle'} transform=${rotation ? `rotate(${rotation}) translate(-4, -6)` : ''}>${text}</text>
+            ${rotation
+              ? svg`<text y="18" text-anchor="end" transform="rotate(${rotation}) translate(-4, -6)">${text}</text>`
+              : renderTickText(text, band.bandWidth)}
           </g>
         `;
       })}
@@ -157,7 +203,8 @@ function renderStackedBars<T extends BarChartRow>(
     const s = ctx.series[si]!;
     const height = seg.value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, seg.height) : 0;
     const y = innerHeight - (segments.slice(0, si + 1).reduce((a, v) => a + Math.max(v.value > 0 ? MIN_SEGMENT_HEIGHT : 0, v.height), 0));
-    return svg`<rect class="bar" x=${band.innerX} y=${y} width=${band.innerWidth} height=${height} fill=${ctx.seriesColor(s, si)}></rect>`;
+    const fill = ctx.barColor?.(g.domain, s.key) ?? ctx.seriesColor(s, si);
+    return svg`<rect class="bar" x=${band.innerX} y=${y} width=${band.innerWidth} height=${height} fill=${fill}></rect>`;
   })}`;
 }
 
@@ -175,7 +222,8 @@ function renderGroupedBars<T extends BarChartRow>(
     const h = yMax > 0 ? (value / yMax) * innerHeight : 0;
     const drawH = value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, h) : 0;
     const y = innerHeight - drawH;
-    return svg`<rect class="bar" x=${bar.x} y=${y} width=${bar.width} height=${drawH} fill=${ctx.seriesColor(s, si)}></rect>`;
+    const fill = ctx.barColor?.(g.domain, s.key) ?? ctx.seriesColor(s, si);
+    return svg`<rect class="bar" x=${bar.x} y=${y} width=${bar.width} height=${drawH} fill=${fill}></rect>`;
   })}`;
 }
 

@@ -7,6 +7,7 @@ import {
   computeGroupedBars,
   computeStackSegments,
 } from './layout.js';
+import { wrapTickLabel } from './bar-chart-svg.js';
 
 describe('niceMax', () => {
   it('returns 1 for non-positive or non-finite values', () => {
@@ -131,5 +132,25 @@ describe('computeStackSegments', () => {
     expect(regular[1].value).toBe(0);
     const empty = computeStackSegments({}, ['missing'], 0, 0);
     expect(empty[0].value).toBe(0);
+  });
+});
+
+describe('wrapTickLabel', () => {
+  it('leaves short labels on one line', () => {
+    expect(wrapTickLabel('Foros', 20)).toEqual(['Foros']);
+  });
+
+  it('wraps at the last word boundary that fits', () => {
+    expect(wrapTickLabel('Inicio de sesión y registro', 20)).toEqual([
+      'Inicio de sesión y',
+      'registro',
+    ]);
+  });
+
+  it('hard-cuts unbroken words and ellipsizes the overflow', () => {
+    const lines = wrapTickLabel('averyverylongunbrokenword and plenty more words after it', 12);
+    expect(lines).toHaveLength(2);
+    expect(lines[0]).toHaveLength(12);
+    expect(lines[1]!.endsWith('…')).toBe(true);
   });
 });

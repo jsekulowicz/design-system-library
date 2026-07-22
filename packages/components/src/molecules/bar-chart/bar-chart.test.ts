@@ -234,6 +234,25 @@ describe('<ds-bar-chart>', () => {
     expect(table?.textContent).toContain('3 pts');
   });
 
+  it('wraps long horizontal tick labels and ellipsizes past two lines', async () => {
+    const el = await mountBarChart({
+      formatDomain: (v: unknown) => `Extremely long category label number ${v} with far too many words to fit`,
+    });
+    const tick = el.shadowRoot!.querySelector('.axis-x g text');
+    const tspans = tick!.querySelectorAll('tspan');
+    expect(tspans).toHaveLength(2);
+    expect(tspans[1]!.textContent!.endsWith('…')).toBe(true);
+  });
+
+  it('colors bars per domain via barColor with a series fallback', async () => {
+    const el = await mountBarChart({
+      barColor: (domain: unknown) => (domain === 1 ? 'tomato' : undefined),
+    });
+    const rects = [...el.shadowRoot!.querySelectorAll('rect.bar')];
+    expect(rects[0]!.getAttribute('fill')).toBe('tomato');
+    expect(rects[3]!.getAttribute('fill')).not.toBe('tomato');
+  });
+
   it('titles the tooltip via formatTooltipTitle while the axis keeps formatDomain', async () => {
     const el = await mountBarChart({
       formatDomain: (v: unknown) => `T${v}`,
