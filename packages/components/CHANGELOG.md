@@ -1,5 +1,16 @@
 # @jsekulowicz/ds-components
 
+## 0.53.0
+
+### Minor Changes
+
+- bdac906: `ds-table`: new `pinnedColumns` property freezes columns into a contiguous left region while the rest of the table scrolls horizontally. It takes an array of column `name`s (any column is eligible, not just the leftmost; pinning one column never pins the columns before it), gathers them on the left in their original relative order, and keeps their natural width (offsets are measured at runtime). A separator marks the boundary and a shadow fades in once the body is scrolled sideways. The region can never cover the whole viewport — pinning falls back to a plain scrolling table when it would exceed `--ds-table-pin-max-ratio` (default `0.75`) of the container. Columns can opt out with `pinnable: false`. The prop is fully controlled, so consuming apps own and can persist the value.
+
+### Patch Changes
+
+- 63c8ac1: `ds-table`: the horizontal scroll container no longer rubber-band bounces or chains to the page (`overscroll-behavior-x: none`), matching the vertical behaviour already used in `scroll-body` mode.
+- 9b77168: `ds-table`: the caption now stays fixed at the start during horizontal scroll instead of scrolling off with the (wider-than-viewport) table body. It still wraps within the container in the stacked responsive layout.
+
 ## 0.52.0
 
 ### Minor Changes
