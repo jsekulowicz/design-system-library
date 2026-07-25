@@ -21,6 +21,7 @@ export const tableStyles = css`
     position: relative;
     width: 100%;
     overflow-x: auto;
+    overscroll-behavior-x: none;
     border: 1px solid var(--ds-color-border-subtle);
     border-radius: var(--ds-radius-md);
     background: var(--ds-color-bg);
