@@ -16,6 +16,15 @@ export type TableColumn<T extends TableRow = TableRow> = {
   sortable?: boolean;
   render?: (row: T, index: number) => TemplateResult | string | number | null;
   width?: string;
+  /** Set `false` to exclude the column from the pinned region. */
+  pinnable?: boolean;
+};
+
+// `pinIndex` is the 0-based position within the pinned region, or null when not pinned.
+export type ResolvedColumn<T extends TableRow = TableRow> = {
+  column: TableColumn<T>;
+  pinIndex: number | null;
+  lastPinned: boolean;
 };
 
 export type TableSortState = { name: string; direction: TableSortDirection };

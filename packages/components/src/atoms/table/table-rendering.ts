@@ -1,12 +1,12 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import type { TableColumn, TableRow } from './types.js';
+import type { ResolvedColumn, TableColumn, TableRow } from './types.js';
 
 type AriaSort = 'ascending' | 'descending' | undefined;
 
 type TableBodyOptions<T extends TableRow> = {
   rows: readonly T[];
-  columns: readonly TableColumn<T>[];
+  columns: readonly ResolvedColumn<T>[];
   rowKey?: string;
   clickableRows: boolean;
   rowActionsDisabled: boolean;
@@ -16,6 +16,21 @@ type TableBodyOptions<T extends TableRow> = {
   onRowPointerMove: (event: PointerEvent) => void;
   onRowAction: (row: T, index: number) => void;
 };
+
+function cellClass<T extends TableRow>(resolved: ResolvedColumn<T>): string {
+  const classes = [`align-${resolved.column.align ?? 'left'}`];
+  if (resolved.pinIndex !== null) {
+    classes.push('pinned');
+    if (resolved.lastPinned) {
+      classes.push('pin-edge');
+    }
+  }
+  return classes.join(' ');
+}
+
+function pinStyle<T extends TableRow>(resolved: ResolvedColumn<T>): string | undefined {
+  return resolved.pinIndex !== null ? `left: var(--ds-table-pin-left-${resolved.pinIndex})` : undefined;
+}
 
 function renderCell<T extends TableRow>(column: TableColumn<T>, row: T, index: number): unknown {
   if (column.render) {
@@ -83,14 +98,19 @@ function renderCellContent<T extends TableRow>(
 
 function renderCells<T extends TableRow>(
   options: TableBodyOptions<T>,
-  columns: readonly TableColumn<T>[],
+  columns: readonly ResolvedColumn<T>[],
   row: T,
   index: number,
 ): TemplateResult[] {
-  return columns.map((column, columnIndex) => html`
-    <td part="cell" class=${`align-${column.align ?? 'left'}`} data-label=${column.label}>
-      ${renderCellLabel(column)}
-      ${renderCellContent(options, column, row, index, columnIndex)}
+  return columns.map((resolved, columnIndex) => html`
+    <td
+      part="cell"
+      class=${cellClass(resolved)}
+      style=${ifDefined(pinStyle(resolved))}
+      data-label=${resolved.column.label}
+    >
+      ${renderCellLabel(resolved.column)}
+      ${renderCellContent(options, resolved.column, row, index, columnIndex)}
     </td>
   `);
 }
@@ -138,17 +158,18 @@ export function renderTableBody<T extends TableRow>(options: TableBodyOptions<T>
 }
 
 export function renderTableHeader<T extends TableRow>(
-  columns: readonly TableColumn<T>[],
+  columns: readonly ResolvedColumn<T>[],
   ariaSort: (column: TableColumn<T>) => AriaSort,
 ): TemplateResult[] {
-  return columns.map(column => html`
+  return columns.map(resolved => html`
     <th
       part="header-cell"
       scope="col"
-      class=${`align-${column.align ?? 'left'}`}
-      aria-sort=${ifDefined(ariaSort(column))}
+      class=${cellClass(resolved)}
+      style=${ifDefined(pinStyle(resolved))}
+      aria-sort=${ifDefined(ariaSort(resolved.column))}
     >
-      <slot name=${`header-${column.name}`}>${column.label}</slot>
+      <slot name=${`header-${resolved.column.name}`}>${resolved.column.label}</slot>
     </th>
   `);
 }

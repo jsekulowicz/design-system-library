@@ -6,13 +6,22 @@ import '../skeleton/define.js';
 import { tableStyles } from './table.styles.js';
 import { tableResponsiveStyles } from './table-responsive.styles.js';
 import { tableScrollBodyStyles } from './table-scroll-body.styles.js';
+import { tablePinnedStyles } from './table-pinned.styles.js';
 import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
+import { PinnedColumnsController } from './pinned-columns-controller.js';
+import { resolvePinnedColumns } from './pinned-columns.js';
 import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay } from '../../shared/loading-overlay.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
-import type { TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
+import type {
+  ResolvedColumn,
+  TableColumn,
+  TableResponsiveMode,
+  TableRow,
+  TableSortState,
+} from './types.js';
 
 const INTERACTIVE_TAGS = new Set([
   'a', 'button', 'input', 'select', 'textarea', 'label',
@@ -57,6 +66,7 @@ const booleanAttributeConverter = {
  * @attr responsive - `stack` stacks cells on small screens; `scroll` preserves horizontal scrolling.
  * @attr scroll-body - When set, the body scrolls under a pinned header (the footer slot stays pinned too). The scrollbar is hidden and overflow is signalled by top/bottom scroll-fades, matching ds-dialog/ds-drawer. Natural column widths are preserved; the host must be given a bounded height by its container.
  * @cssprop --ds-table-header-height - Header row height; in scroll-body mode it pins the header and offsets the top scroll-fade below it. Defaults to a single line of header text.
+ * @cssprop --ds-table-pin-max-ratio - Largest share of the scroll container the pinned region may occupy before pinning is disabled (falls back to a plain scrolling table). Defaults to 0.75.
  * @event ds-row-click - Emitted when `clickable-rows` is set and a row is activated. Detail: `{ row, index }`.
  * @csspart table - The internal `<table>` element.
  * @csspart thead - The `<thead>` element.
@@ -80,11 +90,14 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     tableResponsiveStyles,
     scrollFadeStyles,
     tableScrollBodyStyles,
+    tablePinnedStyles,
     loadingOverlayStyles,
   ];
 
   @property({ attribute: false }) rows: readonly T[] = [];
   @property({ attribute: false }) columns: readonly TableColumn<T>[] = [];
+  /** Column `name`s (any order) to freeze into a contiguous left region; original relative order is preserved. */
+  @property({ attribute: false }) pinnedColumns: readonly string[] = [];
   @property({ attribute: false }) sortState: TableSortState | null = null;
   @property({ attribute: false }) rowActionLabel?: (row: T, index: number) => string;
   @property({ type: Boolean, reflect: true, attribute: 'clickable-rows' }) clickableRows = false;
@@ -102,6 +115,12 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   private readonly _scrollFade = new ScrollFadeController(
     this,
     () => this.shadowRoot?.querySelector('.scroll') as HTMLElement | null,
+  );
+
+  private readonly _pinnedColumns = new PinnedColumnsController(
+    this,
+    () => this.shadowRoot?.querySelector('.scroll') as HTMLElement | null,
+    () => this.shadowRoot?.querySelector('table') as HTMLElement | null,
   );
 
   #slotObserver: MutationObserver | null = null;
@@ -237,20 +256,25 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     return this.columns.length === 0 || (this.loading && this.rows.length === 0);
   }
 
+  #resolvedColumns(): ResolvedColumn<T>[] {
+    return resolvePinnedColumns(this.columns, this.pinnedColumns);
+  }
+
   #renderTable(): TemplateResult {
     if (this.#shouldRenderSkeleton()) {
       return renderTableSkeleton(this.skeletonRows, this.#skeletonColumnCount());
     }
+    const columns = this.#resolvedColumns();
     return html`
       <table part="table" aria-busy=${ifDefined(this.loading ? 'true' : undefined)}>
         ${this.#renderCaption()}
-        <colgroup>${this.columns.map(col => html`<col style=${col.width ? `width: ${col.width}` : ''}>`)}</colgroup>
+        <colgroup>${columns.map(({ column }) => html`<col style=${column.width ? `width: ${column.width}` : ''}>`)}</colgroup>
         <thead part="thead">
-          <tr>${renderTableHeader(this.columns, column => this.#ariaSort(column))}</tr>
+          <tr>${renderTableHeader(columns, column => this.#ariaSort(column))}</tr>
         </thead>
         <tbody part="tbody">${renderTableBody({
           rows: this.rows,
-          columns: this.columns,
+          columns,
           rowKey: this.rowKey,
           clickableRows: this.clickableRows,
           rowActionsDisabled: this.loading,

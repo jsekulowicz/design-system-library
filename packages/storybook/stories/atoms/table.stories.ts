@@ -56,6 +56,37 @@ const RICH_COLUMNS: readonly TableColumn<Person>[] = [
   },
 ];
 
+const OFFICES = ['Remote', 'Berlin', 'New York', 'Tokyo'];
+const MANAGERS = ['G. Hopper', 'A. Turing', 'B. Liskov'];
+
+// Enough columns to overflow a full-width desktop container so the pinned
+// region has something to scroll under.
+const WIDE_COLUMNS: readonly TableColumn<Person>[] = [
+  { name: 'name', field: 'name', label: 'Name', width: '12rem' },
+  { name: 'role', field: 'role', label: 'Role', width: '11rem' },
+  {
+    name: 'status', field: 'status', label: 'Status', width: '9rem',
+    render: row => html`<ds-badge tone=${statusTone[row.status]}>${row.status}</ds-badge>`,
+  },
+  {
+    name: 'email', field: 'name', label: 'Email', width: '17rem',
+    render: row => `${row.name.split(' ')[0].toLowerCase()}@example.com`,
+  },
+  { name: 'joined', field: 'joined', label: 'Joined', width: '10rem' },
+  {
+    name: 'salary', field: 'salary', label: 'Salary', align: 'right', width: '10rem',
+    render: row => money.format(row.salary),
+  },
+  { name: 'level', field: 'id', label: 'Level', width: '8rem', render: row => `L${3 + (row.id % 5)}` },
+  {
+    name: 'tenure', field: 'joined', label: 'Tenure', width: '10rem',
+    render: row => `${2026 - Number(row.joined.slice(0, 4))} yrs`,
+  },
+  { name: 'office', field: 'id', label: 'Office', width: '12rem', render: row => OFFICES[row.id % OFFICES.length] },
+  { name: 'manager', field: 'id', label: 'Manager', width: '14rem', render: row => MANAGERS[row.id % MANAGERS.length] },
+  { name: 'reviewDue', field: 'joined', label: 'Review due', width: '12rem', render: row => `2026-Q${1 + (row.id % 4)}` },
+];
+
 const LONG_CONTENT_ROWS = [
   {
     id: 1,
@@ -98,6 +129,7 @@ const meta: Meta = {
   argTypes: {
     rows: { control: 'object' },
     columns: { control: 'object' },
+    pinnedColumns: { control: 'object' },
     sortState: { control: 'object' },
     rowActionLabel: { control: false },
     clickableRows: { control: 'boolean' },
@@ -114,6 +146,7 @@ const meta: Meta = {
   args: {
     rows: PEOPLE.slice(0, 4),
     columns: BASIC_COLUMNS,
+    pinnedColumns: [],
     sortState: null,
     clickableRows: false,
     loading: false,
@@ -154,6 +187,7 @@ table.rows = rows;`,
 <ds-table
   .rows=${args['rows']}
   .columns=${args['columns']}
+  .pinnedColumns=${args['pinnedColumns']}
   .sortState=${args['sortState']}
   .rowActionLabel=${args['rowActionLabel']}
   .clickableRows=${args['clickableRows']}
@@ -275,6 +309,61 @@ export const ScrollBodyWithPagination: Story = {
 </div>
 `;
   },
+};
+
+export const PinnedColumns: Story = {
+  name: 'Pinned columns',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Pass `pinnedColumns` (an array of column `name`s) to freeze columns into a contiguous ' +
+          'left region while the rest scrolls horizontally. Any column is eligible — here `status` ' +
+          '(the 3rd column) is pinned alongside `name` without pinning `role` in between; the pinned ' +
+          'columns keep their original relative order. A separator marks the edge and a shadow fades ' +
+          'in once the body is scrolled sideways.',
+      },
+    },
+  },
+  render: () => html`
+<style>.pin-demo ds-table::part(table) { min-width: 125rem; }</style>
+<div class="pin-demo">
+  <ds-table
+    responsive="scroll"
+    .rows=${PEOPLE}
+    .columns=${WIDE_COLUMNS}
+    .pinnedColumns=${['name', 'status']}
+  >
+    <span slot="caption">Scroll sideways — Name and Status stay pinned</span>
+  </ds-table>
+</div>
+`,
+};
+
+export const PinnedScrollBody: Story = {
+  name: 'Pinned columns (scroll-body)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Pinning combines with `scroll-body`: the header pins vertically while the pinned columns ' +
+          'pin horizontally, so the pinned header corner stays fixed on both axes.',
+      },
+    },
+  },
+  render: () => html`
+<style>.pin-demo-sb ds-table::part(table) { min-width: 125rem; }</style>
+<div class="pin-demo-sb" style="height: 16rem; display: flex; flex-direction: column;">
+  <ds-table
+    scroll-body
+    responsive="scroll"
+    style="flex: 1; min-height: 0;"
+    .rows=${PEOPLE}
+    .columns=${WIDE_COLUMNS}
+    .pinnedColumns=${['name']}
+  ></ds-table>
+</div>
+`,
 };
 
 export const ResponsiveStack: Story = {
