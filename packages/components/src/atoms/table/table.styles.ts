@@ -35,6 +35,13 @@ export const tableStyles = css`
 
   caption {
     caption-side: top;
+    /* Stay put during horizontal scroll instead of scrolling off with the
+       (wider-than-viewport) table body. Shrink to content so sticky has slack,
+       but never exceed the container (so it still wraps in the stacked layout). */
+    position: sticky;
+    left: 0;
+    width: max-content;
+    max-width: 100%;
     padding: var(--ds-space-3);
     color: var(--ds-color-fg-muted);
     text-align: left;
