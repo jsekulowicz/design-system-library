@@ -89,6 +89,7 @@ Column widths are measured at runtime, so pinned columns keep their natural widt
       <ul>
         <li>Use <code>render(row)</code> on columns for custom cell content (badges, links, formatted numbers).</li>
         <li>Keep sorting and pagination state in the parent — pass <code>sortState</code> and paging props in, handle events to update.</li>
+        <li>Slot <code>ds-table-pagination</code> into <code>footer</code> — its <code>ds-page-change</code> makes the table scroll itself back to the top so the new page starts at row one.</li>
         <li>Right-align numeric columns via <code>align: 'right'</code>.</li>
         <li>Mark columns sortable only when <code>sortable: true</code> — this wires <code>aria-sort</code>.</li>
         <li>Provide <code>.rowActionLabel</code> for clickable rows so the keyboard action names the row, e.g. <code>Open Ada Lovelace</code>.</li>

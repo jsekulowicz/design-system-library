@@ -443,6 +443,32 @@ describe('<ds-table>', () => {
     });
   });
 
+  describe('page change', () => {
+    it('scrolls the body back to the top when a slotted pagination changes page', async () => {
+      const el = await mountTable({ scrollBody: true });
+      const scroller = el.shadowRoot!.querySelector('.scroll') as HTMLElement;
+      scroller.scrollTop = 240;
+      el.dispatchEvent(new CustomEvent('ds-page-change', {
+        detail: { page: 2, pageSize: 20 },
+        bubbles: true,
+        composed: true,
+      }));
+      expect(scroller.scrollTop).toBe(0);
+    });
+
+    it('brings the table back into view when the body is not the scroller', async () => {
+      const el = await mountTable();
+      const scrollIntoView = vi.fn();
+      el.scrollIntoView = scrollIntoView;
+      el.dispatchEvent(new CustomEvent('ds-page-change', {
+        detail: { page: 2, pageSize: 20 },
+        bubbles: true,
+        composed: true,
+      }));
+      expect(scrollIntoView).toHaveBeenCalledWith({ block: 'nearest' });
+    });
+  });
+
   describe('pinned columns', () => {
     const WIDE: readonly TableColumn<Person>[] = [
       { name: 'name', field: 'name', label: 'Name' },

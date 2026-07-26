@@ -57,7 +57,7 @@ const booleanAttributeConverter = {
  * @summary Data table driven by `rows` + `columns` props with optional clickable rows and header slots.
  * @slot caption - Table caption rendered above the header.
  * @slot toolbar - Content placed above the table (filter, search).
- * @slot footer - Content placed below the table (pagination).
+ * @slot footer - Content placed below the table (pagination). A `ds-page-change` from here scrolls the table back to the top so the new page starts at its first row.
  * @slot empty - Shown when `rows` is empty.
  * @slot loading - Shown inside the loading overlay when `loading` is true.
  * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
@@ -137,13 +137,30 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
       childList: true,
       subtree: true,
     });
+    this.addEventListener('ds-page-change', this.#onPageChange);
   }
 
   override disconnectedCallback(): void {
     this.#slotObserver?.disconnect();
     this.#slotObserver = null;
+    this.removeEventListener('ds-page-change', this.#onPageChange);
     super.disconnectedCallback();
   }
+
+  /* A slotted ds-table-pagination is a light-DOM child, so its bubbling
+     `ds-page-change` reaches the host. The new page has to start at the top:
+     in scroll-body mode that means resetting the body scroller, otherwise the
+     page itself is the scroller and the header needs bringing back into view
+     (`nearest` is a no-op while the table is already fully visible). */
+  #onPageChange = (): void => {
+    const scroller = this.shadowRoot?.querySelector('.scroll') as HTMLElement | null;
+    if (scroller) {
+      scroller.scrollTop = 0;
+    }
+    if (!this.scrollBody) {
+      this.scrollIntoView({ block: 'nearest' });
+    }
+  };
 
   #syncSlotPresence = (): void => {
     this._hasCaption = this.querySelector('[slot="caption"]') !== null;
