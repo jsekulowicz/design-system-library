@@ -19,9 +19,10 @@ export type DrawerSide = 'start' | 'end';
  * @slot default - Body content. Scrolls when it overflows.
  * @slot footer - Footer content, typically `<ds-button>` actions.
  * @csspart dialog - The native `<dialog>` element.
- * @csspart card - The inner `ds-card` container.
+ * @csspart card - The card surface inside the drawer (forwarded from `ds-card`).
  * @csspart body - The scrolling body region (forwarded from `ds-card`).
  * @csspart close-button - The header close button.
+ * @cssprop [--ds-drawer-height=100dvh] - Height of the drawer and its card. Set this rather than `::part(dialog) { height }`, so the card follows the same height.
  * @event ds-open - Fires after the drawer opens.
  * @event ds-close - Fires after the drawer closes. Detail: `{ returnValue: string }`.
  * @event ds-cancel - Fires when the drawer is dismissed via Escape or backdrop click.
@@ -111,7 +112,7 @@ export class DsDrawer extends DsElement {
       @cancel=${this.#onCancel}
       @close=${this.#onNativeClose}
     >
-      <ds-card elevation="none" part="card">
+      <ds-card elevation="none" exportparts="card,body">
         <div slot="title" class="title-row">
           <h2 id=${titleId} class="title-text"><slot name="title"></slot></h2>
           <ds-button

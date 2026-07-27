@@ -2,6 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/dialog/define';
 import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/checkbox/define';
 import '@jsekulowicz/ds-components/select/define';
 import '@jsekulowicz/ds-components/text-field/define';
 
@@ -136,6 +137,63 @@ export const WithFormFields: Story = {
           gap: var(--ds-space-3);
         }
       </style>
+    </div>
+  `,
+};
+
+export const TrailingCheckbox: Story = {
+  name: 'Trailing checkbox (phantom scroll-fade check)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The body ends with a `ds-checkbox` and otherwise fits. The checkbox must not overflow its own box: if it does, the body counts as scrollable and the fade mask paints a full `--ds-scroll-fade-depth` over the checkbox row, which then looks cut off.',
+      },
+    },
+  },
+  render: () => html`
+    <div>
+      <ds-button @ds-click=${openDialog}>Open dialog</ds-button>
+      <ds-dialog size="sm" label="Report a problem">
+        <span slot="title">Report a problem</span>
+        <p>Tell us what went wrong and we'll take a look.</p>
+        <ds-checkbox>Include a copy of the puzzle</ds-checkbox>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}>
+          Cancel
+        </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
+          Send
+        </ds-button>
+      </ds-dialog>
+    </div>
+  `,
+};
+
+export const CustomMaxHeight: Story = {
+  name: 'Custom max height',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Apps that need a tighter cap than the default `min(90vh, 720px)` — to stay clear of phone toolbars, say — set `--ds-dialog-max-height`. The dialog and its card share the property, so the card can never outgrow the dialog box.',
+      },
+    },
+  },
+  render: () => html`
+    <div style="--ds-dialog-max-height: 320px">
+      <ds-button @ds-click=${openDialog}>Open capped dialog</ds-button>
+      <ds-dialog>
+        <span slot="title">Terms of service</span>
+        ${Array.from(
+          { length: 12 },
+          (_, i) => html`<p>
+            Section ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </p>`,
+        )}
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
+          Accept
+        </ds-button>
+      </ds-dialog>
     </div>
   `,
 };

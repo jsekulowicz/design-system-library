@@ -1,5 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import type { DsDrawer } from './drawer.js';
+import { drawerStyles } from './drawer.styles.js';
 import './define.js';
 import '../../atoms/button/define.js';
 import { mount, mountWithProps, resetTestDom } from '../../test-utils/mount.js';
@@ -46,7 +47,6 @@ describe('<ds-drawer>', () => {
     const el = await mount<DsDrawer>(TEMPLATE);
     const card = el.shadowRoot!.querySelector('ds-card')!;
     expect(card).not.toBeNull();
-    expect(card.getAttribute('part')).toContain('card');
     const titleSlot = el.shadowRoot!.querySelector('slot[name="title"]') as HTMLSlotElement;
     const defaultSlot = el.shadowRoot!.querySelector('slot:not([name])') as HTMLSlotElement;
     const footerSlot = el.shadowRoot!.querySelector('slot[name="footer"]') as HTMLSlotElement;
@@ -167,11 +167,22 @@ describe('<ds-drawer>', () => {
     expect(dialog.getAttribute('aria-labelledby')).toBeNull();
   });
 
-  it('forwards ds-card body via part="body" so consumers can target the scroll container', async () => {
+  it('exports the ds-card surface and body parts so consumers can override them', async () => {
     const el = await mount<DsDrawer>(TEMPLATE);
     const card = el.shadowRoot!.querySelector('ds-card')!;
-    const cardBody = card.shadowRoot!.querySelector('[part="body"]');
-    expect(cardBody).not.toBeNull();
+    expect(card.getAttribute('exportparts')).toBe('card,body');
+    expect(card.hasAttribute('part')).toBe(false);
+    expect(card.shadowRoot!.querySelector('[part="card"]')).not.toBeNull();
+    expect(card.shadowRoot!.querySelector('[part="body"]')).not.toBeNull();
+  });
+
+  it('sizes the drawer and its card with the same --ds-drawer-height', async () => {
+    const css = drawerStyles.cssText;
+    expect(css).toMatch(/dialog\s*{[^}]*height: var\(--ds-drawer-height, 100dvh\)/s);
+    expect(css).toMatch(/ds-card::part\(card\)\s*{[^}]*height: var\(--ds-drawer-height, 100dvh\)/s);
+    expect(css).toMatch(
+      /ds-card::part\(card\)\s*{[^}]*max-height: var\(--ds-drawer-height, 100dvh\)/s,
+    );
   });
 
   it('closes the dialog on disconnect if it was open', async () => {

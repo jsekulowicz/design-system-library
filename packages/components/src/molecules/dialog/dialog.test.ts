@@ -1,5 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import type { DsDialog } from './dialog.js';
+import { dialogStyles } from './dialog.styles.js';
 import './define.js';
 import '../../atoms/button/define.js';
 import { mount, mountWithProps, resetTestDom } from '../../test-utils/mount.js';
@@ -47,7 +48,6 @@ describe('<ds-dialog>', () => {
     const el = await mount<DsDialog>(TEMPLATE);
     const card = el.shadowRoot!.querySelector('ds-card')!;
     expect(card).not.toBeNull();
-    expect(card.getAttribute('part')).toContain('card');
     const titleSlot = el.shadowRoot!.querySelector('slot[name="title"]') as HTMLSlotElement;
     const defaultSlot = el.shadowRoot!.querySelector('slot:not([name])') as HTMLSlotElement;
     const footerSlot = el.shadowRoot!.querySelector('slot[name="footer"]') as HTMLSlotElement;
@@ -160,11 +160,23 @@ describe('<ds-dialog>', () => {
     expect(dialog.getAttribute('aria-labelledby')).toBeNull();
   });
 
-  it('forwards ds-card body via part="body" so consumers can target the scroll container', async () => {
+  it('exports the ds-card surface and body parts so consumers can override them', async () => {
     const el = await mount<DsDialog>(TEMPLATE);
     const card = el.shadowRoot!.querySelector('ds-card')!;
-    const cardBody = card.shadowRoot!.querySelector('[part="body"]');
-    expect(cardBody).not.toBeNull();
+    // Without exportparts, ds-dialog::part(card) would hit the ds-card host —
+    // where the max-height set on ds-card::part(card) is unreachable.
+    expect(card.getAttribute('exportparts')).toBe('card,body');
+    expect(card.hasAttribute('part')).toBe(false);
+    expect(card.shadowRoot!.querySelector('[part="card"]')).not.toBeNull();
+    expect(card.shadowRoot!.querySelector('[part="body"]')).not.toBeNull();
+  });
+
+  it('caps the dialog and its card with the same --ds-dialog-max-height', async () => {
+    const css = dialogStyles.cssText;
+    expect(css).toMatch(/dialog\s*{[^}]*max-height: var\(--ds-dialog-max-height, min\(90vh, 720px\)\)/s);
+    expect(css).toMatch(
+      /ds-card::part\(card\)\s*{[^}]*max-height: var\(--ds-dialog-max-height, min\(90vh, 720px\)\)/s,
+    );
   });
 
   it('closes the dialog on disconnect if it was open', async () => {

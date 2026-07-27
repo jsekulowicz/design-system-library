@@ -12,7 +12,7 @@ export const drawerStyles = css`
     box-shadow: var(--ds-shadow-lg);
     overflow: visible;
     height: 100vh;
-    height: 100dvh;
+    height: var(--ds-drawer-height, 100dvh);
     max-height: 100%;
     /* allow-discrete lets display/overlay hold their open values for
        the slide-in / slide-out duration. */
@@ -67,11 +67,13 @@ export const drawerStyles = css`
   }
   ds-card::part(card) {
     /* Fill the dialog explicitly; percentage heights don't resolve
-       reliably through ds-card's display:block host. */
+       reliably through ds-card's display:block host. Both read the same
+       custom property, so an app that shortens the drawer never gets a
+       card taller than the drawer it sits in. */
     height: 100vh;
-    height: 100dvh;
+    height: var(--ds-drawer-height, 100dvh);
     max-height: 100vh;
-    max-height: 100dvh;
+    max-height: var(--ds-drawer-height, 100dvh);
     box-shadow: none;
     /* border: 0 not transparent — a 1px transparent border still fills
        with the card's own background (background-clip: border-box). */

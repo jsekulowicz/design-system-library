@@ -18,9 +18,10 @@ export type DialogSize = 'sm' | 'md' | 'lg';
  * @slot default - Body content. Scrolls when it overflows.
  * @slot footer - Footer content, typically `<ds-button>` actions.
  * @csspart dialog - The native `<dialog>` element.
- * @csspart card - The inner `ds-card` container.
+ * @csspart card - The card surface inside the dialog (forwarded from `ds-card`).
  * @csspart body - The scrolling body region (forwarded from `ds-card`).
  * @csspart close-button - The header close button.
+ * @cssprop [--ds-dialog-max-height=min(90vh, 720px)] - Height cap for the dialog and its card. Set this rather than `::part(dialog) { max-height }`, so the card follows the same cap.
  * @event ds-open - Fires after the dialog opens.
  * @event ds-close - Fires after the dialog closes. Detail: `{ returnValue: string }`.
  * @event ds-cancel - Fires when the dialog is dismissed via Escape or backdrop click.
@@ -109,7 +110,7 @@ export class DsDialog extends DsElement {
       @cancel=${this.#onCancel}
       @close=${this.#onNativeClose}
     >
-      <ds-card elevation="md" part="card">
+      <ds-card elevation="md" exportparts="card,body">
         <div slot="title" class="title-row">
           <h2 id=${titleId} class="title-text"><slot name="title"></slot></h2>
           <ds-button

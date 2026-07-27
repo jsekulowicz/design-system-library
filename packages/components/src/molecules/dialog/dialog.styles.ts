@@ -10,7 +10,7 @@ export const dialogStyles = css`
     background: transparent;
     color: inherit;
     width: calc(100% - var(--ds-space-4));
-    max-height: min(90vh, 720px);
+    max-height: var(--ds-dialog-max-height, min(90vh, 720px));
     border-radius: var(--ds-radius-sm);
     box-shadow: var(--ds-shadow-md);
     overflow: visible;
@@ -40,8 +40,10 @@ export const dialogStyles = css`
   ds-card::part(card) {
     /* Match the dialog's cap explicitly; percentage heights don't
        resolve reliably through ds-card's display:block host, so body
-       scroll breaks when content overflows. */
-    max-height: min(90vh, 720px);
+       scroll breaks when content overflows. Both read the same custom
+       property, so an app that lowers the cap never gets a card taller
+       than the dialog it sits in. */
+    max-height: var(--ds-dialog-max-height, min(90vh, 720px));
     box-shadow: none;
     border-color: transparent;
     gap: var(--ds-space-3);

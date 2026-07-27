@@ -108,6 +108,33 @@ export const WithFormFields: Story = {
   `,
 };
 
+export const CustomHeight: Story = {
+  name: 'Custom height',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A drawer that stops short of the full viewport — under a fixed app bar, say — sets `--ds-drawer-height`. The panel and its card share the property, so the card can never outgrow the panel box.',
+      },
+    },
+  },
+  render: () => html`
+    <div style="--ds-drawer-height: 320px">
+      <ds-button @ds-click=${openDrawer}>Open short drawer</ds-button>
+      <ds-drawer side="end" size="sm">
+        <span slot="title">Filters</span>
+        ${Array.from(
+          { length: 8 },
+          (_, i) => html`<p>Filter group ${i + 1}. Lorem ipsum dolor sit amet.</p>`,
+        )}
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}>
+          Close
+        </ds-button>
+      </ds-drawer>
+    </div>
+  `,
+};
+
 export const ScrollingBody: Story = {
   render: () => html`
     <div>
