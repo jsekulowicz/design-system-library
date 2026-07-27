@@ -1,5 +1,23 @@
 # @jsekulowicz/ds-components
 
+## 0.54.0
+
+### Minor Changes
+
+- 31ed504: `ds-dialog` and `ds-drawer` let apps drive their own height cap, and forward the card's parts.
+  - New `--ds-dialog-max-height` (default `min(90vh, 720px)`) and `--ds-drawer-height` (default `100dvh`). The outer `<dialog>` and the inner card read the same property, so lowering the cap — to keep clear of phone toolbars, say — no longer leaves a card that overflows the dialog box and a body that scrolls on content that would have fitted. Prefer these over `::part(dialog) { max-height }`, which only sizes the outer box.
+  - The inner `ds-card` now carries `exportparts="card,body"` instead of `part="card"`. `::part(card)` therefore targets the card surface (padding, background, border, height) rather than the `ds-card` host, and the documented `::part(body)` scroll container is finally reachable. Both can be overridden from the app, which the DS's own `ds-card::part(card)` rules previously made impossible.
+
+  Breaking for anyone styling `ds-dialog::part(card)` / `ds-drawer::part(card)` today: those rules used to land on the `ds-card` host and now land on the card surface inside it.
+
+- fe835a6: `ds-table` now scrolls back to the top when a slotted `ds-table-pagination` emits `ds-page-change`, so a new page always starts at its first row. In `scroll-body` mode the body scroller is reset; otherwise the table is brought back into view.
+
+### Patch Changes
+
+- 4867e13: Fix `ds-checkbox` / `ds-radio` overflowing their own host box by ~2px. The label used `line-height: 1`, so the host box was shorter than the text it rendered and the host's baseline was synthesized from the (textless) control box: a `getBoundingClientRect().height` of 16 contributed 18px to the parent's `scrollHeight`. The label now uses `--ds-line-height-snug` and takes the host's baseline from the label text, so the control occupies a line exactly like a word does. As a side effect the control row is ~4px taller; the box and label are still centred on each other.
+
+  The most visible symptom was in `ds-dialog`: a checkbox as the last body element made the body count as scrollable, and the scroll fade painted a full `--ds-scroll-fade-depth` over the checkbox row, which then looked cut off. `ScrollFadeController` now also ignores up to 2px of overflow, rather than 1px, before treating a container as scrollable.
+
 ## 0.53.0
 
 ### Minor Changes
