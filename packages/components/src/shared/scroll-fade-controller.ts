@@ -12,6 +12,10 @@ import type { ReactiveController, ReactiveControllerHost } from 'lit';
 // (MutationObserver), all rAF-throttled.
 const OPAQUE = 'rgb(0 0 0)';
 const CLEAR = 'rgb(0 0 0 / 0)';
+// Sub-pixel rounding and inline layout (a line box can sit a pixel or two below
+// the boxes on it) leave a few px of "overflow" on content that visually fits.
+// Fading a full --ds-scroll-fade-depth over that is worse than never fading it.
+const OVERFLOW_EPSILON = 2;
 
 export class ScrollFadeController implements ReactiveController {
   #getScroller: () => HTMLElement | null | undefined;
@@ -90,9 +94,9 @@ export class ScrollFadeController implements ReactiveController {
     const el = this.#scroller;
     if (!el || !el.isConnected) return;
     const max = el.scrollHeight - el.clientHeight;
-    const scrollable = max > 1;
-    const atTop = el.scrollTop <= 1;
-    const atBottom = el.scrollTop >= max - 1;
+    const scrollable = max > OVERFLOW_EPSILON;
+    const atTop = el.scrollTop <= OVERFLOW_EPSILON;
+    const atBottom = el.scrollTop >= max - OVERFLOW_EPSILON;
     el.style.setProperty('--ds-scroll-fade-top', scrollable && !atTop ? CLEAR : OPAQUE);
     el.style.setProperty('--ds-scroll-fade-bottom', scrollable && !atBottom ? CLEAR : OPAQUE);
   }
