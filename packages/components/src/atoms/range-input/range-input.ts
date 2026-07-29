@@ -60,7 +60,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     if (this.disabled) return;
     const target = event.target as HTMLInputElement;
     this.value = target.value;
-    this.#syncValidity();
+    this.syncValidity();
     this.emit('ds-input', { detail: { value: Number(target.value) } });
   };
 
@@ -68,7 +68,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     if (this.disabled) return;
     const target = event.target as HTMLInputElement;
     this.value = target.value;
-    this.#syncValidity();
+    this.syncValidity();
     this.emit('ds-change', { detail: { value: Number(target.value) } });
   };
 
@@ -83,7 +83,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
 
   // A native range always holds an in-range value, so validity is forwarded to the
   // form for completeness while `invalid`/`error` stay consumer-controlled (app-level).
-  #syncValidity(): void {
+  override syncValidity(): void {
     if (!this.input) {
       return;
     }
@@ -101,7 +101,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
   }
 
   override firstUpdated(): void {
-    this.#syncValidity();
+    this.syncValidity();
   }
 
   override render(): TemplateResult {

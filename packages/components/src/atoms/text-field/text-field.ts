@@ -59,8 +59,14 @@ export class DsTextField extends FormControlMixin(DsElement) {
     }
     const target = event.target as HTMLInputElement;
     this.value = target.value;
-    this.#syncValidity();
+    this.markInteracted();
+    this.syncValidity();
     this.emit('ds-input', { detail: { value: target.value } });
+  };
+
+  #onBlur = (): void => {
+    this.markInteracted();
+    this.syncValidity();
   };
 
   #onChange = (event: Event): void => {
@@ -69,20 +75,24 @@ export class DsTextField extends FormControlMixin(DsElement) {
     }
     const target = event.target as HTMLInputElement;
     this.value = target.value;
-    this.#syncValidity();
+    this.markInteracted();
+    this.syncValidity();
     this.emit('ds-change', { detail: { value: target.value } });
   };
 
-  #syncValidity(): void {
+  override syncValidity(): void {
     if (!this.input) {
       return;
     }
     this.setValidity(this.input.validity, this.input.validationMessage, this.input);
-    this.invalid = !this.input.validity.valid;
+    const next = this.resolveInvalid(this.invalid, !this.input.validity.valid);
+    if (next !== null) {
+      this.invalid = next;
+    }
   }
 
   override firstUpdated(): void {
-    this.#syncValidity();
+    this.syncValidity();
   }
 
   override render(): TemplateResult {
@@ -111,6 +121,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
           aria-invalid=${this.invalid ? 'true' : 'false'}
           @input=${this.#onInput}
           @change=${this.#onChange}
+          @blur=${this.#onBlur}
         />
         <span class="adornment" ?hidden=${!this._hasTrailing}>
           <slot name="trailing" @slotchange=${this.#onTrailingChange}></slot>

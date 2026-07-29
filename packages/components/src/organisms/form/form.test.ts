@@ -1,11 +1,16 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DsForm } from './form.js';
+import { DsTextField } from '../../atoms/text-field/text-field.js';
 import './define.js';
+import '../../atoms/text-field/define.js';
 import { mount, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
   if (!customElements.get('ds-form')) {
     customElements.define('ds-form', DsForm);
+  }
+  if (!customElements.get('ds-text-field')) {
+    customElements.define('ds-text-field', DsTextField);
   }
   if (!customElements.get('test-number-control')) {
     class TestNumberControl extends HTMLElement {
@@ -79,6 +84,25 @@ describe('<ds-form>', () => {
 
     expect(invalidEvents).toBe(1);
     expect(submitEvents).toBe(0);
+  });
+
+  it('reveals the error styling of untouched controls on a rejected submit', async () => {
+    // The raw input is what fails the check: jsdom leaves ElementInternals
+    // validity unwired, so ds-text-field's own checkValidity always passes.
+    const el = await mount<DsForm>(`
+      <ds-form>
+        <input name="email" type="email" value="invalid" />
+        <ds-text-field name="fullname" label="Name" required></ds-text-field>
+      </ds-form>
+    `);
+    const field = el.querySelector('ds-text-field') as DsTextField;
+    await field.updateComplete;
+    expect(field.invalid).toBe(false);
+
+    getNativeForm(el).requestSubmit();
+    await field.updateComplete;
+
+    expect(field.invalid).toBe(true);
   });
 
   it('emits ds-submit with FormData and skips empty values', async () => {

@@ -58,7 +58,10 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     commitAndClose: () => this.#commitAndClose(),
     emitChange: (value: string) => this.emit('ds-change', { detail: { value } }),
     emitInput: (value: string) => this.emit('ds-input', { detail: { value } }),
-    setValidation: (message: string) => this.#syncValidity(message),
+    setValidation: (message: string) => {
+      this.markInteracted();
+      this.syncValidity(message);
+    },
     setValue: (value: string) => {
       this.value = value;
     },
@@ -72,19 +75,19 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     if (next === null || next === '') {
       super.value = '';
       this.#customInputs.syncEmpty();
-      this.#syncValidity();
+      this.syncValidity();
       return;
     }
     const normalized = normalizeHexColor(next);
     if (!normalized) {
       super.value = '';
       this.#customInputs.syncInvalid(String(next));
-      this.#syncValidity(COLOR_FORMAT_ERROR);
+      this.syncValidity(COLOR_FORMAT_ERROR);
       return;
     }
     super.value = normalized;
     this.#customInputs.syncValue(normalized);
-    this.#syncValidity();
+    this.syncValidity();
   }
 
   override connectedCallback(): void {
@@ -104,7 +107,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('required') || changed.has('value')) {
-      this.#syncValidity();
+      this.syncValidity();
     }
   }
 
@@ -130,7 +133,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     return options.find((option) => option.value === current);
   }
 
-  #syncValidity(message = this.#customInputs.validationError): void {
+  override syncValidity(message = this.#customInputs.validationError): void {
     const missing = this.required && !this.#currentValue();
     const validationMessage = message || (missing ? 'Please select a color.' : '');
     const flags = message ? { customError: true } : missing ? { valueMissing: true } : {};
@@ -139,7 +142,10 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     } else {
       this.setValidity(flags, validationMessage);
     }
-    this.invalid = Boolean(validationMessage);
+    const next = this.resolveInvalid(this.invalid, Boolean(validationMessage));
+    if (next !== null) {
+      this.invalid = next;
+    }
   }
 
   #fieldAccessibleName(): string | null {
@@ -152,6 +158,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   }
 
   #clear = (): void => {
+    this.markInteracted();
     this.value = '';
     this.emit('ds-change', { detail: { value: '' } });
     this.#popover.close(true);
@@ -170,6 +177,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     if (this.disabled) {
       return;
     }
+    this.markInteracted();
     this.value = value;
     this.emit('ds-change', { detail: { value } });
     this.#popover.close(true);

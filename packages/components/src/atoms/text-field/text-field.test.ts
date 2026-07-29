@@ -116,6 +116,33 @@ describe('<ds-text-field>', () => {
     expect(el.shadowRoot!.querySelector('.error')?.textContent).toContain('Required');
   });
 
+  it('does not flag a required empty field before the user touches it', async () => {
+    const el = await mount<DsTextField>('<ds-text-field label="Email" required></ds-text-field>');
+    const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+    expect(input.validity.valueMissing).toBe(true);
+    expect(el.invalid).toBe(false);
+
+    input.dispatchEvent(new Event('blur'));
+    await el.updateComplete;
+
+    expect(el.invalid).toBe(true);
+  });
+
+  it('keeps a consumer-set invalid through later input', async () => {
+    const el = await mount<DsTextField>('<ds-text-field label="Name"></ds-text-field>');
+    const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+    el.invalid = true;
+    await el.updateComplete;
+
+    input.value = 'still-taken';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+
+    expect(el.invalid).toBe(true);
+  });
+
   it('submits the surrounding form when Enter is pressed inside the field', async () => {
     document.body.insertAdjacentHTML(
       'beforeend',

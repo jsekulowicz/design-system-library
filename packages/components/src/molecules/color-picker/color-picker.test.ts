@@ -94,7 +94,6 @@ describe('<ds-color-picker>', () => {
     await el.updateComplete;
 
     expect(el.value).toBe('');
-    expect(el.invalid).toBe(true);
   });
 
   it('selects a preset color, emits ds-change, and closes the panel', async () => {
@@ -163,12 +162,12 @@ describe('<ds-color-picker>', () => {
     expect(events[0]?.detail).toEqual({ value: '' });
   });
 
-  it('reports valueMissing when required and empty', async () => {
+  it('does not flag a required empty picker before the user touches it', async () => {
     const el = await mountColorPicker({ required: true });
 
     await el.updateComplete;
 
-    expect(el.invalid).toBe(true);
+    expect(el.invalid).toBe(false);
   });
 
   it('does not open when disabled', async () => {

@@ -93,8 +93,19 @@ describe('<ds-text-area>', () => {
       '<ds-text-area label="Bio" error="This field is required" required></ds-text-area>',
     );
     expect(el.shadowRoot!.querySelector('label')?.textContent).toContain('Bio');
+    expect(el.invalid).toBe(false);
+
+    textarea(el).dispatchEvent(new Event('blur'));
+    await el.updateComplete;
+
     expect(el.invalid).toBe(true);
     expect(el.shadowRoot!.querySelector('.error')?.textContent).toContain('This field is required');
     expect(textarea(el).getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('stays unstyled until the user has touched it', async () => {
+    const el = await mount<DsTextArea>('<ds-text-area label="Bio" required></ds-text-area>');
+    expect(textarea(el).validity.valueMissing).toBe(true);
+    expect(el.invalid).toBe(false);
   });
 });

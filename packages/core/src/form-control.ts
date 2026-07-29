@@ -18,6 +18,10 @@ export interface FormControlHost {
   reportValidity(): boolean;
   setCustomValidity(message: string): void;
   setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
+  markInteracted(): void;
+  resolveInvalid(current: boolean, fromValidity: boolean): boolean | null;
+  syncValidity(): void;
+  showValidity(): void;
   setFormValue(value: FormDataEntryValue | null, state?: FormDataEntryValue): void;
   setAriaLabel(label: string | null): void;
   setAriaDescription(description: string | null): void;
@@ -33,6 +37,8 @@ export function FormControlMixin<TBase extends LitCtor>(
 
     readonly #internals: ElementInternals;
     #value: FormDataEntryValue | null = null;
+    #interacted = false;
+    #autoInvalid = false;
 
     @property({ reflect: true }) name = '';
     @property({ type: Boolean, reflect: true }) disabled = false;
@@ -138,6 +144,33 @@ export function FormControlMixin<TBase extends LitCtor>(
         return;
       }
       this.#internals.setValidity(flags, message, anchor);
+    }
+
+    markInteracted(): void {
+      this.#interacted = true;
+    }
+
+    /** The new `invalid`, or null to leave it: an untouched control shows
+     *  nothing, and a consumer-assigned `invalid` outranks native validity
+     *  until the consumer clears it again. */
+    resolveInvalid(current: boolean, fromValidity: boolean): boolean | null {
+      if (!this.#interacted || current !== this.#autoInvalid) {
+        return null;
+      }
+      this.#autoInvalid = fromValidity;
+      return fromValidity;
+    }
+
+    /** Refreshes `invalid` from the control's own validity; controls
+     *  backed by a native input override this. */
+    syncValidity(): void {}
+
+    /** Reveals validation state without waiting for the user — what a
+     *  rejected submit needs, since the field that blocked it is exactly
+     *  the one nobody has visited. */
+    showValidity(): void {
+      this.markInteracted();
+      this.syncValidity();
     }
 
     setFormValue(value: FormDataEntryValue | null, state?: FormDataEntryValue): void {
