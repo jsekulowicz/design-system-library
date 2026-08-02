@@ -22,8 +22,11 @@ export const fieldsetStyles = css`
   }
   .items {
     display: flex;
+    /* Explicit: the shared field-group styles lay their items out in a column,
+       so a horizontal fieldset has to say so or it silently stacks. */
+    flex-direction: row;
     flex-wrap: wrap;
-    align-items: flex-end;
+    align-items: flex-start;
     gap: var(--ds-fieldset-gap, var(--ds-space-4));
   }
   :host([orientation='vertical']) .items {
