@@ -192,4 +192,31 @@ describe('<ds-drawer>', () => {
     el.remove();
     expect(dialog.open).toBe(false);
   });
+
+  // A nested modal survives its container being hidden and keeps the whole
+  // document inert, which reads as a frozen page with no way back but a reload.
+  it('closes a nested open dialog in its slotted content when it closes', async () => {
+    const el = await mountWithProps<DsDrawer>(TEMPLATE, { open: true });
+    const nested = document.createElement('dialog');
+    el.append(nested);
+    nested.showModal();
+    expect(nested.open).toBe(true);
+
+    el.open = false;
+    await el.updateComplete;
+
+    expect(nested.open).toBe(false);
+    expect(getDialogEl(el).open).toBe(false);
+  });
+
+  it('closes a nested open dialog on disconnect', async () => {
+    const el = await mountWithProps<DsDrawer>(TEMPLATE, { open: true });
+    const nested = document.createElement('dialog');
+    el.append(nested);
+    nested.showModal();
+
+    el.remove();
+
+    expect(nested.open).toBe(false);
+  });
 });

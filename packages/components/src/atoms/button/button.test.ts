@@ -1,5 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DsButton } from './button.js';
+import { buttonStyles } from './button.styles.js';
 import { DsForm } from '../../organisms/form/form.js';
 import './define.js';
 import '../../organisms/form/define.js';
@@ -104,15 +105,44 @@ describe('<ds-button>', () => {
     expect(el.shadowRoot!.querySelector('.spinner')).not.toBeNull();
   });
 
-  it('keeps the leading slot mounted while loading so the adornment box cannot shrink', async () => {
+  it('keeps every slot in the same in-flow wrapper whether or not it is loading', async () => {
     const el = await mount<DsButton>(
-      '<ds-button loading><span slot="leading">icon</span>Wait</ds-button>',
+      '<ds-button><span slot="leading">icon</span>Wait</ds-button>',
+    );
+    const slotNames = () =>
+      Array.from(el.shadowRoot!.querySelectorAll('.content slot')).map((s) =>
+        s.getAttribute('name'),
+      );
+
+    expect(slotNames()).toEqual(['leading', null, 'trailing']);
+
+    el.loading = true;
+    await el.updateComplete;
+
+    expect(slotNames()).toEqual(['leading', null, 'trailing']);
+    expect(el.shadowRoot!.querySelector('.content')!.className).toContain('is-hidden');
+  });
+
+  // The spinner taking inline space is what used to widen the button the instant
+  // loading began -- as an overlay it contributes no intrinsic size at all.
+  it('renders the spinner as an overlay that stays out of the flex row', async () => {
+    const el = await mount<DsButton>('<ds-button loading>Wait</ds-button>');
+
+    const overlay = el.shadowRoot!.querySelector('.loading-overlay');
+    expect(overlay).not.toBeNull();
+    expect(overlay!.querySelector('.spinner')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('.content .spinner')).toBeNull();
+    expect(buttonStyles.cssText).toMatch(/\.loading-overlay\s*{[^}]*position:\s*absolute/s);
+    expect(buttonStyles.cssText).toMatch(/\.btn\s*{[^}]*position:\s*relative/s);
+  });
+
+  it('keeps the spinner in flow with a loading label so the wider state sets the width', async () => {
+    const el = await mount<DsButton>(
+      '<ds-button loading loading-label="Saving…">Save</ds-button>',
     );
 
-    expect(el.shadowRoot!.querySelector('slot[name="leading"]')).not.toBeNull();
-    expect(el.shadowRoot!.querySelector('.adornment .stack-item')!.className).toContain(
-      'is-hidden',
-    );
+    expect(el.shadowRoot!.querySelector('.loading-overlay')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.labels .spinner')).not.toBeNull();
   });
 
   it('reserves the spinner while idle once loading-label is set', async () => {

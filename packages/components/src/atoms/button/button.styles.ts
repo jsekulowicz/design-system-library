@@ -16,6 +16,7 @@ export const buttonStyles = css`
     vertical-align: middle;
   }
   .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -53,6 +54,20 @@ export const buttonStyles = css`
   }
   :host([loading]) .btn {
     cursor: wait;
+  }
+  .content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ds-space-2);
+    min-width: 0;
+  }
+  .loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .stack {
     display: grid;

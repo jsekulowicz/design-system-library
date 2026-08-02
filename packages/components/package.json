@@ -130,6 +130,13 @@
     "./radio-group/define": {
       "import": "./dist/atoms/radio-group/define.js"
     },
+    "./fieldset": {
+      "types": "./dist/atoms/fieldset/index.d.ts",
+      "import": "./dist/atoms/fieldset/index.js"
+    },
+    "./fieldset/define": {
+      "import": "./dist/atoms/fieldset/define.js"
+    },
     "./select": {
       "types": "./dist/atoms/select/index.d.ts",
       "import": "./dist/atoms/select/index.js"

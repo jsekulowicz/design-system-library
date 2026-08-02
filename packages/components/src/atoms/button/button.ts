@@ -17,7 +17,8 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @slot trailing - Icon or adornment rendered after the label.
  * @attr {boolean} square - Forces an icon-sized square button and ignores the text-button min width.
  * @attr {string} loading-label - Text shown in place of the label while loading. Setting it
- *   pins the button width to the wider of the two labels so toggling `loading` never reflows.
+ *   pins the button width to the wider of the two states so the label swap never reflows.
+ *   Without it the spinner is an overlay, so `loading` never changes the button's size either.
  * @csspart button - The internal `<button>` element.
  * @csspart spinner - The loading spinner SVG.
  * @cssprop --ds-spinner-size - Loading spinner diameter.
@@ -105,49 +106,47 @@ export class DsButton extends DsElement {
         aria-label=${this.label ?? nothing}
         @click=${this.#handleClick}
       >
-        ${this.#renderAdornment()} ${this.#renderLabel()}
-        <slot name="trailing"></slot>
+        ${this.loadingLabel ? this.#renderLabelStack() : this.#renderPlainContent()}
       </button>
     `;
   }
 
-  // Idle buttons without a loading label render the bare slot, exactly as before, so
-  // they gain neither a flex item nor its gap. Once the spinner is in play the slot and
-  // the spinner share one grid cell, making the box as wide as the wider of the two --
-  // the state swap can then only grow the button, never shrink it.
-  #renderAdornment(): TemplateResult {
-    if (!this.loading && !this.loadingLabel) {
-      return html`<slot name="leading"></slot>`;
-    }
+  // The spinner never joins the flex row: it is an overlay centred on the button,
+  // and the content it covers only loses its visibility. Letting it take inline
+  // space is what used to widen the button by a gap plus the spinner box (or, with
+  // a leading icon, by the difference between the two) the instant loading began.
+  #renderPlainContent(): TemplateResult {
     return html`
-      <span class="stack adornment">
-        <span class="stack-item ${this.loading ? 'is-hidden' : ''}">
-          <slot name="leading"></slot>
-        </span>
-        ${spinnerTemplate(this.loading ? '' : 'is-hidden')}
+      <span class="content ${this.loading ? 'is-hidden' : ''}">
+        <slot name="leading"></slot>
+        <slot></slot>
+        <slot name="trailing"></slot>
       </span>
+      ${this.loading ? html`<span class="loading-overlay">${spinnerTemplate()}</span>` : nothing}
     `;
   }
 
-  #renderLabel(): TemplateResult {
-    if (!this.loadingLabel) {
-      return html`<slot></slot>`;
-    }
+  // A loading label has to be readable, so it stays in flow. Both states share one
+  // grid cell instead, making the box as wide as the wider of the two in either
+  // state -- the swap is then a pure visibility change.
+  #renderLabelStack(): TemplateResult {
     return html`
       <span class="stack labels">
         <span
           class="stack-item ${this.loading ? 'is-hidden' : ''}"
           aria-hidden=${this.loading ? 'true' : nothing}
         >
+          <slot name="leading"></slot>
           <slot></slot>
         </span>
         <span
           class="stack-item ${this.loading ? '' : 'is-hidden'}"
           aria-hidden=${this.loading ? nothing : 'true'}
         >
-          ${this.loadingLabel}
+          ${spinnerTemplate(this.loading ? '' : 'is-hidden')} ${this.loadingLabel}
         </span>
       </span>
+      <slot name="trailing"></slot>
     `;
   }
 }

@@ -18,6 +18,7 @@ export { DsCheckbox } from './atoms/checkbox/index.js';
 export { DsCheckboxGroup } from './atoms/checkbox-group/index.js';
 export { DsRadio } from './atoms/radio/index.js';
 export { DsRadioGroup } from './atoms/radio-group/index.js';
+export { DsFieldset, type FieldsetOrientation } from './atoms/fieldset/index.js';
 export {
   DsSegmentedControl,
   type SegmentedControlOption,

@@ -8,6 +8,7 @@ import '../../atoms/icon/icons/x-mark.js';
 import { dialogStyles } from './dialog.styles.js';
 import { cardBodyScrollFadeStyles, scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
+import { closeNestedDialogs } from '../../shared/nested-dialogs.js';
 
 export type DialogSize = 'sm' | 'md' | 'lg';
 
@@ -66,13 +67,17 @@ export class DsDialog extends DsElement {
       this._dialogEl.showModal();
       this.emit('ds-open', { detail: null });
     } else if (!this.open && this._dialogEl.open) {
+      closeNestedDialogs(this);
       this._dialogEl.close();
     }
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
-    if (this._dialogEl?.open) this._dialogEl.close();
+    if (this._dialogEl?.open) {
+      closeNestedDialogs(this);
+      this._dialogEl.close();
+    }
   }
 
   #onBackdropClick = (event: MouseEvent): void => {
