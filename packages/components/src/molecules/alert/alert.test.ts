@@ -36,7 +36,7 @@ describe('<ds-alert>', () => {
     const el = await mount<DsAlert>('<ds-alert dismissible>Body</ds-alert>');
     const events: CustomEvent[] = [];
     el.addEventListener('ds-dismiss', (event) => events.push(event as CustomEvent));
-    const button = el.shadowRoot!.querySelector('button.close')!;
+    const button = el.shadowRoot!.querySelector<HTMLElement>('[part="close-button"]')!;
     button.click();
     expect(events).toHaveLength(1);
     expect(document.body.contains(el)).toBe(false);
@@ -44,7 +44,7 @@ describe('<ds-alert>', () => {
 
   it('does not render a close button when not dismissible', async () => {
     const el = await mount<DsAlert>('<ds-alert>Body</ds-alert>');
-    expect(el.shadowRoot!.querySelector('button.close')).toBeNull();
+    expect(el.shadowRoot!.querySelector('[part="close-button"]')).toBeNull();
   });
 
   it('handles announceOnConnect path when heading is present', async () => {

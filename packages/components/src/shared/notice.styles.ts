@@ -42,17 +42,4 @@ export const noticeStyles = css`
     font-size: var(--ds-font-size-heading-sm);
     letter-spacing: var(--ds-letter-spacing-display);
   }
-  .close {
-    appearance: none;
-    background: transparent;
-    border: none;
-    color: inherit;
-    padding: var(--ds-space-1);
-    margin: calc(var(--ds-space-1) * -1);
-    cursor: pointer;
-    border-radius: var(--ds-radius-xs);
-  }
-  .close:focus-visible {
-    box-shadow: var(--ds-shadow-focus);
-  }
 `;

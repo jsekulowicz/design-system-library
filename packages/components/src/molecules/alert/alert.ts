@@ -1,6 +1,8 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, announce } from '@jsekulowicz/ds-core';
+import '../../atoms/button/define.js';
+import '../../atoms/icon/icons/x-mark.js';
 import { noticeStyles } from '../../shared/notice.styles.js';
 import { alertStyles } from './alert.styles.js';
 
@@ -11,6 +13,7 @@ export type AlertTone = 'info' | 'success' | 'warning' | 'danger';
  * @summary Inline message with tone, optional title, and dismissal.
  * @slot default - Message body.
  * @slot actions - Optional action row below the message.
+ * @csspart close-button - The dismiss button, when `dismissible` is set.
  * @event ds-dismiss - Fires when the close button is activated.
  */
 export class DsAlert extends DsElement {
@@ -42,16 +45,17 @@ export class DsAlert extends DsElement {
         <slot name="actions"></slot>
       </div>
       ${this.dismissible
-        ? html`<button type="button" class="close" aria-label="Dismiss" @click=${this.#dismiss}>
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
-              <path
-                d="M4 4l8 8M12 4l-8 8"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>`
+        ? html`<ds-button
+            class="close-btn"
+            part="close-button"
+            variant="ghost"
+            size="sm"
+            square
+            label="Dismiss"
+            @click=${this.#dismiss}
+          >
+            <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>
+          </ds-button>`
         : nothing}
     </div>`;
   }
