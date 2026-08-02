@@ -351,4 +351,37 @@ describe('<ds-select> label, size and icons', () => {
     listbox.dispatchEvent(new Event('scroll'));
     expect(fired).toBe(2);
   });
+
+  describe('required validation', () => {
+    it('flags a required single select as invalid until something is picked', async () => {
+      const el = await mountSelect({ required: true });
+      el.showValidity();
+      expect(el.invalid).toBe(true);
+
+      el.value = 'vue';
+      el.showValidity();
+      expect(el.invalid).toBe(false);
+    });
+
+    it('flags a required multiple select as invalid while nothing is chosen', async () => {
+      const el = await mountSelect({ required: true, multiple: true, values: [] });
+      el.showValidity();
+      expect(el.invalid).toBe(true);
+
+      el.values = ['vue'];
+      el.showValidity();
+      expect(el.invalid).toBe(false);
+    });
+
+    it('leaves an optional select alone when empty', async () => {
+      const el = await mountSelect();
+      el.showValidity();
+      expect(el.invalid).toBe(false);
+    });
+
+    it('holds the error styling back until the user has interacted', async () => {
+      const el = await mountSelect({ required: true });
+      expect(el.invalid).toBe(false);
+    });
+  });
 });

@@ -132,8 +132,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     ) {
       this.#dropdown.queueOverflowCheck();
     }
-    this.#dropdown.syncScrollTop();
+
     this.#syncListboxPopover();
+    this.#dropdown.syncScrollTop();
   }
 
   // Show the listbox in the top layer so it escapes overflow/scroll ancestors;

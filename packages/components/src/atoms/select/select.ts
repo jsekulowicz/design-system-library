@@ -107,8 +107,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
     ) {
       this.#dropdown.queueOverflowCheck();
     }
-    this.#dropdown.syncScrollTop();
     this.#syncListboxPopover();
+    this.#dropdown.syncScrollTop();
   }
 
   override disconnectedCallback(): void {
@@ -136,6 +136,20 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (!this.label && !this.inputLabel) {
       console.warn('<ds-select>: a `label` or `input-label` is required for accessibility.');
     }
+    this.syncValidity();
+  }
+
+  override syncValidity(): void {
+    const empty = this.multiple ? this.values.length === 0 : !this.value;
+    const missing = this.required && empty;
+    this.setValidity(
+      missing ? { valueMissing: true } : {},
+      missing ? 'Please select an option.' : '',
+    );
+    const next = this.resolveInvalid(this.invalid, missing);
+    if (next !== null) {
+      this.invalid = next;
+    }
   }
 
   #selectOption = (option: SelectOption): void => {
@@ -148,14 +162,13 @@ export class DsSelect extends FormControlMixin(DsElement) {
         : [...this.values, option.value];
       this.values = next;
       this.value = next.join(',');
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { values: next } });
     } else {
       this.value = option.value;
-      this.invalid = this.required && !option.value;
-      this.setValidity(
-        this.invalid ? { valueMissing: true } : {},
-        this.invalid ? 'Please select an option.' : '',
-      );
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { value: option.value } });
       this.#dropdown.close();
     }
@@ -165,9 +178,13 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (this.multiple) {
       this.values = [];
       this.value = '';
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { values: [] } });
     } else {
       this.value = '';
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { value: '' } });
     }
   };
