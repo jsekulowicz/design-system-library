@@ -23,7 +23,7 @@ export {
   DsSegmentedControl,
   type SegmentedControlOption,
 } from './atoms/segmented-control/index.js';
-export { DsSelect, type SelectOption } from './atoms/select/index.js';
+export { DsSelect, type SelectOption, type SelectSize } from './atoms/select/index.js';
 export { DsSearchableSelect } from './atoms/searchable-select/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './atoms/tabs/index.js';
 export { DsBreadcrumb, DsBreadcrumbItem } from './atoms/breadcrumb/index.js';
