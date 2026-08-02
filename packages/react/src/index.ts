@@ -14,6 +14,7 @@ export { ColorPickerSwatchGroup } from './ds-color-picker-swatch-group.js';
 export { Dialog } from './ds-dialog.js';
 export { Divider } from './ds-divider.js';
 export { Drawer } from './ds-drawer.js';
+export { Fieldset } from './ds-fieldset.js';
 export { Footer } from './ds-footer.js';
 export { Form } from './ds-form.js';
 export { HeatmapCalendar } from './ds-heatmap-calendar.js';
