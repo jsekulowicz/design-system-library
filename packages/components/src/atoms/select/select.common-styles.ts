@@ -1,5 +1,11 @@
 import { css } from 'lit';
 
+const TILE_HEIGHT = 28;
+const TILE_GAP = 4;
+
+/** Pitch of a row of selected tiles; the overflow math counts in these. */
+export const TILE_ROW_HEIGHT = TILE_HEIGHT + TILE_GAP;
+
 export const selectCommonStyles = css`
   :host {
     --ds-select-size: var(--ds-size-md);
@@ -44,7 +50,7 @@ export const selectCommonStyles = css`
   .tiles {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--ds-space-1);
+    gap: ${TILE_GAP}px;
     min-width: 0;
   }
   .tile {
@@ -55,13 +61,13 @@ export const selectCommonStyles = css`
        ellipsizes — rather than hard-capping every tile to a narrow width
        and wasting the rest of the row. */
     max-width: 100%;
-    height: 24px;
+    height: ${TILE_HEIGHT}px;
     padding: 0 var(--ds-space-1) 0 var(--ds-space-2);
     background: var(--ds-color-bg-subtle);
     border: 1px solid var(--ds-color-border);
     border-radius: var(--ds-radius-xs);
     color: var(--ds-color-fg);
-    font-size: var(--ds-font-size-body-sm);
+    font-size: var(--ds-font-size-body-md);
     white-space: nowrap;
   }
   .tile-focused {
@@ -93,14 +99,11 @@ export const selectCommonStyles = css`
     flex-shrink: 0;
   }
   .tile-remove {
-    width: 14px; height: 14px;
+    width: 20px; height: 20px;
   }
   .tile-remove:hover {
     color: var(--ds-color-fg);
     background: var(--ds-color-border);
-  }
-  .tile-remove svg {
-    width: 10px; height: 10px;
   }
   .leading {
     display: inline-flex;
@@ -112,7 +115,7 @@ export const selectCommonStyles = css`
     display: none;
   }
   .clear-btn {
-    width: 1.2rem; height: 1.2rem;
+    width: 1.5rem; height: 1.5rem;
   }
   .clear-btn:hover {
     color: var(--ds-color-fg);
@@ -120,12 +123,7 @@ export const selectCommonStyles = css`
   .clear-btn:focus-visible {
     box-shadow: var(--ds-shadow-focus);
   }
-  .clear-btn svg {
-    width: 1rem; height: 1rem;
-  }
   .caret {
-    width: 1.2rem;
-    height: 1.2rem;
     color: var(--ds-color-fg-muted);
     pointer-events: none;
     flex-shrink: 0;

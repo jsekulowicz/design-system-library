@@ -347,4 +347,53 @@ describe('<ds-select>', () => {
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
   });
+
+  describe('projected option content', () => {
+    async function mountWithSlots(props: Partial<DsSelect> = {}): Promise<DsSelect> {
+      return mountWithProps<DsSelect>(
+        `<ds-select label="Framework">
+          <b slot="option:react">React!</b>
+          <i slot="selected:react">Reacting</i>
+          <em slot="tile:react">Tiled</em>
+        </ds-select>`,
+        { options: OPTIONS, ...props },
+        'ds-select',
+      );
+    }
+
+    function assignedTo(el: DsSelect, name: string): Element[] {
+      const slot = el.shadowRoot!.querySelector<HTMLSlotElement>(`slot[name="${name}"]`);
+      return slot ? slot.assignedElements() : [];
+    }
+
+    it('projects a light-DOM node into its option', async () => {
+      const el = await mountWithSlots();
+      await openDropdown(el);
+      expect(assignedTo(el, 'option:react')[0]?.textContent).toBe('React!');
+    });
+
+    it('falls back to the label for options with nothing slotted', async () => {
+      const el = await mountWithSlots();
+      await openDropdown(el);
+      expect(assignedTo(el, 'option:vue')).toHaveLength(0);
+      expect(getOption(el, 'Vue')).not.toBeNull();
+    });
+
+    it('keeps the option label as the accessible name', async () => {
+      const el = await mountWithSlots();
+      await openDropdown(el);
+      const option = el.shadowRoot!.querySelector('ds-select-option')!;
+      expect(option.getAttribute('aria-label')).toBe('React');
+    });
+
+    it('projects into the trigger once selected', async () => {
+      const el = await mountWithSlots({ value: 'react' });
+      expect(assignedTo(el, 'selected:react')[0]?.textContent).toBe('Reacting');
+    });
+
+    it('projects into the selected tile when multiple', async () => {
+      const el = await mountWithSlots({ multiple: true, values: ['react'] });
+      expect(assignedTo(el, 'tile:react')[0]?.textContent).toBe('Tiled');
+    });
+  });
 });

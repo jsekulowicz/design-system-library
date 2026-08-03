@@ -462,3 +462,60 @@ export const LongOptionsWrap: Story = {
   ></ds-select>
 `,
 };
+
+const scaleOptions = [
+  { label: 'Easy', value: 'easy' },
+  { label: 'Medium', value: 'medium' },
+  { label: 'Hard', value: 'hard' },
+];
+
+const squares = (filled: number) => html`
+  <span style="display:inline-flex;gap:3px;align-items:center">
+    ${[1, 2, 3].map(
+      (i) => html`<span
+        style="width:11px;height:11px;border:2px solid currentColor;border-radius:2px;background:${i <=
+        filled
+          ? 'currentColor'
+          : 'transparent'}"
+      ></span>`,
+    )}
+  </span>
+`;
+
+const PROJECTED_SRC = `<ds-select label="Difficulty" .options=\${options}>
+  <span slot="option:easy"><my-scale value="1"></my-scale> Easy</span>
+  <span slot="selected:easy"><my-scale value="1"></my-scale> Easy</span>
+  <!-- one node per option, per surface -->
+</ds-select>`;
+
+export const ProjectedOptionContent: Story = {
+  name: 'Projected option content',
+  parameters: {
+    docs: {
+      story: { height: '240px' },
+      description: {
+        story:
+          'An option renders framework-owned content through the `option:{value}` slot, falling back to its `label` when nothing is projected. `selected:{value}` covers the trigger and `tile:{value}` the tiles of a `multiple` select — a node can only be projected once, so each surface takes its own. Keep projected content inside the 36px row the listbox virtualises on. `ds-searchable-select` has the same `option:` and `tile:` slots, but no `selected:`: its single-value trigger is a text input.',
+      },
+      source: { code: PROJECTED_SRC },
+    },
+  },
+  render: () => html`
+  <ds-select
+    label="Difficulty"
+    placeholder="Pick a difficulty"
+    .options=${scaleOptions}
+  >
+    ${scaleOptions.map(
+      (option, index) => html`
+        <span slot="option:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
+          ${squares(index + 1)} ${option.label}
+        </span>
+        <span slot="selected:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
+          ${squares(index + 1)} ${option.label}
+        </span>
+      `,
+    )}
+  </ds-select>
+`,
+};

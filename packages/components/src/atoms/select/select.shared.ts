@@ -1,12 +1,10 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { IconSize } from '../icon/icon.js';
-import type { OptionBadge } from './select.js';
+import { TILE_ROW_HEIGHT } from './select.common-styles.js';
 import '../icon/define.js';
 import '../icon/icons/x-mark.js';
-import '../badge/define.js';
-
-const TILE_ROW_HEIGHT = 28;
+import '../icon/icons/chevron-down.js';
 
 export interface OptionIcon {
   name: string;
@@ -31,30 +29,6 @@ export function renderOptionIcon(
   ></ds-icon>`;
 }
 
-export function renderOptionBadge(
-  badge: OptionBadge | undefined,
-  content: unknown,
-  part?: string,
-): unknown {
-  if (!badge) {
-    return content;
-  }
-  const style = [
-    badge.background ? `background:${badge.background}` : '',
-    badge.color ? `color:${badge.color}` : '',
-    badge.background ? 'border-color:transparent' : '',
-  ]
-    .filter(Boolean)
-    .join(';');
-  return html`<ds-badge
-    part=${ifDefined(part)}
-    class="option-badge"
-    tone=${ifDefined(badge.tone)}
-    style=${ifDefined(style || undefined)}
-    >${content}</ds-badge
-  >`;
-}
-
 type TileDirection = 'left' | 'right';
 
 interface QueueTaskOptions {
@@ -70,7 +44,6 @@ interface TileListTemplateOptions {
   maxLines?: number;
   labelFor: (value: string) => string;
   iconFor?: (value: string) => OptionIcon | undefined;
-  badgeFor?: (value: string) => OptionBadge | undefined;
   onRemove: (value: string) => void;
 }
 
@@ -78,7 +51,6 @@ interface TileTemplateOptions {
   value: string;
   label: string;
   icon?: OptionIcon;
-  badge?: OptionBadge;
   isFocused: boolean;
   onRemove: (value: string) => void;
 }
@@ -127,9 +99,7 @@ export function queueTaskOnce(options: QueueTaskOptions): void {
 function renderTile(options: TileTemplateOptions): TemplateResult {
   return html` <span class="tile${options.isFocused ? ' tile-focused' : ''}" data-value=${options.value}>
     ${renderOptionIcon(options.icon, { size: 'md' })}
-    <span class="tile-label"
-      >${renderOptionBadge(options.badge, options.label, 'tile-badge')}</span
-    >
+    <span class="tile-label"><slot name="tile:${options.value}">${options.label}</slot></span>
     <button
       class="tile-remove"
       type="button"
@@ -141,7 +111,7 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
         options.onRemove(options.value);
       }}
     >
-      <ds-icon name="x-mark" size="sm"></ds-icon>
+      <ds-icon name="x-mark" size="xl"></ds-icon>
     </button>
   </span>`;
 }
@@ -161,7 +131,6 @@ export function renderSelectedTiles(options: TileListTemplateOptions): TemplateR
         value,
         label: options.labelFor(value),
         icon: options.iconFor?.(value),
-        badge: options.badgeFor?.(value),
         isFocused: options.focusedTileIndex === index,
         onRemove: options.onRemove,
       }),
@@ -174,24 +143,10 @@ export function renderClearButton(
   onKeydown: (event: KeyboardEvent) => void,
 ): TemplateResult {
   return html` <button class="clear-btn" type="button" aria-label="Clear selection" @click=${onClear} @keydown=${onKeydown}>
-    ${renderXMarkIcon()}
+    <ds-icon name="x-mark" size="xl"></ds-icon>
   </button>`;
 }
 
 export function renderChevronDownIcon(): TemplateResult {
-  return html`<svg class="caret" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-    <path
-      fill-rule="evenodd"
-      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-      clip-rule="evenodd"
-    />
-  </svg>`;
-}
-
-function renderXMarkIcon(): TemplateResult {
-  return html`<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-    <path
-      d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-    />
-  </svg>`;
+  return html`<ds-icon class="caret" name="chevron-down" size="xl"></ds-icon>`;
 }

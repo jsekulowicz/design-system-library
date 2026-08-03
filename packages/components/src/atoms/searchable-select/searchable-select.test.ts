@@ -330,54 +330,39 @@ describe('<ds-searchable-select>', () => {
     });
   });
 
-  describe('badge-formatted options', () => {
-    const TAGS = [
-      { value: 'domain:art', label: 'Art', badge: { tone: 'success' as const, background: 'var(--tag-bg)', color: 'var(--tag-fg)' } },
-      { value: 'region:es', label: 'Spain', badge: { tone: 'warning' as const } },
-      { value: 'plain', label: 'Plain' },
-    ];
+  describe('projected option content', () => {
+    async function mountWithSlots(props: Partial<DsSearchableSelect> = {}): Promise<DsSearchableSelect> {
+      return mountWithProps<DsSearchableSelect>(
+        `<ds-searchable-select label="Framework">
+          <b slot="option:react">React!</b>
+          <em slot="tile:react">Tiled</em>
+        </ds-searchable-select>`,
+        { options: OPTIONS, ...props },
+        'ds-searchable-select',
+      );
+    }
 
-    it('wraps a badged option label in a ds-badge and leaves others alone', async () => {
-      const el = await mountSearchableSelect({ options: TAGS });
+    function assignedTo(el: DsSearchableSelect, name: string): Element[] {
+      const slot = el.shadowRoot!.querySelector<HTMLSlotElement>(`slot[name="${name}"]`);
+      return slot ? slot.assignedElements() : [];
+    }
+
+    it('projects a light-DOM node into its option, in place of the highlight', async () => {
+      const el = await mountWithSlots();
       await openDropdown(el);
-
-      const options = Array.from(el.shadowRoot!.querySelectorAll('ds-select-option'));
-      const badges = options.map((o) => o.querySelector('ds-badge'));
-      expect(badges[0]).not.toBeNull();
-      expect(badges[1]).not.toBeNull();
-      expect(badges[2]).toBeNull();
-      expect(badges[0]!.getAttribute('tone')).toBe('success');
-      expect(badges[0]!.getAttribute('style')).toContain('background:var(--tag-bg)');
-      expect(badges[0]!.getAttribute('style')).toContain('border-color:transparent');
-      expect(options[2]!.textContent?.trim()).toBe('Plain');
+      expect(assignedTo(el, 'option:react')[0]?.textContent).toBe('React!');
     });
 
-    it('carries the badge onto the selected tile', async () => {
-      const el = await mountSearchableSelect({
-        options: TAGS,
-        multiple: true,
-        values: ['domain:art', 'plain'],
-      });
-      await el.updateComplete;
-
-      const tiles = Array.from(el.shadowRoot!.querySelectorAll('.tile'));
-      expect(tiles).toHaveLength(2);
-      expect(tiles[0]!.querySelector('ds-badge')?.getAttribute('tone')).toBe('success');
-      expect(tiles[1]!.querySelector('ds-badge')).toBeNull();
+    it('falls back to the highlighted label for options with nothing slotted', async () => {
+      const el = await mountWithSlots();
+      await openDropdown(el);
+      expect(assignedTo(el, 'option:vue')).toHaveLength(0);
+      expect(getOption(el, 'Vue')).not.toBeNull();
     });
 
-    it('keeps formatting a selected tile after the option list is filtered away', async () => {
-      const el = await mountSearchableSelect({
-        options: TAGS,
-        multiple: true,
-        values: ['domain:art'],
-      });
-      await el.updateComplete;
-      el.options = [{ value: 'other', label: 'Other' }];
-      await el.updateComplete;
-
-      const tile = el.shadowRoot!.querySelector('.tile');
-      expect(tile?.querySelector('ds-badge')?.getAttribute('tone')).toBe('success');
+    it('projects into the selected tile when multiple', async () => {
+      const el = await mountWithSlots({ multiple: true, values: ['react'] });
+      expect(assignedTo(el, 'tile:react')[0]?.textContent).toBe('Tiled');
     });
   });
 });

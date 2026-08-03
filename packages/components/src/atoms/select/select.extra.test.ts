@@ -315,7 +315,7 @@ describe('<ds-select> label, size and icons', () => {
     expect(tileIcon!.getAttribute('size')).toBe('md');
     const removeIcon = tile.querySelector('.tile-remove ds-icon');
     expect(removeIcon!.getAttribute('name')).toBe('x-mark');
-    expect(removeIcon!.getAttribute('size')).toBe('sm');
+    expect(removeIcon!.getAttribute('size')).toBe('xl');
   });
   it('emits ds-scroll-end once per approach of the listbox bottom', async () => {
     const el = await mountSelect({ options: MANY_OPTIONS });

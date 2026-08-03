@@ -98,7 +98,7 @@ export class DsNavGroup extends DsElement {
       ${this.#renderIcon()}
       <span class="label">${this.label}</span>
       ${this.collapsible
-        ? html`<ds-icon class="chevron" name="chevron-down" size="lg"></ds-icon>`
+        ? html`<ds-icon class="chevron" name="chevron-down" size="xl"></ds-icon>`
         : null}
     </button>`;
   }

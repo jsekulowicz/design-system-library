@@ -37,7 +37,8 @@ export const searchableSelectStyles = css`
     pointer-events: none;
   }
   .spinner {
-    --ds-spinner-size: 1.2rem;
+    /* Matches the caret it replaces, so loading doesn't shift the trigger. */
+    --ds-spinner-size: 1.25rem;
     margin-left: var(--ds-space-2);
     color: var(--ds-color-fg-muted);
   }

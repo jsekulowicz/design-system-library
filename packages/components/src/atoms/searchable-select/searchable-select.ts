@@ -10,7 +10,6 @@ import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
-  renderOptionBadge,
   renderOptionIcon,
   renderSelectedTiles,
 } from '../select/select.shared.js';
@@ -33,6 +32,9 @@ import '../icon/define.js';
  * @csspart hint - The optional note shown above the options inside the listbox.
  * @csspart option - Each individual option item.
  * @csspart spinner - The loading spinner SVG shown in place of the chevron.
+ * @slot leading - A leading adornment for the trigger.
+ * @slot option:{value} - Replaces an option's label in the listbox, in place of the search highlight. Must fit the 36px row the listbox virtualises on, or long lists drift while scrolling.
+ * @slot tile:{value} - Replaces a selected tile's label when `multiple`. There is no `selected:` slot: the single-value trigger is a text input.
  */
 export class DsSearchableSelect extends FormControlMixin(DsElement) {
   static override styles = [
@@ -67,7 +69,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   private _labelMap = new Map<string, string>();
   private _iconMap = new Map<string, SelectOption['icon']>();
-  private _badgeMap = new Map<string, SelectOption['badge']>();
 
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
@@ -116,9 +117,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
         this._labelMap.set(o.value, o.label);
         if (o.icon) {
           this._iconMap.set(o.value, o.icon);
-        }
-        if (o.badge) {
-          this._badgeMap.set(o.value, o.badge);
         }
       }
     }
@@ -281,7 +279,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       maxLines: this.maxLines,
       labelFor: (value) => this._labelMap.get(value) ?? value,
       iconFor: (value) => this._iconMap.get(value),
-      badgeFor: (value) => this._badgeMap.get(value),
       onRemove: this.#dropdown.removeTile,
     });
 
@@ -297,16 +294,15 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       ?active=${this.#dropdown.focusedIndex === index}
       ?disabled=${option.disabled ?? false}
       title=${ifDefined(option.disabledReason)}
+      aria-label=${option.label}
       aria-description=${ifDefined(option.disabledReason)}
       @click=${() => this.#selectOption(option)}
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${renderOptionIcon(option.icon, { slot: 'leading' })}${renderOptionBadge(
-      option.badge,
-      highlightMatch(option.label, this._search),
-      'option-badge',
-    )}</ds-select-option
+      >${renderOptionIcon(option.icon, { slot: 'leading' })}<slot name="option:${option.value}"
+        >${highlightMatch(option.label, this._search)}</slot
+      ></ds-select-option
     >`;
   };
 

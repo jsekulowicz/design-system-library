@@ -15,24 +15,15 @@ import '../icon/define.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
 import { selectCommonStyles } from './select.common-styles.js';
-import type { BadgeTone } from '../badge/badge.js';
 import { selectStyles } from './select.styles.js';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
-
-/** `background`/`color` take raw CSS, so a consumer can pass its own tokens. */
-export interface OptionBadge {
-  tone?: BadgeTone;
-  background?: string;
-  color?: string;
-}
 
 export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
   icon?: { name: string; color?: string };
-  badge?: OptionBadge;
   // Shown as a tooltip and announced to screen readers — e.g. why a disabled
   // option can't be picked.
   disabledReason?: string;
@@ -47,6 +38,10 @@ export interface SelectOption {
  * @csspart listbox - The dropdown listbox container.
  * @csspart hint - The optional note shown above the options inside the listbox.
  * @csspart option - Each individual option item.
+ * @slot leading - A leading adornment for the trigger.
+ * @slot option:{value} - Replaces an option's label in the listbox. Must fit the 36px row the listbox virtualises on, or long lists drift while scrolling.
+ * @slot selected:{value} - Replaces the selected option's label in the trigger.
+ * @slot tile:{value} - Replaces a selected tile's label when `multiple`.
  */
 export class DsSelect extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, selectCommonStyles, selectStyles];
@@ -250,12 +245,15 @@ export class DsSelect extends FormControlMixin(DsElement) {
       ?active=${this.#dropdown.focusedIndex === index}
       ?disabled=${option.disabled ?? false}
       title=${ifDefined(option.disabledReason)}
+      aria-label=${option.label}
       aria-description=${ifDefined(option.disabledReason)}
       @click=${() => this.#selectOption(option)}
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${renderOptionIcon(option.icon, { slot: 'leading' })}${option.label}</ds-select-option
+      >${renderOptionIcon(option.icon, { slot: 'leading' })}<slot name="option:${option.value}"
+        >${option.label}</slot
+      ></ds-select-option
     >`;
   };
 
@@ -298,7 +296,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
           ${hasTiles
             ? this.#renderTiles()
             : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
-                ${selectedOption?.label ?? this.placeholder}
+                ${selectedOption
+                  ? html`<slot name="selected:${selectedOption.value}">${selectedOption.label}</slot>`
+                  : this.placeholder}
               </span>`}
           ${hasClearBtn
             ? renderClearButton((event: Event) => {
