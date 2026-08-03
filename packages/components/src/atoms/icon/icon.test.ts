@@ -44,10 +44,13 @@ describe('<ds-icon>', () => {
     expect(getIcon('academic-cap')).toContain('M4.26 10.147');
   });
 
+  // Importing every generated icon is inherently slow (a few thousand modules)
+  // and lands within a whisker of the 5s default, so it fails on unrelated
+  // changes that add any load elsewhere in the run.
   it('registers all generated Heroicons from the all module', async () => {
     await import('./icons/all.js');
     expect(getIcon('arrow-right')).toContain('M13.5 4.5');
-  });
+  }, 20_000);
 
   it('renders slot fallback when no icon name is provided', async () => {
     const el = await mount<DsIcon>('<ds-icon>Fallback</ds-icon>');

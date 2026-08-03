@@ -10,6 +10,7 @@ import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
+  renderOptionBadge,
   renderOptionIcon,
   renderSelectedTiles,
 } from '../select/select.shared.js';
@@ -66,6 +67,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   private _labelMap = new Map<string, string>();
   private _iconMap = new Map<string, SelectOption['icon']>();
+  private _badgeMap = new Map<string, SelectOption['badge']>();
 
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
@@ -114,6 +116,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
         this._labelMap.set(o.value, o.label);
         if (o.icon) {
           this._iconMap.set(o.value, o.icon);
+        }
+        if (o.badge) {
+          this._badgeMap.set(o.value, o.badge);
         }
       }
     }
@@ -276,6 +281,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       maxLines: this.maxLines,
       labelFor: (value) => this._labelMap.get(value) ?? value,
       iconFor: (value) => this._iconMap.get(value),
+      badgeFor: (value) => this._badgeMap.get(value),
       onRemove: this.#dropdown.removeTile,
     });
 
@@ -296,7 +302,11 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;
       }}
-      >${renderOptionIcon(option.icon, { slot: 'leading' })}${highlightMatch(option.label, this._search)}</ds-select-option
+      >${renderOptionIcon(option.icon, { slot: 'leading' })}${renderOptionBadge(
+      option.badge,
+      highlightMatch(option.label, this._search),
+      'option-badge',
+    )}</ds-select-option
     >`;
   };
 

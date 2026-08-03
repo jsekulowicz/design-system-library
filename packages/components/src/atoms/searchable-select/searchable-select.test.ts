@@ -329,4 +329,61 @@ describe('<ds-searchable-select>', () => {
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
   });
+
+  // A tag picker wants its options and its selected tiles to look the way the
+  // tags look everywhere else, rather than showing raw slugs and repeating the
+  // formatting in a separate row underneath.
+  describe('badge-formatted options', () => {
+    const TAGS = [
+      { value: 'domain:art', label: 'Art', badge: { tone: 'success' as const, background: 'var(--tag-bg)', color: 'var(--tag-fg)' } },
+      { value: 'region:es', label: 'Spain', badge: { tone: 'warning' as const } },
+      { value: 'plain', label: 'Plain' },
+    ];
+
+    it('wraps a badged option label in a ds-badge and leaves others alone', async () => {
+      const el = await mountSearchableSelect({ options: TAGS });
+      await openDropdown(el);
+
+      const options = Array.from(el.shadowRoot!.querySelectorAll('ds-select-option'));
+      const badges = options.map((o) => o.querySelector('ds-badge'));
+      expect(badges[0]).not.toBeNull();
+      expect(badges[1]).not.toBeNull();
+      expect(badges[2]).toBeNull();
+      expect(badges[0]!.getAttribute('tone')).toBe('success');
+      expect(badges[0]!.getAttribute('style')).toContain('background:var(--tag-bg)');
+      // A consumer-supplied background has to win over the tone's own border.
+      expect(badges[0]!.getAttribute('style')).toContain('border-color:transparent');
+      expect(options[2]!.textContent?.trim()).toBe('Plain');
+    });
+
+    it('carries the badge onto the selected tile', async () => {
+      const el = await mountSearchableSelect({
+        options: TAGS,
+        multiple: true,
+        values: ['domain:art', 'plain'],
+      });
+      await el.updateComplete;
+
+      const tiles = Array.from(el.shadowRoot!.querySelectorAll('.tile'));
+      expect(tiles).toHaveLength(2);
+      expect(tiles[0]!.querySelector('ds-badge')?.getAttribute('tone')).toBe('success');
+      expect(tiles[1]!.querySelector('ds-badge')).toBeNull();
+    });
+
+    // The map is additive so a selected value that search has filtered out of
+    // `options` still renders formatted rather than falling back to its slug.
+    it('keeps formatting a selected tile after the option list is filtered away', async () => {
+      const el = await mountSearchableSelect({
+        options: TAGS,
+        multiple: true,
+        values: ['domain:art'],
+      });
+      await el.updateComplete;
+      el.options = [{ value: 'other', label: 'Other' }];
+      await el.updateComplete;
+
+      const tile = el.shadowRoot!.querySelector('.tile');
+      expect(tile?.querySelector('ds-badge')?.getAttribute('tone')).toBe('success');
+    });
+  });
 });

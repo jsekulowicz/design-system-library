@@ -15,15 +15,29 @@ import '../icon/define.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
 import { selectCommonStyles } from './select.common-styles.js';
+import type { BadgeTone } from '../badge/badge.js';
 import { selectStyles } from './select.styles.js';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
+
+/**
+ * Renders the option's label inside a `ds-badge`, in the listbox and on the
+ * selected tile. `background`/`color` take raw CSS so a consumer can pass its
+ * own tokens (custom properties inherit into the shadow root); omit them to use
+ * the tone's own colours.
+ */
+export interface OptionBadge {
+  tone?: BadgeTone;
+  background?: string;
+  color?: string;
+}
 
 export interface SelectOption {
   value: string;
   label: string;
   disabled?: boolean;
   icon?: { name: string; color?: string };
+  badge?: OptionBadge;
   // Shown as a tooltip and announced to screen readers — e.g. why a disabled
   // option can't be picked.
   disabledReason?: string;

@@ -1,8 +1,10 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { IconSize } from '../icon/icon.js';
+import type { OptionBadge } from './select.js';
 import '../icon/define.js';
 import '../icon/icons/x-mark.js';
+import '../badge/define.js';
 
 const TILE_ROW_HEIGHT = 28;
 
@@ -29,6 +31,35 @@ export function renderOptionIcon(
   ></ds-icon>`;
 }
 
+/**
+ * Wraps content in a badge when the option asked for one. Colours go inline, the
+ * same way `renderOptionIcon` passes `icon.color` through, so a consumer can
+ * hand over its own custom properties without the component knowing their names.
+ */
+export function renderOptionBadge(
+  badge: OptionBadge | undefined,
+  content: unknown,
+  part?: string,
+): unknown {
+  if (!badge) {
+    return content;
+  }
+  const style = [
+    badge.background ? `background:${badge.background}` : '',
+    badge.color ? `color:${badge.color}` : '',
+    badge.background ? 'border-color:transparent' : '',
+  ]
+    .filter(Boolean)
+    .join(';');
+  return html`<ds-badge
+    part=${ifDefined(part)}
+    class="option-badge"
+    tone=${ifDefined(badge.tone)}
+    style=${ifDefined(style || undefined)}
+    >${content}</ds-badge
+  >`;
+}
+
 type TileDirection = 'left' | 'right';
 
 interface QueueTaskOptions {
@@ -44,6 +75,7 @@ interface TileListTemplateOptions {
   maxLines?: number;
   labelFor: (value: string) => string;
   iconFor?: (value: string) => OptionIcon | undefined;
+  badgeFor?: (value: string) => OptionBadge | undefined;
   onRemove: (value: string) => void;
 }
 
@@ -51,6 +83,7 @@ interface TileTemplateOptions {
   value: string;
   label: string;
   icon?: OptionIcon;
+  badge?: OptionBadge;
   isFocused: boolean;
   onRemove: (value: string) => void;
 }
@@ -99,7 +132,9 @@ export function queueTaskOnce(options: QueueTaskOptions): void {
 function renderTile(options: TileTemplateOptions): TemplateResult {
   return html` <span class="tile${options.isFocused ? ' tile-focused' : ''}" data-value=${options.value}>
     ${renderOptionIcon(options.icon, { size: 'md' })}
-    <span class="tile-label">${options.label}</span>
+    <span class="tile-label"
+      >${renderOptionBadge(options.badge, options.label, 'tile-badge')}</span
+    >
     <button
       class="tile-remove"
       type="button"
@@ -131,6 +166,7 @@ export function renderSelectedTiles(options: TileListTemplateOptions): TemplateR
         value,
         label: options.labelFor(value),
         icon: options.iconFor?.(value),
+        badge: options.badgeFor?.(value),
         isFocused: options.focusedTileIndex === index,
         onRemove: options.onRemove,
       }),
