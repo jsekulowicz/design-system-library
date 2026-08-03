@@ -330,9 +330,6 @@ describe('<ds-searchable-select>', () => {
     });
   });
 
-  // A tag picker wants its options and its selected tiles to look the way the
-  // tags look everywhere else, rather than showing raw slugs and repeating the
-  // formatting in a separate row underneath.
   describe('badge-formatted options', () => {
     const TAGS = [
       { value: 'domain:art', label: 'Art', badge: { tone: 'success' as const, background: 'var(--tag-bg)', color: 'var(--tag-fg)' } },
@@ -351,7 +348,6 @@ describe('<ds-searchable-select>', () => {
       expect(badges[2]).toBeNull();
       expect(badges[0]!.getAttribute('tone')).toBe('success');
       expect(badges[0]!.getAttribute('style')).toContain('background:var(--tag-bg)');
-      // A consumer-supplied background has to win over the tone's own border.
       expect(badges[0]!.getAttribute('style')).toContain('border-color:transparent');
       expect(options[2]!.textContent?.trim()).toBe('Plain');
     });
@@ -370,8 +366,6 @@ describe('<ds-searchable-select>', () => {
       expect(tiles[1]!.querySelector('ds-badge')).toBeNull();
     });
 
-    // The map is additive so a selected value that search has filtered out of
-    // `options` still renders formatted rather than falling back to its slug.
     it('keeps formatting a selected tile after the option list is filtered away', async () => {
       const el = await mountSearchableSelect({
         options: TAGS,

@@ -109,12 +109,7 @@ export function renderFieldFooter(
   return html`<div class="field-footer">${renderSubtext(description, error, invalid)}</div>`;
 }
 
-/**
- * The label row, with the character counter right-aligned in it when there is
- * one. The counter is a sibling of `<label>` rather than a child: inside it, a
- * screen reader folds "4/20" into the field's accessible name and clicking the
- * count focuses the input.
- */
+/** The counter must stay outside `<label>`, or it joins the field's a11y name. */
 export function renderFieldHeader(
   label: string,
   required: boolean,
@@ -129,8 +124,6 @@ export function renderFieldHeader(
     return label ? renderFieldLabel(label, required, forId, optional) : nothing;
   }
   const labelEl = label ? renderFieldLabel(label, required, forId, optional) : nothing;
-  // `.char-count` carries `margin-inline-start: auto`, so an unlabelled field
-  // still lands its counter on the right.
   return html`
     <div class="field-header" part="field-header">${labelEl}${counter}</div>
   `;

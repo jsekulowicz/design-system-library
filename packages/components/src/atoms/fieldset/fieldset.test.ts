@@ -40,8 +40,6 @@ describe('<ds-fieldset>', () => {
     expect(el.shadowRoot!.textContent).toContain('Pick a range.');
   });
 
-  // Controls sit side by side and wrap on width alone, so a narrow dialog stacks
-  // them without needing a breakpoint.
   it('lays the controls out in a wrapping row by default', async () => {
     expect(fieldsetStyles.cssText).toMatch(/\.items\s*{[^}]*flex-wrap:\s*wrap/s);
     expect(fieldsetStyles.cssText).toMatch(

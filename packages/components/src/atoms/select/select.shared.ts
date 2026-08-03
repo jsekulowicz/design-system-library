@@ -31,11 +31,6 @@ export function renderOptionIcon(
   ></ds-icon>`;
 }
 
-/**
- * Wraps content in a badge when the option asked for one. Colours go inline, the
- * same way `renderOptionIcon` passes `icon.color` through, so a consumer can
- * hand over its own custom properties without the component knowing their names.
- */
 export function renderOptionBadge(
   badge: OptionBadge | undefined,
   content: unknown,

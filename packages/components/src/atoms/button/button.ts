@@ -111,10 +111,7 @@ export class DsButton extends DsElement {
     `;
   }
 
-  // The spinner never joins the flex row: it is an overlay centred on the button,
-  // and the content it covers only loses its visibility. Letting it take inline
-  // space is what used to widen the button by a gap plus the spinner box (or, with
-  // a leading icon, by the difference between the two) the instant loading began.
+  // Overlay, not a flex item: inline space would resize the button on load.
   #renderPlainContent(): TemplateResult {
     return html`
       <span class="content ${this.loading ? 'is-hidden' : ''}">
@@ -126,9 +123,7 @@ export class DsButton extends DsElement {
     `;
   }
 
-  // A loading label has to be readable, so it stays in flow. Both states share one
-  // grid cell instead, making the box as wide as the wider of the two in either
-  // state -- the swap is then a pure visibility change.
+  // A loading label stays in flow; one grid cell sizes to the wider state.
   #renderLabelStack(): TemplateResult {
     return html`
       <span class="stack labels">

@@ -42,8 +42,6 @@ describe('<ds-text-area> character counter', () => {
     expect(counter(noLimit)).toBeNull();
   });
 
-  // The counter sits in the label row, not the footer: a whole row of vertical
-  // space for "4/30" was more than it was worth.
   it('puts the counter in the label row, right-aligned', async () => {
     const el = await mount<DsTextArea>(
       '<ds-text-area label="Word" char-count max-length="30"></ds-text-area>',
@@ -52,7 +50,6 @@ describe('<ds-text-area> character counter', () => {
 
     expect(header).not.toBeNull();
     expect(header!.querySelector('.char-count')).not.toBeNull();
-    // Outside <label>, or a screen reader folds the count into the field's name.
     expect(el.shadowRoot!.querySelector('label .char-count')).toBeNull();
     expect(el.shadowRoot!.querySelector('.field-footer')).toBeNull();
   });

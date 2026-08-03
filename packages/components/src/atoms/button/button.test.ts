@@ -123,8 +123,6 @@ describe('<ds-button>', () => {
     expect(el.shadowRoot!.querySelector('.content')!.className).toContain('is-hidden');
   });
 
-  // The spinner taking inline space is what used to widen the button the instant
-  // loading began -- as an overlay it contributes no intrinsic size at all.
   it('renders the spinner as an overlay that stays out of the flex row', async () => {
     const el = await mount<DsButton>('<ds-button loading>Wait</ds-button>');
 

@@ -20,12 +20,7 @@ import { selectStyles } from './select.styles.js';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
 
-/**
- * Renders the option's label inside a `ds-badge`, in the listbox and on the
- * selected tile. `background`/`color` take raw CSS so a consumer can pass its
- * own tokens (custom properties inherit into the shadow root); omit them to use
- * the tone's own colours.
- */
+/** `background`/`color` take raw CSS, so a consumer can pass its own tokens. */
 export interface OptionBadge {
   tone?: BadgeTone;
   background?: string;

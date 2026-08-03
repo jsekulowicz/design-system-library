@@ -22,8 +22,7 @@ export const fieldsetStyles = css`
   }
   .items {
     display: flex;
-    /* Explicit: the shared field-group styles lay their items out in a column,
-       so a horizontal fieldset has to say so or it silently stacks. */
+    /* Explicit: field-group styles default to column. */
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;

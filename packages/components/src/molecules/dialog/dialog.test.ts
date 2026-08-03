@@ -187,8 +187,6 @@ describe('<ds-dialog>', () => {
     expect(dialog.open).toBe(false);
   });
 
-  // A nested modal survives its container being hidden and keeps the whole
-  // document inert, which reads as a frozen page with no way back but a reload.
   it('closes a nested open dialog in its slotted content when it closes', async () => {
     const el = await mountWithProps<DsDialog>(TEMPLATE, { open: true });
     const nested = document.createElement('dialog');
@@ -203,8 +201,6 @@ describe('<ds-dialog>', () => {
     expect(getDialogEl(el).open).toBe(false);
   });
 
-  // Each size keeps its own default; a dialog whose content wants a narrower
-  // column can say so without reaching for ::part(dialog).
   it('lets a consumer override the width its size sets', () => {
     const css = dialogStyles.cssText;
     expect(css).toMatch(/\[size='sm'\]\) dialog\s*{[^}]*max-width: var\(--ds-dialog-max-width, 400px\)/s);
