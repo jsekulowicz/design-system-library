@@ -48,13 +48,19 @@ export const formFieldStyles: CSSResult = css`
     align-items: flex-start;
     gap: var(--ds-space-2);
   }
+  .field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--ds-space-2);
+  }
   .field-footer .description,
   .field-footer .error {
     flex: 1;
   }
   .char-count {
     margin: 0;
-    margin-left: auto;
+    margin-inline-start: auto;
     color: var(--ds-color-fg-muted);
     font-size: var(--ds-font-size-body-sm);
     line-height: 1.4;
@@ -96,20 +102,38 @@ export function renderFieldFooter(
   description: string,
   error: string,
   invalid: boolean,
-  currentLength: number,
-  maxLength?: number,
-  charCount = false,
 ): TemplateResult {
-  const hasSubtext = Boolean((invalid && error) || description);
-  const hasCounter = charCount && maxLength !== undefined;
-  const counter = renderCharCount(currentLength, maxLength, charCount);
-  const subtext = renderSubtext(description, error, invalid);
-
-  if (!hasSubtext && !hasCounter) {
+  if (!((invalid && error) || description)) {
     return html``;
   }
+  return html`<div class="field-footer">${renderSubtext(description, error, invalid)}</div>`;
+}
 
-  return html`<div class="field-footer">${subtext}${counter}</div>`;
+/**
+ * The label row, with the character counter right-aligned in it when there is
+ * one. The counter is a sibling of `<label>` rather than a child: inside it, a
+ * screen reader folds "4/20" into the field's accessible name and clicking the
+ * count focuses the input.
+ */
+export function renderFieldHeader(
+  label: string,
+  required: boolean,
+  forId: string,
+  optional = false,
+  currentLength = 0,
+  maxLength?: number,
+  charCount = false,
+): TemplateResult | typeof nothing {
+  const counter = renderCharCount(currentLength, maxLength, charCount);
+  if (counter === nothing) {
+    return label ? renderFieldLabel(label, required, forId, optional) : nothing;
+  }
+  const labelEl = label ? renderFieldLabel(label, required, forId, optional) : nothing;
+  // `.char-count` carries `margin-inline-start: auto`, so an unlabelled field
+  // still lands its counter on the right.
+  return html`
+    <div class="field-header" part="field-header">${labelEl}${counter}</div>
+  `;
 }
 
 function renderCharCount(

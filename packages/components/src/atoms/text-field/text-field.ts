@@ -2,7 +2,7 @@ import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldFooter, renderFieldLabel } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldFooter, renderFieldHeader } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { textFieldStyles } from './text-field.styles.js';
 
@@ -98,7 +98,10 @@ export class DsTextField extends FormControlMixin(DsElement) {
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
     return html`
-      ${this.label ? renderFieldLabel(this.label, this.required, 'input', this.optional) : nothing}
+      ${renderFieldHeader(
+        this.label, this.required, 'input', this.optional,
+        current.length, this.maxLength, this.charCount,
+      )}
       <div class="wrap field-control" part="wrap">
         <span class="adornment" ?hidden=${!this._hasLeading}>
           <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
@@ -127,14 +130,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
           <slot name="trailing" @slotchange=${this.#onTrailingChange}></slot>
         </span>
       </div>
-      ${renderFieldFooter(
-        this.description,
-        this.error,
-        this.invalid,
-        current.length,
-        this.maxLength,
-        this.charCount,
-      )}
+      ${renderFieldFooter(this.description, this.error, this.invalid)}
     `;
   }
 }

@@ -2,7 +2,7 @@ import { html, nothing, LitElement, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldFooter, renderFieldLabel } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldFooter, renderFieldHeader } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { textAreaStyles } from './text-area.styles.js';
 
@@ -86,7 +86,10 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   override render(): TemplateResult {
     const current = typeof this.value === 'string' ? this.value : '';
     return html`
-      ${this.label ? renderFieldLabel(this.label, this.required, 'input', this.optional) : nothing}
+      ${renderFieldHeader(
+        this.label, this.required, 'input', this.optional,
+        current.length, this.maxLength, this.charCount,
+      )}
       <textarea
         id="input"
         class="field-control"
@@ -107,14 +110,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
         @change=${this.#onChange}
         @blur=${this.#onBlur}
       ></textarea>
-      ${renderFieldFooter(
-        this.description,
-        this.error,
-        this.invalid,
-        current.length,
-        this.maxLength,
-        this.charCount,
-      )}
+      ${renderFieldFooter(this.description, this.error, this.invalid)}
     `;
   }
 }

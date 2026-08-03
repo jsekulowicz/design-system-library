@@ -21,13 +21,13 @@ export const dialogStyles = css`
     flex-direction: column;
   }
   :host([size='sm']) dialog {
-    max-width: 400px;
+    max-width: var(--ds-dialog-max-width, 400px);
   }
   :host([size='md']) dialog {
-    max-width: 560px;
+    max-width: var(--ds-dialog-max-width, 560px);
   }
   :host([size='lg']) dialog {
-    max-width: 800px;
+    max-width: var(--ds-dialog-max-width, 800px);
   }
   dialog::backdrop {
     background: rgb(15 23 42 / 0.55);

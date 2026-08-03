@@ -41,4 +41,25 @@ describe('<ds-text-field> character counter', () => {
     expect(counter(noToggle)).toBeNull();
     expect(counter(noLimit)).toBeNull();
   });
+
+  // The counter sits in the label row, not the footer: a whole row of vertical
+  // space for "4/15" was more than it was worth.
+  it('puts the counter in the label row, right-aligned', async () => {
+    const el = await mount<DsTextField>(
+      '<ds-text-field label="Word" char-count max-length="15"></ds-text-field>',
+    );
+    const header = el.shadowRoot!.querySelector('[part="field-header"]');
+
+    expect(header).not.toBeNull();
+    expect(header!.querySelector('.char-count')).not.toBeNull();
+    // Outside <label>, or a screen reader folds the count into the field's name.
+    expect(el.shadowRoot!.querySelector('label .char-count')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.field-footer')).toBeNull();
+  });
+
+  it('still counts an unlabelled field', async () => {
+    const el = await mount<DsTextField>('<ds-text-field char-count max-length="15"></ds-text-field>');
+
+    expect(counter(el)?.textContent).toBe('0/15');
+  });
 });

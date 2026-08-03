@@ -202,4 +202,13 @@ describe('<ds-dialog>', () => {
     expect(nested.open).toBe(false);
     expect(getDialogEl(el).open).toBe(false);
   });
+
+  // Each size keeps its own default; a dialog whose content wants a narrower
+  // column can say so without reaching for ::part(dialog).
+  it('lets a consumer override the width its size sets', () => {
+    const css = dialogStyles.cssText;
+    expect(css).toMatch(/\[size='sm'\]\) dialog\s*{[^}]*max-width: var\(--ds-dialog-max-width, 400px\)/s);
+    expect(css).toMatch(/\[size='md'\]\) dialog\s*{[^}]*max-width: var\(--ds-dialog-max-width, 560px\)/s);
+    expect(css).toMatch(/\[size='lg'\]\) dialog\s*{[^}]*max-width: var\(--ds-dialog-max-width, 800px\)/s);
+  });
 });

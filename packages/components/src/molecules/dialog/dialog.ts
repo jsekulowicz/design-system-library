@@ -22,6 +22,7 @@ export type DialogSize = 'sm' | 'md' | 'lg';
  * @csspart card - The card surface inside the dialog (forwarded from `ds-card`).
  * @csspart body - The scrolling body region (forwarded from `ds-card`).
  * @csspart close-button - The header close button.
+ * @cssprop --ds-dialog-max-width - Width cap, overriding the one the `size` sets.
  * @cssprop [--ds-dialog-max-height=min(90vh, 720px)] - Height cap for the dialog and its card. Set this rather than `::part(dialog) { max-height }`, so the card follows the same cap.
  * @event ds-open - Fires after the dialog opens.
  * @event ds-close - Fires after the dialog closes. Detail: `{ returnValue: string }`.
