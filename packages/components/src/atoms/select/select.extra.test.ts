@@ -24,6 +24,20 @@ beforeEach(() => {
   resetTestDom();
 });
 
+// Patches the shared prototype, so the restore matters: a leak changes later tests.
+function stubRowHeight(el: DsSelect, height: (this: HTMLElement) => number): () => void {
+  const proto = Object.getPrototypeOf(
+    el.shadowRoot!.querySelector('ds-select-option') as HTMLElement,
+  ) as { getBoundingClientRect: () => DOMRect };
+  const original = proto.getBoundingClientRect;
+  proto.getBoundingClientRect = function (this: HTMLElement) {
+    return { height: height.call(this) } as DOMRect;
+  };
+  return () => {
+    proto.getBoundingClientRect = original;
+  };
+}
+
 async function mountSelect(props: Partial<DsSelect> = {}): Promise<DsSelect> {
   return mountWithProps<DsSelect>('<ds-select label="Framework"></ds-select>', {
     options: OPTIONS,
@@ -352,6 +366,42 @@ describe('<ds-select> label, size and icons', () => {
     expect(fired).toBe(2);
   });
 
+  // Measuring picks startIdx, which picks the next row measured: two heights can point at each other.
+  it('settles when neighbouring rows measure differently', async () => {
+    const MANY = Array.from({ length: 200 }, (_, index) => ({
+      value: `v${index}`,
+      label: `Option ${index}`,
+    }));
+    const el = await mountSelect({ options: MANY });
+    const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
+    trigger.click();
+    await el.updateComplete;
+
+    let measurements = 0;
+    const restore = stubRowHeight(el, function (this: HTMLElement) {
+      measurements += 1;
+      // Capped so a regression reports a runaway instead of hanging the suite.
+      if (measurements > 50) {
+        return 37.5;
+      }
+      const index = Number.parseInt(this.id.replace('option-', ''), 10);
+      return index % 2 === 0 ? 38.4 : 37.5;
+    });
+
+    try {
+      // At this offset the two heights select rows of the other height.
+      el._scrollTop = 1640;
+      for (let i = 0; i < 20; i += 1) {
+        await el.updateComplete;
+        await Promise.resolve();
+      }
+    } finally {
+      restore();
+    }
+
+    expect(measurements).toBeLessThan(10);
+  });
+
   it('sizes the virtual spacers from a measured row, not the default', async () => {
     const MANY = Array.from({ length: 100 }, (_, index) => ({
       value: `v${index}`,
@@ -363,15 +413,18 @@ describe('<ds-select> label, size and icons', () => {
     await el.updateComplete;
 
     // jsdom has no layout: stand in for a real row, which exceeds the default.
-    const option = el.shadowRoot!.querySelector('ds-select-option') as HTMLElement;
-    Object.getPrototypeOf(option).getBoundingClientRect = () => ({ height: 37.5 }) as DOMRect;
+    const restore = stubRowHeight(el, () => 37.5);
 
-    el.requestUpdate();
-    await el.updateComplete;
-    await el.updateComplete;
+    try {
+      el.requestUpdate();
+      await el.updateComplete;
+      await el.updateComplete;
 
-    el._scrollTop = 37.5 * 20;
-    await el.updateComplete;
+      el._scrollTop = 37.5 * 20;
+      await el.updateComplete;
+    } finally {
+      restore();
+    }
 
     const topSpacer = el.shadowRoot!.querySelector('.listbox [aria-hidden="true"]') as HTMLElement;
     expect(Number.parseFloat(topSpacer.style.height)).toBe(17 * 37.5);

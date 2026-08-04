@@ -49,6 +49,7 @@ export class DropdownController implements ReactiveController {
   #focusOutHandler?: () => void;
   #overflowCheckQueued = false;
   #itemMeasureQueued = false;
+  #itemMeasured = false;
 
   constructor(host: DropdownHost, config: DropdownConfig) {
     this.#host = host;
@@ -120,6 +121,7 @@ export class DropdownController implements ReactiveController {
     }
     this.#open = true;
     this.#scrollEndArmed = true;
+    this.#itemMeasured = false;
     this.#config.onOpen?.();
     this.#focusedTileIndex = -1;
     const options = this.#config.getOptions();
@@ -249,6 +251,9 @@ export class DropdownController implements ReactiveController {
 
   // Spacers reserve itemHeight per unrendered row; a stale estimate drifts them.
   queueItemMeasure = (): void => {
+    if (this.#itemMeasured) {
+      return;
+    }
     queueTaskOnce({
       isQueued: this.#itemMeasureQueued,
       setQueued: (value) => {
@@ -258,10 +263,15 @@ export class DropdownController implements ReactiveController {
     });
   };
 
+  // Once per open: the height picks startIdx, which picks the row measured next.
   #measureItemHeight = (): void => {
     const row = this.#config.getListboxEl()?.querySelector('ds-select-option');
     const height = row?.getBoundingClientRect().height ?? 0;
-    if (height <= 0 || Math.abs(height - this.#itemHeight) < HEIGHT_EPSILON) {
+    if (height <= 0) {
+      return;
+    }
+    this.#itemMeasured = true;
+    if (Math.abs(height - this.#itemHeight) < HEIGHT_EPSILON) {
       return;
     }
     this.#itemHeight = height;
