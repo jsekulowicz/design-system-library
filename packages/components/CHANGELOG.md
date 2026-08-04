@@ -1,5 +1,25 @@
 # @jsekulowicz/ds-components
 
+## 0.58.0
+
+### Minor Changes
+
+- 917d1b7: Let a select option render framework-owned content, and give both selects real icons.
+
+  `ds-select` and `ds-searchable-select` now render each option's label inside a `option:{value}` slot, mirroring the per-cell slots `ds-table` already uses. `ds-select` adds `selected:{value}` for its trigger and both add `tile:{value}` for the tiles of a `multiple` select — a node can only be projected once, so each surface takes its own. Every slot falls back to the label it replaces, so existing consumers are untouched, and `option.label` stays the option's accessible name. Projected content must fit the 36px row the listbox virtualises on; `ds-searchable-select` has no `selected:` slot because its single-value trigger is a text input.
+
+  **Breaking:** this replaces `SelectOption.badge`, which is removed along with the `option-badge` and `tile-badge` parts. It shipped in 0.57.0 but never worked — it passed colours as inline style on the `ds-badge` host, where the badge's own opaque background painted over them. Pass a badge through the `option:{value}` slot instead.
+
+  The hand-rolled caret and clear SVGs are now `ds-icon` `chevron-down` / `x-mark` at `xl`, as is the tile remove button and `ds-nav-group`'s chevron. Selected tiles grow to 28px with a `body-md` label to carry the larger controls.
+
+### Patch Changes
+
+- 915bc79: Measure the listbox row instead of assuming 36px, so long option lists stop drifting.
+
+  The virtual list reserved `ITEM_HEIGHT = 36` per unrendered row, but nothing pins an option to that height: no line-height is set anywhere in the option chain, so the row follows the font's metrics — 37.5px in Chrome at the default size. Every row was 1.5px shorter than the space reserved for it, and the error compounded: over 200 options the listbox came up 280px short, leaving the last rows unreachable and the visible window increasingly out of step with the scroll position. Projected option content could shift the height again.
+
+  Both selects now measure a rendered row and feed that height to the spacers, the focus-into-view maths and the `ds-scroll-end` threshold, re-measuring whenever the listbox re-renders. `36` stays as the estimate used before the first measurement. Rows still have to be uniform — an option whose text wraps is taller than its neighbours, which no fixed-height virtual list can track.
+
 ## 0.57.0
 
 ### Minor Changes
