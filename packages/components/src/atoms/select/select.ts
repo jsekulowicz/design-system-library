@@ -39,7 +39,7 @@ export interface SelectOption {
  * @csspart hint - The optional note shown above the options inside the listbox.
  * @csspart option - Each individual option item.
  * @slot leading - A leading adornment for the trigger.
- * @slot option:{value} - Replaces an option's label in the listbox. Must fit the 36px row the listbox virtualises on, or long lists drift while scrolling.
+ * @slot option:{value} - Replaces an option's label in the listbox. The listbox virtualises on one measured row, so keep every option the same height.
  * @slot selected:{value} - Replaces the selected option's label in the trigger.
  * @slot tile:{value} - Replaces a selected tile's label when `multiple`.
  */
@@ -112,6 +112,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       this.#dropdown.queueOverflowCheck();
     }
     this.#syncListboxPopover();
+    this.#dropdown.queueItemMeasure();
     this.#dropdown.syncScrollTop();
   }
 
@@ -322,8 +323,11 @@ export class DsSelect extends FormControlMixin(DsElement) {
               ${this.hint
                 ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>`
                 : nothing}
-              ${renderVirtualItems(this.options, this.#dropdown.scrollTop, (option, index) =>
-                this.#renderOption(option, index, current),
+              ${renderVirtualItems(
+                this.options,
+                this.#dropdown.scrollTop,
+                (option, index) => this.#renderOption(option, index, current),
+                this.#dropdown.itemHeight,
               )}
             </div>`
           : nothing}

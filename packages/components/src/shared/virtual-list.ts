@@ -1,6 +1,7 @@
 import { html, type TemplateResult } from 'lit';
 
-export const ITEM_HEIGHT = 36;
+/** Assumed until a row can be measured: real height follows the font metrics. */
+export const DEFAULT_ITEM_HEIGHT = 36;
 export const LISTBOX_HEIGHT = 240;
 
 const OVERSCAN = 3;
@@ -9,11 +10,12 @@ export function renderVirtualItems<T>(
   items: T[],
   scrollTop: number,
   renderItem: (item: T, index: number) => TemplateResult,
+  itemHeight: number = DEFAULT_ITEM_HEIGHT,
 ): TemplateResult {
-  const startIdx = Math.max(0, Math.floor(scrollTop / ITEM_HEIGHT) - OVERSCAN);
-  const endIdx = Math.min(items.length, startIdx + Math.ceil(LISTBOX_HEIGHT / ITEM_HEIGHT) + OVERSCAN * 2);
-  const topPad = startIdx * ITEM_HEIGHT;
-  const bottomPad = (items.length - endIdx) * ITEM_HEIGHT;
+  const startIdx = Math.max(0, Math.floor(scrollTop / itemHeight) - OVERSCAN);
+  const endIdx = Math.min(items.length, startIdx + Math.ceil(LISTBOX_HEIGHT / itemHeight) + OVERSCAN * 2);
+  const topPad = startIdx * itemHeight;
+  const bottomPad = (items.length - endIdx) * itemHeight;
 
   return html`
     <div style="height:${topPad}px" aria-hidden="true"></div>

@@ -5,7 +5,7 @@ import {
   getVisibleTileCount,
   queueTaskOnce,
 } from './select.shared.js';
-import { ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/virtual-list.js';
+import { DEFAULT_ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/virtual-list.js';
 import type { SelectOption } from './select.js';
 
 export interface DropdownConfig {
@@ -26,10 +26,11 @@ export interface DropdownConfig {
 
 type DropdownHost = ReactiveControllerHost & HTMLElement;
 
-// How close (px) to the listbox bottom counts as "scrolled to the end".
-// Two rows of slack lets consumers fetch the next page before the user
-// actually hits the hard end.
-const SCROLL_END_THRESHOLD = ITEM_HEIGHT * 2;
+// Rows of slack before the hard bottom, so consumers can fetch the next page.
+const SCROLL_END_ROWS = 2;
+
+// Sub-pixel jitter shouldn't churn a re-render.
+const HEIGHT_EPSILON = 0.5;
 
 export class DropdownController implements ReactiveController {
   #host: DropdownHost;
@@ -38,6 +39,7 @@ export class DropdownController implements ReactiveController {
   #open = false;
   #focusedIndex = -1;
   #scrollTop = 0;
+  #itemHeight = DEFAULT_ITEM_HEIGHT;
   #focusedTileIndex = -1;
   #overflowCount = 0;
   #hasLeading = false;
@@ -46,6 +48,7 @@ export class DropdownController implements ReactiveController {
   #docClickHandler?: (event: MouseEvent) => void;
   #focusOutHandler?: () => void;
   #overflowCheckQueued = false;
+  #itemMeasureQueued = false;
 
   constructor(host: DropdownHost, config: DropdownConfig) {
     this.#host = host;
@@ -86,6 +89,9 @@ export class DropdownController implements ReactiveController {
     this.#focusedTileIndex = value;
     this.#host.requestUpdate();
   }
+  get itemHeight(): number {
+    return this.#itemHeight;
+  }
   get overflowCount(): number {
     return this.#overflowCount;
   }
@@ -121,7 +127,7 @@ export class DropdownController implements ReactiveController {
       ? options.findIndex((option) => this.#config.getValues().includes(option.value))
       : options.findIndex((option) => option.value === this.#config.getCurrentValue());
     this.#focusedIndex = idx >= 0 ? idx : 0;
-    this.#scrollTop = Math.max(0, (this.#focusedIndex - 2) * ITEM_HEIGHT);
+    this.#scrollTop = Math.max(0, (this.#focusedIndex - 2) * this.#itemHeight);
     this.#docClickHandler = (event: MouseEvent) => {
       if (!event.composedPath().includes(this.#host)) {
         this.close();
@@ -192,7 +198,8 @@ export class DropdownController implements ReactiveController {
   // reopening the dropdown; appended options push the bottom away so the
   // next approach fires again.
   #notifyScrollEnd = (el: HTMLElement): void => {
-    const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - SCROLL_END_THRESHOLD;
+    const threshold = this.#itemHeight * SCROLL_END_ROWS;
+    const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - threshold;
     if (!nearEnd) {
       this.#scrollEndArmed = true;
       return;
@@ -240,9 +247,30 @@ export class DropdownController implements ReactiveController {
     }
   };
 
+  // Spacers reserve itemHeight per unrendered row; a stale estimate drifts them.
+  queueItemMeasure = (): void => {
+    queueTaskOnce({
+      isQueued: this.#itemMeasureQueued,
+      setQueued: (value) => {
+        this.#itemMeasureQueued = value;
+      },
+      task: this.#measureItemHeight,
+    });
+  };
+
+  #measureItemHeight = (): void => {
+    const row = this.#config.getListboxEl()?.querySelector('ds-select-option');
+    const height = row?.getBoundingClientRect().height ?? 0;
+    if (height <= 0 || Math.abs(height - this.#itemHeight) < HEIGHT_EPSILON) {
+      return;
+    }
+    this.#itemHeight = height;
+    this.#host.requestUpdate();
+  };
+
   #scrollFocusedIntoView = (): void => {
-    const top = this.#focusedIndex * ITEM_HEIGHT;
-    const bottom = top + ITEM_HEIGHT;
+    const top = this.#focusedIndex * this.#itemHeight;
+    const bottom = top + this.#itemHeight;
     if (top < this.#scrollTop) {
       this.#scrollTop = top;
     } else if (bottom > this.#scrollTop + LISTBOX_HEIGHT) {

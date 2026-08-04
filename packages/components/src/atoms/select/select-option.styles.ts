@@ -5,9 +5,7 @@ export const selectOptionStyles = css`
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
-    /* ITEM_HEIGHT (virtual-list.ts) baseline for single-line options; an
-       option whose primary text wraps grows past it. Virtualization stays
-       accurate while options fit one line. */
+    /* A floor, not the row height — the listbox measures a row rather than assume it. */
     min-height: 36px;
     box-sizing: border-box;
     padding: var(--ds-space-2) var(--ds-space-3);

@@ -33,7 +33,7 @@ import '../icon/define.js';
  * @csspart option - Each individual option item.
  * @csspart spinner - The loading spinner SVG shown in place of the chevron.
  * @slot leading - A leading adornment for the trigger.
- * @slot option:{value} - Replaces an option's label in the listbox, in place of the search highlight. Must fit the 36px row the listbox virtualises on, or long lists drift while scrolling.
+ * @slot option:{value} - Replaces an option's label in the listbox, in place of the search highlight. The listbox virtualises on one measured row, so keep every option the same height.
  * @slot tile:{value} - Replaces a selected tile's label when `multiple`. There is no `selected:` slot: the single-value trigger is a text input.
  */
 export class DsSearchableSelect extends FormControlMixin(DsElement) {
@@ -137,6 +137,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
 
     this.#syncListboxPopover();
+    this.#dropdown.queueItemMeasure();
     this.#dropdown.syncScrollTop();
   }
 
@@ -384,8 +385,11 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
                 : nothing}
               ${this.options.length === 0
                 ? html`<p class="empty">No results found.</p>`
-                : renderVirtualItems(this.options, this.#dropdown.scrollTop, (option, index) =>
-                    this.#renderOption(option, index, current),
+                : renderVirtualItems(
+                    this.options,
+                    this.#dropdown.scrollTop,
+                    (option, index) => this.#renderOption(option, index, current),
+                    this.#dropdown.itemHeight,
                   )}
             </div>`
           : nothing}

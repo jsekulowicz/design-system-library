@@ -352,6 +352,31 @@ describe('<ds-select> label, size and icons', () => {
     expect(fired).toBe(2);
   });
 
+  it('sizes the virtual spacers from a measured row, not the default', async () => {
+    const MANY = Array.from({ length: 100 }, (_, index) => ({
+      value: `v${index}`,
+      label: `Option ${index}`,
+    }));
+    const el = await mountSelect({ options: MANY });
+    const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
+    trigger.click();
+    await el.updateComplete;
+
+    // jsdom has no layout: stand in for a real row, which exceeds the default.
+    const option = el.shadowRoot!.querySelector('ds-select-option') as HTMLElement;
+    Object.getPrototypeOf(option).getBoundingClientRect = () => ({ height: 37.5 }) as DOMRect;
+
+    el.requestUpdate();
+    await el.updateComplete;
+    await el.updateComplete;
+
+    el._scrollTop = 37.5 * 20;
+    await el.updateComplete;
+
+    const topSpacer = el.shadowRoot!.querySelector('.listbox [aria-hidden="true"]') as HTMLElement;
+    expect(Number.parseFloat(topSpacer.style.height)).toBe(17 * 37.5);
+  });
+
   describe('required validation', () => {
     it('flags a required single select as invalid until something is picked', async () => {
       const el = await mountSelect({ required: true });
