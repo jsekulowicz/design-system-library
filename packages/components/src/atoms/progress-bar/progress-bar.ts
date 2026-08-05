@@ -29,6 +29,13 @@ export class DsProgressBar extends DsElement {
     return Math.min(100, Math.max(0, (this.value / this.max) * 100));
   }
 
+  private get labelPercent(): number {
+    if (!(this.percent > 0)) {
+      return 0;
+    }
+    return Math.min(100, Math.max(0, (this.value / this.max) * 100));
+  }
+
   private get isFull(): boolean {
     return this.max > 0 && this.value >= this.max;
   }
@@ -51,19 +58,11 @@ export class DsProgressBar extends DsElement {
         aria-valuemax=${this.max}
         aria-valuenow=${this.value}
       >
-        <div
-          class="indicator ${this.isFull ? 'indicator--full' : ''}"
-          part="indicator"
-          style=${styleMap({ width: `${this.percent}%` })}
-        ></div>
+        <div class="indicator ${this.isFull ? 'indicator--full' : ''}" part="indicator" style=${styleMap({ width: `${this.percent}%` })}></div>
         <div class="label-layer">
-          <div
-            class="label ${this.hasLabel ? '' : 'label--empty'}"
-            part="label"
-            style=${styleMap({ '--ds-progress-fill': `${this.percent}%` })}
-          >
+          <span class="label ${this.hasLabel ? '' : 'label--empty'}" part="label">
             <slot @slotchange=${this.onSlotChange}></slot>
-          </div>
+          </span>
         </div>
       </div>
     `;
