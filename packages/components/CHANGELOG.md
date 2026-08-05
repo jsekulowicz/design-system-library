@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.58.2
+
+### Patch Changes
+
+- 176301d: - 5ff2678: Rework progress-bar so it shows label background
+
 ## 0.58.1
 
 ### Patch Changes
