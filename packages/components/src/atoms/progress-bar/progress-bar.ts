@@ -12,7 +12,8 @@ import { progressBarStyles } from './progress-bar.styles.js';
  * @cssprop --ds-progress-empty-color - The bar color. Defaults to `--ds-color-bg-muted`.
  * @cssprop --ds-progress-track-height - The bar height. Defaults to `0.25rem`.
  * @cssprop --ds-progress-height - The component (label + bar) height. Defaults to `2rem`.
- * @csspart track - The bar track; set `height` here to resize the bar.
+ * @csspart bar - The bar container.
+ * @csspart track - The bar track.
  * @csspart indicator - The filled portion.
  * @csspart label - The centered label text.
  */
@@ -59,6 +60,7 @@ export class DsProgressBar extends DsElement {
         aria-valuemin="0"
         aria-valuemax=${this.max}
         aria-valuenow=${this.value}
+        part="bar"
       >
         <div class="track" part="track">
           <div class="indicator ${this.isFull ? 'indicator--full' : ''}" part="indicator" style=${styleMap({ width: `${this.percent}%` })}></div>
