@@ -11,9 +11,6 @@ export const progressBarStyles = css`
 
   .progress-bar {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: var(--ds-progress-height);
   }
 
@@ -38,6 +35,9 @@ export const progressBarStyles = css`
   }
 
   .label {
+    display: flex;
+    justify-content: center;
+    width: 100%;
     color: var(--ds-color-fg);
     font-weight: var(--ds-font-weight-medium);
     white-space: nowrap;
