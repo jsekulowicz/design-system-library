@@ -50,12 +50,8 @@ export const WithoutLabel: Story = {
 
 export const CustomHeightAndColor: Story = {
   render: () => html`
-<style>
-  .branded::part(track) { height: 2.25rem; }
-  .branded::part(indicator) { background: var(--ds-color-accent); }
-</style>
 <div style="max-width:24rem">
-  <ds-progress-bar class="branded" value="350" max="500" style="--ds-progress-bar-label-vertical-margin: 6px;">350 ∕ 500</ds-progress-bar>
+  <ds-progress-bar class="branded" value="350" max="500" style="--ds-progress-color: var(--ds-color-success); --ds-progress-track-height: 0.375rem;">350 ∕ 500</ds-progress-bar>
 </div>
   `,
 };

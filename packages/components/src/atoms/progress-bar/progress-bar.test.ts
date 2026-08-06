@@ -26,11 +26,11 @@ function indicatorIsFull(el: DsProgressBar): boolean {
 describe('<ds-progress-bar>', () => {
   it('exposes progressbar semantics', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="30" max="120"></ds-progress-bar>');
-    const track = el.shadowRoot!.querySelector('[part="track"]')!;
-    expect(track.getAttribute('role')).toBe('progressbar');
-    expect(track.getAttribute('aria-valuemin')).toBe('0');
-    expect(track.getAttribute('aria-valuemax')).toBe('120');
-    expect(track.getAttribute('aria-valuenow')).toBe('30');
+    const wrapper = el.shadowRoot!.querySelector('.progress-bar')!;
+    expect(wrapper.getAttribute('role')).toBe('progressbar');
+    expect(wrapper.getAttribute('aria-valuemin')).toBe('0');
+    expect(wrapper.getAttribute('aria-valuemax')).toBe('120');
+    expect(wrapper.getAttribute('aria-valuenow')).toBe('30');
   });
 
   it('fills proportionally to value/max', async () => {
@@ -61,9 +61,9 @@ describe('<ds-progress-bar>', () => {
 
   it('shows the label only when slotted content exists', async () => {
     const empty = await mount<DsProgressBar>('<ds-progress-bar value="10"></ds-progress-bar>');
-    expect(empty.shadowRoot!.querySelector('.label')!.classList.contains('label--empty')).toBe(true);
+    expect(empty.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(true);
 
     const labelled = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
-    expect(labelled.shadowRoot!.querySelector('.label')!.classList.contains('label--empty')).toBe(false);
+    expect(labelled.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
   });
 });

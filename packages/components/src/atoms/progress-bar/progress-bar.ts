@@ -8,7 +8,10 @@ import { progressBarStyles } from './progress-bar.styles.js';
  * @tag ds-progress-bar
  * @summary Horizontal progress indicator with a centered label.
  * @slot default - Optional label rendered as outlined text centered over the bar.
- * @cssprop --ds-progress-color - The bar colour (track border, filled indicator and label text). Defaults to `--ds-color-accent`.
+ * @cssprop --ds-progress-color - The bar color Defaults to `--ds-color-accent`.
+ * @cssprop --ds-progress-empty-color - The bar color. Defaults to `--ds-color-bg-muted`.
+ * @cssprop --ds-progress-track-height - The bar height. Defaults to `0.25rem`.
+ * @cssprop --ds-progress-height - The component (label + bar) height. Defaults to `2rem`.
  * @csspart track - The bar track; set `height` here to resize the bar.
  * @csspart indicator - The filled portion.
  * @csspart label - The centered label text.
@@ -20,7 +23,7 @@ export class DsProgressBar extends DsElement {
   @property({ type: Number }) max = 100;
   @property() label?: string;
 
-  @state() private hasLabel = false;
+  @state() private _hasLabel = false;
 
   private get percent(): number {
     if (!(this.max > 0)) {
@@ -42,7 +45,7 @@ export class DsProgressBar extends DsElement {
 
   private onSlotChange(event: Event): void {
     const slot = event.target as HTMLSlotElement;
-    this.hasLabel = slot
+    this._hasLabel = slot
       .assignedNodes({ flatten: true })
       .some((node) => (node.textContent ?? '').trim().length > 0 || node.nodeType === Node.ELEMENT_NODE);
   }
@@ -50,19 +53,19 @@ export class DsProgressBar extends DsElement {
   override render(): TemplateResult {
     return html`
       <div
-        class="track"
-        part="track"
+        class="progress-bar ${this._hasLabel ? '' : 'progress-bar--no-label'}"
         role="progressbar"
         aria-label=${this.label ?? nothing}
         aria-valuemin="0"
         aria-valuemax=${this.max}
         aria-valuenow=${this.value}
       >
-        <div class="indicator ${this.isFull ? 'indicator--full' : ''}" part="indicator" style=${styleMap({ width: `${this.percent}%` })}></div>
-        <div class="label-layer">
-          <span class="label ${this.hasLabel ? '' : 'label--empty'}" part="label">
-            <slot @slotchange=${this.onSlotChange}></slot>
-          </span>
+        <div class="track" part="track">
+          <div class="indicator ${this.isFull ? 'indicator--full' : ''}" part="indicator" style=${styleMap({ width: `${this.percent}%` })}></div>
+        </div>
+
+        <div class="label" part="label" ?hidden=${!this._hasLabel}>
+          <slot @slotchange=${this.onSlotChange}></slot>
         </div>
       </div>
     `;
