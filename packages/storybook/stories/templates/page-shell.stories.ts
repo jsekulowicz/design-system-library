@@ -33,7 +33,7 @@ const CAPPED_PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-wi
 type PageShellStoryOptions = {
   style?: string;
   asideToggle?: boolean;
-  asideState?: 'visible' | 'compact' | 'hidden';
+  asideState?: 'visible' | 'compact';
   asideEndToggle?: boolean;
   asideEndState?: 'visible' | 'hidden';
 };
@@ -188,8 +188,8 @@ export const CollapsedSidenav: Story = {
           Collapsed navigation
         </h1>
         <p>
-          Set <code>aside-toggle</code> on <code>ds-page-shell</code> to let users cycle the
-          start aside between full, compact, and hidden states.
+          Set <code>aside-toggle</code> on <code>ds-page-shell</code> to let users switch the
+          start aside between its full and compact states.
         </p>
       </article>
       <ds-footer slot="footer">
@@ -218,8 +218,8 @@ export const CollapsibleAsides: Story = {
           Two-sided shell
         </h1>
         <p>
-          The start aside cycles through full, compact, and hidden states. The end aside toggles
-          between visible and hidden while using the same border-aligned control treatment.
+          The start aside toggles between full and compact states. The end aside toggles between
+          visible and hidden while using the same border-aligned control treatment.
         </p>
       </article>
       <nav

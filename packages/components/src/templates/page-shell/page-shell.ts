@@ -6,8 +6,6 @@ import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
 import { hasAssignedContent, hasNamedSlotContent } from '../../shared/slots.js';
 import {
-  nextAsideState,
-  nextAsideEndState,
   type PageShellAsideState,
   type PageShellAsideEndState,
   type PageShellMenuButtonPosition,
@@ -229,7 +227,7 @@ export class DsPageShell extends DsElement {
     if (!this.asideToggle && this.asideState === 'visible') {
       return;
     }
-    aside.toggleAttribute('collapsed', this.asideState !== 'visible');
+    aside.toggleAttribute('collapsed', this.asideState === 'compact');
   }
 
   #setAsideState = (state: PageShellAsideState): void => {
@@ -271,8 +269,10 @@ export class DsPageShell extends DsElement {
       onAsideEndSlotChange: this.#onAsideEndSlotChange,
       toggleMobileNav: () => this.#setMobileNav(!this._mobileNavOpen),
       closeMobileNav: () => this.#setMobileNav(false),
-      toggleAsideState: () => this.#setAsideState(nextAsideState(this.asideState)),
-      toggleAsideEndState: () => this.#setAsideEndState(nextAsideEndState(this.asideEndState)),
+      toggleAsideState: () =>
+        this.#setAsideState(this.asideState === 'visible' ? 'compact' : 'visible'),
+      toggleAsideEndState: () =>
+        this.#setAsideEndState(this.asideEndState === 'visible' ? 'hidden' : 'visible'),
     };
   }
 

@@ -544,7 +544,7 @@ describe('<ds-page-shell>', () => {
       expect(el.querySelector<HTMLElement>('[slot="aside"]')?.hasAttribute('collapsed')).toBe(true);
     });
 
-    it('cycles start aside through visible, compact, hidden, and visible', async () => {
+    it('toggles start aside between visible and compact', async () => {
       const el = await mount<DsPageShell>(`
         <ds-page-shell brand="Brand" aside-toggle>
           <ds-sidenav slot="aside">Navigation</ds-sidenav>
@@ -554,31 +554,33 @@ describe('<ds-page-shell>', () => {
       await forceDesktopLayout(el);
       const toggle = el.shadowRoot!.querySelector('.aside-toggle-start') as HTMLElement;
       const aside = el.querySelector<HTMLElement>('[slot="aside"]')!;
+      const desktopAside = el.shadowRoot!.querySelector('aside[part="aside"]')!;
       expect(toggle.getAttribute('variant')).toBe('secondary');
       expect(toggle.getAttribute('size')).toBe('sm');
       expect(toggle.hasAttribute('square')).toBe(true);
       expect(toggle.querySelector('ds-icon')?.getAttribute('size')).toBe('lg');
+      expect(toggle.getAttribute('aria-expanded')).toBe('true');
+      expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-left');
 
       toggle.click();
       await el.updateComplete;
       expect(el.asideState).toBe('compact');
       expect(el.getAttribute('aside-state')).toBe('compact');
       expect(aside.hasAttribute('collapsed')).toBe(true);
-      expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-left');
-
-      toggle.click();
-      await el.updateComplete;
-      expect(el.asideState).toBe('hidden');
-      expect(aside.hasAttribute('collapsed')).toBe(true);
-      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.getAttribute('aria-hidden')).toBe('true');
-      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('inert')).toBe(true);
+      expect(toggle.getAttribute('aria-expanded')).toBe('false');
       expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-right');
+      expect(desktopAside.getAttribute('aria-hidden')).toBeNull();
+      expect(desktopAside.hasAttribute('inert')).toBe(false);
 
       toggle.click();
       await el.updateComplete;
       expect(el.asideState).toBe('visible');
-      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.getAttribute('aria-hidden')).toBe('false');
-      expect(el.shadowRoot!.querySelector('aside[part="aside"]')?.hasAttribute('inert')).toBe(false);
+      expect(el.getAttribute('aside-state')).toBe('visible');
+      expect(aside.hasAttribute('collapsed')).toBe(false);
+      expect(toggle.getAttribute('aria-expanded')).toBe('true');
+      expect(toggle.querySelector('ds-icon')?.getAttribute('name')).toBe('chevron-left');
+      expect(desktopAside.getAttribute('aria-hidden')).toBeNull();
+      expect(desktopAside.hasAttribute('inert')).toBe(false);
     });
 
     it('cycles end aside between visible and hidden', async () => {
@@ -667,7 +669,7 @@ describe('<ds-page-shell>', () => {
         /\.aside-start-cluster,\s*\.aside-end-cluster\s*{[^}]*grid-template-columns:\s*1fr[^}]*transition:\s*grid-template-columns/s,
       );
       expect(css).toMatch(
-        /:host\(\[aside-state='hidden'\]\)\s*\.aside-start-cluster,[^{]*{[^}]*grid-template-columns:\s*0fr;[^}]*min-width:\s*calc\(var\(--ds-size-sm\)\s*\/\s*2\s*\+\s*var\(--ds-space-2\)\)/s,
+        /:host\(\[aside-end-state='hidden'\]\)\s*\.aside-end-cluster\s*{[^}]*grid-template-columns:\s*0fr;[^}]*min-width:\s*calc\(var\(--ds-size-sm\)\s*\/\s*2\s*\+\s*var\(--ds-space-2\)\)/s,
       );
     });
   });

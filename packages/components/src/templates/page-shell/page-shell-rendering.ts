@@ -52,9 +52,7 @@ export function renderDesktopStartCluster(ctx: PageShellRenderContext): Template
       class="scroll-fade"
       part="aside"
       aria-label=${ctx.menuLabel}
-      aria-hidden=${ctx.asideState === 'hidden' ? 'true' : 'false'}
       ?hidden=${!ctx.hasAside}
-      ?inert=${ctx.asideState === 'hidden'}
       @click=${ctx.onAsideClick}
     >
       <slot name="aside" @slotchange=${ctx.onAsideSlotChange}></slot>
@@ -83,56 +81,66 @@ export function renderDesktopEndCluster(ctx: PageShellRenderContext): TemplateRe
   </div>`;
 }
 
-function renderStartToggle(ctx: PageShellRenderContext): TemplateResult | null {
-  if (!ctx.showStartToggle) {
-    return null;
-  }
-  const hidden = ctx.asideState === 'hidden';
-  const label = ctx.asideState === 'visible'
-    ? 'Collapse primary navigation'
-    : hidden
-      ? 'Show primary navigation'
-      : 'Hide primary navigation';
-  return html`<div class="aside-toggle-rail aside-toggle-start-rail" part="aside-toggle-rail aside-toggle-start-rail">
+interface AsideToggleOptions {
+  side: 'start' | 'end';
+  controls: string;
+  expanded: boolean;
+  label: string;
+  icon: 'chevron-left' | 'chevron-right';
+  onClick(): void;
+}
+
+function renderAsideToggle(options: AsideToggleOptions): TemplateResult {
+  const { side, controls, expanded, label, icon, onClick } = options;
+  return html`<div
+    class="aside-toggle-rail aside-toggle-${side}-rail"
+    part="aside-toggle-rail aside-toggle-${side}-rail"
+  >
     <ds-button
-      class="aside-toggle aside-toggle-start"
-      part="aside-toggle aside-toggle-start"
+      class="aside-toggle aside-toggle-${side}"
+      part="aside-toggle aside-toggle-${side}"
       variant="secondary"
       size="sm"
       square
       label=${label}
       aria-label=${label}
-      aria-controls="desktop-aside"
-      aria-expanded=${hidden ? 'false' : 'true'}
-      @click=${ctx.toggleAsideState}
+      aria-controls=${controls}
+      aria-expanded=${expanded ? 'true' : 'false'}
+      @click=${onClick}
     >
-      <ds-icon slot="leading" name=${hidden ? 'chevron-right' : 'chevron-left'} size="lg"></ds-icon>
+      <ds-icon slot="leading" name=${icon} size="lg"></ds-icon>
     </ds-button>
   </div>`;
+}
+
+function renderStartToggle(ctx: PageShellRenderContext): TemplateResult | null {
+  if (!ctx.showStartToggle) {
+    return null;
+  }
+  const expanded = ctx.asideState === 'visible';
+  return renderAsideToggle({
+    side: 'start',
+    controls: 'desktop-aside',
+    expanded,
+    label: expanded ? 'Collapse primary navigation' : 'Expand primary navigation',
+    icon: expanded ? 'chevron-left' : 'chevron-right',
+    onClick: ctx.toggleAsideState,
+  });
 }
 
 function renderEndToggle(ctx: PageShellRenderContext): TemplateResult | null {
   if (!ctx.showEndToggle) {
     return null;
   }
-  const hidden = ctx.asideEndState === 'hidden';
-  const label = hidden ? 'Show secondary navigation' : 'Hide secondary navigation';
-  return html`<div class="aside-toggle-rail aside-toggle-end-rail" part="aside-toggle-rail aside-toggle-end-rail">
-    <ds-button
-      class="aside-toggle aside-toggle-end"
-      part="aside-toggle aside-toggle-end"
-      variant="secondary"
-      size="sm"
-      square
-      label=${label}
-      aria-label=${label}
-      aria-controls="desktop-aside-end"
-      aria-expanded=${hidden ? 'false' : 'true'}
-      @click=${ctx.toggleAsideEndState}
-    >
-      <ds-icon slot="leading" name=${hidden ? 'chevron-left' : 'chevron-right'} size="lg"></ds-icon>
-    </ds-button>
-  </div>`;
+  const expanded = ctx.asideEndState === 'visible';
+  return renderAsideToggle({
+    side: 'end',
+    controls: 'desktop-aside-end',
+    expanded,
+    label: expanded ? 'Hide secondary navigation' : 'Show secondary navigation',
+    icon: expanded ? 'chevron-right' : 'chevron-left',
+    onClick: ctx.toggleAsideEndState,
+  });
 }
 
 export function renderMobileAside(ctx: PageShellRenderContext): TemplateResult {

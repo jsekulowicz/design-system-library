@@ -136,13 +136,11 @@ export const pageShellStyles = css`
      without measuring it in JS; the aside clips via overflow + min-width: 0.
      The cluster keeps a small min-width so the toggle button that straddles
      its edge never touches the viewport edge. */
-  :host([aside-state='hidden']) .aside-start-cluster,
   :host([aside-end-state='hidden']) .aside-end-cluster {
     grid-template-columns: 0fr;
     min-width: calc(var(--ds-size-sm) / 2 + var(--ds-space-2));
   }
 
-  :host([aside-state='hidden']) aside[part="aside"],
   :host([aside-end-state='hidden']) aside[part="aside-end"] {
     padding-inline: 0;
     opacity: 0;
