@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.58.3
+
+### Patch Changes
+
+- f148ccd: - f17caab: Rework progress-bar so the label is above the bar
+
 ## 0.58.2
 
 ### Patch Changes
