@@ -1,5 +1,13 @@
 # @jsekulowicz/ds-components
 
+## 0.59.0
+
+### Minor Changes
+
+- 439d8ab: - 439d8ab4: Drop the fully collapsed start aside from `ds-page-shell`: the `aside-toggle` control now switches between full and compact only, and `PageShellAsideState` narrows to `'visible' | 'compact'`
+  - b5ef969a: Add 'bar' part to progress-bar component
+  - 06c6f67b: Move flexbox styles from progress-bar wrapper to label so the label is more customizable
+
 ## 0.58.3
 
 ### Patch Changes
