@@ -46,6 +46,7 @@
       "import": "./dist/atoms/button/index.js"
     },
     "./button/define": {
+      "types": "./dist/atoms/button/define.d.ts",
       "import": "./dist/atoms/button/define.js"
     },
     "./segmented-control": {
@@ -53,6 +54,7 @@
       "import": "./dist/atoms/segmented-control/index.js"
     },
     "./segmented-control/define": {
+      "types": "./dist/atoms/segmented-control/define.d.ts",
       "import": "./dist/atoms/segmented-control/define.js"
     },
     "./tooltip": {
@@ -60,6 +62,7 @@
       "import": "./dist/atoms/tooltip/index.js"
     },
     "./tooltip/define": {
+      "types": "./dist/atoms/tooltip/define.d.ts",
       "import": "./dist/atoms/tooltip/define.js"
     },
     "./icon": {
@@ -67,6 +70,7 @@
       "import": "./dist/atoms/icon/index.js"
     },
     "./icon/define": {
+      "types": "./dist/atoms/icon/define.d.ts",
       "import": "./dist/atoms/icon/define.js"
     },
     "./icon/all": {
@@ -86,6 +90,7 @@
       "import": "./dist/atoms/text-field/index.js"
     },
     "./text-field/define": {
+      "types": "./dist/atoms/text-field/define.d.ts",
       "import": "./dist/atoms/text-field/define.js"
     },
     "./text-area": {
@@ -93,6 +98,7 @@
       "import": "./dist/atoms/text-area/index.js"
     },
     "./text-area/define": {
+      "types": "./dist/atoms/text-area/define.d.ts",
       "import": "./dist/atoms/text-area/define.js"
     },
     "./range-input": {
@@ -100,6 +106,7 @@
       "import": "./dist/atoms/range-input/index.js"
     },
     "./range-input/define": {
+      "types": "./dist/atoms/range-input/define.d.ts",
       "import": "./dist/atoms/range-input/define.js"
     },
     "./checkbox": {
@@ -107,6 +114,7 @@
       "import": "./dist/atoms/checkbox/index.js"
     },
     "./checkbox/define": {
+      "types": "./dist/atoms/checkbox/define.d.ts",
       "import": "./dist/atoms/checkbox/define.js"
     },
     "./checkbox-group": {
@@ -114,6 +122,7 @@
       "import": "./dist/atoms/checkbox-group/index.js"
     },
     "./checkbox-group/define": {
+      "types": "./dist/atoms/checkbox-group/define.d.ts",
       "import": "./dist/atoms/checkbox-group/define.js"
     },
     "./radio": {
@@ -121,6 +130,7 @@
       "import": "./dist/atoms/radio/index.js"
     },
     "./radio/define": {
+      "types": "./dist/atoms/radio/define.d.ts",
       "import": "./dist/atoms/radio/define.js"
     },
     "./radio-group": {
@@ -128,6 +138,7 @@
       "import": "./dist/atoms/radio-group/index.js"
     },
     "./radio-group/define": {
+      "types": "./dist/atoms/radio-group/define.d.ts",
       "import": "./dist/atoms/radio-group/define.js"
     },
     "./fieldset": {
@@ -135,6 +146,7 @@
       "import": "./dist/atoms/fieldset/index.js"
     },
     "./fieldset/define": {
+      "types": "./dist/atoms/fieldset/define.d.ts",
       "import": "./dist/atoms/fieldset/define.js"
     },
     "./select": {
@@ -142,6 +154,7 @@
       "import": "./dist/atoms/select/index.js"
     },
     "./select/define": {
+      "types": "./dist/atoms/select/define.d.ts",
       "import": "./dist/atoms/select/define.js"
     },
     "./searchable-select": {
@@ -149,6 +162,7 @@
       "import": "./dist/atoms/searchable-select/index.js"
     },
     "./searchable-select/define": {
+      "types": "./dist/atoms/searchable-select/define.d.ts",
       "import": "./dist/atoms/searchable-select/define.js"
     },
     "./tabs": {
@@ -156,6 +170,7 @@
       "import": "./dist/atoms/tabs/index.js"
     },
     "./tabs/define": {
+      "types": "./dist/atoms/tabs/define.d.ts",
       "import": "./dist/atoms/tabs/define.js"
     },
     "./table": {
@@ -163,6 +178,7 @@
       "import": "./dist/atoms/table/index.js"
     },
     "./table/define": {
+      "types": "./dist/atoms/table/define.d.ts",
       "import": "./dist/atoms/table/define.js"
     },
     "./breadcrumb": {
@@ -170,6 +186,7 @@
       "import": "./dist/atoms/breadcrumb/index.js"
     },
     "./breadcrumb/define": {
+      "types": "./dist/atoms/breadcrumb/define.d.ts",
       "import": "./dist/atoms/breadcrumb/define.js"
     },
     "./nav-item": {
@@ -177,6 +194,7 @@
       "import": "./dist/atoms/nav-item/index.js"
     },
     "./nav-item/define": {
+      "types": "./dist/atoms/nav-item/define.d.ts",
       "import": "./dist/atoms/nav-item/define.js"
     },
     "./menu": {
@@ -184,6 +202,7 @@
       "import": "./dist/atoms/menu/index.js"
     },
     "./menu/define": {
+      "types": "./dist/atoms/menu/define.d.ts",
       "import": "./dist/atoms/menu/define.js"
     },
     "./divider": {
@@ -191,6 +210,7 @@
       "import": "./dist/atoms/divider/index.js"
     },
     "./divider/define": {
+      "types": "./dist/atoms/divider/define.d.ts",
       "import": "./dist/atoms/divider/define.js"
     },
     "./list": {
@@ -198,6 +218,7 @@
       "import": "./dist/atoms/list/index.js"
     },
     "./list/define": {
+      "types": "./dist/atoms/list/define.d.ts",
       "import": "./dist/atoms/list/define.js"
     },
     "./badge": {
@@ -205,6 +226,7 @@
       "import": "./dist/atoms/badge/index.js"
     },
     "./badge/define": {
+      "types": "./dist/atoms/badge/define.d.ts",
       "import": "./dist/atoms/badge/define.js"
     },
     "./skeleton": {
@@ -212,6 +234,7 @@
       "import": "./dist/atoms/skeleton/index.js"
     },
     "./skeleton/define": {
+      "types": "./dist/atoms/skeleton/define.d.ts",
       "import": "./dist/atoms/skeleton/define.js"
     },
     "./progress-bar": {
@@ -219,6 +242,7 @@
       "import": "./dist/atoms/progress-bar/index.js"
     },
     "./progress-bar/define": {
+      "types": "./dist/atoms/progress-bar/define.d.ts",
       "import": "./dist/atoms/progress-bar/define.js"
     },
     "./link": {
@@ -226,6 +250,7 @@
       "import": "./dist/atoms/link/index.js"
     },
     "./link/define": {
+      "types": "./dist/atoms/link/define.d.ts",
       "import": "./dist/atoms/link/define.js"
     },
     "./card": {
@@ -233,6 +258,7 @@
       "import": "./dist/molecules/card/index.js"
     },
     "./card/define": {
+      "types": "./dist/molecules/card/define.d.ts",
       "import": "./dist/molecules/card/define.js"
     },
     "./stat-tile": {
@@ -240,6 +266,7 @@
       "import": "./dist/molecules/stat-tile/index.js"
     },
     "./stat-tile/define": {
+      "types": "./dist/molecules/stat-tile/define.d.ts",
       "import": "./dist/molecules/stat-tile/define.js"
     },
     "./dialog": {
@@ -247,6 +274,7 @@
       "import": "./dist/molecules/dialog/index.js"
     },
     "./dialog/define": {
+      "types": "./dist/molecules/dialog/define.d.ts",
       "import": "./dist/molecules/dialog/define.js"
     },
     "./drawer": {
@@ -254,6 +282,7 @@
       "import": "./dist/molecules/drawer/index.js"
     },
     "./drawer/define": {
+      "types": "./dist/molecules/drawer/define.d.ts",
       "import": "./dist/molecules/drawer/define.js"
     },
     "./toast": {
@@ -261,6 +290,7 @@
       "import": "./dist/molecules/toast/index.js"
     },
     "./toast/define": {
+      "types": "./dist/molecules/toast/define.d.ts",
       "import": "./dist/molecules/toast/define.js"
     },
     "./color-picker": {
@@ -268,6 +298,7 @@
       "import": "./dist/molecules/color-picker/index.js"
     },
     "./color-picker/define": {
+      "types": "./dist/molecules/color-picker/define.d.ts",
       "import": "./dist/molecules/color-picker/define.js"
     },
     "./menu-button": {
@@ -275,6 +306,7 @@
       "import": "./dist/molecules/menu-button/index.js"
     },
     "./menu-button/define": {
+      "types": "./dist/molecules/menu-button/define.d.ts",
       "import": "./dist/molecules/menu-button/define.js"
     },
     "./bar-chart": {
@@ -282,6 +314,7 @@
       "import": "./dist/molecules/bar-chart/index.js"
     },
     "./bar-chart/define": {
+      "types": "./dist/molecules/bar-chart/define.d.ts",
       "import": "./dist/molecules/bar-chart/define.js"
     },
     "./pie-chart": {
@@ -289,6 +322,7 @@
       "import": "./dist/molecules/pie-chart/index.js"
     },
     "./pie-chart/define": {
+      "types": "./dist/molecules/pie-chart/define.d.ts",
       "import": "./dist/molecules/pie-chart/define.js"
     },
     "./heatmap-calendar": {
@@ -296,6 +330,7 @@
       "import": "./dist/molecules/heatmap-calendar/index.js"
     },
     "./heatmap-calendar/define": {
+      "types": "./dist/molecules/heatmap-calendar/define.d.ts",
       "import": "./dist/molecules/heatmap-calendar/define.js"
     },
     "./alert": {
@@ -303,6 +338,7 @@
       "import": "./dist/molecules/alert/index.js"
     },
     "./alert/define": {
+      "types": "./dist/molecules/alert/define.d.ts",
       "import": "./dist/molecules/alert/define.js"
     },
     "./form": {
@@ -310,6 +346,7 @@
       "import": "./dist/organisms/form/index.js"
     },
     "./form/define": {
+      "types": "./dist/organisms/form/define.d.ts",
       "import": "./dist/organisms/form/define.js"
     },
     "./top-bar": {
@@ -317,6 +354,7 @@
       "import": "./dist/organisms/top-bar/index.js"
     },
     "./top-bar/define": {
+      "types": "./dist/organisms/top-bar/define.d.ts",
       "import": "./dist/organisms/top-bar/define.js"
     },
     "./sidenav": {
@@ -324,6 +362,7 @@
       "import": "./dist/organisms/sidenav/index.js"
     },
     "./sidenav/define": {
+      "types": "./dist/organisms/sidenav/define.d.ts",
       "import": "./dist/organisms/sidenav/define.js"
     },
     "./footer": {
@@ -331,6 +370,7 @@
       "import": "./dist/organisms/footer/index.js"
     },
     "./footer/define": {
+      "types": "./dist/organisms/footer/define.d.ts",
       "import": "./dist/organisms/footer/define.js"
     },
     "./page-shell": {
@@ -338,6 +378,7 @@
       "import": "./dist/templates/page-shell/index.js"
     },
     "./page-shell/define": {
+      "types": "./dist/templates/page-shell/define.d.ts",
       "import": "./dist/templates/page-shell/define.js"
     },
     "./scrollable-page": {
@@ -345,6 +386,7 @@
       "import": "./dist/templates/scrollable-page/index.js"
     },
     "./scrollable-page/define": {
+      "types": "./dist/templates/scrollable-page/define.d.ts",
       "import": "./dist/templates/scrollable-page/define.js"
     },
     "./settings-page": {
@@ -352,6 +394,7 @@
       "import": "./dist/pages/settings-page/index.js"
     },
     "./settings-page/define": {
+      "types": "./dist/pages/settings-page/define.d.ts",
       "import": "./dist/pages/settings-page/define.js"
     },
     "./css/utilities.css": "./dist/css/utilities.css",
