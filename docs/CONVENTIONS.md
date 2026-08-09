@@ -104,6 +104,23 @@ Deliberate exceptions, so nobody "fixes" them into the shared helper:
   grid, bar-chart walks grouped/stacked series, pie is 1D. Only the two `@state` fields look
   alike.
 
+## TypeScript version
+
+Pinned at **6.0.3** across every workspace. TypeScript 7 (the native compiler) was tried and
+rolled back — two blockers, both in tools that consume the compiler API:
+
+- `typescript-eslint@8.66.0` declares `>=4.8.4 <6.1.0` and **errors out** on TS 7 rather than
+  warning, so every `pnpm lint` fails.
+- `lit-analyzer@2.0.3` crashes on require, so `pnpm lint:lit:analyzer` fails.
+
+The compiler itself is fine: build, declaration emit under `experimentalDecorators` +
+`useDefineForClassFields: false`, typecheck and all unit tests pass on 7.0.2. Retry once both
+tools ship TS 7 support.
+
+TS 6 no longer picks up `@types` packages from an ancestor `node_modules`. A workspace that uses
+node builtins needs its own `@types/node` **and** an explicit `"types": ["node"]` — see
+`packages/tokens/tsconfig.json`.
+
 ## Linting the templates
 
 `pnpm lint:lit` (eslint-plugin-lit) and `pnpm lint:lit:analyzer` both run in CI. The analyzer CLI
