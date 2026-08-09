@@ -13,6 +13,8 @@
     "build:tokens": "pnpm --filter @jsekulowicz/ds-tokens build",
     "dev": "pnpm --filter @jsekulowicz/ds-core build && pnpm --filter @jsekulowicz/ds-components build && pnpm --parallel --filter \"@jsekulowicz/ds-core\" --filter \"@jsekulowicz/ds-components\" --filter \"@ds/storybook\" dev",
     "typecheck": "pnpm -r --parallel typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "pnpm -r --parallel lint",
     "lint:dead-code": "knip --no-config-hints --include files,exports,types,duplicates",
     "lint:lit": "eslint \"packages/{components,core}/src/**/*.ts\" --max-warnings=0",

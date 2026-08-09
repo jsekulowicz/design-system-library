@@ -32,6 +32,9 @@ jobs:
       - name: Generated code matches its generators
         run: git diff --exit-code -- packages/components/src/atoms/icon/icons packages/react/src
 
+      - name: Format check
+        run: pnpm format:check
+
       - name: Typecheck
         run: pnpm typecheck
 
