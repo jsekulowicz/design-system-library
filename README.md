@@ -16,13 +16,13 @@ Live Storybook docs: https://jsekulowicz.github.io/design-system-library
 
 ## Components
 
-**Atoms** — `ds-badge`, `ds-breadcrumb`, `ds-button`, `ds-checkbox`, `ds-checkbox-group`, `ds-icon`, `ds-link`, `ds-nav-item`, `ds-nav-group`, `ds-radio`, `ds-radio-group`, `ds-searchable-select`, `ds-select`, `ds-skeleton`, `ds-table`, `ds-tabs`, `ds-text-field`, `ds-tooltip`
+**Atoms** — `ds-badge`, `ds-breadcrumb`, `ds-breadcrumb-item`, `ds-button`, `ds-checkbox`, `ds-checkbox-group`, `ds-divider`, `ds-fieldset`, `ds-icon`, `ds-link`, `ds-list`, `ds-list-item`, `ds-menu`, `ds-menu-item`, `ds-nav-group`, `ds-nav-item`, `ds-progress-bar`, `ds-radio`, `ds-radio-group`, `ds-range-input`, `ds-searchable-select`, `ds-segmented-control`, `ds-select`, `ds-select-option`, `ds-skeleton`, `ds-tab`, `ds-tab-panel`, `ds-table`, `ds-table-pagination`, `ds-table-sort-button`, `ds-tabs`, `ds-text-area`, `ds-text-field`, `ds-tooltip`
 
-**Molecules** — `ds-alert`, `ds-bar-chart`, `ds-card`, `ds-field`, `ds-stat-tile`
+**Molecules** — `ds-alert`, `ds-bar-chart`, `ds-card`, `ds-color-picker`, `ds-color-picker-input-color`, `ds-color-picker-swatch`, `ds-color-picker-swatch-group`, `ds-dialog`, `ds-drawer`, `ds-heatmap-calendar`, `ds-menu-button`, `ds-pie-chart`, `ds-stat-tile`, `ds-toast`, `ds-toast-stack`
 
-**Organisms** — `ds-footer`, `ds-form`, `ds-navbar`, `ds-sidenav`
+**Organisms** — `ds-footer`, `ds-form`, `ds-sidenav`, `ds-top-bar`
 
-**Templates** — `ds-page-shell`
+**Templates** — `ds-page-shell`, `ds-scrollable-page`
 
 **Pages** — `ds-settings-page`
 

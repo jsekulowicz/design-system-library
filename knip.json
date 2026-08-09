@@ -4,7 +4,9 @@
   "workspaces": {
     ".": {
       "entry": ["scripts/*.mjs"],
-      "project": ["scripts/**"]
+      "project": ["scripts/**"],
+      "ignoreBinaries": ["scripts/visual-docker.sh"],
+      "ignoreDependencies": ["publint", "@arethetypeswrong/cli", "ts-lit-plugin"]
     },
     "packages/tokens": {
       "entry": ["src/index.ts", "src/build.ts"],
@@ -35,7 +37,8 @@
       "entry": ["src/main.ts"]
     },
     "apps/ssr-demo": {
-      "entry": ["src/server.ts", "src/render.ts"]
+      "entry": ["src/server.ts", "src/render.ts"],
+      "ignoreDependencies": ["@lit-labs/ssr-client"]
     }
   }
 }

@@ -41,6 +41,9 @@ jobs:
       - name: Dead code check
         run: pnpm lint:dead-code
 
+      - name: Packaging check
+        run: pnpm lint:packaging
+
       - name: Lit static validation
         run: pnpm lint:lit
 

@@ -34,7 +34,8 @@
     "./theme-default.css": "./dist/theme-default.css"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && node dist/build.js",
+    "clean": "rm -rf dist",
+    "build": "pnpm clean && tsc -p tsconfig.json && node dist/build.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run",

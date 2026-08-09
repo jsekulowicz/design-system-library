@@ -101,8 +101,6 @@ export class DropdownController implements ReactiveController {
     this.#overflowCheckQueued = value;
   }
 
-  hostConnected(): void {}
-
   hostDisconnected(): void {
     this.close();
   }

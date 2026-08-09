@@ -12,14 +12,12 @@
   },
   "dependencies": {
     "@jsekulowicz/ds-components": "workspace:*",
-    "@jsekulowicz/ds-core": "workspace:*",
     "@jsekulowicz/ds-tokens": "workspace:*",
     "lit": "^3.2.1"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "10.3.6",
     "@storybook/addon-docs": "10.3.6",
-    "@storybook/addon-themes": "10.3.6",
     "@storybook/web-components-vite": "10.3.6",
     "@types/react": "^18.3.28",
     "http-server": "^14.1.1",
