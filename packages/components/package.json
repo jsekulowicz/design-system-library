@@ -393,13 +393,13 @@
   "dependencies": {
     "@jsekulowicz/ds-core": "workspace:*",
     "@jsekulowicz/ds-tokens": "workspace:*",
-    "lit": "^3.2.1"
+    "lit": "^3.3.3"
   },
   "devDependencies": {
-    "heroicons": "2.2.0",
     "@custom-elements-manifest/analyzer": "^0.10.4",
     "@size-limit/esbuild": "^11.1.6",
     "@size-limit/file": "^11.1.6",
+    "heroicons": "2.2.0",
     "jsdom": "^25.0.1",
     "size-limit": "^11.1.6",
     "typescript": "^5.7.2",

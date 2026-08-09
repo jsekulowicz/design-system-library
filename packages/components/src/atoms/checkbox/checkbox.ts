@@ -75,9 +75,11 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
       <span class="control" part="box" aria-hidden="true">
         <!-- Heroicons 2.2.0 — 16/solid: minus (indeterminate), check (checked) -->
         <svg class="check" viewBox="0 0 16 16" fill="currentColor">
-          ${this.indeterminate
-            ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`
-            : svg`<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`}
+          ${
+            this.indeterminate
+              ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`
+              : svg`<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`
+          }
         </svg>
       </span>
       <span part="label"><slot></slot></span>

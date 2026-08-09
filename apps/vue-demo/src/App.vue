@@ -50,7 +50,6 @@ function onSubmit(event: CustomEvent<{ data: FormData }>) {
         border-radius: var(--ds-radius-sm);
         margin: 0;
       "
-      >{{ JSON.stringify(submitted, null, 2) }}</pre
-    >
+      >{{ JSON.stringify(submitted, null, 2) }}</pre>
   </main>
 </template>

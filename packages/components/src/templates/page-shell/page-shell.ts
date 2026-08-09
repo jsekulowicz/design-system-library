@@ -291,10 +291,12 @@ export class DsPageShell extends DsElement {
         </main>
         ${this._mobileLayout ? renderMobileAsideEnd(ctx) : renderDesktopEndCluster(ctx)}
       </div>
-      ${hasFooter
-        ? html`<footer part="footer">
-            <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
-          </footer>`
-        : null}`;
+      ${
+        hasFooter
+          ? html`<footer part="footer">
+              <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+            </footer>`
+          : null
+      }`;
   }
 }

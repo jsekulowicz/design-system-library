@@ -13,8 +13,7 @@ export interface Point {
 }
 
 export type LabelPlacement =
-  | { kind: 'none' }
-  | { kind: 'outside'; point: Point; anchor: Point; anchorEnd: 'start' | 'end' };
+  { kind: 'none' } | { kind: 'outside'; point: Point; anchor: Point; anchorEnd: 'start' | 'end' };
 
 export function polarPoint(radius: number, angle: number): Point {
   return {

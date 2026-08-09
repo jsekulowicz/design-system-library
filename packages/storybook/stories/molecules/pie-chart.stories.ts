@@ -137,11 +137,13 @@ export const DonutWithSlottedCenter: Story = {
     <ds-pie-chart
       donut
       title="Storage used"
-      .data=${[
-        { label: 'Documents', value: 62 },
-        { label: 'Media', value: 128 },
-        { label: 'Backups', value: 46 },
-      ] as PieChartDatum[]}
+      .data=${
+        [
+          { label: 'Documents', value: 62 },
+          { label: 'Media', value: 128 },
+          { label: 'Backups', value: 46 },
+        ] as PieChartDatum[]
+      }
       .formatValue=${(v: number) => `${v} GB`}
     >
       <div slot="center">
@@ -163,11 +165,13 @@ export const WithFormatters: Story = {
       <ds-pie-chart
         donut
         title="Revenue by product line"
-        .data=${[
-          { label: 'Widgets', value: 148200 },
-          { label: 'Gadgets', value: 71400 },
-          { label: 'Services', value: 96300 },
-        ] as PieChartDatum[]}
+        .data=${
+          [
+            { label: 'Widgets', value: 148200 },
+            { label: 'Gadgets', value: 71400 },
+            { label: 'Services', value: 96300 },
+          ] as PieChartDatum[]
+        }
         .formatValue=${(v: number) => money.format(v)}
         .formatPercent=${(p: number) => `${p.toFixed(1)}%`}
       ></ds-pie-chart>
@@ -204,11 +208,13 @@ export const CustomColors: Story = {
   render: () => html`
     <ds-pie-chart
       title="Poll results"
-      .data=${[
-        { label: 'Yes', value: 62, color: '#2b8a3e' },
-        { label: 'No', value: 28, color: '#e2341d' },
-        { label: 'Abstained', value: 10, color: '#7b7f86' },
-      ] as PieChartDatum[]}
+      .data=${
+        [
+          { label: 'Yes', value: 62, color: '#2b8a3e' },
+          { label: 'No', value: 28, color: '#e2341d' },
+          { label: 'Abstained', value: 10, color: '#7b7f86' },
+        ] as PieChartDatum[]
+      }
     ></ds-pie-chart>
   `,
 };

@@ -55,28 +55,32 @@ export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, la
       ?hidden=${hidden}
       style="left:${x}px; top:${barTopY}px"
     >
-      ${group
-        ? html`
-            <div class="tooltip-title">${ctx.formatTooltipTitle(group.domain)}</div>
-            <ul class="tooltip-rows">
-              ${ctx.series.map(
-                (s, si) => html`
-                  <li class="tooltip-row-label">
-                    <span class="tooltip-swatch" style="background:${ctx.seriesColor(s, si)}"></span>
-                    ${ctx.seriesLabel(s)}
-                  </li>
-                  <li class="tooltip-row-value">${ctx.formatValue(group.values[s.key] ?? 0)}</li>
-                `,
-              )}
-              ${ctx.stacked
-                ? html`
-                    <li class="tooltip-row-label">Total</li>
-                    <li class="tooltip-row-value">${ctx.formatValue(group.total)}</li>
-                  `
-                : nothing}
-            </ul>
-          `
-        : nothing}
+      ${
+        group
+          ? html`
+              <div class="tooltip-title">${ctx.formatTooltipTitle(group.domain)}</div>
+              <ul class="tooltip-rows">
+                ${ctx.series.map(
+                  (s, si) => html`
+                    <li class="tooltip-row-label">
+                      <span class="tooltip-swatch" style="background:${ctx.seriesColor(s, si)}"></span>
+                      ${ctx.seriesLabel(s)}
+                    </li>
+                    <li class="tooltip-row-value">${ctx.formatValue(group.values[s.key] ?? 0)}</li>
+                  `,
+                )}
+                ${
+                  ctx.stacked
+                    ? html`
+                        <li class="tooltip-row-label">Total</li>
+                        <li class="tooltip-row-value">${ctx.formatValue(group.total)}</li>
+                      `
+                    : nothing
+                }
+              </ul>
+            `
+          : nothing
+      }
     </div>
   `;
 }

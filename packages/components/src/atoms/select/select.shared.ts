@@ -117,11 +117,13 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {
   const style = options.maxLines ? `max-height:${options.maxLines * TILE_ROW_HEIGHT - 4}px;overflow:hidden` : '';
   return html` <div class="tiles" style=${style}>
-    ${options.overflowCount > 0
-      ? html` <span class="tile tile-overflow" aria-label="${options.overflowCount} more selected">
-          +${options.overflowCount}
-        </span>`
-      : nothing}
+    ${
+      options.overflowCount > 0
+        ? html` <span class="tile tile-overflow" aria-label="${options.overflowCount} more selected">
+            +${options.overflowCount}
+          </span>`
+        : nothing
+    }
     ${options.values.map((value, index) =>
       renderTile({
         value,

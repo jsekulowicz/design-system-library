@@ -243,9 +243,11 @@ export const LetterSpacing: Story = {
               >
               <span
                 role="cell"
-                style="letter-spacing:${val};font-size:var(--ds-font-size-body-lg);${name === 'wide'
-                  ? 'text-transform:uppercase;font-size:var(--ds-font-size-body-sm);font-weight:600'
-                  : ''}"
+                style="letter-spacing:${val};font-size:var(--ds-font-size-body-lg);${
+                  name === 'wide'
+                    ? 'text-transform:uppercase;font-size:var(--ds-font-size-body-sm);font-weight:600'
+                    : ''
+                }"
               >
                 ${name === 'wide' ? 'Section heading label' : 'The quick brown fox jumps'}
               </span>

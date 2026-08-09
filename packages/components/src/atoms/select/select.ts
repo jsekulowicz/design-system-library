@@ -290,41 +290,49 @@ export class DsSelect extends FormControlMixin(DsElement) {
             ${selectedIcon ? renderOptionIcon(selectedIcon) : nothing}
             <slot name="leading" ?hidden=${Boolean(selectedIcon)} @slotchange=${this.#dropdown.onLeadingChange}></slot>
           </span>
-          ${hasTiles
-            ? this.#renderTiles()
-            : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
-                ${selectedOption
-                  ? html`<slot name="selected:${selectedOption.value}">${selectedOption.label}</slot>`
-                  : this.placeholder}
-              </span>`}
-          ${hasClearBtn
-            ? renderClearButton((event: Event) => {
-                event.stopPropagation();
-                this.#clear();
-              }, this.#onClearKeydown)
-            : nothing}
+          ${
+            hasTiles
+              ? this.#renderTiles()
+              : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
+                  ${
+                    selectedOption
+                      ? html`<slot name="selected:${selectedOption.value}">${selectedOption.label}</slot>`
+                      : this.placeholder
+                  }
+                </span>`
+          }
+          ${
+            hasClearBtn
+              ? renderClearButton((event: Event) => {
+                  event.stopPropagation();
+                  this.#clear();
+                }, this.#onClearKeydown)
+              : nothing
+          }
           ${renderChevronDownIcon()}
         </div>
-        ${open
-          ? html` <div
-              id="listbox"
-              class="listbox"
-              part="listbox"
-              role="listbox"
-              popover="manual"
-              aria-multiselectable=${this.multiple ? 'true' : 'false'}
-              @scroll=${this.#dropdown.onScroll}
-              @ds-activate=${(event: Event) => event.stopPropagation()}
-            >
-              ${this.hint ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>` : nothing}
-              ${renderVirtualItems(
-                this.options,
-                this.#dropdown.scrollTop,
-                (option, index) => this.#renderOption(option, index, current),
-                this.#dropdown.itemHeight,
-              )}
-            </div>`
-          : nothing}
+        ${
+          open
+            ? html` <div
+                id="listbox"
+                class="listbox"
+                part="listbox"
+                role="listbox"
+                popover="manual"
+                aria-multiselectable=${this.multiple ? 'true' : 'false'}
+                @scroll=${this.#dropdown.onScroll}
+                @ds-activate=${(event: Event) => event.stopPropagation()}
+              >
+                ${this.hint ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>` : nothing}
+                ${renderVirtualItems(
+                  this.options,
+                  this.#dropdown.scrollTop,
+                  (option, index) => this.#renderOption(option, index, current),
+                  this.#dropdown.itemHeight,
+                )}
+              </div>`
+            : nothing
+        }
       </div>
       ${renderSubtext(this.description, this.error, this.invalid)}`;
   }

@@ -42,21 +42,23 @@ export class DsSettingsPage extends DsElement {
         <h1 part="heading">${this.heading}</h1>
         ${this.description ? html`<p>${this.description}</p>` : null}
       </header>
-      ${hasNav
-        ? html`<div class="grid">
-            <nav aria-label="Settings sections" part="nav">
-              ${this.sections.map(
-                (section) =>
-                  html`<a
-                    href=${`#${section.id}`}
-                    aria-current=${section.id === current ? 'true' : 'false'}
-                    @click=${this.#scrollTo(section.id)}
-                    >${section.label}</a
-                  >`,
-              )}
-            </nav>
-            <div class="sections" part="sections"><slot></slot></div>
-          </div>`
-        : html`<div class="sections" part="sections"><slot></slot></div>`}`;
+      ${
+        hasNav
+          ? html`<div class="grid">
+              <nav aria-label="Settings sections" part="nav">
+                ${this.sections.map(
+                  (section) =>
+                    html`<a
+                      href=${`#${section.id}`}
+                      aria-current=${section.id === current ? 'true' : 'false'}
+                      @click=${this.#scrollTo(section.id)}
+                      >${section.label}</a
+                    >`,
+                )}
+              </nav>
+              <div class="sections" part="sections"><slot></slot></div>
+            </div>`
+          : html`<div class="sections" part="sections"><slot></slot></div>`
+      }`;
   }
 }

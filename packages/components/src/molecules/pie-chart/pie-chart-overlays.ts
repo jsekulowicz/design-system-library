@@ -48,12 +48,14 @@ export function renderPieTooltip(ctx: PieRenderContext, slices: readonly PieSlic
       ?hidden=${!slice}
       style="left:${position.left}%; top:${position.top}%; transform:${position.transform}"
     >
-      ${slice
-        ? html`
-            <div class="tooltip-title">${slice.label}</div>
-            <div class="tooltip-row-value">${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})</div>
-          `
-        : nothing}
+      ${
+        slice
+          ? html`
+              <div class="tooltip-title">${slice.label}</div>
+              <div class="tooltip-row-value">${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})</div>
+            `
+          : nothing
+      }
     </div>
   `;
 }

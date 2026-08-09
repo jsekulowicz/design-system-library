@@ -381,11 +381,13 @@ export const CustomColors: Story = {
     <ds-bar-chart
       .data=${TURNS}
       domain="turnOrdinalNumber"
-      .series=${[
-        { key: 'Jess', color: '#e2341d' },
-        { key: 'Marco', color: '#4a72cc' },
-        { key: 'Andrew', color: '#1f7a48' },
-      ] as BarChartSeries[]}
+      .series=${
+        [
+          { key: 'Jess', color: '#e2341d' },
+          { key: 'Marco', color: '#4a72cc' },
+          { key: 'Andrew', color: '#1f7a48' },
+        ] as BarChartSeries[]
+      }
       x-axis-label="Turn"
       y-axis-label="Score"
     ></ds-bar-chart>

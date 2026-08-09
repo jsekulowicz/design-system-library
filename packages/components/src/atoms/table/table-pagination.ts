@@ -195,11 +195,13 @@ export class DsTablePagination extends DsElement {
           'prev-label',
           'Previous',
         )}
-        ${this.hidePageNumbers
-          ? html`<span class="ellipsis">Page ${current} of ${totalPages}</span>`
-          : html`<ul class="list" part="list">
-              ${this.#range().map((i) => this.#renderItem(i, current))}
-            </ul>`}
+        ${
+          this.hidePageNumbers
+            ? html`<span class="ellipsis">Page ${current} of ${totalPages}</span>`
+            : html`<ul class="list" part="list">
+                ${this.#range().map((i) => this.#renderItem(i, current))}
+              </ul>`
+        }
         ${this.#renderPrevNext(ICON_NEXT, 'Next page', 'button-next', current + 1, isLast, 'next-label', 'Next')}
         ${this.#renderSize()}
       </nav>

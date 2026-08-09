@@ -30,9 +30,11 @@ export class DsStatTile extends DsElement {
     return html`
       <div class="tile" part="tile" aria-busy=${this.loading ? 'true' : 'false'}>
         <div class="value" part="value">
-          ${this.loading
-            ? html`<ds-skeleton width="4rem"></ds-skeleton>`
-            : html`<slot name="value">${this.value}</slot>`}
+          ${
+            this.loading
+              ? html`<ds-skeleton width="4rem"></ds-skeleton>`
+              : html`<slot name="value">${this.value}</slot>`
+          }
         </div>
         <div class="label" part="label" ?hidden=${!this.label.trim() && !this.#slots.has('label')}>
           <slot name="label" @slotchange=${this.#slots.handleSlotChange}>${this.label}</slot>

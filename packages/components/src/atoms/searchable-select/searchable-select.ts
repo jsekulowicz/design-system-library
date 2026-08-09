@@ -357,36 +357,42 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             @input=${this.#onSearchInput}
             @keydown=${this.#onKeydown}
           />
-          ${hasClearBtn
-            ? renderClearButton((event: Event) => {
-                event.stopPropagation();
-                this.#clear();
-              }, this.#onClearKeydown)
-            : nothing}
+          ${
+            hasClearBtn
+              ? renderClearButton((event: Event) => {
+                  event.stopPropagation();
+                  this.#clear();
+                }, this.#onClearKeydown)
+              : nothing
+          }
           ${this.loading ? spinnerTemplate() : renderChevronDownIcon()}
         </div>
-        ${open
-          ? html` <div
-              id="listbox"
-              class="listbox"
-              part="listbox"
-              role="listbox"
-              popover="manual"
-              aria-multiselectable=${this.multiple ? 'true' : 'false'}
-              @scroll=${this.#dropdown.onScroll}
-              @ds-activate=${(event: Event) => event.stopPropagation()}
-            >
-              ${this.hint ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>` : nothing}
-              ${this.options.length === 0
-                ? html`<p class="empty">No results found.</p>`
-                : renderVirtualItems(
-                    this.options,
-                    this.#dropdown.scrollTop,
-                    (option, index) => this.#renderOption(option, index, current),
-                    this.#dropdown.itemHeight,
-                  )}
-            </div>`
-          : nothing}
+        ${
+          open
+            ? html` <div
+                id="listbox"
+                class="listbox"
+                part="listbox"
+                role="listbox"
+                popover="manual"
+                aria-multiselectable=${this.multiple ? 'true' : 'false'}
+                @scroll=${this.#dropdown.onScroll}
+                @ds-activate=${(event: Event) => event.stopPropagation()}
+              >
+                ${this.hint ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>` : nothing}
+                ${
+                  this.options.length === 0
+                    ? html`<p class="empty">No results found.</p>`
+                    : renderVirtualItems(
+                        this.options,
+                        this.#dropdown.scrollTop,
+                        (option, index) => this.#renderOption(option, index, current),
+                        this.#dropdown.itemHeight,
+                      )
+                }
+              </div>`
+            : nothing
+        }
       </div>
       ${renderSubtext(this.description, this.error, this.invalid)}`;
   }

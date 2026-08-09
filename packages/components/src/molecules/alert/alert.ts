@@ -44,19 +44,21 @@ export class DsAlert extends DsElement {
         <slot></slot>
         <slot name="actions"></slot>
       </div>
-      ${this.dismissible
-        ? html`<ds-button
-            class="close-btn"
-            part="close-button"
-            variant="ghost"
-            size="sm"
-            square
-            label="Dismiss"
-            @click=${this.#dismiss}
-          >
-            <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>
-          </ds-button>`
-        : nothing}
+      ${
+        this.dismissible
+          ? html`<ds-button
+              class="close-btn"
+              part="close-button"
+              variant="ghost"
+              size="sm"
+              square
+              label="Dismiss"
+              @click=${this.#dismiss}
+            >
+              <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>
+            </ds-button>`
+          : nothing
+      }
     </div>`;
   }
 }

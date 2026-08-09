@@ -170,19 +170,21 @@ export class DsToast extends DsElement {
     return html`<div class="notice" part="toast">
       <div class="header">
         ${this.heading ? html`<div class="title" part="title">${this.heading}</div>` : nothing}
-        ${this.dismissible
-          ? html`<ds-button
-              class="close-btn"
-              part="close-button"
-              variant="ghost"
-              size="sm"
-              square
-              label="Dismiss"
-              @click=${this.#onDismissClick}
-            >
-              <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>
-            </ds-button>`
-          : nothing}
+        ${
+          this.dismissible
+            ? html`<ds-button
+                class="close-btn"
+                part="close-button"
+                variant="ghost"
+                size="sm"
+                square
+                label="Dismiss"
+                @click=${this.#onDismissClick}
+              >
+                <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>
+              </ds-button>`
+            : nothing
+        }
       </div>
       <div class="body"><slot></slot></div>
       <slot name="actions"></slot>

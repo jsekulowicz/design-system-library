@@ -459,9 +459,9 @@ const squares = (filled: number) => html`
     ${[1, 2, 3].map(
       (i) =>
         html`<span
-          style="width:11px;height:11px;border:2px solid currentColor;border-radius:2px;background:${i <= filled
-            ? 'currentColor'
-            : 'transparent'}"
+          style="width:11px;height:11px;border:2px solid currentColor;border-radius:2px;background:${
+            i <= filled ? 'currentColor' : 'transparent'
+          }"
         ></span>`,
     )}
   </span>

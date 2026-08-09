@@ -227,12 +227,14 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
         style=${current ? `--color-picker-value:${current}` : ''}
         aria-hidden="true"
       ></span>
-      ${this.compact
-        ? html`<ds-icon class="compact-icon" name="swatch"></ds-icon>`
-        : html`<span class="trigger-text">
-            <span class=${current ? 'trigger-label' : 'trigger-label placeholder'}>${label}</span>
-            ${current ? html`<span class="trigger-value">${current}</span>` : nothing}
-          </span>`}
+      ${
+        this.compact
+          ? html`<ds-icon class="compact-icon" name="swatch"></ds-icon>`
+          : html`<span class="trigger-text">
+              <span class=${current ? 'trigger-label' : 'trigger-label placeholder'}>${label}</span>
+              ${current ? html`<span class="trigger-value">${current}</span>` : nothing}
+            </span>`
+      }
     </ds-button>`;
   }
 
@@ -269,9 +271,11 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
         <span slot="title" class="panel-title"> ${this.#fieldAccessibleName() || 'Color picker'} </span>
         ${options.length ? this.#renderSwatches(options, current) : nothing} ${this.#renderCustomInputs()}
         <div slot="footer" class="panel-actions">
-          ${this.clearable
-            ? html`<ds-button variant="ghost" size="sm" @ds-click=${this.#clear}>Clear</ds-button>`
-            : nothing}
+          ${
+            this.clearable
+              ? html`<ds-button variant="ghost" size="sm" @ds-click=${this.#clear}>Clear</ds-button>`
+              : nothing
+          }
           <ds-button variant="primary" size="sm" @ds-click=${this.#commitAndClose}>Done</ds-button>
         </div>
       </ds-card>
