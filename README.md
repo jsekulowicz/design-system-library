@@ -35,8 +35,15 @@ pnpm dev            # start Storybook with watch mode
 pnpm test           # Vitest unit tests across all packages
 pnpm test:e2e       # Playwright end-to-end tests
 pnpm test:a11y      # axe-core accessibility tests against every story
-pnpm lint           # ESLint + Stylelint across all packages
+pnpm lint           # ESLint across all packages
 pnpm typecheck      # TypeScript type-check across all packages
+pnpm format         # Prettier write; `pnpm format:check` is the CI gate
+```
+
+The repo was reformatted wholesale in one commit. Skip it in `git blame`:
+
+```sh
+git config blame.ignoreRevsFile .git-blame-ignore-revs
 ```
 
 ## Consumer usage
