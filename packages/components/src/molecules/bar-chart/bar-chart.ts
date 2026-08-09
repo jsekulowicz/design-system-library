@@ -1,4 +1,5 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state, query } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/skeleton/define.js';
@@ -171,7 +172,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         @pointermove=${this.#onPointerMove}
         @pointerleave=${this.#onPointerLeave}
         part="chart"
-        aria-busy=${this.loading ? 'true' : nothing}
+        aria-busy=${ifDefined(this.loading ? 'true' : undefined)}
       >
         ${renderChartSvg(ctx, layout, this.height)} ${renderTooltip(ctx, layout)}
         ${this.loading ? renderLoadingOverlay(loadingContent) : nothing}

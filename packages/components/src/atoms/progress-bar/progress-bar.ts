@@ -1,4 +1,5 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { DsElement } from '@jsekulowicz/ds-core';
@@ -56,7 +57,7 @@ export class DsProgressBar extends DsElement {
       <div
         class="progress-bar ${this._hasLabel ? '' : 'progress-bar--no-label'}"
         role="progressbar"
-        aria-label=${this.label ?? nothing}
+        aria-label=${ifDefined(this.label)}
         aria-valuemin="0"
         aria-valuemax=${this.max}
         aria-valuenow=${this.value}

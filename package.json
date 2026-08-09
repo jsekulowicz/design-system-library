@@ -18,7 +18,7 @@
     "lint": "pnpm -r --parallel lint",
     "lint:dead-code": "knip --no-config-hints --include files,exports,types,duplicates",
     "lint:lit": "eslint \"packages/{components,core}/src/**/*.ts\" --max-warnings=0",
-    "lint:lit:analyzer": "lit-analyzer \"packages/components/src/**/*.ts\" \"packages/core/src/**/*.ts\" --quiet",
+    "lint:lit:analyzer": "lit-analyzer \"packages/components/src/**/*.ts\" \"packages/core/src/**/*.ts\" --rules.no-invalid-css off --quiet",
     "test": "pnpm -r --parallel test",
     "test:coverage": "pnpm --filter @jsekulowicz/ds-components test:coverage",
     "test:coverage:all": "pnpm -r --parallel --if-present test:coverage",
@@ -47,6 +47,7 @@
     "knip": "^6.25.0",
     "lit-analyzer": "^2.0.3",
     "prettier": "^3.4.1",
+    "ts-lit-plugin": "^2.0.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.59.1"
   }

@@ -1,4 +1,5 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/button/define.js';
@@ -151,7 +152,7 @@ export class DsMenuButton extends DsElement {
       ?disabled=${this.disabled}
       aria-haspopup="menu"
       aria-expanded=${this.#popover.open ? 'true' : 'false'}
-      aria-controls=${this.#popover.open ? PANEL_ID : nothing}
+      aria-controls=${ifDefined(this.#popover.open ? PANEL_ID : undefined)}
       @ds-click=${this.#onDsClick}
       @keydown=${this.#popover.onTriggerKeydown}
     >
@@ -161,7 +162,7 @@ export class DsMenuButton extends DsElement {
 
   #renderPanel(): TemplateResult {
     return html`<div id=${PANEL_ID} class="panel" part="panel" popover="manual">
-      <ds-menu part="menu" label=${this.menuLabel || this.label || nothing} @ds-select=${this.#onSelect}>
+      <ds-menu part="menu" label=${ifDefined(this.menuLabel || this.label || undefined)} @ds-select=${this.#onSelect}>
         <slot name="header" slot="header"></slot>
         <slot></slot>
         <slot name="footer" slot="footer"></slot>

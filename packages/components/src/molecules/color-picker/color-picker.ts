@@ -1,4 +1,5 @@
 import { html, nothing, LitElement, type PropertyValues, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import '../../atoms/button/define.js';
@@ -209,13 +210,13 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       class="trigger"
       part="trigger"
       variant="secondary"
-      style=${this.compact ? this.#compactTriggerStyle(current) : nothing}
+      style=${ifDefined(this.compact ? this.#compactTriggerStyle(current) : undefined)}
       ?full-width=${!this.compact}
       ?disabled=${this.disabled}
       label=${this.#triggerAccessibleName(current, selected)}
       aria-haspopup="dialog"
       aria-expanded=${this.#popover.open ? 'true' : 'false'}
-      aria-controls=${this.#popover.open ? 'panel' : nothing}
+      aria-controls=${ifDefined(this.#popover.open ? 'panel' : undefined)}
       aria-invalid=${this.invalid ? 'true' : 'false'}
       @ds-click=${this.#popover.toggle}
       @keydown=${this.#popover.onTriggerKeydown}

@@ -1,4 +1,5 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { linkStyles } from './link.styles.js';
@@ -31,7 +32,7 @@ export class DsLink extends DsElement {
 
   override render(): TemplateResult {
     const rel = this.#resolveRel();
-    return html`<a part="link" href=${this.href} target=${this.target ?? nothing} rel=${rel ?? nothing}>
+    return html`<a part="link" href=${this.href} target=${ifDefined(this.target)} rel=${ifDefined(rel)}>
       <slot></slot>
     </a>`;
   }

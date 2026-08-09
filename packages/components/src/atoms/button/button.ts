@@ -1,6 +1,8 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import type { AriaBoolean, AriaChecked, AriaHasPopup, AriaInvalid, AriaRole } from '@jsekulowicz/ds-core';
 import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import { buttonStyles } from './button.styles.js';
 
@@ -44,15 +46,12 @@ export class DsButton extends DsElement {
   @property() label?: string;
   @property({ attribute: 'loading-label' }) loadingLabel?: string;
   @property({ attribute: 'aria-controls' }) ariaControlsAttr?: string;
-  @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: string;
-  @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: string;
-  @property({ attribute: 'aria-invalid' }) ariaInvalidAttr?: string;
-  // Let a parent repurpose the focusable element as a radio/tab/menuitem and
-  // drive roving tabindex (e.g. ds-segmented-control). Bound as properties so
-  // the role/state/tabindex land on the inner <button>, never duplicated onto
-  // the host (a host tabindex would add a second, stray tab stop).
-  @property({ attribute: 'role' }) roleAttr?: string;
-  @property({ attribute: 'aria-checked' }) ariaCheckedAttr?: string;
+  @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: AriaBoolean;
+  @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: AriaHasPopup;
+  @property({ attribute: 'aria-invalid' }) ariaInvalidAttr?: AriaInvalid;
+  // Bound onto the inner <button>, never the host: a host tabindex would add a stray tab stop.
+  @property({ attribute: 'role' }) roleAttr?: AriaRole;
+  @property({ attribute: 'aria-checked' }) ariaCheckedAttr?: AriaChecked;
   @property({ attribute: false }) tabIndexAttr?: number;
 
   override focus(options?: FocusOptions): void {
@@ -94,16 +93,16 @@ export class DsButton extends DsElement {
         part="button"
         class="btn ds-focus-ring"
         type=${this.type}
-        role=${this.roleAttr ?? nothing}
-        tabindex=${this.tabIndexAttr ?? nothing}
+        role=${ifDefined(this.roleAttr)}
+        tabindex=${ifDefined(this.tabIndexAttr)}
         aria-disabled=${this.disabled || this.loading ? 'true' : 'false'}
         aria-busy=${this.loading ? 'true' : 'false'}
-        aria-checked=${this.ariaCheckedAttr ?? nothing}
-        aria-controls=${this.ariaControlsAttr ?? nothing}
-        aria-expanded=${this.ariaExpandedAttr ?? nothing}
-        aria-haspopup=${this.ariaHasPopupAttr ?? nothing}
-        aria-invalid=${this.ariaInvalidAttr ?? nothing}
-        aria-label=${this.label ?? nothing}
+        aria-checked=${ifDefined(this.ariaCheckedAttr)}
+        aria-controls=${ifDefined(this.ariaControlsAttr)}
+        aria-expanded=${ifDefined(this.ariaExpandedAttr)}
+        aria-haspopup=${ifDefined(this.ariaHasPopupAttr)}
+        aria-invalid=${ifDefined(this.ariaInvalidAttr)}
+        aria-label=${ifDefined(this.label)}
         @click=${this.#handleClick}
       >
         ${this.loadingLabel ? this.#renderLabelStack() : this.#renderPlainContent()}
@@ -127,11 +126,17 @@ export class DsButton extends DsElement {
   #renderLabelStack(): TemplateResult {
     return html`
       <span class="stack labels">
-        <span class="stack-item ${this.loading ? 'is-hidden' : ''}" aria-hidden=${this.loading ? 'true' : nothing}>
+        <span
+          class="stack-item ${this.loading ? 'is-hidden' : ''}"
+          aria-hidden=${ifDefined(this.loading ? 'true' : undefined)}
+        >
           <slot name="leading"></slot>
           <slot></slot>
         </span>
-        <span class="stack-item ${this.loading ? '' : 'is-hidden'}" aria-hidden=${this.loading ? nothing : 'true'}>
+        <span
+          class="stack-item ${this.loading ? '' : 'is-hidden'}"
+          aria-hidden=${ifDefined(this.loading ? undefined : 'true')}
+        >
           ${spinnerTemplate(this.loading ? '' : 'is-hidden')} ${this.loadingLabel}
         </span>
       </span>

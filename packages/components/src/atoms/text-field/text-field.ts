@@ -1,7 +1,9 @@
-import { html, nothing, LitElement, type TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import type { AutocompleteToken } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldFooter, renderFieldHeader } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { textFieldStyles } from './text-field.styles.js';
@@ -32,7 +34,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property({ attribute: 'max-length', type: Number }) maxLength?: number;
   @property({ attribute: 'char-count', type: Boolean, reflect: true }) charCount = false;
   @property() pattern?: string;
-  @property() autocomplete?: string;
+  @property() autocomplete?: AutocompleteToken;
   @property() label = '';
   @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
@@ -116,16 +118,16 @@ export class DsTextField extends FormControlMixin(DsElement) {
           part="input"
           .value=${live(current)}
           type=${this.type}
-          name=${this.name || nothing}
+          name=${ifDefined(this.name || undefined)}
           placeholder=${this.placeholder}
-          aria-label=${this.label ? nothing : this.inputLabel || nothing}
+          aria-label=${ifDefined(this.label ? undefined : this.inputLabel || undefined)}
           ?required=${this.required}
           ?readonly=${this.disabled || this.readonly}
           aria-disabled=${this.disabled ? 'true' : 'false'}
-          minlength=${this.minLength ?? nothing}
-          maxlength=${this.maxLength ?? nothing}
-          pattern=${this.pattern ?? nothing}
-          autocomplete=${this.autocomplete ?? nothing}
+          minlength=${ifDefined(this.minLength)}
+          maxlength=${ifDefined(this.maxLength)}
+          pattern=${ifDefined(this.pattern)}
+          autocomplete=${ifDefined(this.autocomplete)}
           aria-invalid=${this.invalid ? 'true' : 'false'}
           @input=${this.#onInput}
           @change=${this.#onChange}

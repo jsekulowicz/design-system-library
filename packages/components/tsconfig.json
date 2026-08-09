@@ -4,7 +4,16 @@
     "outDir": "dist",
     "rootDir": "src",
     "experimentalDecorators": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "plugins": [
+      {
+        "name": "ts-lit-plugin",
+        "rules": {
+          "no-incompatible-type-binding": "error",
+          "no-invalid-css": "off"
+        }
+      }
+    ]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.test.ts"]

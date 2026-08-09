@@ -1,4 +1,5 @@
-import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { html, type PropertyValues, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { spinnerTemplate } from '../../shared/spinner.js';
@@ -106,12 +107,12 @@ export class DsNavItem extends DsElement {
       class="link nav-control"
       part="link"
       href=${this.href}
-      target=${this.target ?? nothing}
-      rel=${this.rel ?? nothing}
-      aria-current=${this.current ? 'page' : nothing}
-      aria-disabled=${this.disabled || this.loading ? 'true' : nothing}
-      aria-busy=${this.loading ? 'true' : nothing}
-      aria-label=${this.compact && this._labelText ? this._labelText : nothing}
+      target=${ifDefined(this.target)}
+      rel=${ifDefined(this.rel)}
+      aria-current=${ifDefined(this.current ? 'page' : undefined)}
+      aria-disabled=${ifDefined(this.disabled || this.loading ? 'true' : undefined)}
+      aria-busy=${ifDefined(this.loading ? 'true' : undefined)}
+      aria-label=${ifDefined(this.compact && this._labelText ? this._labelText : undefined)}
       @click=${this.#onClick}
     >
       ${this.#renderInner()}

@@ -1,4 +1,5 @@
 import { html, svg, nothing, type TemplateResult, type SVGTemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { tablePaginationStyles } from './table-pagination.styles.js';
@@ -114,7 +115,7 @@ export class DsTablePagination extends DsElement {
           part="button"
           type="button"
           aria-label=${`Page ${page}`}
-          aria-current=${isCurrent ? 'page' : nothing}
+          aria-current=${ifDefined(isCurrent ? 'page' : undefined)}
           @click=${() => this.#emitPage(page)}
         >
           ${page}

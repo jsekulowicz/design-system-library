@@ -1,4 +1,5 @@
 import { html, nothing, LitElement, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
@@ -119,8 +120,8 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
           min=${this.min}
           max=${this.max}
           step=${this.step}
-          name=${this.name || nothing}
-          aria-label=${this.label ? nothing : this.inputLabel || nothing}
+          name=${ifDefined(this.name || undefined)}
+          aria-label=${ifDefined(this.label ? undefined : this.inputLabel || undefined)}
           ?required=${this.required}
           aria-disabled=${this.disabled ? 'true' : 'false'}
           aria-invalid=${this.invalid ? 'true' : 'false'}

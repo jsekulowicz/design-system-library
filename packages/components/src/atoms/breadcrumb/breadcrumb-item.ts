@@ -1,6 +1,8 @@
 import { html, nothing, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import type { LinkTarget } from '@jsekulowicz/ds-core';
 import { breadcrumbItemStyles } from './breadcrumb-item.styles.js';
 import '../icon/define.js';
 import '../icon/icons/chevron-right.js';
@@ -19,12 +21,12 @@ export class DsBreadcrumbItem extends DsElement {
   static override styles = [...DsElement.styles, breadcrumbItemStyles];
 
   @property() href?: string;
-  @property() target?: string;
+  @property() target?: LinkTarget;
   @property() rel?: string;
   @property() download?: string;
   @property() hreflang?: string;
   @property() type?: string;
-  @property() referrerpolicy?: string;
+  @property() referrerpolicy?: ReferrerPolicy;
   @property({ type: Boolean, reflect: true }) current = false;
   @property({ type: Boolean, reflect: true }) last = false;
 
@@ -42,12 +44,12 @@ export class DsBreadcrumbItem extends DsElement {
       <a
         part="link"
         href=${this.href ?? '#'}
-        target=${this.target ?? nothing}
-        rel=${this.rel ?? nothing}
-        download=${this.download ?? nothing}
-        hreflang=${this.hreflang ?? nothing}
-        type=${this.type ?? nothing}
-        referrerpolicy=${this.referrerpolicy ?? nothing}
+        target=${ifDefined(this.target)}
+        rel=${ifDefined(this.rel)}
+        download=${ifDefined(this.download)}
+        hreflang=${ifDefined(this.hreflang)}
+        type=${ifDefined(this.type)}
+        referrerpolicy=${ifDefined(this.referrerpolicy)}
       >
         ${this.#renderLabel()}
       </a>

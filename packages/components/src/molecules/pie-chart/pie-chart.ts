@@ -1,4 +1,5 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/skeleton/define.js';
@@ -113,7 +114,7 @@ export class DsPieChart extends DsElement {
         @focusin=${this.#onFocusIn}
         @focusout=${this.#onFocusOut}
         @click=${this.#onClick}
-        aria-busy=${this.loading ? 'true' : nothing}
+        aria-busy=${ifDefined(this.loading ? 'true' : undefined)}
       >
         <div
           class="canvas"

@@ -44,6 +44,7 @@ jobs:
       - name: Lit static validation
         run: pnpm lint:lit
 
+      # Template syntax only: the CLI takes globs, not a project, so type-dependent rules see `any` here.
       - name: Lit analyzer validation
         run: pnpm lint:lit:analyzer
 
