@@ -1,7 +1,6 @@
 import { html, type TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import { hasAssignedContent, hasNamedSlotContent } from '../../shared/slots.js';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { scrollablePageStyles } from './scrollable-page.styles.js';
 
 /**
@@ -21,27 +20,17 @@ import { scrollablePageStyles } from './scrollable-page.styles.js';
 export class DsScrollablePage extends DsElement {
   static override styles = [...DsElement.styles, scrollablePageStyles];
 
-  @state() private _hasHeader = false;
+  readonly #slots = new SlotPresenceController(this, ['header']);
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    this.#syncHeaderPresence();
+  override updated(): void {
+    this.toggleAttribute('header-empty', !this.#slots.has('header'));
   }
-
-  #syncHeaderPresence(slot?: HTMLSlotElement): void {
-    this._hasHeader = slot ? hasAssignedContent(slot) : hasNamedSlotContent(this, 'header');
-    this.toggleAttribute('header-empty', !this._hasHeader);
-  }
-
-  #onHeaderSlotChange = (event: Event): void => {
-    this.#syncHeaderPresence(event.target as HTMLSlotElement);
-  };
 
   override render(): TemplateResult {
     return html`
-      <div class="header" part="header" ?hidden=${!this._hasHeader}>
+      <div class="header" part="header" ?hidden=${!this.#slots.has('header')}>
         <div class="header-inner">
-          <slot name="header" @slotchange=${this.#onHeaderSlotChange}></slot>
+          <slot name="header" @slotchange=${this.#slots.handleSlotChange}></slot>
         </div>
       </div>
       <div class="scroller" part="scroller">

@@ -84,16 +84,25 @@ JSDoc, where consumers actually read them.
 
 Reach for `packages/components/src/shared/` before writing a second copy:
 
-| Module                      | Use for                                                              |
-| --------------------------- | -------------------------------------------------------------------- |
-| `slots.ts`                  | slot content detection — `hasAssignedContent`, `hasNamedSlotContent` |
-| `roving-focus.ts`           | arrow/Home/End index resolution for roving-tabindex widgets          |
-| `scroll-fade-controller.ts` | scroll-driven edge fades                                             |
-| `form-field.ts`             | label/description/error rendering for form controls                  |
-| `chart-a11y.ts`             | chart keyboard and screen-reader affordances                         |
+| Module                      | Use for                                                               |
+| --------------------------- | --------------------------------------------------------------------- |
+| `slot-presence.ts`          | reactive "is this slot filled?" state — the default for `_hasX` flags |
+| `slots.ts`                  | the underlying predicates, when a controller is overkill              |
+| `modal-surface.ts`          | the native `<dialog>` lifecycle shared by `ds-dialog` / `ds-drawer`   |
+| `roving-focus.ts`           | arrow/Home/End index resolution for roving-tabindex widgets           |
+| `scroll-fade-controller.ts` | scroll-driven edge fades                                              |
+| `form-field.ts`             | label/description/error rendering for form controls                   |
+| `chart-a11y.ts`             | chart keyboard and screen-reader affordances                          |
 
-`resolveRovingTarget` does not cover the select dropdown: `dropdown-keydown.ts` interleaves
-typeahead with open/close state and stays separate on purpose.
+Deliberate exceptions, so nobody "fixes" them into the shared helper:
+
+- **`ds-tabs`** does not use `resolveRovingTarget`. Arrowing onto a disabled tab is a no-op here,
+  not a skip, and its tests assert that. The shared helper skips disabled entries.
+- **`dropdown-keydown.ts`** (select) interleaves typeahead with open/close state.
+- **`ds-table`** derives slot presence from light-DOM queries during update, not `slotchange`.
+- The **charts** share `chart-a11y.ts` but keep their own key handling: heatmap navigates a 2D
+  grid, bar-chart walks grouped/stacked series, pie is 1D. Only the two `@state` fields look
+  alike.
 
 ## Linting the templates
 

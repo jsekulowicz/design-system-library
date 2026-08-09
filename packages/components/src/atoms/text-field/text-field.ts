@@ -1,11 +1,12 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { property, query, state } from 'lit/decorators.js';
+import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import type { AutocompleteToken } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldFooter, renderFieldHeader } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { textFieldStyles } from './text-field.styles.js';
 
 export type TextFieldType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
@@ -42,18 +43,9 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
 
-  @state() private _hasLeading = false;
-  @state() private _hasTrailing = false;
+  readonly #slots = new SlotPresenceController(this, ['leading', 'trailing']);
 
   @query('input') private _input!: HTMLInputElement;
-
-  #onLeadingChange = (e: Event): void => {
-    this._hasLeading = (e.target as HTMLSlotElement).assignedElements().length > 0;
-  };
-
-  #onTrailingChange = (e: Event): void => {
-    this._hasTrailing = (e.target as HTMLSlotElement).assignedElements().length > 0;
-  };
 
   #onInput = (event: Event): void => {
     if (this.disabled) {
@@ -110,8 +102,8 @@ export class DsTextField extends FormControlMixin(DsElement) {
         this.charCount,
       )}
       <div class="wrap field-control" part="wrap">
-        <span class="adornment" ?hidden=${!this._hasLeading}>
-          <slot name="leading" @slotchange=${this.#onLeadingChange}></slot>
+        <span class="adornment" ?hidden=${!this.#slots.has('leading')}>
+          <slot name="leading" @slotchange=${this.#slots.handleSlotChange}></slot>
         </span>
         <input
           id="input"
@@ -133,8 +125,8 @@ export class DsTextField extends FormControlMixin(DsElement) {
           @change=${this.#onChange}
           @blur=${this.#onBlur}
         />
-        <span class="adornment" ?hidden=${!this._hasTrailing}>
-          <slot name="trailing" @slotchange=${this.#onTrailingChange}></slot>
+        <span class="adornment" ?hidden=${!this.#slots.has('trailing')}>
+          <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
         </span>
       </div>
       ${renderFieldFooter(this.description, this.error, this.invalid)}

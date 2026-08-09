@@ -1,8 +1,8 @@
 import { html, type TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { cardStyles } from './card.styles.js';
-import { hasAssignedContent } from '../../shared/slots.js';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
 
 export type CardElevation = 'none' | 'sm' | 'md';
 export type CardOrientation = 'vertical' | 'horizontal';
@@ -24,40 +24,21 @@ export class DsCard extends DsElement {
   @property({ reflect: true }) orientation: CardOrientation = 'vertical';
   @property({ type: Boolean, reflect: true }) interactive = false;
 
-  @state() private _hasEyebrow = false;
-  @state() private _hasTitle = false;
-  @state() private _hasActions = false;
-  @state() private _hasFooter = false;
-
-  #onEyebrowSlotChange = (e: Event) => {
-    this._hasEyebrow = hasAssignedContent(e.target as HTMLSlotElement);
-  };
-
-  #onTitleSlotChange = (e: Event) => {
-    this._hasTitle = hasAssignedContent(e.target as HTMLSlotElement);
-  };
-
-  #onActionsSlotChange = (e: Event) => {
-    this._hasActions = hasAssignedContent(e.target as HTMLSlotElement);
-  };
-
-  #onFooterSlotChange = (e: Event) => {
-    this._hasFooter = hasAssignedContent(e.target as HTMLSlotElement);
-  };
+  readonly #slots = new SlotPresenceController(this, ['eyebrow', 'title', 'actions', 'footer']);
 
   override render(): TemplateResult {
-    const showHeader = this._hasEyebrow || this._hasTitle;
+    const showHeader = this.#slots.hasAny('eyebrow', 'title');
     return html`<article class="card" part="card">
       <header class="header" ?hidden=${!showHeader}>
-        <slot name="eyebrow" @slotchange=${this.#onEyebrowSlotChange}></slot>
-        <slot name="title" @slotchange=${this.#onTitleSlotChange}></slot>
+        <slot name="eyebrow" @slotchange=${this.#slots.handleSlotChange}></slot>
+        <slot name="title" @slotchange=${this.#slots.handleSlotChange}></slot>
       </header>
       <div class="body" part="body"><slot></slot></div>
-      <div class="actions" ?hidden=${!this._hasActions}>
-        <slot name="actions" @slotchange=${this.#onActionsSlotChange}></slot>
+      <div class="actions" ?hidden=${!this.#slots.has('actions')}>
+        <slot name="actions" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
-      <footer ?hidden=${!this._hasFooter}>
-        <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+      <footer ?hidden=${!this.#slots.has('footer')}>
+        <slot name="footer" @slotchange=${this.#slots.handleSlotChange}></slot>
       </footer>
     </article>`;
   }

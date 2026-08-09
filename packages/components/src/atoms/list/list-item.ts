@@ -1,8 +1,7 @@
 import { html, type TemplateResult } from 'lit';
-import { state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { listItemStyles } from './list-item.styles.js';
-import { hasAssignedContent } from '../../shared/slots.js';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
 
 /**
  * @tag ds-list-item
@@ -14,25 +13,16 @@ import { hasAssignedContent } from '../../shared/slots.js';
 export class DsListItem extends DsElement {
   static override styles = [...DsElement.styles, listItemStyles];
 
-  @state() private _hasLeading = false;
-  @state() private _hasTrailing = false;
-
-  #onLeadingSlotChange = (e: Event) => {
-    this._hasLeading = hasAssignedContent(e.target as HTMLSlotElement);
-  };
-
-  #onTrailingSlotChange = (e: Event) => {
-    this._hasTrailing = hasAssignedContent(e.target as HTMLSlotElement);
-  };
+  readonly #slots = new SlotPresenceController(this, ['leading', 'trailing']);
 
   override render(): TemplateResult {
     return html`<li part="item">
-      <div class="leading" ?hidden=${!this._hasLeading}>
-        <slot name="leading" @slotchange=${this.#onLeadingSlotChange}></slot>
+      <div class="leading" ?hidden=${!this.#slots.has('leading')}>
+        <slot name="leading" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
       <div class="content"><slot></slot></div>
-      <div class="trailing" ?hidden=${!this._hasTrailing}>
-        <slot name="trailing" @slotchange=${this.#onTrailingSlotChange}></slot>
+      <div class="trailing" ?hidden=${!this.#slots.has('trailing')}>
+        <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
     </li>`;
   }

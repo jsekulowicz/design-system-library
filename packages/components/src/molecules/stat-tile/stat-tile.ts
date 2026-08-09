@@ -1,8 +1,8 @@
 import { html, type TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/skeleton/define.js';
-import { hasAssignedContent } from '../../shared/slots.js';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { statTileStyles } from './stat-tile.styles.js';
 
 /**
@@ -24,16 +24,7 @@ export class DsStatTile extends DsElement {
   @property() hint?: string;
   @property({ type: Boolean, reflect: true }) loading = false;
 
-  @state() private _hasLabel = false;
-  @state() private _hasHint = false;
-
-  #onLabelSlotChange = (event: Event): void => {
-    this._hasLabel = hasAssignedContent(event.target as HTMLSlotElement);
-  };
-
-  #onHintSlotChange = (event: Event): void => {
-    this._hasHint = hasAssignedContent(event.target as HTMLSlotElement);
-  };
+  readonly #slots = new SlotPresenceController(this, ['label', 'hint']);
 
   override render(): TemplateResult {
     return html`
@@ -43,11 +34,11 @@ export class DsStatTile extends DsElement {
             ? html`<ds-skeleton width="4rem"></ds-skeleton>`
             : html`<slot name="value">${this.value}</slot>`}
         </div>
-        <div class="label" part="label" ?hidden=${!this.label.trim() && !this._hasLabel}>
-          <slot name="label" @slotchange=${this.#onLabelSlotChange}>${this.label}</slot>
+        <div class="label" part="label" ?hidden=${!this.label.trim() && !this.#slots.has('label')}>
+          <slot name="label" @slotchange=${this.#slots.handleSlotChange}>${this.label}</slot>
         </div>
-        <div class="hint" part="hint" ?hidden=${!this.hint?.trim() && !this._hasHint}>
-          <slot name="hint" @slotchange=${this.#onHintSlotChange}>${this.hint}</slot>
+        <div class="hint" part="hint" ?hidden=${!this.hint?.trim() && !this.#slots.has('hint')}>
+          <slot name="hint" @slotchange=${this.#slots.handleSlotChange}>${this.hint}</slot>
         </div>
       </div>
     `;

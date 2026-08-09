@@ -2,6 +2,7 @@ import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { getColorLabel, normalizeColorOptions } from './color-utils.js';
+import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { colorPickerSwatchGroupStyles } from './color-picker-swatch-group.styles.js';
 import type { ColorPickerOption } from './types.js';
 
@@ -62,31 +63,16 @@ export class DsColorPickerSwatchGroup extends DsElement {
     if (!enabled.length) {
       return;
     }
-    const next = this.#nextIndex(key, index, enabled);
+    const next = resolveRovingTarget({
+      key,
+      currentIndex: Math.max(0, enabled.indexOf(index)),
+      count: enabled.length,
+    });
+    if (next === null) {
+      return;
+    }
     this._focusedIndex = enabled[next] ?? enabled[0] ?? -1;
     void this.updateComplete.then(() => this.#focusSwatch());
-  }
-
-  #nextIndex(key: string, index: number, enabled: number[]): number {
-    const current = Math.max(0, enabled.indexOf(index));
-    const last = enabled.length - 1;
-    if (key === 'Home') {
-      return 0;
-    }
-    if (key === 'End') {
-      return last;
-    }
-    return key === 'ArrowRight' || key === 'ArrowDown'
-      ? this.#nextForward(current, last)
-      : this.#nextBackward(current, last);
-  }
-
-  #nextForward(current: number, last: number): number {
-    return current >= last ? 0 : current + 1;
-  }
-
-  #nextBackward(current: number, last: number): number {
-    return current <= 0 ? last : current - 1;
   }
 
   #focusSwatch(): void {

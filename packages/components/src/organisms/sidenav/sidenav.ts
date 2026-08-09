@@ -1,9 +1,10 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { sidenavStyles } from './sidenav.styles.js';
 import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
 
 const COMPACT_TARGETS = 'ds-nav-item, ds-nav-group';
 
@@ -24,8 +25,7 @@ export class DsSidenav extends DsElement {
   @property() label = 'Secondary';
   @property({ type: Boolean, reflect: true }) collapsed = false;
 
-  @state() private _hasHeader = false;
-  @state() private _hasFooter = false;
+  readonly #slots = new SlotPresenceController(this, ['header', 'footer']);
 
   private readonly _scrollFade = new ScrollFadeController(this, () => this.shadowRoot?.querySelector('nav'));
 
@@ -42,30 +42,20 @@ export class DsSidenav extends DsElement {
     });
   }
 
-  #onHeaderSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    this._hasHeader = slot.assignedNodes({ flatten: true }).length > 0;
-  }
-
-  #onFooterSlotChange(e: Event) {
-    const slot = e.target as HTMLSlotElement;
-    this._hasFooter = slot.assignedNodes({ flatten: true }).length > 0;
-  }
-
   #onDefaultSlotChange = (): void => {
     this.#syncCompact();
   };
 
   override render(): TemplateResult {
     return html`<nav class="scroll-fade" part="nav" aria-label=${this.label}>
-      <div class="header" part="header" ?hidden=${!this._hasHeader}>
-        <slot name="header" @slotchange=${this.#onHeaderSlotChange}></slot>
+      <div class="header" part="header" ?hidden=${!this.#slots.has('header')}>
+        <slot name="header" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
       <div class="list" part="list" role="list">
         <slot @slotchange=${this.#onDefaultSlotChange}></slot>
       </div>
-      <div class="footer" part="footer" ?hidden=${!this._hasFooter}>
-        <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+      <div class="footer" part="footer" ?hidden=${!this.#slots.has('footer')}>
+        <slot name="footer" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
     </nav>`;
   }

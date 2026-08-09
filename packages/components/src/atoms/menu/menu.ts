@@ -1,7 +1,9 @@
 import { html, type TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
+import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { menuStyles } from './menu.styles.js';
 import type { DsMenuItem } from './menu-item.js';
 
@@ -21,8 +23,7 @@ export class DsMenu extends DsElement {
 
   @property() label = '';
 
-  @state() private _hasHeader = false;
-  @state() private _hasFooter = false;
+  readonly #slots = new SlotPresenceController(this, ['header', 'footer']);
 
   #typeaheadBuffer = '';
   #typeaheadTimer = 0;
@@ -63,14 +64,6 @@ export class DsMenu extends DsElement {
     }
   };
 
-  #onHeaderSlotChange = (event: Event): void => {
-    this._hasHeader = (event.target as HTMLSlotElement).assignedNodes({ flatten: true }).length > 0;
-  };
-
-  #onFooterSlotChange = (event: Event): void => {
-    this._hasFooter = (event.target as HTMLSlotElement).assignedNodes({ flatten: true }).length > 0;
-  };
-
   #onFocusIn = (event: FocusEvent): void => {
     const target = event.target as HTMLElement;
     if (target.tagName.toLowerCase() !== 'ds-menu-item') {
@@ -87,16 +80,21 @@ export class DsMenu extends DsElement {
     this.emit('ds-select', { detail });
   };
 
-  #moveFocus = (direction: 1 | -1): void => {
+  #moveFocus(key: string): boolean {
     const items = this.#enabledItems();
-    if (items.length === 0) {
-      return;
-    }
     const current = items.findIndex((item) => item.getAttribute('tabindex') === '0');
-    const start = current >= 0 ? current : 0;
-    const next = (start + direction + items.length) % items.length;
+    const next = resolveRovingTarget({
+      key,
+      currentIndex: current >= 0 ? current : 0,
+      count: items.length,
+      orientation: 'vertical',
+    });
+    if (next === null) {
+      return false;
+    }
     items[next]?.focus();
-  };
+    return true;
+  }
 
   #onKeydown = (event: KeyboardEvent): void => {
     const items = this.#enabledItems();
@@ -104,27 +102,15 @@ export class DsMenu extends DsElement {
       return;
     }
     switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        this.#moveFocus(1);
-        return;
-      case 'ArrowUp':
-        event.preventDefault();
-        this.#moveFocus(-1);
-        return;
-      case 'Home':
-        event.preventDefault();
-        items[0]?.focus();
-        return;
-      case 'End':
-        event.preventDefault();
-        items[items.length - 1]?.focus();
-        return;
       case 'Tab':
       case 'Escape':
       case 'Enter':
       case ' ':
         return;
+    }
+    if (this.#moveFocus(event.key)) {
+      event.preventDefault();
+      return;
     }
     if (event.key.length === 1 && !event.altKey && !event.ctrlKey && !event.metaKey) {
       this.#typeahead(event.key);
@@ -150,8 +136,8 @@ export class DsMenu extends DsElement {
   }
 
   override render(): TemplateResult {
-    return html`<div class="header" ?hidden=${!this._hasHeader}>
-        <slot name="header" @slotchange=${this.#onHeaderSlotChange}></slot>
+    return html`<div class="header" ?hidden=${!this.#slots.has('header')}>
+        <slot name="header" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
       <div
         class="items"
@@ -165,8 +151,8 @@ export class DsMenu extends DsElement {
       >
         <slot @slotchange=${this.#onItemsSlotChange}></slot>
       </div>
-      <div class="footer" ?hidden=${!this._hasFooter}>
-        <slot name="footer" @slotchange=${this.#onFooterSlotChange}></slot>
+      <div class="footer" ?hidden=${!this.#slots.has('footer')}>
+        <slot name="footer" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>`;
   }
 }
