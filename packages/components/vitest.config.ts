@@ -1,6 +1,8 @@
 import { coverageConfigDefaults, defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
 
+const here = import.meta.dirname;
+
 function suppressKnownTestNoise(log: string, type: 'stdout' | 'stderr'): boolean | void {
   if (type === 'stderr' && log.includes('Lit is in dev mode. Not recommended for production!')) {
     return false;
@@ -10,8 +12,8 @@ function suppressKnownTestNoise(log: string, type: 'stdout' | 'stderr'): boolean
 export default defineConfig({
   resolve: {
     alias: {
-      '@jsekulowicz/ds-core': resolve(__dirname, '../core/src/index.ts'),
-      '@jsekulowicz/ds-tokens': resolve(__dirname, '../tokens/src/index.ts'),
+      '@jsekulowicz/ds-core': resolve(here, '../core/src/index.ts'),
+      '@jsekulowicz/ds-tokens': resolve(here, '../tokens/src/index.ts'),
     },
   },
   test: {

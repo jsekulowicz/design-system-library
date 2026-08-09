@@ -374,20 +374,20 @@
   },
   "size-limit": [
     {
-      "name": "ds-button (subpath + define, gzip)",
+      "name": "ds-button (subpath + define, brotli)",
       "path": [
         "dist/atoms/button/index.js",
         "dist/atoms/button/define.js"
       ],
-      "limit": "17 kB"
+      "limit": "18 kB"
     },
     {
-      "name": "ds-text-field (subpath + define, gzip)",
+      "name": "ds-text-field (subpath + define, brotli)",
       "path": [
         "dist/atoms/text-field/index.js",
         "dist/atoms/text-field/define.js"
       ],
-      "limit": "19 kB"
+      "limit": "21 kB"
     }
   ],
   "dependencies": {
@@ -397,12 +397,12 @@
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.4",
-    "@size-limit/esbuild": "^11.1.6",
-    "@size-limit/file": "^11.1.6",
+    "@size-limit/esbuild": "^13.0.3",
+    "@size-limit/file": "^13.0.3",
     "heroicons": "2.2.0",
-    "jsdom": "^25.0.1",
-    "size-limit": "^11.1.6",
+    "jsdom": "^30.0.1",
+    "size-limit": "^13.0.3",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.5"
+    "vitest": "^4.1.10"
   }
 }
