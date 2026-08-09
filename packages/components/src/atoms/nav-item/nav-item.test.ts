@@ -73,7 +73,7 @@ describe('<ds-nav-item>', () => {
 
   it('stretches the control when rendered inside a nav group', () => {
     const css = (DsNavItem as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).toMatch(
       /:host\(\[role='listitem'\]:not\(\[compact\]\)\):host-context\(ds-nav-group\) \.nav-control\s*{[^}]*width: 100%;[^}]*padding-inline-start: var\(--ds-space-5\);/s,

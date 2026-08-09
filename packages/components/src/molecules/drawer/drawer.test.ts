@@ -85,9 +85,7 @@ describe('<ds-drawer>', () => {
   it('emits ds-close with returnValue when close(value) is called', async () => {
     const el = await mountWithProps<DsDrawer>(TEMPLATE, { open: true });
     const closes: CustomEvent<{ returnValue: string }>[] = [];
-    el.addEventListener('ds-close', (event) =>
-      closes.push(event as CustomEvent<{ returnValue: string }>),
-    );
+    el.addEventListener('ds-close', (event) => closes.push(event as CustomEvent<{ returnValue: string }>));
 
     el.close('applied');
     await el.updateComplete;
@@ -180,9 +178,7 @@ describe('<ds-drawer>', () => {
     const css = drawerStyles.cssText;
     expect(css).toMatch(/dialog\s*{[^}]*height: var\(--ds-drawer-height, 100dvh\)/s);
     expect(css).toMatch(/ds-card::part\(card\)\s*{[^}]*height: var\(--ds-drawer-height, 100dvh\)/s);
-    expect(css).toMatch(
-      /ds-card::part\(card\)\s*{[^}]*max-height: var\(--ds-drawer-height, 100dvh\)/s,
-    );
+    expect(css).toMatch(/ds-card::part\(card\)\s*{[^}]*max-height: var\(--ds-drawer-height, 100dvh\)/s);
   });
 
   it('closes the dialog on disconnect if it was open', async () => {

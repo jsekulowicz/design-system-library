@@ -91,9 +91,7 @@ export const Disabled: Story = {
 
 export const NewTab: Story = {
   render: () => html`
-    <ds-nav-item href="https://example.com" target="_blank" rel="noopener">
-      External docs
-    </ds-nav-item>
+    <ds-nav-item href="https://example.com" target="_blank" rel="noopener"> External docs </ds-nav-item>
   `,
 };
 
@@ -109,9 +107,7 @@ export const Compact: Story = {
         Settings
       </ds-nav-item>
     </div>
-    <p
-      style="margin-top:var(--ds-space-4);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)"
-    >
+    <p style="margin-top:var(--ds-space-4);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)">
       Hover an item for ~1s to see the tooltip with the original label. Customize the delay with
       <code>compactHoverTooltipDelay</code>.
     </p>

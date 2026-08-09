@@ -46,14 +46,14 @@ export class DsTabs extends DsElement {
   };
 
   #syncSelection = (): void => {
-    this._tabs.forEach(tab => {
+    this._tabs.forEach((tab) => {
       const selected = !tab.disabled && tab.value === this.value;
       tab.selected = selected;
       tab.tabIndex = selected ? 0 : -1;
       tab.id = `${this.uid}-tab-${tab.value}`;
       tab.setAttribute('aria-controls', `${this.uid}-panel-${tab.value}`);
     });
-    this._panels.forEach(panel => {
+    this._panels.forEach((panel) => {
       panel.active = panel.value === this.value;
       panel.id = `${this.uid}-panel-${panel.value}`;
       panel.setAttribute('aria-labelledby', `${this.uid}-tab-${panel.value}`);
@@ -87,7 +87,7 @@ export class DsTabs extends DsElement {
     if (count === 0) {
       return;
     }
-    const current = this._tabs.findIndex(t => t.value === this.value);
+    const current = this._tabs.findIndex((t) => t.value === this.value);
     let next: number;
     switch (event.key) {
       case 'ArrowLeft':

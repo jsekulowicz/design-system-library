@@ -31,74 +31,70 @@ const WRAPPING_FRAME_STYLE = `${CENTERED_FRAME_STYLE};text-align:right;white-spa
 
 export const Playground: Story = {
   render: (args) => html`
-<div style=${CENTERED_FRAME_STYLE}>
-  <ds-tooltip placement=${args['placement']} ?open=${args['open']}>
-    <ds-button variant="secondary">Hover me</ds-button>
-    <span slot="tip">Helpful context</span>
-  </ds-tooltip>
-</div>
+    <div style=${CENTERED_FRAME_STYLE}>
+      <ds-tooltip placement=${args['placement']} ?open=${args['open']}>
+        <ds-button variant="secondary">Hover me</ds-button>
+        <span slot="tip">Helpful context</span>
+      </ds-tooltip>
+    </div>
   `,
 };
 
 export const RichContent: Story = {
   render: () => html`
-<div style=${CENTERED_FRAME_STYLE}>
-  <ds-tooltip placement="top">
-    <ds-button variant="ghost" size="sm">What's this?</ds-button>
-    <span slot="tip">
-      <strong>Keyboard shortcut:</strong> ⌘K to open the command palette.
-    </span>
-  </ds-tooltip>
-</div>
+    <div style=${CENTERED_FRAME_STYLE}>
+      <ds-tooltip placement="top">
+        <ds-button variant="ghost" size="sm">What's this?</ds-button>
+        <span slot="tip"> <strong>Keyboard shortcut:</strong> ⌘K to open the command palette. </span>
+      </ds-tooltip>
+    </div>
   `,
 };
 
 export const WrappingContent: Story = {
   render: () => html`
-<div style=${WRAPPING_FRAME_STYLE}>
-  <ds-tooltip placement="bottom">
-    <ds-button variant="ghost" size="sm">Contributions</ds-button>
-    <span slot="tip">
-      Approved crosswords created by the player and accepted word or clue suggestions
-    </span>
-  </ds-tooltip>
-</div>
+    <div style=${WRAPPING_FRAME_STYLE}>
+      <ds-tooltip placement="bottom">
+        <ds-button variant="ghost" size="sm">Contributions</ds-button>
+        <span slot="tip"> Approved crosswords created by the player and accepted word or clue suggestions </span>
+      </ds-tooltip>
+    </div>
   `,
 };
 
 export const ViewportConstraint: Story = {
   render: () => html`
-<div style=${EDGE_FRAME_STYLE}>
-  <ds-tooltip placement="right" open>
-    <ds-button variant="ghost" size="sm">Info</ds-button>
-    <span slot="tip">
-      This intentionally long tooltip demonstrates how content wraps before it can exceed the viewport,
-      even when its preferred placement is to the right.
-    </span>
-  </ds-tooltip>
-</div>
+    <div style=${EDGE_FRAME_STYLE}>
+      <ds-tooltip placement="right" open>
+        <ds-button variant="ghost" size="sm">Info</ds-button>
+        <span slot="tip">
+          This intentionally long tooltip demonstrates how content wraps before it can exceed the viewport, even when
+          its preferred placement is to the right.
+        </span>
+      </ds-tooltip>
+    </div>
   `,
 };
 
 export const Placements: Story = {
   render: () => html`
-<div style=${PLACEMENTS_FRAME_STYLE}>
-  <ds-tooltip placement="top">
-    <ds-button variant="ghost" size="sm">Top</ds-button>
-    <span slot="tip">Appears above</span>
-  </ds-tooltip>
-  <ds-tooltip placement="bottom">
-    <ds-button variant="ghost" size="sm">Bottom</ds-button>
-    <span slot="tip">Appears below</span>
-  </ds-tooltip>
-  <ds-tooltip placement="left">
-    <ds-button variant="ghost" size="sm">Left</ds-button>
-    <span slot="tip">Appears left</span>
-  </ds-tooltip>
-  <ds-tooltip placement="right">
-    <ds-button variant="ghost" size="sm">Right</ds-button>
-    <span slot="tip">Appears right</span>
-  </ds-tooltip>
-</div>
+    <div style=${PLACEMENTS_FRAME_STYLE}>
+      <ds-tooltip placement="top">
+        <ds-button variant="ghost" size="sm">Top</ds-button>
+        <span slot="tip">Appears above</span>
+      </ds-tooltip>
+      <ds-tooltip placement="bottom">
+        <ds-button variant="ghost" size="sm">Bottom</ds-button>
+        <span slot="tip">Appears below</span>
+      </ds-tooltip>
+      <ds-tooltip placement="left">
+        <ds-button variant="ghost" size="sm">Left</ds-button>
+        <span slot="tip">Appears left</span>
+      </ds-tooltip>
+      <ds-tooltip placement="right">
+        <ds-button variant="ghost" size="sm">Right</ds-button>
+        <span slot="tip">Appears right</span>
+      </ds-tooltip>
+    </div>
   `,
 };

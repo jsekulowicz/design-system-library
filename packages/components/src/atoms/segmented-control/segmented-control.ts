@@ -37,20 +37,18 @@ export class DsSegmentedControl extends DsElement {
   override connectedCallback(): void {
     super.connectedCallback();
     if (!this.label) {
-      console.warn(
-        '<ds-segmented-control>: the `label` property is required for accessibility.',
-      );
+      console.warn('<ds-segmented-control>: the `label` property is required for accessibility.');
     }
   }
 
   // The single tab stop: the selected option, or the first enabled one when
   // nothing is selected yet. Arrow keys move focus (and selection) from here.
   get #tabStopIndex(): number {
-    const selected = this.options.findIndex(option => option.value === this.value);
+    const selected = this.options.findIndex((option) => option.value === this.value);
     if (selected >= 0) {
       return selected;
     }
-    return this.options.findIndex(option => !option.disabled);
+    return this.options.findIndex((option) => !option.disabled);
   }
 
   #select(option: SegmentedControlOption): void {
@@ -74,7 +72,7 @@ export class DsSegmentedControl extends DsElement {
       key: event.key,
       currentIndex: this.#tabStopIndex,
       count: this.options.length,
-      isDisabled: index => this.options[index]?.disabled === true,
+      isDisabled: (index) => this.options[index]?.disabled === true,
     });
     if (target === null) {
       return;
@@ -104,9 +102,7 @@ export class DsSegmentedControl extends DsElement {
         ?disabled=${this.disabled || option.disabled}
         @ds-click=${() => this.#select(option)}
       >
-        ${option.icon
-          ? html`<ds-icon slot="leading" name=${option.icon} size="sm"></ds-icon>`
-          : nothing}
+        ${option.icon ? html`<ds-icon slot="leading" name=${option.icon} size="sm"></ds-icon>` : nothing}
         ${option.label}
       </ds-button>
     `;
@@ -115,14 +111,7 @@ export class DsSegmentedControl extends DsElement {
   override render(): TemplateResult {
     return html`
       ${this.label ? renderFieldLabel(this.label, false, 'group') : nothing}
-      <div
-        class="group"
-        id="group"
-        role="radiogroup"
-        aria-label=${this.label}
-        part="group"
-        @keydown=${this.#onKeydown}
-      >
+      <div class="group" id="group" role="radiogroup" aria-label=${this.label} part="group" @keydown=${this.#onKeydown}>
         ${this.options.map((option, index) => this.#renderSegment(option, index))}
       </div>
       ${renderSubtext(this.description, '', false)}

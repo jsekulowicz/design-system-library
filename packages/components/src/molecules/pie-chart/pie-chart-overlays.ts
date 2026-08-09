@@ -36,10 +36,7 @@ function tooltipPosition(slice: PieSlice): { left: number; top: number; transfor
   };
 }
 
-export function renderPieTooltip(
-  ctx: PieRenderContext,
-  slices: readonly PieSlice[],
-): TemplateResult {
+export function renderPieTooltip(ctx: PieRenderContext, slices: readonly PieSlice[]): TemplateResult {
   const slice = ctx.activeIndex == null ? undefined : slices[ctx.activeIndex];
   const position = slice ? tooltipPosition(slice) : { left: 50, top: 50, transform: 'none' };
   return html`
@@ -54,9 +51,7 @@ export function renderPieTooltip(
       ${slice
         ? html`
             <div class="tooltip-title">${slice.label}</div>
-            <div class="tooltip-row-value">
-              ${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})
-            </div>
+            <div class="tooltip-row-value">${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})</div>
           `
         : nothing}
     </div>
@@ -71,9 +66,7 @@ export function renderPieLegend(ctx: PieRenderContext, slices: readonly PieSlice
           <span class="legend-item">
             <span class="legend-swatch" style="background:${ctx.sliceColor(slice, index)}"></span>
             <span class="legend-label">${slice.label}</span>
-            <span class="legend-value">
-              ${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})
-            </span>
+            <span class="legend-value"> ${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)}) </span>
           </span>
         `,
       )}
@@ -85,7 +78,9 @@ export function renderPieSrTable(ctx: PieRenderContext, slices: readonly PieSlic
   return html`
     <div class="visually-hidden">
       <table>
-        <caption>${ctx.title || 'Pie chart data'}</caption>
+        <caption>
+          ${ctx.title || 'Pie chart data'}
+        </caption>
         <thead>
           <tr>
             <th scope="col">Category</th>
@@ -95,7 +90,7 @@ export function renderPieSrTable(ctx: PieRenderContext, slices: readonly PieSlic
         </thead>
         <tbody>
           ${slices.map(
-            slice => html`
+            (slice) => html`
               <tr>
                 <th scope="row">${slice.label}</th>
                 <td>${ctx.formatValue(slice.value)}</td>

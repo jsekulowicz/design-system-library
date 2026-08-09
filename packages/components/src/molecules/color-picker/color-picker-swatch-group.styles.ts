@@ -19,10 +19,7 @@ export const colorPickerSwatchGroupStyles = css`
 
   .swatches {
     display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(var(--color-picker-swatch-size), var(--color-picker-swatch-size))
-    );
+    grid-template-columns: repeat(auto-fill, minmax(var(--color-picker-swatch-size), var(--color-picker-swatch-size)));
     gap: var(--ds-space-2);
   }
 `;

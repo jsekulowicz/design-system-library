@@ -9,21 +9,15 @@ describe('toggle control typography', () => {
   });
 
   it('leaves descender room in the label line box so the host box contains it', () => {
-    expect(toggleControlStyles.cssText).toMatch(
-      /label\s*{[^}]*line-height: var\(--ds-line-height-snug\)/s,
-    );
+    expect(toggleControlStyles.cssText).toMatch(/label\s*{[^}]*line-height: var\(--ds-line-height-snug\)/s);
     expect(toggleControlStyles.cssText).not.toMatch(/label\s*{[^}]*line-height: 1;/s);
   });
 
   it('takes the host baseline from the label text, not the control box', () => {
-    expect(toggleControlStyles.cssText).toMatch(
-      /\[part~='label'\]\s*{[^}]*align-self: baseline/s,
-    );
+    expect(toggleControlStyles.cssText).toMatch(/\[part~='label'\]\s*{[^}]*align-self: baseline/s);
   });
 
   it('keeps labels above grouped fields at the small font size', () => {
-    expect(formFieldStyles.cssText).toMatch(
-      /\.label\s*{[^}]*font-size: var\(--ds-font-size-body-md\)/s,
-    );
+    expect(formFieldStyles.cssText).toMatch(/\.label\s*{[^}]*font-size: var\(--ds-font-size-body-md\)/s);
   });
 });

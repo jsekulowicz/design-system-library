@@ -7,10 +7,7 @@ const configDir = dirname(fileURLToPath(import.meta.url));
 const publicDir = resolve(configDir, '../public');
 
 const config: StorybookConfig = {
-  stories: [
-    '../stories/**/*.mdx',
-    '../stories/**/*.stories.@(ts|tsx)',
-  ],
+  stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(ts|tsx)'],
 
   addons: ['@storybook/addon-a11y', '@storybook/addon-docs'],
 

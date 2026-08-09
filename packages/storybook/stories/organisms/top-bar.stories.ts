@@ -36,9 +36,7 @@ export const BrandWithPageName: Story = {
     <ds-top-bar>
       <span slot="brand">
         <strong>Brand</strong>
-        <span style="color:var(--ds-color-fg-muted);margin-inline-start:var(--ds-space-2)">
-          Settings
-        </span>
+        <span style="color:var(--ds-color-fg-muted);margin-inline-start:var(--ds-space-2)"> Settings </span>
       </span>
       <ds-button slot="actions" variant="ghost" size="sm" square label="Menu" aria-label="Menu">
         <ds-icon slot="leading" name="bars-3" size="xl"></ds-icon>

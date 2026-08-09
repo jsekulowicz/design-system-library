@@ -25,9 +25,7 @@ export class SlottedTriggerController {
   onSlotChange = (event: Event): void => {
     const slot = event.target as HTMLSlotElement;
     const next =
-      slot
-        .assignedElements({ flatten: true })
-        .find((el): el is HTMLElement => el instanceof HTMLElement) ?? null;
+      slot.assignedElements({ flatten: true }).find((el): el is HTMLElement => el instanceof HTMLElement) ?? null;
     if (this.#element && this.#element !== next) {
       this.detach();
     }

@@ -46,7 +46,9 @@ test('typing in search after relabeling recent docs does not crash the manager',
   await expect(search).toHaveValue('s');
   await expect(page.getByText('Something went wrong')).toHaveCount(0);
   await expect(page.getByRole('option', { name: /Sidenav/ })).toBeVisible();
-  expect(errors).not.toContain("Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.");
+  expect(errors).not.toContain(
+    "Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.",
+  );
 });
 
 async function openDocs(page: Page, id: string): Promise<void> {

@@ -48,10 +48,7 @@ export class DsNavGroup extends DsElement {
 
   #warnIfMissingIcon(): void {
     if (this.compact && !this.#hasAssignedIcon()) {
-      console.error(
-        '[ds-nav-group] compact mode requires a child element with slot="icon".',
-        this,
-      );
+      console.error('[ds-nav-group] compact mode requires a child element with slot="icon".', this);
     }
   }
 
@@ -73,11 +70,7 @@ export class DsNavGroup extends DsElement {
     if (this._hasIcon) {
       return html`<span class="icon" part="icon">${iconSlot}</span>`;
     }
-    return html`<slot
-      class="icon-probe"
-      name="icon"
-      @slotchange=${this.#onIconSlotChange}
-    ></slot>`;
+    return html`<slot class="icon-probe" name="icon" @slotchange=${this.#onIconSlotChange}></slot>`;
   }
 
   #renderHeading(): TemplateResult {
@@ -97,9 +90,7 @@ export class DsNavGroup extends DsElement {
     >
       ${this.#renderIcon()}
       <span class="label">${this.label}</span>
-      ${this.collapsible
-        ? html`<ds-icon class="chevron" name="chevron-down" size="xl"></ds-icon>`
-        : null}
+      ${this.collapsible ? html`<ds-icon class="chevron" name="chevron-down" size="xl"></ds-icon>` : null}
     </button>`;
   }
 
@@ -108,24 +99,13 @@ export class DsNavGroup extends DsElement {
     const headingId = `${this.uid}-heading`;
     const isOpen = !this.collapsible || this.expanded;
     const heading = this.compact
-      ? html`<ds-tooltip
-          class="tooltip-wrapper"
-          placement="right"
-          delay=${this.compactHoverTooltipDelay}
-        >
+      ? html`<ds-tooltip class="tooltip-wrapper" placement="right" delay=${this.compactHoverTooltipDelay}>
           ${this.#renderHeading()}
           <span slot="tip">${this.label}</span>
         </ds-tooltip>`
       : this.#renderHeading();
     return html`${heading}
-      <div
-        class="items"
-        part="items"
-        id=${itemsId}
-        role="list"
-        aria-labelledby=${headingId}
-        ?hidden=${!isOpen}
-      >
+      <div class="items" part="items" id=${itemsId} role="list" aria-labelledby=${headingId} ?hidden=${!isOpen}>
         <slot></slot>
       </div>`;
   }

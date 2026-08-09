@@ -79,9 +79,7 @@ describe('<ds-heatmap-calendar>', () => {
     const cells = element.shadowRoot!.querySelectorAll('rect.cell');
     const rows = element.shadowRoot!.querySelectorAll('.visually-hidden tbody tr');
     expect(rows).toHaveLength(cells.length);
-    expect(element.shadowRoot!.querySelector('.visually-hidden table')?.textContent).toContain(
-      'Jul 13, 2026',
-    );
+    expect(element.shadowRoot!.querySelector('.visually-hidden table')?.textContent).toContain('Jul 13, 2026');
   });
 
   it('keeps the tooltip and legend outside the horizontal scroller', async () => {
@@ -103,9 +101,7 @@ describe('<ds-heatmap-calendar>', () => {
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
     await element.updateComplete;
 
-    expect(element.shadowRoot!.querySelector('.tooltip')?.getAttribute('data-position')).toBe(
-      'below',
-    );
+    expect(element.shadowRoot!.querySelector('.tooltip')?.getAttribute('data-position')).toBe('below');
   });
 
   it('keeps tooltip coordinates in sync with horizontal scrolling', async () => {

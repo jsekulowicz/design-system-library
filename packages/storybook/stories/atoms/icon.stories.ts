@@ -20,37 +20,45 @@ export default meta;
 type Story = StoryObj;
 
 export const Playground: Story = {
-  render: (args) => html`
-<ds-icon name=${args['name']} size=${args['size']} label=${args['label']}></ds-icon>
-  `,
+  render: (args) => html` <ds-icon name=${args['name']} size=${args['size']} label=${args['label']}></ds-icon> `,
 };
 
 export const Sizes: Story = {
   render: () => html`
-<div style="
+    <div
+      style="
   display:grid;
   grid-template-columns:repeat(7, minmax(4rem, 1fr));
   gap:var(--ds-space-4);
   align-items:end;
   max-width:40rem;
-">
-  ${(['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const).map((size) => html`
-    <figure style="
+"
+    >
+      ${(['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const).map(
+        (size) => html`
+          <figure
+            style="
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:var(--ds-space-2);
       margin:0;
-    ">
-      <ds-icon name="arrow-right" size=${size}></ds-icon>
-      <figcaption style="
+    "
+          >
+            <ds-icon name="arrow-right" size=${size}></ds-icon>
+            <figcaption
+              style="
         color:var(--ds-color-fg-muted);
         font-family:var(--ds-font-body);
         font-size:var(--ds-font-size-body-sm);
         font-weight:var(--ds-font-weight-medium);
-      ">${size}</figcaption>
-    </figure>
-  `)}
-</div>
+      "
+            >
+              ${size}
+            </figcaption>
+          </figure>
+        `,
+      )}
+    </div>
   `,
 };

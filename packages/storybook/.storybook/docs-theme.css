@@ -207,11 +207,7 @@ p {
 }
 
 .sbdocs .docblock-argstable label:has(> input[type='checkbox']) input:checked ~ span:last-of-type,
-.sbdocs
-  .docblock-argstable
-  label:has(> input[type='checkbox'])
-  input:not(:checked)
-  ~ span:first-of-type {
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) input:not(:checked) ~ span:first-of-type {
   background: var(--ds-color-accent) !important;
   color: var(--ds-color-accent-fg) !important;
   box-shadow: none !important;

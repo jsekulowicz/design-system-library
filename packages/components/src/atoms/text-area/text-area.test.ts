@@ -70,9 +70,7 @@ describe('<ds-text-area>', () => {
   });
 
   it('reflects placeholder and readonly into the inner textarea; disabled maps to readonly', async () => {
-    const el = await mount<DsTextArea>(
-      '<ds-text-area placeholder="Write a reply" readonly disabled></ds-text-area>',
-    );
+    const el = await mount<DsTextArea>('<ds-text-area placeholder="Write a reply" readonly disabled></ds-text-area>');
     const input = textarea(el);
     expect(input.placeholder).toBe('Write a reply');
     expect(input.readOnly).toBe(true);

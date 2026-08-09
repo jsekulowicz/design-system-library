@@ -12,11 +12,7 @@ export function hasAssignedContent(slot: HTMLSlotElement): boolean {
 }
 
 /* Falls back to inspecting light-DOM children before the slot has rendered. */
-export function hasNamedSlotContent(
-  host: HTMLElement,
-  name: string,
-  slot?: HTMLSlotElement | null,
-): boolean {
+export function hasNamedSlotContent(host: HTMLElement, name: string, slot?: HTMLSlotElement | null): boolean {
   if (slot) {
     return hasAssignedContent(slot);
   }

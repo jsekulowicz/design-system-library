@@ -17,7 +17,8 @@ export const cardStyles = css`
     border-radius: var(--ds-radius-sm);
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
-    transition: border-color var(--ds-duration-normal) var(--ds-easing-standard),
+    transition:
+      border-color var(--ds-duration-normal) var(--ds-easing-standard),
       transform var(--ds-duration-normal) var(--ds-easing-standard);
   }
   :host([elevation='sm']) .card {

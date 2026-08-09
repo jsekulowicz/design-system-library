@@ -28,23 +28,26 @@ export default meta;
 type Story = StoryObj;
 
 function componentShowcase(vars: string): ReturnType<typeof html> {
-  return html`
-<div style="${vars};display:grid;gap:var(--ds-space-4);max-width:480px">
-  <ds-card elevation="sm">
-    <ds-badge slot="eyebrow" tone="accent">Themed</ds-badge>
-    <span slot="title">Override the semantic layer</span>
-    <p>Every <code>ds-*</code> component reads from the same semantic CSS custom properties. Change the tokens, every component updates.</p>
-    <div slot="actions">
-      <ds-button variant="primary">Primary</ds-button>
-      <ds-button variant="ghost">Ghost</ds-button>
-    </div>
-  </ds-card>
-  <ds-text-field placeholder="Type to test focus ring"></ds-text-field>
-</div>`;
+  return html` <div style="${vars};display:grid;gap:var(--ds-space-4);max-width:480px">
+    <ds-card elevation="sm">
+      <ds-badge slot="eyebrow" tone="accent">Themed</ds-badge>
+      <span slot="title">Override the semantic layer</span>
+      <p>
+        Every <code>ds-*</code> component reads from the same semantic CSS custom properties. Change the tokens, every
+        component updates.
+      </p>
+      <div slot="actions">
+        <ds-button variant="primary">Primary</ds-button>
+        <ds-button variant="ghost">Ghost</ds-button>
+      </div>
+    </ds-card>
+    <ds-text-field placeholder="Type to test focus ring"></ds-text-field>
+  </div>`;
 }
 
 export const LivePlayground: Story = {
-  render: (args) => componentShowcase(`
+  render: (args) =>
+    componentShowcase(`
     --ds-color-accent:${args['accent']};
     --ds-color-accent-hover:${args['accentHover']};
     --ds-radius-sm:${args['radius']}px;
@@ -54,27 +57,40 @@ export const LivePlayground: Story = {
 };
 
 export const BrandPresets: Story = {
-  render: () => html`
-<section style="display:grid;gap:var(--ds-space-6);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
-  <p style="margin:0;color:var(--ds-color-fg-muted);max-width:56ch">
-    Three example brand configurations. Each overrides only the tokens that differ from the base theme — no component code changes.
-  </p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--ds-space-5)">
-    <div>
-      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Cobalt (default)</p>
-      ${componentShowcase('')}
-    </div>
-    <div>
-      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Vermilion</p>
-      ${componentShowcase(`
+  render: () =>
+    html` <section style="display:grid;gap:var(--ds-space-6);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+      <p style="margin:0;color:var(--ds-color-fg-muted);max-width:56ch">
+        Three example brand configurations. Each overrides only the tokens that differ from the base theme — no
+        component code changes.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--ds-space-5)">
+        <div>
+          <p
+            style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+          >
+            Cobalt (default)
+          </p>
+          ${componentShowcase('')}
+        </div>
+        <div>
+          <p
+            style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+          >
+            Vermilion
+          </p>
+          ${componentShowcase(`
         --ds-color-accent:#E2341D;
         --ds-color-accent-hover:#C12613;
         --ds-color-accent-active:#9A1B0C;
         --ds-color-accent-subtle:rgba(226,52,29,0.1)`)}
-    </div>
-    <div>
-      <p style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Rounded Teal</p>
-      ${componentShowcase(`
+        </div>
+        <div>
+          <p
+            style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+          >
+            Rounded Teal
+          </p>
+          ${componentShowcase(`
         --ds-color-accent:#1F7A7A;
         --ds-color-accent-hover:#166666;
         --ds-color-accent-active:#0D5252;
@@ -82,7 +98,7 @@ export const BrandPresets: Story = {
         --ds-radius-sm:12px;
         --ds-radius-md:24px;
         --ds-radius-lg:32px`)}
-    </div>
-  </div>
-</section>`,
+        </div>
+      </div>
+    </section>`,
 };

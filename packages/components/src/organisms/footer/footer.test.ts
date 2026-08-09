@@ -40,9 +40,7 @@ describe('<ds-footer>', () => {
   });
 
   it('uses a fixed 36px chrome height on footer and 16px inline padding on the inner content wrapper', () => {
-    const css = (DsFooter as unknown as { styles: { cssText: string }[] }).styles
-      .map((s) => s.cssText)
-      .join('\n');
+    const css = (DsFooter as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
     // Full-width chrome (height + border-top) lives on footer itself.
     expect(css).toMatch(/footer\s*{[^}]*height:\s*36px/);
     // The inner wrapper holds the 16px symmetric padding and centers

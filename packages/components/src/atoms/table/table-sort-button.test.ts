@@ -63,7 +63,7 @@ describe('<ds-table-sort-button>', () => {
 
   it('uses the shared focus shadow for keyboard focus', () => {
     const css = (DsTableSortButton as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).toContain('button:focus-visible');
     expect(css).toContain('box-shadow: var(--ds-shadow-focus)');

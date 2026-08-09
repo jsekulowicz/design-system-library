@@ -6,12 +6,7 @@ import '../../atoms/skeleton/define.js';
 import { heatmapCalendarStyles } from './heatmap-calendar.styles.js';
 import { computeHeatmapLayout, parseDate } from './heatmap-layout.js';
 import { actionForKey } from './heatmap-interaction.js';
-import {
-  defaultDateFormatter,
-  monthFormatter,
-  todayDate,
-  weekdayLabels,
-} from './heatmap-formatters.js';
+import { defaultDateFormatter, monthFormatter, todayDate, weekdayLabels } from './heatmap-formatters.js';
 import { heatmapDimensions, renderHeatmapSvg } from './heatmap-calendar-svg.js';
 import {
   heatmapAriaLabel,
@@ -74,12 +69,7 @@ export class DsHeatmapCalendar extends DsElement {
     if (this.loading) {
       const dimensions = heatmapDimensions(ctx, layout);
       return html`
-        <div
-          class="frame loading-frame"
-          part="chart"
-          aria-busy="true"
-          aria-label=${this.title || 'Activity calendar'}
-        >
+        <div class="frame loading-frame" part="chart" aria-busy="true" aria-label=${this.title || 'Activity calendar'}>
           <div class="scroller" part="scroller">
             <ds-skeleton
               variant="rectangle"
@@ -107,15 +97,11 @@ export class DsHeatmapCalendar extends DsElement {
           @pointermove=${this.#onPointerMove}
           @pointerleave=${this.#clearPointer}
         >
-          <div class="canvas" style="--heatmap-viewport-width:${this._width}px">
-            ${renderHeatmapSvg(ctx, layout)}
-          </div>
+          <div class="canvas" style="--heatmap-viewport-width:${this._width}px">${renderHeatmapSvg(ctx, layout)}</div>
         </div>
-        ${renderHeatmapTooltip(ctx, layout)}
-        ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
+        ${renderHeatmapTooltip(ctx, layout)} ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
       </div>
-      ${renderChartTitle(this.uid, heatmapAriaLabel(ctx, layout))}
-      ${renderHeatmapSrTable(ctx, layout)}
+      ${renderChartTitle(this.uid, heatmapAriaLabel(ctx, layout))} ${renderHeatmapSrTable(ctx, layout)}
       ${renderChartLiveRegion(heatmapLiveText(ctx, layout))}
     `;
   }
@@ -189,9 +175,7 @@ export class DsHeatmapCalendar extends DsElement {
   };
 
   #onPointerMove = (event: PointerEvent): void => {
-    const target = event.composedPath().find((item) => item instanceof SVGRectElement) as
-      | SVGRectElement
-      | undefined;
+    const target = event.composedPath().find((item) => item instanceof SVGRectElement) as SVGRectElement | undefined;
     const index = Number(target?.dataset['index']);
     if (Number.isInteger(index)) {
       this._focusMode = 'pointer';

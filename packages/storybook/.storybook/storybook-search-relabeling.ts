@@ -98,7 +98,9 @@ function isSearchTextInput(event: KeyboardEvent): boolean {
   if (!(event.target instanceof HTMLInputElement)) {
     return false;
   }
-  return (event.target.type === 'search' || event.target.getAttribute('role') === 'searchbox') && event.key.length === 1;
+  return (
+    (event.target.type === 'search' || event.target.getAttribute('role') === 'searchbox') && event.key.length === 1
+  );
 }
 
 export function setupRecentDocsRelabeling(): void {

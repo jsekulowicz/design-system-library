@@ -58,7 +58,10 @@ function getSearchPathLabel(leafElements: HTMLElement[], labelCell: HTMLElement)
 
 function getSearchIdLabel(item: HTMLElement): string {
   const id = item.dataset['id'] ?? '';
-  const path = id.replace(/--docs$/, '').split('-').filter(Boolean);
+  const path = id
+    .replace(/--docs$/, '')
+    .split('-')
+    .filter(Boolean);
   return path.at(-1) ?? '';
 }
 

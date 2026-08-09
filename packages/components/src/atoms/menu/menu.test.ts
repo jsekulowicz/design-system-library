@@ -83,9 +83,7 @@ describe('<ds-menu>', () => {
     await el.updateComplete;
     const items = getItems(el);
     const events: CustomEvent<{ value: string }>[] = [];
-    el.addEventListener('ds-select', (event) =>
-      events.push(event as CustomEvent<{ value: string }>),
-    );
+    el.addEventListener('ds-select', (event) => events.push(event as CustomEvent<{ value: string }>));
     items[1]?.click();
     expect(events).toHaveLength(1);
     expect(events[0]?.detail.value).toBe('save-as');
@@ -130,9 +128,7 @@ describe('<ds-menu>', () => {
     expect(header.hidden).toBe(false);
     expect(footer.hidden).toBe(false);
 
-    const empty = await mount<DsMenu>(
-      '<ds-menu label="X"><ds-menu-item>One</ds-menu-item></ds-menu>',
-    );
+    const empty = await mount<DsMenu>('<ds-menu label="X"><ds-menu-item>One</ds-menu-item></ds-menu>');
     await empty.updateComplete;
     expect((empty.shadowRoot!.querySelector('.header') as HTMLElement).hidden).toBe(true);
     expect((empty.shadowRoot!.querySelector('.footer') as HTMLElement).hidden).toBe(true);

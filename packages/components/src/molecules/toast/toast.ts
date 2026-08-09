@@ -85,8 +85,7 @@ export class DsToast extends DsElement {
     this.#dismissed = true;
     this.#clearTimer();
     // Don't pull focus back if the user has already moved it out of the toast.
-    const returnTo =
-      this.restoreFocusTo && this.contains(document.activeElement) ? this.restoreFocusTo : null;
+    const returnTo = this.restoreFocusTo && this.contains(document.activeElement) ? this.restoreFocusTo : null;
     this.emit('ds-dismiss', { detail: { reason } });
     this.remove();
     returnTo?.focus();

@@ -32,21 +32,11 @@ export const Playground: Story = {
   render: (args) => html`
     <div>
       <ds-button @ds-click=${openDialog}>Open dialog</ds-button>
-      <ds-dialog
-        size=${args['size']}
-        ?dismissible=${args['dismissible']}
-        label=${args['label']}
-      >
+      <ds-dialog size=${args['size']} ?dismissible=${args['dismissible']} label=${args['label']}>
         <span slot="title">Confirm action</span>
-        <p>
-          Are you sure you want to proceed? This action cannot be undone.
-        </p>
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}>
-          Cancel
-        </ds-button>
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
-          Confirm
-        </ds-button>
+        <p>Are you sure you want to proceed? This action cannot be undone.</p>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}> Cancel </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Confirm </ds-button>
       </ds-dialog>
     </div>
   `,
@@ -60,17 +50,14 @@ export const ScrollingBody: Story = {
         <span slot="title">Terms of service</span>
         ${Array.from(
           { length: 24 },
-          (_, i) => html`<p>
-            Section ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>`,
+          (_, i) =>
+            html`<p>
+              Section ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua.
+            </p>`,
         )}
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}>
-          Decline
-        </ds-button>
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
-          Accept
-        </ds-button>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}> Decline </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Accept </ds-button>
       </ds-dialog>
     </div>
   `,
@@ -107,28 +94,16 @@ export const WithFormFields: Story = {
         <span slot="title">Pick for me</span>
         <p>Give us a few hints and we'll pick a puzzle that fits.</p>
         <div class="form">
-          <ds-select
-            label="Difficulty"
-            .options=${sampleOptions}
-            value="any"
-          ></ds-select>
-          <ds-select
-            label="Size"
-            .options=${sampleSizes}
-            value="any"
-          ></ds-select>
+          <ds-select label="Difficulty" .options=${sampleOptions} value="any"></ds-select>
+          <ds-select label="Size" .options=${sampleSizes} value="any"></ds-select>
           <ds-text-field
             label="Theme"
             description="Optional — leave blank for any theme"
             placeholder="e.g. food, travel"
           ></ds-text-field>
         </div>
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}>
-          Cancel
-        </ds-button>
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
-          Pick a crossword
-        </ds-button>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}> Cancel </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Pick a crossword </ds-button>
       </ds-dialog>
       <style>
         .form {
@@ -158,12 +133,8 @@ export const TrailingCheckbox: Story = {
         <span slot="title">Report a problem</span>
         <p>Tell us what went wrong and we'll take a look.</p>
         <ds-checkbox>Include a copy of the puzzle</ds-checkbox>
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}>
-          Cancel
-        </ds-button>
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
-          Send
-        </ds-button>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}> Cancel </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Send </ds-button>
       </ds-dialog>
     </div>
   `,
@@ -186,13 +157,9 @@ export const CustomMaxHeight: Story = {
         <span slot="title">Terms of service</span>
         ${Array.from(
           { length: 12 },
-          (_, i) => html`<p>
-            Section ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>`,
+          (_, i) => html`<p>Section ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>`,
         )}
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
-          Accept
-        </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Accept </ds-button>
       </ds-dialog>
     </div>
   `,
@@ -205,9 +172,7 @@ export const NotDismissible: Story = {
       <ds-dialog ?dismissible=${false}>
         <span slot="title">Saving changes…</span>
         <p>The Escape key and backdrop are disabled. Choose an action to continue.</p>
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}>
-          Got it
-        </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Got it </ds-button>
       </ds-dialog>
     </div>
   `,

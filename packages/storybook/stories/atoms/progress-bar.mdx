@@ -18,25 +18,36 @@ A `track` containing a coloured `indicator` (the fill) and a centred `label` chi
   <ds-tab slot="tab" value="examples">Examples</ds-tab>
   <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
 
-  <ds-tab-panel value="api">
-    <Canvas of={ProgressBarStories.Playground} />
-    <h3>Props</h3>
-    <Controls of={ProgressBarStories.Playground} />
-    <ComponentApi tag="ds-progress-bar" />
-    <h3>Styling</h3>
-    <p>The bar is <code>1.5rem</code> tall and filled with <code>--ds-color-success</code> by default. Override via CSS parts:</p>
-    <ul>
-      <li><code>::part(track)</code> — height, track background and radius.</li>
-      <li><code>::part(indicator)</code> — the fill colour.</li>
-      <li><code>::part(label)</code> — the centred label chip.</li>
-    </ul>
-    <pre><code>{`ds-progress-bar::part(track) { height: 2.25rem; }
-ds-progress-bar::part(indicator) { background: var(--ds-color-accent); }`}</code></pre>
-  </ds-tab-panel>
+<ds-tab-panel value="api">
+  <Canvas of={ProgressBarStories.Playground} />
+  <h3>Props</h3>
+  <Controls of={ProgressBarStories.Playground} />
+  <ComponentApi tag="ds-progress-bar" />
+  <h3>Styling</h3>
+  <p>
+    The bar is <code>1.5rem</code> tall and filled with <code>--ds-color-success</code> by default. Override via CSS
+    parts:
+  </p>
+  <ul>
+    <li>
+      <code>::part(track)</code> — height, track background and radius.
+    </li>
+    <li>
+      <code>::part(indicator)</code> — the fill colour.
+    </li>
+    <li>
+      <code>::part(label)</code> — the centred label chip.
+    </li>
+  </ul>
+  <pre>
+    <code>{`ds-progress-bar::part(track) { height: 2.25rem; }
+ds-progress-bar::part(indicator) { background: var(--ds-color-accent); }`}</code>
+  </pre>
+</ds-tab-panel>
 
-  <ds-tab-panel value="examples">
-    <Stories includePrimary={false} />
-  </ds-tab-panel>
+<ds-tab-panel value="examples">
+  <Stories includePrimary={false} />
+</ds-tab-panel>
 
   <ds-tab-panel value="guidelines">
     <h3>Do</h3>

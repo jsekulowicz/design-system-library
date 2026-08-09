@@ -56,9 +56,7 @@ export class DsBreadcrumbItem extends DsElement {
 
   #renderText(): TemplateResult {
     const ariaCurrent = this.current ? 'page' : nothing;
-    return html`
-      <span part="current" class="current" aria-current=${ariaCurrent}> ${this.#renderLabel()} </span>
-    `;
+    return html` <span part="current" class="current" aria-current=${ariaCurrent}> ${this.#renderLabel()} </span> `;
   }
 
   #renderSeparator(): TemplateResult | typeof nothing {
@@ -73,8 +71,6 @@ export class DsBreadcrumbItem extends DsElement {
   }
 
   override render(): TemplateResult {
-    return html`
-      ${this.href ? this.#renderAnchor() : this.#renderText()} ${this.#renderSeparator()}
-    `;
+    return html` ${this.href ? this.#renderAnchor() : this.#renderText()} ${this.#renderSeparator()} `;
   }
 }

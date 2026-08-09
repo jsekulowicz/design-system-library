@@ -76,14 +76,12 @@ export class DsPageShell extends DsElement {
   #resizeObserver: ResizeObserver | null = null;
   #slotObserver: MutationObserver | null = null;
 
-  private readonly _asideScrollFade = new ScrollFadeController(
-    this,
-    () => this.shadowRoot?.querySelector('aside[part="aside"]'),
+  private readonly _asideScrollFade = new ScrollFadeController(this, () =>
+    this.shadowRoot?.querySelector('aside[part="aside"]'),
   );
 
-  private readonly _asideEndScrollFade = new ScrollFadeController(
-    this,
-    () => this.shadowRoot?.querySelector('aside[part="aside-end"]'),
+  private readonly _asideEndScrollFade = new ScrollFadeController(this, () =>
+    this.shadowRoot?.querySelector('aside[part="aside-end"]'),
   );
 
   override connectedCallback(): void {
@@ -121,11 +119,7 @@ export class DsPageShell extends DsElement {
   }
 
   override updated(changed: PropertyValues): void {
-    if (
-      changed.has('asideState') ||
-      changed.has('_mobileLayout') ||
-      changed.has('_hasAside')
-    ) {
+    if (changed.has('asideState') || changed.has('_mobileLayout') || changed.has('_hasAside')) {
       this.#syncSlottedAsideCollapsed();
     }
   }
@@ -157,8 +151,7 @@ export class DsPageShell extends DsElement {
     const elements = slot
       ? slot.assignedElements({ flatten: true })
       : Array.from(this.children).filter((child) => !child.slot);
-    const hasScrollablePage =
-      elements.length === 1 && elements[0]?.tagName === 'DS-SCROLLABLE-PAGE';
+    const hasScrollablePage = elements.length === 1 && elements[0]?.tagName === 'DS-SCROLLABLE-PAGE';
     this.toggleAttribute('scrollable-main', hasScrollablePage);
   }
 
@@ -191,9 +184,7 @@ export class DsPageShell extends DsElement {
       .some(
         (node) =>
           node instanceof HTMLElement &&
-          (node.tagName === 'DS-NAV-ITEM' ||
-            node.tagName === 'A' ||
-            node.getAttribute('href') !== null),
+          (node.tagName === 'DS-NAV-ITEM' || node.tagName === 'A' || node.getAttribute('href') !== null),
       );
     if (clickedNavItem) {
       this.#setMobileNav(false);
@@ -269,10 +260,8 @@ export class DsPageShell extends DsElement {
       onAsideEndSlotChange: this.#onAsideEndSlotChange,
       toggleMobileNav: () => this.#setMobileNav(!this._mobileNavOpen),
       closeMobileNav: () => this.#setMobileNav(false),
-      toggleAsideState: () =>
-        this.#setAsideState(this.asideState === 'visible' ? 'compact' : 'visible'),
-      toggleAsideEndState: () =>
-        this.#setAsideEndState(this.asideEndState === 'visible' ? 'hidden' : 'visible'),
+      toggleAsideState: () => this.#setAsideState(this.asideState === 'visible' ? 'compact' : 'visible'),
+      toggleAsideEndState: () => this.#setAsideEndState(this.asideEndState === 'visible' ? 'hidden' : 'visible'),
     };
   }
 

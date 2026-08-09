@@ -21,8 +21,7 @@ export const scrollFadeStyles = css`
       rgb(0 0 0) 0,
       rgb(0 0 0) var(--ds-scroll-fade-offset, 0px),
       var(--ds-scroll-fade-top, rgb(0 0 0)) var(--ds-scroll-fade-offset, 0px),
-      rgb(0 0 0)
-        calc(var(--ds-scroll-fade-offset, 0px) + var(--ds-scroll-fade-depth, var(--ds-space-8))),
+      rgb(0 0 0) calc(var(--ds-scroll-fade-offset, 0px) + var(--ds-scroll-fade-depth, var(--ds-space-8))),
       rgb(0 0 0) calc(100% - var(--ds-scroll-fade-depth, var(--ds-space-8))),
       var(--ds-scroll-fade-bottom, rgb(0 0 0)) 100%
     );

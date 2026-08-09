@@ -27,11 +27,7 @@ const TURNS: readonly Turn[] = [
   { turnOrdinalNumber: 13, Jess: 4, Marco: 3, Andrew: 3, Stacey: 3 },
 ];
 
-const THREE_PLAYERS: readonly BarChartSeries[] = [
-  { key: 'Jess' },
-  { key: 'Marco' },
-  { key: 'Andrew' },
-];
+const THREE_PLAYERS: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
 
 const FOUR_PLAYERS: readonly BarChartSeries[] = [
   { key: 'Jess' },
@@ -107,22 +103,22 @@ type Story = StoryObj;
 export const Grouped: Story = {
   render: function render(args) {
     return html`
-<ds-bar-chart
-  .title=${args['title']}
-  .data=${args['data']}
-  .domain=${args['domain']}
-  .series=${args['series']}
-  ?stacked=${args['stacked']}
-  .xAxisLabel=${args['xAxisLabel']}
-  .yAxisLabel=${args['yAxisLabel']}
-  .height=${args['height']}
-  .showLegend=${args['showLegend']}
-  .loading=${args['loading']}
-  .loadingLabel=${args['loadingLabel']}
-  .formatValue=${args['formatValue']}
-  .formatDomain=${args['formatDomain']}
-></ds-bar-chart>
-  `;
+      <ds-bar-chart
+        .title=${args['title']}
+        .data=${args['data']}
+        .domain=${args['domain']}
+        .series=${args['series']}
+        ?stacked=${args['stacked']}
+        .xAxisLabel=${args['xAxisLabel']}
+        .yAxisLabel=${args['yAxisLabel']}
+        .height=${args['height']}
+        .showLegend=${args['showLegend']}
+        .loading=${args['loading']}
+        .loadingLabel=${args['loadingLabel']}
+        .formatValue=${args['formatValue']}
+        .formatDomain=${args['formatDomain']}
+      ></ds-bar-chart>
+    `;
   },
   parameters: {
     docs: {
@@ -146,43 +142,38 @@ export const Grouped: Story = {
 
 export const Loading: Story = {
   render: () => html`
-<ds-bar-chart
-  loading
-  title="Game turns — scores"
-  height="320"
-  .data=${TURNS}
-  domain="turnOrdinalNumber"
-  .series=${THREE_PLAYERS}
-  x-axis-label="Turn"
-  y-axis-label="Score"
-  .formatDomain=${(v: unknown) => `Turn ${v}`}
-></ds-bar-chart>
+    <ds-bar-chart
+      loading
+      title="Game turns — scores"
+      height="320"
+      .data=${TURNS}
+      domain="turnOrdinalNumber"
+      .series=${THREE_PLAYERS}
+      x-axis-label="Turn"
+      y-axis-label="Score"
+      .formatDomain=${(v: unknown) => `Turn ${v}`}
+    ></ds-bar-chart>
   `,
 };
 
 export const InitialLoading: Story = {
   render: () => html`
-<ds-bar-chart
-  loading
-  title="Game turns — scores"
-  height="320"
-  .series=${THREE_PLAYERS}
-></ds-bar-chart>
+    <ds-bar-chart loading title="Game turns — scores" height="320" .series=${THREE_PLAYERS}></ds-bar-chart>
   `,
 };
 
 export const Stacked: Story = {
   render: () => html`
-<ds-bar-chart
-  stacked
-  title="Game turns — stacked scores"
-  .data=${TURNS}
-  domain="turnOrdinalNumber"
-  .series=${THREE_PLAYERS}
-  x-axis-label="Turn"
-  y-axis-label="Total score"
-  .formatDomain=${(v: unknown) => `Turn ${v}`}
-></ds-bar-chart>
+    <ds-bar-chart
+      stacked
+      title="Game turns — stacked scores"
+      .data=${TURNS}
+      domain="turnOrdinalNumber"
+      .series=${THREE_PLAYERS}
+      x-axis-label="Turn"
+      y-axis-label="Total score"
+      .formatDomain=${(v: unknown) => `Turn ${v}`}
+    ></ds-bar-chart>
   `,
   parameters: {
     docs: {
@@ -207,16 +198,16 @@ export const Stacked: Story = {
 
 export const FourSeriesStacked: Story = {
   render: () => html`
-<ds-bar-chart
-  stacked
-  title="Game turns — all four players"
-  .data=${TURNS}
-  domain="turnOrdinalNumber"
-  .series=${FOUR_PLAYERS}
-  x-axis-label="Turn"
-  y-axis-label="Total score"
-  .formatDomain=${(v: unknown) => `Turn ${v}`}
-></ds-bar-chart>
+    <ds-bar-chart
+      stacked
+      title="Game turns — all four players"
+      .data=${TURNS}
+      domain="turnOrdinalNumber"
+      .series=${FOUR_PLAYERS}
+      x-axis-label="Turn"
+      y-axis-label="Total score"
+      .formatDomain=${(v: unknown) => `Turn ${v}`}
+    ></ds-bar-chart>
   `,
   parameters: {
     docs: {
@@ -241,13 +232,13 @@ export const FourSeriesStacked: Story = {
 
 export const FewGroups: Story = {
   render: () => html`
-<ds-bar-chart
-  .data=${TURNS.slice(0, 3)}
-  domain="turnOrdinalNumber"
-  .series=${THREE_PLAYERS}
-  x-axis-label="Turn"
-  y-axis-label="Score"
-></ds-bar-chart>
+    <ds-bar-chart
+      .data=${TURNS.slice(0, 3)}
+      domain="turnOrdinalNumber"
+      .series=${THREE_PLAYERS}
+      x-axis-label="Turn"
+      y-axis-label="Score"
+    ></ds-bar-chart>
   `,
   parameters: {
     docs: {
@@ -284,13 +275,13 @@ export const ManyGroups: Story = {
       Stacey: 2 + ((i * 2) % 5),
     }));
     return html`
-  <ds-bar-chart
-    .data=${many}
-    domain="turnOrdinalNumber"
-    .series=${FOUR_PLAYERS}
-    x-axis-label="Turn"
-    y-axis-label="Score"
-  ></ds-bar-chart>
+      <ds-bar-chart
+        .data=${many}
+        domain="turnOrdinalNumber"
+        .series=${FOUR_PLAYERS}
+        x-axis-label="Turn"
+        y-axis-label="Score"
+      ></ds-bar-chart>
     `;
   },
   parameters: {
@@ -333,17 +324,17 @@ export const WithFormatters: Story = {
     const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
     const monthFmt = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' });
     return html`
-  <ds-bar-chart
-    stacked
-    title="Quarterly revenue"
-    .data=${revenue}
-    domain="month"
-    .series=${series}
-    x-axis-label="Month"
-    y-axis-label="Revenue"
-    .formatValue=${(v: number) => money.format(v)}
-    .formatDomain=${(v: unknown) => monthFmt.format(new Date(String(v)))}
-  ></ds-bar-chart>
+      <ds-bar-chart
+        stacked
+        title="Quarterly revenue"
+        .data=${revenue}
+        domain="month"
+        .series=${series}
+        x-axis-label="Month"
+        y-axis-label="Revenue"
+        .formatValue=${(v: number) => money.format(v)}
+        .formatDomain=${(v: unknown) => monthFmt.format(new Date(String(v)))}
+      ></ds-bar-chart>
     `;
   },
   parameters: {
@@ -387,17 +378,17 @@ const monthFmt = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numer
 
 export const CustomColors: Story = {
   render: () => html`
-<ds-bar-chart
-  .data=${TURNS}
-  domain="turnOrdinalNumber"
-  .series=${[
-    { key: 'Jess', color: '#e2341d' },
-    { key: 'Marco', color: '#4a72cc' },
-    { key: 'Andrew', color: '#1f7a48' },
-  ] as BarChartSeries[]}
-  x-axis-label="Turn"
-  y-axis-label="Score"
-></ds-bar-chart>
+    <ds-bar-chart
+      .data=${TURNS}
+      domain="turnOrdinalNumber"
+      .series=${[
+        { key: 'Jess', color: '#e2341d' },
+        { key: 'Marco', color: '#4a72cc' },
+        { key: 'Andrew', color: '#1f7a48' },
+      ] as BarChartSeries[]}
+      x-axis-label="Turn"
+      y-axis-label="Score"
+    ></ds-bar-chart>
   `,
   parameters: {
     docs: {
@@ -427,23 +418,20 @@ const series = [
 
 export const CompactHeight: Story = {
   render: () => html`
-<div style="max-width: 420px;">
-  <ds-bar-chart
-    height="180"
-    .data=${TURNS.slice(0, 7)}
-    domain="turnOrdinalNumber"
-    .series=${THREE_PLAYERS}
-  ></ds-bar-chart>
-</div>
+    <div style="max-width: 420px;">
+      <ds-bar-chart
+        height="180"
+        .data=${TURNS.slice(0, 7)}
+        domain="turnOrdinalNumber"
+        .series=${THREE_PLAYERS}
+      ></ds-bar-chart>
+    </div>
   `,
   parameters: {
     docs: {
       source: {
         code: chartSnippet({
-          lead: [
-            `const turns = [/* first 7 turns */];`,
-            THREE_PLAYERS_SOURCE,
-          ],
+          lead: [`const turns = [/* first 7 turns */];`, THREE_PLAYERS_SOURCE],
           tag: `  <div style="max-width: 420px;">
     <ds-bar-chart
       height="180"

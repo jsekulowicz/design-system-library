@@ -84,9 +84,7 @@ describe('<ds-icon>', () => {
   });
 
   it('supports the full icon size scale', () => {
-    const css = (DsIcon as unknown as { styles: { cssText: string }[] }).styles
-      .map((s) => s.cssText)
-      .join('\n');
+    const css = (DsIcon as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
     expect(css).toMatch(/:host\s*{[^}]*width:\s*1\.125rem/);
     expect(css).toMatch(/:host\(\[size='sm'\]\)\s*{[^}]*width:\s*0\.875rem/);
     expect(css).toMatch(/:host\(\[size='md'\]\)\s*{[^}]*width:\s*1rem/);

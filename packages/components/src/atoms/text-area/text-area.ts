@@ -87,8 +87,13 @@ export class DsTextArea extends FormControlMixin(DsElement) {
     const current = typeof this.value === 'string' ? this.value : '';
     return html`
       ${renderFieldHeader(
-        this.label, this.required, 'input', this.optional,
-        current.length, this.maxLength, this.charCount,
+        this.label,
+        this.required,
+        'input',
+        this.optional,
+        current.length,
+        this.maxLength,
+        this.charCount,
       )}
       <textarea
         id="input"

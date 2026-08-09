@@ -60,12 +60,7 @@ export class DsTableSortButton extends DsElement {
 
   override render(): TemplateResult {
     return html`
-      <button
-        part="button"
-        type="button"
-        aria-label=${this.#ariaLabel()}
-        @click=${this.#onClick}
-      >
+      <button part="button" type="button" aria-label=${this.#ariaLabel()} @click=${this.#onClick}>
         <slot></slot>
         <span class="icon" part="icon">${this.#icon()}</span>
       </button>

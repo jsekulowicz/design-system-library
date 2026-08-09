@@ -64,8 +64,8 @@ export class DsRadioGroup extends DsElement {
 
   #wireRadios = (syncChecked: boolean): void => {
     const radios = this._radios;
-    const selectedIndex = radios.findIndex(radio => this.#radioValueOf(radio) === this.value);
-    const firstEnabled = radios.findIndex(radio => !radio.hasAttribute('disabled'));
+    const selectedIndex = radios.findIndex((radio) => this.#radioValueOf(radio) === this.value);
+    const firstEnabled = radios.findIndex((radio) => !radio.hasAttribute('disabled'));
     // Exactly one radio stays in the tab order: the selected one, or the first
     // enabled radio when nothing is selected yet (roving tabindex).
     const tabStopIndex = selectedIndex >= 0 ? selectedIndex : firstEnabled;
@@ -99,7 +99,7 @@ export class DsRadioGroup extends DsElement {
     const radios = this._radios;
     const target = resolveRovingTarget({
       key: event.key,
-      currentIndex: radios.findIndex(radio => this.#radioValueOf(radio) === this.value),
+      currentIndex: radios.findIndex((radio) => this.#radioValueOf(radio) === this.value),
       count: radios.length,
       isDisabled: this.#isRadioDisabledAt,
     });
@@ -116,9 +116,7 @@ export class DsRadioGroup extends DsElement {
     if (value !== this.value) {
       this.value = value;
       this.invalid = false;
-      this.dispatchEvent(
-        new CustomEvent('ds-change', { bubbles: true, composed: true, detail: { value } }),
-      );
+      this.dispatchEvent(new CustomEvent('ds-change', { bubbles: true, composed: true, detail: { value } }));
     }
     void this.updateComplete.then(() => radio.focus());
   };
@@ -138,8 +136,7 @@ export class DsRadioGroup extends DsElement {
     return html`
       <fieldset class="fieldset" part="fieldset" @keydown=${this.#onKeydown}>
         <legend class="label" part="legend">
-          ${this.label}
-          ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
+          ${this.label} ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items">
           <slot @slotchange=${this.#onSlotChange}></slot>

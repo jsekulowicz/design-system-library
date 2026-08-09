@@ -13,9 +13,15 @@ const DATA: readonly PieChartDatum[] = [
 
 describe('preparePieSlices', () => {
   it('sorts slices by value and computes percentages', () => {
-    const slices = preparePieSlices([{ label: 'small', value: 1 }, { label: 'big', value: 9 }], OPTIONS);
-    expect(slices.map(s => s.label)).toEqual(['big', 'small']);
-    expect(slices.map(s => s.percent)).toEqual([90, 10]);
+    const slices = preparePieSlices(
+      [
+        { label: 'small', value: 1 },
+        { label: 'big', value: 9 },
+      ],
+      OPTIONS,
+    );
+    expect(slices.map((s) => s.label)).toEqual(['big', 'small']);
+    expect(slices.map((s) => s.percent)).toEqual([90, 10]);
   });
 
   it('spans a full circle starting at twelve o clock', () => {
@@ -34,7 +40,7 @@ describe('preparePieSlices', () => {
       ],
       OPTIONS,
     );
-    expect(slices.map(s => s.label)).toEqual(['keep']);
+    expect(slices.map((s) => s.label)).toEqual(['keep']);
     expect(slices[0]!.percent).toBe(100);
   });
 
@@ -62,7 +68,7 @@ describe('preparePieSlices', () => {
       ],
       { ...OPTIONS, otherThreshold: 6 },
     );
-    expect(slices.map(s => s.label)).toEqual(['big', 'Other']);
+    expect(slices.map((s) => s.label)).toEqual(['big', 'Other']);
     expect(slices[1]!.percent).toBe(10);
   });
 
@@ -74,8 +80,8 @@ describe('preparePieSlices', () => {
       ],
       { ...OPTIONS, otherThreshold: 6 },
     );
-    expect(slices.map(s => s.label)).toEqual(['big', 'tiny']);
-    expect(slices.every(s => !s.isOther)).toBe(true);
+    expect(slices.map((s) => s.label)).toEqual(['big', 'tiny']);
+    expect(slices.every((s) => !s.isOther)).toBe(true);
   });
 
   it('carries per-datum colors through', () => {
@@ -136,7 +142,7 @@ describe('zero-value slices', () => {
       ],
       { ...OPTIONS, includeZeroSlices: true },
     );
-    expect(slices.map(s => s.label)).toEqual(['some', 'none']);
+    expect(slices.map((s) => s.label)).toEqual(['some', 'none']);
     expect(slices[1]!.percent).toBe(0);
     expect(slices[1]!.endAngle).toBe(slices[1]!.startAngle);
     expect(slices[1]!.color).toBe('grey');
@@ -152,7 +158,7 @@ describe('zero-value slices', () => {
       ],
       { ...OPTIONS, otherThreshold: 6, includeZeroSlices: true },
     );
-    expect(slices.map(s => s.label)).toEqual(['big', 'Other', 'none']);
+    expect(slices.map((s) => s.label)).toEqual(['big', 'Other', 'none']);
   });
 
   it('still reports no data when every value is zero', () => {

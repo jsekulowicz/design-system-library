@@ -35,18 +35,10 @@ export const Playground: Story = {
 export const Tones: Story = {
   render: () => html`
     <div style="display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:420px">
-      <ds-toast tone="info" heading="Heads up" duration=${0}>
-        We've added a new collaborator role.
-      </ds-toast>
-      <ds-toast tone="success" heading="Saved" duration=${0}>
-        Your changes are live.
-      </ds-toast>
-      <ds-toast tone="warning" heading="Heads up" duration=${0}>
-        You have unsaved drafts in another tab.
-      </ds-toast>
-      <ds-toast tone="danger" heading="Couldn't save" duration=${0}>
-        Network error. Please try again.
-      </ds-toast>
+      <ds-toast tone="info" heading="Heads up" duration=${0}> We've added a new collaborator role. </ds-toast>
+      <ds-toast tone="success" heading="Saved" duration=${0}> Your changes are live. </ds-toast>
+      <ds-toast tone="warning" heading="Heads up" duration=${0}> You have unsaved drafts in another tab. </ds-toast>
+      <ds-toast tone="danger" heading="Couldn't save" duration=${0}> Network error. Please try again. </ds-toast>
     </div>
   `,
 };
@@ -71,19 +63,12 @@ export const StickyDanger: Story = {
 export const Imperative: Story = {
   render: () => html`
     <div style="display:flex;gap:var(--ds-space-2);flex-wrap:wrap">
-      <ds-button @ds-click=${() => toast.info('Heads up', { body: 'A new comment was posted.' })}>
-        Info
-      </ds-button>
-      <ds-button @ds-click=${() => toast.success('Saved', { body: 'Your changes are live.' })}>
-        Success
-      </ds-button>
+      <ds-button @ds-click=${() => toast.info('Heads up', { body: 'A new comment was posted.' })}> Info </ds-button>
+      <ds-button @ds-click=${() => toast.success('Saved', { body: 'Your changes are live.' })}> Success </ds-button>
       <ds-button @ds-click=${() => toast.warning('Heads up', { body: 'Unsaved drafts in another tab.' })}>
         Warning
       </ds-button>
-      <ds-button
-        @ds-click=${() =>
-          toast.danger("Couldn't save", { body: 'Network error. Please try again.' })}
-      >
+      <ds-button @ds-click=${() => toast.danger("Couldn't save", { body: 'Network error. Please try again.' })}>
         Danger
       </ds-button>
     </div>

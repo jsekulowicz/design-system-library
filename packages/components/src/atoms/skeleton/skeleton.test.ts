@@ -41,7 +41,7 @@ describe('<ds-skeleton>', () => {
 
   it('keeps circle placeholders square from their responsive width', () => {
     const css = (DsSkeleton as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).toContain(":host([variant='circle']) .item");
     expect(css).toContain('aspect-ratio: 1');

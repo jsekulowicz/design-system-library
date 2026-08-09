@@ -7,14 +7,13 @@ export function resolvePinnedColumns<T extends TableRow>(
   pinnedNames: readonly string[],
 ): ResolvedColumn<T>[] {
   const pinnedSet = new Set(pinnedNames);
-  const isPinned = (column: TableColumn<T>): boolean =>
-    pinnedSet.has(column.name) && column.pinnable !== false;
+  const isPinned = (column: TableColumn<T>): boolean => pinnedSet.has(column.name) && column.pinnable !== false;
 
   const pinned = columns.filter(isPinned);
-  const rest = columns.filter(column => !isPinned(column));
+  const rest = columns.filter((column) => !isPinned(column));
   const lastPinnedName = pinned.at(-1)?.name;
 
-  return [...pinned, ...rest].map(column => {
+  return [...pinned, ...rest].map((column) => {
     const index = pinned.indexOf(column);
     return {
       column,

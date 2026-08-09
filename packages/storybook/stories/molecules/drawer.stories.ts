@@ -40,17 +40,10 @@ export const Playground: Story = {
   render: (args) => html`
     <div>
       <ds-button @ds-click=${openDrawer}>Open drawer</ds-button>
-      <ds-drawer
-        size=${args['size']}
-        side=${args['side']}
-        ?dismissible=${args['dismissible']}
-        label=${args['label']}
-      >
+      <ds-drawer size=${args['size']} side=${args['side']} ?dismissible=${args['dismissible']} label=${args['label']}>
         <span slot="title">Drawer title</span>
         <p>Body content goes here. Scrolls when it overflows.</p>
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}>
-          Close
-        </ds-button>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}> Close </ds-button>
       </ds-drawer>
     </div>
   `,
@@ -90,12 +83,8 @@ export const WithFormFields: Story = {
           <ds-select label="Difficulty" .options=${difficultyOptions} value="any"></ds-select>
           <ds-text-field label="Theme" placeholder="e.g. food, travel"></ds-text-field>
         </div>
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}>
-          Reset
-        </ds-button>
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDrawer}>
-          Apply
-        </ds-button>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}> Reset </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDrawer}> Apply </ds-button>
       </ds-drawer>
       <style>
         .form {
@@ -123,13 +112,8 @@ export const CustomHeight: Story = {
       <ds-button @ds-click=${openDrawer}>Open short drawer</ds-button>
       <ds-drawer side="end" size="sm">
         <span slot="title">Filters</span>
-        ${Array.from(
-          { length: 8 },
-          (_, i) => html`<p>Filter group ${i + 1}. Lorem ipsum dolor sit amet.</p>`,
-        )}
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}>
-          Close
-        </ds-button>
+        ${Array.from({ length: 8 }, (_, i) => html`<p>Filter group ${i + 1}. Lorem ipsum dolor sit amet.</p>`)}
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}> Close </ds-button>
       </ds-drawer>
     </div>
   `,
@@ -143,13 +127,9 @@ export const ScrollingBody: Story = {
         <span slot="title">Long content</span>
         ${Array.from(
           { length: 24 },
-          (_, i) => html`<p>
-            Section ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>`,
+          (_, i) => html`<p>Section ${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>`,
         )}
-        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}>
-          Close
-        </ds-button>
+        <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}> Close </ds-button>
       </ds-drawer>
     </div>
   `,

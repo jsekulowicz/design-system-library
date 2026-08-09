@@ -75,23 +75,13 @@ export const Activity: Story = {
 
 export const Loading: Story = {
   render: () => html`
-    <ds-heatmap-calendar
-      loading
-      end-date="2026-07-13"
-      months="6"
-      title="Crosswords played"
-    ></ds-heatmap-calendar>
+    <ds-heatmap-calendar loading end-date="2026-07-13" months="6" title="Crosswords played"></ds-heatmap-calendar>
   `,
 };
 
 export const Empty: Story = {
   render: () => html`
-    <ds-heatmap-calendar
-      .data=${[]}
-      end-date="2026-07-13"
-      months="6"
-      title="Crosswords played"
-    ></ds-heatmap-calendar>
+    <ds-heatmap-calendar .data=${[]} end-date="2026-07-13" months="6" title="Crosswords played"></ds-heatmap-calendar>
   `,
 };
 

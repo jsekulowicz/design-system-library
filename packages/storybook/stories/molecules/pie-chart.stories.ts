@@ -73,23 +73,23 @@ type Story = StoryObj;
 export const Playground: Story = {
   render: function render(args) {
     return html`
-<ds-pie-chart
-  .title=${args['title']}
-  .data=${args['data']}
-  ?donut=${args['donut']}
-  .innerRadius=${args['innerRadius']}
-  .size=${args['size']}
-  .showLegend=${args['showLegend']}
-  .showPercentages=${args['showPercentages']}
-  .maxSlices=${args['maxSlices']}
-  .otherThreshold=${args['otherThreshold']}
-  .otherLabel=${args['otherLabel']}
-  .loading=${args['loading']}
-  .loadingLabel=${args['loadingLabel']}
-  .formatValue=${args['formatValue']}
-  .formatPercent=${args['formatPercent']}
-></ds-pie-chart>
-  `;
+      <ds-pie-chart
+        .title=${args['title']}
+        .data=${args['data']}
+        ?donut=${args['donut']}
+        .innerRadius=${args['innerRadius']}
+        .size=${args['size']}
+        .showLegend=${args['showLegend']}
+        .showPercentages=${args['showPercentages']}
+        .maxSlices=${args['maxSlices']}
+        .otherThreshold=${args['otherThreshold']}
+        .otherLabel=${args['otherLabel']}
+        .loading=${args['loading']}
+        .loadingLabel=${args['loadingLabel']}
+        .formatValue=${args['formatValue']}
+        .formatPercent=${args['formatPercent']}
+      ></ds-pie-chart>
+    `;
   },
   parameters: {
     docs: {
@@ -108,12 +108,12 @@ export const Playground: Story = {
 
 export const Donut: Story = {
   render: () => html`
-<ds-pie-chart
-  donut
-  title="Sessions by channel"
-  .data=${TRAFFIC}
-  .formatValue=${(v: number) => v.toLocaleString('en-US')}
-></ds-pie-chart>
+    <ds-pie-chart
+      donut
+      title="Sessions by channel"
+      .data=${TRAFFIC}
+      .formatValue=${(v: number) => v.toLocaleString('en-US')}
+    ></ds-pie-chart>
   `,
   parameters: {
     docs: {
@@ -134,21 +134,21 @@ export const Donut: Story = {
 
 export const DonutWithSlottedCenter: Story = {
   render: () => html`
-<ds-pie-chart
-  donut
-  title="Storage used"
-  .data=${[
-    { label: 'Documents', value: 62 },
-    { label: 'Media', value: 128 },
-    { label: 'Backups', value: 46 },
-  ] as PieChartDatum[]}
-  .formatValue=${(v: number) => `${v} GB`}
->
-  <div slot="center">
-    <strong style="font-size: 1.5rem">236 GB</strong>
-    <div style="color: var(--ds-color-fg-muted)">of 500 GB</div>
-  </div>
-</ds-pie-chart>
+    <ds-pie-chart
+      donut
+      title="Storage used"
+      .data=${[
+        { label: 'Documents', value: 62 },
+        { label: 'Media', value: 128 },
+        { label: 'Backups', value: 46 },
+      ] as PieChartDatum[]}
+      .formatValue=${(v: number) => `${v} GB`}
+    >
+      <div slot="center">
+        <strong style="font-size: 1.5rem">236 GB</strong>
+        <div style="color: var(--ds-color-fg-muted)">of 500 GB</div>
+      </div>
+    </ds-pie-chart>
   `,
 };
 
@@ -160,37 +160,35 @@ export const WithFormatters: Story = {
       maximumFractionDigits: 0,
     });
     return html`
-<ds-pie-chart
-  donut
-  title="Revenue by product line"
-  .data=${[
-    { label: 'Widgets', value: 148200 },
-    { label: 'Gadgets', value: 71400 },
-    { label: 'Services', value: 96300 },
-  ] as PieChartDatum[]}
-  .formatValue=${(v: number) => money.format(v)}
-  .formatPercent=${(p: number) => `${p.toFixed(1)}%`}
-></ds-pie-chart>
+      <ds-pie-chart
+        donut
+        title="Revenue by product line"
+        .data=${[
+          { label: 'Widgets', value: 148200 },
+          { label: 'Gadgets', value: 71400 },
+          { label: 'Services', value: 96300 },
+        ] as PieChartDatum[]}
+        .formatValue=${(v: number) => money.format(v)}
+        .formatPercent=${(p: number) => `${p.toFixed(1)}%`}
+      ></ds-pie-chart>
     `;
   },
 };
 
 export const OtherGrouping: Story = {
   render: () => html`
-<ds-pie-chart
-  title="Sessions by channel"
-  .data=${LONG_TAIL}
-  .maxSlices=${6}
-  .formatValue=${(v: number) => v.toLocaleString('en-US')}
-></ds-pie-chart>
+    <ds-pie-chart
+      title="Sessions by channel"
+      .data=${LONG_TAIL}
+      .maxSlices=${6}
+      .formatValue=${(v: number) => v.toLocaleString('en-US')}
+    ></ds-pie-chart>
   `,
   parameters: {
     docs: {
       source: {
         code: chartSnippet({
-          lead: [
-            `// Ten channels; \`max-slices\` keeps the five largest and rolls the rest into "Other".`,
-          ],
+          lead: [`// Ten channels; \`max-slices\` keeps the five largest and rolls the rest into "Other".`],
           tag: `  <ds-pie-chart
     title="Sessions by channel"
     .data=\${channels}
@@ -204,49 +202,39 @@ export const OtherGrouping: Story = {
 
 export const CustomColors: Story = {
   render: () => html`
-<ds-pie-chart
-  title="Poll results"
-  .data=${[
-    { label: 'Yes', value: 62, color: '#2b8a3e' },
-    { label: 'No', value: 28, color: '#e2341d' },
-    { label: 'Abstained', value: 10, color: '#7b7f86' },
-  ] as PieChartDatum[]}
-></ds-pie-chart>
+    <ds-pie-chart
+      title="Poll results"
+      .data=${[
+        { label: 'Yes', value: 62, color: '#2b8a3e' },
+        { label: 'No', value: 28, color: '#e2341d' },
+        { label: 'Abstained', value: 10, color: '#7b7f86' },
+      ] as PieChartDatum[]}
+    ></ds-pie-chart>
   `,
 };
 
 export const SingleSlice: Story = {
   render: () => html`
-<ds-pie-chart
-  title="Uptime"
-  .data=${[{ label: 'Available', value: 100 }] as PieChartDatum[]}
-  .formatValue=${(v: number) => `${v}%`}
-></ds-pie-chart>
+    <ds-pie-chart
+      title="Uptime"
+      .data=${[{ label: 'Available', value: 100 }] as PieChartDatum[]}
+      .formatValue=${(v: number) => `${v}%`}
+    ></ds-pie-chart>
   `,
 };
 
 export const Loading: Story = {
-  render: () => html`
-<ds-pie-chart loading title="Sessions by channel" .data=${TRAFFIC}></ds-pie-chart>
-  `,
+  render: () => html` <ds-pie-chart loading title="Sessions by channel" .data=${TRAFFIC}></ds-pie-chart> `,
 };
 
 export const InitialLoading: Story = {
-  render: () => html`
-<ds-pie-chart loading title="Sessions by channel"></ds-pie-chart>
-  `,
+  render: () => html` <ds-pie-chart loading title="Sessions by channel"></ds-pie-chart> `,
 };
 
 export const Compact: Story = {
   render: () => html`
-<div style="max-width: 240px;">
-  <ds-pie-chart
-    donut
-    size="200"
-    .showPercentages=${false}
-    title="Sessions"
-    .data=${TRAFFIC}
-  ></ds-pie-chart>
-</div>
+    <div style="max-width: 240px;">
+      <ds-pie-chart donut size="200" .showPercentages=${false} title="Sessions" .data=${TRAFFIC}></ds-pie-chart>
+    </div>
   `,
 };

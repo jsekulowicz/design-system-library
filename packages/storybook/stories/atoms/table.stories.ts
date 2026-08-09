@@ -46,13 +46,19 @@ const RICH_COLUMNS: readonly TableColumn<Person>[] = [
   { name: 'name', field: 'name', label: 'Name', sortable: true },
   { name: 'role', field: 'role', label: 'Role' },
   {
-    name: 'status', field: 'status', label: 'Status',
-    render: row => html`<ds-badge tone=${statusTone[row.status]}>${row.status}</ds-badge>`,
+    name: 'status',
+    field: 'status',
+    label: 'Status',
+    render: (row) => html`<ds-badge tone=${statusTone[row.status]}>${row.status}</ds-badge>`,
   },
   { name: 'joined', field: 'joined', label: 'Joined', sortable: true },
   {
-    name: 'salary', field: 'salary', label: 'Salary', align: 'right', sortable: true,
-    render: row => money.format(row.salary),
+    name: 'salary',
+    field: 'salary',
+    label: 'Salary',
+    align: 'right',
+    sortable: true,
+    render: (row) => money.format(row.salary),
   },
 ];
 
@@ -65,26 +71,51 @@ const WIDE_COLUMNS: readonly TableColumn<Person>[] = [
   { name: 'name', field: 'name', label: 'Name', width: '12rem' },
   { name: 'role', field: 'role', label: 'Role', width: '11rem' },
   {
-    name: 'status', field: 'status', label: 'Status', width: '9rem',
-    render: row => html`<ds-badge tone=${statusTone[row.status]}>${row.status}</ds-badge>`,
+    name: 'status',
+    field: 'status',
+    label: 'Status',
+    width: '9rem',
+    render: (row) => html`<ds-badge tone=${statusTone[row.status]}>${row.status}</ds-badge>`,
   },
   {
-    name: 'email', field: 'name', label: 'Email', width: '17rem',
-    render: row => `${row.name.split(' ')[0].toLowerCase()}@example.com`,
+    name: 'email',
+    field: 'name',
+    label: 'Email',
+    width: '17rem',
+    render: (row) => `${row.name.split(' ')[0].toLowerCase()}@example.com`,
   },
   { name: 'joined', field: 'joined', label: 'Joined', width: '10rem' },
   {
-    name: 'salary', field: 'salary', label: 'Salary', align: 'right', width: '10rem',
-    render: row => money.format(row.salary),
+    name: 'salary',
+    field: 'salary',
+    label: 'Salary',
+    align: 'right',
+    width: '10rem',
+    render: (row) => money.format(row.salary),
   },
-  { name: 'level', field: 'id', label: 'Level', width: '8rem', render: row => `L${3 + (row.id % 5)}` },
+  { name: 'level', field: 'id', label: 'Level', width: '8rem', render: (row) => `L${3 + (row.id % 5)}` },
   {
-    name: 'tenure', field: 'joined', label: 'Tenure', width: '10rem',
-    render: row => `${2026 - Number(row.joined.slice(0, 4))} yrs`,
+    name: 'tenure',
+    field: 'joined',
+    label: 'Tenure',
+    width: '10rem',
+    render: (row) => `${2026 - Number(row.joined.slice(0, 4))} yrs`,
   },
-  { name: 'office', field: 'id', label: 'Office', width: '12rem', render: row => OFFICES[row.id % OFFICES.length] },
-  { name: 'manager', field: 'id', label: 'Manager', width: '14rem', render: row => MANAGERS[row.id % MANAGERS.length] },
-  { name: 'reviewDue', field: 'joined', label: 'Review due', width: '12rem', render: row => `2026-Q${1 + (row.id % 4)}` },
+  { name: 'office', field: 'id', label: 'Office', width: '12rem', render: (row) => OFFICES[row.id % OFFICES.length] },
+  {
+    name: 'manager',
+    field: 'id',
+    label: 'Manager',
+    width: '14rem',
+    render: (row) => MANAGERS[row.id % MANAGERS.length],
+  },
+  {
+    name: 'reviewDue',
+    field: 'joined',
+    label: 'Review due',
+    width: '12rem',
+    render: (row) => `2026-Q${1 + (row.id % 4)}`,
+  },
 ];
 
 const LONG_CONTENT_ROWS = [
@@ -108,7 +139,11 @@ const LONG_CONTENT_COLUMNS: readonly TableColumn<(typeof LONG_CONTENT_ROWS)[numb
   { name: 'lastUpdate', field: 'lastUpdate', label: 'Latest status update' },
 ];
 
-function sortBy<T extends Record<string, unknown>>(rows: readonly T[], field: string, direction: TableSortDirection): T[] {
+function sortBy<T extends Record<string, unknown>>(
+  rows: readonly T[],
+  field: string,
+  direction: TableSortDirection,
+): T[] {
   if (!direction) {
     return [...rows];
   }
@@ -184,21 +219,21 @@ table.rows = rows;`,
     },
   },
   render: (args) => html`
-<ds-table
-  .rows=${args['rows']}
-  .columns=${args['columns']}
-  .pinnedColumns=${args['pinnedColumns']}
-  .sortState=${args['sortState']}
-  .rowActionLabel=${args['rowActionLabel']}
-  .clickableRows=${args['clickableRows']}
-  .loading=${args['loading']}
-  .skeletonRows=${args['skeletonRows']}
-  .skeletonColumns=${args['skeletonColumns']}
-  .rowKey=${args['rowKey']}
-  .responsive=${args['responsive']}
-  .scrollBody=${args['scrollBody']}
-></ds-table>
-`,
+    <ds-table
+      .rows=${args['rows']}
+      .columns=${args['columns']}
+      .pinnedColumns=${args['pinnedColumns']}
+      .sortState=${args['sortState']}
+      .rowActionLabel=${args['rowActionLabel']}
+      .clickableRows=${args['clickableRows']}
+      .loading=${args['loading']}
+      .skeletonRows=${args['skeletonRows']}
+      .skeletonColumns=${args['skeletonColumns']}
+      .rowKey=${args['rowKey']}
+      .responsive=${args['responsive']}
+      .scrollBody=${args['scrollBody']}
+    ></ds-table>
+  `,
 };
 
 export const WithRenderFunctions: Story = {
@@ -236,9 +271,7 @@ table.rows = rows;`,
       },
     },
   },
-  render: () => html`
-<ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS}></ds-table>
-`,
+  render: () => html` <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS}></ds-table> `,
 };
 
 export const SlottedCells: Story = {
@@ -252,15 +285,13 @@ export const SlottedCells: Story = {
     },
   },
   render: () => html`
-<ds-table .rows=${PEOPLE} .columns=${BASIC_COLUMNS} row-key="id">
-  ${PEOPLE.map(
-    (person) => html`<ds-badge
-      slot="cell:status:${person.id}"
-      tone=${statusTone[person.status]}
-    >${person.status}</ds-badge>`,
-  )}
-</ds-table>
-`,
+    <ds-table .rows=${PEOPLE} .columns=${BASIC_COLUMNS} row-key="id">
+      ${PEOPLE.map(
+        (person) =>
+          html`<ds-badge slot="cell:status:${person.id}" tone=${statusTone[person.status]}>${person.status}</ds-badge>`,
+      )}
+    </ds-table>
+  `,
 };
 
 export const ScrollBodyWithPagination: Story = {
@@ -284,30 +315,33 @@ export const ScrollBodyWithPagination: Story = {
       table.rows = PEOPLE.slice(start, start + pageSize);
     };
     return html`
-<div style="height: 13rem; display: flex; flex-direction: column;">
-  <ds-table
-    scroll-body
-    id="scrollBodyTable"
-    style="flex: 1; min-height: 0;"
-    .rows=${PEOPLE.slice(0, pageSize)}
-    .columns=${RICH_COLUMNS}
-  >
-    <ds-table-pagination
-      slot="footer"
-      page=${page}
-      page-size=${pageSize}
-      total=${PEOPLE.length}
-      .pageSizeOptions=${[5, 8]}
-      @ds-page-change=${(e: CustomEvent<{ page: number }>) => { page = e.detail.page; sync(); }}
-      @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-        pageSize = e.detail.pageSize;
-        page = e.detail.page;
-        sync();
-      }}
-    ></ds-table-pagination>
-  </ds-table>
-</div>
-`;
+      <div style="height: 13rem; display: flex; flex-direction: column;">
+        <ds-table
+          scroll-body
+          id="scrollBodyTable"
+          style="flex: 1; min-height: 0;"
+          .rows=${PEOPLE.slice(0, pageSize)}
+          .columns=${RICH_COLUMNS}
+        >
+          <ds-table-pagination
+            slot="footer"
+            page=${page}
+            page-size=${pageSize}
+            total=${PEOPLE.length}
+            .pageSizeOptions=${[5, 8]}
+            @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+              page = e.detail.page;
+              sync();
+            }}
+            @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
+              pageSize = e.detail.pageSize;
+              page = e.detail.page;
+              sync();
+            }}
+          ></ds-table-pagination>
+        </ds-table>
+      </div>
+    `;
   },
 };
 
@@ -326,18 +360,17 @@ export const PinnedColumns: Story = {
     },
   },
   render: () => html`
-<style>.pin-demo ds-table::part(table) { min-width: 125rem; }</style>
-<div class="pin-demo">
-  <ds-table
-    responsive="scroll"
-    .rows=${PEOPLE}
-    .columns=${WIDE_COLUMNS}
-    .pinnedColumns=${['name', 'status']}
-  >
-    <span slot="caption">Scroll sideways — Name and Status stay pinned</span>
-  </ds-table>
-</div>
-`,
+    <style>
+      .pin-demo ds-table::part(table) {
+        min-width: 125rem;
+      }
+    </style>
+    <div class="pin-demo">
+      <ds-table responsive="scroll" .rows=${PEOPLE} .columns=${WIDE_COLUMNS} .pinnedColumns=${['name', 'status']}>
+        <span slot="caption">Scroll sideways — Name and Status stay pinned</span>
+      </ds-table>
+    </div>
+  `,
 };
 
 export const PinnedScrollBody: Story = {
@@ -352,48 +385,52 @@ export const PinnedScrollBody: Story = {
     },
   },
   render: () => html`
-<style>.pin-demo-sb ds-table::part(table) { min-width: 125rem; }</style>
-<div class="pin-demo-sb" style="height: 16rem; display: flex; flex-direction: column;">
-  <ds-table
-    scroll-body
-    responsive="scroll"
-    style="flex: 1; min-height: 0;"
-    .rows=${PEOPLE}
-    .columns=${WIDE_COLUMNS}
-    .pinnedColumns=${['name']}
-  ></ds-table>
-</div>
-`,
+    <style>
+      .pin-demo-sb ds-table::part(table) {
+        min-width: 125rem;
+      }
+    </style>
+    <div class="pin-demo-sb" style="height: 16rem; display: flex; flex-direction: column;">
+      <ds-table
+        scroll-body
+        responsive="scroll"
+        style="flex: 1; min-height: 0;"
+        .rows=${PEOPLE}
+        .columns=${WIDE_COLUMNS}
+        .pinnedColumns=${['name']}
+      ></ds-table>
+    </div>
+  `,
 };
 
 export const ResponsiveStack: Story = {
   render: () => html`
-<div style="max-width: 24rem;">
-  <ds-table .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
-    <span slot="caption">Narrow container using the default stacked layout</span>
-  </ds-table>
-</div>
-`,
+    <div style="max-width: 24rem;">
+      <ds-table .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
+        <span slot="caption">Narrow container using the default stacked layout</span>
+      </ds-table>
+    </div>
+  `,
 };
 
 export const ResponsiveScroll: Story = {
   render: () => html`
-<div style="max-width: 24rem;">
-  <ds-table responsive="scroll" .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
-    <span slot="caption">Narrow container preserving horizontal scroll</span>
-  </ds-table>
-</div>
-`,
+    <div style="max-width: 24rem;">
+      <ds-table responsive="scroll" .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
+        <span slot="caption">Narrow container preserving horizontal scroll</span>
+      </ds-table>
+    </div>
+  `,
 };
 
 export const ResponsiveLongContent: Story = {
   render: () => html`
-<div style="max-width: 24rem;">
-  <ds-table .rows=${LONG_CONTENT_ROWS} .columns=${LONG_CONTENT_COLUMNS}>
-    <span slot="caption">Long labels and values wrap in stacked rows</span>
-  </ds-table>
-</div>
-`,
+    <div style="max-width: 24rem;">
+      <ds-table .rows=${LONG_CONTENT_ROWS} .columns=${LONG_CONTENT_COLUMNS}>
+        <span slot="caption">Long labels and values wrap in stacked rows</span>
+      </ds-table>
+    </div>
+  `,
 };
 
 export const Sortable: Story = {
@@ -408,165 +445,172 @@ export const Sortable: Story = {
       table.sortState = state;
     };
     return html`
-<ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
-  <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}>Name</ds-table-sort-button>
-  <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}>Joined</ds-table-sort-button>
-  <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}>Salary</ds-table-sort-button>
-</ds-table>
-`;
+      <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
+        <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}
+          >Name</ds-table-sort-button
+        >
+        <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}
+          >Joined</ds-table-sort-button
+        >
+        <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}
+          >Salary</ds-table-sort-button
+        >
+      </ds-table>
+    `;
   },
 };
 
 export const ClickableRows: Story = {
   render: () => html`
-<div>
-  <p id="clickLog" style="margin: 0 0 var(--ds-space-3); color: var(--ds-color-fg-muted); font-family: var(--ds-font-body);">
-    Click a row, or tab to its row action and press Enter.
-  </p>
-  <ds-table
-    clickable-rows
-    .rows=${PEOPLE.slice(0, 5)}
-    .rowActionLabel=${(row: Person) => `Open ${row.name}`}
-    .columns=${[
-      ...RICH_COLUMNS,
-      {
-        name: 'action', field: 'id', label: '',
-        render: (row: Person) => html`<ds-button size="sm" variant="ghost">Edit ${row.name.split(' ')[0]}</ds-button>`,
-      },
-    ]}
-    @ds-row-click=${(e: CustomEvent<{ row: Person }>) => {
-      const log = document.getElementById('clickLog');
-      if (log) {
-        log.textContent = `Clicked row: ${e.detail.row.name}`;
-      }
-    }}
-  ></ds-table>
-</div>
-`,
+    <div>
+      <p
+        id="clickLog"
+        style="margin: 0 0 var(--ds-space-3); color: var(--ds-color-fg-muted); font-family: var(--ds-font-body);"
+      >
+        Click a row, or tab to its row action and press Enter.
+      </p>
+      <ds-table
+        clickable-rows
+        .rows=${PEOPLE.slice(0, 5)}
+        .rowActionLabel=${(row: Person) => `Open ${row.name}`}
+        .columns=${[
+          ...RICH_COLUMNS,
+          {
+            name: 'action',
+            field: 'id',
+            label: '',
+            render: (row: Person) =>
+              html`<ds-button size="sm" variant="ghost">Edit ${row.name.split(' ')[0]}</ds-button>`,
+          },
+        ]}
+        @ds-row-click=${(e: CustomEvent<{ row: Person }>) => {
+          const log = document.getElementById('clickLog');
+          if (log) {
+            log.textContent = `Clicked row: ${e.detail.row.name}`;
+          }
+        }}
+      ></ds-table>
+    </div>
+  `,
 };
 
 export const EmptyState: Story = {
   render: () => html`
-<ds-table .rows=${[]} .columns=${BASIC_COLUMNS}>
-  <div slot="empty">
-    <p style="margin: 0 0 var(--ds-space-3);">No people yet.</p>
-    <ds-button size="sm">Invite someone</ds-button>
-  </div>
-</ds-table>
-`,
+    <ds-table .rows=${[]} .columns=${BASIC_COLUMNS}>
+      <div slot="empty">
+        <p style="margin: 0 0 var(--ds-space-3);">No people yet.</p>
+        <ds-button size="sm">Invite someone</ds-button>
+      </div>
+    </ds-table>
+  `,
 };
 
 export const WithCaptionAndToolbar: Story = {
   render: () => html`
-<ds-table .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
-  <span slot="caption">Team roster — Q2 snapshot</span>
-  <div slot="toolbar" style="display: flex; gap: var(--ds-space-2); align-items: flex-end;">
-    <ds-text-field label="Filter by name" size="sm"></ds-text-field>
-    <ds-button variant="secondary" size="sm">Export CSV</ds-button>
-  </div>
-</ds-table>
-`,
+    <ds-table .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
+      <span slot="caption">Team roster — Q2 snapshot</span>
+      <div slot="toolbar" style="display: flex; gap: var(--ds-space-2); align-items: flex-end;">
+        <ds-text-field label="Filter by name" size="sm"></ds-text-field>
+        <ds-button variant="secondary" size="sm">Export CSV</ds-button>
+      </div>
+    </ds-table>
+  `,
 };
 
 export const Loading: Story = {
   render: () => html`
-<ds-table .loading=${true} .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
-  <span slot="caption">Refreshing team roster</span>
-  <span slot="loading">Refreshing...</span>
-</ds-table>
-`,
+    <ds-table .loading=${true} .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
+      <span slot="caption">Refreshing team roster</span>
+      <span slot="loading">Refreshing...</span>
+    </ds-table>
+  `,
 };
 
 export const InitialLoading: Story = {
-  render: () => html`
-<ds-table .loading=${true} .rows=${[]} .columns=${RICH_COLUMNS}></ds-table>
-`,
+  render: () => html` <ds-table .loading=${true} .rows=${[]} .columns=${RICH_COLUMNS}></ds-table> `,
 };
 
 export const UninitializedSkeleton: Story = {
-  render: () => html`
-<ds-table skeleton-rows="5" skeleton-columns="4"></ds-table>
-`,
+  render: () => html` <ds-table skeleton-rows="5" skeleton-columns="4"></ds-table> `,
 };
 
 export const ResponsiveSkeleton: Story = {
   render: () => html`
-<div style="max-width: 24rem;">
-  <ds-table skeleton-rows="4" skeleton-columns="4"></ds-table>
-</div>
-`,
+    <div style="max-width: 24rem;">
+      <ds-table skeleton-rows="4" skeleton-columns="4"></ds-table>
+    </div>
+  `,
 };
 
 export const Paginated: Story = {
   render: () => {
     let page = 1;
     let pageSize = 3;
-    const render = (table: HTMLElement & { rows: readonly Person[] }, pagination: HTMLElement & { page: number; pageSize: number }) => {
+    const render = (
+      table: HTMLElement & { rows: readonly Person[] },
+      pagination: HTMLElement & { page: number; pageSize: number },
+    ) => {
       const start = (page - 1) * pageSize;
       table.rows = PEOPLE.slice(start, start + pageSize);
       pagination.page = page;
       pagination.pageSize = pageSize;
     };
     return html`
-<ds-table
-  id="paginatedTable"
-  .rows=${PEOPLE.slice(0, 3)}
-  .columns=${RICH_COLUMNS}
->
-  <ds-table-pagination
-    slot="footer"
-    page=${page}
-    page-size=${pageSize}
-    total=${PEOPLE.length}
-    .pageSizeOptions=${[3, 5, 8]}
-    @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-      page = e.detail.page;
-      const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-      const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
-      render(table, pagination);
-    }}
-    @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-      pageSize = e.detail.pageSize;
-      page = e.detail.page;
-      const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-      const pagination = (e.target as HTMLElement) as HTMLElement & { page: number; pageSize: number };
-      render(table, pagination);
-    }}
-  ></ds-table-pagination>
-</ds-table>
-`;
+      <ds-table id="paginatedTable" .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
+        <ds-table-pagination
+          slot="footer"
+          page=${page}
+          page-size=${pageSize}
+          total=${PEOPLE.length}
+          .pageSizeOptions=${[3, 5, 8]}
+          @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+            page = e.detail.page;
+            const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
+            const pagination = e.target as HTMLElement as HTMLElement & { page: number; pageSize: number };
+            render(table, pagination);
+          }}
+          @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
+            pageSize = e.detail.pageSize;
+            page = e.detail.page;
+            const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
+            const pagination = e.target as HTMLElement as HTMLElement & { page: number; pageSize: number };
+            render(table, pagination);
+          }}
+        ></ds-table-pagination>
+      </ds-table>
+    `;
   },
 };
 
 export const PaginatedCompact: Story = {
   render: () => html`
-<ds-table-pagination
-  hide-page-numbers
-  page="2"
-  page-size="10"
-  total="42"
-  @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-    (e.target as HTMLElement & { page: number }).page = e.detail.page;
-  }}
-></ds-table-pagination>
-`,
+    <ds-table-pagination
+      hide-page-numbers
+      page="2"
+      page-size="10"
+      total="42"
+      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+        (e.target as HTMLElement & { page: number }).page = e.detail.page;
+      }}
+    ></ds-table-pagination>
+  `,
 };
 
 export const StandalonePagination: Story = {
   render: () => html`
-<ds-table-pagination
-  page="4"
-  page-size="10"
-  total="126"
-  .pageSizeOptions=${[10, 25, 50]}
-  @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-    (e.target as HTMLElement & { page: number }).page = e.detail.page;
-  }}
-  @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-    const el = e.target as HTMLElement & { pageSize: number; page: number };
-    el.pageSize = e.detail.pageSize;
-    el.page = e.detail.page;
-  }}
-></ds-table-pagination>
-`,
+    <ds-table-pagination
+      page="4"
+      page-size="10"
+      total="126"
+      .pageSizeOptions=${[10, 25, 50]}
+      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
+        (e.target as HTMLElement & { page: number }).page = e.detail.page;
+      }}
+      @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
+        const el = e.target as HTMLElement & { pageSize: number; page: number };
+        el.pageSize = e.detail.pageSize;
+        el.page = e.detail.page;
+      }}
+    ></ds-table-pagination>
+  `,
 };

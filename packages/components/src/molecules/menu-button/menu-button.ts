@@ -161,11 +161,7 @@ export class DsMenuButton extends DsElement {
 
   #renderPanel(): TemplateResult {
     return html`<div id=${PANEL_ID} class="panel" part="panel" popover="manual">
-      <ds-menu
-        part="menu"
-        label=${this.menuLabel || this.label || nothing}
-        @ds-select=${this.#onSelect}
-      >
+      <ds-menu part="menu" label=${this.menuLabel || this.label || nothing} @ds-select=${this.#onSelect}>
         <slot name="header" slot="header"></slot>
         <slot></slot>
         <slot name="footer" slot="footer"></slot>

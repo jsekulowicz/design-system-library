@@ -59,11 +59,7 @@ export function getVisibleTileCount(valueCount: number, overflowCount: number): 
   return Math.max(0, valueCount - overflowCount);
 }
 
-export function getNextTileFocusIndex(
-  currentIndex: number,
-  visibleCount: number,
-  direction: TileDirection,
-): number {
+export function getNextTileFocusIndex(currentIndex: number, visibleCount: number, direction: TileDirection): number {
   if (direction === 'left') {
     return currentIndex <= 0 ? visibleCount - 1 : currentIndex - 1;
   }
@@ -117,9 +113,7 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
 }
 
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {
-  const style = options.maxLines
-    ? `max-height:${options.maxLines * TILE_ROW_HEIGHT - 4}px;overflow:hidden`
-    : '';
+  const style = options.maxLines ? `max-height:${options.maxLines * TILE_ROW_HEIGHT - 4}px;overflow:hidden` : '';
   return html` <div class="tiles" style=${style}>
     ${options.overflowCount > 0
       ? html` <span class="tile tile-overflow" aria-label="${options.overflowCount} more selected">
@@ -142,7 +136,13 @@ export function renderClearButton(
   onClear: (event: Event) => void,
   onKeydown: (event: KeyboardEvent) => void,
 ): TemplateResult {
-  return html` <button class="clear-btn" type="button" aria-label="Clear selection" @click=${onClear} @keydown=${onKeydown}>
+  return html` <button
+    class="clear-btn"
+    type="button"
+    aria-label="Clear selection"
+    @click=${onClear}
+    @keydown=${onKeydown}
+  >
     <ds-icon name="x-mark" size="xl"></ds-icon>
   </button>`;
 }

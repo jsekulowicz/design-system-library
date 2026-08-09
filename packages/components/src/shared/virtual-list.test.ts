@@ -13,12 +13,7 @@ function spacerHeights(template: TemplateResult): number[] {
 }
 
 function renderAt(scrollTop: number, itemHeight?: number): TemplateResult {
-  return renderVirtualItems(
-    ITEMS,
-    scrollTop,
-    (item) => html`<span>${item}</span>`,
-    itemHeight,
-  );
+  return renderVirtualItems(ITEMS, scrollTop, (item) => html`<span>${item}</span>`, itemHeight);
 }
 
 describe('renderVirtualItems', () => {

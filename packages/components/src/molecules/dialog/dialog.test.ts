@@ -78,9 +78,7 @@ describe('<ds-dialog>', () => {
   it('emits ds-close with returnValue when close(value) is called', async () => {
     const el = await mountWithProps<DsDialog>(TEMPLATE, { open: true });
     const closes: CustomEvent<{ returnValue: string }>[] = [];
-    el.addEventListener('ds-close', (event) =>
-      closes.push(event as CustomEvent<{ returnValue: string }>),
-    );
+    el.addEventListener('ds-close', (event) => closes.push(event as CustomEvent<{ returnValue: string }>));
 
     el.close('confirmed');
     await el.updateComplete;
@@ -174,9 +172,7 @@ describe('<ds-dialog>', () => {
   it('caps the dialog and its card with the same --ds-dialog-max-height', async () => {
     const css = dialogStyles.cssText;
     expect(css).toMatch(/dialog\s*{[^}]*max-height: var\(--ds-dialog-max-height, min\(90vh, 720px\)\)/s);
-    expect(css).toMatch(
-      /ds-card::part\(card\)\s*{[^}]*max-height: var\(--ds-dialog-max-height, min\(90vh, 720px\)\)/s,
-    );
+    expect(css).toMatch(/ds-card::part\(card\)\s*{[^}]*max-height: var\(--ds-dialog-max-height, min\(90vh, 720px\)\)/s);
   });
 
   it('closes the dialog on disconnect if it was open', async () => {

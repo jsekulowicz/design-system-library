@@ -20,9 +20,7 @@ beforeEach(() => {
 });
 
 async function mountControl(value = 'light'): Promise<DsSegmentedControl> {
-  const el = await mount<DsSegmentedControl>(
-    '<ds-segmented-control label="Voice"></ds-segmented-control>',
-  );
+  const el = await mount<DsSegmentedControl>('<ds-segmented-control label="Voice"></ds-segmented-control>');
   el.options = OPTIONS;
   el.value = value;
   await el.updateComplete;
@@ -34,7 +32,7 @@ function segments(el: DsSegmentedControl): HTMLElement[] {
 }
 
 function segmentSizes(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map(s => s.getAttribute('size'));
+  return segments(el).map((s) => s.getAttribute('size'));
 }
 
 // Each segment is a <ds-button>; its focusable element carries the radio role
@@ -44,11 +42,11 @@ function nativeButton(segment: HTMLElement): HTMLButtonElement {
 }
 
 function checkedStates(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map(s => nativeButton(s).getAttribute('aria-checked'));
+  return segments(el).map((s) => nativeButton(s).getAttribute('aria-checked'));
 }
 
 function tabIndexes(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map(s => nativeButton(s).getAttribute('tabindex'));
+  return segments(el).map((s) => nativeButton(s).getAttribute('tabindex'));
 }
 
 function pressKey(el: DsSegmentedControl, key: string): void {
@@ -64,7 +62,7 @@ describe('<ds-segmented-control>', () => {
     console.warn = (...args: unknown[]) => warnings.push(args);
     try {
       await mount<DsSegmentedControl>('<ds-segmented-control></ds-segmented-control>');
-      expect(warnings.some(args => String(args[0]).includes('label'))).toBe(true);
+      expect(warnings.some((args) => String(args[0]).includes('label'))).toBe(true);
     } finally {
       console.warn = original;
     }
@@ -91,7 +89,7 @@ describe('<ds-segmented-control>', () => {
   it('emits ds-change and updates value on click', async () => {
     const el = await mountControl('light');
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', e => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
 
     nativeButton(segments(el)[2]).click();
     await el.updateComplete;
@@ -104,7 +102,7 @@ describe('<ds-segmented-control>', () => {
   it('does not emit when the selected option is clicked again', async () => {
     const el = await mountControl('light');
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', e => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
 
     nativeButton(segments(el)[1]).click();
     await el.updateComplete;
@@ -117,7 +115,7 @@ describe('<ds-segmented-control>', () => {
     el.disabled = true;
     await el.updateComplete;
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', e => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
 
     nativeButton(segments(el)[2]).click();
     await el.updateComplete;
@@ -134,15 +132,11 @@ describe('<ds-segmented-control>', () => {
     await el.updateComplete;
 
     expect(el.shadowRoot!.querySelector('.label')?.textContent).toContain('Voice');
-    expect(el.shadowRoot!.querySelector('.description')?.textContent).toContain(
-      'Pick a reading voice',
-    );
+    expect(el.shadowRoot!.querySelector('.description')?.textContent).toContain('Pick a reading voice');
   });
 
   it('renders a leading icon when an option provides one', async () => {
-    const el = await mount<DsSegmentedControl>(
-      '<ds-segmented-control label="Voice"></ds-segmented-control>',
-    );
+    const el = await mount<DsSegmentedControl>('<ds-segmented-control label="Voice"></ds-segmented-control>');
     el.options = [{ value: 'off', label: 'Off', icon: 'speaker-x-mark' }];
     el.value = 'off';
     await el.updateComplete;
@@ -163,7 +157,7 @@ describe('<ds-segmented-control>', () => {
   it('moves selection and the tab stop with ArrowRight (selection follows focus)', async () => {
     const el = await mountControl('light');
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', e => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
 
     pressKey(el, 'ArrowRight');
     await el.updateComplete;
@@ -192,9 +186,7 @@ describe('<ds-segmented-control>', () => {
   });
 
   it('skips disabled options while arrowing', async () => {
-    const el = await mount<DsSegmentedControl>(
-      '<ds-segmented-control label="Voice"></ds-segmented-control>',
-    );
+    const el = await mount<DsSegmentedControl>('<ds-segmented-control label="Voice"></ds-segmented-control>');
     el.options = [
       { value: 'off', label: 'Off' },
       { value: 'light', label: 'Light', disabled: true },

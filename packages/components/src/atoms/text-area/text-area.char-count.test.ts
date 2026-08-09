@@ -43,9 +43,7 @@ describe('<ds-text-area> character counter', () => {
   });
 
   it('puts the counter in the label row, right-aligned', async () => {
-    const el = await mount<DsTextArea>(
-      '<ds-text-area label="Word" char-count max-length="30"></ds-text-area>',
-    );
+    const el = await mount<DsTextArea>('<ds-text-area label="Word" char-count max-length="30"></ds-text-area>');
     const header = el.shadowRoot!.querySelector('[part="field-header"]');
 
     expect(header).not.toBeNull();

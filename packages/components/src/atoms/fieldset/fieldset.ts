@@ -18,12 +18,7 @@ export type FieldsetOrientation = 'horizontal' | 'vertical';
  * @cssprop [--ds-fieldset-gap=var(--ds-space-4)] - Space between the grouped controls.
  */
 export class DsFieldset extends DsElement {
-  static override styles = [
-    ...DsElement.styles,
-    formFieldStyles,
-    fieldGroupStyles,
-    fieldsetStyles,
-  ];
+  static override styles = [...DsElement.styles, formFieldStyles, fieldGroupStyles, fieldsetStyles];
 
   @property() label = '';
   @property() description = '';
@@ -44,8 +39,7 @@ export class DsFieldset extends DsElement {
     return html`
       <fieldset class="fieldset" part="fieldset">
         <legend class="label" part="legend">
-          ${this.label}
-          ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
+          ${this.label} ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items" part="items">
           <slot></slot>

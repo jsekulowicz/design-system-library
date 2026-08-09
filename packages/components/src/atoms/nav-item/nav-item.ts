@@ -62,10 +62,7 @@ export class DsNavItem extends DsElement {
 
   #warnIfMissingIcon(): void {
     if (this.compact && !this.loading && !this.#hasAssignedIcon()) {
-      console.error(
-        '[ds-nav-item] compact mode requires a child element with slot="icon".',
-        this,
-      );
+      console.error('[ds-nav-item] compact mode requires a child element with slot="icon".', this);
     }
   }
 
@@ -98,9 +95,7 @@ export class DsNavItem extends DsElement {
   }
 
   #renderInner(): TemplateResult {
-    return html`<span class="icon" part="icon" ?hidden=${!this._hasIcon && !this.loading}>
-        ${this.#renderIcon()}
-      </span>
+    return html`<span class="icon" part="icon" ?hidden=${!this._hasIcon && !this.loading}> ${this.#renderIcon()} </span>
       <span class="label" part="label">
         <slot @slotchange=${this.#onLabelSlotChange}></slot>
       </span>`;
@@ -125,11 +120,7 @@ export class DsNavItem extends DsElement {
 
   override render(): TemplateResult {
     if (this.compact) {
-      return html`<ds-tooltip
-        class="tooltip-wrapper"
-        placement="right"
-        delay=${this.compactHoverTooltipDelay}
-      >
+      return html`<ds-tooltip class="tooltip-wrapper" placement="right" delay=${this.compactHoverTooltipDelay}>
         ${this.#renderLink()}
         <span slot="tip"><slot name="tooltip">${this._labelText}</slot></span>
       </ds-tooltip>`;

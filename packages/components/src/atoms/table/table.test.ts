@@ -67,10 +67,10 @@ describe('<ds-table>', () => {
   });
 
   it('supports horizontal scroll responsive mode', async () => {
-    const el = await mountWithProps<DsTable<Person>>(
-      '<ds-table responsive="scroll"></ds-table>',
-      { rows: ROWS, columns: COLUMNS },
-    );
+    const el = await mountWithProps<DsTable<Person>>('<ds-table responsive="scroll"></ds-table>', {
+      rows: ROWS,
+      columns: COLUMNS,
+    });
     expect(el.responsive).toBe('scroll');
     expect(el.getAttribute('responsive')).toBe('scroll');
   });
@@ -86,7 +86,9 @@ describe('<ds-table>', () => {
     const received: { name: string; index: number }[] = [];
     const columns: TableColumn<Person>[] = [
       {
-        name: 'name', field: 'name', label: 'Name',
+        name: 'name',
+        field: 'name',
+        label: 'Name',
         render: (row, index) => {
           received.push({ name: row.name, index });
           return html`<em>${row.name.toUpperCase()}</em>`;
@@ -94,7 +96,10 @@ describe('<ds-table>', () => {
       },
     ];
     const el = await mountTable({ columns });
-    expect(received).toEqual([{ name: 'Ada', index: 0 }, { name: 'Bob', index: 1 }]);
+    expect(received).toEqual([
+      { name: 'Ada', index: 0 },
+      { name: 'Bob', index: 1 },
+    ]);
     expect(el.shadowRoot!.querySelector('em')?.textContent).toBe('ADA');
   });
 
@@ -138,18 +143,18 @@ describe('<ds-table>', () => {
   });
 
   it('renders the toolbar wrapper once content is slotted in', async () => {
-    const el = await mountWithProps<DsTable<Person>>(
-      '<ds-table><div slot="toolbar">filters</div></ds-table>',
-      { rows: ROWS, columns: COLUMNS },
-    );
+    const el = await mountWithProps<DsTable<Person>>('<ds-table><div slot="toolbar">filters</div></ds-table>', {
+      rows: ROWS,
+      columns: COLUMNS,
+    });
     expect(el.shadowRoot!.querySelector('[part="toolbar"]')).not.toBeNull();
   });
 
   it('renders the footer wrapper once content is slotted in', async () => {
-    const el = await mountWithProps<DsTable<Person>>(
-      '<ds-table><div slot="footer">pagination</div></ds-table>',
-      { rows: ROWS, columns: COLUMNS },
-    );
+    const el = await mountWithProps<DsTable<Person>>('<ds-table><div slot="footer">pagination</div></ds-table>', {
+      rows: ROWS,
+      columns: COLUMNS,
+    });
     expect(el.shadowRoot!.querySelector('[part="footer"]')).not.toBeNull();
   });
 
@@ -159,10 +164,10 @@ describe('<ds-table>', () => {
   });
 
   it('renders caption element when caption slot content is provided', async () => {
-    const el = await mountWithProps<DsTable<Person>>(
-      '<ds-table><span slot="caption">Team roster</span></ds-table>',
-      { rows: ROWS, columns: COLUMNS },
-    );
+    const el = await mountWithProps<DsTable<Person>>('<ds-table><span slot="caption">Team roster</span></ds-table>', {
+      rows: ROWS,
+      columns: COLUMNS,
+    });
     const caption = el.shadowRoot!.querySelector('caption') as HTMLTableCaptionElement;
     expect(caption).not.toBeNull();
     expect(caption.querySelector('slot[name="caption"]')).not.toBeNull();
@@ -235,7 +240,7 @@ describe('<ds-table>', () => {
 
   it('includes stacked skeleton styles for narrow containers', () => {
     const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).toContain('.skeleton-table');
     expect(css).toContain('min-width: 0');
@@ -247,7 +252,7 @@ describe('<ds-table>', () => {
 
   it('draws clickable row focus only from the row action in table layout', () => {
     const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).toContain('tbody tr.clickable:has(.row-action:focus-visible) td');
     expect(css).toContain('inset 0 2px 0 var(--ds-color-focus)');
@@ -256,7 +261,7 @@ describe('<ds-table>', () => {
 
   it('rounds the last row edge cells to match the table container', () => {
     const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).toContain('tbody tr:last-child td:first-child');
     expect(css).toContain('border-bottom-left-radius');
@@ -274,19 +279,20 @@ describe('<ds-table>', () => {
   });
 
   it('treats loading="false" as false for string-based integrations', async () => {
-    const el = await mountWithProps<DsTable<Person>>(
-      '<ds-table loading="false"></ds-table>',
-      { rows: ROWS, columns: COLUMNS },
-    );
+    const el = await mountWithProps<DsTable<Person>>('<ds-table loading="false"></ds-table>', {
+      rows: ROWS,
+      columns: COLUMNS,
+    });
     expect(el.loading).toBe(false);
     expect(el.shadowRoot!.querySelector('[part="loading"]')).toBeNull();
   });
 
   it('renders slotted loading content', async () => {
-    const el = await mountWithProps<DsTable<Person>>(
-      '<ds-table><span slot="loading">Chargement...</span></ds-table>',
-      { rows: ROWS, columns: COLUMNS, loading: true },
-    );
+    const el = await mountWithProps<DsTable<Person>>('<ds-table><span slot="loading">Chargement...</span></ds-table>', {
+      rows: ROWS,
+      columns: COLUMNS,
+      loading: true,
+    });
     const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="loading"]')!;
     const assigned = slot.assignedElements();
     expect(assigned[0].textContent).toBe('Chargement...');
@@ -322,7 +328,7 @@ describe('<ds-table>', () => {
     it('supports custom row action labels', async () => {
       const el = await mountTable({
         clickableRows: true,
-        rowActionLabel: row => `Open ${row.name}`,
+        rowActionLabel: (row) => `Open ${row.name}`,
       });
       const button = el.shadowRoot!.querySelector('tbody tr .row-action') as HTMLButtonElement;
       expect(button.getAttribute('aria-label')).toBe('Open Ada');
@@ -350,7 +356,9 @@ describe('<ds-table>', () => {
       const columns: TableColumn<Person>[] = [
         { name: 'name', field: 'name', label: 'Name' },
         {
-          name: 'action', field: 'id', label: '',
+          name: 'action',
+          field: 'id',
+          label: '',
           render: (row) => html`<button data-id=${row.id}>Edit</button>`,
         },
       ];
@@ -367,12 +375,22 @@ describe('<ds-table>', () => {
       const events: CustomEvent[] = [];
       el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
       const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      tr.dispatchEvent(new MouseEvent('pointerdown', {
-        bubbles: true, composed: true, clientX: 10, clientY: 10,
-      }));
-      tr.dispatchEvent(new MouseEvent('pointermove', {
-        bubbles: true, composed: true, clientX: 18, clientY: 10,
-      }));
+      tr.dispatchEvent(
+        new MouseEvent('pointerdown', {
+          bubbles: true,
+          composed: true,
+          clientX: 10,
+          clientY: 10,
+        }),
+      );
+      tr.dispatchEvent(
+        new MouseEvent('pointermove', {
+          bubbles: true,
+          composed: true,
+          clientX: 18,
+          clientY: 10,
+        }),
+      );
       tr.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
     });
@@ -393,7 +411,9 @@ describe('<ds-table>', () => {
       const columns: TableColumn<Person>[] = [
         { name: 'name', field: 'name', label: 'Name' },
         {
-          name: 'action', field: 'id', label: '',
+          name: 'action',
+          field: 'id',
+          label: '',
           render: () => html`<span role="button">Open</span>`,
         },
       ];
@@ -409,7 +429,9 @@ describe('<ds-table>', () => {
       const columns: TableColumn<Person>[] = [
         { name: 'name', field: 'name', label: 'Name' },
         {
-          name: 'meta', field: 'id', label: '',
+          name: 'meta',
+          field: 'id',
+          label: '',
           render: () => html`<span class="meta"><span class="text">Open</span></span>`,
         },
       ];
@@ -448,11 +470,13 @@ describe('<ds-table>', () => {
       const el = await mountTable({ scrollBody: true });
       const scroller = el.shadowRoot!.querySelector('.scroll') as HTMLElement;
       scroller.scrollTop = 240;
-      el.dispatchEvent(new CustomEvent('ds-page-change', {
-        detail: { page: 2, pageSize: 20 },
-        bubbles: true,
-        composed: true,
-      }));
+      el.dispatchEvent(
+        new CustomEvent('ds-page-change', {
+          detail: { page: 2, pageSize: 20 },
+          bubbles: true,
+          composed: true,
+        }),
+      );
       expect(scroller.scrollTop).toBe(0);
     });
 
@@ -460,11 +484,13 @@ describe('<ds-table>', () => {
       const el = await mountTable();
       const scrollIntoView = vi.fn();
       el.scrollIntoView = scrollIntoView;
-      el.dispatchEvent(new CustomEvent('ds-page-change', {
-        detail: { page: 2, pageSize: 20 },
-        bubbles: true,
-        composed: true,
-      }));
+      el.dispatchEvent(
+        new CustomEvent('ds-page-change', {
+          detail: { page: 2, pageSize: 20 },
+          bubbles: true,
+          composed: true,
+        }),
+      );
       expect(scrollIntoView).toHaveBeenCalledWith({ block: 'nearest' });
     });
   });
@@ -478,7 +504,7 @@ describe('<ds-table>', () => {
     const WIDE_ROWS = [{ id: 1, name: 'Ada', salary: 100, role: 'Eng' }] as unknown as readonly Person[];
 
     const headerNames = (el: DsTable<Person>): string[] =>
-      [...el.shadowRoot!.querySelectorAll('thead th')].map(th => th.textContent!.trim());
+      [...el.shadowRoot!.querySelectorAll('thead th')].map((th) => th.textContent!.trim());
 
     it('does not add pinned classes when pinnedColumns is empty', async () => {
       const el = await mountTable({ columns: WIDE, rows: WIDE_ROWS });
@@ -530,7 +556,7 @@ describe('<ds-table>', () => {
 
     it('includes sticky pinned-column styles capped by a max ratio', () => {
       const css = (DsTable as unknown as { styles: { cssText: string }[] }).styles
-        .map(style => style.cssText)
+        .map((style) => style.cssText)
         .join('\n');
       expect(css).toContain('td.pinned');
       expect(css).toContain('position: sticky');

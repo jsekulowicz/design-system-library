@@ -94,14 +94,14 @@ describe('computeGroupedBars', () => {
   it('returns one bar per series with equal widths', () => {
     const bars = computeGroupedBars(10, 60, 3, 2);
     expect(bars).toHaveLength(3);
-    bars.forEach(b => expect(b.width).toBeCloseTo((60 - 2 * 2) / 3));
+    bars.forEach((b) => expect(b.width).toBeCloseTo((60 - 2 * 2) / 3));
     expect(bars[0].x).toBe(10);
     expect(bars[1].x).toBeCloseTo(10 + bars[0].width + 2);
   });
 
   it('clamps to minimum width 1 when space is tight', () => {
     const bars = computeGroupedBars(0, 5, 10, 2);
-    bars.forEach(b => expect(b.width).toBeGreaterThanOrEqual(1));
+    bars.forEach((b) => expect(b.width).toBeGreaterThanOrEqual(1));
   });
 });
 

@@ -1,8 +1,4 @@
-import {
-  COLOR_FORMAT_ERROR,
-  DEFAULT_COLOR,
-  normalizeHexColor,
-} from './color-utils.js';
+import { COLOR_FORMAT_ERROR, DEFAULT_COLOR, normalizeHexColor } from './color-utils.js';
 
 interface ColorPickerCustomInputsHost {
   requestUpdate(): void;

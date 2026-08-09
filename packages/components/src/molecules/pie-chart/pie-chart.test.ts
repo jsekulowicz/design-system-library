@@ -46,16 +46,16 @@ describe('<ds-pie-chart>', () => {
     const el = await mountPieChart();
     const groups = slices(el);
     expect(groups).toHaveLength(3);
-    expect(groups.every(g => g.getAttribute('role') === 'graphics-symbol')).toBe(true);
+    expect(groups.every((g) => g.getAttribute('role') === 'graphics-symbol')).toBe(true);
     expect(groups[0]!.getAttribute('aria-label')).toBe('Organic: 50, 50%');
   });
 
   it('keeps exactly one slice in the tab order', async () => {
     const el = await mountPieChart();
-    expect(slices(el).filter(g => g.getAttribute('tabindex') === '0')).toHaveLength(1);
+    expect(slices(el).filter((g) => g.getAttribute('tabindex') === '0')).toHaveLength(1);
     press(el, 'ArrowRight');
     await el.updateComplete;
-    const tabbable = slices(el).filter(g => g.getAttribute('tabindex') === '0');
+    const tabbable = slices(el).filter((g) => g.getAttribute('tabindex') === '0');
     expect(tabbable).toHaveLength(1);
     expect(tabbable[0]!.getAttribute('data-index')).toBe('0');
   });
@@ -107,20 +107,18 @@ describe('<ds-pie-chart>', () => {
   it('emits ds-slice-focus with the slice payload', async () => {
     const el = await mountPieChart();
     const events: PieChartSliceDetail[] = [];
-    el.addEventListener('ds-slice-focus', event => {
+    el.addEventListener('ds-slice-focus', (event) => {
       events.push((event as CustomEvent<PieChartSliceDetail>).detail);
     });
     press(el, 'ArrowRight');
     await el.updateComplete;
-    expect(events).toEqual([
-      { index: 0, label: 'Organic', value: 50, percent: 50, isOther: false },
-    ]);
+    expect(events).toEqual([{ index: 0, label: 'Organic', value: 50, percent: 50, isOther: false }]);
   });
 
   it('emits ds-slice-select on Enter, Space and click', async () => {
     const el = await mountPieChart();
     const selected: string[] = [];
-    el.addEventListener('ds-slice-select', event => {
+    el.addEventListener('ds-slice-select', (event) => {
       selected.push((event as CustomEvent<PieChartSliceDetail>).detail.label);
     });
     press(el, 'ArrowRight');
@@ -136,9 +134,7 @@ describe('<ds-pie-chart>', () => {
     const el = await mountPieChart();
     press(el, 'End');
     await el.updateComplete;
-    expect(el.shadowRoot!.querySelector('[role="status"]')!.textContent?.trim()).toBe(
-      'Referral: 20, 20%.',
-    );
+    expect(el.shadowRoot!.querySelector('[role="status"]')!.textContent?.trim()).toBe('Referral: 20, 20%.');
   });
 
   it('formats values and percentages through the provided formatters', async () => {
@@ -202,7 +198,7 @@ describe('<ds-pie-chart>', () => {
       maxSlices: 3,
     });
     const details: PieChartSliceDetail[] = [];
-    el.addEventListener('ds-slice-focus', event => {
+    el.addEventListener('ds-slice-focus', (event) => {
       details.push((event as CustomEvent<PieChartSliceDetail>).detail);
     });
     press(el, 'End');

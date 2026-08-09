@@ -10,9 +10,7 @@ const OPTIONS = [
   { value: '#7c3aed', label: 'Violet' },
 ];
 
-async function mountGroup(
-  props: Partial<DsColorPickerSwatchGroup> = {},
-): Promise<DsColorPickerSwatchGroup> {
+async function mountGroup(props: Partial<DsColorPickerSwatchGroup> = {}): Promise<DsColorPickerSwatchGroup> {
   return mountWithProps<DsColorPickerSwatchGroup>(
     '<ds-color-picker-swatch-group></ds-color-picker-swatch-group>',
     { options: OPTIONS, ...props },

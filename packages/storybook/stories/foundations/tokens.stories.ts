@@ -19,46 +19,80 @@ const SHADOW_STEPS = Object.entries(shadow) as [string, string][];
 const BORDER_STEPS = Object.entries(border) as [string, string][];
 
 export const Shape: Story = {
-  render: () => html`
-<section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+  render: () =>
+    html` <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+      <div style="display:grid;gap:var(--ds-space-4)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Radius
+        </h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:var(--ds-space-3)">
+          ${RADIUS_STEPS.map(
+            ([name, val]) =>
+              html` <div style="display:grid;gap:var(--ds-space-2);align-items:start">
+                <div
+                  style="width:56px;height:56px;background:var(--ds-color-accent-subtle);border:1.5px solid var(--ds-color-accent);border-radius:${val}"
+                ></div>
+                <div>
+                  <code style="display:block;font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                    >radius-${name}</code
+                  >
+                  <span style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${val}</span>
+                </div>
+              </div>`,
+          )}
+        </div>
+      </div>
 
-  <div style="display:grid;gap:var(--ds-space-4)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Radius</h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:var(--ds-space-3)">
-      ${RADIUS_STEPS.map(([name, val]) => html`
-        <div style="display:grid;gap:var(--ds-space-2);align-items:start">
-          <div style="width:56px;height:56px;background:var(--ds-color-accent-subtle);border:1.5px solid var(--ds-color-accent);border-radius:${val}"></div>
-          <div>
-            <code style="display:block;font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">radius-${name}</code>
-            <span style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${val}</span>
-          </div>
-        </div>`)}
-    </div>
-  </div>
+      <div style="display:grid;gap:var(--ds-space-4)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Shadow
+        </h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:var(--ds-space-5)">
+          ${SHADOW_STEPS.map(
+            ([name]) =>
+              html` <div style="display:grid;gap:var(--ds-space-3)">
+                <div
+                  style="height:64px;background:var(--ds-color-bg);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-${name})"
+                ></div>
+                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                  >shadow-${name}</code
+                >
+              </div>`,
+          )}
+        </div>
+      </div>
 
-  <div style="display:grid;gap:var(--ds-space-4)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Shadow</h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:var(--ds-space-5)">
-      ${SHADOW_STEPS.map(([name]) => html`
-        <div style="display:grid;gap:var(--ds-space-3)">
-          <div style="height:64px;background:var(--ds-color-bg);border-radius:var(--ds-radius-md);box-shadow:var(--ds-shadow-${name})"></div>
-          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">shadow-${name}</code>
-        </div>`)}
-    </div>
-  </div>
-
-  <div style="display:grid;gap:var(--ds-space-4)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Border width</h3>
-    <div style="display:grid;gap:0">
-      ${BORDER_STEPS.map(([name, val], i) => html`
-        <div style="display:grid;grid-template-columns:9rem 4rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-          <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">border-${name}</code>
-          <span style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${val}</span>
-          <div style="height:${val};background:var(--ds-color-fg);border-radius:1px;max-width:120px"></div>
-        </div>`)}
-    </div>
-  </div>
-</section>`,
+      <div style="display:grid;gap:var(--ds-space-4)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Border width
+        </h3>
+        <div style="display:grid;gap:0">
+          ${BORDER_STEPS.map(
+            ([name, val], i) =>
+              html` <div
+                style="display:grid;grid-template-columns:9rem 4rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(
+                  i,
+                )}"
+              >
+                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                  >border-${name}</code
+                >
+                <span
+                  style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)"
+                  >${val}</span
+                >
+                <div style="height:${val};background:var(--ds-color-fg);border-radius:1px;max-width:120px"></div>
+              </div>`,
+          )}
+        </div>
+      </div>
+    </section>`,
 };
 
 const DURATION_STEPS = Object.entries(duration) as [string, string][];
@@ -78,33 +112,70 @@ const EASING_USE: Record<string, string> = {
 };
 
 export const Motion: Story = {
-  render: () => html`
-<section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+  render: () =>
+    html` <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+      <div style="display:grid;gap:var(--ds-space-3)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Duration
+        </h3>
+        <div role="table" style="display:grid;gap:0">
+          ${DURATION_STEPS.map(
+            ([name, val], i) =>
+              html` <div
+                role="row"
+                style="display:grid;grid-template-columns:9rem 4.5rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(
+                  i,
+                )}"
+              >
+                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                  >duration-${name}</code
+                >
+                <span
+                  role="cell"
+                  style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)"
+                  >${val}</span
+                >
+                <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
+                  >${DURATION_USE[name]}</span
+                >
+              </div>`,
+          )}
+        </div>
+      </div>
 
-  <div style="display:grid;gap:var(--ds-space-3)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Duration</h3>
-    <div role="table" style="display:grid;gap:0">
-      ${DURATION_STEPS.map(([name, val], i) => html`
-        <div role="row" style="display:grid;grid-template-columns:9rem 4.5rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-          <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">duration-${name}</code>
-          <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${val}</span>
-          <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${DURATION_USE[name]}</span>
-        </div>`)}
-    </div>
-  </div>
-
-  <div style="display:grid;gap:var(--ds-space-3)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Easing</h3>
-    <div role="table" style="display:grid;gap:0">
-      ${EASING_STEPS.map(([name, val], i) => html`
-        <div role="row" style="display:grid;grid-template-columns:9rem 1fr 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-          <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">easing-${name}</code>
-          <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${val}</code>
-          <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${EASING_USE[name]}</span>
-        </div>`)}
-    </div>
-  </div>
-</section>`,
+      <div style="display:grid;gap:var(--ds-space-3)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Easing
+        </h3>
+        <div role="table" style="display:grid;gap:0">
+          ${EASING_STEPS.map(
+            ([name, val], i) =>
+              html` <div
+                role="row"
+                style="display:grid;grid-template-columns:9rem 1fr 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(
+                  i,
+                )}"
+              >
+                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                  >easing-${name}</code
+                >
+                <code
+                  role="cell"
+                  style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
+                  >${val}</code
+                >
+                <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
+                  >${EASING_USE[name]}</span
+                >
+              </div>`,
+          )}
+        </div>
+      </div>
+    </section>`,
 };
 
 const BREAKPOINT_STEPS = Object.entries(breakpoint) as [string, string][];
@@ -122,43 +193,101 @@ const ZINDEX_USE: Record<string, string> = {
 };
 
 export const BreakpointsAndZIndex: Story = {
-  render: () => html`
-<section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+  render: () =>
+    html` <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+      <div style="display:grid;gap:var(--ds-space-3)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Breakpoints
+        </h3>
+        <div role="table" style="display:grid;gap:0">
+          ${BREAKPOINT_STEPS.map(
+            ([name, val], i) =>
+              html` <div
+                role="row"
+                style="display:grid;grid-template-columns:7rem 6rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(
+                  i,
+                )}"
+              >
+                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                  >breakpoint-${name}</code
+                >
+                <span
+                  role="cell"
+                  style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)"
+                  >${val}</span
+                >
+                <div
+                  role="cell"
+                  style="height:6px;background:var(--ds-color-accent-subtle);border:1px solid var(--ds-color-accent);border-radius:2px;max-width:${val}"
+                ></div>
+              </div>`,
+          )}
+        </div>
+      </div>
 
-  <div style="display:grid;gap:var(--ds-space-3)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Breakpoints</h3>
-    <div role="table" style="display:grid;gap:0">
-      ${BREAKPOINT_STEPS.map(([name, val], i) => html`
-        <div role="row" style="display:grid;grid-template-columns:7rem 6rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-          <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">breakpoint-${name}</code>
-          <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${val}</span>
-          <div role="cell" style="height:6px;background:var(--ds-color-accent-subtle);border:1px solid var(--ds-color-accent);border-radius:2px;max-width:${val}"></div>
-        </div>`)}
-    </div>
-  </div>
+      <div style="display:grid;gap:var(--ds-space-3)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Container max-widths
+        </h3>
+        <div role="table" style="display:grid;gap:0">
+          ${CONTAINER_STEPS.map(
+            ([name, val], i) =>
+              html` <div
+                role="row"
+                style="display:grid;grid-template-columns:7rem 4.5rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(
+                  i,
+                )}"
+              >
+                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                  >container-${name}</code
+                >
+                <span
+                  role="cell"
+                  style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)"
+                  >${val}</span
+                >
+                <div
+                  role="cell"
+                  style="height:6px;background:var(--ds-color-bg-muted);border-radius:2px;max-width:min(${val},100%)"
+                ></div>
+              </div>`,
+          )}
+        </div>
+      </div>
 
-  <div style="display:grid;gap:var(--ds-space-3)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Container max-widths</h3>
-    <div role="table" style="display:grid;gap:0">
-      ${CONTAINER_STEPS.map(([name, val], i) => html`
-        <div role="row" style="display:grid;grid-template-columns:7rem 4.5rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-          <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">container-${name}</code>
-          <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${val}</span>
-          <div role="cell" style="height:6px;background:var(--ds-color-bg-muted);border-radius:2px;max-width:min(${val},100%)"></div>
-        </div>`)}
-    </div>
-  </div>
-
-  <div style="display:grid;gap:var(--ds-space-3)">
-    <h3 style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)">Z-index</h3>
-    <div role="table" style="display:grid;gap:0">
-      ${ZINDEX_STEPS.map(([name, val], i) => html`
-        <div role="row" style="display:grid;grid-template-columns:9rem 4rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(i)}">
-          <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">z-index-${name}</code>
-          <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)">${val}</span>
-          <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${ZINDEX_USE[name]}</span>
-        </div>`)}
-    </div>
-  </div>
-</section>`,
+      <div style="display:grid;gap:var(--ds-space-3)">
+        <h3
+          style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
+        >
+          Z-index
+        </h3>
+        <div role="table" style="display:grid;gap:0">
+          ${ZINDEX_STEPS.map(
+            ([name, val], i) =>
+              html` <div
+                role="row"
+                style="display:grid;grid-template-columns:9rem 4rem 1fr;align-items:center;gap:var(--ds-space-3);padding:var(--ds-space-3) var(--ds-space-2);border-radius:var(--ds-radius-xs);${stripeRow(
+                  i,
+                )}"
+              >
+                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
+                  >z-index-${name}</code
+                >
+                <span
+                  role="cell"
+                  style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-sm)"
+                  >${val}</span
+                >
+                <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
+                  >${ZINDEX_USE[name]}</span
+                >
+              </div>`,
+          )}
+        </div>
+      </div>
+    </section>`,
 };

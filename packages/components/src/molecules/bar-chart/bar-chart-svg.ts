@@ -25,10 +25,8 @@ export function renderChartSvg<T extends BarChartRow>(
       preserveAspectRatio="none"
     >
       <g transform="translate(${margin.left}, ${margin.top})">
-        ${renderGrid(ticks, innerHeight, innerWidth, yMax)}
-        ${renderYAxis(ctx, ticks, innerHeight, margin.left, yMax)}
-        ${renderXAxis(ctx, groups, bands, innerHeight, margin)}
-        ${renderBars(ctx, groups, bands, innerHeight, yMax)}
+        ${renderGrid(ticks, innerHeight, innerWidth, yMax)} ${renderYAxis(ctx, ticks, innerHeight, margin.left, yMax)}
+        ${renderXAxis(ctx, groups, bands, innerHeight, margin)} ${renderBars(ctx, groups, bands, innerHeight, yMax)}
         ${renderFocusRing(ctx, layout)}
       </g>
     </svg>
@@ -38,7 +36,7 @@ export function renderChartSvg<T extends BarChartRow>(
 function renderGrid(ticks: number[], innerHeight: number, innerWidth: number, yMax: number): SVGTemplateResult {
   return svg`
     <g class="grid" aria-hidden="true">
-      ${ticks.map(tick => {
+      ${ticks.map((tick) => {
         const y = innerHeight - (tick / yMax) * innerHeight;
         return svg`<line x1="0" x2=${innerWidth} y1=${y} y2=${y}></line>`;
       })}
@@ -46,11 +44,17 @@ function renderGrid(ticks: number[], innerHeight: number, innerWidth: number, yM
   `;
 }
 
-function renderYAxis(ctx: ChartRenderContext, ticks: number[], innerHeight: number, marginLeft: number, yMax: number): SVGTemplateResult {
+function renderYAxis(
+  ctx: ChartRenderContext,
+  ticks: number[],
+  innerHeight: number,
+  marginLeft: number,
+  yMax: number,
+): SVGTemplateResult {
   return svg`
     <g class="axis axis-y" aria-hidden="true">
       <line x1="0" x2="0" y1="0" y2=${innerHeight}></line>
-      ${ticks.map(tick => {
+      ${ticks.map((tick) => {
         const y = innerHeight - (tick / yMax) * innerHeight;
         return svg`
           <g transform="translate(0, ${y})">
@@ -59,9 +63,11 @@ function renderYAxis(ctx: ChartRenderContext, ticks: number[], innerHeight: numb
           </g>
         `;
       })}
-      ${ctx.yAxisLabel
-        ? svg`<text class="axis-label" transform="translate(${-marginLeft + 12}, ${innerHeight / 2}) rotate(-90)" text-anchor="middle">${ctx.yAxisLabel}</text>`
-        : nothing}
+      ${
+        ctx.yAxisLabel
+          ? svg`<text class="axis-label" transform="translate(${-marginLeft + 12}, ${innerHeight / 2}) rotate(-90)" text-anchor="middle">${ctx.yAxisLabel}</text>`
+          : nothing
+      }
     </g>
   `;
 }
@@ -121,15 +127,19 @@ function renderXAxis<T extends BarChartRow>(
         return svg`
           <g transform="translate(${cx}, 0)">
             <line x1="0" x2="0" y1="0" y2="4"></line>
-            ${rotation
-              ? svg`<text y="18" text-anchor="end" transform="rotate(${rotation}) translate(-4, -6)">${text}</text>`
-              : renderTickText(text, band.bandWidth)}
+            ${
+              rotation
+                ? svg`<text y="18" text-anchor="end" transform="rotate(${rotation}) translate(-4, -6)">${text}</text>`
+                : renderTickText(text, band.bandWidth)
+            }
           </g>
         `;
       })}
-      ${ctx.xAxisLabel
-        ? svg`<text class="axis-label" x=${lastBand.x / 2 + firstBand.bandWidth / 2} y=${margin.bottom - 8} text-anchor="middle">${ctx.xAxisLabel}</text>`
-        : nothing}
+      ${
+        ctx.xAxisLabel
+          ? svg`<text class="axis-label" x=${lastBand.x / 2 + firstBand.bandWidth / 2} y=${margin.bottom - 8} text-anchor="middle">${ctx.xAxisLabel}</text>`
+          : nothing
+      }
     </g>
   `;
 }
@@ -167,11 +177,18 @@ function renderStackedBars<T extends BarChartRow>(
   innerHeight: number,
   yMax: number,
 ): SVGTemplateResult {
-  const segments = computeStackSegments(g.values, ctx.series.map(s => s.key), innerHeight, yMax);
+  const segments = computeStackSegments(
+    g.values,
+    ctx.series.map((s) => s.key),
+    innerHeight,
+    yMax,
+  );
   return svg`${segments.map((seg, si) => {
     const s = ctx.series[si]!;
     const height = seg.value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, seg.height) : 0;
-    const y = innerHeight - (segments.slice(0, si + 1).reduce((a, v) => a + Math.max(v.value > 0 ? MIN_SEGMENT_HEIGHT : 0, v.height), 0));
+    const y =
+      innerHeight -
+      segments.slice(0, si + 1).reduce((a, v) => a + Math.max(v.value > 0 ? MIN_SEGMENT_HEIGHT : 0, v.height), 0);
     const fill = ctx.barColor?.(g.domain, s.key) ?? ctx.seriesColor(s, si);
     return svg`<rect class="bar" x=${band.innerX} y=${y} width=${band.innerWidth} height=${height} fill=${fill}></rect>`;
   })}`;

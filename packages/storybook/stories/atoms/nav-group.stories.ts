@@ -33,25 +33,25 @@ type Story = StoryObj;
 export const Basic: Story = {
   render: function render(args) {
     return html`
-    <div style="display:flex;flex-direction:column;gap:var(--ds-space-1);width:${args['compact'] ? '64px' : '240px'}">
-      <ds-nav-group
-        .label=${args['label']}
-        ?expanded=${args['expanded']}
-        .collapsible=${args['collapsible']}
-        ?compact=${args['compact']}
-        .compactHoverTooltipDelay=${args['compactHoverTooltipDelay']}
-      >
-        <ds-nav-item href="/settings">
-          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
-          General
-        </ds-nav-item>
-        <ds-nav-item href="/members">
-          <ds-icon slot="icon" name="users" size="lg"></ds-icon>
-          Members
-        </ds-nav-item>
-      </ds-nav-group>
-    </div>
-  `;
+      <div style="display:flex;flex-direction:column;gap:var(--ds-space-1);width:${args['compact'] ? '64px' : '240px'}">
+        <ds-nav-group
+          .label=${args['label']}
+          ?expanded=${args['expanded']}
+          .collapsible=${args['collapsible']}
+          ?compact=${args['compact']}
+          .compactHoverTooltipDelay=${args['compactHoverTooltipDelay']}
+        >
+          <ds-nav-item href="/settings">
+            <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+            General
+          </ds-nav-item>
+          <ds-nav-item href="/members">
+            <ds-icon slot="icon" name="users" size="lg"></ds-icon>
+            Members
+          </ds-nav-item>
+        </ds-nav-group>
+      </div>
+    `;
   },
 };
 

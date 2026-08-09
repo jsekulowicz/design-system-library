@@ -58,7 +58,7 @@ export const tablePaginationStyles = css`
     cursor: not-allowed;
     opacity: 0.6;
   }
-  button[aria-current="page"] {
+  button[aria-current='page'] {
     background: var(--ds-color-accent);
     color: var(--ds-color-accent-fg);
     border-color: var(--ds-color-accent);
@@ -68,7 +68,7 @@ export const tablePaginationStyles = css`
      and the current-page button briefly flashes back to the muted
      surface colour on hover. Keep the active button on-brand by
      stepping to the accent-hover token instead. */
-  button[aria-current="page"]:hover:not(:disabled) {
+  button[aria-current='page']:hover:not(:disabled) {
     background: var(--ds-color-accent-hover);
     border-color: var(--ds-color-accent-hover);
   }

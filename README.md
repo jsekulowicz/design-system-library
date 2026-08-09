@@ -69,8 +69,7 @@ import '@jsekulowicz/ds-components/text-field/define';
 ### Use in HTML
 
 ```html
-<ds-button variant="primary">Save</ds-button>
-<ds-text-field label="Email" type="email"></ds-text-field>
+<ds-button variant="primary">Save</ds-button> <ds-text-field label="Email" type="email"></ds-text-field>
 ```
 
 ### Use in React

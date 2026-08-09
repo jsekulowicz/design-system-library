@@ -21,12 +21,12 @@ export const Basic: Story = {
   },
   render: function render(args) {
     return html`
-    <ds-breadcrumb .label=${args['label']}>
-      <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
-      <ds-breadcrumb-item href="/products">Products</ds-breadcrumb-item>
-      <ds-breadcrumb-item>Widget</ds-breadcrumb-item>
-    </ds-breadcrumb>
-  `;
+      <ds-breadcrumb .label=${args['label']}>
+        <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
+        <ds-breadcrumb-item href="/products">Products</ds-breadcrumb-item>
+        <ds-breadcrumb-item>Widget</ds-breadcrumb-item>
+      </ds-breadcrumb>
+    `;
   },
 };
 
@@ -117,9 +117,7 @@ export const SingleCurrent: Story = {
 export const OpensInNewTab: Story = {
   render: () => html`
     <ds-breadcrumb>
-      <ds-breadcrumb-item href="https://example.com" target="_blank" rel="noopener">
-        External docs
-      </ds-breadcrumb-item>
+      <ds-breadcrumb-item href="https://example.com" target="_blank" rel="noopener"> External docs </ds-breadcrumb-item>
       <ds-breadcrumb-item href="/guide">Guide</ds-breadcrumb-item>
       <ds-breadcrumb-item>Getting started</ds-breadcrumb-item>
     </ds-breadcrumb>

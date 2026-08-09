@@ -118,7 +118,9 @@ describe('<ds-tooltip>', () => {
 
   it('respects hover delay and focus behavior', async () => {
     vi.useFakeTimers();
-    const el = await mount<DsTooltip>('<ds-tooltip delay="200"><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
+    const el = await mount<DsTooltip>(
+      '<ds-tooltip delay="200"><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>',
+    );
     const harness = setupPopoverHarness(el);
     const anchor = el.shadowRoot!.querySelector('.anchor') as HTMLElement;
 
@@ -156,7 +158,9 @@ describe('<ds-tooltip>', () => {
   });
 
   it('ignores focus in hover-only mode and handles popover errors on disconnect', async () => {
-    const el = await mount<DsTooltip>('<ds-tooltip hover-only><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
+    const el = await mount<DsTooltip>(
+      '<ds-tooltip hover-only><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>',
+    );
     const harness = setupPopoverHarness(el);
 
     const failingShow = harness.tooltip as HTMLElement & { showPopover: () => void; hidePopover: () => void };

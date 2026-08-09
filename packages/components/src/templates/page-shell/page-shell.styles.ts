@@ -9,8 +9,7 @@ export const pageShellStyles = css`
     --ds-page-shell-page-padding-block: var(--ds-space-5);
     --ds-page-shell-page-padding-inline: var(--ds-space-5);
     --ds-page-shell-page-header-gap: var(--ds-space-6);
-    --ds-page-shell-aside-toggle-clearance:
-      calc(var(--ds-size-sm) / 2);
+    --ds-page-shell-aside-toggle-clearance: calc(var(--ds-size-sm) / 2);
 
     display: flex;
     flex-direction: column;
@@ -111,20 +110,20 @@ export const pageShellStyles = css`
     display: none;
   }
 
-  :host([aside-toggle]) aside[part="aside"] {
+  :host([aside-toggle]) aside[part='aside'] {
     padding-inline-end: var(--ds-page-shell-aside-toggle-clearance);
   }
 
-  :host([aside-end-toggle]) aside[part="aside-end"] {
+  :host([aside-end-toggle]) aside[part='aside-end'] {
     padding-inline-start: var(--ds-page-shell-aside-toggle-clearance);
   }
 
-  :host([aside-empty]) aside[part="aside"],
-  :host([aside-empty]) ds-drawer[part="aside"] {
+  :host([aside-empty]) aside[part='aside'],
+  :host([aside-empty]) ds-drawer[part='aside'] {
     display: none;
   }
 
-  :host([aside-end-empty]) aside[part="aside-end"] {
+  :host([aside-end-empty]) aside[part='aside-end'] {
     display: none;
   }
 
@@ -141,13 +140,13 @@ export const pageShellStyles = css`
     min-width: calc(var(--ds-size-sm) / 2 + var(--ds-space-2));
   }
 
-  :host([aside-end-state='hidden']) aside[part="aside-end"] {
+  :host([aside-end-state='hidden']) aside[part='aside-end'] {
     padding-inline: 0;
     opacity: 0;
     pointer-events: none;
   }
 
-  :host([aside-state='compact']) aside[part="aside"] ::slotted(ds-sidenav) {
+  :host([aside-state='compact']) aside[part='aside'] ::slotted(ds-sidenav) {
     width: var(--ds-sidenav-collapsed-width, var(--ds-space-14, 3.5rem)) !important;
   }
 
@@ -271,10 +270,10 @@ export const pageShellStyles = css`
   :host([mobile-layout]) main {
     grid-column: 1;
   }
-  :host([mobile-layout]) aside[part="aside-end"] {
+  :host([mobile-layout]) aside[part='aside-end'] {
     display: none;
   }
-  :host([mobile-layout]) ds-drawer[part="aside"] {
+  :host([mobile-layout]) ds-drawer[part='aside'] {
     /* Top-layer modal; don't reserve a grid column when closed. */
     display: contents;
     --ds-drawer-card-padding: 0;
@@ -291,7 +290,7 @@ export const pageShellStyles = css`
     --ds-drawer-title-fg: var(--ds-page-shell-drawer-header-fg, inherit);
     --ds-drawer-title-border-color: var(--ds-page-shell-drawer-header-border-color, transparent);
   }
-  :host([mobile-layout]) ds-drawer[part="aside"] ::slotted(ds-sidenav) {
+  :host([mobile-layout]) ds-drawer[part='aside'] ::slotted(ds-sidenav) {
     width: 100% !important;
     max-width: 100% !important;
     flex: 1 1 auto;

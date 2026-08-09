@@ -12,11 +12,7 @@ const ROWS: readonly Turn[] = [
   { turn: 3, Jess: 5, Marco: 5, Andrew: 4 },
 ];
 
-const SERIES: readonly BarChartSeries[] = [
-  { key: 'Jess' },
-  { key: 'Marco' },
-  { key: 'Andrew' },
-];
+const SERIES: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
 
 beforeAll(() => {
   if (!customElements.get('ds-bar-chart')) {
@@ -34,12 +30,16 @@ beforeEach(() => {
 });
 
 async function mountChart(props: Partial<DsBarChart<Turn>> = {}): Promise<DsBarChart<Turn>> {
-  const el = await mountWithProps<DsBarChart<Turn>>('<ds-bar-chart></ds-bar-chart>', {
-    data: ROWS,
-    domain: 'turn',
-    series: SERIES,
-    ...props,
-  }, 'ds-bar-chart');
+  const el = await mountWithProps<DsBarChart<Turn>>(
+    '<ds-bar-chart></ds-bar-chart>',
+    {
+      data: ROWS,
+      domain: 'turn',
+      series: SERIES,
+      ...props,
+    },
+    'ds-bar-chart',
+  );
   (el as unknown as { _width: number })._width = 600;
   await el.updateComplete;
   return el;

@@ -29,12 +29,7 @@ export type DialogSize = 'sm' | 'md' | 'lg';
  * @event ds-cancel - Fires when the dialog is dismissed via Escape or backdrop click.
  */
 export class DsDialog extends DsElement {
-  static override styles = [
-    ...DsElement.styles,
-    scrollFadeStyles,
-    cardBodyScrollFadeStyles,
-    dialogStyles,
-  ];
+  static override styles = [...DsElement.styles, scrollFadeStyles, cardBodyScrollFadeStyles, dialogStyles];
 
   @property({ type: Boolean, reflect: true }) open = false;
   @property() label = '';
@@ -46,9 +41,8 @@ export class DsDialog extends DsElement {
   private readonly _scrollFade = new ScrollFadeController(
     this,
     () =>
-      (this.shadowRoot
-        ?.querySelector('ds-card')
-        ?.shadowRoot?.querySelector('[part~="body"]') as HTMLElement | null) ?? null,
+      (this.shadowRoot?.querySelector('ds-card')?.shadowRoot?.querySelector('[part~="body"]') as HTMLElement | null) ??
+      null,
   );
 
   show(): void {
@@ -128,11 +122,7 @@ export class DsDialog extends DsElement {
             label="Close"
             @click=${this.#onCloseButtonClick}
           >
-            <ds-icon
-              slot="leading"
-              name="x-mark"
-              size="2xl"
-            ></ds-icon>
+            <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>
           </ds-button>
         </div>
         <slot></slot>

@@ -20,7 +20,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('checked') || changed.has('indeterminate') || changed.has('checkboxValue')) {
-      this.value = this.checked ? (this.checkboxValue || 'on') : null;
+      this.value = this.checked ? this.checkboxValue || 'on' : null;
       this.#syncValidity();
     }
   }

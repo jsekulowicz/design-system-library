@@ -75,8 +75,8 @@ async function mountFormFixture(page: Page): Promise<void> {
     document.querySelector('form')?.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget as HTMLFormElement);
-      (window as unknown as { __colorPickerPayload: Record<string, FormDataEntryValue> })
-        .__colorPickerPayload = Object.fromEntries(data.entries());
+      (window as unknown as { __colorPickerPayload: Record<string, FormDataEntryValue> }).__colorPickerPayload =
+        Object.fromEntries(data.entries());
     });
   });
 }

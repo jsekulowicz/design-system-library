@@ -43,9 +43,7 @@ const keyedToasts = new Map<string, { el: DsToast; controller: ToastController }
 
 function ensureStack(placement: ToastPlacement): DsToastStack | null {
   if (typeof document === 'undefined') return null;
-  const existing = document.body.querySelector<DsToastStack>(
-    `ds-toast-stack[placement="${placement}"]`,
-  );
+  const existing = document.body.querySelector<DsToastStack>(`ds-toast-stack[placement="${placement}"]`);
   if (existing) return existing;
   const stack = document.createElement('ds-toast-stack') as DsToastStack;
   stack.setAttribute('placement', placement);
@@ -64,10 +62,7 @@ function noopController(id: string): ToastController {
 function renderActionButtons(actions: ToastAction[], controller: ToastController): TemplateResult {
   return html`${actions.map(
     (action) =>
-      html`<ds-button
-        size="sm"
-        variant=${action.variant ?? 'secondary'}
-        @ds-click=${() => action.onClick(controller)}
+      html`<ds-button size="sm" variant=${action.variant ?? 'secondary'} @ds-click=${() => action.onClick(controller)}
         >${action.label}</ds-button
       >`,
   )}`;
@@ -150,10 +145,7 @@ function toastFn(options: ToastOptions = {}): ToastController {
   return controller;
 }
 
-type ToneShortcut = (
-  heading: string,
-  opts?: Omit<ToastOptions, 'tone' | 'heading'>,
-) => ToastController;
+type ToneShortcut = (heading: string, opts?: Omit<ToastOptions, 'tone' | 'heading'>) => ToastController;
 
 interface ToastFn {
   (options?: ToastOptions): ToastController;
@@ -163,8 +155,10 @@ interface ToastFn {
   danger: ToneShortcut;
 }
 
-const shortcut = (tone: ToastTone): ToneShortcut => (heading, opts) =>
-  toastFn({ ...opts, tone, heading });
+const shortcut =
+  (tone: ToastTone): ToneShortcut =>
+  (heading, opts) =>
+    toastFn({ ...opts, tone, heading });
 
 export const toast: ToastFn = Object.assign(toastFn, {
   info: shortcut('info'),

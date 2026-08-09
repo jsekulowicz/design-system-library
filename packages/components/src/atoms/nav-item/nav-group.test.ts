@@ -119,7 +119,7 @@ describe('<ds-nav-group>', () => {
 
   it('spaces nested nav items with item padding and a heading gap', () => {
     const css = (DsNavGroup as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).not.toContain('padding-left: var(--ds-space-2)');
     expect(css).toContain('margin-top: var(--ds-space-1)');

@@ -170,12 +170,7 @@ export const FormUsage: Story = {
   name: 'Form usage',
   render: () => html`
     <ds-form title="Theme">
-      <ds-color-picker
-        label="Accent color"
-        name="accent"
-        required
-        .colors=${brandColors}
-      ></ds-color-picker>
+      <ds-color-picker label="Accent color" name="accent" required .colors=${brandColors}></ds-color-picker>
       <ds-button slot="actions" type="submit">Save</ds-button>
     </ds-form>
   `,

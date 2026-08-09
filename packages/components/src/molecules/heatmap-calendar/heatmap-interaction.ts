@@ -1,10 +1,6 @@
 export type HeatmapKeyAction = { index: number } | { clear: true } | null;
 
-export function actionForKey(
-  key: string,
-  activeIndex: number | null,
-  count: number,
-): HeatmapKeyAction {
+export function actionForKey(key: string, activeIndex: number | null, count: number): HeatmapKeyAction {
   if (count === 0) {
     return null;
   }

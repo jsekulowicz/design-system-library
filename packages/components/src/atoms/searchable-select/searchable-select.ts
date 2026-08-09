@@ -99,17 +99,39 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   });
 
   /* test-facing forwarders to controller state */
-  get _open(): boolean { return this.#dropdown.open; }
-  get _focusedIndex(): number { return this.#dropdown.focusedIndex; }
-  set _focusedIndex(value: number) { this.#dropdown.focusedIndex = value; }
-  get _focusedTileIndex(): number { return this.#dropdown.focusedTileIndex; }
-  set _focusedTileIndex(value: number) { this.#dropdown.focusedTileIndex = value; }
-  get _scrollTop(): number { return this.#dropdown.scrollTop; }
-  set _scrollTop(value: number) { this.#dropdown.scrollTop = value; }
-  get _hasLeading(): boolean { return this.#dropdown.hasLeading; }
-  get _overflowCount(): number { return this.#dropdown.overflowCount; }
-  get _overflowCheckQueued(): boolean { return this.#dropdown.overflowCheckQueued; }
-  set _overflowCheckQueued(value: boolean) { this.#dropdown.overflowCheckQueued = value; }
+  get _open(): boolean {
+    return this.#dropdown.open;
+  }
+  get _focusedIndex(): number {
+    return this.#dropdown.focusedIndex;
+  }
+  set _focusedIndex(value: number) {
+    this.#dropdown.focusedIndex = value;
+  }
+  get _focusedTileIndex(): number {
+    return this.#dropdown.focusedTileIndex;
+  }
+  set _focusedTileIndex(value: number) {
+    this.#dropdown.focusedTileIndex = value;
+  }
+  get _scrollTop(): number {
+    return this.#dropdown.scrollTop;
+  }
+  set _scrollTop(value: number) {
+    this.#dropdown.scrollTop = value;
+  }
+  get _hasLeading(): boolean {
+    return this.#dropdown.hasLeading;
+  }
+  get _overflowCount(): number {
+    return this.#dropdown.overflowCount;
+  }
+  get _overflowCheckQueued(): boolean {
+    return this.#dropdown.overflowCheckQueued;
+  }
+  set _overflowCheckQueued(value: boolean) {
+    this.#dropdown.overflowCheckQueued = value;
+  }
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('options')) {
@@ -129,10 +151,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     if (changed.has('description')) {
       this.setAriaDescription(this.description || null);
     }
-    if (
-      (changed.has('values') || changed.has('maxLines') || changed.has('multiple')) &&
-      this.multiple
-    ) {
+    if ((changed.has('values') || changed.has('maxLines') || changed.has('multiple')) && this.multiple) {
       this.#dropdown.queueOverflowCheck();
     }
 
@@ -196,10 +215,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     } else {
       this.value = option.value;
       this.invalid = this.required && !option.value;
-      this.setValidity(
-        this.invalid ? { valueMissing: true } : {},
-        this.invalid ? 'Please select an option.' : '',
-      );
+      this.setValidity(this.invalid ? { valueMissing: true } : {}, this.invalid ? 'Please select an option.' : '');
       this.emit('ds-change', { detail: { value: option.value } });
       this.#dropdown.close();
     }
@@ -284,9 +300,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     });
 
   #renderOption = (option: SelectOption, index: number, current: string): TemplateResult => {
-    const isSelected = this.multiple
-      ? this.values.includes(option.value)
-      : option.value === current;
+    const isSelected = this.multiple ? this.values.includes(option.value) : option.value === current;
     return html`<ds-select-option
       id="option-${index}"
       part="option"
@@ -311,18 +325,10 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     const current = typeof this.value === 'string' ? this.value : '';
     const open = this.#dropdown.open;
     const hasTiles = this.multiple && this.values.length > 0;
-    const hasClearBtn =
-      (this.clearable || this.required) &&
-      (this.multiple ? this.values.length > 0 : current !== '');
-    const displayValue = open
-      ? this._search
-      : !this.multiple
-        ? (this._labelMap.get(current) ?? '')
-        : '';
-    const activeDesc =
-      open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
-    const selectedIcon =
-      !open && !this.multiple && current ? this._iconMap.get(current) : undefined;
+    const hasClearBtn = (this.clearable || this.required) && (this.multiple ? this.values.length > 0 : current !== '');
+    const displayValue = open ? this._search : !this.multiple ? (this._labelMap.get(current) ?? '') : '';
+    const activeDesc = open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
+    const selectedIcon = !open && !this.multiple && current ? this._iconMap.get(current) : undefined;
     return html` ${this.label ? renderFieldLabel(this.label, this.required, 'search-input') : nothing}
       <div class="control-wrap">
         <div
@@ -336,11 +342,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
         >
           <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>
             ${selectedIcon ? renderOptionIcon(selectedIcon) : nothing}
-            <slot
-              name="leading"
-              ?hidden=${Boolean(selectedIcon)}
-              @slotchange=${this.#dropdown.onLeadingChange}
-            ></slot>
+            <slot name="leading" ?hidden=${Boolean(selectedIcon)} @slotchange=${this.#dropdown.onLeadingChange}></slot>
           </span>
           ${hasTiles ? this.#renderTiles() : nothing}
           <input
@@ -380,9 +382,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
               @scroll=${this.#dropdown.onScroll}
               @ds-activate=${(event: Event) => event.stopPropagation()}
             >
-              ${this.hint
-                ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>`
-                : nothing}
+              ${this.hint ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>` : nothing}
               ${this.options.length === 0
                 ? html`<p class="empty">No results found.</p>`
                 : renderVirtualItems(

@@ -3,8 +3,9 @@ import { buildPaginationRange } from './pagination-range.js';
 
 describe('buildPaginationRange', () => {
   it('returns all pages when total fits within max visible', () => {
-    expect(buildPaginationRange({ totalPages: 5, currentPage: 1, maxVisiblePages: 7, siblingCount: 1 }))
-      .toEqual([1, 2, 3, 4, 5]);
+    expect(buildPaginationRange({ totalPages: 5, currentPage: 1, maxVisiblePages: 7, siblingCount: 1 })).toEqual([
+      1, 2, 3, 4, 5,
+    ]);
   });
 
   it('renders leading pages with trailing ellipsis when current is near the start', () => {
@@ -52,7 +53,7 @@ describe('buildPaginationRange', () => {
     const range = buildPaginationRange({ totalPages: 50, currentPage: 1, maxVisiblePages: 7, siblingCount: 1 });
     const numbers = range.filter((r): r is number => typeof r === 'number');
     expect(new Set(numbers).size).toBe(numbers.length);
-    expect(numbers.every(n => n >= 1)).toBe(true);
+    expect(numbers.every((n) => n >= 1)).toBe(true);
   });
 
   it('clamps currentPage to valid range', () => {
@@ -61,7 +62,6 @@ describe('buildPaginationRange', () => {
   });
 
   it('handles totalPages=1', () => {
-    expect(buildPaginationRange({ totalPages: 1, currentPage: 1, maxVisiblePages: 7, siblingCount: 1 }))
-      .toEqual([1]);
+    expect(buildPaginationRange({ totalPages: 1, currentPage: 1, maxVisiblePages: 7, siblingCount: 1 })).toEqual([1]);
   });
 });

@@ -12,11 +12,7 @@ const ROWS: readonly Turn[] = [
   { turn: 3, Jess: 5, Marco: 5, Andrew: 4 },
 ];
 
-const SERIES: readonly BarChartSeries[] = [
-  { key: 'Jess' },
-  { key: 'Marco' },
-  { key: 'Andrew' },
-];
+const SERIES: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
 
 beforeAll(() => {
   if (!customElements.get('ds-bar-chart')) {
@@ -49,11 +45,15 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
     } as unknown as typeof ResizeObserver;
 
     try {
-      const el = await mountWithProps<DsBarChart<Turn>>('<ds-bar-chart></ds-bar-chart>', {
-        data: ROWS,
-        domain: 'turn',
-        series: SERIES,
-      }, 'ds-bar-chart');
+      const el = await mountWithProps<DsBarChart<Turn>>(
+        '<ds-bar-chart></ds-bar-chart>',
+        {
+          data: ROWS,
+          domain: 'turn',
+          series: SERIES,
+        },
+        'ds-bar-chart',
+      );
       await Promise.resolve();
       await el.updateComplete;
       expect((el as unknown as { _width: number })._width).toBe(222);
@@ -84,11 +84,15 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
     });
 
     try {
-      const el = await mountWithProps<DsBarChart<Turn>>('<ds-bar-chart></ds-bar-chart>', {
-        data: ROWS,
-        domain: 'turn',
-        series: SERIES,
-      }, 'ds-bar-chart');
+      const el = await mountWithProps<DsBarChart<Turn>>(
+        '<ds-bar-chart></ds-bar-chart>',
+        {
+          data: ROWS,
+          domain: 'turn',
+          series: SERIES,
+        },
+        'ds-bar-chart',
+      );
       await Promise.resolve();
       await el.updateComplete;
       expect((el as unknown as { _width: number })._width).toBe(321);
@@ -118,12 +122,16 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
     } as unknown as typeof ResizeObserver;
 
     try {
-      const el = await mountWithProps<DsBarChart<Turn>>('<ds-bar-chart></ds-bar-chart>', {
-        data: ROWS,
-        domain: 'turn',
-        series: SERIES,
-        loading: true,
-      }, 'ds-bar-chart');
+      const el = await mountWithProps<DsBarChart<Turn>>(
+        '<ds-bar-chart></ds-bar-chart>',
+        {
+          data: ROWS,
+          domain: 'turn',
+          series: SERIES,
+          loading: true,
+        },
+        'ds-bar-chart',
+      );
       el.loading = false;
       await el.updateComplete;
       await Promise.resolve();

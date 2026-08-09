@@ -161,11 +161,7 @@ export function renderMobileAside(ctx: PageShellRenderContext): TemplateResult {
 }
 
 export function renderMobileAsideEnd(ctx: PageShellRenderContext): TemplateResult {
-  return html`<aside
-    part="aside-end"
-    aria-label=${ctx.endLabel}
-    ?hidden=${!ctx.hasAsideEnd}
-  >
+  return html`<aside part="aside-end" aria-label=${ctx.endLabel} ?hidden=${!ctx.hasAsideEnd}>
     <slot name="aside-end" @slotchange=${ctx.onAsideEndSlotChange}></slot>
   </aside>`;
 }

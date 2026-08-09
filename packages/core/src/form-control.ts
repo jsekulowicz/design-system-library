@@ -53,17 +53,11 @@ export function FormControlMixin<TBase extends LitCtor>(
 
     override connectedCallback(): void {
       super.connectedCallback();
-      (this as unknown as HTMLElement).addEventListener(
-        'keydown',
-        this.#handleImplicitSubmit,
-      );
+      (this as unknown as HTMLElement).addEventListener('keydown', this.#handleImplicitSubmit);
     }
 
     override disconnectedCallback(): void {
-      (this as unknown as HTMLElement).removeEventListener(
-        'keydown',
-        this.#handleImplicitSubmit,
-      );
+      (this as unknown as HTMLElement).removeEventListener('keydown', this.#handleImplicitSubmit);
       super.disconnectedCallback();
     }
 
@@ -81,8 +75,7 @@ export function FormControlMixin<TBase extends LitCtor>(
       if (type === 'textarea') {
         return;
       }
-      const form =
-        this.#internals.form ?? (this as unknown as HTMLElement).closest('form');
+      const form = this.#internals.form ?? (this as unknown as HTMLElement).closest('form');
       if (!form) {
         return;
       }

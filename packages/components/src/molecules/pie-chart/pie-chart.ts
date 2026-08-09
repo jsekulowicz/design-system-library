@@ -86,9 +86,8 @@ export class DsPieChart extends DsElement {
       activeIndex: this._activeIndex,
       focusMode: this._focusMode,
       sliceColor: (slice, index) => slice.color ?? colorForIndex(index),
-      formatValue: value => (this.formatValue ? this.formatValue(value) : String(value)),
-      formatPercent: percent =>
-        this.formatPercent ? this.formatPercent(percent) : `${Math.round(percent)}%`,
+      formatValue: (value) => (this.formatValue ? this.formatValue(value) : String(value)),
+      formatPercent: (percent) => (this.formatPercent ? this.formatPercent(percent) : `${Math.round(percent)}%`),
     };
   }
 

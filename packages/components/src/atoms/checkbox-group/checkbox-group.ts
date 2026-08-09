@@ -48,7 +48,7 @@ export class DsCheckboxGroup extends DsElement {
   };
 
   #wireCheckboxes = (syncChecked: boolean): void => {
-    this._checkboxes.forEach(el => {
+    this._checkboxes.forEach((el) => {
       if (this.name) el.setAttribute('name', this.name);
       if (this.required) {
         el.setAttribute('required', '');
@@ -77,8 +77,8 @@ export class DsCheckboxGroup extends DsElement {
     }
     event.stopImmediatePropagation();
     const values = this._checkboxes
-      .filter(el => el.checked === true)
-      .map(el => el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '')
+      .filter((el) => el.checked === true)
+      .map((el) => el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '')
       .filter(Boolean);
     this.value = values;
     this.invalid = false;
@@ -89,8 +89,7 @@ export class DsCheckboxGroup extends DsElement {
     return html`
       <fieldset class="fieldset" part="fieldset">
         <legend class="label" part="legend">
-          ${this.label}
-          ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
+          ${this.label} ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items">
           <slot @slotchange=${this.#onSlotChange}></slot>

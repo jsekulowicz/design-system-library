@@ -26,9 +26,9 @@ beforeEach(() => {
 
 // Patches the shared prototype, so the restore matters: a leak changes later tests.
 function stubRowHeight(el: DsSelect, height: (this: HTMLElement) => number): () => void {
-  const proto = Object.getPrototypeOf(
-    el.shadowRoot!.querySelector('ds-select-option') as HTMLElement,
-  ) as { getBoundingClientRect: () => DOMRect };
+  const proto = Object.getPrototypeOf(el.shadowRoot!.querySelector('ds-select-option') as HTMLElement) as {
+    getBoundingClientRect: () => DOMRect;
+  };
   const original = proto.getBoundingClientRect;
   proto.getBoundingClientRect = function (this: HTMLElement) {
     return { height: height.call(this) } as DOMRect;
@@ -39,10 +39,14 @@ function stubRowHeight(el: DsSelect, height: (this: HTMLElement) => number): () 
 }
 
 async function mountSelect(props: Partial<DsSelect> = {}): Promise<DsSelect> {
-  return mountWithProps<DsSelect>('<ds-select label="Framework"></ds-select>', {
-    options: OPTIONS,
-    ...props,
-  }, 'ds-select');
+  return mountWithProps<DsSelect>(
+    '<ds-select label="Framework"></ds-select>',
+    {
+      options: OPTIONS,
+      ...props,
+    },
+    'ds-select',
+  );
 }
 
 describe('<ds-select> extra coverage', () => {
@@ -159,9 +163,13 @@ describe('<ds-select> extra coverage', () => {
   });
 
   it('scrolls focused option into view when keyboard focus moves below the viewport', async () => {
-    const el = await mountWithProps<DsSelect>('<ds-select label="Framework"></ds-select>', {
-      options: MANY_OPTIONS,
-    }, 'ds-select');
+    const el = await mountWithProps<DsSelect>(
+      '<ds-select label="Framework"></ds-select>',
+      {
+        options: MANY_OPTIONS,
+      },
+      'ds-select',
+    );
     const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
     trigger.click();
     await el.updateComplete;
@@ -192,9 +200,9 @@ describe('<ds-select> extra coverage', () => {
 
     trigger.click();
     await el.updateComplete;
-    const none = Array.from(
-      el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option'),
-    ).find((option) => (option.textContent ?? '').trim() === 'None') as HTMLElement;
+    const none = Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option')).find(
+      (option) => (option.textContent ?? '').trim() === 'None',
+    ) as HTMLElement;
     none.click();
     await el.updateComplete;
     expect(el.invalid).toBe(true);
@@ -276,9 +284,13 @@ const ICON_OPTIONS = [
 
 describe('<ds-select> label, size and icons', () => {
   it('omits the label element when label is empty', async () => {
-    const el = await mountWithProps<DsSelect>('<ds-select></ds-select>', {
-      options: OPTIONS,
-    }, 'ds-select');
+    const el = await mountWithProps<DsSelect>(
+      '<ds-select></ds-select>',
+      {
+        options: OPTIONS,
+      },
+      'ds-select',
+    );
     expect(el.shadowRoot!.querySelector('.label')).toBeNull();
   });
 

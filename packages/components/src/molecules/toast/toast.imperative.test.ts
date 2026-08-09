@@ -84,9 +84,7 @@ describe('toast() imperative API', () => {
     let dismissedFrom: string | null = null;
     const controller = toast({
       heading: 'No more unapproved',
-      actions: [
-        { label: 'Ignore status', onClick: (c) => (dismissedFrom = c.id) },
-      ],
+      actions: [{ label: 'Ignore status', onClick: (c) => (dismissedFrom = c.id) }],
     });
     const el = document.querySelector('ds-toast') as DsToast;
     const button = el.querySelector('[slot="actions"] ds-button');

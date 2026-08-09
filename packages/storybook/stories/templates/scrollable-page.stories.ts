@@ -19,9 +19,7 @@ function activitySections() {
     { length: 18 },
     (_, index) => html`
       <section>
-        <h2 style="margin:0;font-size:var(--ds-font-size-heading-sm)">
-          Activity group ${index + 1}
-        </h2>
+        <h2 style="margin:0;font-size:var(--ds-font-size-heading-sm)">Activity group ${index + 1}</h2>
         <p style="margin:var(--ds-space-1) 0 0;color:var(--ds-color-fg-muted)">
           Recent project and account events appear in this scrolling region.
         </p>

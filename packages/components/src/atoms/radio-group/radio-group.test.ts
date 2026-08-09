@@ -126,9 +126,7 @@ describe('<ds-radio-group>', () => {
 
   async function settle(el: DsRadioGroup): Promise<void> {
     await el.updateComplete;
-    await Promise.all(
-      Array.from(el.querySelectorAll<DsRadio>('ds-radio')).map((radio) => radio.updateComplete),
-    );
+    await Promise.all(Array.from(el.querySelectorAll<DsRadio>('ds-radio')).map((radio) => radio.updateComplete));
   }
 
   function tabIndexes(el: DsRadioGroup): (string | null)[] {

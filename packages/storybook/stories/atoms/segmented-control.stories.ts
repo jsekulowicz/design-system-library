@@ -40,7 +40,7 @@ const ICON_OPTIONS = [
 ];
 
 export const Playground: Story = {
-  render: args => html`
+  render: (args) => html`
     <ds-segmented-control
       label=${args['label']}
       description=${args['description']}
@@ -54,21 +54,12 @@ export const Playground: Story = {
 
 export const WithIcons: Story = {
   render: () => html`
-    <ds-segmented-control
-      label="Voice"
-      value="natural"
-      .options=${ICON_OPTIONS}
-    ></ds-segmented-control>
+    <ds-segmented-control label="Voice" value="natural" .options=${ICON_OPTIONS}></ds-segmented-control>
   `,
 };
 
 export const Disabled: Story = {
   render: () => html`
-    <ds-segmented-control
-      label="Voice"
-      value="light"
-      .options=${ICON_OPTIONS}
-      disabled
-    ></ds-segmented-control>
+    <ds-segmented-control label="Voice" value="light" .options=${ICON_OPTIONS} disabled></ds-segmented-control>
   `,
 };

@@ -19,10 +19,14 @@ const OPTIONS = [
 ];
 
 async function mountSearchableSelect(props: Partial<DsSearchableSelect> = {}): Promise<DsSearchableSelect> {
-  return mountWithProps<DsSearchableSelect>('<ds-searchable-select label="Framework"></ds-searchable-select>', {
-    options: OPTIONS,
-    ...props,
-  }, 'ds-searchable-select');
+  return mountWithProps<DsSearchableSelect>(
+    '<ds-searchable-select label="Framework"></ds-searchable-select>',
+    {
+      options: OPTIONS,
+      ...props,
+    },
+    'ds-searchable-select',
+  );
 }
 
 function getInput(el: DsSearchableSelect): HTMLInputElement {
@@ -142,7 +146,10 @@ describe('<ds-searchable-select>', () => {
       getOption(el, 'React').click();
       await el.updateComplete;
       // Simulate consumer filtering options (React is excluded)
-      el.options = [{ value: 'vue', label: 'Vue' }, { value: 'svelte', label: 'Svelte' }];
+      el.options = [
+        { value: 'vue', label: 'Vue' },
+        { value: 'svelte', label: 'Svelte' },
+      ];
       await el.updateComplete;
       expect(getInput(el).value).toBe('React');
     });
@@ -232,7 +239,10 @@ describe('<ds-searchable-select>', () => {
       getOption(el, 'React').click();
       await el.updateComplete;
       // Consumer filters out React from the options list
-      el.options = [{ value: 'vue', label: 'Vue' }, { value: 'svelte', label: 'Svelte' }];
+      el.options = [
+        { value: 'vue', label: 'Vue' },
+        { value: 'svelte', label: 'Svelte' },
+      ];
       await el.updateComplete;
       const tile = el.shadowRoot!.querySelector('.tile[data-value="react"] .tile-label');
       expect(tile?.textContent?.trim()).toBe('React');

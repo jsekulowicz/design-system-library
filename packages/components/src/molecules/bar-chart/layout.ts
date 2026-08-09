@@ -37,7 +37,7 @@ export function groupData<T extends BarChartRow>(
   domainKey: keyof T & string,
   seriesKeys: readonly string[],
 ): BarChartGroup<T>[] {
-  return rows.map(row => {
+  return rows.map((row) => {
     const values: Record<string, number> = {};
     let total = 0;
     for (const key of seriesKeys) {
@@ -57,11 +57,7 @@ export type GroupBand = {
   innerWidth: number;
 };
 
-export function computeGroupBands(
-  innerWidth: number,
-  groupCount: number,
-  outerGapRatio: number,
-): GroupBand[] {
+export function computeGroupBands(innerWidth: number, groupCount: number, outerGapRatio: number): GroupBand[] {
   if (groupCount <= 0) {
     return [];
   }
@@ -103,7 +99,7 @@ export function computeStackSegments(
 ): StackSegment[] {
   const segments: StackSegment[] = [];
   if (yMax <= 0 || innerHeight <= 0) {
-    return seriesKeys.map(key => ({ key, value: values[key] ?? 0, y: innerHeight, height: 0 }));
+    return seriesKeys.map((key) => ({ key, value: values[key] ?? 0, y: innerHeight, height: 0 }));
   }
   let cumulative = 0;
   for (const key of seriesKeys) {

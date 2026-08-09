@@ -1,10 +1,5 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
-import {
-  clampTileFocusIndex,
-  countOverflowTiles,
-  getVisibleTileCount,
-  queueTaskOnce,
-} from './select.shared.js';
+import { clampTileFocusIndex, countOverflowTiles, getVisibleTileCount, queueTaskOnce } from './select.shared.js';
 import { DEFAULT_ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/virtual-list.js';
 import type { SelectOption } from './select.js';
 
@@ -171,8 +166,7 @@ export class DropdownController implements ReactiveController {
   toggle = (): void => {
     if (this.#open) {
       this.close();
-    }
-    else this.openDropdown();
+    } else this.openDropdown();
   };
 
   moveFocus = (direction: 1 | -1): void => {
@@ -210,9 +204,7 @@ export class DropdownController implements ReactiveController {
       return;
     }
     this.#scrollEndArmed = false;
-    this.#host.dispatchEvent(
-      new CustomEvent('ds-scroll-end', { bubbles: true, composed: true }),
-    );
+    this.#host.dispatchEvent(new CustomEvent('ds-scroll-end', { bubbles: true, composed: true }));
   };
 
   onLeadingChange = (event: Event): void => {

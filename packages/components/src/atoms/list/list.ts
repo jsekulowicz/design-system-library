@@ -20,6 +20,8 @@ export class DsList extends DsElement {
   @property({ reflect: true }) density: ListDensity = 'default';
 
   override render(): TemplateResult {
-    return html`<ul role="list" part="list"><slot></slot></ul>`;
+    return html`<ul role="list" part="list">
+      <slot></slot>
+    </ul>`;
   }
 }

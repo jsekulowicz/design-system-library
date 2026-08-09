@@ -15,25 +15,40 @@ import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay } from '../../shared/loading-overlay.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
-import type {
-  ResolvedColumn,
-  TableColumn,
-  TableResponsiveMode,
-  TableRow,
-  TableSortState,
-} from './types.js';
+import type { ResolvedColumn, TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
 
 const INTERACTIVE_TAGS = new Set([
-  'a', 'button', 'input', 'select', 'textarea', 'label',
-  'ds-button', 'ds-link', 'ds-checkbox', 'ds-radio', 'ds-select',
-  'ds-searchable-select', 'ds-text-field', 'ds-table-sort-button',
+  'a',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  'label',
+  'ds-button',
+  'ds-link',
+  'ds-checkbox',
+  'ds-radio',
+  'ds-select',
+  'ds-searchable-select',
+  'ds-text-field',
+  'ds-table-sort-button',
   'ds-table-pagination',
 ]);
 
 const INTERACTIVE_ROLES = new Set([
-  'button', 'checkbox', 'link', 'menuitem', 'menuitemcheckbox',
-  'menuitemradio', 'option', 'radio', 'searchbox', 'slider',
-  'spinbutton', 'switch', 'textbox',
+  'button',
+  'checkbox',
+  'link',
+  'menuitem',
+  'menuitemcheckbox',
+  'menuitemradio',
+  'option',
+  'radio',
+  'searchbox',
+  'slider',
+  'spinbutton',
+  'switch',
+  'textbox',
 ]);
 
 const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
@@ -262,7 +277,9 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     if (!this._hasCaption) {
       return null;
     }
-    return html`<caption part="caption"><slot name="caption"></slot></caption>`;
+    return html`<caption part="caption">
+      <slot name="caption"></slot>
+    </caption>`;
   }
 
   #skeletonColumnCount(): number {
@@ -285,22 +302,28 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     return html`
       <table part="table" aria-busy=${ifDefined(this.loading ? 'true' : undefined)}>
         ${this.#renderCaption()}
-        <colgroup>${columns.map(({ column }) => html`<col style=${column.width ? `width: ${column.width}` : ''}>`)}</colgroup>
+        <colgroup>
+          ${columns.map(({ column }) => html`<col style=${column.width ? `width: ${column.width}` : ''} />`)}
+        </colgroup>
         <thead part="thead">
-          <tr>${renderTableHeader(columns, column => this.#ariaSort(column))}</tr>
+          <tr>
+            ${renderTableHeader(columns, (column) => this.#ariaSort(column))}
+          </tr>
         </thead>
-        <tbody part="tbody">${renderTableBody({
-          rows: this.rows,
-          columns,
-          rowKey: this.rowKey,
-          clickableRows: this.clickableRows,
-          rowActionsDisabled: this.loading,
-          rowActionLabel: this.#rowActionLabel,
-          onRowClick: this.#onRowClick,
-          onRowPointerDown: this.#onRowPointerDown,
-          onRowPointerMove: this.#onRowPointerMove,
-          onRowAction: this.#onRowAction,
-        })}</tbody>
+        <tbody part="tbody">
+          ${renderTableBody({
+            rows: this.rows,
+            columns,
+            rowKey: this.rowKey,
+            clickableRows: this.clickableRows,
+            rowActionsDisabled: this.loading,
+            rowActionLabel: this.#rowActionLabel,
+            onRowClick: this.#onRowClick,
+            onRowPointerDown: this.#onRowPointerDown,
+            onRowPointerMove: this.#onRowPointerMove,
+            onRowAction: this.#onRowAction,
+          })}
+        </tbody>
       </table>
     `;
   }
@@ -322,10 +345,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   override render(): TemplateResult {
     return html`
       ${this.#renderToolbar()}
-      <div class="scroll" part="scroll">
-        ${this.#renderTable()}
-        ${this.#renderLoading()}
-      </div>
+      <div class="scroll" part="scroll">${this.#renderTable()} ${this.#renderLoading()}</div>
       ${this.#renderFooter()}
     `;
   }

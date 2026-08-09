@@ -1,9 +1,4 @@
-export {
-  DsButton,
-  type ButtonVariant,
-  type ButtonSize,
-  type ButtonType,
-} from './atoms/button/index.js';
+export { DsButton, type ButtonVariant, type ButtonSize, type ButtonType } from './atoms/button/index.js';
 export { DsTooltip, type TooltipPlacement } from './atoms/tooltip/index.js';
 export { DsBadge, type BadgeTone } from './atoms/badge/index.js';
 export { DsSkeleton, type SkeletonVariant } from './atoms/skeleton/index.js';
@@ -19,10 +14,7 @@ export { DsCheckboxGroup } from './atoms/checkbox-group/index.js';
 export { DsRadio } from './atoms/radio/index.js';
 export { DsRadioGroup } from './atoms/radio-group/index.js';
 export { DsFieldset, type FieldsetOrientation } from './atoms/fieldset/index.js';
-export {
-  DsSegmentedControl,
-  type SegmentedControlOption,
-} from './atoms/segmented-control/index.js';
+export { DsSegmentedControl, type SegmentedControlOption } from './atoms/segmented-control/index.js';
 export { DsSelect, type SelectOption, type SelectSize } from './atoms/select/index.js';
 export { DsSearchableSelect } from './atoms/searchable-select/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './atoms/tabs/index.js';

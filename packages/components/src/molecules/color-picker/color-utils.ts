@@ -67,7 +67,11 @@ function parseColor(value: string): RgbColor | null {
       blue: Number.parseInt(hex.slice(5, 7), 16),
     };
   }
-  const channels = value.trim().match(RGB_COLOR)?.[1]?.split(',').map((item) => item.trim());
+  const channels = value
+    .trim()
+    .match(RGB_COLOR)?.[1]
+    ?.split(',')
+    .map((item) => item.trim());
   if (!channels || channels.length < 3) {
     return null;
   }
@@ -94,11 +98,7 @@ function contrastRatio(first: RgbColor, second: RgbColor): number {
 }
 
 function relativeLuminance(color: RgbColor): number {
-  return (
-    0.2126 * linearChannel(color.red) +
-    0.7152 * linearChannel(color.green) +
-    0.0722 * linearChannel(color.blue)
-  );
+  return 0.2126 * linearChannel(color.red) + 0.7152 * linearChannel(color.green) + 0.0722 * linearChannel(color.blue);
 }
 
 function linearChannel(channel: number): number {

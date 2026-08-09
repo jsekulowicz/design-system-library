@@ -28,9 +28,7 @@ export interface ChartLayout<T extends BarChartRow = BarChartRow> {
   bands: GroupBand[];
 }
 
-export function computeChartLayout<T extends BarChartRow>(
-  options: ChartLayoutOptions<T>,
-): ChartLayout<T> {
+export function computeChartLayout<T extends BarChartRow>(options: ChartLayoutOptions<T>): ChartLayout<T> {
   const groups = groupData(options.data, options.domain, options.seriesKeys);
   const maxValue = groups.reduce((acc, g) => {
     const v = options.stacked ? g.total : Math.max(...Object.values(g.values), 0);

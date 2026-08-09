@@ -38,10 +38,7 @@ type PageShellStoryOptions = {
   asideEndState?: 'visible' | 'hidden';
 };
 
-function pageShellStory(
-  inner: ReturnType<typeof html>,
-  options: PageShellStoryOptions = {},
-) {
+function pageShellStory(inner: ReturnType<typeof html>, options: PageShellStoryOptions = {}) {
   const {
     style = FLUID_PAGE_SHELL_STYLE,
     asideToggle = false,
@@ -86,13 +83,10 @@ export const WithSidenav: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
-          Overview
-        </h1>
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">Overview</h1>
         <p>
-          Compose <code>ds-sidenav</code> + <code>ds-nav-item</code> in the <code>aside</code> slot
-          and <code>ds-footer</code> in the <code>footer</code> slot for a complete application
-          frame.
+          Compose <code>ds-sidenav</code> + <code>ds-nav-item</code> in the <code>aside</code> slot and
+          <code>ds-footer</code> in the <code>footer</code> slot for a complete application frame.
         </p>
       </article>
       <ds-footer slot="footer">
@@ -106,9 +100,7 @@ export const NoAside: Story = {
   name: 'No Aside',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    html`<div
-      style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)"
-    >
+    html`<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
       <ds-page-shell brand="Brand" style=${FLUID_PAGE_SHELL_STYLE}>
         <div slot="header-actions">
           <ds-button variant="primary" size="sm">New session</ds-button>
@@ -118,10 +110,9 @@ export const NoAside: Story = {
             Single-section app
           </h1>
           <p>
-            Leave the <code>aside</code> slot empty and the page shell auto-collapses to a single
-            column on every viewport — the hamburger toggle, drawer, and aside region don't render.
-            Useful for focused, single-purpose tools that don't need a global
-            <code>ds-sidenav</code>.
+            Leave the <code>aside</code> slot empty and the page shell auto-collapses to a single column on every
+            viewport — the hamburger toggle, drawer, and aside region don't render. Useful for focused, single-purpose
+            tools that don't need a global <code>ds-sidenav</code>.
           </p>
         </article>
       </ds-page-shell>
@@ -151,8 +142,8 @@ export const ConstrainedWidth: Story = {
             Capped shell
           </h1>
           <p>
-            This story opts into <code>--ds-page-shell-max-width: 90rem</code> to show the
-            centred column cap. The default PageShell stories use the fluid <code>none</code>
+            This story opts into <code>--ds-page-shell-max-width: 90rem</code> to show the centred column cap. The
+            default PageShell stories use the fluid <code>none</code>
             value.
           </p>
         </article>
@@ -165,74 +156,80 @@ export const CollapsedSidenav: Story = {
   name: 'Collapsed Sidenav',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(html`
-      <div slot="header-actions">
-        <ds-button variant="secondary" size="sm">Invite</ds-button>
-      </div>
-      <ds-sidenav slot="aside">
-        <ds-nav-item href="#" current>
-          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
-          Overview
-        </ds-nav-item>
-        <ds-nav-item href="#">
-          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
-          Activity
-        </ds-nav-item>
-        <ds-nav-item href="#">
-          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
-          Settings
-        </ds-nav-item>
-      </ds-sidenav>
-      <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
-          Collapsed navigation
-        </h1>
-        <p>
-          Set <code>aside-toggle</code> on <code>ds-page-shell</code> to let users switch the
-          start aside between its full and compact states.
-        </p>
-      </article>
-      <ds-footer slot="footer">
-        <span slot="start">© 2026 Brand</span>
-      </ds-footer>
-    `, { asideToggle: true, asideState: 'compact' }),
+    pageShellStory(
+      html`
+        <div slot="header-actions">
+          <ds-button variant="secondary" size="sm">Invite</ds-button>
+        </div>
+        <ds-sidenav slot="aside">
+          <ds-nav-item href="#" current>
+            <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+            Overview
+          </ds-nav-item>
+          <ds-nav-item href="#">
+            <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+            Activity
+          </ds-nav-item>
+          <ds-nav-item href="#">
+            <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+            Settings
+          </ds-nav-item>
+        </ds-sidenav>
+        <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+            Collapsed navigation
+          </h1>
+          <p>
+            Set <code>aside-toggle</code> on <code>ds-page-shell</code> to let users switch the start aside between its
+            full and compact states.
+          </p>
+        </article>
+        <ds-footer slot="footer">
+          <span slot="start">© 2026 Brand</span>
+        </ds-footer>
+      `,
+      { asideToggle: true, asideState: 'compact' },
+    ),
 };
 
 export const CollapsibleAsides: Story = {
   name: 'Collapsible Asides',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(html`
-      <ds-sidenav slot="aside">
-        <ds-nav-item href="#" current>
-          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
-          Overview
-        </ds-nav-item>
-        <ds-nav-item href="#">
-          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
-          Activity
-        </ds-nav-item>
-      </ds-sidenav>
-      <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
-          Two-sided shell
-        </h1>
-        <p>
-          The start aside toggles between full and compact states. The end aside toggles between
-          visible and hidden while using the same border-aligned control treatment.
-        </p>
-      </article>
-      <nav
-        slot="aside-end"
-        aria-label="On this page"
-        style="width:14rem;padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-3)"
-      >
-        <strong>On this page</strong>
-        <ds-link href="#overview" variant="quiet">Overview</ds-link>
-        <ds-link href="#activity" variant="quiet">Activity</ds-link>
-        <ds-link href="#settings" variant="quiet">Settings</ds-link>
-      </nav>
-    `, { asideToggle: true, asideEndToggle: true }),
+    pageShellStory(
+      html`
+        <ds-sidenav slot="aside">
+          <ds-nav-item href="#" current>
+            <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+            Overview
+          </ds-nav-item>
+          <ds-nav-item href="#">
+            <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+            Activity
+          </ds-nav-item>
+        </ds-sidenav>
+        <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+            Two-sided shell
+          </h1>
+          <p>
+            The start aside toggles between full and compact states. The end aside toggles between visible and hidden
+            while using the same border-aligned control treatment.
+          </p>
+        </article>
+        <nav
+          slot="aside-end"
+          aria-label="On this page"
+          style="width:14rem;padding:var(--ds-space-4);display:flex;flex-direction:column;gap:var(--ds-space-3)"
+        >
+          <strong>On this page</strong>
+          <ds-link href="#overview" variant="quiet">Overview</ds-link>
+          <ds-link href="#activity" variant="quiet">Activity</ds-link>
+          <ds-link href="#settings" variant="quiet">Settings</ds-link>
+        </nav>
+      `,
+      { asideToggle: true, asideEndToggle: true },
+    ),
 };
 
 export const OverflowingMain: Story = {
@@ -258,18 +255,14 @@ export const OverflowingMain: Story = {
           Overflowing main
         </h1>
         <p>
-          When main has more content than fits, a thin vertical scrollbar appears at the
-          inline-end. Because main reserves a scrollbar gutter on both inline edges
-          (<code>scrollbar-gutter: stable both-edges</code>), the inline-start and inline-end
-          visible empty bands stay equal in width whether or not the scrollbar is currently
+          When main has more content than fits, a thin vertical scrollbar appears at the inline-end. Because main
+          reserves a scrollbar gutter on both inline edges (<code>scrollbar-gutter: stable both-edges</code>), the
+          inline-start and inline-end visible empty bands stay equal in width whether or not the scrollbar is currently
           rendered — so the page doesn't shift horizontally when overflow toggles on or off.
         </p>
         ${Array.from(
           { length: 30 },
-          (_, i) =>
-            html`<p>
-              Filler row ${i + 1}: lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </p>`,
+          (_, i) => html`<p>Filler row ${i + 1}: lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>`,
         )}
       </article>
       <ds-footer slot="footer">
@@ -277,7 +270,6 @@ export const OverflowingMain: Story = {
       </ds-footer>
     `),
 };
-
 
 export const NonScrollingPageHeader: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
@@ -294,9 +286,7 @@ export const NonScrollingPageHeader: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <header slot="page-header" style="display:grid;gap:var(--ds-space-1)">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
-          Activity
-        </h1>
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">Activity</h1>
         <p style="margin:0;color:var(--ds-color-fg-muted)">
           The heading stays still while the edge-aligned content region scrolls.
         </p>
@@ -305,9 +295,7 @@ export const NonScrollingPageHeader: Story = {
         { length: 24 },
         (_, index) => html`
           <section style="max-width:68rem">
-            <h2 style="margin:0;font-size:var(--ds-font-size-heading-sm)">
-              Activity group ${index + 1}
-            </h2>
+            <h2 style="margin:0;font-size:var(--ds-font-size-heading-sm)">Activity group ${index + 1}</h2>
             <p>Recent project and account events appear in this scrolling region.</p>
           </section>
         `,
@@ -325,7 +313,10 @@ export const HeaderStatusAndMenuAtStart: Story = {
         style="${FLUID_PAGE_SHELL_STYLE};--ds-page-shell-menu-toggle-size:var(--ds-size-md)"
         mobile-menu-button-position="start"
       >
-        <div slot="header-status" style="display:flex;align-items:center;gap:var(--ds-space-2);font-weight:var(--ds-font-weight-semibold)">
+        <div
+          slot="header-status"
+          style="display:flex;align-items:center;gap:var(--ds-space-2);font-weight:var(--ds-font-weight-semibold)"
+        >
           <span>1200 XP</span>
           <span>·</span>
           <span>10 credits</span>
@@ -349,10 +340,10 @@ export const HeaderStatusAndMenuAtStart: Story = {
             Header status
           </h1>
           <p>
-            Indicator widgets go in the <code>header-status</code> slot and read apart from the
-            action buttons. Narrow the frame to see the mobile menu toggle appear as a peer of
-            the action buttons; <code>mobile-menu-button-position="start"</code> places it before
-            them, and <code>--ds-page-shell-menu-toggle-size</code> sizes it to match.
+            Indicator widgets go in the <code>header-status</code> slot and read apart from the action buttons. Narrow
+            the frame to see the mobile menu toggle appear as a peer of the action buttons;
+            <code>mobile-menu-button-position="start"</code> places it before them, and
+            <code>--ds-page-shell-menu-toggle-size</code> sizes it to match.
           </p>
         </article>
       </ds-page-shell>

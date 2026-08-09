@@ -32,10 +32,7 @@ class ResizeObserverMock {
 // Other components (e.g. the mobile-nav ds-drawer) also create ResizeObservers,
 // so pick the one observing the page shell itself rather than instances[0].
 function shellResizeObserver(el: Element): ResizeObserverMock {
-  return (
-    ResizeObserverMock.instances.find((o) => o.target === el) ??
-    ResizeObserverMock.instances[0]
-  );
+  return ResizeObserverMock.instances.find((o) => o.target === el) ?? ResizeObserverMock.instances[0];
 }
 
 const OriginalResizeObserver = globalThis.ResizeObserver;
@@ -307,9 +304,7 @@ describe('<ds-page-shell>', () => {
 
   describe('empty aside slot', () => {
     it('reflects aside-empty when nothing is slotted in aside', async () => {
-      const el = await mount<DsPageShell>(
-        `<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`,
-      );
+      const el = await mount<DsPageShell>(`<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`);
       await el.updateComplete;
       expect(el.hasAttribute('aside-empty')).toBe(true);
       expect(el.shadowRoot!.querySelector('ds-button.menu-toggle')).toBeNull();
@@ -326,17 +321,13 @@ describe('<ds-page-shell>', () => {
 
   describe('empty footer slot', () => {
     it('reflects footer-empty when nothing is slotted in footer', async () => {
-      const el = await mount<DsPageShell>(
-        `<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`,
-      );
+      const el = await mount<DsPageShell>(`<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`);
       await el.updateComplete;
       expect(el.hasAttribute('footer-empty')).toBe(true);
     });
 
     it('does not render footer markup when nothing is slotted in footer', async () => {
-      const el = await mount<DsPageShell>(
-        `<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`,
-      );
+      const el = await mount<DsPageShell>(`<ds-page-shell brand="Brand"><div>Content</div></ds-page-shell>`);
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('footer')).toBeNull();
     });
@@ -417,9 +408,7 @@ describe('<ds-page-shell>', () => {
     });
 
     it('lets consumers size the menu toggle via a custom property', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(
         /\.menu-toggle::part\(button\)\s*{[^}]*width:\s*var\(--ds-page-shell-menu-toggle-size,\s*var\(--ds-size-sm\)\)/,
       );
@@ -434,41 +423,29 @@ describe('<ds-page-shell>', () => {
     });
 
     it('makes the embedded ds-top-bar background transparent so the sticky header bg shows through', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/\.chrome\s*{[^}]*--ds-top-bar-bg:\s*transparent/);
     });
 
     it('constrains the shell to the viewport so main owns page scrolling', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/:host\s*{[^}]*height:\s*100vh/);
       expect(css).toMatch(/:host\s*{[^}]*height:\s*100dvh/);
     });
 
     it('defaults the page content column to fluid width', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/:host\s*{[^}]*--ds-page-shell-max-width:\s*none/);
     });
 
     it('hides the drawer toggle by default and shows it only in mobile-layout', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/\.menu-toggle\s*{[^}]*display:\s*none/);
-      expect(css).toMatch(
-        /:host\(\[mobile-layout\]\)\s*\.menu-toggle\s*{[^}]*display:\s*inline-flex/,
-      );
+      expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.menu-toggle\s*{[^}]*display:\s*inline-flex/);
     });
 
     it('lets the main grid track shrink while its inner region owns scrolling', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/main\s*{[^}]*min-width:\s*0/);
       expect(css).toMatch(/main\s*{[^}]*overflow:\s*hidden/);
       expect(css).toMatch(/\.main-scroller\s*{[^}]*overflow-x:\s*clip/);
@@ -476,42 +453,28 @@ describe('<ds-page-shell>', () => {
     });
 
     it('keeps the desktop aside flush with its column edge (no scrollbar gutter)', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       const baseAsideRule = css.match(/(?<![\w-\]"])aside\s*{[^}]*}/)?.[0];
       expect(baseAsideRule).toBeTruthy();
       expect(baseAsideRule).not.toMatch(/scrollbar-gutter:\s*stable/);
     });
 
     it('hides aside scrollbars and applies the shared scroll fade mask', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/aside\s*{[^}]*scrollbar-width:\s*none/);
       expect(css).toMatch(/aside\s*{[^}]*mask-image:\s*var\(--ds-scroll-fade-mask\)/);
       expect(css).toMatch(/aside::-webkit-scrollbar\s*{[^}]*display:\s*none/);
     });
 
     it('reserves balanced gutters around the edge-aligned main scroller', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
-      expect(css).toMatch(
-        /\.main-scroller\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/,
-      );
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
+      expect(css).toMatch(/\.main-scroller\s*{[^}]*scrollbar-gutter:\s*stable\s+both-edges/);
     });
 
     it('pads the page header and content instead of the scroller', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
-      expect(css).toMatch(
-        /\.page-header\s*{[^}]*padding-inline:\s*var\(--ds-page-shell-page-padding-inline\)/,
-      );
-      expect(css).toMatch(
-        /\.main-content\s*{[^}]*padding:\s*var\(--ds-page-shell-page-padding-block\)/,
-      );
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
+      expect(css).toMatch(/\.page-header\s*{[^}]*padding-inline:\s*var\(--ds-page-shell-page-padding-inline\)/);
+      expect(css).toMatch(/\.main-content\s*{[^}]*padding:\s*var\(--ds-page-shell-page-padding-block\)/);
       expect(css).not.toMatch(/main\s*{[^}]*padding:/);
       expect(css).toContain('@media (max-width: calc(1024px - 0.02px))');
       expect(css).toContain('--ds-page-shell-page-padding-block: var(--ds-space-4)');
@@ -646,25 +609,19 @@ describe('<ds-page-shell>', () => {
     });
 
     it('positions controls over aside borders without reserving a full rail', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/\.aside-toggle-rail\s*{[^}]*position:\s*absolute/);
       expect(css).toMatch(
         /\.aside-toggle-start-rail\s*{[^}]*inset-inline-end:\s*calc\(var\(--ds-size-sm\)\s*\/\s*-2\)/,
       );
-      expect(css).toMatch(
-        /:host\(\[aside-toggle\]\)\s*aside\[part=['"]aside['"]\]\s*{[^}]*padding-inline-end:/,
-      );
+      expect(css).toMatch(/:host\(\[aside-toggle\]\)\s*aside\[part=['"]aside['"]\]\s*{[^}]*padding-inline-end:/);
       expect(css).toMatch(
         /:host\(\[aside-end-toggle\]\)\s*aside\[part=['"]aside-end['"]\]\s*{[^}]*padding-inline-start:/,
       );
     });
 
     it('collapses asides with an animatable grid track and keeps toggle clearance', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
-        .map((s) => s.cssText)
-        .join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(
         /\.aside-start-cluster,\s*\.aside-end-cluster\s*{[^}]*grid-template-columns:\s*1fr[^}]*transition:\s*grid-template-columns/s,
       );
@@ -694,7 +651,7 @@ describe('<ds-page-shell>', () => {
       expect(drawer.getAttribute('size')).toBe('sm');
     });
 
-    it('forwards the drawer-brand slot into ds-drawer\'s title slot', async () => {
+    it("forwards the drawer-brand slot into ds-drawer's title slot", async () => {
       const el = await mount<DsPageShell>(`
         <ds-page-shell brand="Brand">
           <span slot="drawer-brand">Wide Brand</span>

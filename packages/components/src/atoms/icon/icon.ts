@@ -57,11 +57,7 @@ export class DsIcon extends DsElement {
   override render(): TemplateResult {
     const ariaHidden = this.label ? 'false' : 'true';
     const role: 'img' | undefined = this.label ? 'img' : undefined;
-    return html`<span
-      role=${ifDefined(role)}
-      aria-hidden=${ariaHidden}
-      aria-label=${ifDefined(this.label)}
-    >
+    return html`<span role=${ifDefined(role)} aria-hidden=${ariaHidden} aria-label=${ifDefined(this.label)}>
       ${this.svg ? this.svg : html`<slot></slot>`}
     </span>`;
   }

@@ -89,9 +89,10 @@ function renderWrapperFile(spec: WrapperSpec): string {
   const componentName = spec.className.replace(/^Ds/, '');
   const subpath = resolveSubpath(spec.modulePath);
   const events = renderEventMap(spec.events);
-  const litReactImport = spec.events.length > 0
-    ? "import { createComponent, type EventName } from '@lit/react';"
-    : "import { createComponent } from '@lit/react';";
+  const litReactImport =
+    spec.events.length > 0
+      ? "import { createComponent, type EventName } from '@lit/react';"
+      : "import { createComponent } from '@lit/react';";
   return `import * as React from 'react';
 ${litReactImport}
 import { ${spec.className} } from '@jsekulowicz/ds-components/${subpath}';

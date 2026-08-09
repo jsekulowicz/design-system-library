@@ -20,8 +20,7 @@ beforeEach(() => {
 async function mountBreadcrumb(inner: string): Promise<DsBreadcrumb> {
   const el = await mount<DsBreadcrumb>(`<ds-breadcrumb>${inner}</ds-breadcrumb>`);
   await Promise.all(
-    Array.from(el.querySelectorAll('ds-breadcrumb-item'))
-      .map(child => (child as DsBreadcrumbItem).updateComplete),
+    Array.from(el.querySelectorAll('ds-breadcrumb-item')).map((child) => (child as DsBreadcrumbItem).updateComplete),
   );
   return el;
 }

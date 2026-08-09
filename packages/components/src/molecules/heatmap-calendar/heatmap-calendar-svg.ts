@@ -6,10 +6,7 @@ import type { HeatmapLayout, HeatmapRenderContext } from './types.js';
 export const HEATMAP_LEFT = 34;
 export const HEATMAP_TOP = 24;
 
-export function heatmapDimensions(
-  ctx: HeatmapRenderContext,
-  layout: HeatmapLayout,
-): { width: number; height: number } {
+export function heatmapDimensions(ctx: HeatmapRenderContext, layout: HeatmapLayout): { width: number; height: number } {
   const step = ctx.cellSize + ctx.cellGap;
   return {
     width: HEATMAP_LEFT + Math.max(0, layout.weekCount * step - ctx.cellGap),
@@ -25,10 +22,7 @@ function levelColor(ctx: HeatmapRenderContext, level: number): string {
   return `color-mix(in oklab, ${ctx.color} ${strengths[level]}%, var(--ds-color-bg-subtle))`;
 }
 
-export function renderHeatmapSvg(
-  ctx: HeatmapRenderContext,
-  layout: HeatmapLayout,
-): SVGTemplateResult {
+export function renderHeatmapSvg(ctx: HeatmapRenderContext, layout: HeatmapLayout): SVGTemplateResult {
   const { width, height } = heatmapDimensions(ctx, layout);
   const step = ctx.cellSize + ctx.cellGap;
   return svg`

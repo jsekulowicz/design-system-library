@@ -10,12 +10,7 @@ export default defineConfig({
       reportsDirectory: './coverage',
       all: true,
       include: ['src/**/*.ts'],
-      exclude: [
-        ...coverageConfigDefaults.exclude,
-        'src/**/*.test.ts',
-        'src/**/utils/**',
-        'src/build.ts',
-      ],
+      exclude: [...coverageConfigDefaults.exclude, 'src/**/*.test.ts', 'src/**/utils/**', 'src/build.ts'],
       excludeAfterRemap: true,
       reportOnFailure: true,
     },

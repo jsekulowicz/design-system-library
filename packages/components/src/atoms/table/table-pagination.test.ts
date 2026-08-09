@@ -24,7 +24,7 @@ async function mountPagination(props: Partial<DsTablePagination> = {}): Promise<
 
 function getButton(el: DsTablePagination, label: string): HTMLButtonElement | null {
   const buttons = el.shadowRoot!.querySelectorAll('button');
-  return Array.from(buttons).find(b => b.getAttribute('aria-label') === label) ?? null;
+  return Array.from(buttons).find((b) => b.getAttribute('aria-label') === label) ?? null;
 }
 
 function getPageButton(el: DsTablePagination, page: number): HTMLButtonElement | null {
@@ -139,13 +139,13 @@ describe('<ds-table-pagination>', () => {
     // Compact mode caps the range at three items + first/last: with
     // currentPage = 50 we expect [1, …, 50, …, 100].
     const pageButtons = Array.from(el.shadowRoot!.querySelectorAll('button[aria-label^="Page "]'));
-    const pages = pageButtons.map(b => Number(b.getAttribute('aria-label')!.replace('Page ', '')));
+    const pages = pageButtons.map((b) => Number(b.getAttribute('aria-label')!.replace('Page ', '')));
     expect(pages).toEqual([1, 50, 100]);
   });
 
   it('uses the shared focus shadow for buttons and the page size select', () => {
     const css = (DsTablePagination as unknown as { styles: { cssText: string }[] }).styles
-      .map(style => style.cssText)
+      .map((style) => style.cssText)
       .join('\n');
     expect(css).toContain('button:focus-visible');
     expect(css).toContain('select:focus-visible');

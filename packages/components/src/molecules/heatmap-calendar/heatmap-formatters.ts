@@ -27,9 +27,7 @@ export function monthFormatter(locale?: string): (date: string) => string {
 export function weekdayLabels(locale: string | undefined, weekStart: HeatmapWeekStart): string[] {
   const formatter = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' });
   const monday = Date.UTC(1970, 0, 5);
-  const labels = Array.from({ length: 7 }, (_, index) =>
-    formatter.format(new Date(monday + index * 86400000)),
-  );
+  const labels = Array.from({ length: 7 }, (_, index) => formatter.format(new Date(monday + index * 86400000)));
   return weekStart === 'sunday' ? [labels[6]!, ...labels.slice(0, 6)] : labels;
 }
 

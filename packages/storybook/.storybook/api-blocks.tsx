@@ -13,8 +13,8 @@ type CemModule = { declarations?: unknown[] };
 
 function findDeclaration(tag: string): CemDeclaration | undefined {
   return (cem.modules as CemModule[])
-    .flatMap(m => (m.declarations ?? []) as CemDeclaration[])
-    .find(d => d.tagName === tag);
+    .flatMap((m) => (m.declarations ?? []) as CemDeclaration[])
+    .find((d) => d.tagName === tag);
 }
 
 function ApiTable({ title, items }: { title: string; items: Entry[] }) {
@@ -36,9 +36,11 @@ function ApiTable({ title, items }: { title: string; items: Entry[] }) {
           </tr>
         </thead>
         <tbody>
-          {items.map(item => (
+          {items.map((item) => (
             <tr key={item.name}>
-              <td><code>{item.name || 'default'}</code></td>
+              <td>
+                <code>{item.name || 'default'}</code>
+              </td>
               <td>{item.description ?? '—'}</td>
             </tr>
           ))}

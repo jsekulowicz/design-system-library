@@ -129,9 +129,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
           @input=${this.#onInput}
           @change=${this.#onChange}
         />
-        ${this.showValue
-          ? html`<output part="value" for="input">${current}</output>`
-          : nothing}
+        ${this.showValue ? html`<output part="value" for="input">${current}</output>` : nothing}
       </div>
       ${renderSubtext(this.description, this.error, this.invalid)}
     `;

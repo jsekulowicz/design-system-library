@@ -45,7 +45,9 @@ export const SeparatingFormSections: Story = {
 
 export const InlineWithText: Story = {
   render: () => html`
-    <p style="margin:0;display:inline-flex;align-items:center;gap:var(--ds-space-2);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)">
+    <p
+      style="margin:0;display:inline-flex;align-items:center;gap:var(--ds-space-2);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)"
+    >
       <span>Edited just now</span>
       <ds-divider orientation="vertical"></ds-divider>
       <span>3 contributors</span>

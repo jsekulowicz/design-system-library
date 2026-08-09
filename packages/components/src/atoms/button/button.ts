@@ -127,17 +127,11 @@ export class DsButton extends DsElement {
   #renderLabelStack(): TemplateResult {
     return html`
       <span class="stack labels">
-        <span
-          class="stack-item ${this.loading ? 'is-hidden' : ''}"
-          aria-hidden=${this.loading ? 'true' : nothing}
-        >
+        <span class="stack-item ${this.loading ? 'is-hidden' : ''}" aria-hidden=${this.loading ? 'true' : nothing}>
           <slot name="leading"></slot>
           <slot></slot>
         </span>
-        <span
-          class="stack-item ${this.loading ? '' : 'is-hidden'}"
-          aria-hidden=${this.loading ? nothing : 'true'}
-        >
+        <span class="stack-item ${this.loading ? '' : 'is-hidden'}" aria-hidden=${this.loading ? nothing : 'true'}>
           ${spinnerTemplate(this.loading ? '' : 'is-hidden')} ${this.loadingLabel}
         </span>
       </span>

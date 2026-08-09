@@ -42,68 +42,68 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-<ds-text-field
-  type=${args['type']}
-  size=${args['size']}
-  label=${args['label']}
-  description=${args['description'] || ''}
-  error=${args['error'] || ''}
-  placeholder=${args['placeholder']}
-  max-length=${args['maxLength'] ?? nothing}
-  ?char-count=${args['charCount']}
-  ?disabled=${args['disabled']}
-  ?required=${args['required']}
-  ?invalid=${args['invalid']}
-></ds-text-field>
+    <ds-text-field
+      type=${args['type']}
+      size=${args['size']}
+      label=${args['label']}
+      description=${args['description'] || ''}
+      error=${args['error'] || ''}
+      placeholder=${args['placeholder']}
+      max-length=${args['maxLength'] ?? nothing}
+      ?char-count=${args['charCount']}
+      ?disabled=${args['disabled']}
+      ?required=${args['required']}
+      ?invalid=${args['invalid']}
+    ></ds-text-field>
   `,
 };
 
 export const WithDescription: Story = {
   render: () => html`
-<ds-text-field
-  label="Email address"
-  description="We'll use this for receipts and audit logs only."
-  type="email"
-  placeholder="you@studio.co"
-></ds-text-field>
+    <ds-text-field
+      label="Email address"
+      description="We'll use this for receipts and audit logs only."
+      type="email"
+      placeholder="you@studio.co"
+    ></ds-text-field>
   `,
 };
 
 export const WithIcons: Story = {
   render: () => html`
-  <ds-text-field
-    label="Email address"
-    description="We'll use this for receipts and audit logs only."
-    type="email"
-    placeholder="you@studio.co"
-  >
-    <ds-icon slot="leading" name="home"></ds-icon>
-    <ds-icon slot="trailing" name="clock"></ds-icon>
-  </ds-text-field>
+    <ds-text-field
+      label="Email address"
+      description="We'll use this for receipts and audit logs only."
+      type="email"
+      placeholder="you@studio.co"
+    >
+      <ds-icon slot="leading" name="home"></ds-icon>
+      <ds-icon slot="trailing" name="clock"></ds-icon>
+    </ds-text-field>
   `,
 };
 
 export const Required: Story = {
   render: () => html`
-<ds-text-field
-  label="Email address"
-  error="Must be a valid email address."
-  type="email"
-  placeholder="you@studio.co"
-  required
-  invalid
-></ds-text-field>
+    <ds-text-field
+      label="Email address"
+      error="Must be a valid email address."
+      type="email"
+      placeholder="you@studio.co"
+      required
+      invalid
+    ></ds-text-field>
   `,
 };
 
 export const Disabled: Story = {
   render: () => html`
-<ds-text-field
-  label="Full name"
-  description="This field cannot be edited right now."
-  placeholder="Your name"
-  value="Jane Smith"
-  disabled
-></ds-text-field>
+    <ds-text-field
+      label="Full name"
+      description="This field cannot be edited right now."
+      placeholder="Your name"
+      value="Jane Smith"
+      disabled
+    ></ds-text-field>
   `,
 };

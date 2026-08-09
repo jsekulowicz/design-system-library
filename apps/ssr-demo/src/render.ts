@@ -12,9 +12,8 @@ export async function renderPage(baseCss: string): Promise<string> {
           Rendered on the server
         </h1>
         <p>
-          This page is server-rendered via @lit-labs/ssr using Declarative Shadow DOM. Try reloading
-          with JavaScript disabled — the button still renders from HTML alone; once JS boots, it
-          hydrates in place.
+          This page is server-rendered via @lit-labs/ssr using Declarative Shadow DOM. Try reloading with JavaScript
+          disabled — the button still renders from HTML alone; once JS boots, it hydrates in place.
         </p>
         <ds-button variant="primary">Primary (hydrates)</ds-button>
       </article>

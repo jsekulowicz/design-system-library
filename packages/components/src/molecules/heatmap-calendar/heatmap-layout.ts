@@ -1,10 +1,4 @@
-import type {
-  HeatmapCell,
-  HeatmapDay,
-  HeatmapLayout,
-  HeatmapMonthLabel,
-  HeatmapWeekStart,
-} from './types.js';
+import type { HeatmapCell, HeatmapDay, HeatmapLayout, HeatmapMonthLabel, HeatmapWeekStart } from './types.js';
 
 type CivilDate = { year: number; month: number; day: number };
 
@@ -14,10 +8,7 @@ export function parseDate(value: string): CivilDate | null {
     return null;
   }
   const date = { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]) };
-  return date.month >= 1 &&
-    date.month <= 12 &&
-    date.day >= 1 &&
-    date.day <= daysInMonth(date.year, date.month)
+  return date.month >= 1 && date.month <= 12 && date.day >= 1 && date.day <= daysInMonth(date.year, date.month)
     ? date
     : null;
 }
@@ -40,8 +31,7 @@ export function daysFromCivil(date: CivilDate): number {
   const yearOfEra = year - era * 400;
   const adjustedMonth = date.month + (date.month > 2 ? -3 : 9);
   const dayOfYear = Math.floor((153 * adjustedMonth + 2) / 5) + date.day - 1;
-  const dayOfEra =
-    yearOfEra * 365 + Math.floor(yearOfEra / 4) - Math.floor(yearOfEra / 100) + dayOfYear;
+  const dayOfEra = yearOfEra * 365 + Math.floor(yearOfEra / 4) - Math.floor(yearOfEra / 100) + dayOfYear;
   return era * 146097 + dayOfEra - 719468;
 }
 
@@ -50,15 +40,10 @@ export function civilFromDays(days: number): CivilDate {
   const era = Math.floor(shifted / 146097);
   const dayOfEra = shifted - era * 146097;
   const yearOfEra = Math.floor(
-    (dayOfEra -
-      Math.floor(dayOfEra / 1460) +
-      Math.floor(dayOfEra / 36524) -
-      Math.floor(dayOfEra / 146096)) /
-      365,
+    (dayOfEra - Math.floor(dayOfEra / 1460) + Math.floor(dayOfEra / 36524) - Math.floor(dayOfEra / 146096)) / 365,
   );
   let year = yearOfEra + era * 400;
-  const dayOfYear =
-    dayOfEra - (365 * yearOfEra + Math.floor(yearOfEra / 4) - Math.floor(yearOfEra / 100));
+  const dayOfYear = dayOfEra - (365 * yearOfEra + Math.floor(yearOfEra / 4) - Math.floor(yearOfEra / 100));
   const monthPrime = Math.floor((5 * dayOfYear + 2) / 153);
   const day = dayOfYear - Math.floor((153 * monthPrime + 2) / 5) + 1;
   const month = monthPrime + (monthPrime < 10 ? 3 : -9);
@@ -99,9 +84,7 @@ function monthLabels(cells: HeatmapCell[]): HeatmapMonthLabel[] {
       labels.push({ date: cell.date, column: cell.column });
     }
   }
-  return labels.filter(
-    (label, index) => index === 0 || label.column > labels[index - 1]!.column + 1,
-  );
+  return labels.filter((label, index) => index === 0 || label.column > labels[index - 1]!.column + 1);
 }
 
 export function computeHeatmapLayout(

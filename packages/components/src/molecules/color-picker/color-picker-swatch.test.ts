@@ -3,9 +3,7 @@ import type { DsColorPickerSwatch } from './color-picker-swatch.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-async function mountSwatch(
-  props: Partial<DsColorPickerSwatch> = {},
-): Promise<DsColorPickerSwatch> {
+async function mountSwatch(props: Partial<DsColorPickerSwatch> = {}): Promise<DsColorPickerSwatch> {
   return mountWithProps<DsColorPickerSwatch>(
     '<ds-color-picker-swatch></ds-color-picker-swatch>',
     { value: '#7C3AED', label: 'Violet', ...props },
@@ -33,9 +31,7 @@ describe('<ds-color-picker-swatch>', () => {
   it('uses theme contrast for the selected checkmark', async () => {
     const el = await mountSwatch({ selected: true, value: '#FDE68A' });
 
-    expect(el.style.getPropertyValue('--color-picker-check-color')).toBe(
-      'var(--ds-color-fg)',
-    );
+    expect(el.style.getPropertyValue('--color-picker-check-color')).toBe('var(--ds-color-fg)');
   });
 
   it('emits selection on click and keyboard activation', async () => {

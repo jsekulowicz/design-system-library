@@ -28,7 +28,13 @@ describe('<ds-menu-item>', () => {
     expect(leading.assignedElements()[0]?.textContent).toBe('L');
     expect(description.assignedElements()[0]?.textContent).toBe('Persist changes');
     expect(trailing.assignedElements()[0]?.textContent).toBe('⌘S');
-    expect(primary.assignedNodes({ flatten: true }).map((n) => n.textContent ?? '').join('').trim()).toBe('Save');
+    expect(
+      primary
+        .assignedNodes({ flatten: true })
+        .map((n) => n.textContent ?? '')
+        .join('')
+        .trim(),
+    ).toBe('Save');
   });
 
   it('reflects disabled and selected to attributes and ARIA', async () => {

@@ -9,14 +9,7 @@ export {
   type FontFamilyTokens,
   type FontSizeTokens,
 } from './typography.js';
-export {
-  radius,
-  border,
-  shadow,
-  type RadiusTokens,
-  type BorderTokens,
-  type ShadowTokens,
-} from './shape.js';
+export { radius, border, shadow, type RadiusTokens, type BorderTokens, type ShadowTokens } from './shape.js';
 export { duration, easing, type DurationTokens, type EasingTokens } from './motion.js';
 export {
   breakpoint,

@@ -10,13 +10,7 @@ import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
 import { positionTooltip } from './bar-chart-tooltip-position.js';
 import { renderChartSvg } from './bar-chart-svg.js';
-import {
-  liveText,
-  renderLegend,
-  renderSrTable,
-  renderTooltip,
-  rootAriaLabel,
-} from './bar-chart-overlays.js';
+import { liveText, renderLegend, renderSrTable, renderTooltip, rootAriaLabel } from './bar-chart-overlays.js';
 import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js';
 
 /**
@@ -99,7 +93,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       return;
     }
     this.#resizeObserver?.disconnect();
-    this.#resizeObserver = new ResizeObserver(entries => {
+    this.#resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) {
         this._width = Math.max(0, entry.contentRect.width);
@@ -137,7 +131,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     return computeChartLayout({
       data: this.data,
       domain: this.domain,
-      seriesKeys: this.series.map(s => s.key),
+      seriesKeys: this.series.map((s) => s.key),
       stacked: this.stacked,
       measuredWidth: this._width,
       height: this.height,
@@ -157,11 +151,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
           aria-busy="true"
           aria-label=${this.title || 'Bar chart'}
         >
-          <ds-skeleton
-            variant="rectangle"
-            width="100%"
-            height="${this.height}px"
-          ></ds-skeleton>
+          <ds-skeleton variant="rectangle" width="100%" height="${this.height}px"></ds-skeleton>
           ${renderLoadingStatus(loadingContent)}
         </div>
         ${this.showLegend ? renderLegend(ctx) : nothing}
@@ -183,13 +173,11 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         part="chart"
         aria-busy=${this.loading ? 'true' : nothing}
       >
-        ${renderChartSvg(ctx, layout, this.height)}
-        ${renderTooltip(ctx, layout)}
+        ${renderChartSvg(ctx, layout, this.height)} ${renderTooltip(ctx, layout)}
         ${this.loading ? renderLoadingOverlay(loadingContent) : nothing}
       </div>
       ${this.showLegend ? renderLegend(ctx) : nothing}
-      ${renderChartTitle(this.uid, rootAriaLabel(ctx, layout.groups.length))}
-      ${renderSrTable(ctx, layout.groups)}
+      ${renderChartTitle(this.uid, rootAriaLabel(ctx, layout.groups.length))} ${renderSrTable(ctx, layout.groups)}
       ${renderChartLiveRegion(liveText(ctx, layout.groups))}
     `;
   }
@@ -227,12 +215,24 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     const current = this._activeIndex ?? -1;
     let next: number;
     switch (event.key) {
-      case 'ArrowRight': next = Math.min(count - 1, current + 1); break;
-      case 'ArrowLeft': next = Math.max(0, current < 0 ? 0 : current - 1); break;
-      case 'Home': next = 0; break;
-      case 'End': next = count - 1; break;
-      case 'Escape': this._focusMode = null; this.#setActive(null); return;
-      default: return;
+      case 'ArrowRight':
+        next = Math.min(count - 1, current + 1);
+        break;
+      case 'ArrowLeft':
+        next = Math.max(0, current < 0 ? 0 : current - 1);
+        break;
+      case 'Home':
+        next = 0;
+        break;
+      case 'End':
+        next = count - 1;
+        break;
+      case 'Escape':
+        this._focusMode = null;
+        this.#setActive(null);
+        return;
+      default:
+        return;
     }
     event.preventDefault();
     this._focusMode = 'keyboard';
@@ -268,7 +268,10 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       this.#setActive(null);
       return;
     }
-    const index = Math.min(layout.bands.length - 1, Math.max(0, Math.floor(localX / Math.max(1, layout.bands[0]!.bandWidth))));
+    const index = Math.min(
+      layout.bands.length - 1,
+      Math.max(0, Math.floor(localX / Math.max(1, layout.bands[0]!.bandWidth))),
+    );
     this._focusMode = 'pointer';
     this.#setActive(index);
   };
@@ -279,7 +282,6 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     }
     this.#setActive(null);
   };
-
 }
 
 function groupIndexFrom(target: EventTarget | null): number | null {

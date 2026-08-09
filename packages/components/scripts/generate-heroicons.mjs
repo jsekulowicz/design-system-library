@@ -31,7 +31,10 @@ async function getIconNames() {
 }
 
 function cleanSvg(svg) {
-  return svg.trim().replace(/>\s+</g, '><').replace(/\s{2,}/g, ' ');
+  return svg
+    .trim()
+    .replace(/>\s+</g, '><')
+    .replace(/\s{2,}/g, ' ');
 }
 
 async function readIcon(name) {

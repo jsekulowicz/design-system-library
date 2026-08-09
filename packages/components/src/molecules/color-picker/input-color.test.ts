@@ -3,9 +3,7 @@ import type { DsColorPickerInputColor } from './input-color.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-async function mountInput(
-  props: Partial<DsColorPickerInputColor> = {},
-): Promise<DsColorPickerInputColor> {
+async function mountInput(props: Partial<DsColorPickerInputColor> = {}): Promise<DsColorPickerInputColor> {
   return mountWithProps<DsColorPickerInputColor>(
     '<ds-color-picker-input-color></ds-color-picker-input-color>',
     props,

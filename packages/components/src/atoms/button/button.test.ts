@@ -61,7 +61,8 @@ describe('<ds-button>', () => {
   });
 
   it('resets the host form when type=reset', async () => {
-    document.body.innerHTML = '<form><input name="email" value="a@b.com"/><ds-button type="reset">Reset</ds-button></form>';
+    document.body.innerHTML =
+      '<form><input name="email" value="a@b.com"/><ds-button type="reset">Reset</ds-button></form>';
     const form = document.querySelector('form')!;
     const btn = form.querySelector('ds-button') as DsButton;
     await btn.updateComplete;
@@ -106,13 +107,9 @@ describe('<ds-button>', () => {
   });
 
   it('keeps every slot in the same in-flow wrapper whether or not it is loading', async () => {
-    const el = await mount<DsButton>(
-      '<ds-button><span slot="leading">icon</span>Wait</ds-button>',
-    );
+    const el = await mount<DsButton>('<ds-button><span slot="leading">icon</span>Wait</ds-button>');
     const slotNames = () =>
-      Array.from(el.shadowRoot!.querySelectorAll('.content slot')).map((s) =>
-        s.getAttribute('name'),
-      );
+      Array.from(el.shadowRoot!.querySelectorAll('.content slot')).map((s) => s.getAttribute('name'));
 
     expect(slotNames()).toEqual(['leading', null, 'trailing']);
 
@@ -135,9 +132,7 @@ describe('<ds-button>', () => {
   });
 
   it('keeps the spinner in flow with a loading label so the wider state sets the width', async () => {
-    const el = await mount<DsButton>(
-      '<ds-button loading loading-label="Saving…">Save</ds-button>',
-    );
+    const el = await mount<DsButton>('<ds-button loading loading-label="Saving…">Save</ds-button>');
 
     expect(el.shadowRoot!.querySelector('.loading-overlay')).toBeNull();
     expect(el.shadowRoot!.querySelector('.labels .spinner')).not.toBeNull();

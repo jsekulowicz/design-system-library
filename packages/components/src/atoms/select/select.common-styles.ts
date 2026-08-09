@@ -86,7 +86,8 @@ export const selectCommonStyles = css`
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .tile-remove, .clear-btn {
+  .tile-remove,
+  .clear-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -99,7 +100,8 @@ export const selectCommonStyles = css`
     flex-shrink: 0;
   }
   .tile-remove {
-    width: 20px; height: 20px;
+    width: 20px;
+    height: 20px;
   }
   .tile-remove:hover {
     color: var(--ds-color-fg);
@@ -115,7 +117,8 @@ export const selectCommonStyles = css`
     display: none;
   }
   .clear-btn {
-    width: 1.5rem; height: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
   .clear-btn:hover {
     color: var(--ds-color-fg);

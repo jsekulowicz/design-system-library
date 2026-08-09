@@ -30,11 +30,7 @@ const ROWS: readonly Turn[] = [
   { turn: 3, Jess: 5, Marco: 5, Andrew: 4 },
 ];
 
-const SERIES: readonly BarChartSeries[] = [
-  { key: 'Jess' },
-  { key: 'Marco' },
-  { key: 'Andrew' },
-];
+const SERIES: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
 
 async function mountBarChart(props: Partial<DsBarChart<Turn>> = {}): Promise<DsBarChart<Turn>> {
   const el = await mountWithProps<DsBarChart<Turn>>('<ds-bar-chart></ds-bar-chart>', {
@@ -64,8 +60,8 @@ describe('<ds-bar-chart>', () => {
   it('exposes bar groups as focusable graphics symbols', async () => {
     const el = await mountBarChart();
     const all = groups(el);
-    expect(all.every(g => g.getAttribute('role') === 'graphics-symbol')).toBe(true);
-    expect(all.filter(g => g.getAttribute('tabindex') === '0')).toHaveLength(1);
+    expect(all.every((g) => g.getAttribute('role') === 'graphics-symbol')).toBe(true);
+    expect(all.filter((g) => g.getAttribute('tabindex') === '0')).toHaveLength(1);
     expect(all[0]!.getAttribute('aria-label')).toBe('1: Jess 3, Marco 2, Andrew 4');
 
     const svg = el.shadowRoot!.querySelector('svg')!;
@@ -184,7 +180,7 @@ describe('<ds-bar-chart>', () => {
   it('emits ds-bar-focus on active change with series values', async () => {
     const el = await mountBarChart();
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-bar-focus', e => events.push(e as CustomEvent));
+    el.addEventListener('ds-bar-focus', (e) => events.push(e as CustomEvent));
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
     await el.updateComplete;
@@ -201,11 +197,13 @@ describe('<ds-bar-chart>', () => {
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
 
     const rect = frame.getBoundingClientRect();
-    frame.dispatchEvent(new MouseEvent('pointermove', {
-      bubbles: true,
-      clientX: rect.left + 200,
-      clientY: rect.top + 100,
-    }));
+    frame.dispatchEvent(
+      new MouseEvent('pointermove', {
+        bubbles: true,
+        clientX: rect.left + 200,
+        clientY: rect.top + 100,
+      }),
+    );
     await el.updateComplete;
     expect((el as unknown as { _activeIndex: number | null })._activeIndex).not.toBeNull();
     expect(el.shadowRoot!.querySelector('rect.focus-ring')).toBeNull();
@@ -243,11 +241,7 @@ describe('<ds-bar-chart>', () => {
 
   it('uses series label and color overrides when provided', async () => {
     const el = await mountBarChart({
-      series: [
-        { key: 'Jess', label: 'Jessica', color: '#ff0000' },
-        { key: 'Marco' },
-        { key: 'Andrew' },
-      ],
+      series: [{ key: 'Jess', label: 'Jessica', color: '#ff0000' }, { key: 'Marco' }, { key: 'Andrew' }],
     });
     const table = el.shadowRoot!.querySelector('.visually-hidden table');
     expect(table?.textContent).toContain('Jessica');

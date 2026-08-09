@@ -33,7 +33,9 @@ describe('<ds-radio>', () => {
   });
 
   it('selects on click, unchecks siblings and emits ds-change', async () => {
-    await mount('<div><ds-radio name="plan" radiovalue="a">A</ds-radio><ds-radio name="plan" radiovalue="b" checked>B</ds-radio></div>');
+    await mount(
+      '<div><ds-radio name="plan" radiovalue="a">A</ds-radio><ds-radio name="plan" radiovalue="b" checked>B</ds-radio></div>',
+    );
     const radios = Array.from(document.body.querySelectorAll<DsRadio>('ds-radio'));
     const [first, second] = radios;
     const events: CustomEvent[] = [];
@@ -96,7 +98,9 @@ describe('<ds-radio>', () => {
     } as never;
 
     try {
-      await mount('<div><ds-radio name="plan" radiovalue="a">A</ds-radio><ds-radio name="plan" radiovalue="b">B</ds-radio></div>');
+      await mount(
+        '<div><ds-radio name="plan" radiovalue="a">A</ds-radio><ds-radio name="plan" radiovalue="b">B</ds-radio></div>',
+      );
       const first = document.body.querySelector<DsRadio>('ds-radio[radiovalue="a"]')!;
       first.shadowRoot!.querySelector('label')!.click();
       await first.updateComplete;

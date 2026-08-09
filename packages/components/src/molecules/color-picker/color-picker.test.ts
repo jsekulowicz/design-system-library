@@ -41,17 +41,11 @@ function getPanel(el: DsColorPicker): HTMLElement | null {
 }
 
 function getSwatchGroup(el: DsColorPicker): DsColorPickerSwatchGroup {
-  return el.shadowRoot!.querySelector<DsColorPickerSwatchGroup>(
-    'ds-color-picker-swatch-group',
-  )!;
+  return el.shadowRoot!.querySelector<DsColorPickerSwatchGroup>('ds-color-picker-swatch-group')!;
 }
 
 function getSwatches(el: DsColorPicker): DsColorPickerSwatch[] {
-  return Array.from(
-    getSwatchGroup(el).shadowRoot!.querySelectorAll<DsColorPickerSwatch>(
-      'ds-color-picker-swatch',
-    ),
-  );
+  return Array.from(getSwatchGroup(el).shadowRoot!.querySelectorAll<DsColorPickerSwatch>('ds-color-picker-swatch'));
 }
 
 function keydown(target: HTMLElement, key: string): void {

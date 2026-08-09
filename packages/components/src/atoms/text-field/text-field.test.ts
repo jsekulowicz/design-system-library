@@ -156,9 +156,7 @@ describe('<ds-text-field>', () => {
       event.preventDefault();
       submitted = true;
     });
-    el.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
-    );
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
     expect(submitted).toBe(true);
   });
 
@@ -175,18 +173,14 @@ describe('<ds-text-field>', () => {
       event.preventDefault();
       submitted = true;
     });
-    el.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
-    );
+    el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
     expect(submitted).toBe(false);
   });
 
   it('does not submit on Enter when no form ancestor exists', async () => {
     const el = await mount<DsTextField>('<ds-text-field></ds-text-field>');
     expect(() =>
-      el.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
-      ),
+      el.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })),
     ).not.toThrow();
   });
 

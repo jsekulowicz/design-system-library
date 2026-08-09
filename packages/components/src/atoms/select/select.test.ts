@@ -19,10 +19,14 @@ const OPTIONS = [
 ];
 
 async function mountSelect(props: Partial<DsSelect> = {}): Promise<DsSelect> {
-  return mountWithProps<DsSelect>('<ds-select label="Framework"></ds-select>', {
-    options: OPTIONS,
-    ...props,
-  }, 'ds-select');
+  return mountWithProps<DsSelect>(
+    '<ds-select label="Framework"></ds-select>',
+    {
+      options: OPTIONS,
+      ...props,
+    },
+    'ds-select',
+  );
 }
 
 function getTrigger(el: DsSelect): HTMLElement {

@@ -25,10 +25,14 @@ beforeEach(() => {
 });
 
 async function mountSearchable(props: Partial<DsSearchableSelect> = {}): Promise<DsSearchableSelect> {
-  return mountWithProps<DsSearchableSelect>('<ds-searchable-select label="Framework"></ds-searchable-select>', {
-    options: OPTIONS,
-    ...props,
-  }, 'ds-searchable-select');
+  return mountWithProps<DsSearchableSelect>(
+    '<ds-searchable-select label="Framework"></ds-searchable-select>',
+    {
+      options: OPTIONS,
+      ...props,
+    },
+    'ds-searchable-select',
+  );
 }
 
 describe('<ds-searchable-select> extra coverage', () => {
@@ -37,10 +41,14 @@ describe('<ds-searchable-select> extra coverage', () => {
     const original = console.warn;
     console.warn = (...args: unknown[]) => warnings.push(args);
     try {
-      const el = await mountWithProps<DsSearchableSelect>('<ds-searchable-select></ds-searchable-select>', {
-        options: OPTIONS,
-        loading: true,
-      }, 'ds-searchable-select');
+      const el = await mountWithProps<DsSearchableSelect>(
+        '<ds-searchable-select></ds-searchable-select>',
+        {
+          options: OPTIONS,
+          loading: true,
+        },
+        'ds-searchable-select',
+      );
       expect(warnings.some((args) => String(args[0]).includes('label'))).toBe(true);
       (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
       await el.updateComplete;
@@ -293,9 +301,13 @@ const ICON_OPTIONS = [
 
 describe('<ds-searchable-select> label, size and icons', () => {
   it('omits the label element when label is empty', async () => {
-    const el = await mountWithProps<DsSearchableSelect>('<ds-searchable-select></ds-searchable-select>', {
-      options: OPTIONS,
-    }, 'ds-searchable-select');
+    const el = await mountWithProps<DsSearchableSelect>(
+      '<ds-searchable-select></ds-searchable-select>',
+      {
+        options: OPTIONS,
+      },
+      'ds-searchable-select',
+    );
     expect(el.shadowRoot!.querySelector('.label')).toBeNull();
   });
 
@@ -377,9 +389,7 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
   it('does not reopen for modifier-key combos', async () => {
     const el = await mountSearchable({ value: 'react' });
     const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
-    input.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'a', metaKey: true, bubbles: true, cancelable: true }),
-    );
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', metaKey: true, bubbles: true, cancelable: true }));
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(false);
   });

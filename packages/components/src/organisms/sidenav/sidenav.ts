@@ -27,10 +27,7 @@ export class DsSidenav extends DsElement {
   @state() private _hasHeader = false;
   @state() private _hasFooter = false;
 
-  private readonly _scrollFade = new ScrollFadeController(
-    this,
-    () => this.shadowRoot?.querySelector('nav'),
-  );
+  private readonly _scrollFade = new ScrollFadeController(this, () => this.shadowRoot?.querySelector('nav'));
 
   override updated(changed: PropertyValues): void {
     if (changed.has('collapsed')) {

@@ -122,17 +122,17 @@ export const barChartStyles = css`
     z-index: var(--ds-z-index-raised);
   }
 
-  .tooltip[data-position="above"] {
+  .tooltip[data-position='above'] {
     transform: translate(-50%, -100%);
     margin-top: -8px;
   }
 
-  .tooltip[data-position="below"] {
+  .tooltip[data-position='below'] {
     transform: translate(-50%, 0);
     margin-top: 8px;
   }
 
-  .tooltip[data-position="contained"] {
+  .tooltip[data-position='contained'] {
     transform: translateX(-50%);
   }
 
@@ -173,5 +173,4 @@ export const barChartStyles = css`
     font-variant-numeric: tabular-nums;
     text-align: right;
   }
-
 `;

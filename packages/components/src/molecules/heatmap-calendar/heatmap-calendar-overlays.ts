@@ -12,16 +12,12 @@ export function heatmapAriaLabel(ctx: HeatmapRenderContext, layout: HeatmapLayou
   return `${title}: ${layout.cells.length} days.`;
 }
 
-
 export function heatmapLiveText(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
   const cell = activeCell(ctx, layout);
   return cell ? `${cellAriaLabel(ctx, cell)}.` : '';
 }
 
-export function renderHeatmapTooltip(
-  ctx: HeatmapRenderContext,
-  layout: HeatmapLayout,
-): TemplateResult {
+export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
   const cell = activeCell(ctx, layout);
   const step = ctx.cellSize + ctx.cellGap;
   const placeBelow = Boolean(cell && cell.row < 2);
@@ -36,10 +32,7 @@ export function renderHeatmapTooltip(
       ?hidden=${!cell}
       style="--heatmap-tooltip-x:${left}px; --heatmap-tooltip-y:${top}px"
     >
-      ${cell
-        ? html`<strong>${ctx.formatValue(cell.value)}</strong
-            ><span>${ctx.formatDate(cell.date)}</span>`
-        : ''}
+      ${cell ? html`<strong>${ctx.formatValue(cell.value)}</strong><span>${ctx.formatDate(cell.date)}</span>` : ''}
     </div>
   `;
 }
@@ -49,21 +42,14 @@ export function renderHeatmapLegend(ctx: HeatmapRenderContext): TemplateResult {
     <div class="legend" part="legend" aria-label="Value intensity from less to more">
       <span>Less</span>
       ${[0, 1, 2, 3, 4].map(
-        (level) =>
-          html`<span
-            class="legend-cell level-${level}"
-            style="--heatmap-color:${ctx.color}"
-          ></span>`,
+        (level) => html`<span class="legend-cell level-${level}" style="--heatmap-color:${ctx.color}"></span>`,
       )}
       <span>More</span>
     </div>
   `;
 }
 
-export function renderHeatmapSrTable(
-  ctx: HeatmapRenderContext,
-  layout: HeatmapLayout,
-): TemplateResult {
+export function renderHeatmapSrTable(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
   return html`
     <div class="visually-hidden" id="${ctx.uid}-desc">
       <table>

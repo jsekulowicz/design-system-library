@@ -3,10 +3,7 @@ import { readFileSync } from 'node:fs';
 import { renderPage } from './render.js';
 
 const port = Number(process.env.PORT ?? 3100);
-const baseCss = readFileSync(
-  new URL('../../../packages/tokens/dist/theme-default.css', import.meta.url),
-  'utf8'
-);
+const baseCss = readFileSync(new URL('../../../packages/tokens/dist/theme-default.css', import.meta.url), 'utf8');
 
 const server = createServer(async (request, response) => {
   if (request.url === '/client.js') {

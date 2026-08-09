@@ -2,11 +2,7 @@ const TOOLTIP_EDGE_GAP = 8;
 
 export type TooltipPosition = 'above' | 'below' | 'contained';
 
-export function tooltipPosition(
-  anchorTop: number,
-  tooltipHeight: number,
-  frameHeight: number,
-): TooltipPosition {
+export function tooltipPosition(anchorTop: number, tooltipHeight: number, frameHeight: number): TooltipPosition {
   if (anchorTop - TOOLTIP_EDGE_GAP - tooltipHeight >= TOOLTIP_EDGE_GAP) {
     return 'above';
   }

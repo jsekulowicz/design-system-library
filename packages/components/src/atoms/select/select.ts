@@ -5,12 +5,7 @@ import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
-import {
-  renderChevronDownIcon,
-  renderClearButton,
-  renderOptionIcon,
-  renderSelectedTiles,
-} from './select.shared.js';
+import { renderChevronDownIcon, renderClearButton, renderOptionIcon, renderSelectedTiles } from './select.shared.js';
 import '../icon/define.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
@@ -86,17 +81,39 @@ export class DsSelect extends FormControlMixin(DsElement) {
   });
 
   /* test-facing forwarders to controller state */
-  get _open(): boolean { return this.#dropdown.open; }
-  get _focusedIndex(): number { return this.#dropdown.focusedIndex; }
-  set _focusedIndex(value: number) { this.#dropdown.focusedIndex = value; }
-  get _focusedTileIndex(): number { return this.#dropdown.focusedTileIndex; }
-  set _focusedTileIndex(value: number) { this.#dropdown.focusedTileIndex = value; }
-  get _scrollTop(): number { return this.#dropdown.scrollTop; }
-  set _scrollTop(value: number) { this.#dropdown.scrollTop = value; }
-  get _hasLeading(): boolean { return this.#dropdown.hasLeading; }
-  get _overflowCount(): number { return this.#dropdown.overflowCount; }
-  get _overflowCheckQueued(): boolean { return this.#dropdown.overflowCheckQueued; }
-  set _overflowCheckQueued(value: boolean) { this.#dropdown.overflowCheckQueued = value; }
+  get _open(): boolean {
+    return this.#dropdown.open;
+  }
+  get _focusedIndex(): number {
+    return this.#dropdown.focusedIndex;
+  }
+  set _focusedIndex(value: number) {
+    this.#dropdown.focusedIndex = value;
+  }
+  get _focusedTileIndex(): number {
+    return this.#dropdown.focusedTileIndex;
+  }
+  set _focusedTileIndex(value: number) {
+    this.#dropdown.focusedTileIndex = value;
+  }
+  get _scrollTop(): number {
+    return this.#dropdown.scrollTop;
+  }
+  set _scrollTop(value: number) {
+    this.#dropdown.scrollTop = value;
+  }
+  get _hasLeading(): boolean {
+    return this.#dropdown.hasLeading;
+  }
+  get _overflowCount(): number {
+    return this.#dropdown.overflowCount;
+  }
+  get _overflowCheckQueued(): boolean {
+    return this.#dropdown.overflowCheckQueued;
+  }
+  set _overflowCheckQueued(value: boolean) {
+    this.#dropdown.overflowCheckQueued = value;
+  }
 
   override updated(changed: PropertyValues): void {
     if (changed.has('label') || changed.has('inputLabel')) {
@@ -105,10 +122,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if (changed.has('description')) {
       this.setAriaDescription(this.description || null);
     }
-    if (
-      (changed.has('values') || changed.has('maxLines') || changed.has('multiple')) &&
-      this.multiple
-    ) {
+    if ((changed.has('values') || changed.has('maxLines') || changed.has('multiple')) && this.multiple) {
       this.#dropdown.queueOverflowCheck();
     }
     this.#syncListboxPopover();
@@ -147,10 +161,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   override syncValidity(): void {
     const empty = this.multiple ? this.values.length === 0 : !this.value;
     const missing = this.required && empty;
-    this.setValidity(
-      missing ? { valueMissing: true } : {},
-      missing ? 'Please select an option.' : '',
-    );
+    this.setValidity(missing ? { valueMissing: true } : {}, missing ? 'Please select an option.' : '');
     const next = this.resolveInvalid(this.invalid, missing);
     if (next !== null) {
       this.invalid = next;
@@ -214,10 +225,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     ) {
       return;
     }
-    if (
-      !this.#dropdown.open &&
-      (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ')
-    ) {
+    if (!this.#dropdown.open && (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
       this.#dropdown.openDropdown();
     }
@@ -235,9 +243,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     });
 
   #renderOption = (option: SelectOption, index: number, current: string): TemplateResult => {
-    const isSelected = this.multiple
-      ? this.values.includes(option.value)
-      : option.value === current;
+    const isSelected = this.multiple ? this.values.includes(option.value) : option.value === current;
     return html`<ds-select-option
       id="option-${index}"
       part="option"
@@ -263,12 +269,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const selectedOption = this.options.find((option) => option.value === current);
     const selectedIcon = this.multiple ? undefined : selectedOption?.icon;
     const open = this.#dropdown.open;
-    const activeDesc =
-      open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
+    const activeDesc = open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
     const hasTiles = this.multiple && this.values.length > 0;
-    const hasClearBtn =
-      (this.clearable || this.required) &&
-      (this.multiple ? this.values.length > 0 : current !== '');
+    const hasClearBtn = (this.clearable || this.required) && (this.multiple ? this.values.length > 0 : current !== '');
     return html` ${this.label ? renderFieldLabel(this.label, this.required, 'trigger') : nothing}
       <div class="control-wrap">
         <div
@@ -288,11 +291,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
         >
           <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>
             ${selectedIcon ? renderOptionIcon(selectedIcon) : nothing}
-            <slot
-              name="leading"
-              ?hidden=${Boolean(selectedIcon)}
-              @slotchange=${this.#dropdown.onLeadingChange}
-            ></slot>
+            <slot name="leading" ?hidden=${Boolean(selectedIcon)} @slotchange=${this.#dropdown.onLeadingChange}></slot>
           </span>
           ${hasTiles
             ? this.#renderTiles()
@@ -320,9 +319,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
               @scroll=${this.#dropdown.onScroll}
               @ds-activate=${(event: Event) => event.stopPropagation()}
             >
-              ${this.hint
-                ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>`
-                : nothing}
+              ${this.hint ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>` : nothing}
               ${renderVirtualItems(
                 this.options,
                 this.#dropdown.scrollTop,

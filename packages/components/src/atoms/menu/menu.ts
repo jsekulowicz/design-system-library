@@ -124,9 +124,7 @@ export class DsMenu extends DsElement {
       this.#typeaheadBuffer = '';
     }, TYPEAHEAD_TIMEOUT_MS);
     const items = this.#enabledItems();
-    const match = items.find((item) =>
-      item.primaryText.toLowerCase().startsWith(this.#typeaheadBuffer),
-    );
+    const match = items.find((item) => item.primaryText.toLowerCase().startsWith(this.#typeaheadBuffer));
     match?.focus();
   };
 

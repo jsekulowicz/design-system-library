@@ -43,31 +43,34 @@ async function attachEventCounter(page: Page, event: string) {
         () => {
           store[key] = (store[key] ?? 0) + 1;
         },
-        true
+        true,
       );
     },
-    { event, key }
+    { event, key },
   );
   return () => page.evaluate((k) => (window as unknown as Record<string, number>)[k], key);
 }
 
 async function attachSubmitRecorder(page: Page) {
   const key = '__submit_payload';
-  await page.addInitScript(({ key }) => {
-    const store = window as unknown as Record<string, unknown>;
-    store[key] = null;
-    window.addEventListener(
-      'ds-submit',
-      (event: Event) => {
-        const detail = (event as CustomEvent<{ data: FormData }>).detail;
-        const object: Record<string, FormDataEntryValue> = {};
-        detail.data.forEach((value, name) => {
-          object[name] = value;
-        });
-        store[key] = object;
-      },
-      true
-    );
-  }, { key });
+  await page.addInitScript(
+    ({ key }) => {
+      const store = window as unknown as Record<string, unknown>;
+      store[key] = null;
+      window.addEventListener(
+        'ds-submit',
+        (event: Event) => {
+          const detail = (event as CustomEvent<{ data: FormData }>).detail;
+          const object: Record<string, FormDataEntryValue> = {};
+          detail.data.forEach((value, name) => {
+            object[name] = value;
+          });
+          store[key] = object;
+        },
+        true,
+      );
+    },
+    { key },
+  );
   return () => page.evaluate((k) => (window as unknown as Record<string, unknown>)[k], key);
 }

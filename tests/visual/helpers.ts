@@ -43,11 +43,7 @@ export async function expectScenarioScreenshot(
   await expect(page).toHaveScreenshot(screenshotName, { fullPage: scenario.fullPage ?? false });
 }
 
-async function seedStorybookState(
-  page: Page,
-  viewport: ViewportName,
-  theme: ThemeName,
-): Promise<void> {
+async function seedStorybookState(page: Page, viewport: ViewportName, theme: ThemeName): Promise<void> {
   await page.addInitScript(
     ({ theme, viewport }) => {
       window.localStorage.setItem('ds-storybook-theme', theme);

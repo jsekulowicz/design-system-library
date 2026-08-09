@@ -47,11 +47,7 @@ function renderCellLabel<T extends TableRow>(column: TableColumn<T>): TemplateRe
   return html`<div class="cell-label" aria-hidden="true">${column.label}</div>`;
 }
 
-function renderRowAction<T extends TableRow>(
-  options: TableBodyOptions<T>,
-  row: T,
-  index: number,
-): TemplateResult {
+function renderRowAction<T extends TableRow>(options: TableBodyOptions<T>, row: T, index: number): TemplateResult {
   return html`
     <button
       class="row-action visually-hidden"
@@ -102,24 +98,21 @@ function renderCells<T extends TableRow>(
   row: T,
   index: number,
 ): TemplateResult[] {
-  return columns.map((resolved, columnIndex) => html`
-    <td
-      part="cell"
-      class=${cellClass(resolved)}
-      style=${ifDefined(pinStyle(resolved))}
-      data-label=${resolved.column.label}
-    >
-      ${renderCellLabel(resolved.column)}
-      ${renderCellContent(options, resolved.column, row, index, columnIndex)}
-    </td>
-  `);
+  return columns.map(
+    (resolved, columnIndex) => html`
+      <td
+        part="cell"
+        class=${cellClass(resolved)}
+        style=${ifDefined(pinStyle(resolved))}
+        data-label=${resolved.column.label}
+      >
+        ${renderCellLabel(resolved.column)} ${renderCellContent(options, resolved.column, row, index, columnIndex)}
+      </td>
+    `,
+  );
 }
 
-function renderClickableRow<T extends TableRow>(
-  options: TableBodyOptions<T>,
-  row: T,
-  index: number,
-): TemplateResult {
+function renderClickableRow<T extends TableRow>(options: TableBodyOptions<T>, row: T, index: number): TemplateResult {
   return html`
     <tr
       part="row row-clickable"
@@ -161,15 +154,17 @@ export function renderTableHeader<T extends TableRow>(
   columns: readonly ResolvedColumn<T>[],
   ariaSort: (column: TableColumn<T>) => AriaSort,
 ): TemplateResult[] {
-  return columns.map(resolved => html`
-    <th
-      part="header-cell"
-      scope="col"
-      class=${cellClass(resolved)}
-      style=${ifDefined(pinStyle(resolved))}
-      aria-sort=${ifDefined(ariaSort(resolved.column))}
-    >
-      <slot name=${`header-${resolved.column.name}`}>${resolved.column.label}</slot>
-    </th>
-  `);
+  return columns.map(
+    (resolved) => html`
+      <th
+        part="header-cell"
+        scope="col"
+        class=${cellClass(resolved)}
+        style=${ifDefined(pinStyle(resolved))}
+        aria-sort=${ifDefined(ariaSort(resolved.column))}
+      >
+        <slot name=${`header-${resolved.column.name}`}>${resolved.column.label}</slot>
+      </th>
+    `,
+  );
 }

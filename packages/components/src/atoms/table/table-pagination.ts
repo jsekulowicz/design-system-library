@@ -116,7 +116,9 @@ export class DsTablePagination extends DsElement {
           aria-label=${`Page ${page}`}
           aria-current=${isCurrent ? 'page' : nothing}
           @click=${() => this.#emitPage(page)}
-        >${page}</button>
+        >
+          ${page}
+        </button>
       </li>
     `;
   }
@@ -128,7 +130,15 @@ export class DsTablePagination extends DsElement {
     return this.#renderButton(item, current);
   }
 
-  #renderPrevNext(icon: SVGTemplateResult, label: string, part: string, target: number, disabled: boolean, slotName: string, defaultText: string): TemplateResult {
+  #renderPrevNext(
+    icon: SVGTemplateResult,
+    label: string,
+    part: string,
+    target: number,
+    disabled: boolean,
+    slotName: string,
+    defaultText: string,
+  ): TemplateResult {
     return html`
       <button
         part=${`button ${part}`}
@@ -152,9 +162,10 @@ export class DsTablePagination extends DsElement {
     }
     return html`
       <div class="size" part="size-selector">
-        <label>Rows per page
+        <label
+          >Rows per page
           <select aria-label="Rows per page" .value=${String(this.pageSize)} @change=${this.#onSizeChange}>
-            ${this.pageSizeOptions.map(n => html`<option value=${n} ?selected=${n === this.pageSize}>${n}</option>`)}
+            ${this.pageSizeOptions.map((n) => html`<option value=${n} ?selected=${n === this.pageSize}>${n}</option>`)}
           </select>
         </label>
       </div>
@@ -165,7 +176,9 @@ export class DsTablePagination extends DsElement {
     const start = this.total === 0 ? 0 : (current - 1) * this.pageSize + 1;
     const end = Math.min(current * this.pageSize, this.total);
     const fallback = this.total === 0 ? 'No results' : `Showing ${start}–${end} of ${this.total}`;
-    return html`<div class="summary" part="summary" role="status" aria-live="polite"><slot name="summary">${fallback}</slot></div>`;
+    return html`<div class="summary" part="summary" role="status" aria-live="polite">
+      <slot name="summary">${fallback}</slot>
+    </div>`;
   }
 
   override render(): TemplateResult {
@@ -176,10 +189,20 @@ export class DsTablePagination extends DsElement {
     return html`
       ${this.#renderSummary(current)}
       <nav part="nav" aria-label="Pagination">
-        ${this.#renderPrevNext(ICON_PREV, 'Previous page', 'button-prev', current - 1, isFirst, 'prev-label', 'Previous')}
+        ${this.#renderPrevNext(
+          ICON_PREV,
+          'Previous page',
+          'button-prev',
+          current - 1,
+          isFirst,
+          'prev-label',
+          'Previous',
+        )}
         ${this.hidePageNumbers
           ? html`<span class="ellipsis">Page ${current} of ${totalPages}</span>`
-          : html`<ul class="list" part="list">${this.#range().map(i => this.#renderItem(i, current))}</ul>`}
+          : html`<ul class="list" part="list">
+              ${this.#range().map((i) => this.#renderItem(i, current))}
+            </ul>`}
         ${this.#renderPrevNext(ICON_NEXT, 'Next page', 'button-next', current + 1, isLast, 'next-label', 'Next')}
         ${this.#renderSize()}
       </nav>

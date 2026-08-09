@@ -38,12 +38,7 @@ describe('levelForValue', () => {
 
 describe('computeHeatmapLayout', () => {
   it('aligns rolling dates into Monday-first week columns', () => {
-    const layout = computeHeatmapLayout(
-      [{ date: '2024-01-10', value: 3 }],
-      '2024-01-10',
-      1,
-      'monday',
-    );
+    const layout = computeHeatmapLayout([{ date: '2024-01-10', value: 3 }], '2024-01-10', 1, 'monday');
     expect(layout.cells[0]?.date).toBe('2023-12-11');
     expect(layout.cells[0]?.row).toBe(0);
     expect(layout.cells.at(-1)).toMatchObject({ date: '2024-01-10', row: 2, value: 3, level: 4 });

@@ -27,12 +27,7 @@ describe('<ds-toast-stack>', () => {
   });
 
   it('reflects placement to attribute for each of the four corners', async () => {
-    const placements: ToastPlacement[] = [
-      'top-left',
-      'top-right',
-      'bottom-left',
-      'bottom-right',
-    ];
+    const placements: ToastPlacement[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
     for (const placement of placements) {
       const el = await mountWithProps<DsToastStack>('<ds-toast-stack></ds-toast-stack>', {
         placement,

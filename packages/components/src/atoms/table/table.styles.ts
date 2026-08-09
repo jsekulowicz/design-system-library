@@ -96,11 +96,21 @@ export const tableStyles = css`
     background: var(--ds-color-bg-subtle);
   }
 
-  .align-left { text-align: left; }
-  .align-right { text-align: right; }
-  .align-center { text-align: center; }
-  .align-right .cell-content { justify-content: flex-end; }
-  .align-center .cell-content { justify-content: center; }
+  .align-left {
+    text-align: left;
+  }
+  .align-right {
+    text-align: right;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right .cell-content {
+    justify-content: flex-end;
+  }
+  .align-center .cell-content {
+    justify-content: center;
+  }
 
   tbody tr.clickable {
     position: relative;
@@ -131,7 +141,6 @@ export const tableStyles = css`
   tbody tr.clickable:has(.row-action:focus-visible) td:first-child:last-child {
     box-shadow: inset 0 0 0 2px var(--ds-color-focus);
   }
-
 
   .skeleton-table {
     min-width: 32rem;

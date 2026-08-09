@@ -19,12 +19,17 @@ A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of 
 const columns: TableColumn<Person>[] = [
   { name: 'name', field: 'name', label: 'Name' },
   {
-    name: 'status', field: 'status', label: 'Status',
-    render: row => html`<ds-badge tone=${toneFor(row.status)}>${row.status}</ds-badge>`,
+    name: 'status',
+    field: 'status',
+    label: 'Status',
+    render: (row) => html`<ds-badge tone=${toneFor(row.status)}>${row.status}</ds-badge>`,
   },
   {
-    name: 'salary', field: 'salary', label: 'Salary', align: 'right',
-    render: row => money.format(row.salary),
+    name: 'salary',
+    field: 'salary',
+    label: 'Salary',
+    align: 'right',
+    render: (row) => money.format(row.salary),
   },
 ];
 ```
@@ -36,7 +41,7 @@ The `render` function receives the full row object and index — any component, 
 When `row-key` is set, every cell is also exposed as a named slot `cell:{columnName}:{rowKey}`, with the column's `render`/`field` value as **fallback**. This lets a framework (Vue, React, …) project real component instances — keeping their own reactivity, context, and event handlers — into a cell instead of returning Lit templates. Tables without `row-key`, or cells with nothing projected, render exactly as before.
 
 ```html
-<ds-table .rows=${rows} .columns=${columns} row-key="id">
+<ds-table .rows="${rows}" .columns="${columns}" row-key="id">
   <!-- projected into the "status" cell of the row whose id === 1 -->
   <my-status-chip slot="cell:status:1" status="active"></my-status-chip>
 </ds-table>
@@ -111,4 +116,5 @@ Column widths are measured at runtime, so pinned columns keep their natural widt
         <li>Loading states set <code>aria-busy</code> for existing data and expose a live status for initial skeleton loading.</li>
       </ul>
     </ds-tab-panel>
+
   </ds-tabs>

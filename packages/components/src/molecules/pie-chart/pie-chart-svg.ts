@@ -1,12 +1,6 @@
 import { html, svg, nothing, type TemplateResult, type SVGTemplateResult } from 'lit';
 import { chartTitleId, datumId, rovingTabIndex } from '../../shared/chart-a11y.js';
-import {
-  RADIUS,
-  VIEWBOX_SIZE,
-  arcPath,
-  innerRadiusFor,
-  labelPlacement,
-} from './pie-geometry.js';
+import { RADIUS, VIEWBOX_SIZE, arcPath, innerRadiusFor, labelPlacement } from './pie-geometry.js';
 import { sliceAriaLabel } from './pie-chart-overlays.js';
 import type { PieRenderContext, PieSlice } from './types.js';
 
@@ -21,8 +15,7 @@ export function renderPieSvg(ctx: PieRenderContext, slices: readonly PieSlice[])
       aria-roledescription="pie chart"
       aria-labelledby=${chartTitleId(ctx.uid)}
     >
-      ${slices.map((slice, index) => renderSlice(ctx, slice, index, inner))}
-      ${renderFocusRing(ctx, slices, inner)}
+      ${slices.map((slice, index) => renderSlice(ctx, slice, index, inner))} ${renderFocusRing(ctx, slices, inner)}
     </svg>
   `;
 }
@@ -31,12 +24,7 @@ function hasSweep(slice: PieSlice): boolean {
   return slice.endAngle > slice.startAngle;
 }
 
-function renderSlice(
-  ctx: PieRenderContext,
-  slice: PieSlice,
-  index: number,
-  inner: number,
-): SVGTemplateResult {
+function renderSlice(ctx: PieRenderContext, slice: PieSlice, index: number, inner: number): SVGTemplateResult {
   const inactive = ctx.activeIndex != null && ctx.activeIndex !== index ? 'inactive' : '';
   return svg`
     <g
@@ -48,19 +36,17 @@ function renderSlice(
       tabindex=${rovingTabIndex(index, ctx.activeIndex)}
       aria-label=${sliceAriaLabel(ctx, slice)}
     >
-      ${hasSweep(slice)
-        ? svg`<path class="slice-shape" d=${arcPath(slice, RADIUS, inner)} fill=${ctx.sliceColor(slice, index)}></path>`
-        : nothing}
+      ${
+        hasSweep(slice)
+          ? svg`<path class="slice-shape" d=${arcPath(slice, RADIUS, inner)} fill=${ctx.sliceColor(slice, index)}></path>`
+          : nothing
+      }
       ${renderSliceLabel(ctx, slice, index)}
     </g>
   `;
 }
 
-function renderSliceLabel(
-  ctx: PieRenderContext,
-  slice: PieSlice,
-  index: number,
-): SVGTemplateResult | typeof nothing {
+function renderSliceLabel(ctx: PieRenderContext, slice: PieSlice, index: number): SVGTemplateResult | typeof nothing {
   if (!ctx.showPercentages || ctx.activeIndex === index) {
     return nothing;
   }

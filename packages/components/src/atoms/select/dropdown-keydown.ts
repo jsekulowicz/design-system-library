@@ -18,20 +18,12 @@ export function dropdownKeydown(event: KeyboardEvent, ctx: KeydownContext): 'han
   if (ctx.multiple && visibleCount > 0) {
     if (event.key === 'ArrowLeft' && (ctx.tileArrowLeftGate ? ctx.tileArrowLeftGate() : true)) {
       event.preventDefault();
-      controller.focusedTileIndex = getNextTileFocusIndex(
-        controller.focusedTileIndex,
-        visibleCount,
-        'left',
-      );
+      controller.focusedTileIndex = getNextTileFocusIndex(controller.focusedTileIndex, visibleCount, 'left');
       return 'handled';
     }
     if (event.key === 'ArrowRight' && controller.focusedTileIndex >= 0) {
       event.preventDefault();
-      controller.focusedTileIndex = getNextTileFocusIndex(
-        controller.focusedTileIndex,
-        visibleCount,
-        'right',
-      );
+      controller.focusedTileIndex = getNextTileFocusIndex(controller.focusedTileIndex, visibleCount, 'right');
       return 'handled';
     }
     if ((event.key === ' ' || event.key === 'Backspace') && controller.focusedTileIndex >= 0) {

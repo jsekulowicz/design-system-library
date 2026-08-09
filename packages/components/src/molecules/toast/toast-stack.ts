@@ -34,9 +34,7 @@ export class DsToastStack extends DsElement {
   }
 
   #enforceMax = (): void => {
-    const toasts = Array.from(this.children).filter(
-      (child) => child.tagName.toLowerCase() === 'ds-toast',
-    ) as DsToast[];
+    const toasts = Array.from(this.children).filter((child) => child.tagName.toLowerCase() === 'ds-toast') as DsToast[];
     let extra = toasts.length - this.max;
     let i = 0;
     while (extra > 0 && i < toasts.length) {

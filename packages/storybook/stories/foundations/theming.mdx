@@ -21,29 +21,31 @@ This is the same contract demonstrated in the Tokens foundation page: components
 
 ## What is overridable
 
-| Token group | Semantic tokens | Effect |
-|---|---|---|
-| Brand colour | `--ds-color-accent`, `--ds-color-accent-hover`, `--ds-color-accent-active`, `--ds-color-accent-subtle` | Buttons, links, badges, focus rings |
-| Radii | `--ds-radius-xs` through `--ds-radius-full` | All rounded corners |
-| Borders | `--ds-color-border`, `--ds-color-border-strong` | Cards, inputs, dividers |
-| Display font | `--ds-font-display` | Headings that use the display typeface |
-| Surface colours | `--ds-color-bg`, `--ds-color-bg-subtle`, `--ds-color-bg-muted` | Page and card backgrounds |
-| Status colours | `--ds-color-success/warning/danger` | Alert banners, validation states |
+| Token group     | Semantic tokens                                                                                        | Effect                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------- |
+| Brand colour    | `--ds-color-accent`, `--ds-color-accent-hover`, `--ds-color-accent-active`, `--ds-color-accent-subtle` | Buttons, links, badges, focus rings    |
+| Radii           | `--ds-radius-xs` through `--ds-radius-full`                                                            | All rounded corners                    |
+| Borders         | `--ds-color-border`, `--ds-color-border-strong`                                                        | Cards, inputs, dividers                |
+| Display font    | `--ds-font-display`                                                                                    | Headings that use the display typeface |
+| Surface colours | `--ds-color-bg`, `--ds-color-bg-subtle`, `--ds-color-bg-muted`                                         | Page and card backgrounds              |
+| Status colours  | `--ds-color-success/warning/danger`                                                                    | Alert banners, validation states       |
 
 ## How to apply overrides
 
 Set overrides on any ancestor element. They cascade into every shadow root via CSS custom property inheritance.
 
 **Page-level** — targets the whole app:
+
 ```css
 :root {
-  --ds-color-accent: #E2341D;
-  --ds-color-accent-hover: #C12613;
+  --ds-color-accent: #e2341d;
+  --ds-color-accent-hover: #c12613;
   --ds-radius-sm: 12px;
 }
 ```
 
 **Scoped to a region** — targets one section or component:
+
 ```html
 <div style="--ds-color-accent: #1F7A7A; --ds-radius-md: 24px;">
   <ds-button variant="primary">Scoped theme</ds-button>

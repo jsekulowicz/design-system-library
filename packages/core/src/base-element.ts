@@ -1,10 +1,5 @@
 import { LitElement } from 'lit';
-import {
-  resetStyles,
-  focusVisibleStyles,
-  reducedMotionStyles,
-  visuallyHiddenStyles,
-} from './reset-styles.js';
+import { resetStyles, focusVisibleStyles, reducedMotionStyles, visuallyHiddenStyles } from './reset-styles.js';
 import { emit, type DsEventOptions } from './utils/event.js';
 import { nextId } from './utils/id.js';
 

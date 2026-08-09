@@ -29,15 +29,7 @@ function main() {
   ensureCleanTree();
   ensureBranchIsPushed(branch);
 
-  run('gh', [
-    'workflow',
-    'run',
-    workflowFile,
-    '--ref',
-    workflowRef,
-    '-f',
-    `branch=${branch}`,
-  ]);
+  run('gh', ['workflow', 'run', workflowFile, '--ref', workflowRef, '-f', `branch=${branch}`]);
 
   console.log(`Requested ${workflowFile} for ${branch} using workflow ref ${workflowRef}.`);
   console.log('GitHub Actions will commit updated PNG baselines if screenshots changed.');

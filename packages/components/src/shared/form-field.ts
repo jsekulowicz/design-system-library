@@ -71,10 +71,7 @@ export const formFieldStyles: CSSResult = css`
 export function renderFieldLabel(label: string, required: boolean, forId: string, optional = false): TemplateResult {
   return html`
     <label class="label" for=${forId}>
-      <span>
-        ${label}
-        ${required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
-      </span>
+      <span> ${label} ${required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing} </span>
       ${optional ? html`<span class="optional" aria-hidden="true">optional</span>` : nothing}
     </label>
   `;
@@ -86,7 +83,11 @@ export function renderSubtext(description: string, error: string, invalid: boole
       <p class="error" role="alert">
         <!-- Heroicons 2.2.0 — 16/solid: exclamation-circle -->
         <svg class="error-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+          />
         </svg>
         ${error}
       </p>
@@ -98,11 +99,7 @@ export function renderSubtext(description: string, error: string, invalid: boole
   return html``;
 }
 
-export function renderFieldFooter(
-  description: string,
-  error: string,
-  invalid: boolean,
-): TemplateResult {
+export function renderFieldFooter(description: string, error: string, invalid: boolean): TemplateResult {
   if (!((invalid && error) || description)) {
     return html``;
   }
@@ -124,9 +121,7 @@ export function renderFieldHeader(
     return label ? renderFieldLabel(label, required, forId, optional) : nothing;
   }
   const labelEl = label ? renderFieldLabel(label, required, forId, optional) : nothing;
-  return html`
-    <div class="field-header" part="field-header">${labelEl}${counter}</div>
-  `;
+  return html` <div class="field-header" part="field-header">${labelEl}${counter}</div> `;
 }
 
 function renderCharCount(

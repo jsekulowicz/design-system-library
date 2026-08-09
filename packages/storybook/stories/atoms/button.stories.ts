@@ -45,113 +45,107 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-<ds-button
-  variant=${args['variant']}
-  color=${args['color']}
-  size=${args['size']}
-  type=${args['type']}
-  ?disabled=${args['disabled']}
-  ?loading=${args['loading']}
-  loading-label=${args['loadingLabel']}
-  ?full-width=${args['fullWidth']}
-  ?square=${args['square']}
-  >Ship it</ds-button
->
+    <ds-button
+      variant=${args['variant']}
+      color=${args['color']}
+      size=${args['size']}
+      type=${args['type']}
+      ?disabled=${args['disabled']}
+      ?loading=${args['loading']}
+      loading-label=${args['loadingLabel']}
+      ?full-width=${args['fullWidth']}
+      ?square=${args['square']}
+      >Ship it</ds-button
+    >
   `,
 };
 
 export const Variants: Story = {
   render: () => html`
-<div style="display:flex;gap:var(--ds-space-3);flex-wrap:wrap">
-  <ds-button variant="primary">Primary</ds-button>
-  <ds-button variant="secondary">Secondary</ds-button>
-  <ds-button variant="ghost">Ghost</ds-button>
-</div>
+    <div style="display:flex;gap:var(--ds-space-3);flex-wrap:wrap">
+      <ds-button variant="primary">Primary</ds-button>
+      <ds-button variant="secondary">Secondary</ds-button>
+      <ds-button variant="ghost">Ghost</ds-button>
+    </div>
   `,
 };
 
 export const Colors: Story = {
   render: () => html`
-<div style="display:grid;grid-template-columns:repeat(3,max-content);gap:var(--ds-space-3)">
-  <ds-button variant="primary" color="accent">Accent</ds-button>
-  <ds-button variant="secondary" color="accent">Accent</ds-button>
-  <ds-button variant="ghost" color="accent">Accent</ds-button>
-  <ds-button variant="primary" color="success">Success</ds-button>
-  <ds-button variant="secondary" color="success">Success</ds-button>
-  <ds-button variant="ghost" color="success">Success</ds-button>
-  <ds-button variant="primary" color="danger">Danger</ds-button>
-  <ds-button variant="secondary" color="danger">Danger</ds-button>
-  <ds-button variant="ghost" color="danger">Danger</ds-button>
-</div>
+    <div style="display:grid;grid-template-columns:repeat(3,max-content);gap:var(--ds-space-3)">
+      <ds-button variant="primary" color="accent">Accent</ds-button>
+      <ds-button variant="secondary" color="accent">Accent</ds-button>
+      <ds-button variant="ghost" color="accent">Accent</ds-button>
+      <ds-button variant="primary" color="success">Success</ds-button>
+      <ds-button variant="secondary" color="success">Success</ds-button>
+      <ds-button variant="ghost" color="success">Success</ds-button>
+      <ds-button variant="primary" color="danger">Danger</ds-button>
+      <ds-button variant="secondary" color="danger">Danger</ds-button>
+      <ds-button variant="ghost" color="danger">Danger</ds-button>
+    </div>
   `,
 };
 
 export const Sizes: Story = {
   render: () => html`
-<div style="display:flex;gap:var(--ds-space-3);align-items:center">
-  <ds-button size="sm">Small</ds-button>
-  <ds-button size="md">Medium</ds-button>
-  <ds-button size="lg">Large</ds-button>
-</div>
+    <div style="display:flex;gap:var(--ds-space-3);align-items:center">
+      <ds-button size="sm">Small</ds-button>
+      <ds-button size="md">Medium</ds-button>
+      <ds-button size="lg">Large</ds-button>
+    </div>
   `,
 };
 
 export const Square: Story = {
   render: () => html`
-<div style="display:flex;gap:var(--ds-space-3);align-items:center">
-  <ds-button square size="sm" variant="ghost" label="Search">
-    <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
-  </ds-button>
-  <ds-button square variant="secondary" label="Search">
-    <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
-  </ds-button>
-  <ds-button square size="lg" label="Search">
-    <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
-  </ds-button>
-</div>
+    <div style="display:flex;gap:var(--ds-space-3);align-items:center">
+      <ds-button square size="sm" variant="ghost" label="Search">
+        <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
+      </ds-button>
+      <ds-button square variant="secondary" label="Search">
+        <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
+      </ds-button>
+      <ds-button square size="lg" label="Search">
+        <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
+      </ds-button>
+    </div>
   `,
 };
 
 export const Loading: Story = {
   args: { loading: true },
-  render: (args) => html`
-<ds-button ?loading=${args['loading']}>Saving…</ds-button>
-  `,
+  render: (args) => html` <ds-button ?loading=${args['loading']}>Saving…</ds-button> `,
 };
 
 export const LoadingLabel: Story = {
   render: () => html`
-<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;">
-  <ds-button
-    id="toggle"
-    variant="ghost"
-    @ds-click=${() => {
-      document
-        .querySelectorAll<HTMLElement & { loading: boolean }>('ds-button[data-demo]')
-        .forEach((button) => {
-          button.loading = !button.loading;
-        });
-    }}
-    >Toggle loading</ds-button
-  >
-  <ds-button data-demo loading-label="Playing…">
-    <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
-    Preview
-  </ds-button>
-  <ds-button data-demo variant="secondary">
-    <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
-    No loading label
-  </ds-button>
-  <div style="width: 22rem;">
-    <ds-button data-demo full-width loading-label="Saving…">Save changes</ds-button>
-  </div>
-</div>
+    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;">
+      <ds-button
+        id="toggle"
+        variant="ghost"
+        @ds-click=${() => {
+          document.querySelectorAll<HTMLElement & { loading: boolean }>('ds-button[data-demo]').forEach((button) => {
+            button.loading = !button.loading;
+          });
+        }}
+        >Toggle loading</ds-button
+      >
+      <ds-button data-demo loading-label="Playing…">
+        <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
+        Preview
+      </ds-button>
+      <ds-button data-demo variant="secondary">
+        <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
+        No loading label
+      </ds-button>
+      <div style="width: 22rem;">
+        <ds-button data-demo full-width loading-label="Saving…">Save changes</ds-button>
+      </div>
+    </div>
   `,
 };
 
 export const Disabled: Story = {
   args: { disabled: true },
-  render: (args) => html`
-<ds-button ?disabled=${args['disabled']}>Unavailable</ds-button>
-  `,
+  render: (args) => html` <ds-button ?disabled=${args['disabled']}>Unavailable</ds-button> `,
 };

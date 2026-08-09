@@ -92,22 +92,22 @@ ${LEADING}
     },
   },
   render: (args) => html`
-  <ds-select
-    label=${args['label']}
-    placeholder=${args['placeholder']}
-    description=${args['description'] || ''}
-    hint=${args['hint'] || ''}
-    error=${args['error'] || ''}
-    size=${args['size']}
-    ?invalid=${args['invalid']}
-    ?disabled=${args['disabled']}
-    ?required=${args['required']}
-    ?clearable=${args['clearable']}
-    .options=${options}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label=${args['label']}
+      placeholder=${args['placeholder']}
+      description=${args['description'] || ''}
+      hint=${args['hint'] || ''}
+      error=${args['error'] || ''}
+      size=${args['size']}
+      ?invalid=${args['invalid']}
+      ?disabled=${args['disabled']}
+      ?required=${args['required']}
+      ?clearable=${args['clearable']}
+      .options=${options}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const Preselected: Story = {
@@ -123,14 +123,10 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Discipline"
-    .options=${options}
-    .value=${'engineering'}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select label="Discipline" .options=${options} .value=${'engineering'}>
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const WithDescription: Story = {
@@ -151,15 +147,15 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Discipline"
-    placeholder="Pick a discipline"
-    description="Choose the team you primarily work with."
-    .options=${options}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      description="Choose the team you primarily work with."
+      .options=${options}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const WithHint: Story = {
@@ -185,15 +181,15 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Discipline"
-    placeholder="Pick a discipline"
-    hint="Operations is managed by an admin and can't be picked here."
-    .options=${options}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      hint="Operations is managed by an admin and can't be picked here."
+      .options=${options}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const Sizes: Story = {
@@ -214,18 +210,18 @@ ${LEADING}
     },
   },
   render: () => html`
-  <div style="display:flex;gap:var(--ds-space-3);align-items:flex-start">
-    <ds-select size="sm" label="" placeholder="Small" .options=${options}>
-      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-    </ds-select>
-    <ds-select size="md" label="" placeholder="Medium" .options=${options}>
-      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-    </ds-select>
-    <ds-select size="lg" label="" placeholder="Large" .options=${options}>
-      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-    </ds-select>
-  </div>
-`,
+    <div style="display:flex;gap:var(--ds-space-3);align-items:flex-start">
+      <ds-select size="sm" label="" placeholder="Small" .options=${options}>
+        <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+      </ds-select>
+      <ds-select size="md" label="" placeholder="Medium" .options=${options}>
+        <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+      </ds-select>
+      <ds-select size="lg" label="" placeholder="Large" .options=${options}>
+        <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+      </ds-select>
+    </div>
+  `,
 };
 
 export const Invalid: Story = {
@@ -249,18 +245,18 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Discipline"
-    placeholder="Pick a discipline"
-    description="Choose the team you primarily work with."
-    error="Please select a discipline."
-    ?invalid=${true}
-    ?required=${true}
-    .options=${options}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      description="Choose the team you primarily work with."
+      error="Please select a discipline."
+      ?invalid=${true}
+      ?required=${true}
+      .options=${options}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const Disabled: Story = {
@@ -282,16 +278,16 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Discipline"
-    placeholder="Pick a discipline"
-    description="This field cannot be changed right now."
-    ?disabled=${true}
-    .options=${options}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      description="This field cannot be changed right now."
+      ?disabled=${true}
+      .options=${options}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const Required: Story = {
@@ -313,16 +309,16 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Discipline"
-    placeholder="Pick a discipline"
-    description="This field is required."
-    ?required=${true}
-    .options=${options}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      description="This field is required."
+      ?required=${true}
+      .options=${options}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const Multiple: Story = {
@@ -340,15 +336,10 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Disciplines"
-    placeholder="Pick disciplines"
-    ?multiple=${true}
-    .options=${options}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select label="Disciplines" placeholder="Pick disciplines" ?multiple=${true} .options=${options}>
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const MultipleWithIcons: Story = {
@@ -372,16 +363,16 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Disciplines"
-    placeholder="Pick disciplines"
-    ?multiple=${true}
-    .options=${options}
-    .values=${['design', 'engineering', 'product']}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label="Disciplines"
+      placeholder="Pick disciplines"
+      ?multiple=${true}
+      .options=${options}
+      .values=${['design', 'engineering', 'product']}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 export const MultiplePreselected: Story = {
@@ -406,17 +397,17 @@ ${LEADING}
     },
   },
   render: () => html`
-  <ds-select
-    label="Disciplines"
-    placeholder="Pick disciplines"
-    ?multiple=${true}
-    .maxLines=${1}
-    .options=${options}
-    .values=${['design', 'engineering', 'product']}
-  >
-    <ds-icon slot="leading" name="squares-2x2"></ds-icon>
-  </ds-select>
-`,
+    <ds-select
+      label="Disciplines"
+      placeholder="Pick disciplines"
+      ?multiple=${true}
+      .maxLines=${1}
+      .options=${options}
+      .values=${['design', 'engineering', 'product']}
+    >
+      <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
 };
 
 // Long, sentence-like labels (e.g. crossword clues) to show option wrapping.
@@ -454,13 +445,7 @@ export const LongOptionsWrap: Story = {
       },
     },
   },
-  render: () => html`
-  <ds-select
-    label="Clue"
-    placeholder="Pick a clue"
-    .options=${longOptions}
-  ></ds-select>
-`,
+  render: () => html` <ds-select label="Clue" placeholder="Pick a clue" .options=${longOptions}></ds-select> `,
 };
 
 const scaleOptions = [
@@ -472,12 +457,12 @@ const scaleOptions = [
 const squares = (filled: number) => html`
   <span style="display:inline-flex;gap:3px;align-items:center">
     ${[1, 2, 3].map(
-      (i) => html`<span
-        style="width:11px;height:11px;border:2px solid currentColor;border-radius:2px;background:${i <=
-        filled
-          ? 'currentColor'
-          : 'transparent'}"
-      ></span>`,
+      (i) =>
+        html`<span
+          style="width:11px;height:11px;border:2px solid currentColor;border-radius:2px;background:${i <= filled
+            ? 'currentColor'
+            : 'transparent'}"
+        ></span>`,
     )}
   </span>
 `;
@@ -501,21 +486,17 @@ export const ProjectedOptionContent: Story = {
     },
   },
   render: () => html`
-  <ds-select
-    label="Difficulty"
-    placeholder="Pick a difficulty"
-    .options=${scaleOptions}
-  >
-    ${scaleOptions.map(
-      (option, index) => html`
-        <span slot="option:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
-          ${squares(index + 1)} ${option.label}
-        </span>
-        <span slot="selected:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
-          ${squares(index + 1)} ${option.label}
-        </span>
-      `,
-    )}
-  </ds-select>
-`,
+    <ds-select label="Difficulty" placeholder="Pick a difficulty" .options=${scaleOptions}>
+      ${scaleOptions.map(
+        (option, index) => html`
+          <span slot="option:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
+            ${squares(index + 1)} ${option.label}
+          </span>
+          <span slot="selected:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
+            ${squares(index + 1)} ${option.label}
+          </span>
+        `,
+      )}
+    </ds-select>
+  `,
 };

@@ -193,12 +193,9 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     const selected = this.#selectedOption(options);
 
     return html`
-      ${this.label && !this.compact
-        ? renderFieldLabel(this.label, this.required, 'trigger', this.optional)
-        : nothing}
+      ${this.label && !this.compact ? renderFieldLabel(this.label, this.required, 'trigger', this.optional) : nothing}
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
-        ${this.#renderTrigger(current, selected)}
-        ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
+        ${this.#renderTrigger(current, selected)} ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>
       ${this.compact ? nothing : renderSubtext(this.description, this.error, this.invalid)}
     `;
@@ -268,11 +265,8 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       aria-label=${this.#fieldAccessibleName() || 'Color picker'}
     >
       <ds-card elevation="md">
-        <span slot="title" class="panel-title">
-          ${this.#fieldAccessibleName() || 'Color picker'}
-        </span>
-        ${options.length ? this.#renderSwatches(options, current) : nothing}
-        ${this.#renderCustomInputs()}
+        <span slot="title" class="panel-title"> ${this.#fieldAccessibleName() || 'Color picker'} </span>
+        ${options.length ? this.#renderSwatches(options, current) : nothing} ${this.#renderCustomInputs()}
         <div slot="footer" class="panel-actions">
           ${this.clearable
             ? html`<ds-button variant="ghost" size="sm" @ds-click=${this.#clear}>Clear</ds-button>`

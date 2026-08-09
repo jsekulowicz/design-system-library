@@ -3,14 +3,7 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "fixed": [],
-  "linked": [
-    [
-      "@jsekulowicz/ds-tokens",
-      "@jsekulowicz/ds-core",
-      "@jsekulowicz/ds-components",
-      "@jsekulowicz/ds-react"
-    ]
-  ],
+  "linked": [["@jsekulowicz/ds-tokens", "@jsekulowicz/ds-core", "@jsekulowicz/ds-components", "@jsekulowicz/ds-react"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

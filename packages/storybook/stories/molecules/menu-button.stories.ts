@@ -42,25 +42,13 @@ function logSelect(event: Event): void {
   console.log('ds-select →', detail.value);
 }
 
-const PENCIL_ICON = html`<svg
-  viewBox="0 0 16 16"
-  width="16"
-  height="16"
-  fill="currentColor"
-  aria-hidden="true"
->
+const PENCIL_ICON = html`<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
   <path
     d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.756l8.61-8.61Z"
   />
 </svg>`;
 
-const CHEVRON_DOWN_ICON = html`<svg
-  viewBox="0 0 16 16"
-  width="16"
-  height="16"
-  fill="currentColor"
-  aria-hidden="true"
->
+const CHEVRON_DOWN_ICON = html`<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
   <path
     fill-rule="evenodd"
     d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
@@ -91,17 +79,8 @@ export const Playground: Story = {
     },
   },
   render: (args) => html`
-    <ds-menu-button
-      placement=${args['placement']}
-      ?disabled=${args['disabled']}
-      @ds-select=${logSelect}
-    >
-      <ds-button
-        slot="trigger"
-        variant=${args['variant']}
-        size=${args['size']}
-        ?disabled=${args['disabled']}
-      >
+    <ds-menu-button placement=${args['placement']} ?disabled=${args['disabled']} @ds-select=${logSelect}>
+      <ds-button slot="trigger" variant=${args['variant']} size=${args['size']} ?disabled=${args['disabled']}>
         <span slot="leading">${PENCIL_ICON}</span>
         ${args['label']}
         <span slot="trailing">${CHEVRON_DOWN_ICON}</span>
@@ -118,40 +97,19 @@ export const WithIcons: Story = {
   render: () => html`
     <ds-menu-button label="View" @ds-select=${logSelect}>
       <ds-menu-item value="grid">
-        <svg
-          slot="leading"
-          viewBox="0 0 16 16"
-          width="16"
-          height="16"
-          fill="currentColor"
-          aria-hidden="true"
-        >
+        <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
           <path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" />
         </svg>
         Grid
       </ds-menu-item>
       <ds-menu-item value="list">
-        <svg
-          slot="leading"
-          viewBox="0 0 16 16"
-          width="16"
-          height="16"
-          fill="currentColor"
-          aria-hidden="true"
-        >
+        <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
           <path d="M2 3h12v2H2zM2 7h12v2H2zM2 11h12v2H2z" />
         </svg>
         List
       </ds-menu-item>
       <ds-menu-item value="kanban">
-        <svg
-          slot="leading"
-          viewBox="0 0 16 16"
-          width="16"
-          height="16"
-          fill="currentColor"
-          aria-hidden="true"
-        >
+        <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
           <path d="M2 2h3v12H2zM6.5 2h3v8h-3zM11 2h3v6h-3z" />
         </svg>
         Board
@@ -197,27 +155,15 @@ export const WithShortcuts: Story = {
     <ds-menu-button label="File" @ds-select=${logSelect}>
       <ds-menu-item value="new">
         New
-        <span
-          slot="trailing"
-          style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)"
-          >⌘N</span
-        >
+        <span slot="trailing" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)">⌘N</span>
       </ds-menu-item>
       <ds-menu-item value="open">
         Open
-        <span
-          slot="trailing"
-          style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)"
-          >⌘O</span
-        >
+        <span slot="trailing" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)">⌘O</span>
       </ds-menu-item>
       <ds-menu-item value="save">
         Save
-        <span
-          slot="trailing"
-          style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)"
-          >⌘S</span
-        >
+        <span slot="trailing" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle)">⌘S</span>
       </ds-menu-item>
     </ds-menu-button>
   `,
@@ -226,9 +172,7 @@ export const WithShortcuts: Story = {
 export const Placements: Story = {
   parameters: { docs: { story: { height: '260px' } } },
   render: () => html`
-    <div
-      style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:80px 32px;padding:60px 32px;"
-    >
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:80px 32px;padding:60px 32px;">
       <ds-menu-button label="Bottom start" placement="bottom-start" @ds-select=${logSelect}>
         <ds-menu-item value="a">Option A</ds-menu-item>
         <ds-menu-item value="b">Option B</ds-menu-item>

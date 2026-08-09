@@ -18,13 +18,11 @@ function onSubmit(event: CustomEvent<{ data: FormData }>) {
       gap: 'var(--ds-space-6)',
     }"
   >
-    <header style="display:grid;gap:var(--ds-space-2)">
-      <span style="font-family:var(--ds-font-body);color:var(--ds-color-fg-muted)"
+    <header style="display: grid; gap: var(--ds-space-2)">
+      <span style="font-family: var(--ds-font-body); color: var(--ds-color-fg-muted)"
         >@jsekulowicz/ds-components · Vue 3</span
       >
-      <h1
-        style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-3xl);margin:0"
-      >
+      <h1 style="font-family: var(--ds-font-display); font-size: var(--ds-font-size-3xl); margin: 0">
         Same web components, Vue bindings.
       </h1>
     </header>
@@ -45,7 +43,14 @@ function onSubmit(event: CustomEvent<{ data: FormData }>) {
 
     <pre
       v-if="submitted"
-      style="font-family:var(--ds-font-mono);background:var(--ds-color-bg-subtle);padding:var(--ds-space-4);border-radius:var(--ds-radius-sm);margin:0"
-    >{{ JSON.stringify(submitted, null, 2) }}</pre>
+      style="
+        font-family: var(--ds-font-mono);
+        background: var(--ds-color-bg-subtle);
+        padding: var(--ds-space-4);
+        border-radius: var(--ds-radius-sm);
+        margin: 0;
+      "
+      >{{ JSON.stringify(submitted, null, 2) }}</pre
+    >
   </main>
 </template>

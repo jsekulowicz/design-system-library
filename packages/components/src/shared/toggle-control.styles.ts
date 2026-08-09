@@ -39,7 +39,8 @@ export const toggleControlStyles = css`
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: background var(--ds-duration-fast) var(--ds-easing-standard),
+    transition:
+      background var(--ds-duration-fast) var(--ds-easing-standard),
       border-color var(--ds-duration-fast) var(--ds-easing-standard);
   }
   :host(:focus-within) .control {

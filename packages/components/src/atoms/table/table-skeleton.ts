@@ -32,27 +32,35 @@ export function renderTableSkeleton(rowCount: number, columnCount: number): Temp
 
   return html`
     <table part="table" class="skeleton-table" aria-hidden="true">
-      <colgroup>${columns.map(() => html`<col>`)}</colgroup>
+      <colgroup>
+        ${columns.map(() => html`<col />`)}
+      </colgroup>
       <thead part="thead">
         <tr>
-          ${columns.map(index => html`
-            <th part="header-cell" scope="col">
-              <ds-skeleton width=${headerWidth(index)}></ds-skeleton>
-            </th>
-          `)}
+          ${columns.map(
+            (index) => html`
+              <th part="header-cell" scope="col">
+                <ds-skeleton width=${headerWidth(index)}></ds-skeleton>
+              </th>
+            `,
+          )}
         </tr>
       </thead>
       <tbody part="tbody">
-        ${rows.map(rowIndex => html`
-          <tr part="row">
-            ${columns.map(columnIndex => html`
-              <td part="cell">
-                <ds-skeleton class="skeleton-label" width=${labelWidth(columnIndex)}></ds-skeleton>
-                <ds-skeleton class="skeleton-value" width=${valueWidth(rowIndex, columnIndex)}></ds-skeleton>
-              </td>
-            `)}
-          </tr>
-        `)}
+        ${rows.map(
+          (rowIndex) => html`
+            <tr part="row">
+              ${columns.map(
+                (columnIndex) => html`
+                  <td part="cell">
+                    <ds-skeleton class="skeleton-label" width=${labelWidth(columnIndex)}></ds-skeleton>
+                    <ds-skeleton class="skeleton-value" width=${valueWidth(rowIndex, columnIndex)}></ds-skeleton>
+                  </td>
+                `,
+              )}
+            </tr>
+          `,
+        )}
       </tbody>
     </table>
   `;

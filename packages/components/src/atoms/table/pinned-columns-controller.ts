@@ -104,7 +104,7 @@ export class PinnedColumnsController implements ReactiveController {
       this.#deactivate(table);
       return;
     }
-    const widths = pinnedHeaders.map(cell => cell.offsetWidth);
+    const widths = pinnedHeaders.map((cell) => cell.offsetWidth);
     const total = widths.reduce((sum, width) => sum + width, 0);
     const containerWidth = scroller.clientWidth;
     const fits = containerWidth > 0 && total <= containerWidth * this.#maxRatio(table);

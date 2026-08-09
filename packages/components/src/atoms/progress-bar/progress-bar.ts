@@ -63,7 +63,11 @@ export class DsProgressBar extends DsElement {
         part="bar"
       >
         <div class="track" part="track">
-          <div class="indicator ${this.isFull ? 'indicator--full' : ''}" part="indicator" style=${styleMap({ width: `${this.percent}%` })}></div>
+          <div
+            class="indicator ${this.isFull ? 'indicator--full' : ''}"
+            part="indicator"
+            style=${styleMap({ width: `${this.percent}%` })}
+          ></div>
         </div>
 
         <div class="label" part="label" ?hidden=${!this._hasLabel}>

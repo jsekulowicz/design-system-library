@@ -90,7 +90,9 @@ describe('<ds-checkbox-group>', () => {
         <ds-checkbox>B</ds-checkbox>
       </ds-checkbox-group>
     `);
-    const checkboxes = Array.from(el.querySelectorAll<DsCheckbox>('ds-checkbox')) as Array<DsCheckbox & { checkboxValue?: string }>;
+    const checkboxes = Array.from(el.querySelectorAll<DsCheckbox>('ds-checkbox')) as Array<
+      DsCheckbox & { checkboxValue?: string }
+    >;
     checkboxes[0].checkboxValue = undefined;
     checkboxes[1].checkboxValue = undefined;
     checkboxes[0].checked = true;

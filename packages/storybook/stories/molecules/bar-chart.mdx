@@ -13,9 +13,9 @@ Responsive grouped or stacked bar chart. Pass rows via `.data`, a `domain` field
 
 ```ts
 type BarChartSeries = {
-  key: string;         // property name on each row
-  label?: string;      // legend + SR label (defaults to key)
-  color?: string;      // CSS color; defaults to a palette entry
+  key: string; // property name on each row
+  label?: string; // legend + SR label (defaults to key)
+  color?: string; // CSS color; defaults to a palette entry
 };
 ```
 
@@ -72,4 +72,5 @@ Setting `stacked` collapses each group into a single bar of stacked segments (su
         <li>Palette colors come from <code>--ds-color-chart-1</code>…<code>--ds-color-chart-6</code>; override per-series via <code>color</code>.</li>
       </ul>
     </ds-tab-panel>
+
   </ds-tabs>

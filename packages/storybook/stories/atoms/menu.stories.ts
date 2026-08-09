@@ -62,7 +62,8 @@ export const RichItems: Story = {
         <span
           slot="leading"
           style="display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--ds-color-accent-subtle);align-items:center;justify-content:center;color:var(--ds-color-accent);font-weight:600"
-        >JS</span>
+          >JS</span
+        >
         Jane Smith
         <span slot="description">jane@example.com</span>
       </ds-menu-item>
@@ -70,7 +71,8 @@ export const RichItems: Story = {
         <span
           slot="leading"
           style="display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--ds-color-accent-subtle);align-items:center;justify-content:center;color:var(--ds-color-accent);font-weight:600"
-        >AC</span>
+          >AC</span
+        >
         Alex Chen
         <span slot="description">alex@example.com</span>
       </ds-menu-item>

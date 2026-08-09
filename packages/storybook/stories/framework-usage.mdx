@@ -32,8 +32,8 @@ html`
     stacked
     .data=${rows}
     .series=${[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
-    .formatDomain=${v => `Turn ${v}`}
-    @ds-bar-focus=${e => console.log(e.detail)}
+    .formatDomain=${(v) => `Turn ${v}`}
+    @ds-bar-focus=${(e) => console.log(e.detail)}
   ></ds-bar-chart>
 `;
 ```
@@ -55,9 +55,9 @@ import { BarChart } from '@jsekulowicz/ds-react';
   stacked
   data={rows}
   series={[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
-  formatDomain={v => `Turn ${v}`}
-  onDsBarFocus={e => console.log(e.detail)}
-/>
+  formatDomain={(v) => `Turn ${v}`}
+  onDsBarFocus={(e) => console.log(e.detail)}
+/>;
 ```
 
 Rules of thumb:
@@ -79,7 +79,7 @@ import '@jsekulowicz/ds-components/bar-chart/define';
 import App from './App.vue';
 
 const app = createApp(App);
-app.config.compilerOptions.isCustomElement = tag => tag.startsWith('ds-');
+app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith('ds-');
 app.mount('#app');
 ```
 
@@ -139,12 +139,7 @@ Square-bracket syntax (`[data]="rows"`) binds to the DOM property; parentheses (
 Attributes only carry strings, so set complex values with JS property assignment after the element is in the DOM:
 
 ```html
-<ds-bar-chart
-  domain="turnOrdinalNumber"
-  x-axis-label="Turn"
-  y-axis-label="Score"
-  stacked
-></ds-bar-chart>
+<ds-bar-chart domain="turnOrdinalNumber" x-axis-label="Turn" y-axis-label="Score" stacked></ds-bar-chart>
 
 <script type="module">
   import '@jsekulowicz/ds-components/bar-chart/define';
@@ -152,8 +147,8 @@ Attributes only carry strings, so set complex values with JS property assignment
   const chart = document.querySelector('ds-bar-chart');
   chart.data = rows;
   chart.series = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
-  chart.formatDomain = v => `Turn ${v}`;
-  chart.addEventListener('ds-bar-focus', e => console.log(e.detail));
+  chart.formatDomain = (v) => `Turn ${v}`;
+  chart.addEventListener('ds-bar-focus', (e) => console.log(e.detail));
 </script>
 ```
 

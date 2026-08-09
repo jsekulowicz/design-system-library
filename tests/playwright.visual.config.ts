@@ -12,9 +12,7 @@ export default defineConfig({
   timeout: 60_000,
   forbidOnly: isCI,
   retries: isCI ? 1 : 0,
-  reporter: isCI
-    ? [['github'], ['html', { open: 'never', outputFolder: 'visual-report' }]]
-    : 'list',
+  reporter: isCI ? [['github'], ['html', { open: 'never', outputFolder: 'visual-report' }]] : 'list',
   expect: {
     toHaveScreenshot: {
       // Absolute budget, not a ratio: small real changes (e.g. a button border-radius)
