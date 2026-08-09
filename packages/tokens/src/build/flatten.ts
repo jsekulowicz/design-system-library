@@ -1,4 +1,6 @@
-export type TokenTree = { [key: string]: string | number | TokenTree };
+export interface TokenTree {
+  [key: string]: string | number | TokenTree;
+}
 export type FlatTokens = Record<string, string>;
 
 function kebab(key: string): string {

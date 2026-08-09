@@ -20,11 +20,15 @@ export class DsToastStack extends DsElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.hasAttribute('role')) this.setAttribute('role', 'region');
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'region');
+    }
   }
 
   override updated(changed: PropertyValues): void {
-    if (changed.has('label')) this.setAttribute('aria-label', this.label);
+    if (changed.has('label')) {
+      this.setAttribute('aria-label', this.label);
+    }
   }
 
   /** Append a toast and enforce the `max` cap. */

@@ -7,11 +7,11 @@ import { setupRecentDocsRelabeling } from './storybook-search-relabeling';
 type ViewportKey = 'mobile' | 'tablet' | 'desktop';
 type ThemeKey = 'light' | 'dark';
 
-type ViewportPreset = {
+interface ViewportPreset {
   key: ViewportKey;
   title: string;
   icon: React.ReactNode;
-};
+}
 
 function DevicePhoneMobileIcon(): React.ReactElement {
   return (

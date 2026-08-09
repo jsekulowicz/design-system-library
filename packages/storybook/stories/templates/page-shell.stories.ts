@@ -30,13 +30,13 @@ const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
 const FLUID_PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:none';
 const CAPPED_PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:90rem';
 
-type PageShellStoryOptions = {
+interface PageShellStoryOptions {
   style?: string;
   asideToggle?: boolean;
   asideState?: 'visible' | 'compact';
   asideEndToggle?: boolean;
   asideEndState?: 'visible' | 'hidden';
-};
+}
 
 function pageShellStory(inner: ReturnType<typeof html>, options: PageShellStoryOptions = {}) {
   const {

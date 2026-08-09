@@ -16,7 +16,9 @@ export class SlottedTriggerController {
   }
 
   detach(): void {
-    if (!this.#element) return;
+    if (!this.#element) {
+      return;
+    }
     this.#element.removeEventListener('click', this.#onClick);
     this.#element.removeEventListener('keydown', this.delegate.onTriggerKeydown);
     this.#element = null;
@@ -38,7 +40,9 @@ export class SlottedTriggerController {
   };
 
   syncAria(panelId: string): void {
-    if (!this.#element) return;
+    if (!this.#element) {
+      return;
+    }
     this.#element.setAttribute('aria-haspopup', 'menu');
     this.#element.setAttribute('aria-expanded', this.delegate.isOpen() ? 'true' : 'false');
     if (this.delegate.isOpen()) {
@@ -53,7 +57,9 @@ export class SlottedTriggerController {
   }
 
   #onClick = (): void => {
-    if (this.delegate.isDisabled()) return;
+    if (this.delegate.isDisabled()) {
+      return;
+    }
     this.delegate.toggle();
   };
 }

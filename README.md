@@ -46,6 +46,8 @@ The repo was reformatted wholesale in one commit. Skip it in `git blame`:
 git config blame.ignoreRevsFile .git-blame-ignore-revs
 ```
 
+Contributing? Read [docs/CONVENTIONS.md](./docs/CONVENTIONS.md) first.
+
 ## Consumer usage
 
 ### Install

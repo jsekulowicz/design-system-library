@@ -34,7 +34,9 @@ export class DsMenu extends DsElement {
 
   #items(): DsMenuItem[] {
     const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
-    if (!slot) return [];
+    if (!slot) {
+      return [];
+    }
     return slot
       .assignedElements({ flatten: true })
       .filter((el): el is DsMenuItem => el.tagName.toLowerCase() === 'ds-menu-item');
@@ -52,9 +54,13 @@ export class DsMenu extends DsElement {
 
   #onItemsSlotChange = (): void => {
     const enabled = this.#enabledItems();
-    if (enabled.length === 0) return;
+    if (enabled.length === 0) {
+      return;
+    }
     const hasActive = enabled.some((item) => item.getAttribute('tabindex') === '0');
-    if (!hasActive) this.#setRovingTabindex(enabled[0] ?? null);
+    if (!hasActive) {
+      this.#setRovingTabindex(enabled[0] ?? null);
+    }
   };
 
   #onHeaderSlotChange = (event: Event): void => {
@@ -67,8 +73,12 @@ export class DsMenu extends DsElement {
 
   #onFocusIn = (event: FocusEvent): void => {
     const target = event.target as HTMLElement;
-    if (target.tagName.toLowerCase() !== 'ds-menu-item') return;
-    if ((target as DsMenuItem).disabled) return;
+    if (target.tagName.toLowerCase() !== 'ds-menu-item') {
+      return;
+    }
+    if ((target as DsMenuItem).disabled) {
+      return;
+    }
     this.#setRovingTabindex(target as DsMenuItem);
   };
 
@@ -79,7 +89,9 @@ export class DsMenu extends DsElement {
 
   #moveFocus = (direction: 1 | -1): void => {
     const items = this.#enabledItems();
-    if (items.length === 0) return;
+    if (items.length === 0) {
+      return;
+    }
     const current = items.findIndex((item) => item.getAttribute('tabindex') === '0');
     const start = current >= 0 ? current : 0;
     const next = (start + direction + items.length) % items.length;
@@ -88,7 +100,9 @@ export class DsMenu extends DsElement {
 
   #onKeydown = (event: KeyboardEvent): void => {
     const items = this.#enabledItems();
-    if (items.length === 0) return;
+    if (items.length === 0) {
+      return;
+    }
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();

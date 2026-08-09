@@ -1,26 +1,26 @@
-export type BarChartSeries = {
+export interface BarChartSeries {
   key: string;
   label?: string;
   color?: string;
-};
+}
 
 export type BarChartRow = Record<string, unknown>;
 
-export type BarChartGroup<T extends BarChartRow = BarChartRow> = {
+export interface BarChartGroup<T extends BarChartRow = BarChartRow> {
   domain: unknown;
   row: T;
   values: Record<string, number>;
   total: number;
-};
+}
 
-export type BarChartFocusDetail = {
+export interface BarChartFocusDetail {
   groupIndex: number;
   domainValue: unknown;
   values: Array<{ key: string; label: string; value: number }>;
-};
+}
 
 /* Everything the stateless render helpers need from the component instance. */
-export type ChartRenderContext = {
+export interface ChartRenderContext {
   uid: string;
   title: string;
   domainKey: string;
@@ -36,4 +36,4 @@ export type ChartRenderContext = {
   formatDomain(value: unknown): string;
   formatTooltipTitle(value: unknown): string;
   barColor?(domain: unknown, seriesKey: string): string | undefined;
-};
+}

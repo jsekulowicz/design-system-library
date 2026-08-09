@@ -8,7 +8,7 @@ export type TableSortDirection = 'asc' | 'desc' | null;
 
 export type TableRow = Record<string, unknown>;
 
-export type TableColumn<T extends TableRow = TableRow> = {
+export interface TableColumn<T extends TableRow = TableRow> {
   name: string;
   field: keyof T & string;
   label: string;
@@ -18,24 +18,35 @@ export type TableColumn<T extends TableRow = TableRow> = {
   width?: string;
   /** Set `false` to exclude the column from the pinned region. */
   pinnable?: boolean;
-};
+}
 
 // `pinIndex` is the 0-based position within the pinned region, or null when not pinned.
-export type ResolvedColumn<T extends TableRow = TableRow> = {
+export interface ResolvedColumn<T extends TableRow = TableRow> {
   column: TableColumn<T>;
   pinIndex: number | null;
   lastPinned: boolean;
-};
+}
 
-export type TableSortState = { name: string; direction: TableSortDirection };
+export interface TableSortState {
+  name: string;
+  direction: TableSortDirection;
+}
 
-export type TableRowClickDetail<T extends TableRow = TableRow> = {
+export interface TableRowClickDetail<T extends TableRow = TableRow> {
   row: T;
   index: number;
-};
+}
 
-export type TableSortDetail = { direction: TableSortDirection };
+export interface TableSortDetail {
+  direction: TableSortDirection;
+}
 
-export type TablePageChangeDetail = { page: number; pageSize: number };
+export interface TablePageChangeDetail {
+  page: number;
+  pageSize: number;
+}
 
-export type TablePageSizeChangeDetail = { pageSize: number; page: number };
+export interface TablePageSizeChangeDetail {
+  pageSize: number;
+  page: number;
+}

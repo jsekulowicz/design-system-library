@@ -81,7 +81,9 @@ export class DsToast extends DsElement {
   }
 
   dismiss(reason: ToastDismissReason = 'programmatic'): void {
-    if (this.#dismissed) return;
+    if (this.#dismissed) {
+      return;
+    }
     this.#dismissed = true;
     this.#clearTimer();
     // Don't pull focus back if the user has already moved it out of the toast.
@@ -93,9 +95,13 @@ export class DsToast extends DsElement {
 
   #startTimer = (): void => {
     this.#clearTimer();
-    if (this.effectiveDuration <= 0) return;
+    if (this.effectiveDuration <= 0) {
+      return;
+    }
     this.#remaining = this.effectiveDuration;
-    if (this.#hovered || this.#focused) return;
+    if (this.#hovered || this.#focused) {
+      return;
+    }
     this.#startedAt = Date.now();
     this.#timer = window.setTimeout(() => this.dismiss('timeout'), this.#remaining);
   };
@@ -108,15 +114,21 @@ export class DsToast extends DsElement {
   };
 
   #pauseTimer = (): void => {
-    if (!this.#timer) return;
+    if (!this.#timer) {
+      return;
+    }
     const elapsed = Date.now() - this.#startedAt;
     this.#remaining = Math.max(0, this.#remaining - elapsed);
     this.#clearTimer();
   };
 
   #resumeTimer = (): void => {
-    if (this.#timer || this.#remaining <= 0 || this.effectiveDuration <= 0) return;
-    if (this.#hovered || this.#focused) return;
+    if (this.#timer || this.#remaining <= 0 || this.effectiveDuration <= 0) {
+      return;
+    }
+    if (this.#hovered || this.#focused) {
+      return;
+    }
     this.#startedAt = Date.now();
     this.#timer = window.setTimeout(() => this.dismiss('timeout'), this.#remaining);
   };
@@ -138,7 +150,9 @@ export class DsToast extends DsElement {
 
   #onFocusOut = (event: FocusEvent): void => {
     const next = event.relatedTarget as Node | null;
-    if (next && this.contains(next)) return;
+    if (next && this.contains(next)) {
+      return;
+    }
     this.#focused = false;
     this.#resumeTimer();
   };

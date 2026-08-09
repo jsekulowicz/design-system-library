@@ -1,10 +1,10 @@
-export type PieChartDatum = {
+export interface PieChartDatum {
   label: string;
   value: number;
   color?: string;
-};
+}
 
-export type PieSlice = {
+export interface PieSlice {
   label: string;
   value: number;
   percent: number;
@@ -13,18 +13,18 @@ export type PieSlice = {
   color?: string;
   isOther: boolean;
   sourceIndices: number[];
-};
+}
 
-export type PieChartSliceDetail = {
+export interface PieChartSliceDetail {
   index: number;
   label: string;
   value: number;
   percent: number;
   isOther: boolean;
-};
+}
 
 /* Everything the stateless render helpers need from the component instance. */
-export type PieRenderContext = {
+export interface PieRenderContext {
   uid: string;
   title: string;
   donut: boolean;
@@ -36,4 +36,4 @@ export type PieRenderContext = {
   sliceColor(slice: PieSlice, index: number): string;
   formatValue(value: number): string;
   formatPercent(percent: number): string;
-};
+}

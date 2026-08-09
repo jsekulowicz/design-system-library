@@ -4,7 +4,12 @@ import type { BarChartSeries } from './types.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-type Turn = { turn: number; Jess: number; Marco: number; Andrew: number };
+interface Turn {
+  turn: number;
+  Jess: number;
+  Marco: number;
+  Andrew: number;
+}
 
 const ROWS: readonly Turn[] = [
   { turn: 1, Jess: 3, Marco: 2, Andrew: 4 },
@@ -78,7 +83,9 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
       configurable: true,
       get() {
-        if (this.classList?.contains('frame')) return 321;
+        if (this.classList?.contains('frame')) {
+          return 321;
+        }
         return 0;
       },
     });

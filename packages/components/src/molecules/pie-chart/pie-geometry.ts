@@ -7,7 +7,10 @@ export const LABEL_RADIUS = RADIUS + 6;
 const FULL_CIRCLE = Math.PI * 2;
 const LABEL_MIN_PERCENT = 3;
 
-export type Point = { x: number; y: number };
+export interface Point {
+  x: number;
+  y: number;
+}
 
 export type LabelPlacement =
   | { kind: 'none' }

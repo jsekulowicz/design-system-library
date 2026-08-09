@@ -117,7 +117,9 @@ describe('<ds-radio-group>', () => {
         <ds-radio radiovalue="team">Team</ds-radio>
       </ds-radio-group>
     `);
-    if (value) el.value = value;
+    if (value) {
+      el.value = value;
+    }
     await el.updateComplete;
     el.shadowRoot!.querySelector('slot')!.dispatchEvent(new Event('slotchange'));
     await settle(el);

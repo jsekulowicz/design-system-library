@@ -1,15 +1,20 @@
 import cem from '../../components/custom-elements.json';
 
-type Entry = { name: string; description?: string };
-type CemDeclaration = {
+interface Entry {
+  name: string;
+  description?: string;
+}
+interface CemDeclaration {
   kind: string;
   tagName?: string;
   slots?: Entry[];
   events?: Entry[];
   cssParts?: Entry[];
   cssProperties?: Entry[];
-};
-type CemModule = { declarations?: unknown[] };
+}
+interface CemModule {
+  declarations?: unknown[];
+}
 
 function findDeclaration(tag: string): CemDeclaration | undefined {
   return (cem.modules as CemModule[])

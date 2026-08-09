@@ -41,7 +41,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
 
-  @query('textarea') private input!: HTMLTextAreaElement;
+  @query('textarea') private _input!: HTMLTextAreaElement;
 
   #onInput = (event: Event): void => {
     if (this.disabled) {
@@ -71,11 +71,11 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   };
 
   override syncValidity(): void {
-    if (!this.input) {
+    if (!this._input) {
       return;
     }
-    this.setValidity(this.input.validity, this.input.validationMessage, this.input);
-    const next = this.resolveInvalid(this.invalid, !this.input.validity.valid);
+    this.setValidity(this._input.validity, this._input.validationMessage, this._input);
+    const next = this.resolveInvalid(this.invalid, !this._input.validity.valid);
     if (next !== null) {
       this.invalid = next;
     }

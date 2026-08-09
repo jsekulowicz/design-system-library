@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { BarChartSeries } from '@jsekulowicz/ds-components/bar-chart';
 import '@jsekulowicz/ds-components/bar-chart/define';
 
-type Turn = {
+interface Turn {
   turnOrdinalNumber: number;
   Jess: number;
   Marco: number;
   Andrew: number;
   Stacey: number;
-};
+}
 
 const TURNS: readonly Turn[] = [
   { turnOrdinalNumber: 1, Jess: 3, Marco: 2, Andrew: 4, Stacey: 2 },

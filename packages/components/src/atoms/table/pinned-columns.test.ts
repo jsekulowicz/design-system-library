@@ -2,7 +2,12 @@ import { describe, it, expect } from 'vitest';
 import { resolvePinnedColumns } from './pinned-columns.js';
 import type { TableColumn } from './types.js';
 
-type Row = { a: string; b: string; c: string; d: string };
+interface Row {
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+}
 
 const COLUMNS: readonly TableColumn<Row>[] = [
   { name: 'a', field: 'a', label: 'A' },

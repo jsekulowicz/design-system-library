@@ -45,7 +45,7 @@ export class DsProgressBar extends DsElement {
     return this.max > 0 && this.value >= this.max;
   }
 
-  private onSlotChange(event: Event): void {
+  private _onSlotChange(event: Event): void {
     const slot = event.target as HTMLSlotElement;
     this._hasLabel = slot
       .assignedNodes({ flatten: true })
@@ -72,7 +72,7 @@ export class DsProgressBar extends DsElement {
         </div>
 
         <div class="label" part="label" ?hidden=${!this._hasLabel}>
-          <slot @slotchange=${this.onSlotChange}></slot>
+          <slot @slotchange=${this._onSlotChange}></slot>
         </div>
       </div>
     `;

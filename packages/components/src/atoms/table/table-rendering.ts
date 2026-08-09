@@ -4,7 +4,7 @@ import type { ResolvedColumn, TableColumn, TableRow } from './types.js';
 
 type AriaSort = 'ascending' | 'descending' | undefined;
 
-type TableBodyOptions<T extends TableRow> = {
+interface TableBodyOptions<T extends TableRow> {
   rows: readonly T[];
   columns: readonly ResolvedColumn<T>[];
   rowKey?: string;
@@ -15,7 +15,7 @@ type TableBodyOptions<T extends TableRow> = {
   onRowPointerDown: (event: PointerEvent) => void;
   onRowPointerMove: (event: PointerEvent) => void;
   onRowAction: (row: T, index: number) => void;
-};
+}
 
 function cellClass<T extends TableRow>(resolved: ResolvedColumn<T>): string {
   const classes = [`align-${resolved.column.align ?? 'left'}`];

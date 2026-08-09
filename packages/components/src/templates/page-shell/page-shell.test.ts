@@ -17,7 +17,9 @@ class ResizeObserverMock {
   }
 
   observe(target?: Element): void {
-    if (target) this.target = target;
+    if (target) {
+      this.target = target;
+    }
   }
 
   disconnect(): void {

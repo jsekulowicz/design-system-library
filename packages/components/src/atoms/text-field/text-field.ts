@@ -45,7 +45,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @state() private _hasLeading = false;
   @state() private _hasTrailing = false;
 
-  @query('input') private input!: HTMLInputElement;
+  @query('input') private _input!: HTMLInputElement;
 
   #onLeadingChange = (e: Event): void => {
     this._hasLeading = (e.target as HTMLSlotElement).assignedElements().length > 0;
@@ -83,11 +83,11 @@ export class DsTextField extends FormControlMixin(DsElement) {
   };
 
   override syncValidity(): void {
-    if (!this.input) {
+    if (!this._input) {
       return;
     }
-    this.setValidity(this.input.validity, this.input.validationMessage, this.input);
-    const next = this.resolveInvalid(this.invalid, !this.input.validity.valid);
+    this.setValidity(this._input.validity, this._input.validationMessage, this._input);
+    const next = this.resolveInvalid(this.invalid, !this._input.validity.valid);
     if (next !== null) {
       this.invalid = next;
     }

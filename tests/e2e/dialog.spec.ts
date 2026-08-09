@@ -3,12 +3,12 @@ import { test, expect, type Page } from '@playwright/test';
 const trailingCheckboxStory = '/iframe.html?id=molecules-dialog--trailing-checkbox&viewMode=story';
 const cappedStory = '/iframe.html?id=molecules-dialog--custom-max-height&viewMode=story';
 
-type DialogMetrics = {
+interface DialogMetrics {
   dialogHeight: number;
   cardHeight: number;
   overflow: number;
   bottomFade: string;
-};
+}
 
 test.describe('ds-dialog sizing', () => {
   test('a body that fits gets no scroll fade, trailing checkbox included', async ({ page }) => {

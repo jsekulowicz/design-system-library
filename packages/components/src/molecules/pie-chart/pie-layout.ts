@@ -8,7 +8,11 @@ export interface PieSliceOptions {
   minSlicePercent?: number;
 }
 
-type Weighted = { datum: PieChartDatum; value: number; index: number };
+interface Weighted {
+  datum: PieChartDatum;
+  value: number;
+  index: number;
+}
 
 function toWeighted(data: readonly PieChartDatum[]): Weighted[] {
   return data

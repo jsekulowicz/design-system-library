@@ -40,10 +40,26 @@ export default [
     },
     rules: {
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      curly: ['error', 'all'],
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
+      'prefer-const': 'error',
+      'no-else-return': ['error', { allowElseIf: false }],
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    },
+  },
+  {
+    files: litFiles,
+    rules: {
+      // `@state`/`@query` cannot decorate a `#private` field, so those use `private _x` instead.
+      '@typescript-eslint/naming-convention': [
+        'error',
+        { selector: 'classProperty', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
+        { selector: 'classMethod', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
+      ],
     },
   },
   {

@@ -41,8 +41,8 @@ export class DsMenuButton extends DsElement {
 
   @state() private _hasTriggerSlot = false;
 
-  @query('#trigger') private triggerEl?: HTMLElement;
-  @query(`#${PANEL_ID}`) private panelEl?: HTMLElement & {
+  @query('#trigger') private _triggerEl?: HTMLElement;
+  @query(`#${PANEL_ID}`) private _panelEl?: HTMLElement & {
     showPopover?: () => void;
   };
 
@@ -92,7 +92,7 @@ export class DsMenuButton extends DsElement {
 
   // `popover="manual"` hoists the panel to the top layer, escaping overflow ancestors.
   #syncPanelPopover(): void {
-    const panel = this.panelEl;
+    const panel = this._panelEl;
 
     if (!panel || !this.#popover.open) {
       return;
@@ -112,8 +112,8 @@ export class DsMenuButton extends DsElement {
       this.#slottedTrigger.focus();
       return;
     }
-    const inner = this.triggerEl?.shadowRoot?.querySelector<HTMLButtonElement>('button');
-    (inner ?? this.triggerEl)?.focus();
+    const inner = this._triggerEl?.shadowRoot?.querySelector<HTMLButtonElement>('button');
+    (inner ?? this._triggerEl)?.focus();
   }
 
   #focusFirstItem(): void {
@@ -122,7 +122,9 @@ export class DsMenuButton extends DsElement {
   }
 
   #onDsClick = (): void => {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
     this.#popover.toggle();
   };
 

@@ -70,7 +70,9 @@ export class DsRadioGroup extends DsElement {
     // enabled radio when nothing is selected yet (roving tabindex).
     const tabStopIndex = selectedIndex >= 0 ? selectedIndex : firstEnabled;
     radios.forEach((radio, index) => {
-      if (this.name) radio.setAttribute('name', this.name);
+      if (this.name) {
+        radio.setAttribute('name', this.name);
+      }
       if (this.required) {
         radio.setAttribute('required', '');
       } else {

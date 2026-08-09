@@ -166,7 +166,9 @@ export class DropdownController implements ReactiveController {
   toggle = (): void => {
     if (this.#open) {
       this.close();
-    } else this.openDropdown();
+    } else {
+      this.openDropdown();
+    }
   };
 
   moveFocus = (direction: 1 | -1): void => {

@@ -1,19 +1,19 @@
 const STORYBOOK_CATEGORIES = ['Foundations', 'Atoms', 'Molecules', 'Organisms', 'Templates', 'Pages'] as const;
 let shouldUseFriendlyDocsLabels = true;
 
-type StorybookLabelItem = {
+interface StorybookLabelItem {
   id?: string;
   name?: string;
-};
+}
 
-type StorybookLabelApi = {
+interface StorybookLabelApi {
   getData: (id: string) => { title?: string } | undefined;
-};
+}
 
-export type SearchLabelResult = {
+export interface SearchLabelResult {
   cell: HTMLElement;
   label: string;
-};
+}
 
 export function setFriendlyDocsLabelsEnabled(enabled: boolean): void {
   shouldUseFriendlyDocsLabels = enabled;

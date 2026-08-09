@@ -20,7 +20,9 @@ export function renderOptionIcon(
   icon?: OptionIcon,
   { slot, size }: OptionIconOptions = {},
 ): TemplateResult | typeof nothing {
-  if (!icon) return nothing;
+  if (!icon) {
+    return nothing;
+  }
   return html`<ds-icon
     slot=${ifDefined(slot)}
     size=${ifDefined(size)}

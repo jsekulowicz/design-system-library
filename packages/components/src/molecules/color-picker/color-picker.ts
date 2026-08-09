@@ -47,7 +47,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Boolean, reflect: true }) compact = false;
 
-  @query('#trigger') private triggerEl?: HTMLElement;
+  @query('#trigger') private _triggerEl?: HTMLElement;
 
   #popover = new ColorPickerPopover(this, {
     focusTrigger: () => this.#focusTrigger(),
@@ -138,8 +138,8 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     const missing = this.required && !this.#currentValue();
     const validationMessage = message || (missing ? 'Please select a color.' : '');
     const flags = message ? { customError: true } : missing ? { valueMissing: true } : {};
-    if (this.triggerEl) {
-      this.setValidity(flags, validationMessage, this.triggerEl);
+    if (this._triggerEl) {
+      this.setValidity(flags, validationMessage, this._triggerEl);
     } else {
       this.setValidity(flags, validationMessage);
     }
@@ -154,8 +154,8 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   }
 
   #focusTrigger(): void {
-    const button = this.triggerEl?.shadowRoot?.querySelector<HTMLButtonElement>('button');
-    (button ?? this.triggerEl)?.focus();
+    const button = this._triggerEl?.shadowRoot?.querySelector<HTMLButtonElement>('button');
+    (button ?? this._triggerEl)?.focus();
   }
 
   #clear = (): void => {

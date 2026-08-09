@@ -24,7 +24,9 @@ export class DsSelectOption extends DsElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.hasAttribute('role')) this.setAttribute('role', 'option');
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'option');
+    }
     this.addEventListener('click', this.#onClick);
   }
 

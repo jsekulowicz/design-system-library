@@ -54,10 +54,10 @@ const INTERACTIVE_ROLES = new Set([
 const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
 const ROW_DRAG_THRESHOLD = 4;
 
-type RowPointerStart = {
+interface RowPointerStart {
   x: number;
   y: number;
-};
+}
 
 function parseBooleanAttribute(value: string | null): boolean {
   return value !== null && !FALSE_BOOLEAN_ATTRIBUTES.has(value.trim().toLowerCase());

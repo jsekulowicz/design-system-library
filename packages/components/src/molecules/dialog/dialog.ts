@@ -57,7 +57,9 @@ export class DsDialog extends DsElement {
   }
 
   override updated(changed: PropertyValues): void {
-    if (!changed.has('open') || !this._dialogEl) return;
+    if (!changed.has('open') || !this._dialogEl) {
+      return;
+    }
     if (this.open && !this._dialogEl.open) {
       this._dialogEl.showModal();
       this.emit('ds-open', { detail: null });
@@ -76,8 +78,12 @@ export class DsDialog extends DsElement {
   }
 
   #onBackdropClick = (event: MouseEvent): void => {
-    if (!this.dismissible) return;
-    if (event.target === this._dialogEl) this.close();
+    if (!this.dismissible) {
+      return;
+    }
+    if (event.target === this._dialogEl) {
+      this.close();
+    }
   };
 
   #onCancel = (event: Event): void => {

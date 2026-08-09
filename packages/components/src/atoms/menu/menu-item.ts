@@ -24,8 +24,12 @@ export class DsMenuItem extends DsElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    if (!this.hasAttribute('role')) this.setAttribute('role', 'menuitem');
-    if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', '-1');
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'menuitem');
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '-1');
+    }
     this.addEventListener('click', this.#onClick);
     this.addEventListener('keydown', this.#onKeydown);
   }
@@ -33,14 +37,18 @@ export class DsMenuItem extends DsElement {
   override updated(changed: PropertyValues): void {
     if (changed.has('disabled')) {
       this.setAttribute('aria-disabled', this.disabled ? 'true' : 'false');
-      if (this.disabled) this.setAttribute('tabindex', '-1');
+      if (this.disabled) {
+        this.setAttribute('tabindex', '-1');
+      }
     }
   }
 
   /** Primary slot text used by ds-menu type-ahead. */
   get primaryText(): string {
     const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
-    if (!slot) return (this.textContent ?? '').trim();
+    if (!slot) {
+      return (this.textContent ?? '').trim();
+    }
     return slot
       .assignedNodes({ flatten: true })
       .map((node) => node.textContent ?? '')
@@ -58,7 +66,9 @@ export class DsMenuItem extends DsElement {
   };
 
   #onKeydown = (event: KeyboardEvent): void => {
-    if (this.disabled) return;
+    if (this.disabled) {
+      return;
+    }
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       event.stopPropagation();

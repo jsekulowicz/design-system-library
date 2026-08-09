@@ -1,6 +1,10 @@
 import type { HeatmapCell, HeatmapDay, HeatmapLayout, HeatmapMonthLabel, HeatmapWeekStart } from './types.js';
 
-type CivilDate = { year: number; month: number; day: number };
+interface CivilDate {
+  year: number;
+  month: number;
+  day: number;
+}
 
 export function parseDate(value: string): CivilDate | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);

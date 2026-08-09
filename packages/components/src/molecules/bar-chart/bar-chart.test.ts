@@ -17,12 +17,12 @@ beforeAll(() => {
   } as unknown as RO;
 });
 
-type Turn = {
+interface Turn {
   turn: number;
   Jess: number;
   Marco: number;
   Andrew: number;
-};
+}
 
 const ROWS: readonly Turn[] = [
   { turn: 1, Jess: 3, Marco: 2, Andrew: 4 },

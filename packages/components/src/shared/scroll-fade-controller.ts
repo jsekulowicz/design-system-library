@@ -49,7 +49,9 @@ export class ScrollFadeController implements ReactiveController {
     }
     if (!el) {
       // The scroller may live in a nested shadow root that hasn't rendered yet.
-      if (attempt < 10) requestAnimationFrame(() => this.#tryAttach(attempt + 1));
+      if (attempt < 10) {
+        requestAnimationFrame(() => this.#tryAttach(attempt + 1));
+      }
       return;
     }
     this.#detach();
@@ -58,7 +60,9 @@ export class ScrollFadeController implements ReactiveController {
     if (typeof ResizeObserver !== 'undefined') {
       this.#resize = new ResizeObserver(this.#onScroll);
       this.#resize.observe(el);
-      if (el.firstElementChild) this.#resize.observe(el.firstElementChild);
+      if (el.firstElementChild) {
+        this.#resize.observe(el.firstElementChild);
+      }
     }
     if (typeof MutationObserver !== 'undefined') {
       this.#mutation = new MutationObserver(this.#onScroll);
@@ -83,7 +87,9 @@ export class ScrollFadeController implements ReactiveController {
   #onScroll = (): void => this.#schedule();
 
   #schedule(): void {
-    if (this.#frame) return;
+    if (this.#frame) {
+      return;
+    }
     this.#frame = requestAnimationFrame(() => {
       this.#frame = 0;
       this.#update();
@@ -92,7 +98,9 @@ export class ScrollFadeController implements ReactiveController {
 
   #update(): void {
     const el = this.#scroller;
-    if (!el || !el.isConnected) return;
+    if (!el || !el.isConnected) {
+      return;
+    }
     const max = el.scrollHeight - el.clientHeight;
     const scrollable = max > OVERFLOW_EPSILON;
     const atTop = el.scrollTop <= OVERFLOW_EPSILON;

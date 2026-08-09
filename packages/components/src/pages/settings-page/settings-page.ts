@@ -19,7 +19,7 @@ export class DsSettingsPage extends DsElement {
   @property() heading = 'Settings';
   @property() description = '';
   @property({ type: Array }) sections: SettingsSection[] = [];
-  @state() private activeId = '';
+  @state() private _activeId = '';
 
   #escapeId(value: string): string {
     if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
@@ -30,13 +30,13 @@ export class DsSettingsPage extends DsElement {
 
   #scrollTo = (id: string) => (event: MouseEvent) => {
     event.preventDefault();
-    this.activeId = id;
+    this._activeId = id;
     const target = document.getElementById(id) ?? this.querySelector(`#${this.#escapeId(id)}`);
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   override render(): TemplateResult {
-    const current = this.activeId || this.sections[0]?.id || '';
+    const current = this._activeId || this.sections[0]?.id || '';
     const hasNav = this.sections.length > 0;
     return html`<header class="hero" part="hero">
         <h1 part="heading">${this.heading}</h1>

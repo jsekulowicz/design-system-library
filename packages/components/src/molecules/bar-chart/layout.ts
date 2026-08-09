@@ -6,10 +6,18 @@ export function niceMax(value: number): number {
   }
   const pow = Math.pow(10, Math.floor(Math.log10(value)));
   const d = value / pow;
-  if (d <= 1) return 1 * pow;
-  if (d <= 2) return 2 * pow;
-  if (d <= 2.5) return 2.5 * pow;
-  if (d <= 5) return 5 * pow;
+  if (d <= 1) {
+    return 1 * pow;
+  }
+  if (d <= 2) {
+    return 2 * pow;
+  }
+  if (d <= 2.5) {
+    return 2.5 * pow;
+  }
+  if (d <= 5) {
+    return 5 * pow;
+  }
   return 10 * pow;
 }
 
@@ -21,9 +29,13 @@ export function generateTicks(maxValue: number, approxCount = 5): number[] {
   const pow = Math.pow(10, Math.floor(Math.log10(ideal)));
   const d = ideal / pow;
   let stepMultiplier = 10;
-  if (d <= 1) stepMultiplier = 1;
-  else if (d <= 2) stepMultiplier = 2;
-  else if (d <= 5) stepMultiplier = 5;
+  if (d <= 1) {
+    stepMultiplier = 1;
+  } else if (d <= 2) {
+    stepMultiplier = 2;
+  } else if (d <= 5) {
+    stepMultiplier = 5;
+  }
   const step = stepMultiplier * pow;
   const ticks: number[] = [];
   for (let v = 0; v <= maxValue + 1e-9; v += step) {
@@ -50,12 +62,12 @@ export function groupData<T extends BarChartRow>(
   });
 }
 
-export type GroupBand = {
+export interface GroupBand {
   x: number;
   bandWidth: number;
   innerX: number;
   innerWidth: number;
-};
+}
 
 export function computeGroupBands(innerWidth: number, groupCount: number, outerGapRatio: number): GroupBand[] {
   if (groupCount <= 0) {
@@ -72,7 +84,10 @@ export function computeGroupBands(innerWidth: number, groupCount: number, outerG
   return bands;
 }
 
-export type GroupedBar = { x: number; width: number };
+export interface GroupedBar {
+  x: number;
+  width: number;
+}
 
 export function computeGroupedBars(
   innerX: number,
@@ -89,7 +104,12 @@ export function computeGroupedBars(
   }));
 }
 
-export type StackSegment = { key: string; value: number; y: number; height: number };
+export interface StackSegment {
+  key: string;
+  value: number;
+  y: number;
+  height: number;
+}
 
 export function computeStackSegments(
   values: Record<string, number>,

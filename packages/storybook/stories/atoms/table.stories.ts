@@ -6,14 +6,14 @@ import '@jsekulowicz/ds-components/badge/define';
 import '@jsekulowicz/ds-components/button/define';
 import '@jsekulowicz/ds-components/text-field/define';
 
-type Person = {
+interface Person {
   id: number;
   name: string;
   role: string;
   status: 'active' | 'pending' | 'disabled';
   joined: string;
   salary: number;
-};
+}
 
 type SortableStoryTable = HTMLElement & {
   rows: readonly Person[];

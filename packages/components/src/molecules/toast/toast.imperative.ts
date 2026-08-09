@@ -42,9 +42,13 @@ let counter = 0;
 const keyedToasts = new Map<string, { el: DsToast; controller: ToastController }>();
 
 function ensureStack(placement: ToastPlacement): DsToastStack | null {
-  if (typeof document === 'undefined') return null;
+  if (typeof document === 'undefined') {
+    return null;
+  }
   const existing = document.body.querySelector<DsToastStack>(`ds-toast-stack[placement="${placement}"]`);
-  if (existing) return existing;
+  if (existing) {
+    return existing;
+  }
   const stack = document.createElement('ds-toast-stack') as DsToastStack;
   stack.setAttribute('placement', placement);
   document.body.appendChild(stack);
@@ -69,15 +73,25 @@ function renderActionButtons(actions: ToastAction[], controller: ToastController
 }
 
 function applyProps(el: DsToast, options: ToastOptions): void {
-  if (options.tone !== undefined) el.tone = options.tone;
-  if (options.heading !== undefined) el.heading = options.heading;
-  if (options.duration !== undefined) el.duration = options.duration;
-  if (options.dismissible !== undefined) el.dismissible = options.dismissible;
+  if (options.tone !== undefined) {
+    el.tone = options.tone;
+  }
+  if (options.heading !== undefined) {
+    el.heading = options.heading;
+  }
+  if (options.duration !== undefined) {
+    el.duration = options.duration;
+  }
+  if (options.dismissible !== undefined) {
+    el.dismissible = options.dismissible;
+  }
 }
 
 function toastFn(options: ToastOptions = {}): ToastController {
   const id = `ds-toast-${++counter}`;
-  if (typeof document === 'undefined') return noopController(id);
+  if (typeof document === 'undefined') {
+    return noopController(id);
+  }
 
   const key = options.key;
   if (key !== undefined) {
@@ -91,7 +105,9 @@ function toastFn(options: ToastOptions = {}): ToastController {
 
   const placement: ToastPlacement = options.placement ?? 'bottom-right';
   const stack = ensureStack(placement);
-  if (!stack) return noopController(id);
+  if (!stack) {
+    return noopController(id);
+  }
 
   const el = document.createElement('ds-toast') as DsToast;
   el.id = id;
@@ -128,7 +144,9 @@ function toastFn(options: ToastOptions = {}): ToastController {
     el.addEventListener(
       'ds-dismiss',
       () => {
-        if (keyedToasts.get(key)?.el === el) keyedToasts.delete(key);
+        if (keyedToasts.get(key)?.el === el) {
+          keyedToasts.delete(key);
+        }
       },
       { once: true },
     );

@@ -11,7 +11,11 @@ beforeAll(() => {
   }
 });
 
-type Person = { id: number; name: string; salary: number };
+interface Person {
+  id: number;
+  name: string;
+  salary: number;
+}
 
 const ROWS: readonly Person[] = [
   { id: 1, name: 'Ada', salary: 100 },

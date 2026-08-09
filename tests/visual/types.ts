@@ -3,7 +3,7 @@ import type { Page } from '@playwright/test';
 export type ThemeName = 'light' | 'dark';
 export type ViewportName = 'mobile' | 'tablet' | 'desktop';
 
-export type VisualScenario = {
+export interface VisualScenario {
   name: string;
   storyId: string;
   selector?: string;
@@ -12,4 +12,4 @@ export type VisualScenario = {
   viewportSize?: { width: number; height: number };
   fullPage?: boolean;
   beforeCapture?: (page: Page) => Promise<void>;
-};
+}

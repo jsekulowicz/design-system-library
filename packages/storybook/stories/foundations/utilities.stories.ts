@@ -4,11 +4,11 @@ import type { TableColumn } from '@jsekulowicz/ds-components/table';
 import '@jsekulowicz/ds-components/table/define';
 
 type Story = StoryObj;
-type UtilityRow = {
+interface UtilityRow {
   group: string;
   classes: readonly string[];
   mapsTo: string;
-};
+}
 
 const meta: Meta = {
   title: 'Foundations/Utilities',

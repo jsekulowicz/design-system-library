@@ -134,7 +134,9 @@ describe('<ds-drawer>', () => {
     const dialog = getDialogEl(el);
     const cancelEvent = new Event('cancel', { cancelable: true });
     dialog.dispatchEvent(cancelEvent);
-    if (!cancelEvent.defaultPrevented) dialog.close();
+    if (!cancelEvent.defaultPrevented) {
+      dialog.close();
+    }
     await el.updateComplete;
     expect(events).toEqual(['cancel', 'close']);
     expect(el.open).toBe(false);

@@ -29,7 +29,9 @@ export function dropdownKeydown(event: KeyboardEvent, ctx: KeydownContext): 'han
     if ((event.key === ' ' || event.key === 'Backspace') && controller.focusedTileIndex >= 0) {
       event.preventDefault();
       const value = ctx.values[controller.focusedTileIndex];
-      if (value !== undefined) controller.removeTile(value);
+      if (value !== undefined) {
+        controller.removeTile(value);
+      }
       return 'handled';
     }
   }

@@ -10,7 +10,12 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-type Step = { name: string; cssVar: string; rem: string; px: number };
+interface Step {
+  name: string;
+  cssVar: string;
+  rem: string;
+  px: number;
+}
 
 const REM_IN_PX = 16;
 

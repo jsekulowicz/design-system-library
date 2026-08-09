@@ -97,7 +97,9 @@ describe('<ds-menu>', () => {
     const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
     let bubbled = false;
     el.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') bubbled = true;
+      if (e.key === 'Escape') {
+        bubbled = true;
+      }
     });
     items[0]?.dispatchEvent(event);
     expect(bubbled).toBe(true);

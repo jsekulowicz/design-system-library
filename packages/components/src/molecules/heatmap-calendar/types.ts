@@ -1,7 +1,7 @@
-export type HeatmapDay = {
+export interface HeatmapDay {
   date: string;
   value: number;
-};
+}
 
 export type HeatmapFocusDetail = HeatmapDay & {
   level: number;
@@ -14,19 +14,19 @@ export type HeatmapCell = HeatmapFocusDetail & {
   row: number;
 };
 
-export type HeatmapMonthLabel = {
+export interface HeatmapMonthLabel {
   date: string;
   column: number;
-};
+}
 
-export type HeatmapLayout = {
+export interface HeatmapLayout {
   cells: HeatmapCell[];
   monthLabels: HeatmapMonthLabel[];
   maxValue: number;
   weekCount: number;
-};
+}
 
-export type HeatmapRenderContext = {
+export interface HeatmapRenderContext {
   uid: string;
   title: string;
   color: string;
@@ -39,4 +39,4 @@ export type HeatmapRenderContext = {
   formatDate(date: string): string;
   formatMonth(date: string): string;
   weekdayLabels: readonly string[];
-};
+}

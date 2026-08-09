@@ -1,11 +1,11 @@
 export type PaginationRangeItem = number | 'ellipsis-start' | 'ellipsis-end';
 
-export type PaginationRangeInput = {
+export interface PaginationRangeInput {
   totalPages: number;
   currentPage: number;
   maxVisiblePages: number;
   siblingCount: number;
-};
+}
 
 export function buildPaginationRange({
   totalPages,
