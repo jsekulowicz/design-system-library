@@ -402,7 +402,7 @@
     "heroicons": "2.2.0",
     "jsdom": "^30.0.1",
     "size-limit": "^13.0.3",
-    "typescript": "^5.7.2",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   }
 }
