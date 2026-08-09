@@ -77,17 +77,14 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     this.emit('ds-change', { detail: { value: Number(target.value) } });
   };
 
-  // Stay focusable when disabled (so assistive tech can find and announce it,
-  // like ds-button) but block the keyboard/pointer interactions that would
-  // otherwise move the thumb.
+  // Focusable when disabled so assistive tech can announce it, like ds-button.
   #blockWhenDisabled = (event: Event): void => {
     if (this.disabled) {
       event.preventDefault();
     }
   };
 
-  // A native range always holds an in-range value, so validity is forwarded to the
-  // form for completeness while `invalid`/`error` stay consumer-controlled (app-level).
+  // A native range is always in range; `invalid`/`error` stay consumer-controlled.
   override syncValidity(): void {
     if (!this._input) {
       return;

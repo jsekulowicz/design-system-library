@@ -1,20 +1,10 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
-// Drives the `--ds-scroll-fade-top` / `--ds-scroll-fade-bottom` custom
-// properties on a scroll container from its REAL scroll state, so the
-// mask-fade (see the consuming component's styles) shows:
-//   • the bottom edge fading while there is more content below,
-//   • the top edge fading once content has scrolled above,
-//   • and NOTHING when the content fits (not scrollable).
-// This replaces `animation-timeline: scroll(self)`, which some engines park at
-// an extreme keyframe on non-scrollable content (painting a phantom fade). It
-// recomputes on scroll, on resize (ResizeObserver) and on content changes
-// (MutationObserver), all rAF-throttled.
+// Measured, not `animation-timeline: scroll(self)`: some engines fade content that fits.
 const OPAQUE = 'rgb(0 0 0)';
 const CLEAR = 'rgb(0 0 0 / 0)';
-// Sub-pixel rounding and inline layout (a line box can sit a pixel or two below
-// the boxes on it) leave a few px of "overflow" on content that visually fits.
-// Fading a full --ds-scroll-fade-depth over that is worse than never fading it.
+
+// Sub-pixel rounding leaves a few px of overflow on content that visually fits.
 const OVERFLOW_EPSILON = 2;
 
 export class ScrollFadeController implements ReactiveController {

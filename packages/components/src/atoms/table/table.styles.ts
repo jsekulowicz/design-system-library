@@ -8,8 +8,6 @@ export const tableStyles = css`
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-lg);
-    /* Header row height (used as the top scroll-fade offset in scroll-body
-       mode). Single-line by construction; override to taste. */
     --ds-table-header-height: calc(var(--ds-space-2) * 2 + var(--ds-font-size-body-lg) * 1.5 + 1px);
   }
 
@@ -35,9 +33,7 @@ export const tableStyles = css`
 
   caption {
     caption-side: top;
-    /* Stay put during horizontal scroll instead of scrolling off with the
-       (wider-than-viewport) table body. Shrink to content so sticky has slack,
-       but never exceed the container (so it still wraps in the stacked layout). */
+    /* Shrink to content so sticky has slack, capped so the stacked layout still wraps. */
     position: sticky;
     left: 0;
     width: max-content;
@@ -57,8 +53,7 @@ export const tableStyles = css`
     font-weight: var(--ds-font-weight-medium);
     padding: var(--ds-space-2) var(--ds-space-3);
     border-bottom: 1px solid var(--ds-color-border);
-    /* Headers never wrap, so the header row keeps a constant height (a long
-       header widens its column / scrolls rather than growing taller). */
+    /* No wrapping keeps the header row a constant height. */
     white-space: nowrap;
   }
 
@@ -72,10 +67,7 @@ export const tableStyles = css`
     display: none;
   }
 
-  /* Flex (not block) so custom cell content (icon scales, badges, links)
-     centres vertically against text cells. justify-content mirrors the
-     column alignment for non-text items; text-align (below) still handles
-     wrapped text inside the item. */
+  /* Flex so non-text cell content centres against text cells. */
   .cell-content {
     display: flex;
     align-items: center;

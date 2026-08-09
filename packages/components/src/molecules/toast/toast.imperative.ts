@@ -5,8 +5,6 @@ import type { DsToastStack, ToastPlacement } from './toast-stack.js';
 
 import '../../atoms/button/define.js';
 
-// Declarative action button: pass data, the toast renders the `ds-button`.
-// Avoids callers hand-writing lit templates for the common case.
 export interface ToastAction {
   label: string;
   onClick: (controller: ToastController) => void;
@@ -20,14 +18,10 @@ export interface ToastOptions {
   duration?: number;
   dismissible?: boolean;
   placement?: ToastPlacement;
-  // Either a render function (full control) or a list of action buttons.
   actions?: ((controller: ToastController) => TemplateResult) | ToastAction[];
-  // Move keyboard focus to the toast when it appears. Use for actionable
-  // toasts raised in response to a user action, so a keyboard user lands on
-  // the notification (and its buttons) instead of hunting for it. The toast
-  // pauses its auto-dismiss timer while focused. Leave off for passive toasts.
+  /** Pulls focus on show and pauses auto-dismiss while focused. For actionable toasts only. */
   focusOnShow?: boolean;
-  // Dedup id: a repeat with the same key refreshes the live toast, not a copy.
+  /** Dedup id: a repeat with the same key refreshes the live toast instead of stacking. */
   key?: string;
 }
 

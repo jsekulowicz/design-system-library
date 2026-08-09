@@ -14,8 +14,7 @@ export const drawerStyles = css`
     height: 100vh;
     height: var(--ds-drawer-height, 100dvh);
     max-height: 100%;
-    /* allow-discrete lets display/overlay hold their open values for
-       the slide-in / slide-out duration. */
+    /* allow-discrete holds display/overlay open for the slide duration. */
     transition:
       transform var(--ds-duration-slow) var(--ds-easing-standard),
       display var(--ds-duration-slow) allow-discrete,
@@ -66,24 +65,18 @@ export const drawerStyles = css`
     min-width: 0;
   }
   ds-card::part(card) {
-    /* Fill the dialog explicitly; percentage heights don't resolve
-       reliably through ds-card's display:block host. Both read the same
-       custom property, so an app that shortens the drawer never gets a
-       card taller than the drawer it sits in. */
+    /* Explicit: percentage heights don't resolve through ds-card's block host. */
     height: 100vh;
     height: var(--ds-drawer-height, 100dvh);
     max-height: 100vh;
     max-height: var(--ds-drawer-height, 100dvh);
     box-shadow: none;
-    /* border: 0 not transparent — a 1px transparent border still fills
-       with the card's own background (background-clip: border-box). */
+    /* 0, not transparent: background-clip is border-box, so a transparent border still fills. */
     border: 0;
     border-radius: 0;
     gap: var(--ds-drawer-card-gap, var(--ds-space-3));
     padding: var(--ds-drawer-card-padding, var(--ds-space-6));
   }
-  /* The scrolling body (ds-card::part(body)) + its scroll fade come from the
-     shared cardBodyScrollFadeStyles. */
   .title-row {
     display: flex;
     align-items: center;
@@ -98,8 +91,7 @@ export const drawerStyles = css`
   .title-text {
     margin: 0;
     flex: 1;
-    /* Flex-centre the slotted content; otherwise the h2's line-height
-       inflates the title-row height and content sits at the baseline. */
+    /* Flex-centre: otherwise the h2's line-height inflates the row. */
     display: flex;
     align-items: center;
     line-height: 1;

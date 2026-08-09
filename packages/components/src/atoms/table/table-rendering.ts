@@ -60,9 +60,7 @@ function renderRowAction<T extends TableRow>(options: TableBodyOptions<T>, row: 
   `;
 }
 
-// A per-cell slot lets consumers project framework-rendered content (keyed by
-// column + row key), falling back to `render`/`field` when nothing is slotted —
-// so existing tables are unaffected. Needs `row-key` set to be unique per cell.
+// Per-cell slots need `row-key` set to be unique; falls back to `render`/`field`.
 function renderCellValue<T extends TableRow>(
   options: TableBodyOptions<T>,
   column: TableColumn<T>,

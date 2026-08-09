@@ -34,12 +34,7 @@ export const cardStyles = css`
     border-color: var(--ds-color-fg-subtle);
     transform: translateY(-1px);
   }
-  /* Body grows to fill leftover height so anything below it
-     (.actions, footer) is anchored to the bottom of the card. When a
-     parent grid/flex stretches several cards to a common height, this
-     keeps their footers aligned even if the bodies are different
-     lengths. Cards that aren't stretched (auto-height context) see no
-     visual change — body still wraps its content. */
+  /* Body absorbs slack so footers align across cards stretched to a common height. */
   .body {
     flex: 1;
   }

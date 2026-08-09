@@ -17,9 +17,7 @@ export interface SegmentedControlOption {
 
 /**
  * @tag ds-segmented-control
- * @summary Single-select segmented control — a connected row of mutually
- *   exclusive options, each with an optional leading icon. A token-styled,
- *   inline alternative to a dropdown when there are only a few choices.
+ * @summary Connected row of mutually exclusive options; an inline alternative to a dropdown.
  * @event ds-change - Fires when the selection changes. Detail: `{ value: string }`.
  * @csspart group - The container that holds the segments.
  * @csspart segment - Each option button.
@@ -41,8 +39,7 @@ export class DsSegmentedControl extends DsElement {
     }
   }
 
-  // The single tab stop: the selected option, or the first enabled one when
-  // nothing is selected yet. Arrow keys move focus (and selection) from here.
+  // The single tab stop; arrow keys move focus and selection from here.
   get #tabStopIndex(): number {
     const selected = this.options.findIndex((option) => option.value === this.value);
     if (selected >= 0) {

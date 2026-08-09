@@ -13,8 +13,7 @@ export const alertStyles = css`
     height: 1.1rem;
     margin-top: 0.1rem;
   }
-  /* Pull the close button into the top-right corner past the notice padding,
-     matching ds-toast. */
+  /* Past the notice padding, into the corner — matches ds-toast. */
   .close-btn {
     margin-block-start: calc(var(--ds-space-2) * -1);
     margin-inline-end: calc(var(--ds-space-2) * -1);

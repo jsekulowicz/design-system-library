@@ -5,10 +5,7 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { tablePaginationStyles } from './table-pagination.styles.js';
 import { buildPaginationRange, type PaginationRangeItem } from './pagination-range.js';
 
-// Width threshold (px) below which the component switches into compact
-// mode: prev/next collapse to icon-only, fewer page buttons render, and
-// the siblingCount is forced to 0. Matches breakpoint.sm so it lines
-// up with ds-table's own stack breakpoint.
+// Matches breakpoint.sm so it lines up with ds-table's own stack breakpoint.
 const COMPACT_WIDTH_PX = 480;
 const COMPACT_MAX_VISIBLE = 3;
 
@@ -47,8 +44,7 @@ export class DsTablePagination extends DsElement {
   @property({ type: Number, reflect: true, attribute: 'sibling-count' }) siblingCount = 1;
   @property({ type: Boolean, reflect: true, attribute: 'hide-page-numbers' }) hidePageNumbers = false;
 
-  // `compact` is reflected so consumer styles can react to it (e.g.
-  // tighten surrounding layout) without re-deriving the breakpoint.
+  // Reflected so consumer styles can react without re-deriving the breakpoint.
   @property({ type: Boolean, reflect: true }) compact = false;
 
   #resizeObserver: ResizeObserver | null = null;

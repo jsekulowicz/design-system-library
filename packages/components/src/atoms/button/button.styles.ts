@@ -4,8 +4,6 @@ export const buttonStyles = css`
   :host {
     --ds-button-size: var(--ds-size-md);
     --ds-button-min-width: 4.5rem;
-    /* Public tint knobs. The color attribute presets them; consumers may
-       override any of them per instance for custom palettes. */
     --ds-button-solid: var(--ds-color-accent);
     --ds-button-solid-hover: var(--ds-color-accent-hover);
     --ds-button-solid-active: var(--ds-color-accent-active);

@@ -1,8 +1,6 @@
 import { css } from 'lit';
 
-// Frozen columns. Offsets and separator/shadow gates come from
-// PinnedColumnsController. Sticky cells are transparent by default, so every row
-// background state is re-declared to keep them opaque over scrolling content.
+// Sticky cells are transparent by default: every row background state is re-declared on purpose.
 export const tablePinnedStyles = css`
   :host {
     --ds-table-pin-max-ratio: 0.75;
@@ -16,8 +14,7 @@ export const tablePinnedStyles = css`
   td.pinned {
     z-index: 1;
   }
-  /* :host raises specificity above :host([scroll-body]) thead th so the pinned
-     header corner stays top of the stack. */
+  /* :host outranks :host([scroll-body]) thead th, keeping the corner on top. */
   :host thead th.pinned {
     z-index: calc(var(--ds-z-index-raised) + 1);
     background: var(--ds-color-bg-subtle);
@@ -29,8 +26,7 @@ export const tablePinnedStyles = css`
     background: var(--ds-color-bg-muted);
   }
 
-  /* Box-shadow, not border: collapsed borders don't paint reliably on sticky
-     cells. Separator is always on; the drop-shadow fades in on horizontal scroll. */
+  /* Box-shadow, not border: collapsed borders don't paint reliably on sticky cells. */
   th.pin-edge,
   td.pin-edge {
     box-shadow:

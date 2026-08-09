@@ -18,9 +18,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @slot leading - Icon or adornment rendered before the label.
  * @slot trailing - Icon or adornment rendered after the label.
  * @attr {boolean} square - Forces an icon-sized square button and ignores the text-button min width.
- * @attr {string} loading-label - Text shown in place of the label while loading. Setting it
- *   pins the button width to the wider of the two states so the label swap never reflows.
- *   Without it the spinner is an overlay, so `loading` never changes the button's size either.
+ * @attr {string} loading-label - Label shown while loading. Pins the button to the wider of the two states.
  * @csspart button - The internal `<button>` element.
  * @csspart spinner - The loading spinner SVG.
  * @cssprop --ds-spinner-size - Loading spinner diameter.

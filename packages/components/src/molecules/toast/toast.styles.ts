@@ -26,8 +26,7 @@ export const toastStyles = css`
     justify-content: space-between;
     gap: var(--ds-space-3);
   }
-  /* Pull the close button into the top-right corner past the notice padding,
-     and keep it there even when no title precedes it. */
+  /* Past the notice padding, into the corner, with or without a title. */
   .close-btn {
     margin-block-start: calc(var(--ds-space-2) * -1);
     margin-inline-end: calc(var(--ds-space-2) * -1);

@@ -38,18 +38,12 @@ export const dialogStyles = css`
     min-width: 0;
   }
   ds-card::part(card) {
-    /* Match the dialog's cap explicitly; percentage heights don't
-       resolve reliably through ds-card's display:block host, so body
-       scroll breaks when content overflows. Both read the same custom
-       property, so an app that lowers the cap never gets a card taller
-       than the dialog it sits in. */
+    /* Explicit: percentage heights don't resolve through ds-card's block host. */
     max-height: var(--ds-dialog-max-height, min(90vh, 720px));
     box-shadow: none;
     border-color: transparent;
     gap: var(--ds-space-3);
   }
-  /* The scrolling body (ds-card::part(body)) + its scroll fade come from the
-     shared cardBodyScrollFadeStyles. */
   .title-row {
     display: flex;
     align-items: flex-start;
@@ -64,15 +58,13 @@ export const dialogStyles = css`
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }
-  /* Normalise slotted headings (h1-h6) so UA defaults don't compound
-     with .title-text styles. */
+  /* Normalise slotted h1-h6 so UA defaults don't compound with .title-text. */
   .title-text ::slotted(*) {
     font: inherit;
     margin: 0;
     letter-spacing: inherit;
   }
-  /* Pull the close button toward the card's top-right corner; the
-     card's own padding would otherwise indent it. */
+  /* Past the card's own padding, into the corner. */
   .close-btn {
     margin-block-start: calc(var(--ds-space-3) * -1);
     margin-inline-end: calc(var(--ds-space-3) * -1);

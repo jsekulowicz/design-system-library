@@ -160,8 +160,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     this.#dropdown.syncScrollTop();
   }
 
-  // Show the listbox in the top layer so it escapes overflow/scroll ancestors;
-  // positioned in CSS via anchor positioning (see select.common-styles).
+  // Top layer escapes overflow ancestors; positioned in select.common-styles.
   #syncListboxPopover(): void {
     const listbox = this._listboxEl;
     if (!listbox || !this.#dropdown.open) {
@@ -264,9 +263,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
   };
 
-  // A printable character or Backspace pressed while the dropdown is closed
-  // should re-enter search mode (Backspace from an empty query, a character
-  // from that character) — not be swallowed by the collapsed input.
+  // Typing into a closed dropdown re-enters search mode rather than being swallowed.
   #isSearchInitiatingKey(event: KeyboardEvent): boolean {
     if (event.ctrlKey || event.metaKey || event.altKey) {
       return false;
@@ -275,10 +272,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   }
 
   #beginSearchFromClosed(event: KeyboardEvent): void {
-    // Clear any selected-label text so search starts fresh, then open (which
-    // resets _search to ''). A printable key's default insertion then lands in
-    // the empty input and #onSearchInput picks it up; Space and Backspace open
-    // with an empty query.
+    // Cleared before opening so the key's default insertion lands in an empty input.
     if (this._inputEl) {
       this._inputEl.value = '';
     }

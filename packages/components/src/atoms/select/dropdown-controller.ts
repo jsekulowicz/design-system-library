@@ -191,10 +191,7 @@ export class DropdownController implements ReactiveController {
     this.#host.requestUpdate();
   };
 
-  // Emits `ds-scroll-end` once per approach of the listbox bottom (the
-  // infinite-scroll hook). Scrolling back up re-arms it, as does
-  // reopening the dropdown; appended options push the bottom away so the
-  // next approach fires again.
+  // Fires once per approach; scrolling away or reopening re-arms it.
   #notifyScrollEnd = (el: HTMLElement): void => {
     const threshold = this.#itemHeight * SCROLL_END_ROWS;
     const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - threshold;

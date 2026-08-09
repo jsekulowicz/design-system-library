@@ -1,7 +1,5 @@
 import type { ResolvedColumn, TableColumn, TableRow } from './types.js';
 
-// Gathers pinned columns into a contiguous left region, preserving each group's
-// original relative order. Unknown names and `pinnable: false` columns are ignored.
 export function resolvePinnedColumns<T extends TableRow>(
   columns: readonly TableColumn<T>[],
   pinnedNames: readonly string[],

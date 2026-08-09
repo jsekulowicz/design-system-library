@@ -1,12 +1,7 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
-// Measures the pinned columns and drives their sticky region via custom
-// properties on the <table>: cumulative `left` offsets, plus the separator and
-// scroll-conditional shadow gates. Horizontal pinning is turned off by
-// withholding the offsets (left falls back to auto), so the scroll-body vertical
-// header stick is never disturbed. Disabled when the region would exceed
-// `--ds-table-pin-max-ratio` of the container, so it can't cover the viewport.
-// rAF-throttled on scroll/resize/mutation, mirroring ScrollFadeController.
+// Pinning is disabled by withholding the offsets, so scroll-body's vertical
+// header stick is never disturbed.
 const DEFAULT_MAX_RATIO = 0.75;
 
 export class PinnedColumnsController implements ReactiveController {

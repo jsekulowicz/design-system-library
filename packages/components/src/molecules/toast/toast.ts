@@ -44,8 +44,7 @@ export class DsToast extends DsElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    // Programmatically focusable (e.g. `focusOnShow`) but never in the tab
-    // sequence, so passive toasts don't add a stop for every keyboard user.
+    // Focusable programmatically, never in the tab sequence: passive toasts add no tab stop.
     if (!this.hasAttribute('tabindex')) {
       this.setAttribute('tabindex', '-1');
     }
@@ -159,8 +158,7 @@ export class DsToast extends DsElement {
 
   #onDismissClick = (): void => this.dismiss('user');
 
-  // Escape dismisses the toast while it (or a control inside it) has focus —
-  // the keyboard counterpart to the close button, matching dialog behaviour.
+  // Escape is the keyboard counterpart to the close button, matching ds-dialog.
   #onKeydown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape' && this.dismissible) {
       event.stopPropagation();

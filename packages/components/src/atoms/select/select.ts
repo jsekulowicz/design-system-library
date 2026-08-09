@@ -19,8 +19,6 @@ export interface SelectOption {
   label: string;
   disabled?: boolean;
   icon?: { name: string; color?: string };
-  // Shown as a tooltip and announced to screen readers — e.g. why a disabled
-  // option can't be picked.
   disabledReason?: string;
 }
 
@@ -135,8 +133,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     this.#dropdown.close();
   }
 
-  // Show the listbox in the top layer so it escapes overflow/scroll ancestors;
-  // positioned in CSS via anchor positioning (see select.common-styles).
+  // Top layer escapes overflow ancestors; positioned in select.common-styles.
   #syncListboxPopover(): void {
     const listbox = this._listboxEl;
     if (!listbox || !this.#dropdown.open) {

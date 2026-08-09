@@ -66,8 +66,7 @@ export class DsRadioGroup extends DsElement {
     const radios = this._radios;
     const selectedIndex = radios.findIndex((radio) => this.#radioValueOf(radio) === this.value);
     const firstEnabled = radios.findIndex((radio) => !radio.hasAttribute('disabled'));
-    // Exactly one radio stays in the tab order: the selected one, or the first
-    // enabled radio when nothing is selected yet (roving tabindex).
+    // Roving tabindex: exactly one radio stays in the tab order.
     const tabStopIndex = selectedIndex >= 0 ? selectedIndex : firstEnabled;
     radios.forEach((radio, index) => {
       if (this.name) {

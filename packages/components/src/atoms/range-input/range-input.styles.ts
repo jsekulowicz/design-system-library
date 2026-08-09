@@ -32,7 +32,6 @@ export const rangeInputStyles = css`
     -webkit-appearance: none;
     appearance: none;
   }
-  /* Track — filled portion (accent) up to the thumb, rest is subtle. */
   .range::-webkit-slider-runnable-track {
     height: var(--ds-range-track-height);
     border-radius: var(--ds-radius-full);
@@ -52,7 +51,6 @@ export const rangeInputStyles = css`
     border-radius: var(--ds-radius-full);
     background: var(--ds-color-accent);
   }
-  /* Thumb */
   .range::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -83,7 +81,6 @@ export const rangeInputStyles = css`
   .range:focus-visible::-moz-range-thumb {
     box-shadow: var(--ds-shadow-focus);
   }
-  /* Invalid */
   :host([invalid]) .range::-webkit-slider-runnable-track {
     background: linear-gradient(
       to right,
@@ -100,7 +97,6 @@ export const rangeInputStyles = css`
   :host([invalid]) .range::-moz-range-thumb {
     border-color: var(--ds-color-danger);
   }
-  /* Disabled */
   :host([disabled]) {
     opacity: 0.5;
   }

@@ -63,11 +63,7 @@ export const tablePaginationStyles = css`
     color: var(--ds-color-accent-fg);
     border-color: var(--ds-color-accent);
   }
-  /* Without this override the generic button:hover:not(:disabled)
-     rule wins on specificity (it carries an extra :not pseudo-class)
-     and the current-page button briefly flashes back to the muted
-     surface colour on hover. Keep the active button on-brand by
-     stepping to the accent-hover token instead. */
+  /* Outranks button:hover:not(:disabled), which would flash the current page muted. */
   button[aria-current='page']:hover:not(:disabled) {
     background: var(--ds-color-accent-hover);
     border-color: var(--ds-color-accent-hover);
@@ -110,14 +106,7 @@ export const tablePaginationStyles = css`
     height: 1em;
   }
 
-  /* Compact mode is driven by the host's [compact] attribute, which
-     ds-table-pagination toggles automatically via ResizeObserver when
-     the host is narrower than ~480px. We hide the Previous / Next
-     text label here so the buttons collapse to icons; the page-number
-     range shrinks via the JS path (maxVisiblePages → 3, siblingCount
-     → 0). The slot itself stays in the DOM so consumer overrides via
-     ::part(prev-next-label) still work if labels are wanted even when
-     compact. */
+  /* Hidden, not removed, so ::part(prev-next-label) overrides still work when compact. */
   :host([compact]) .label {
     display: none;
   }
