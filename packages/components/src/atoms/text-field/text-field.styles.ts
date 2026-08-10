@@ -28,7 +28,7 @@ export const textFieldStyles = css`
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-lg);
-    line-height: 1.4;
+    line-height: var(--ds-line-height-normal);
     padding: 0;
     min-width: 0;
   }

@@ -28,7 +28,7 @@ export const buttonStyles = css`
     font-size: var(--ds-font-size-body-lg);
     font-weight: var(--ds-font-weight-medium);
     letter-spacing: var(--ds-letter-spacing-normal);
-    line-height: 1;
+    line-height: var(--ds-line-height-none);
     cursor: pointer;
     background: transparent;
     color: var(--ds-color-fg);

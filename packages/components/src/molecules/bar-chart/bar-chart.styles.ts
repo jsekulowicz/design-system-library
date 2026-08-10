@@ -59,7 +59,7 @@ export const barChartStyles = css`
     text-align: center;
     color: var(--ds-color-fg-muted);
     font-size: 0.75rem;
-    line-height: 1.2;
+    line-height: var(--ds-line-height-tight);
   }
 
   .axis-label {

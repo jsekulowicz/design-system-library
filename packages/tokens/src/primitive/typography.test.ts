@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { fontSize } from './typography.js';
+import { fontSize, lineHeight } from './typography.js';
 
 describe('fontSize', () => {
   it('provides non-overlapping body and heading scales', () => {
@@ -9,5 +9,15 @@ describe('fontSize', () => {
     expect(fontSize['body-lg']).toBe('1rem');
     expect(fontSize['heading-xs']).toBe('1.125rem');
     expect(fontSize['heading-sm']).toBe('1.25rem');
+  });
+});
+
+describe('lineHeight', () => {
+  it('rises monotonically from single-line controls to prose', () => {
+    expect(Object.values(lineHeight)).toEqual(['1', '1.25', '1.375', '1.5', '1.75']);
+  });
+
+  it('keeps a value for single-line control text', () => {
+    expect(lineHeight.none).toBe('1');
   });
 });

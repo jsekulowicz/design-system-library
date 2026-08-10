@@ -14,7 +14,7 @@ export const textAreaStyles = css`
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-lg);
-    line-height: 1.4;
+    line-height: var(--ds-line-height-normal);
     resize: none;
   }
   :host([resize='vertical']) textarea {

@@ -25,10 +25,11 @@ export const fontWeight = {
 } as const;
 
 export const lineHeight = {
-  tight: '1.1',
-  snug: '1.25',
-  normal: '1.45',
-  relaxed: '1.6',
+  none: '1',
+  tight: '1.25',
+  snug: '1.375',
+  normal: '1.5',
+  relaxed: '1.75',
 } as const;
 
 export const letterSpacing = {

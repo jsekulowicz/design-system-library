@@ -17,7 +17,7 @@ export const tabStyles = css`
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-lg);
     font-weight: var(--ds-font-weight-medium);
-    line-height: 1;
+    line-height: var(--ds-line-height-none);
     cursor: pointer;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;

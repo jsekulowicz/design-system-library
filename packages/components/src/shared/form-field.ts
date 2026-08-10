@@ -8,7 +8,7 @@ export const formFieldStyles: CSSResult = css`
     font-size: var(--ds-font-size-body-md);
     font-weight: var(--ds-font-weight-medium);
     color: var(--ds-color-fg);
-    line-height: 1.4;
+    line-height: var(--ds-line-height-normal);
     cursor: default;
   }
   .required {
@@ -25,7 +25,7 @@ export const formFieldStyles: CSSResult = css`
     margin: 0;
     font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
-    line-height: 1.4;
+    line-height: var(--ds-line-height-normal);
   }
   .error {
     margin: 0;
@@ -34,7 +34,7 @@ export const formFieldStyles: CSSResult = css`
     gap: var(--ds-space-1);
     font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
-    line-height: 1.4;
+    line-height: var(--ds-line-height-normal);
   }
   .error-icon {
     width: 1rem;
@@ -63,7 +63,7 @@ export const formFieldStyles: CSSResult = css`
     margin-inline-start: auto;
     color: var(--ds-color-fg-muted);
     font-size: var(--ds-font-size-body-sm);
-    line-height: 1.4;
+    line-height: var(--ds-line-height-normal);
     white-space: nowrap;
   }
 `;

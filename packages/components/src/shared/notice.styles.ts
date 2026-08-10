@@ -12,7 +12,7 @@ export const noticeStyles = css`
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-lg);
-    line-height: 1.5;
+    line-height: var(--ds-line-height-relaxed);
   }
   :host([tone='info']) .notice {
     border-left-color: var(--ds-color-accent);

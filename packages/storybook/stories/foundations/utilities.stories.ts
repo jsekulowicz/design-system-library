@@ -129,7 +129,7 @@ const typographyRows: readonly UtilityRow[] = [
   },
   {
     group: 'Line height',
-    classes: ['.ds-leading-tight', '.ds-leading-normal', '.ds-leading-relaxed'],
+    classes: ['.ds-leading-none', '.ds-leading-tight', '.ds-leading-snug', '.ds-leading-normal', '.ds-leading-relaxed'],
     mapsTo: '--ds-line-height-*',
   },
 ];
