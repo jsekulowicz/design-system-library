@@ -1,5 +1,26 @@
 # @jsekulowicz/ds-react
 
+## 0.60.0
+
+### Patch Changes
+
+- ecbbafe: Stop shipping stale build output, and drop two export paths that no longer resolve.
+
+  `@jsekulowicz/ds-core` declared `./theme-controller` and `./responsive` in its export map, but
+  neither source file exists any more — importing either would fail on any clean build. Both entries
+  are removed.
+
+  No package cleaned `dist/` before `tsc`, so the published tarballs carried artefacts from deleted
+  modules: 23 files in `ds-components` (including the removed `molecules/field` and
+  `organisms/navbar` components) and 2 in `ds-core`. Every package build now cleans first.
+
+  `ds-react` no longer declares a `lit` dependency it never imported.
+
+- Updated dependencies [4c34dc3]
+- Updated dependencies [ecbbafe]
+- Updated dependencies [9467ff9]
+  - @jsekulowicz/ds-components@0.60.0
+
 ## 0.59.0
 
 ### Patch Changes

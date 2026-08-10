@@ -1,5 +1,46 @@
 # @jsekulowicz/ds-components
 
+## 0.60.0
+
+### Minor Changes
+
+- 4c34dc3: Type the attributes that components forward to inner elements, so lit template analyzers stop
+  reporting `no-incompatible-type-binding` in editors.
+
+  `@jsekulowicz/ds-core` now exports `AriaRole`, `AriaBoolean`, `AriaChecked`, `AriaInvalid`,
+  `AriaHasPopup`, `LinkTarget` and `AutocompleteToken`. `ds-button`'s `role`/`aria-*` properties,
+  `ds-breadcrumb-item`'s `target`/`referrerpolicy`, and the `autocomplete` property on `ds-text-field`
+  and `ds-text-area` use them instead of `string`.
+
+  TypeScript consumers passing arbitrary strings to these properties will now see a type error; the
+  runtime behaviour of the underlying attributes is unchanged.
+
+  Optional attribute bindings moved from `?? nothing` to the `ifDefined` directive throughout. Same
+  rendered output — the attribute is still omitted when the value is absent.
+
+### Patch Changes
+
+- ecbbafe: Stop shipping stale build output, and drop two export paths that no longer resolve.
+
+  `@jsekulowicz/ds-core` declared `./theme-controller` and `./responsive` in its export map, but
+  neither source file exists any more — importing either would fail on any clean build. Both entries
+  are removed.
+
+  No package cleaned `dist/` before `tsc`, so the published tarballs carried artefacts from deleted
+  modules: 23 files in `ds-components` (including the removed `molecules/field` and
+  `organisms/navbar` components) and 2 in `ds-core`. Every package build now cleans first.
+
+  `ds-react` no longer declares a `lit` dependency it never imported.
+
+- 9467ff9: Add `types` to the 43 subpath exports that only declared `import`, so
+  `@jsekulowicz/ds-components/button/define` and friends resolve to their type
+  declarations instead of nothing. The `.d.ts` files were always emitted; the export map just
+  never pointed at them.
+- Updated dependencies [4c34dc3]
+- Updated dependencies [ecbbafe]
+  - @jsekulowicz/ds-core@0.60.0
+  - @jsekulowicz/ds-tokens@0.60.0
+
 ## 0.59.0
 
 ### Minor Changes
