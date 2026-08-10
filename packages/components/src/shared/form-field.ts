@@ -42,6 +42,20 @@ export const formFieldStyles: CSSResult = css`
     flex-shrink: 0;
     color: var(--ds-color-danger);
   }
+  .description,
+  .error,
+  .subtext-spacer {
+    min-block-size: calc(var(--ds-font-size-body-sm) * var(--ds-line-height-normal));
+  }
+  .subtext-spacer {
+    margin: 0;
+  }
+  :host([no-message-space]) .subtext-spacer {
+    display: none;
+  }
+  :host([no-message-space]) .field-footer:not(:has(.description, .error)) {
+    display: none;
+  }
   .field-footer {
     display: flex;
     justify-content: space-between;
@@ -96,13 +110,10 @@ export function renderSubtext(description: string, error: string, invalid: boole
   if (description) {
     return html`<p class="description">${description}</p>`;
   }
-  return html``;
+  return html`<p class="subtext-spacer" aria-hidden="true"></p>`;
 }
 
 export function renderFieldFooter(description: string, error: string, invalid: boolean): TemplateResult {
-  if (!((invalid && error) || description)) {
-    return html``;
-  }
   return html`<div class="field-footer">${renderSubtext(description, error, invalid)}</div>`;
 }
 

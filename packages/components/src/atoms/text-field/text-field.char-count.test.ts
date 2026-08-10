@@ -49,7 +49,7 @@ describe('<ds-text-field> character counter', () => {
     expect(header).not.toBeNull();
     expect(header!.querySelector('.char-count')).not.toBeNull();
     expect(el.shadowRoot!.querySelector('label .char-count')).toBeNull();
-    expect(el.shadowRoot!.querySelector('.field-footer')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.field-footer .char-count')).toBeNull();
   });
 
   it('still counts an unlabelled field', async () => {
