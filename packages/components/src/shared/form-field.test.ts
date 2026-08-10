@@ -50,8 +50,15 @@ describe('field message space', () => {
 
   it('reserves exactly one line, measured from the tokens', () => {
     expect(formFieldStyles.cssText).toContain(
-      'min-block-size: calc(var(--ds-font-size-body-sm) * var(--ds-line-height-normal))',
+      'min-block-size: calc(var(--ds-font-size-body-sm) * var(--ds-line-height-none))',
     );
+  });
+
+  // Both must track the same token, or the taller one sets the row height.
+  it('sizes the message text and its icon off the same step', () => {
+    expect(formFieldStyles.cssText).toMatch(/\.error\s*{[^}]*line-height: var\(--ds-line-height-none\)/s);
+    expect(formFieldStyles.cssText).toMatch(/\.error-icon\s*{[^}]*width: 1em/s);
+    expect(formFieldStyles.cssText).not.toMatch(/\.error-icon\s*{[^}]*width: 1rem/s);
   });
 
   it('lets a dense layout drop the reserved row', () => {

@@ -115,4 +115,33 @@ describe('<ds-checkbox>', () => {
     label.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
     expect(el.checked).toBe(false);
   });
+
+  describe('message row', () => {
+    it('renders nothing extra by default', async () => {
+      const el = await mount<DsCheckbox>('<ds-checkbox>Accept</ds-checkbox>');
+
+      expect(el.shadowRoot!.querySelector('.description, .error, .subtext-spacer')).toBeNull();
+    });
+
+    it('holds a row open when the consumer opts in', async () => {
+      const el = await mount<DsCheckbox>('<ds-checkbox message-space>Accept</ds-checkbox>');
+
+      expect(el.shadowRoot!.querySelector('.subtext-spacer')).not.toBeNull();
+    });
+
+    it('swaps the reserved row for the error in place', async () => {
+      const el = await mount<DsCheckbox>('<ds-checkbox message-space error="Required">Accept</ds-checkbox>');
+      el.invalid = true;
+      await el.updateComplete;
+
+      expect(el.shadowRoot!.querySelector('.subtext-spacer')).toBeNull();
+      expect(el.shadowRoot!.querySelector('.error')?.textContent).toContain('Required');
+    });
+
+    it('shows a description without opting in', async () => {
+      const el = await mount<DsCheckbox>('<ds-checkbox description="Optional extra">Accept</ds-checkbox>');
+
+      expect(el.shadowRoot!.querySelector('.description')?.textContent).toContain('Optional extra');
+    });
+  });
 });

@@ -25,7 +25,8 @@ export const fieldGroupStyles = css`
     gap: var(--ds-space-2);
   }
   .description,
-  .error {
+  .error,
+  .subtext-spacer {
     margin-top: var(--ds-space-1);
   }
 `;

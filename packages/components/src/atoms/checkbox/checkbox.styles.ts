@@ -1,6 +1,12 @@
 import { css } from 'lit';
 
 export const checkboxStyles = css`
+  .stack {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--ds-space-1);
+    min-inline-size: 0;
+  }
   .control {
     border-radius: var(--ds-radius-xs);
   }

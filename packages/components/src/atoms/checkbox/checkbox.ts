@@ -1,6 +1,7 @@
-import { html, svg, type PropertyValues, type TemplateResult } from 'lit';
+import { html, nothing, svg, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { checkboxStyles } from './checkbox.styles.js';
 
@@ -11,12 +12,15 @@ import { checkboxStyles } from './checkbox.styles.js';
  * @event ds-change - Fires when the checked state changes.
  */
 export class DsCheckbox extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, toggleControlStyles, checkboxStyles];
+  static override styles = [...DsElement.styles, toggleControlStyles, formFieldStyles, checkboxStyles];
 
   @property({ type: Boolean, reflect: true }) checked = false;
   @property({ type: Boolean, reflect: true }) indeterminate = false;
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property() checkboxValue = '';
+  @property() description = '';
+  @property() error = '';
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('checked') || changed.has('indeterminate') || changed.has('checkboxValue')) {
@@ -64,29 +68,30 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   };
 
   override render(): TemplateResult {
-    return html`<label @click=${this.#blockClickWhenDisabled} @keydown=${this.#onKey}>
-      <input
-        class="visually-hidden"
-        type="checkbox"
-        name=${this.name || ''}
-        .checked=${this.checked}
-        .indeterminate=${this.indeterminate}
-        ?required=${this.required}
-        aria-disabled=${this.disabled ? 'true' : 'false'}
-        aria-invalid=${this.invalid ? 'true' : 'false'}
-        @change=${this.#onInput}
-      />
-      <span class="control" part="box" aria-hidden="true">
-        <!-- Heroicons 2.2.0 — 16/solid: minus (indeterminate), check (checked) -->
-        <svg class="check" viewBox="0 0 16 16" fill="currentColor">
-          ${
-            this.indeterminate
-              ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`
-              : svg`<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`
-          }
-        </svg>
-      </span>
-      <span part="label"><slot></slot></span>
-    </label>`;
+    const message = this.messageSpace || this.description || (this.invalid && this.error);
+    // Heroicons 2.2.0 — 16/solid: minus (indeterminate), check (checked)
+    const mark = this.indeterminate
+      ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`
+      : svg`<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`;
+    return html`<div class="stack">
+      <label @click=${this.#blockClickWhenDisabled} @keydown=${this.#onKey}>
+        <input
+          class="visually-hidden"
+          type="checkbox"
+          name=${this.name || ''}
+          .checked=${this.checked}
+          .indeterminate=${this.indeterminate}
+          ?required=${this.required}
+          aria-disabled=${this.disabled ? 'true' : 'false'}
+          aria-invalid=${this.invalid ? 'true' : 'false'}
+          @change=${this.#onInput}
+        />
+        <span class="control" part="box" aria-hidden="true">
+          <svg class="check" viewBox="0 0 16 16" fill="currentColor">${mark}</svg>
+        </span>
+        <span part="label"><slot></slot></span>
+      </label>
+      ${message ? renderSubtext(this.description, this.error, this.invalid) : nothing}
+    </div>`;
   }
 }

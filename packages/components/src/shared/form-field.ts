@@ -25,7 +25,7 @@ export const formFieldStyles: CSSResult = css`
     margin: 0;
     font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
-    line-height: var(--ds-line-height-normal);
+    line-height: var(--ds-line-height-none);
   }
   .error {
     margin: 0;
@@ -34,18 +34,19 @@ export const formFieldStyles: CSSResult = css`
     gap: var(--ds-space-1);
     font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
-    line-height: var(--ds-line-height-normal);
+    line-height: var(--ds-line-height-none);
   }
+  /* 1em, not 1rem: a 16px icon would set the row height on its own. */
   .error-icon {
-    width: 1rem;
-    height: 1rem;
+    width: 1em;
+    height: 1em;
     flex-shrink: 0;
     color: var(--ds-color-danger);
   }
   .description,
   .error,
   .subtext-spacer {
-    min-block-size: calc(var(--ds-font-size-body-sm) * var(--ds-line-height-normal));
+    min-block-size: calc(var(--ds-font-size-body-sm) * var(--ds-line-height-none));
   }
   .subtext-spacer {
     margin: 0;
