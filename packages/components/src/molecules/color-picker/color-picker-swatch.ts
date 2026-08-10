@@ -80,11 +80,11 @@ export class DsColorPickerSwatch extends DsElement {
       return;
     }
 
-    const styles = getComputedStyle(this);
+    const styles = typeof getComputedStyle === 'function' ? getComputedStyle(this) : null;
     const color = getContrastingThemeColor(
       this.value,
-      styles.getPropertyValue('--ds-color-bg'),
-      styles.getPropertyValue('--ds-color-fg'),
+      styles?.getPropertyValue('--ds-color-bg') ?? '',
+      styles?.getPropertyValue('--ds-color-fg') ?? '',
     );
     this.style.setProperty('--color-picker-check-color', color);
   }

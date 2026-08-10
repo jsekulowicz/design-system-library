@@ -65,4 +65,19 @@ describe('<ds-color-picker-swatch>', () => {
     expect(el.getAttribute('aria-disabled')).toBe('true');
     expect(events).toHaveLength(0);
   });
+
+  it('sets the check colour when an update lands after the view is gone', async () => {
+    const el = await mountSwatch({ selected: true, value: '#FDE68A' });
+    const real = globalThis.getComputedStyle;
+
+    Reflect.deleteProperty(globalThis, 'getComputedStyle');
+    try {
+      el.value = '#0EA5E9';
+      await el.updateComplete;
+    } finally {
+      globalThis.getComputedStyle = real;
+    }
+
+    expect(el.style.getPropertyValue('--color-picker-check-color')).not.toBe('');
+  });
 });

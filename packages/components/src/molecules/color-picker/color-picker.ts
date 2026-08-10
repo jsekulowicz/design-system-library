@@ -252,11 +252,11 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     if (!this.compact || !current) {
       return '';
     }
-    const styles = getComputedStyle(this);
+    const styles = typeof getComputedStyle === 'function' ? getComputedStyle(this) : null;
     const color = getContrastingThemeColor(
       current,
-      styles.getPropertyValue('--ds-color-bg'),
-      styles.getPropertyValue('--ds-color-fg'),
+      styles?.getPropertyValue('--ds-color-bg') ?? '',
+      styles?.getPropertyValue('--ds-color-fg') ?? '',
     );
     return `--color-picker-compact-bg:${current};--color-picker-compact-fg:${color};`;
   }

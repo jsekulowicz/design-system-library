@@ -229,4 +229,19 @@ describe('<ds-color-picker>', () => {
     await openPicker(el);
     expect(getPanel(el)).not.toBeNull();
   });
+
+  it('renders the compact trigger when a render lands after the view is gone', async () => {
+    const el = await mountColorPicker({ compact: true, value: '#0ea5e9' });
+    const real = globalThis.getComputedStyle;
+
+    Reflect.deleteProperty(globalThis, 'getComputedStyle');
+    try {
+      el.value = '#ff0000';
+      await el.updateComplete;
+    } finally {
+      globalThis.getComputedStyle = real;
+    }
+
+    expect(getTrigger(el).getAttribute('style')).toContain('--color-picker-compact-bg:#FF0000');
+  });
 });
