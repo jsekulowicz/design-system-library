@@ -106,6 +106,35 @@ describe('<ds-searchable-select>', () => {
     });
   });
 
+  describe('validity', () => {
+    it('leaves a required empty select alone until it is touched', async () => {
+      const el = await mountSearchableSelect({ required: true });
+      await el.updateComplete;
+
+      expect(el.invalid).toBe(false);
+    });
+
+    it('reveals the error when the form asks it to', async () => {
+      const el = await mountSearchableSelect({ required: true });
+      el.showValidity();
+      await el.updateComplete;
+
+      expect(el.invalid).toBe(true);
+    });
+
+    it('clears the error once an option is chosen', async () => {
+      const el = await mountSearchableSelect({ required: true });
+      el.showValidity();
+      await el.updateComplete;
+
+      await openDropdown(el);
+      getOption(el, 'Vue').click();
+      await el.updateComplete;
+
+      expect(el.invalid).toBe(false);
+    });
+  });
+
   describe('single selection', () => {
     it('selects option on click, closes dropdown, emits ds-change', async () => {
       const el = await mountSearchableSelect();

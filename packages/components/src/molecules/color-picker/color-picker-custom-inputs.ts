@@ -9,7 +9,7 @@ interface ColorPickerCustomInputsDelegate {
   commitAndClose: () => void;
   emitChange: (value: string) => void;
   emitInput: (value: string) => void;
-  setValidation: (message: string) => void;
+  setValidation: (message: string, commit: boolean) => void;
   setValue: (value: string) => void;
 }
 
@@ -106,16 +106,16 @@ export class ColorPickerCustomInputs {
     }
     const normalized = normalizeHexColor(this.textValue);
     if (!normalized) {
-      this.#setValidation(COLOR_FORMAT_ERROR);
+      this.#setValidation(COLOR_FORMAT_ERROR, true);
       return null;
     }
     this.delegate.setValue(normalized);
     return normalized;
   }
 
-  #setValidation(message: string): void {
+  #setValidation(message: string, commit = false): void {
     this.validationError = message;
-    this.delegate.setValidation(message);
+    this.delegate.setValidation(message, commit);
     this.host.requestUpdate();
   }
 }

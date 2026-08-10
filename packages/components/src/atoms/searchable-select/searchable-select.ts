@@ -179,6 +179,17 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     if (!this.label) {
       console.warn('<ds-searchable-select>: the `label` property is required for accessibility.');
     }
+    this.syncValidity();
+  }
+
+  override syncValidity(): void {
+    const empty = this.multiple ? this.values.length === 0 : !this.value;
+    const missing = this.required && empty;
+    this.setValidity(missing ? { valueMissing: true } : {}, missing ? 'Please select an option.' : '');
+    const next = this.resolveInvalid(this.invalid, missing);
+    if (next !== null) {
+      this.invalid = next;
+    }
   }
 
   override disconnectedCallback(): void {
@@ -209,12 +220,14 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       this.values = next;
       this.value = next.join(',');
       this._search = '';
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-search', { detail: { query: '' } });
       this.emit('ds-change', { detail: { values: next } });
     } else {
       this.value = option.value;
-      this.invalid = this.required && !option.value;
-      this.setValidity(this.invalid ? { valueMissing: true } : {}, this.invalid ? 'Please select an option.' : '');
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { value: option.value } });
       this.#dropdown.close();
     }
@@ -224,10 +237,14 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     if (this.multiple) {
       this.values = [];
       this.value = '';
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { values: [] } });
     } else {
       this.value = '';
       this._search = '';
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-search', { detail: { query: '' } });
       this.emit('ds-change', { detail: { value: '' } });
     }

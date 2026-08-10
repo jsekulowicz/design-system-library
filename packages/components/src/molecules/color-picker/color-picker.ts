@@ -59,8 +59,10 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     commitAndClose: () => this.#commitAndClose(),
     emitChange: (value: string) => this.emit('ds-change', { detail: { value } }),
     emitInput: (value: string) => this.emit('ds-input', { detail: { value } }),
-    setValidation: (message: string) => {
-      this.markInteracted();
+    setValidation: (message: string, commit: boolean) => {
+      if (commit) {
+        this.markInteracted();
+      }
       this.syncValidity(message);
     },
     setValue: (value: string) => {

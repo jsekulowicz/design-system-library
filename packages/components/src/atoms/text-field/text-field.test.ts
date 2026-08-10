@@ -129,6 +129,48 @@ describe('<ds-text-field>', () => {
     expect(el.invalid).toBe(true);
   });
 
+  it('stays clean while a half-typed value is still invalid', async () => {
+    const el = await mount<DsTextField>('<ds-text-field label="Email" type="email" required></ds-text-field>');
+    const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+    input.value = 'j';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await el.updateComplete;
+
+    expect(input.validity.typeMismatch).toBe(true);
+    expect(el.invalid).toBe(false);
+  });
+
+  it('returns to a clean state on refocus and re-decides on blur', async () => {
+    const el = await mount<DsTextField>('<ds-text-field label="Email" required></ds-text-field>');
+    const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+    input.dispatchEvent(new Event('blur'));
+    await el.updateComplete;
+    expect(el.invalid).toBe(true);
+
+    input.dispatchEvent(new Event('focus'));
+    await el.updateComplete;
+    expect(el.invalid).toBe(false);
+
+    input.dispatchEvent(new Event('blur'));
+    await el.updateComplete;
+    expect(el.invalid).toBe(true);
+  });
+
+  it('keeps a consumer-set invalid through a refocus', async () => {
+    const el = await mount<DsTextField>('<ds-text-field label="Name"></ds-text-field>');
+    const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;
+
+    el.invalid = true;
+    await el.updateComplete;
+
+    input.dispatchEvent(new Event('focus'));
+    await el.updateComplete;
+
+    expect(el.invalid).toBe(true);
+  });
+
   it('keeps a consumer-set invalid through later input', async () => {
     const el = await mount<DsTextField>('<ds-text-field label="Name"></ds-text-field>');
     const input = el.shadowRoot!.querySelector('input') as HTMLInputElement;

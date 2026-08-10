@@ -133,6 +133,12 @@ describe('<ds-color-picker>', () => {
     input.dispatchEvent(new CustomEvent('ds-input', { detail: { value: 'red' } }));
     await el.updateComplete;
 
+    expect(el.invalid).toBe(false);
+    expect(el.value).toBe('');
+
+    input.dispatchEvent(new CustomEvent('ds-change', { detail: { value: 'red' } }));
+    await el.updateComplete;
+
     expect(el.invalid).toBe(true);
     expect(el.value).toBe('');
 

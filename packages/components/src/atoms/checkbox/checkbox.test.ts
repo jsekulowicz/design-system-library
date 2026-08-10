@@ -30,9 +30,19 @@ describe('<ds-checkbox>', () => {
     expect(el.value).toBe('on');
   });
 
+  it('leaves a required unchecked box alone until it is touched', async () => {
+    const el = await mount<DsCheckbox>('<ds-checkbox required>Accept</ds-checkbox>');
+    el.checkboxValue = 'accept';
+    await el.updateComplete;
+
+    expect(el.invalid).toBe(false);
+    expect(el.shadowRoot!.querySelector('input')!.getAttribute('aria-invalid')).toBe('false');
+  });
+
   it('marks required unchecked state as invalid and clears invalid when checked', async () => {
     const el = await mount<DsCheckbox>('<ds-checkbox required>Accept</ds-checkbox>');
     el.checkboxValue = 'accept';
+    el.showValidity();
     await el.updateComplete;
     expect(el.invalid).toBe(true);
 
@@ -43,6 +53,17 @@ describe('<ds-checkbox>', () => {
     await el.updateComplete;
     expect(el.invalid).toBe(false);
     expect(input.getAttribute('aria-invalid')).toBe('false');
+  });
+
+  it('keeps a consumer-assigned invalid across a toggle', async () => {
+    const el = await mount<DsCheckbox>('<ds-checkbox>Accept</ds-checkbox>');
+    el.invalid = true;
+    await el.updateComplete;
+
+    el.checked = true;
+    await el.updateComplete;
+
+    expect(el.invalid).toBe(true);
   });
 
   it('handles change input events and emits ds-change', async () => {

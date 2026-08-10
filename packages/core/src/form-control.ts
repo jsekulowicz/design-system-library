@@ -20,6 +20,7 @@ export interface FormControlHost {
   setValidity(flags: ValidityStateFlags, message?: string, anchor?: HTMLElement): void;
   markInteracted(): void;
   resolveInvalid(current: boolean, fromValidity: boolean): boolean | null;
+  clearAutoInvalid(current: boolean): boolean | null;
   syncValidity(): void;
   showValidity(): void;
   setFormValue(value: FormDataEntryValue | null, state?: FormDataEntryValue): void;
@@ -152,6 +153,15 @@ export function FormControlMixin<TBase extends LitCtor>(
       }
       this.#autoInvalid = fromValidity;
       return fromValidity;
+    }
+
+    clearAutoInvalid(current: boolean): boolean | null {
+      if (!this.#interacted || current !== this.#autoInvalid) {
+        return null;
+      }
+      this.#interacted = false;
+      this.#autoInvalid = false;
+      return false;
     }
 
     /** Refreshes `invalid` from the control's own validity; controls

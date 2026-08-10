@@ -21,15 +21,17 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('checked') || changed.has('indeterminate') || changed.has('checkboxValue')) {
       this.value = this.checked ? this.checkboxValue || 'on' : null;
-      this.#syncValidity();
+      this.syncValidity();
     }
   }
 
-  #syncValidity(): void {
-    const flags: ValidityStateFlags = this.required && !this.checked ? { valueMissing: true } : {};
-    const message = this.required && !this.checked ? 'Please check this box.' : '';
-    this.setValidity(flags, message);
-    this.invalid = !!flags.valueMissing;
+  override syncValidity(): void {
+    const missing = this.required && !this.checked;
+    this.setValidity(missing ? { valueMissing: true } : {}, missing ? 'Please check this box.' : '');
+    const next = this.resolveInvalid(this.invalid, missing);
+    if (next !== null) {
+      this.invalid = next;
+    }
   }
 
   #onInput = (event: Event): void => {
@@ -37,6 +39,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
       return;
     }
     const target = event.target as HTMLInputElement;
+    this.markInteracted();
     this.checked = target.checked;
     this.indeterminate = false;
     this.emit('ds-change', { detail: { checked: this.checked } });
@@ -48,6 +51,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
       if (this.disabled) {
         return;
       }
+      this.markInteracted();
       this.checked = !this.checked;
       this.emit('ds-change', { detail: { checked: this.checked } });
     }

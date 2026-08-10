@@ -49,9 +49,15 @@ export class DsTextArea extends FormControlMixin(DsElement) {
     }
     const target = event.target as HTMLTextAreaElement;
     this.value = target.value;
-    this.markInteracted();
     this.syncValidity();
     this.emit('ds-input', { detail: { value: target.value } });
+  };
+
+  #onFocus = (): void => {
+    const next = this.clearAutoInvalid(this.invalid);
+    if (next !== null) {
+      this.invalid = next;
+    }
   };
 
   #onBlur = (): void => {
@@ -115,6 +121,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
         aria-invalid=${this.invalid ? 'true' : 'false'}
         @input=${this.#onInput}
         @change=${this.#onChange}
+        @focus=${this.#onFocus}
         @blur=${this.#onBlur}
       ></textarea>
       ${renderFieldFooter(this.description, this.error, this.invalid)}
