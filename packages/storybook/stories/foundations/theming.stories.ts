@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import { GROUP_LABEL, joinStyles } from '../shared/styles';
 import '@jsekulowicz/ds-components/button/define';
 import '@jsekulowicz/ds-components/card/define';
 import '@jsekulowicz/ds-components/text-field/define';
@@ -23,6 +24,8 @@ const meta: Meta = {
     displayFont: "'Source Serif 4', Georgia, ui-serif, serif",
   },
 };
+
+const PANEL_LABEL = joinStyles('margin:0 0 var(--ds-space-3)', GROUP_LABEL.replace('margin:0;', ''));
 
 export default meta;
 type Story = StoryObj;
@@ -65,19 +68,11 @@ export const BrandPresets: Story = {
       </p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--ds-space-5)">
         <div>
-          <p
-            style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
-          >
-            Cobalt (default)
-          </p>
+          <p style=${PANEL_LABEL}>Cobalt (default)</p>
           ${componentShowcase('')}
         </div>
         <div>
-          <p
-            style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
-          >
-            Vermilion
-          </p>
+          <p style=${PANEL_LABEL}>Vermilion</p>
           ${componentShowcase(`
         --ds-color-accent:#E2341D;
         --ds-color-accent-hover:#C12613;
@@ -85,11 +80,7 @@ export const BrandPresets: Story = {
         --ds-color-accent-subtle:rgba(226,52,29,0.1)`)}
         </div>
         <div>
-          <p
-            style="margin:0 0 var(--ds-space-3);font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
-          >
-            Rounded Teal
-          </p>
+          <p style=${PANEL_LABEL}>Rounded Teal</p>
           ${componentShowcase(`
         --ds-color-accent:#1F7A7A;
         --ds-color-accent-hover:#166666;

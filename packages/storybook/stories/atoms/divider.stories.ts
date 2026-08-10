@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import { joinStyles } from '../shared/styles';
 import '@jsekulowicz/ds-components/divider/define';
 
 const meta: Meta = {
@@ -13,6 +14,13 @@ const meta: Meta = {
   },
   args: { orientation: 'horizontal' },
 };
+
+const INLINE_LABEL = joinStyles(
+  'margin:0',
+  'display:inline-flex;align-items:center;gap:var(--ds-space-2)',
+  'color:var(--ds-color-fg-muted)',
+  'font-size:var(--ds-font-size-body-md)',
+);
 
 export default meta;
 type Story = StoryObj;
@@ -45,9 +53,7 @@ export const SeparatingFormSections: Story = {
 
 export const InlineWithText: Story = {
   render: () => html`
-    <p
-      style="margin:0;display:inline-flex;align-items:center;gap:var(--ds-space-2);color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)"
-    >
+    <p style=${INLINE_LABEL}>
       <span>Edited just now</span>
       <ds-divider orientation="vertical"></ds-divider>
       <span>3 contributors</span>

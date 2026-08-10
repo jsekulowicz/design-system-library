@@ -18,6 +18,7 @@
     "lint": "pnpm -r --parallel lint",
     "lint:dead-code": "knip --no-config-hints",
     "lint:packaging": "node scripts/lint-packaging.mjs",
+    "lint:template-styles": "node scripts/lint-template-styles.mjs",
     "lint:lit": "eslint \"packages/{components,core}/src/**/*.ts\" --max-warnings=0",
     "lint:lit:analyzer": "lit-analyzer \"packages/components/src/**/*.ts\" \"packages/core/src/**/*.ts\" --rules.no-invalid-css off --quiet",
     "test": "pnpm -r --parallel test",

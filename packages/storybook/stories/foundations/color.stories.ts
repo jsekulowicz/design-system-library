@@ -1,10 +1,25 @@
 import { html, type TemplateResult } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import { GROUP_LABEL, joinStyles } from '../shared/styles';
 
 const meta: Meta = {
   title: 'Foundations/Color',
   parameters: { docs: { story: { inline: true } } },
 };
+
+const SWATCH_META = joinStyles(
+  'margin:0',
+  'font-size:var(--ds-font-size-body-sm)',
+  'color:var(--ds-color-fg-subtle)',
+  'margin-top:var(--ds-space-1)',
+);
+
+const LEGEND_BAR = joinStyles(
+  'padding:var(--ds-space-2) var(--ds-space-4)',
+  'background:var(--ds-color-bg-subtle)',
+  'display:flex;align-items:center;gap:var(--ds-space-4);flex-wrap:wrap',
+  'border-top:1px solid var(--ds-color-border)',
+);
 
 export default meta;
 type Story = StoryObj;
@@ -136,11 +151,7 @@ function swatchCard(s: Swatch): TemplateResult {
       <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
         >${s.token}</code
       >
-      <p
-        style="margin:0;font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-subtle);margin-top:var(--ds-space-1)"
-      >
-        ${s.desc}
-      </p>
+      <p style=${SWATCH_META}>${s.desc}</p>
     </figcaption>
   </figure>`;
 }
@@ -151,11 +162,7 @@ export const SemanticPalette: Story = {
       ${GROUPS.map(
         (g) =>
           html` <div style="display:grid;gap:var(--ds-space-3)">
-            <h3
-              style="margin:0;font-size:var(--ds-font-size-body-sm);font-weight:var(--ds-font-weight-semibold);text-transform:uppercase;letter-spacing:var(--ds-letter-spacing-wide);color:var(--ds-color-fg-muted)"
-            >
-              ${g.name}
-            </h3>
+            <h3 style=${GROUP_LABEL}>${g.name}</h3>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:var(--ds-space-3)">
               ${g.swatches.map(swatchCard)}
             </div>
@@ -206,9 +213,7 @@ export const UsagePairings: Story = {
             <div style="padding:var(--ds-space-5);background:var(${p.bg});color:var(${p.fg})">
               <p style="margin:0;font-size:var(--ds-font-size-body-lg)">${p.sample}</p>
             </div>
-            <div
-              style="padding:var(--ds-space-2) var(--ds-space-4);background:var(--ds-color-bg-subtle);display:flex;align-items:center;gap:var(--ds-space-4);flex-wrap:wrap;border-top:1px solid var(--ds-color-border)"
-            >
+            <div style=${LEGEND_BAR}>
               <span style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted);min-width:14rem"
                 >${p.label}</span
               >

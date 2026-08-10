@@ -1,11 +1,55 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { space } from '@jsekulowicz/ds-tokens';
+import { joinStyles } from '../shared/styles';
 
 const meta: Meta = {
   title: 'Foundations/Spacing',
   parameters: { docs: { story: { inline: true } } },
 };
+
+const PAGE = joinStyles(
+  'display:grid;gap:var(--ds-space-3)',
+  'max-width:780px',
+  'font-family:var(--ds-font-body)',
+  'color:var(--ds-color-fg)',
+);
+
+const SCALE_ROW = joinStyles(
+  'display:grid;grid-template-columns:6rem 5rem 5rem 1fr',
+  'gap:var(--ds-space-2) var(--ds-space-3)',
+  'align-items:center',
+);
+
+function bar(cssVar: string): string {
+  return joinStyles(
+    'display:inline-block',
+    'background:var(--ds-color-accent)',
+    'height:12px',
+    `width:var(${cssVar})`,
+    'min-width:1px',
+    'border-radius:2px',
+  );
+}
+
+function paddingBox(n: number | string): string {
+  return joinStyles(
+    'border:1px solid var(--ds-color-border)',
+    'border-radius:var(--ds-radius-sm)',
+    'background:var(--ds-color-bg-subtle)',
+    `padding:var(--ds-space-${n})`,
+  );
+}
+
+function paddingChip(): string {
+  return joinStyles(
+    'background:var(--ds-color-accent-subtle)',
+    'border:1px dashed var(--ds-color-accent)',
+    'padding:var(--ds-space-1) var(--ds-space-2)',
+    'font-family:var(--ds-font-mono)',
+    'font-size:var(--ds-font-size-body-md)',
+  );
+}
 
 export default meta;
 type Story = StoryObj;
@@ -28,9 +72,7 @@ const STEPS: readonly Step[] = Object.entries(space).map(([name, rem]) => ({
 
 export const Scale: Story = {
   render: () => html`
-    <section
-      style="display:grid;gap:var(--ds-space-3);max-width:780px;font-family:var(--ds-font-body);color:var(--ds-color-fg)"
-    >
+    <section style=${PAGE}>
       <header style="display:grid;gap:var(--ds-space-1)">
         <h2 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-lg)">
           Spacing scale
@@ -40,10 +82,7 @@ export const Scale: Story = {
           <code>--ds-space-3</code> is <strong>3 × 4px = 12px</strong>.
         </p>
       </header>
-      <div
-        role="table"
-        style="display:grid;grid-template-columns:6rem 5rem 5rem 1fr;gap:var(--ds-space-2) var(--ds-space-3);align-items:center"
-      >
+      <div role="table" style=${SCALE_ROW}>
         <strong role="columnheader">Token</strong>
         <strong role="columnheader">rem</strong>
         <strong role="columnheader">px</strong>
@@ -57,11 +96,7 @@ export const Scale: Story = {
             <span role="cell" style="font-variant-numeric:tabular-nums;color:var(--ds-color-fg-muted)">
               ${s.px}px
             </span>
-            <span
-              role="cell"
-              aria-hidden="true"
-              style="display:inline-block;background:var(--ds-color-accent);height:12px;width:var(${s.cssVar});min-width:1px;border-radius:2px"
-            ></span>
+            <span role="cell" aria-hidden="true" style=${bar(s.cssVar)}></span>
           `,
         )}
       </div>
@@ -80,14 +115,8 @@ export const PaddingExamples: Story = {
         (n) => html`
           <div style="display:flex;align-items:center;gap:var(--ds-space-4)">
             <code style="width:6rem;font-family:var(--ds-font-mono)">space-${n}</code>
-            <div
-              style="border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-sm);background:var(--ds-color-bg-subtle);padding:var(--ds-space-${n})"
-            >
-              <div
-                style="background:var(--ds-color-accent-subtle);border:1px dashed var(--ds-color-accent);padding:var(--ds-space-1) var(--ds-space-2);font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)"
-              >
-                Content
-              </div>
+            <div style=${paddingBox(n)}>
+              <div style=${paddingChip()}>Content</div>
             </div>
           </div>
         `,

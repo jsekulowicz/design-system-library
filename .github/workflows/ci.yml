@@ -43,6 +43,8 @@ jobs:
 
       - name: Packaging check
         run: pnpm lint:packaging
+      - name: Lint template styles
+        run: pnpm lint:template-styles
 
       - name: Lit static validation
         run: pnpm lint:lit

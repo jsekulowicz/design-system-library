@@ -1,6 +1,19 @@
 import { html, type TemplateResult } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { fontSize, fontWeight, lineHeight, letterSpacing } from '@jsekulowicz/ds-tokens';
+import {
+  autoGrid,
+  bodyRow,
+  card,
+  headerRow,
+  joinStyles,
+  MONO_CELL,
+  MONO_MUTED_CELL,
+  MUTED_CELL,
+  NUM_CELL,
+  SECTION,
+  TABLE,
+} from '../shared/styles';
 
 const meta: Meta = {
   title: 'Foundations/Typography',
@@ -22,41 +35,6 @@ function sectionHeader(title: string, description: TemplateResult): TemplateResu
     <h2 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-lg)">${title}</h2>
     <p style="margin:0;color:var(--ds-color-fg-muted);max-width:68ch">${description}</p>
   </header>`;
-}
-
-function stripeRow(i: number): string {
-  return i % 2 !== 0 ? 'background:color-mix(in oklab,var(--ds-color-fg) 3%,transparent)' : '';
-}
-
-// Hoisted because Prettier cannot break inside an attribute value.
-const SECTION = 'display:grid;gap:var(--ds-space-5);font-family:var(--ds-font-body);color:var(--ds-color-fg)';
-const TABLE = 'display:grid;gap:0';
-const MONO_CELL = 'font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)';
-const MUTED_CELL = 'font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)';
-const NUM_CELL = `font-variant-numeric:tabular-nums;${MUTED_CELL}`;
-
-function joinStyles(...parts: string[]): string {
-  return parts.filter(Boolean).join(';');
-}
-
-function headerRow(columns: string): string {
-  return joinStyles(
-    `display:grid;grid-template-columns:${columns}`,
-    'gap:var(--ds-space-3)',
-    'padding:var(--ds-space-2) var(--ds-space-2)',
-    'border-bottom:1px solid var(--ds-color-border)',
-  );
-}
-
-function bodyRow(columns: string, i: number): string {
-  return joinStyles(
-    `display:grid;grid-template-columns:${columns}`,
-    'align-items:center',
-    'gap:var(--ds-space-3)',
-    'padding:var(--ds-space-3) var(--ds-space-2)',
-    'border-radius:var(--ds-radius-xs)',
-    stripeRow(i),
-  );
 }
 
 const SIZE_STEPS = Object.entries(fontSize) as [string, string][];
@@ -123,15 +101,6 @@ const FAMILIES = [
   },
 ];
 
-const CARD_GRID = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--ds-space-4)';
-const CARD = joinStyles(
-  'margin:0',
-  'padding:var(--ds-space-5)',
-  'border:1px solid var(--ds-color-border)',
-  'border-radius:var(--ds-radius-md)',
-  'display:grid;gap:var(--ds-space-3)',
-);
-
 function familySample(token: string): string {
   return joinStyles(
     'margin:0',
@@ -148,13 +117,13 @@ export const FontFamilies: Story = {
         'Font families',
         html`Three typefaces, three roles. Never swap them — each pairing of semantics and personality is intentional.`,
       )}
-      <div style=${CARD_GRID}>
+      <div style=${autoGrid('240px')}>
         ${FAMILIES.map(
           (f) => html`
-            <figure style=${CARD}>
+            <figure style=${card('var(--ds-space-5)')}>
               <figcaption style="display:grid;gap:4px">
                 <strong>${f.label} — ${f.name}</strong>
-                <code style=${joinStyles(MONO_CELL, 'color:var(--ds-color-fg-muted)')}>${f.token}</code>
+                <code style=${MONO_MUTED_CELL}>${f.token}</code>
                 <p style=${joinStyles('margin:0', MUTED_CELL)}>${f.note}</p>
               </figcaption>
               <p style=${familySample(f.token)}>${f.sample}</p>
@@ -195,13 +164,6 @@ const LINE_HEIGHT_STEPS = Object.entries(lineHeight) as [string, string][];
 const PROSE =
   'Spacing between lines determines whether text feels crowded or open. Tighter leading suits large display type; more relaxed leading aids comprehension in body paragraphs.';
 
-const STEP_GRID = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--ds-space-4)';
-const STEP_CARD = joinStyles(
-  'padding:var(--ds-space-4)',
-  'border:1px solid var(--ds-color-border)',
-  'border-radius:var(--ds-radius-md)',
-  'display:grid;gap:var(--ds-space-3)',
-);
 const STEP_TOKEN = 'font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)';
 const STEP_VALUE = joinStyles('display:block', MUTED_CELL, 'margin-top:2px');
 
@@ -213,10 +175,10 @@ export const LineHeights: Story = {
         html`Five steps, from <code>none</code> for single-line controls to <code>relaxed</code> for long-form prose.
           Pair the tight end with large sizes and the loose end with body copy.`,
       )}
-      <div style=${STEP_GRID}>
+      <div style=${autoGrid('200px')}>
         ${LINE_HEIGHT_STEPS.map(
           ([name, val]) => html`
-            <div style=${STEP_CARD}>
+            <div style=${card('var(--ds-space-4)')}>
               <div>
                 <code style=${STEP_TOKEN}>line-height-${name}</code>
                 <span style=${STEP_VALUE}>${val}</span>

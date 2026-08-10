@@ -1,5 +1,6 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import { joinStyles } from '../shared/styles';
 import '@jsekulowicz/ds-components/menu/define';
 
 const meta: Meta = {
@@ -10,6 +11,14 @@ const meta: Meta = {
   },
   args: { label: 'Actions' },
 };
+
+const AVATAR = joinStyles(
+  'display:inline-flex;width:32px;height:32px',
+  'border-radius:50%',
+  'background:var(--ds-color-accent-subtle)',
+  'align-items:center;justify-content:center',
+  'color:var(--ds-color-accent);font-weight:600',
+);
 
 export default meta;
 type Story = StoryObj;
@@ -59,20 +68,12 @@ export const RichItems: Story = {
   render: () => html`
     <ds-menu label="People" @ds-select=${logSelect}>
       <ds-menu-item value="jane">
-        <span
-          slot="leading"
-          style="display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--ds-color-accent-subtle);align-items:center;justify-content:center;color:var(--ds-color-accent);font-weight:600"
-          >JS</span
-        >
+        <span slot="leading" style=${AVATAR}>JS</span>
         Jane Smith
         <span slot="description">jane@example.com</span>
       </ds-menu-item>
       <ds-menu-item value="alex">
-        <span
-          slot="leading"
-          style="display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--ds-color-accent-subtle);align-items:center;justify-content:center;color:var(--ds-color-accent);font-weight:600"
-          >AC</span
-        >
+        <span slot="leading" style=${AVATAR}>AC</span>
         Alex Chen
         <span slot="description">alex@example.com</span>
       </ds-menu-item>
