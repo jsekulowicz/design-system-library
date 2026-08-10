@@ -11,3 +11,5 @@ Tighten the reserved field-message row, and give `ds-checkbox` one.
 Reserving the row is opt-in on a checkbox, via the new `message-space` attribute. A checkbox inside a `ds-checkbox-group` is slotted, so reserving by default would add a blank row per option — underneath a group that already renders its own message.
 
 **`ds-checkbox-group` / `ds-radio-group` / `ds-fieldset`.** The reserved spacer was missing the `margin-top` that `.description` and `.error` get, so those groups still shifted by 4px when a message appeared.
+
+**`ds-color-picker`.** The compact trigger and the swatch check colour read `getComputedStyle` to pick a contrasting foreground. Lit flushes asynchronously, so those runs can land after the view is gone — a torn-down test environment, or SSR — where the global does not exist. Both feature-detect it now; the rendered result is unchanged wherever a view exists.
