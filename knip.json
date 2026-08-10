@@ -23,11 +23,13 @@
     },
     "packages/react": {
       "entry": ["src/index.ts", "scripts/generate-wrappers.ts"],
-      "project": ["src/**", "scripts/**"]
+      "project": ["src/**", "scripts/**"],
+      "ignoreDependencies": ["react-dom", "@types/react-dom"]
     },
     "packages/storybook": {
       "entry": [".storybook/**/*.{ts,tsx}", "stories/**/*.stories.ts"],
-      "project": ["stories/**", ".storybook/**"]
+      "project": ["stories/**", ".storybook/**"],
+      "ignoreDependencies": ["react-dom"]
     },
     "tests": {
       "entry": ["playwright.config.ts", "playwright.visual.config.ts", "{e2e,a11y,visual}/**/*.spec.ts"],

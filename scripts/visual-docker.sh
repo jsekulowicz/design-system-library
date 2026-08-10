@@ -6,7 +6,7 @@
 #   scripts/visual-docker.sh test:visual:update   # regenerate baselines
 set -euo pipefail
 
-readonly IMAGE="mcr.microsoft.com/playwright:v1.60.0-noble"
+readonly IMAGE="mcr.microsoft.com/playwright:v1.62.1-noble"
 readonly TARGET="${1:-test:visual}"
 readonly REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 

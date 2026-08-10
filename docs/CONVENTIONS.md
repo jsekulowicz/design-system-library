@@ -104,6 +104,21 @@ Deliberate exceptions, so nobody "fixes" them into the shared helper:
   grid, bar-chart walks grouped/stacked series, pie is 1D. Only the two `@state` fields look
   alike.
 
+## Do not remove the react-dom devDependencies
+
+`packages/react` and `packages/storybook` both declare `react-dom` as a devDependency even though
+neither imports it. knip is configured to ignore them, and they must stay.
+
+`@jsekulowicz/ds-react` declares `react-dom: ">=18"` as a **peer**. With nothing pinning it, pnpm
+satisfies that range with react-dom 18 and pairs it against react 19
+(`react-dom@18.3.1_react@19.2.8`). React 19 removed the `ReactCurrentBatchConfig` internal that
+react-dom 18 reads, so Storybook's preview throws on load, no custom element upgrades, and every
+e2e and a11y test times out waiting for elements that never render.
+
+It reproduces only from a clean `--frozen-lockfile` install, which is what CI does — a local
+`node_modules` that has drifted through incremental installs will happily keep working. Reproduce
+with `scripts/visual-docker.sh test:e2e`.
+
 ## TypeScript version
 
 Pinned at **6.0.3** across every workspace. TypeScript 7 (the native compiler) was tried and
