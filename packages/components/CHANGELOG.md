@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.64.0
+
+### Minor Changes
+
+- 7a477d2: Add a neutral popover button for rich interactive panels and share its anchored lifecycle with menu buttons.
+
 ## 0.63.0
 
 ### Minor Changes
