@@ -14,6 +14,7 @@ import type { PopoverPlacement } from '../../shared/popover-placement.js';
 export type MenuButtonPlacement = PopoverPlacement;
 
 const PANEL_ID = 'panel';
+const OPEN_KEYS = new Set(['ArrowDown', 'ArrowUp', 'Enter', ' ']);
 
 /**
  * @tag ds-menu-button
@@ -116,12 +117,7 @@ export class DsMenuButton extends DsElement {
   };
 
   #onTriggerKeydown = (event: KeyboardEvent): void => {
-    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.#popover.show(() => this.#focusFirstItem());
-      return;
-    }
-    if (event.key === 'ArrowUp') {
+    if (OPEN_KEYS.has(event.key)) {
       event.preventDefault();
       this.#popover.show(() => this.#focusFirstItem());
       return;

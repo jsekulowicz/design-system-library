@@ -55,22 +55,25 @@ describe('<ds-menu-button>', () => {
     expect(getPanel(el)).toBeNull();
   });
 
-  it('ArrowDown on trigger opens and focuses the first enabled item', async () => {
-    const el = await mount<DsMenuButton>(`
+  it.each(['ArrowDown', 'ArrowUp', 'Enter', ' '])(
+    '%s on trigger opens and focuses the first enabled item',
+    async (key) => {
+      const el = await mount<DsMenuButton>(`
       <ds-menu-button label="Edit">
         <ds-menu-item value="undo" disabled>Undo</ds-menu-item>
         <ds-menu-item value="redo">Redo</ds-menu-item>
         <ds-menu-item value="cut">Cut</ds-menu-item>
       </ds-menu-button>
     `);
-    const trigger = getDefaultTrigger(el);
-    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-    await el.updateComplete;
-    await el.updateComplete;
-    const items = getItems(el);
-    expect(el.open).toBe(true);
-    expect(document.activeElement).toBe(items[1]);
-  });
+      const trigger = getDefaultTrigger(el);
+      trigger.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+      await el.updateComplete;
+      await el.updateComplete;
+      const items = getItems(el);
+      expect(el.open).toBe(true);
+      expect(document.activeElement).toBe(items[1]);
+    },
+  );
 
   it('Escape on the panel closes the menu and returns focus to the trigger', async () => {
     const el = await mount<DsMenuButton>(TEMPLATE);
