@@ -15,6 +15,7 @@ const meta: Meta = {
     required: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
   },
   args: {
     label: 'Billing cadence',
@@ -25,6 +26,7 @@ const meta: Meta = {
     required: false,
     disabled: false,
     invalid: false,
+    messageSpace: false,
   },
 };
 
@@ -42,6 +44,7 @@ export const Playground: Story = {
       ?required=${args['required']}
       ?disabled=${args['disabled']}
       ?invalid=${args['invalid']}
+      ?message-space=${args['messageSpace']}
     >
       <ds-radio radiovalue="monthly">Monthly</ds-radio>
       <ds-radio radiovalue="quarterly">Quarterly</ds-radio>

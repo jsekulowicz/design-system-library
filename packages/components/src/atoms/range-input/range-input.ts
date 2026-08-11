@@ -34,6 +34,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, attribute: 'show-value' }) showValue = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   @query('input') private _input!: HTMLInputElement;
 
@@ -133,7 +134,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
         />
         ${this.showValue ? html`<output part="value" for="input">${current}</output>` : nothing}
       </div>
-      ${renderSubtext(this.description, this.error, this.invalid)}
+      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
     `;
   }
 }

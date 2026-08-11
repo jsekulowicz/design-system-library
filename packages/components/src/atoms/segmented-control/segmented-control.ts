@@ -31,6 +31,7 @@ export class DsSegmentedControl extends DsElement {
   @property({ type: Array }) options: SegmentedControlOption[] = [];
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) small = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -111,7 +112,7 @@ export class DsSegmentedControl extends DsElement {
       <div class="group" id="group" role="radiogroup" aria-label=${this.label} part="group" @keydown=${this.#onKeydown}>
         ${this.options.map((option, index) => this.#renderSegment(option, index))}
       </div>
-      ${renderSubtext(this.description, '', false)}
+      ${renderSubtext(this.description, '', false, this.messageSpace)}
     `;
   }
 }

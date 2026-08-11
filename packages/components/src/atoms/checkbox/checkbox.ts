@@ -1,4 +1,4 @@
-import { html, nothing, svg, type PropertyValues, type TemplateResult } from 'lit';
+import { html, svg, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
@@ -68,7 +68,6 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   };
 
   override render(): TemplateResult {
-    const message = this.messageSpace || this.description || (this.invalid && this.error);
     // Heroicons 2.2.0 — 16/solid: minus (indeterminate), check (checked)
     const mark = this.indeterminate
       ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`
@@ -91,7 +90,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
         </span>
         <span part="label"><slot></slot></span>
       </label>
-      ${message ? renderSubtext(this.description, this.error, this.invalid) : nothing}
+      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
     </div>`;
   }
 }

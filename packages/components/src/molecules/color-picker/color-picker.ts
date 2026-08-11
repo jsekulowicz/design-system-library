@@ -46,6 +46,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) optional = false;
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Boolean, reflect: true }) compact = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   @query('#trigger') private _triggerEl?: HTMLElement;
 
@@ -200,7 +201,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
         ${this.#renderTrigger(current, selected)} ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>
-      ${this.compact ? nothing : renderSubtext(this.description, this.error, this.invalid)}
+      ${this.compact ? nothing : renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
     `;
   }
 

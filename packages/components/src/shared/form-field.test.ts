@@ -1,5 +1,15 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { DsCheckbox } from '../atoms/checkbox/checkbox.js';
+import { DsCheckboxGroup } from '../atoms/checkbox-group/checkbox-group.js';
+import { DsFieldset } from '../atoms/fieldset/fieldset.js';
+import { DsRadioGroup } from '../atoms/radio-group/radio-group.js';
+import { DsRangeInput } from '../atoms/range-input/range-input.js';
+import { DsSearchableSelect } from '../atoms/searchable-select/searchable-select.js';
+import { DsSegmentedControl } from '../atoms/segmented-control/segmented-control.js';
+import { DsSelect } from '../atoms/select/select.js';
+import { DsTextArea } from '../atoms/text-area/text-area.js';
 import { DsTextField } from '../atoms/text-field/text-field.js';
+import { DsColorPicker } from '../molecules/color-picker/color-picker.js';
 import '../atoms/text-field/define.js';
 import { formFieldStyles } from './form-field.js';
 import { mount, resetTestDom } from '../test-utils/mount.js';
@@ -19,20 +29,25 @@ function footer(el: DsTextField): HTMLElement | null {
 }
 
 describe('field message space', () => {
-  it('holds the row open on a field with nothing to say', async () => {
+  it('renders no message row by default', async () => {
     const el = await mount<DsTextField>('<ds-text-field label="Email"></ds-text-field>');
 
-    expect(footer(el)).not.toBeNull();
-    expect(footer(el)!.querySelector('.subtext-spacer')).not.toBeNull();
+    expect(footer(el)).toBeNull();
   });
 
-  it('swaps the spacer for the error without adding a row', async () => {
+  it('holds the row open when requested', async () => {
+    const el = await mount<DsTextField>('<ds-text-field label="Email" message-space></ds-text-field>');
+
+    expect(footer(el)?.querySelector('.subtext-spacer')).not.toBeNull();
+  });
+
+  it('renders an error without reserved space', async () => {
     const el = await mount<DsTextField>('<ds-text-field label="Email" error="Required"></ds-text-field>');
     el.invalid = true;
     await el.updateComplete;
 
-    expect(footer(el)!.querySelector('.subtext-spacer')).toBeNull();
-    expect(footer(el)!.querySelector('.error')?.textContent).toContain('Required');
+    expect(footer(el)?.querySelector('.subtext-spacer')).toBeNull();
+    expect(footer(el)?.querySelector('.error')?.textContent).toContain('Required');
   });
 
   it('swaps the description for the error in place', async () => {
@@ -61,7 +76,23 @@ describe('field message space', () => {
     expect(formFieldStyles.cssText).not.toMatch(/\.error-icon\s*{[^}]*width: 1rem/s);
   });
 
-  it('lets a dense layout drop the reserved row', () => {
-    expect(formFieldStyles.cssText).toMatch(/:host\(\[no-message-space\]\) \.subtext-spacer\s*{[^}]*display: none/s);
+  it.each([
+    DsTextField,
+    DsTextArea,
+    DsRangeInput,
+    DsSelect,
+    DsSearchableSelect,
+    DsRadioGroup,
+    DsCheckboxGroup,
+    DsSegmentedControl,
+    DsCheckbox,
+    DsFieldset,
+    DsColorPicker,
+  ])('exposes the reflected message-space property on %s', (component) => {
+    expect(component.elementProperties.get('messageSpace')).toMatchObject({
+      attribute: 'message-space',
+      reflect: true,
+      type: Boolean,
+    });
   });
 });

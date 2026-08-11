@@ -27,6 +27,7 @@ export class DsFieldset extends DsElement {
   @property({ type: Boolean, reflect: true }) required = false;
   @property({ type: Boolean, reflect: true }) borderless = false;
   @property({ type: Boolean, reflect: true }) invalid = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   override connectedCallback(): void {
     super.connectedCallback();
@@ -45,7 +46,7 @@ export class DsFieldset extends DsElement {
           <slot></slot>
         </div>
       </fieldset>
-      ${renderSubtext(this.description, this.error, this.invalid)}
+      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
     `;
   }
 }

@@ -23,6 +23,7 @@ export class DsCheckboxGroup extends DsElement {
   @property({ type: Boolean, reflect: true }) required = false;
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) invalid = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   @queryAssignedElements({ selector: 'ds-checkbox' }) private _checkboxes!: CheckboxEl[];
 
@@ -97,7 +98,7 @@ export class DsCheckboxGroup extends DsElement {
           <slot @slotchange=${this.#onSlotChange}></slot>
         </div>
       </fieldset>
-      ${renderSubtext(this.description, this.error, this.invalid)}
+      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
     `;
   }
 }

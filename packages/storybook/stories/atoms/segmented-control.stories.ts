@@ -14,6 +14,7 @@ const meta: Meta = {
     value: { control: 'text' },
     disabled: { control: 'boolean' },
     small: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
   },
   args: {
     label: 'Voice',
@@ -21,6 +22,7 @@ const meta: Meta = {
     value: 'light',
     disabled: false,
     small: false,
+    messageSpace: false,
   },
 };
 
@@ -48,6 +50,7 @@ export const Playground: Story = {
       .options=${OPTIONS}
       ?disabled=${args['disabled']}
       ?small=${args['small']}
+      ?message-space=${args['messageSpace']}
     ></ds-segmented-control>
   `,
 };

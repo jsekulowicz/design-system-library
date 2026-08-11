@@ -17,6 +17,7 @@ const meta: Meta = {
     charCount: { control: 'boolean' },
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
   },
   args: {
     size: 'md',
@@ -30,6 +31,7 @@ const meta: Meta = {
     charCount: false,
     disabled: false,
     required: false,
+    messageSpace: false,
   },
 };
 
@@ -50,6 +52,7 @@ export const Playground: Story = {
       ?char-count=${args['charCount']}
       ?disabled=${args['disabled']}
       ?required=${args['required']}
+      ?message-space=${args['messageSpace']}
     ></ds-text-area>
   `,
 };

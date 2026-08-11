@@ -51,12 +51,6 @@ export const formFieldStyles: CSSResult = css`
   .subtext-spacer {
     margin: 0;
   }
-  :host([no-message-space]) .subtext-spacer {
-    display: none;
-  }
-  :host([no-message-space]) .field-footer:not(:has(.description, .error)) {
-    display: none;
-  }
   .field-footer {
     display: flex;
     justify-content: space-between;
@@ -92,7 +86,12 @@ export function renderFieldLabel(label: string, required: boolean, forId: string
   `;
 }
 
-export function renderSubtext(description: string, error: string, invalid: boolean): TemplateResult {
+export function renderSubtext(
+  description: string,
+  error: string,
+  invalid: boolean,
+  messageSpace = false,
+): TemplateResult | typeof nothing {
   if (invalid && error) {
     return html`
       <p class="error" role="alert">
@@ -111,11 +110,17 @@ export function renderSubtext(description: string, error: string, invalid: boole
   if (description) {
     return html`<p class="description">${description}</p>`;
   }
-  return html`<p class="subtext-spacer" aria-hidden="true"></p>`;
+  return messageSpace ? html`<p class="subtext-spacer" aria-hidden="true"></p>` : nothing;
 }
 
-export function renderFieldFooter(description: string, error: string, invalid: boolean): TemplateResult {
-  return html`<div class="field-footer">${renderSubtext(description, error, invalid)}</div>`;
+export function renderFieldFooter(
+  description: string,
+  error: string,
+  invalid: boolean,
+  messageSpace = false,
+): TemplateResult | typeof nothing {
+  const subtext = renderSubtext(description, error, invalid, messageSpace);
+  return subtext === nothing ? nothing : html`<div class="field-footer">${subtext}</div>`;
 }
 
 /** The counter must stay outside `<label>`, or it joins the field's a11y name. */

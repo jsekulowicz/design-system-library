@@ -17,6 +17,7 @@ const meta: Meta = {
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
   },
   args: {
     min: 0,
@@ -30,6 +31,7 @@ const meta: Meta = {
     disabled: false,
     required: false,
     invalid: false,
+    messageSpace: false,
   },
 };
 
@@ -50,6 +52,7 @@ export const Playground: Story = {
       ?disabled=${args['disabled']}
       ?required=${args['required']}
       ?invalid=${args['invalid']}
+      ?message-space=${args['messageSpace']}
     ></ds-range-input>
   `,
 };

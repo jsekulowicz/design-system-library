@@ -60,6 +60,7 @@ const meta: Meta = {
     disabled: { control: 'boolean' },
     required: { control: 'boolean' },
     clearable: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
     options: { control: false },
   },
   args: {
@@ -73,6 +74,7 @@ const meta: Meta = {
     disabled: false,
     required: false,
     clearable: false,
+    messageSpace: false,
   },
 };
 
@@ -103,6 +105,7 @@ ${LEADING}
       ?disabled=${args['disabled']}
       ?required=${args['required']}
       ?clearable=${args['clearable']}
+      ?message-space=${args['messageSpace']}
       .options=${options}
     >
       <ds-icon slot="leading" name="squares-2x2"></ds-icon>

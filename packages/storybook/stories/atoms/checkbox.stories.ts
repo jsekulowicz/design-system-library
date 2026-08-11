@@ -9,8 +9,21 @@ const meta: Meta = {
     checked: { control: 'boolean' },
     indeterminate: { control: 'boolean' },
     disabled: { control: 'boolean' },
+    description: { control: 'text' },
+    error: { control: 'text' },
+    invalid: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
   },
-  args: { checked: false, indeterminate: false, disabled: false, label: 'Subscribe to updates' },
+  args: {
+    checked: false,
+    indeterminate: false,
+    disabled: false,
+    description: '',
+    error: 'This field is required.',
+    invalid: false,
+    messageSpace: false,
+    label: 'Subscribe to updates',
+  },
 };
 
 export default meta;
@@ -18,7 +31,14 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-    <ds-checkbox ?checked=${args['checked']} ?indeterminate=${args['indeterminate']} ?disabled=${args['disabled']}
+    <ds-checkbox
+      description=${args['description'] || ''}
+      error=${args['error'] || ''}
+      ?checked=${args['checked']}
+      ?indeterminate=${args['indeterminate']}
+      ?disabled=${args['disabled']}
+      ?invalid=${args['invalid']}
+      ?message-space=${args['messageSpace']}
       >${args['label']}</ds-checkbox
     >
   `,

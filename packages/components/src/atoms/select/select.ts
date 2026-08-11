@@ -53,6 +53,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @property() hint = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
   @property({ type: Boolean, reflect: true }) multiple = false;
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Array }) values: string[] = [];
@@ -334,7 +335,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
             : nothing
         }
       </div>
-      ${renderSubtext(this.description, this.error, this.invalid)}`;
+      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}`;
   }
 
   #toggle = (): void => {

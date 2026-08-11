@@ -15,6 +15,7 @@ const meta: Meta = {
     required: { control: 'boolean' },
     disabled: { control: 'boolean' },
     invalid: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
   },
   args: {
     label: 'Notification channels',
@@ -25,6 +26,7 @@ const meta: Meta = {
     required: false,
     disabled: false,
     invalid: false,
+    messageSpace: false,
   },
 };
 
@@ -42,6 +44,7 @@ export const Playground: Story = {
       ?required=${args['required']}
       ?disabled=${args['disabled']}
       ?invalid=${args['invalid']}
+      ?message-space=${args['messageSpace']}
     >
       <ds-checkbox checkboxvalue="email">Email</ds-checkbox>
       <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>

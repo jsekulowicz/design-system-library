@@ -213,6 +213,7 @@ describe('<ds-color-picker>', () => {
     const el = await mountColorPicker({
       compact: true,
       label: '',
+      messageSpace: true,
       placeholder: 'Player color',
       value: '#0ea5e9',
     });
@@ -220,6 +221,7 @@ describe('<ds-color-picker>', () => {
 
     expect(el.hasAttribute('compact')).toBe(true);
     expect(el.shadowRoot!.querySelector('.label')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.subtext-spacer')).toBeNull();
     expect(el.shadowRoot!.querySelector('.trigger-text')).toBeNull();
     expect(el.shadowRoot!.querySelector('ds-icon[name="swatch"]')).toBeTruthy();
     expect(getTrigger(el).getAttribute('label')).toContain('Player color');

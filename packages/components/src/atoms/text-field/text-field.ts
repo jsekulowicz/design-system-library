@@ -42,6 +42,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   readonly #slots = new SlotPresenceController(this, ['leading', 'trailing']);
 
@@ -136,7 +137,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
           <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
         </span>
       </div>
-      ${renderFieldFooter(this.description, this.error, this.invalid)}
+      ${renderFieldFooter(this.description, this.error, this.invalid, this.messageSpace)}
     `;
   }
 }

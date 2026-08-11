@@ -40,6 +40,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
+  @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
   @query('textarea') private _input!: HTMLTextAreaElement;
 
@@ -124,7 +125,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
         @focus=${this.#onFocus}
         @blur=${this.#onBlur}
       ></textarea>
-      ${renderFieldFooter(this.description, this.error, this.invalid)}
+      ${renderFieldFooter(this.description, this.error, this.invalid, this.messageSpace)}
     `;
   }
 }

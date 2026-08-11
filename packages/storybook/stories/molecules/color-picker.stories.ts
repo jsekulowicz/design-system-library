@@ -41,6 +41,7 @@ const meta: Meta = {
     required: { control: 'boolean' },
     clearable: { control: 'boolean' },
     compact: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
     colors: { control: false },
   },
   args: {
@@ -53,6 +54,7 @@ const meta: Meta = {
     required: false,
     clearable: true,
     compact: false,
+    messageSpace: false,
   },
 };
 
@@ -71,6 +73,7 @@ export const Playground: Story = {
       ?required=${args['required']}
       ?clearable=${args['clearable']}
       ?compact=${args['compact']}
+      ?message-space=${args['messageSpace']}
       .colors=${brandColors}
     ></ds-color-picker>
   `,

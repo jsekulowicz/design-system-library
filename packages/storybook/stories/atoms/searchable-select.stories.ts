@@ -329,6 +329,7 @@ const meta: Meta = {
     invalid: { control: 'boolean' },
     clearable: { control: 'boolean' },
     loading: { control: 'boolean' },
+    messageSpace: { control: 'boolean' },
   },
   args: {
     label: 'Discipline',
@@ -343,6 +344,7 @@ const meta: Meta = {
     invalid: false,
     clearable: false,
     loading: false,
+    messageSpace: false,
   },
 };
 
@@ -381,6 +383,7 @@ export const Playground: Story = {
       ?invalid=${args['invalid']}
       ?clearable=${args['clearable']}
       ?loading=${args['loading']}
+      ?message-space=${args['messageSpace']}
       .options=${DISCIPLINES}
       @ds-search=${(e: CustomEvent<{ query: string }>) => {
         const q = e.detail.query.toLowerCase();
