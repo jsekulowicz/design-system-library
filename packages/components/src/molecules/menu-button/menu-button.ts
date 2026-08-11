@@ -4,13 +4,14 @@ import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import '../../atoms/button/define.js';
 import '../../atoms/menu/define.js';
-import { MenuButtonPopover } from './menu-button-popover.js';
-import { SlottedTriggerController } from './slotted-trigger.js';
+import { PopoverController, syncPopoverPanel } from '../../shared/popover-controller.js';
+import { SlottedTriggerController } from '../../shared/slotted-trigger.js';
 import { menuButtonStyles } from './menu-button.styles.js';
 import type { ButtonSize, ButtonVariant } from '../../atoms/button/button.js';
 import type { DsMenuItem } from '../../atoms/menu/menu-item.js';
+import type { PopoverPlacement } from '../../shared/popover-placement.js';
 
-export type MenuButtonPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
+export type MenuButtonPlacement = PopoverPlacement;
 
 const PANEL_ID = 'panel';
 
@@ -46,9 +47,8 @@ export class DsMenuButton extends DsElement {
     showPopover?: () => void;
   };
 
-  #popover = new MenuButtonPopover(this, {
+  #popover = new PopoverController(this, {
     focusTrigger: () => this.#focusTrigger(),
-    focusFirstItem: () => this.#focusFirstItem(),
     onOpen: () => {
       this.open = true;
       this.emit('ds-open', { detail: {} });
@@ -63,7 +63,7 @@ export class DsMenuButton extends DsElement {
     isOpen: () => this.#popover.open,
     isDisabled: () => this.disabled,
     toggle: () => this.#popover.toggle(),
-    onTriggerKeydown: (event) => this.#popover.onTriggerKeydown(event),
+    onTriggerKeydown: (event) => this.#onTriggerKeydown(event),
     onSlotChange: (hasTrigger) => {
       this._hasTriggerSlot = hasTrigger;
     },
@@ -78,33 +78,16 @@ export class DsMenuButton extends DsElement {
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('open') && this.open !== this.#popover.open) {
       if (this.open) {
-        this.#popover.openMenu();
+        this.#popover.show();
       } else {
-        this.#popover.close();
+        this.#popover.hide();
       }
     }
   }
 
   override updated(): void {
-    this.#slottedTrigger.syncAria(PANEL_ID);
-    this.#syncPanelPopover();
-  }
-
-  // `popover="manual"` hoists the panel to the top layer, escaping overflow ancestors.
-  #syncPanelPopover(): void {
-    const panel = this._panelEl;
-
-    if (!panel || !this.#popover.open) {
-      return;
-    }
-
-    if (typeof panel.showPopover !== 'function') {
-      return;
-    }
-
-    if (!panel.matches(':popover-open')) {
-      panel.showPopover();
-    }
+    this.#slottedTrigger.syncAria(PANEL_ID, 'menu');
+    syncPopoverPanel(this._panelEl, this.#popover.open);
   }
 
   #focusTrigger(): void {
@@ -129,11 +112,25 @@ export class DsMenuButton extends DsElement {
   };
 
   #onSelect = (): void => {
-    this.#popover.close(true);
+    this.#popover.hide(true);
+  };
+
+  #onTriggerKeydown = (event: KeyboardEvent): void => {
+    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.#popover.show(() => this.#focusFirstItem());
+      return;
+    }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.#popover.show(() => this.#focusFirstItem());
+      return;
+    }
+    this.#popover.onEscapeKeydown(event);
   };
 
   override render(): TemplateResult {
-    return html`<div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
+    return html`<div class="control-wrap" @keydown=${this.#popover.onEscapeKeydown}>
       ${this.#renderTrigger()} ${this.#popover.open ? this.#renderPanel() : nothing}
     </div>`;
   }
@@ -156,7 +153,7 @@ export class DsMenuButton extends DsElement {
       aria-expanded=${this.#popover.open ? 'true' : 'false'}
       aria-controls=${ifDefined(this.#popover.open ? PANEL_ID : undefined)}
       @ds-click=${this.#onDsClick}
-      @keydown=${this.#popover.onTriggerKeydown}
+      @keydown=${this.#onTriggerKeydown}
     >
       ${this.label}
     </ds-button>`;

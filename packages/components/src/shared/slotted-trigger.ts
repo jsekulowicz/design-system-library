@@ -39,11 +39,15 @@ export class SlottedTriggerController {
     this.delegate.onSlotChange(!!next);
   };
 
-  syncAria(panelId: string): void {
+  syncAria(panelId: string, hasPopup?: 'menu'): void {
     if (!this.#element) {
       return;
     }
-    this.#element.setAttribute('aria-haspopup', 'menu');
+    if (hasPopup) {
+      this.#element.setAttribute('aria-haspopup', hasPopup);
+    } else {
+      this.#element.removeAttribute('aria-haspopup');
+    }
     this.#element.setAttribute('aria-expanded', this.delegate.isOpen() ? 'true' : 'false');
     if (this.delegate.isOpen()) {
       this.#element.setAttribute('aria-controls', panelId);
