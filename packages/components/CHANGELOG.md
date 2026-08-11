@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.63.0
+
+### Minor Changes
+
+- 6e8dbd0: Make reserved field-message space opt-in through `message-space` on every component that renders field subtext. Descriptions and errors still render without opting in, while empty fields no longer add a blank message row by default.
+
 ## 0.62.0
 
 ### Minor Changes
