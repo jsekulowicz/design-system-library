@@ -2,6 +2,8 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/popover-button/define';
 import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/checkbox/define';
+import '@jsekulowicz/ds-components/checkbox-group/define';
 import { joinStyles } from '../shared/styles';
 
 const PANEL_SURFACE = joinStyles(
@@ -50,11 +52,12 @@ export const Playground: Story = {
       placement=${args['placement']}
       ?disabled=${args['disabled']}
     >
-      <section aria-label="Display preferences" style=${PREFERENCES_PANEL}>
-        <strong>Display preferences</strong>
-        <label><input type="checkbox" /> Compact rows</label>
-        <label><input type="checkbox" /> Show descriptions</label>
-      </section>
+      <div style=${PREFERENCES_PANEL}>
+        <ds-checkbox-group label="Display preferences" name="display-preferences">
+          <ds-checkbox checkboxvalue="compact-rows">Compact rows</ds-checkbox>
+          <ds-checkbox checkboxvalue="show-descriptions" checked>Show descriptions</ds-checkbox>
+        </ds-checkbox-group>
+      </div>
     </ds-popover-button>
   `,
 };
