@@ -11,6 +11,16 @@ import type { PopoverPlacement } from '../../shared/popover-placement.js';
 
 const PANEL_ID = 'panel';
 
+/**
+ * @tag ds-popover-button
+ * @summary Trigger-controlled neutral popover panel for arbitrary interactive content.
+ * @slot trigger - Optional custom trigger.
+ * @slot default - Popover panel content.
+ * @csspart trigger - Default trigger button.
+ * @csspart panel - Popover panel.
+ * @event ds-open - Fires when the popover opens.
+ * @event ds-close - Fires when the popover closes.
+ */
 export class DsPopoverButton extends DsElement {
   static override styles = [...DsElement.styles, popoverButtonStyles];
 
