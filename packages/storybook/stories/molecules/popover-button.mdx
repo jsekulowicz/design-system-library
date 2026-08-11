@@ -14,44 +14,39 @@ PopoverButton opens a neutral, anchored panel from a button. Use it for compact 
 PopoverButton provides a default button or accepts a custom trigger through the `trigger` slot. The default slot contains the panel content. The component manages positioning, disclosure state, outside-click dismissal, Escape dismissal, and focus return while leaving the panel's content and semantics to the consumer.
 
 <ds-tabs value="api">
-  <ds-tab-list slot="tab-list" aria-label="PopoverButton documentation">
-    <ds-tab value="api">API</ds-tab>
-    <ds-tab value="examples">Examples</ds-tab>
-    <ds-tab value="guidelines">Guidelines</ds-tab>
-  </ds-tab-list>
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
 
-  <ds-tab-panel value="api">
-    <Canvas of={PopoverButtonStories.Playground} />
+    <ds-tab-panel value="api">
+      <Canvas of={PopoverButtonStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={PopoverButtonStories.Playground} />
+      <ComponentApi tag="ds-popover-button" />
+    </ds-tab-panel>
 
-    <Controls of={PopoverButtonStories.Playground} />
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
 
-    <ComponentApi component="ds-popover-button" />
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Use PopoverButton for rich or mixed interactive content that is not a menu.</li>
+        <li>Give the trigger a meaningful visible label or accessible name.</li>
+        <li>Give panel content suitable semantics and an accessible name where needed.</li>
+        <li>Choose a placement that keeps the panel close to its trigger and within the viewport.</li>
+        <li>Keep the content concise and suitable for a non-modal interaction.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use PopoverButton for a list of actions; use MenuButton instead.</li>
+        <li>Don't use it for complex or modal tasks that require focus trapping; use Dialog instead.</li>
+        <li>Don't manually manage <code>aria-expanded</code> or <code>aria-controls</code> on a custom trigger.</li>
+        <li>Don't rely on the popover to provide roles or labels for its slotted content.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <p>The trigger exposes disclosure state through <code>aria-expanded</code> and associates itself with the open panel through <code>aria-controls</code>. Escape closes the panel and returns focus to the trigger. Clicking outside also closes it. Because the component does not impose a role or focus model on the panel, consumers must provide semantic structure, accessible names, and a logical tab order for slotted content.</p>
+    </ds-tab-panel>
 
-  </ds-tab-panel>
-
-<ds-tab-panel value="examples">
-  <Stories includePrimary={false} />
-</ds-tab-panel>
-
-  <ds-tab-panel value="guidelines">
-    ### Do
-
-    - Use PopoverButton for rich or mixed interactive content that is not a menu.
-    - Give the trigger a meaningful visible label or accessible name.
-    - Give panel content suitable semantics and an accessible name where needed.
-    - Choose a placement that keeps the panel close to its trigger and within the viewport.
-    - Keep the content concise and suitable for a non-modal interaction.
-
-    ### Don't
-
-    - Don't use PopoverButton for a list of actions; use MenuButton instead.
-    - Don't use it for complex or modal tasks that require focus trapping; use Dialog instead.
-    - Don't manually manage `aria-expanded` or `aria-controls` on a custom trigger.
-    - Don't rely on the popover to provide roles or labels for its slotted content.
-
-    ### Accessibility
-
-    The trigger exposes disclosure state through `aria-expanded` and associates itself with the open panel through `aria-controls`. Escape closes the panel and returns focus to the trigger. Clicking outside also closes it. Because the component does not impose a role or focus model on the panel, consumers must provide semantic structure, accessible names, and a logical tab order for slotted content.
-
-  </ds-tab-panel>
 </ds-tabs>
