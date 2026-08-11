@@ -47,22 +47,31 @@ export const anchoredPopoverStyles = css`
     position: fixed;
     position-anchor: --ds-popover-trigger;
     inset: auto;
+    min-width: 0;
+    max-width: calc(100dvw - var(--ds-space-4));
+    max-height: calc(100dvh - var(--ds-space-4));
     position-try-fallbacks: flip-block, flip-inline;
   }
+  .panel[popover]:popover-open > ds-menu,
+  .panel[popover]:popover-open > slot::slotted(*) {
+    box-sizing: border-box;
+    max-width: inherit;
+    max-height: inherit;
+  }
   :host([placement='bottom-start']) .panel[popover]:popover-open {
-    top: calc(anchor(bottom) + var(--ds-space-1));
-    left: anchor(left);
+    position-area: bottom span-right;
+    justify-self: start;
   }
   :host([placement='bottom-end']) .panel[popover]:popover-open {
-    top: calc(anchor(bottom) + var(--ds-space-1));
-    right: anchor(right);
+    position-area: bottom span-left;
+    justify-self: end;
   }
   :host([placement='top-start']) .panel[popover]:popover-open {
-    bottom: calc(anchor(top) + var(--ds-space-1));
-    left: anchor(left);
+    position-area: top span-right;
+    justify-self: start;
   }
   :host([placement='top-end']) .panel[popover]:popover-open {
-    bottom: calc(anchor(top) + var(--ds-space-1));
-    right: anchor(right);
+    position-area: top span-left;
+    justify-self: end;
   }
 `;
