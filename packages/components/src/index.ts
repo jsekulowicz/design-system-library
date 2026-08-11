@@ -59,6 +59,7 @@ export {
   type ColorPickerOption,
 } from './molecules/color-picker/index.js';
 export { DsMenuButton, type MenuButtonPlacement } from './molecules/menu-button/index.js';
+export { DsPopoverButton, type PopoverPlacement } from './molecules/popover-button/index.js';
 export {
   DsBarChart,
   type BarChartSeries,

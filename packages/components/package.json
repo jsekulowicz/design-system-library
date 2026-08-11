@@ -309,6 +309,14 @@
       "types": "./dist/molecules/menu-button/define.d.ts",
       "import": "./dist/molecules/menu-button/define.js"
     },
+    "./popover-button": {
+      "types": "./dist/molecules/popover-button/index.d.ts",
+      "import": "./dist/molecules/popover-button/index.js"
+    },
+    "./popover-button/define": {
+      "types": "./dist/molecules/popover-button/define.d.ts",
+      "import": "./dist/molecules/popover-button/define.js"
+    },
     "./bar-chart": {
       "types": "./dist/molecules/bar-chart/index.d.ts",
       "import": "./dist/molecules/bar-chart/index.js"
