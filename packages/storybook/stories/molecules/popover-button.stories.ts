@@ -2,6 +2,17 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/popover-button/define';
 import '@jsekulowicz/ds-components/button/define';
+import { joinStyles } from '../shared/styles';
+
+const PANEL_SURFACE = joinStyles(
+  'padding:16px',
+  'border:1px solid var(--ds-color-border)',
+  'border-radius:var(--ds-radius-md)',
+  'background:var(--ds-color-bg)',
+  'box-shadow:var(--ds-shadow-lg)',
+);
+const PREFERENCES_PANEL = joinStyles('display:grid', 'gap:12px', 'width:240px', PANEL_SURFACE);
+const NOTIFICATIONS_PANEL = joinStyles('width:280px', PANEL_SURFACE);
 
 const meta: Meta = {
   title: 'Molecules/PopoverButton',
@@ -39,10 +50,7 @@ export const Playground: Story = {
       placement=${args['placement']}
       ?disabled=${args['disabled']}
     >
-      <section
-        aria-label="Display preferences"
-        style="display:grid;gap:12px;width:240px;padding:16px;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);background:var(--ds-color-bg);box-shadow:var(--ds-shadow-lg);"
-      >
+      <section aria-label="Display preferences" style=${PREFERENCES_PANEL}>
         <strong>Display preferences</strong>
         <label><input type="checkbox" /> Compact rows</label>
         <label><input type="checkbox" /> Show descriptions</label>
@@ -55,10 +63,7 @@ export const SlottedTrigger: Story = {
   render: () => html`
     <ds-popover-button placement="bottom-end">
       <ds-button slot="trigger" variant="ghost" aria-label="Notifications">Notifications</ds-button>
-      <section
-        aria-label="Notifications"
-        style="width:280px;padding:16px;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);background:var(--ds-color-bg);box-shadow:var(--ds-shadow-lg);"
-      >
+      <section aria-label="Notifications" style=${NOTIFICATIONS_PANEL}>
         <strong>Notifications</strong>
         <p>Your crossword was approved.</p>
       </section>
