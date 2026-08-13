@@ -38,15 +38,15 @@
 <style>
   html[data-ds-theme='light'] {
     --ds-preview-loading-bg: #faf8f5;
-    --ds-preview-loading-fg: #1d1f20;
-    --ds-preview-loading-muted: #6f7375;
+    --ds-preview-loading-fg: #0b0b0c;
+    --ds-preview-loading-muted: #6b6b6e;
     --ds-preview-loading-accent: #4a72cc;
   }
 
   html[data-ds-theme='dark'] {
     --ds-preview-loading-bg: #222425;
     --ds-preview-loading-fg: #f2efea;
-    --ds-preview-loading-muted: #a8acad;
+    --ds-preview-loading-muted: #a6a6a9;
     --ds-preview-loading-accent: #6a95e8;
   }
 
@@ -54,8 +54,8 @@
   body,
   .sb-preparing-story,
   .sb-preparing-docs {
-    background: var(--ds-preview-loading-bg) !important;
-    color: var(--ds-preview-loading-fg) !important;
+    background: var(--ds-color-bg, var(--ds-preview-loading-bg)) !important;
+    color: var(--ds-color-fg, var(--ds-preview-loading-fg)) !important;
   }
 
   .sb-preparing-story .sb-loader,
@@ -66,8 +66,8 @@
     margin: -1.25rem 0 0 -1.25rem;
     border-style: solid !important;
     border-width: 3px !important;
-    border-color: color-mix(in srgb, var(--ds-preview-loading-muted) 35%, transparent);
-    border-top-color: var(--ds-preview-loading-accent);
+    border-color: color-mix(in srgb, var(--ds-color-fg-muted, var(--ds-preview-loading-muted)) 35%, transparent);
+    border-top-color: var(--ds-color-accent, var(--ds-preview-loading-accent));
     border-radius: 50%;
     animation: ds-loading-spin 0.7s linear infinite !important;
     mix-blend-mode: normal;
@@ -112,7 +112,7 @@
 
   .sb-preparing-docs::after {
     content: 'Loading documentation...';
-    color: var(--ds-preview-loading-muted);
+    color: var(--ds-color-fg-muted, var(--ds-preview-loading-muted));
     font:
       500 1rem/1.5 system-ui,
       sans-serif;
