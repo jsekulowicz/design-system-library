@@ -2,6 +2,12 @@
    Storybook's docs blocks inject emotion styles AFTER our CSS, so the
    cascade loses without !important on the critical rules. */
 
+html,
+body {
+  background: var(--ds-color-bg);
+  overscroll-behavior-y: none;
+}
+
 .sbdocs.sbdocs-wrapper,
 .sbdocs-wrapper {
   background: var(--ds-color-bg) !important;
