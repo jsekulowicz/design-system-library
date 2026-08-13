@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { DsToast, ToastDismissReason } from './toast.js';
+import { toastStyles } from './toast.styles.js';
 import './define.js';
 import { mount, mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
@@ -12,6 +13,10 @@ afterEach(() => {
 });
 
 describe('<ds-toast>', () => {
+  it('uses an opaque surface for every tone', () => {
+    expect(toastStyles.cssText).toMatch(/:host\(\[tone\]\) \.notice\s*{[^}]*background: var\(--ds-color-bg\)/s);
+  });
+
   it('maps tone to role and aria-live', async () => {
     const info = await mountWithProps<DsToast>('<ds-toast>Body</ds-toast>', { tone: 'info' });
     expect(info.getAttribute('role')).toBe('status');

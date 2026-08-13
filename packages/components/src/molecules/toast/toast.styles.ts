@@ -10,7 +10,7 @@ export const toastStyles = css`
   :host(:focus) {
     outline: none;
   }
-  .notice {
+  :host([tone]) .notice {
     flex-direction: column;
     align-items: stretch;
     gap: var(--ds-space-2);

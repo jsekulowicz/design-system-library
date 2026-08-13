@@ -25,6 +25,27 @@ test('static toasts restore while imperative toasts dismiss', async ({ page }) =
   await expect(page.locator('ds-toast')).toHaveCount(0);
 });
 
+for (const [theme, expectedBackground] of [
+  ['light', 'rgb(250, 248, 245)'],
+  ['dark', 'rgb(34, 36, 37)'],
+] as const) {
+  test(`Toast tones use opaque ${theme} surfaces`, async ({ page }) => {
+    await page.addInitScript((nextTheme) => localStorage.setItem('ds-storybook-theme', nextTheme), theme);
+    await openStory(page, 'molecules-toast--tones');
+    const surfaces = await page.locator('ds-toast').evaluateAll((toasts) =>
+      toasts.map((toast) => {
+        const notice = toast.shadowRoot!.querySelector('.notice')!;
+        return {
+          background: getComputedStyle(notice).backgroundColor,
+          opacity: getComputedStyle(toast).opacity,
+        };
+      }),
+    );
+    expect(surfaces).toHaveLength(4);
+    expect(surfaces).toEqual(Array.from({ length: 4 }, () => ({ background: expectedBackground, opacity: '1' })));
+  });
+}
+
 for (const story of ['atoms-select--multiple', 'atoms-searchableselect--multiple-countries']) {
   test(`${story} keeps its height when the first tile is selected`, async ({ page }) => {
     await openStory(page, story);

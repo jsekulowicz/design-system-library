@@ -45,6 +45,7 @@ export const visualScenarios: VisualScenario[] = [
   staticStory('bar-chart-formatters', 'molecules-barchart--with-formatters'),
   staticStory('divider-inline', 'atoms-divider--inline-with-text'),
   staticStory('menu-header-footer', 'atoms-menu--with-header-footer'),
+  staticStory('toast-tones', 'molecules-toast--tones'),
   staticStory('segmented-control-icons', 'atoms-segmentedcontrol--with-icons'),
   responsiveStory('tooltip-viewport-constraint', 'atoms-tooltip--viewport-constraint'),
   {
