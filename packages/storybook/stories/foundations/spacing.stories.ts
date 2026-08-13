@@ -92,8 +92,8 @@ export const PaddingExamples: Story = {
     <section style=${EXAMPLES_LAYOUT}>
       ${[2, 3, 4, 6, 8].map(
         (n) => html`
-          <div style="display:flex;align-items:center;gap:var(--ds-space-4)">
-            <code style="width:6rem;font-family:var(--ds-font-mono)">space-${n}</code>
+          <div style="display:grid;justify-items:start;gap:var(--ds-space-2)">
+            <span>Padding with <code>space-${n}</code></span>
             <div style=${paddingBox(n)}>
               <div style=${paddingChip()}>Content</div>
             </div>
