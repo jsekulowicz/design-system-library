@@ -138,6 +138,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       height: this.height,
       hasXAxisLabel: Boolean(this.xAxisLabel),
       hasYAxisLabel: Boolean(this.yAxisLabel),
+      formatValue: (value) => (this.formatValue ? this.formatValue(value) : String(value)),
     });
   }
 

@@ -2,7 +2,10 @@ import { groupData, niceMax, generateTicks, computeGroupBands, type GroupBand } 
 import type { BarChartGroup, BarChartRow } from './types.js';
 
 const MARGIN = { top: 16, right: 16, bottomBase: 36, leftBase: 44 } as const;
-const AXIS_LABEL_SPACE = 18;
+const AXIS_LABEL_SPACE = 24;
+const Y_TICK_GAP = 12;
+const Y_TICK_CHARACTER_WIDTH = 7;
+const MIN_PLOT_WIDTH = 48;
 const FALLBACK_WIDTH = 640;
 const BAND_OUTER_GAP = 0.18;
 
@@ -15,6 +18,7 @@ export interface ChartLayoutOptions<T extends BarChartRow> {
   height: number;
   hasXAxisLabel: boolean;
   hasYAxisLabel: boolean;
+  formatValue?: (value: number) => string;
 }
 
 export interface ChartLayout<T extends BarChartRow = BarChartRow> {
@@ -36,13 +40,18 @@ export function computeChartLayout<T extends BarChartRow>(options: ChartLayoutOp
   }, 0);
   const yMax = niceMax(maxValue);
   const ticks = generateTicks(yMax);
+  const width = options.measuredWidth > 0 ? options.measuredWidth : FALLBACK_WIDTH;
+  const tickLabelWidth = Math.max(
+    MARGIN.leftBase - Y_TICK_GAP,
+    ...ticks.map((tick) => Array.from(options.formatValue?.(tick) ?? String(tick)).length * Y_TICK_CHARACTER_WIDTH),
+  );
+  const preferredLeftMargin = tickLabelWidth + Y_TICK_GAP + (options.hasYAxisLabel ? AXIS_LABEL_SPACE : 0);
   const margin = {
     top: MARGIN.top,
     right: MARGIN.right,
     bottom: MARGIN.bottomBase + (options.hasXAxisLabel ? AXIS_LABEL_SPACE : 0),
-    left: MARGIN.leftBase + (options.hasYAxisLabel ? AXIS_LABEL_SPACE : 0),
+    left: Math.min(preferredLeftMargin, Math.max(0, width - MARGIN.right - MIN_PLOT_WIDTH)),
   };
-  const width = options.measuredWidth > 0 ? options.measuredWidth : FALLBACK_WIDTH;
   const innerWidth = Math.max(0, width - margin.left - margin.right);
   const innerHeight = Math.max(0, options.height - margin.top - margin.bottom);
   const bands = computeGroupBands(innerWidth, groups.length, BAND_OUTER_GAP);
