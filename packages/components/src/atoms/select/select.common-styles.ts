@@ -41,7 +41,7 @@ export const selectCommonStyles = css`
   .trigger-multiple {
     height: auto;
     min-height: var(--ds-select-size);
-    padding: 6px var(--ds-space-3);
+    padding: max(1px, calc((var(--ds-select-size) - ${TILE_HEIGHT + 2}px) / 2)) var(--ds-space-3);
     flex-wrap: wrap;
     align-items: center;
     gap: var(--ds-space-2);
@@ -58,7 +58,7 @@ export const selectCommonStyles = css`
     align-items: center;
     gap: var(--ds-space-1);
     /* Grow with the label up to the full row width, then the label
-       ellipsizes — rather than hard-capping every tile to a narrow width
+       ellipsizes - rather than hard-capping every tile to a narrow width
        and wasting the rest of the row. */
     max-width: 100%;
     height: ${TILE_HEIGHT}px;
@@ -136,7 +136,7 @@ export const selectCommonStyles = css`
     /* In-flow fallback for browsers without the Popover API. When the API is
        available the listbox is shown via showPopover() (top layer, so it
        escapes any overflow:hidden / scroll ancestor) and positioned with CSS
-       anchor positioning — see .listbox[popover]:popover-open below. */
+       anchor positioning - see .listbox[popover]:popover-open below. */
     position: absolute;
     inset: calc(100% + var(--ds-space-1)) 0 auto;
     z-index: var(--ds-z-index-dropdown);
@@ -155,7 +155,7 @@ export const selectCommonStyles = css`
   }
 
   /* Shown in the top layer: position it under the trigger with CSS anchor
-     positioning — matching the trigger's width (so long options wrap rather
+     positioning - matching the trigger's width (so long options wrap rather
      than widening the menu) and flipping above when there's no room below.
      The browser keeps it glued to the trigger on scroll, so no JS. */
   .listbox[popover]:popover-open {
