@@ -5,6 +5,30 @@ const baseURL = `http://localhost:${port}`;
 const isCI = Boolean(process.env['CI']);
 const snapshotDir = process.env['VISUAL_SNAPSHOT_DIR'] ?? '{testDir}/__screenshots__';
 
+assertBaselinesAreWrittenOnTheCiArchitecture();
+
+function isWritingBaselines(): boolean {
+  return process.argv.some((arg: string) => {
+    return arg === '-u' || arg === '--update-snapshots' || arg.startsWith('--update-snapshots=');
+  });
+}
+
+function isCiArchitecture(): boolean {
+  return process.platform === 'linux' && process.arch === 'x64';
+}
+
+function assertBaselinesAreWrittenOnTheCiArchitecture(): void {
+  if (!isWritingBaselines() || isCiArchitecture() || process.env['ALLOW_HOST_VISUAL_BASELINES'] === 'true') {
+    return;
+  }
+  throw new Error(
+    `Refusing to write visual baselines on ${process.platform}/${process.arch}: text anti-aliasing ` +
+      'differs from the linux/x64 container CI compares against, so host-written PNGs pass locally ' +
+      'and fail every CI run. Use `pnpm test:visual:update:docker` or `pnpm test:visual:update:ci`. ' +
+      'Set ALLOW_HOST_VISUAL_BASELINES=true only for throwaway experiments.',
+  );
+}
+
 export default defineConfig({
   testDir: './visual',
   snapshotPathTemplate: `${snapshotDir}/{arg}{ext}`,

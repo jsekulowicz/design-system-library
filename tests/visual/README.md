@@ -16,7 +16,7 @@ pnpm test:visual                 # check on the host (fast, debugging only - not
 
 Baselines are environment-sensitive: rendering depends on OS, fonts, browser binaries, and graphics
 libraries. To make local results match CI byte-for-byte, run the suite inside the pinned Playwright
-container (`mcr.microsoft.com/playwright:v1.60.0-noble`) - the same image CI uses. Chromium headless
+container (`mcr.microsoft.com/playwright:v1.62.1-noble`) - the same image CI uses. Chromium headless
 renders deterministically (SwiftShader), so a macOS host running this container matches Linux CI.
 
 - `pnpm test:visual:docker` verifies the current tree against committed baselines.
@@ -28,6 +28,12 @@ container. The first run pulls the ~2 GB image and warms cached volumes; later r
 
 Require Docker to be installed and running. `pnpm test:visual` on the host is fine for quick
 debugging but its screenshots are **not** authoritative - never commit host-generated baselines.
+
+A host and the container render identical markup with different text anti-aliasing, so
+host-written PNGs look right locally and fail every CI comparison. To keep that mistake out of the
+history, `playwright.visual.config.ts` refuses `--update-snapshots` unless it is running on
+linux/x64. Set `ALLOW_HOST_VISUAL_BASELINES=true` to override for throwaway experiments, and do not
+commit what it produces.
 
 ### Inspecting CI failures
 
