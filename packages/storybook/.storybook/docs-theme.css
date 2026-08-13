@@ -5,6 +5,10 @@
 html,
 body {
   background: var(--ds-color-bg);
+}
+
+html[data-ds-view-mode='docs'],
+html[data-ds-view-mode='docs'] body {
   overscroll-behavior-y: none;
 }
 

@@ -45,6 +45,26 @@ test('dark docs root covers overscroll with the active theme', async ({ page }) 
   expect(styles.bodyOverscroll).toBe('none');
 });
 
+test('story frames preserve scroll chaining', async ({ page }) => {
+  await page.goto('/iframe.html?id=atoms-tooltip--viewport-constraint&viewMode=story');
+  await expect(page.locator('html')).toHaveAttribute('data-ds-view-mode', 'story');
+  await expect(page.locator('html')).toHaveCSS('overscroll-behavior-y', 'auto');
+  await expect(page.locator('body')).toHaveCSS('overscroll-behavior-y', 'auto');
+});
+
+test('wheel input over a Tooltip preview scrolls its documentation page', async ({ page }) => {
+  await page.goto('/?path=/docs/atoms-tooltip--docs');
+  const preview = page.frameLocator('#storybook-preview-iframe');
+  const docs = preview.locator('.sbdocs-content');
+  await expect(docs).toBeVisible();
+  const storyFrame = preview.locator('iframe[id^="iframe--"]').first();
+  await storyFrame.scrollIntoViewIfNeeded();
+  await storyFrame.hover();
+  const before = await docs.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, 500);
+  await expect.poll(() => docs.evaluate(() => window.scrollY)).toBeGreaterThan(before);
+});
+
 test('Icon docs open Heroicons safely in a new tab', async ({ page }) => {
   await openDocs(page, 'atoms-icon--docs');
   const links = page.locator('a[href="https://heroicons.com"]');

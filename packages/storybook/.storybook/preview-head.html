@@ -1,13 +1,18 @@
 <script>
   (function () {
-    var theme = 'light';
-    try {
-      theme = localStorage.getItem('ds-storybook-theme') === 'dark' ? 'dark' : 'light';
-    } catch (_error) {
-      theme = 'light';
+    function readStoredTheme() {
+      try {
+        return localStorage.getItem('ds-storybook-theme') === 'dark' ? 'dark' : 'light';
+      } catch (_error) {
+        return 'light';
+      }
     }
+
+    const theme = readStoredTheme();
+    const viewMode = new URLSearchParams(location.search).get('viewMode') === 'docs' ? 'docs' : 'story';
     document.documentElement.setAttribute('data-ds-theme', theme);
-    if (new URLSearchParams(location.search).get('viewMode') === 'docs') {
+    document.documentElement.setAttribute('data-ds-view-mode', viewMode);
+    if (viewMode === 'docs') {
       document.documentElement.setAttribute('data-ds-docs-ready', 'false');
     }
 
