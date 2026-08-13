@@ -131,6 +131,7 @@ p {
   border-radius: 0 !important;
   box-shadow: none !important;
   overflow: visible !important;
+  position: relative;
 }
 
 .sbdocs .docs-story,
@@ -149,6 +150,38 @@ p {
   max-width: min(100%, var(--ds-docs-viewport-width, 100%)) !important;
   margin-left: 0 !important;
   margin-right: auto !important;
+}
+
+.sbdocs .docs-story:has(iframe[data-ds-story-loading='true'])::before,
+.sbdocs .docs-story:has(iframe[data-ds-story-loading='true'])::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.sbdocs .docs-story:has(iframe[data-ds-story-loading='true'])::before {
+  inset: 0;
+  background: var(--ds-color-bg);
+}
+
+.sbdocs .docs-story:has(iframe[data-ds-story-loading='true'])::after {
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: -1.25rem 0 0 -1.25rem;
+  border: 3px solid color-mix(in srgb, var(--ds-color-fg-muted) 35%, transparent);
+  border-top-color: var(--ds-color-accent);
+  border-radius: 50%;
+  animation: ds-loading-spin 0.7s linear infinite;
+}
+
+@keyframes ds-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Source toolbar (Show code + copy) - kill contrasting backgrounds and the

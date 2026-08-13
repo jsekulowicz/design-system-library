@@ -17,6 +17,8 @@ const THEME_ATTR = 'data-ds-theme';
 const THEME_STORAGE_KEY = 'ds-storybook-theme';
 const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
 const STORY_IFRAME_SELECTOR = 'iframe[id^="iframe--"]';
+const STORY_LOADING_ATTR = 'data-ds-story-loading';
+const storyReadyObservers = new WeakMap<HTMLIFrameElement, MutationObserver>();
 
 function normalizeTheme(value: unknown): ThemeKey {
   return value === 'dark' ? 'dark' : 'light';
@@ -84,19 +86,73 @@ function syncStoryIframeTheme(iframe: HTMLIFrameElement, theme = readAppliedThem
   root?.setAttribute(THEME_ATTR, theme);
 }
 
-function attachStoryIframeThemeSync(iframe: HTMLIFrameElement): void {
+function isStoryIframeSettled(iframe: HTMLIFrameElement): boolean {
+  const body = iframe.contentDocument?.body;
+  return Boolean(body?.matches('.sb-show-main, .sb-show-nopreview, .sb-show-errordisplay'));
+}
+
+function finishStoryIframeLoad(iframe: HTMLIFrameElement): void {
+  storyReadyObservers.get(iframe)?.disconnect();
+  storyReadyObservers.delete(iframe);
+  iframe.removeAttribute(STORY_LOADING_ATTR);
+}
+
+function markStoryIframeLoading(iframe: HTMLIFrameElement): void {
+  storyReadyObservers.get(iframe)?.disconnect();
+  storyReadyObservers.delete(iframe);
+  iframe.setAttribute(STORY_LOADING_ATTR, 'true');
+}
+
+function trackStoryIframeReadiness(iframe: HTMLIFrameElement): void {
+  syncStoryIframeTheme(iframe);
+  if (isStoryIframeSettled(iframe)) {
+    finishStoryIframeLoad(iframe);
+    return;
+  }
+  markStoryIframeLoading(iframe);
+  const root = iframe.contentDocument?.documentElement;
+  if (!root) {
+    return;
+  }
+  const observer = new MutationObserver(() => {
+    if (isStoryIframeSettled(iframe)) {
+      finishStoryIframeLoad(iframe);
+    }
+  });
+  observer.observe(root, { attributeFilter: ['class'], attributes: true, childList: true, subtree: true });
+  storyReadyObservers.set(iframe, observer);
+}
+
+function attachStoryIframeLifecycle(iframe: HTMLIFrameElement): void {
   if (iframe.dataset['dsThemeSyncAttached'] === 'true') {
     return;
   }
   iframe.dataset['dsThemeSyncAttached'] = 'true';
-  iframe.addEventListener('load', () => syncStoryIframeTheme(iframe));
+  iframe.addEventListener('load', () => trackStoryIframeReadiness(iframe));
+  if (iframe.contentDocument?.location.href !== 'about:blank') {
+    trackStoryIframeReadiness(iframe);
+  } else {
+    markStoryIframeLoading(iframe);
+  }
 }
 
 function syncStoryIframeThemes(theme = readAppliedTheme()): void {
   const iframes = document.querySelectorAll<HTMLIFrameElement>(STORY_IFRAME_SELECTOR);
   for (const iframe of iframes) {
-    attachStoryIframeThemeSync(iframe);
+    attachStoryIframeLifecycle(iframe);
     syncStoryIframeTheme(iframe, theme);
+  }
+}
+
+function markChangedStoryIframeLoading(mutations: MutationRecord[]): void {
+  for (const mutation of mutations) {
+    if (
+      mutation.type === 'attributes' &&
+      mutation.target instanceof HTMLIFrameElement &&
+      mutation.target.matches(STORY_IFRAME_SELECTOR)
+    ) {
+      markStoryIframeLoading(mutation.target);
+    }
   }
 }
 
@@ -105,8 +161,11 @@ function setupStoryIframeThemeSync(): void {
     window.addEventListener('DOMContentLoaded', setupStoryIframeThemeSync, { once: true });
     return;
   }
-  const observer = new MutationObserver(() => syncStoryIframeThemes());
-  observer.observe(document.body, { childList: true, subtree: true });
+  const observer = new MutationObserver((mutations) => {
+    markChangedStoryIframeLoading(mutations);
+    syncStoryIframeThemes();
+  });
+  observer.observe(document.body, { attributeFilter: ['src'], attributes: true, childList: true, subtree: true });
   syncStoryIframeThemes();
 }
 

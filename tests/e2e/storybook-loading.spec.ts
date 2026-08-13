@@ -161,6 +161,64 @@ test('cached docs navigation skips the stability overlay', async ({ page }) => {
   await expect(preview.locator('.sb-preparing-docs')).toBeHidden();
 });
 
+test('nested story frames show a themed spinner before their document loads', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('ds-storybook-theme', 'dark'));
+  let releaseRequest: (() => void) | undefined;
+  let signalRequest: (() => void) | undefined;
+  const requestStarted = new Promise<void>((resolve) => {
+    signalRequest = resolve;
+  });
+  const requestReleased = new Promise<void>((resolve) => {
+    releaseRequest = resolve;
+  });
+  let blocked = false;
+  await page.route(/\/iframe\.html\?.*viewMode=story/, async (route) => {
+    if (!blocked) {
+      blocked = true;
+      signalRequest?.();
+      await requestReleased;
+    }
+    await route.continue();
+  });
+
+  const navigation = page.goto('/iframe.html?id=atoms-tooltip--docs&viewMode=docs');
+  await requestStarted;
+  const loadingFrame = page.locator('iframe[data-ds-story-loading="true"]').first();
+  await expect(loadingFrame).toBeVisible();
+  const loadingFrameId = await loadingFrame.getAttribute('id');
+  expect(loadingFrameId).not.toBeNull();
+  const story = loadingFrame.locator('xpath=ancestor::*[contains(@class,"docs-story")][1]');
+  await expect
+    .poll(() => story.evaluate((element) => getComputedStyle(element, '::after').animationName))
+    .toBe('ds-loading-spin');
+  await expect
+    .poll(() => story.evaluate((element) => getComputedStyle(element, '::before').backgroundColor))
+    .toBe('rgb(34, 36, 37)');
+  const outerSpinner = await story.evaluate((element) => {
+    const style = getComputedStyle(element, '::after');
+    return [style.width, style.height, style.borderTopWidth, style.animationDuration];
+  });
+  expect(outerSpinner).toEqual(['40px', '40px', '3px', '0.7s']);
+  const handoff = story.evaluate((element) => {
+    const iframe = element.querySelector('iframe')!;
+    return new Promise<boolean>((resolve) => {
+      const observer = new MutationObserver(() => {
+        if (iframe.getAttribute('data-ds-story-loading') !== 'true') {
+          observer.disconnect();
+          resolve(
+            Boolean(iframe.contentDocument?.body.matches('.sb-show-main, .sb-show-nopreview, .sb-show-errordisplay')),
+          );
+        }
+      });
+      observer.observe(iframe, { attributeFilter: ['data-ds-story-loading'], attributes: true });
+    });
+  });
+  releaseRequest?.();
+  await expect(handoff).resolves.toBe(true);
+  await navigation;
+  await expect(page.locator(`[id="${loadingFrameId}"]`)).not.toHaveAttribute('data-ds-story-loading', 'true');
+});
+
 test('preview initialization survives unavailable local storage', async ({ page }) => {
   await page.addInitScript(() => {
     Storage.prototype.getItem = () => {
