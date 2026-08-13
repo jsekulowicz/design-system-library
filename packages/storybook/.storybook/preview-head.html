@@ -1,5 +1,86 @@
+<script>
+  (function () {
+    var theme = 'light';
+    try {
+      theme = localStorage.getItem('ds-storybook-theme') === 'dark' ? 'dark' : 'light';
+    } catch (_error) {
+      theme = 'light';
+    }
+    document.documentElement.setAttribute('data-ds-theme', theme);
+    if (new URLSearchParams(location.search).get('viewMode') === 'docs') {
+      document.documentElement.setAttribute('data-ds-docs-ready', 'false');
+    }
+  })();
+</script>
 <style>
+  html[data-ds-theme='light'] {
+    --ds-preview-loading-bg: #faf8f5;
+    --ds-preview-loading-fg: #1d1f20;
+    --ds-preview-loading-muted: #6f7375;
+    --ds-preview-loading-accent: #4a72cc;
+  }
+
+  html[data-ds-theme='dark'] {
+    --ds-preview-loading-bg: #222425;
+    --ds-preview-loading-fg: #f2efea;
+    --ds-preview-loading-muted: #a8acad;
+    --ds-preview-loading-accent: #6a95e8;
+  }
+
+  html,
+  body,
+  .sb-preparing-story,
   .sb-preparing-docs {
+    background: var(--ds-preview-loading-bg) !important;
+    color: var(--ds-preview-loading-fg) !important;
+  }
+
+  .sb-preparing-story .sb-loader,
+  .sb-preparing-docs .sb-loader {
+    border-color: color-mix(in srgb, var(--ds-preview-loading-muted) 35%, transparent);
+    border-top-color: var(--ds-preview-loading-accent);
+    mix-blend-mode: normal;
+  }
+
+  .sb-preparing-docs {
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .sb-preparing-docs .sb-previewBlock {
+    width: 4rem;
+    height: 4rem;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .sb-preparing-docs .sb-previewBlock_header,
+  .sb-preparing-docs .sb-argstableBlock {
     display: none;
+  }
+
+  .sb-preparing-docs .sb-previewBlock_body {
+    height: 4rem;
+    border: 0;
+    background: transparent;
+  }
+
+  .sb-preparing-docs::after {
+    content: 'Loading documentation...';
+    color: var(--ds-preview-loading-muted);
+    font:
+      500 1rem/1.5 system-ui,
+      sans-serif;
+  }
+
+  html[data-ds-docs-ready='false'] body.sb-show-main > #storybook-docs {
+    visibility: hidden;
+  }
+
+  html[data-ds-docs-ready='false'] body.sb-show-main > .sb-preparing-docs {
+    display: flex !important;
   }
 </style>

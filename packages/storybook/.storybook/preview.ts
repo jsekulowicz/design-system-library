@@ -25,9 +25,25 @@ function normalizeViewport(value: unknown): ViewportKey {
   return value === 'mobile' || value === 'tablet' || value === 'desktop' ? value : 'desktop';
 }
 
+function readStorage(key: string): string | null {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeStorage(key: string, value: string): void {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Storage can be unavailable in privacy-restricted browsing contexts.
+  }
+}
+
 function applyTheme(theme: ThemeKey): void {
   document.documentElement.setAttribute(THEME_ATTR, theme);
-  window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  writeStorage(THEME_STORAGE_KEY, theme);
   syncStoryIframeThemes(theme);
 }
 
@@ -42,7 +58,7 @@ function applyViewport(viewport: ViewportKey, persist = true): void {
   document.documentElement.setAttribute('data-ds-viewport', viewport);
   document.documentElement.style.setProperty('--ds-docs-viewport-width', width);
   if (persist) {
-    window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
+    writeStorage(VIEWPORT_STORAGE_KEY, viewport);
   }
 }
 
@@ -55,7 +71,7 @@ function readInitialViewport(): ViewportKey {
   if (isFixedDesktopPreview()) {
     return 'desktop';
   }
-  return normalizeViewport(window.localStorage.getItem(VIEWPORT_STORAGE_KEY));
+  return normalizeViewport(readStorage(VIEWPORT_STORAGE_KEY));
 }
 
 function readAppliedTheme(): ThemeKey {
@@ -104,7 +120,7 @@ channel.on(DS_VIEWPORT_CHANGED, (payload: ViewportPayload) => {
   applyViewport(normalizeViewport(viewport), persist);
 });
 
-applyTheme(normalizeTheme(window.localStorage.getItem(THEME_STORAGE_KEY)));
+applyTheme(normalizeTheme(readStorage(THEME_STORAGE_KEY)));
 applyViewport(readInitialViewport(), false);
 setupStoryIframeThemeSync();
 
