@@ -19,15 +19,25 @@ const INLINE_LABEL = joinStyles(
   'margin:0',
   'display:inline-flex;align-items:center;gap:var(--ds-space-2)',
   'color:var(--ds-color-fg-muted)',
-  'font-size:var(--ds-font-size-body-md)',
+  'font-family:var(--ds-font-body)',
+  'font-size:var(--ds-font-size-body-lg)',
 );
+
+const DEMO_LAYOUT = joinStyles(
+  'display:grid;gap:var(--ds-space-3);max-width:32rem',
+  'color:var(--ds-color-fg)',
+  'font-family:var(--ds-font-body)',
+  'font-size:var(--ds-font-size-body-lg)',
+);
+
+const SECTION_LAYOUT = DEMO_LAYOUT.replace('var(--ds-space-3)', 'var(--ds-space-2)');
 
 export default meta;
 type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) => html`
-    <div style="display:grid;gap:var(--ds-space-3);max-width:32rem;color:var(--ds-color-fg)">
+    <div style=${DEMO_LAYOUT}>
       <p style="margin:0">Above the divider.</p>
       <ds-divider orientation=${args['orientation']}></ds-divider>
       <p style="margin:0">Below the divider.</p>
@@ -37,16 +47,12 @@ export const Playground: Story = {
 
 export const SeparatingFormSections: Story = {
   render: () => html`
-    <section style="display:grid;gap:var(--ds-space-2);max-width:32rem;color:var(--ds-color-fg)">
-      <h3 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-body-lg)">Profile</h3>
-      <p style="margin:0;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)">
-        Name, email, avatar — visible to your team.
-      </p>
+    <section style=${SECTION_LAYOUT}>
+      <h3 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-sm)">Profile</h3>
+      <p style="margin:0;color:var(--ds-color-fg-muted)">Name, email, avatar — visible to your team.</p>
       <ds-divider></ds-divider>
-      <h3 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-body-lg)">Preferences</h3>
-      <p style="margin:0;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)">
-        Theme, notifications, keyboard shortcuts.
-      </p>
+      <h3 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-sm)">Preferences</h3>
+      <p style="margin:0;color:var(--ds-color-fg-muted)">Theme, notifications, keyboard shortcuts.</p>
     </section>
   `,
 };

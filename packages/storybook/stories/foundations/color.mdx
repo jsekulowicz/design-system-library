@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs/blocks';
 import * as ColorStories from './color.stories';
 
 <Meta of={ColorStories} />
@@ -13,7 +13,7 @@ Follow the same naming pattern shown in the Tokens foundation page: use semantic
 
 All semantic color tokens, grouped by role. Toggle the dark-theme switch in the toolbar to see how each token resolves in dark mode.
 
-<Canvas of={ColorStories.SemanticPalette} />
+<Story of={ColorStories.SemanticPalette} />
 
 ### Surface tokens
 
@@ -43,7 +43,7 @@ Six distinct hues tuned to remain legible side-by-side and to maintain relative 
 
 Only pair foreground and background tokens that the system explicitly defines as compatible. Improvised combinations may fail contrast requirements in one or both themes.
 
-<Canvas of={ColorStories.UsagePairings} />
+<Story of={ColorStories.UsagePairings} />
 
 ## Dark mode
 

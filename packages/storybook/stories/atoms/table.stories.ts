@@ -7,6 +7,7 @@ import '@jsekulowicz/ds-components/button/define';
 import '@jsekulowicz/ds-components/text-field/define';
 
 interface Person {
+  [key: string]: unknown;
   id: number;
   name: string;
   role: string;
@@ -82,7 +83,7 @@ const WIDE_COLUMNS: readonly TableColumn<Person>[] = [
     field: 'name',
     label: 'Email',
     width: '17rem',
-    render: (row) => `${row.name.split(' ')[0].toLowerCase()}@example.com`,
+    render: (row) => `${(row.name.split(' ')[0] ?? row.name).toLowerCase()}@example.com`,
   },
   { name: 'joined', field: 'joined', label: 'Joined', width: '10rem' },
   {
@@ -101,13 +102,19 @@ const WIDE_COLUMNS: readonly TableColumn<Person>[] = [
     width: '10rem',
     render: (row) => `${2026 - Number(row.joined.slice(0, 4))} yrs`,
   },
-  { name: 'office', field: 'id', label: 'Office', width: '12rem', render: (row) => OFFICES[row.id % OFFICES.length] },
+  {
+    name: 'office',
+    field: 'id',
+    label: 'Office',
+    width: '12rem',
+    render: (row) => OFFICES[row.id % OFFICES.length] ?? '',
+  },
   {
     name: 'manager',
     field: 'id',
     label: 'Manager',
     width: '14rem',
-    render: (row) => MANAGERS[row.id % MANAGERS.length],
+    render: (row) => MANAGERS[row.id % MANAGERS.length] ?? '',
   },
   {
     name: 'reviewDue',
@@ -118,7 +125,15 @@ const WIDE_COLUMNS: readonly TableColumn<Person>[] = [
   },
 ];
 
-const LONG_CONTENT_ROWS = [
+interface LongContentRow {
+  [key: string]: unknown;
+  id: number;
+  metricName: string;
+  owner: string;
+  lastUpdate: string;
+}
+
+const LONG_CONTENT_ROWS: readonly LongContentRow[] = [
   {
     id: 1,
     metricName: 'north-america-enterprise-account-renewal-risk-score-with-exception-review',
@@ -133,7 +148,7 @@ const LONG_CONTENT_ROWS = [
   },
 ];
 
-const LONG_CONTENT_COLUMNS: readonly TableColumn<(typeof LONG_CONTENT_ROWS)[number]>[] = [
+const LONG_CONTENT_COLUMNS: readonly TableColumn<LongContentRow>[] = [
   { name: 'metricName', field: 'metricName', label: 'Long metric or record name' },
   { name: 'owner', field: 'owner', label: 'Responsible team or business capability' },
   { name: 'lastUpdate', field: 'lastUpdate', label: 'Latest status update' },

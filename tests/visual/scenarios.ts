@@ -10,6 +10,9 @@ export const visualScenarios: VisualScenario[] = [
   staticStory('button-variants', 'atoms-button--variants'),
   staticStory('button-colors', 'atoms-button--colors'),
   staticStory('button-sizes', 'atoms-button--sizes'),
+  staticStory('card-playground', 'molecules-card--playground'),
+  responsiveStory('table-basic', 'atoms-table--basic'),
+  responsiveStory('scrollable-page', 'templates-scrollablepage--with-non-scrolling-header'),
   staticStory('textfield-states', 'atoms-textfield--required'),
   staticStory('select-invalid', 'atoms-select--invalid'),
   {

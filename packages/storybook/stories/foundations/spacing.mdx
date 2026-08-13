@@ -1,15 +1,19 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs/blocks';
 import * as SpacingStories from './spacing.stories';
 
 <Meta of={SpacingStories} />
 
 # Spacing
 
-Spacing is the system's rhythm. Every step is a **multiple of 4px**, so any layout — a page, a card, a cramped table cell — snaps to the same grid. The number in the token name is the step count, so `--ds-space-3` is **3 × 4px = 12px**.
+Spacing is the system's rhythm. Consistent tokens keep pages, cards, and dense table cells aligned to the same underlying grid.
 
 This matches the Tokens foundation convention: token names encode intent and step (`space-*`), so spacing decisions stay consistent and predictable.
 
-<Canvas of={SpacingStories.Scale} />
+## Spacing scale
+
+Every step is a multiple of 4px. The number in the token name is the step count on that 4px grid, so `--ds-space-3` is **3 × 4px = 12px**.
+
+<Story of={SpacingStories.Scale} />
 
 ## Why rems, not pixels
 
@@ -31,7 +35,9 @@ If you need an exact-px gap for a specific UI moment, use a raw `4px`/`8px`/`12p
 - **`space-4` / `space-6`** — comfortable padding for cards, dialogs, and section content.
 - **`space-8`+** — section-to-section separation, page gutters.
 
-<Canvas of={SpacingStories.PaddingExamples} />
+Compare how common steps feel when used as padding. Pair `space-3` with `space-4` or `space-6` for dense, comfortable, and spacious layouts.
+
+<Story of={SpacingStories.PaddingExamples} />
 
 ## Invariants
 

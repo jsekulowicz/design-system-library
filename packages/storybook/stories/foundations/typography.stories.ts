@@ -1,19 +1,9 @@
 import { html, type TemplateResult } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import type { TableColumn } from '@jsekulowicz/ds-components/table';
 import { fontSize, fontWeight, lineHeight, letterSpacing } from '@jsekulowicz/ds-tokens';
-import {
-  autoGrid,
-  bodyRow,
-  card,
-  headerRow,
-  joinStyles,
-  MONO_CELL,
-  MONO_MUTED_CELL,
-  MUTED_CELL,
-  NUM_CELL,
-  SECTION,
-  TABLE,
-} from '../shared/styles';
+import '@jsekulowicz/ds-components/table/define';
+import { autoGrid, card, joinStyles, MONO_MUTED_CELL, MUTED_CELL, SECTION } from '../shared/styles';
 
 const meta: Meta = {
   title: 'Foundations/Typography',
@@ -26,55 +16,72 @@ type Story = StoryObj;
 const REM_IN_PX = 16;
 
 function remToPx(rem: string): number {
-  const m = /^(-?\d*\.?\d+)rem$/.exec(rem);
-  return m ? Math.round(Number(m[1]) * REM_IN_PX) : 0;
+  const match = /^(-?\d*\.?\d+)rem$/.exec(rem);
+  return match ? Math.round(Number(match[1]) * REM_IN_PX) : 0;
 }
 
-function sectionHeader(title: string, description: TemplateResult): TemplateResult {
-  return html` <header style="display:grid;gap:var(--ds-space-1)">
-    <h2 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-lg)">${title}</h2>
-    <p style="margin:0;color:var(--ds-color-fg-muted);max-width:68ch">${description}</p>
-  </header>`;
+function code(value: string): TemplateResult {
+  return html`<code>${value}</code>`;
 }
 
-const SIZE_STEPS = Object.entries(fontSize) as [string, string][];
-const SIZE_COLUMNS = '9rem 4rem 3.5rem 1fr';
+interface SizeRow {
+  [key: string]: unknown;
+  name: string;
+  token: string;
+  rem: string;
+  px: string;
+  preview: string;
+}
 
-function previewCell(name: string): string {
-  return joinStyles(
-    `font-size:var(--ds-font-size-${name})`,
+const sizeRows: readonly SizeRow[] = Object.entries(fontSize).map(([name, rem]) => ({
+  name,
+  token: `font-size-${name}`,
+  rem,
+  px: `${remToPx(rem)}px`,
+  preview: 'The quick brown fox',
+}));
+
+function previewCell(row: SizeRow): TemplateResult {
+  const style = joinStyles(
+    `font-size:var(--ds-font-size-${row.name})`,
     'line-height:var(--ds-line-height-none)',
     'overflow:hidden;white-space:nowrap;text-overflow:ellipsis',
   );
+  return html`<span style=${style}>${row.preview}</span>`;
 }
 
+const sizeColumns: readonly TableColumn<SizeRow>[] = [
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'rem', field: 'rem', label: 'rem', width: '6rem' },
+  { name: 'px', field: 'px', label: 'px', width: '5rem' },
+  { name: 'preview', field: 'preview', label: 'Preview', render: previewCell },
+];
+
 export const TypeScale: Story = {
-  render: () =>
-    html` <section style=${SECTION}>
-      ${sectionHeader(
-        'Type scale',
-        html`Two role-based scales: <code>body-sm</code> through <code>body-lg</code> for interface and prose text, and
-          <code>heading-xs</code> through <code>heading-3xl</code> for section headings, page titles, and display text.`,
-      )}
-      <div role="table" style=${TABLE}>
-        <div role="row" style=${headerRow(SIZE_COLUMNS)}>
-          <strong role="columnheader" style=${MUTED_CELL}>Token</strong>
-          <strong role="columnheader" style=${MUTED_CELL}>rem</strong>
-          <strong role="columnheader" style=${MUTED_CELL}>px</strong>
-          <strong role="columnheader" style=${MUTED_CELL}>Preview</strong>
-        </div>
-        ${SIZE_STEPS.map(
-          ([name, rem], i) => html`
-            <div role="row" style=${bodyRow(SIZE_COLUMNS, i)}>
-              <code role="cell" style=${MONO_CELL}>font-size-${name}</code>
-              <span role="cell" style=${NUM_CELL}>${rem}</span>
-              <span role="cell" style=${NUM_CELL}>${remToPx(rem)}px</span>
-              <span role="cell" style=${previewCell(name)}>The quick brown fox</span>
-            </div>
-          `,
-        )}
-      </div>
-    </section>`,
+  render: () => html`<ds-table .rows=${sizeRows} .columns=${sizeColumns}></ds-table>`,
+};
+
+interface GuidanceRow {
+  [key: string]: unknown;
+  range: string;
+  role: string;
+}
+
+const guidanceRows: readonly GuidanceRow[] = [
+  { range: 'body-sm', role: 'Captions, helper text, badges, and timestamps' },
+  { range: 'body-md – body-lg', role: 'Body copy, UI labels, and form fields' },
+  { range: 'heading-xs – heading-sm', role: 'Card titles and nested section headings' },
+  { range: 'heading-md', role: 'Page and main section headings' },
+  { range: 'heading-lg – heading-3xl', role: 'Editorial headings, feature titles, and display text' },
+];
+
+const guidanceColumns: readonly TableColumn<GuidanceRow>[] = [
+  { name: 'range', field: 'range', label: 'Token range', width: '15rem', render: (row) => code(row.range) },
+  { name: 'role', field: 'role', label: 'Role' },
+];
+
+export const SizeGuidance: Story = {
+  render: () => html`<ds-table .rows=${guidanceRows} .columns=${guidanceColumns}></ds-table>`,
 };
 
 const FAMILIES = [
@@ -111,117 +118,110 @@ function familySample(token: string): string {
 }
 
 export const FontFamilies: Story = {
-  render: () =>
-    html` <section style=${SECTION}>
-      ${sectionHeader(
-        'Font families',
-        html`Three typefaces, three roles. Never swap them — each pairing of semantics and personality is intentional.`,
-      )}
+  render: () => html`
+    <section style=${SECTION}>
       <div style=${autoGrid('240px')}>
         ${FAMILIES.map(
-          (f) => html`
+          (family) => html`
             <figure style=${card('var(--ds-space-5)')}>
               <figcaption style="display:grid;gap:4px">
-                <strong>${f.label} — ${f.name}</strong>
-                <code style=${MONO_MUTED_CELL}>${f.token}</code>
-                <p style=${joinStyles('margin:0', MUTED_CELL)}>${f.note}</p>
+                <strong>${family.label} — ${family.name}</strong>
+                <code style=${MONO_MUTED_CELL}>${family.token}</code>
+                <p style=${joinStyles('margin:0', MUTED_CELL)}>${family.note}</p>
               </figcaption>
-              <p style=${familySample(f.token)}>${f.sample}</p>
+              <p style=${familySample(family.token)}>${family.sample}</p>
             </figure>
           `,
         )}
       </div>
-    </section>`,
+    </section>
+  `,
 };
 
-const WEIGHT_STEPS = Object.entries(fontWeight) as [string, string][];
-const WEIGHT_COLUMNS = '10rem 4rem 1fr';
-const SAMPLE = 'The quick brown fox jumps over the lazy dog';
+interface WeightRow {
+  [key: string]: unknown;
+  token: string;
+  value: string;
+  sample: string;
+}
+
+const weightRows: readonly WeightRow[] = Object.entries(fontWeight).map(([name, value]) => ({
+  token: `weight-${name}`,
+  value,
+  sample: 'The quick brown fox jumps over the lazy dog',
+}));
+
+const weightColumns: readonly TableColumn<WeightRow>[] = [
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'value', field: 'value', label: 'Value', width: '6rem' },
+  {
+    name: 'sample',
+    field: 'sample',
+    label: 'Preview',
+    render: (row) => html`<span style="font-weight:${row.value}">${row.sample}</span>`,
+  },
+];
 
 export const FontWeights: Story = {
-  render: () =>
-    html` <section style=${SECTION}>
-      ${sectionHeader(
-        'Font weights',
-        html`Four weights. Use <code>regular</code> for body, <code>medium</code> for labels, <code>semibold</code> for
-          headings, <code>bold</code> sparingly for maximum contrast.`,
-      )}
-      <div role="table" style=${TABLE}>
-        ${WEIGHT_STEPS.map(
-          ([name, val], i) => html`
-            <div role="row" style=${bodyRow(WEIGHT_COLUMNS, i)}>
-              <code role="cell" style=${MONO_CELL}>weight-${name}</code>
-              <span role="cell" style=${NUM_CELL}>${val}</span>
-              <span role="cell" style="font-weight:${val}">${SAMPLE}</span>
-            </div>
-          `,
-        )}
-      </div>
-    </section>`,
+  render: () => html`<ds-table .rows=${weightRows} .columns=${weightColumns}></ds-table>`,
 };
 
-const LINE_HEIGHT_STEPS = Object.entries(lineHeight) as [string, string][];
 const PROSE =
   'Spacing between lines determines whether text feels crowded or open. Tighter leading suits large display type; more relaxed leading aids comprehension in body paragraphs.';
-
 const STEP_TOKEN = 'font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)';
 const STEP_VALUE = joinStyles('display:block', MUTED_CELL, 'margin-top:2px');
 
 export const LineHeights: Story = {
-  render: () =>
-    html` <section style=${SECTION}>
-      ${sectionHeader(
-        'Line heights',
-        html`Five steps, from <code>none</code> for single-line controls to <code>relaxed</code> for long-form prose.
-          Pair the tight end with large sizes and the loose end with body copy.`,
-      )}
+  render: () => html`
+    <section style=${SECTION}>
       <div style=${autoGrid('200px')}>
-        ${LINE_HEIGHT_STEPS.map(
-          ([name, val]) => html`
+        ${Object.entries(lineHeight).map(
+          ([name, value]) => html`
             <div style=${card('var(--ds-space-4)')}>
               <div>
                 <code style=${STEP_TOKEN}>line-height-${name}</code>
-                <span style=${STEP_VALUE}>${val}</span>
+                <span style=${STEP_VALUE}>${value}</span>
               </div>
-              <p style="margin:0;font-size:var(--ds-font-size-body-md);line-height:${val}">${PROSE}</p>
+              <p style="margin:0;font-size:var(--ds-font-size-body-lg);line-height:${value}">${PROSE}</p>
             </div>
           `,
         )}
       </div>
-    </section>`,
+    </section>
+  `,
 };
 
-const TRACKING_STEPS = Object.entries(letterSpacing) as [string, string][];
-const TRACKING_COLUMNS = '11rem 5.5rem 1fr';
-
-function trackingSample(val: string, uppercase: boolean): string {
-  return joinStyles(
-    `letter-spacing:${val}`,
-    'font-size:var(--ds-font-size-body-lg)',
-    uppercase ? 'text-transform:uppercase;font-size:var(--ds-font-size-body-sm);font-weight:600' : '',
-  );
+interface TrackingRow {
+  [key: string]: unknown;
+  name: string;
+  token: string;
+  value: string;
+  sample: string;
 }
 
+const trackingRows: readonly TrackingRow[] = Object.entries(letterSpacing).map(([name, value]) => ({
+  name,
+  token: `letter-spacing-${name}`,
+  value: value || '0',
+  sample: name === 'wide' ? 'Section heading label' : 'The quick brown fox jumps',
+}));
+
+function trackingSample(row: TrackingRow): TemplateResult {
+  const uppercase = row.name === 'wide';
+  return html`<span
+    style="letter-spacing:${row.value};font-size:var(--ds-font-size-${uppercase ? 'body-sm' : 'body-lg'});${
+      uppercase ? 'text-transform:uppercase;font-weight:600' : ''
+    }"
+    >${row.sample}</span
+  >`;
+}
+
+const trackingColumns: readonly TableColumn<TrackingRow>[] = [
+  { name: 'token', field: 'token', label: 'Token', width: '14rem', render: (row) => code(row.token) },
+  { name: 'value', field: 'value', label: 'Value', width: '7rem' },
+  { name: 'sample', field: 'sample', label: 'Preview', render: trackingSample },
+];
+
 export const LetterSpacing: Story = {
-  render: () =>
-    html` <section style=${SECTION}>
-      ${sectionHeader(
-        'Letter spacing',
-        html`Four values covering optically tight display headings to spaced-out uppercase labels.
-          <code>normal</code> is 0 — no adjustment.`,
-      )}
-      <div role="table" style=${TABLE}>
-        ${TRACKING_STEPS.map(
-          ([name, val], i) => html`
-            <div role="row" style=${bodyRow(TRACKING_COLUMNS, i)}>
-              <code role="cell" style=${MONO_CELL}>letter-spacing-${name}</code>
-              <span role="cell" style=${NUM_CELL}>${val || '0'}</span>
-              <span role="cell" style=${trackingSample(val, name === 'wide')}>
-                ${name === 'wide' ? 'Section heading label' : 'The quick brown fox jumps'}
-              </span>
-            </div>
-          `,
-        )}
-      </div>
-    </section>`,
+  render: () => html`<ds-table .rows=${trackingRows} .columns=${trackingColumns}></ds-table>`,
 };

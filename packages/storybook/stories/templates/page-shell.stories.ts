@@ -29,6 +29,12 @@ const FRAME_HEIGHT = 360;
 const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
 const FLUID_PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:none';
 const CAPPED_PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:90rem';
+const ACTIVITY_HEADING_STYLE = [
+  'margin:0',
+  'font-family:var(--ds-font-display)',
+  'font-size:var(--ds-font-size-heading-sm)',
+  'letter-spacing:var(--ds-letter-spacing-display)',
+].join(';');
 
 interface PageShellStoryOptions {
   style?: string;
@@ -83,7 +89,7 @@ export const WithSidenav: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">Overview</h1>
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">Overview</h1>
         <p>
           Compose <code>ds-sidenav</code> + <code>ds-nav-item</code> in the <code>aside</code> slot and
           <code>ds-footer</code> in the <code>footer</code> slot for a complete application frame.
@@ -106,7 +112,7 @@ export const NoAside: Story = {
           <ds-button variant="primary" size="sm">New session</ds-button>
         </div>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">
             Single-section app
           </h1>
           <p>
@@ -138,7 +144,7 @@ export const ConstrainedWidth: Story = {
           </ds-nav-item>
         </ds-sidenav>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">
             Capped shell
           </h1>
           <p>
@@ -176,7 +182,7 @@ export const CollapsedSidenav: Story = {
           </ds-nav-item>
         </ds-sidenav>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">
             Collapsed navigation
           </h1>
           <p>
@@ -209,7 +215,7 @@ export const CollapsibleAsides: Story = {
           </ds-nav-item>
         </ds-sidenav>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">
             Two-sided shell
           </h1>
           <p>
@@ -251,7 +257,7 @@ export const OverflowingMain: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">
           Overflowing main
         </h1>
         <p>
@@ -286,7 +292,7 @@ export const NonScrollingPageHeader: Story = {
         </ds-nav-item>
       </ds-sidenav>
       <header slot="page-header" style="display:grid;gap:var(--ds-space-1)">
-        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">Activity</h1>
+        <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">Activity</h1>
         <p style="margin:0;color:var(--ds-color-fg-muted)">
           The heading stays still while the edge-aligned content region scrolls.
         </p>
@@ -295,7 +301,7 @@ export const NonScrollingPageHeader: Story = {
         { length: 24 },
         (_, index) => html`
           <section style="max-width:68rem">
-            <h2 style="margin:0;font-size:var(--ds-font-size-heading-sm)">Activity group ${index + 1}</h2>
+            <h2 style=${ACTIVITY_HEADING_STYLE}>Activity group ${index + 1}</h2>
             <p>Recent project and account events appear in this scrolling region.</p>
           </section>
         `,
@@ -336,7 +342,7 @@ export const HeaderStatusAndMenuAtStart: Story = {
           </ds-nav-item>
         </ds-sidenav>
         <article style="display:grid;gap:var(--ds-space-4);max-width:68ch">
-          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-xl);margin:0">
+          <h1 style="font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-md);margin:0">
             Header status
           </h1>
           <p>

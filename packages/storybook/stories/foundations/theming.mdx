@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs/blocks';
 import * as ThemingStories from './theming.stories';
 
 <Meta of={ThemingStories} />
@@ -10,7 +10,7 @@ The system uses a **three-layer token architecture**. Override only the layer yo
 ```
 Primitive layer   —  raw values: #4A72CC, 1rem, 8px, 120ms
        ↓
-Semantic layer    —  roles: --ds-color-accent, --ds-radius-sm, --ds-duration-fast
+Semantic layer    —  roles: --ds-color-accent, --ds-radius-xs, --ds-duration-fast
        ↓
 Component layer   —  ds-button reads --ds-color-accent, not the hex
 ```
@@ -21,14 +21,7 @@ This is the same contract demonstrated in the Tokens foundation page: components
 
 ## What is overridable
 
-| Token group     | Semantic tokens                                                                                        | Effect                                 |
-| --------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------- |
-| Brand colour    | `--ds-color-accent`, `--ds-color-accent-hover`, `--ds-color-accent-active`, `--ds-color-accent-subtle` | Buttons, links, badges, focus rings    |
-| Radii           | `--ds-radius-xs` through `--ds-radius-full`                                                            | All rounded corners                    |
-| Borders         | `--ds-color-border`, `--ds-color-border-strong`                                                        | Cards, inputs, dividers                |
-| Display font    | `--ds-font-display`                                                                                    | Headings that use the display typeface |
-| Surface colours | `--ds-color-bg`, `--ds-color-bg-subtle`, `--ds-color-bg-muted`                                         | Page and card backgrounds              |
-| Status colours  | `--ds-color-success/warning/danger`                                                                    | Alert banners, validation states       |
+<Story of={ThemingStories.OverridableTokens} />
 
 ## How to apply overrides
 
@@ -40,14 +33,14 @@ Set overrides on any ancestor element. They cascade into every shadow root via C
 :root {
   --ds-color-accent: #e2341d;
   --ds-color-accent-hover: #c12613;
-  --ds-radius-sm: 12px;
+  --ds-radius-xs: 12px;
 }
 ```
 
 **Scoped to a region** — targets one section or component:
 
 ```html
-<div style="--ds-color-accent: #1F7A7A; --ds-radius-md: 24px;">
+<div style="--ds-color-accent: #1F7A7A; --ds-radius-xs: 12px;">
   <ds-button variant="primary">Scoped theme</ds-button>
 </div>
 ```
@@ -58,10 +51,10 @@ Set overrides on any ancestor element. They cascade into every shadow root via C
 
 Adjust the controls panel below to see how accent, radius, border, and display font changes propagate across components in real time.
 
-<Canvas of={ThemingStories.LivePlayground} />
+<Story of={ThemingStories.LivePlayground} />
 
 ## Brand presets
 
 Three pre-configured brand themes showing how a few token overrides create a meaningfully different visual identity.
 
-<Canvas of={ThemingStories.BrandPresets} />
+<Story of={ThemingStories.BrandPresets} />

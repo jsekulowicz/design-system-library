@@ -1,7 +1,9 @@
-import { html } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
-import { radius, shadow, border, duration, easing, breakpoint, container, zIndex } from '@jsekulowicz/ds-tokens';
-import { bodyRow, GROUP_LABEL, joinStyles, MONO_MUTED_CELL, NUM_CELL, TABLE } from '../shared/styles';
+import type { TableColumn } from '@jsekulowicz/ds-components/table';
+import { border, breakpoint, container, duration, easing, radius, shadow, zIndex } from '@jsekulowicz/ds-tokens';
+import '@jsekulowicz/ds-components/table/define';
+import { GROUP_LABEL, joinStyles } from '../shared/styles';
 
 const meta: Meta = {
   title: 'Foundations/Tokens',
@@ -11,12 +13,30 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-function radiusSwatch(val: string): string {
+interface TokenRow {
+  [key: string]: unknown;
+  token: string;
+  value: string;
+  use?: string;
+}
+
+function code(value: string): TemplateResult {
+  return html`<code>${value}</code>`;
+}
+
+const SHAPE_LAYOUT = joinStyles(
+  'display:grid;gap:var(--ds-space-8)',
+  'font-family:var(--ds-font-body)',
+  'font-size:var(--ds-font-size-body-lg)',
+  'color:var(--ds-color-fg)',
+);
+
+function radiusSwatch(value: string): string {
   return joinStyles(
     'width:56px;height:56px',
     'background:var(--ds-color-accent-subtle)',
     'border:1.5px solid var(--ds-color-accent)',
-    `border-radius:${val}`,
+    `border-radius:${value}`,
   );
 }
 
@@ -24,42 +44,47 @@ function shadowSwatch(name: string): string {
   return joinStyles(
     'height:64px',
     'background:var(--ds-color-bg)',
-    'border-radius:var(--ds-radius-md)',
+    'border-radius:var(--ds-radius-xs)',
     `box-shadow:var(--ds-shadow-${name})`,
   );
 }
 
-function barSwatch(val: string): string {
-  return joinStyles(
-    'height:6px',
-    'background:var(--ds-color-accent-subtle)',
-    'border:1px solid var(--ds-color-accent)',
-    'border-radius:2px',
-    `max-width:${val}`,
-  );
-}
+const borderRows: readonly TokenRow[] = Object.entries(border).map(([name, value]) => ({
+  token: `border-${name}`,
+  value,
+}));
 
-const RADIUS_STEPS = Object.entries(radius) as [string, string][];
-const SHADOW_STEPS = Object.entries(shadow) as [string, string][];
-const BORDER_STEPS = Object.entries(border) as [string, string][];
+const borderColumns: readonly TableColumn<TokenRow>[] = [
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'value', field: 'value', label: 'Value', width: '6rem' },
+  {
+    name: 'preview',
+    field: 'value',
+    label: 'Preview',
+    render: (row) =>
+      html`<span
+        aria-hidden="true"
+        style="display:block;height:${row.value};background:var(--ds-color-fg);max-width:120px"
+      ></span>`,
+  },
+];
 
 export const Shape: Story = {
-  render: () =>
-    html` <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+  render: () => html`
+    <section style=${SHAPE_LAYOUT}>
       <div style="display:grid;gap:var(--ds-space-4)">
         <h3 style=${GROUP_LABEL}>Radius</h3>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:var(--ds-space-3)">
-          ${RADIUS_STEPS.map(
-            ([name, val]) =>
-              html` <div style="display:grid;gap:var(--ds-space-2);align-items:start">
-                <div style=${radiusSwatch(val)}></div>
+          ${Object.entries(radius).map(
+            ([name, value]) => html`
+              <div style="display:grid;gap:var(--ds-space-2);align-items:start">
+                <div style=${radiusSwatch(value)}></div>
                 <div>
-                  <code style="display:block;font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                    >radius-${name}</code
-                  >
-                  <span style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)">${val}</span>
+                  <code style="display:block">radius-${name}</code>
+                  <span style="color:var(--ds-color-fg-muted)">${value}</span>
                 </div>
-              </div>`,
+              </div>
+            `,
           )}
         </div>
       </div>
@@ -67,161 +92,110 @@ export const Shape: Story = {
       <div style="display:grid;gap:var(--ds-space-4)">
         <h3 style=${GROUP_LABEL}>Shadow</h3>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:var(--ds-space-5)">
-          ${SHADOW_STEPS.map(
-            ([name]) =>
-              html` <div style="display:grid;gap:var(--ds-space-3)">
+          ${Object.keys(shadow).map(
+            (name) => html`
+              <div style="display:grid;gap:var(--ds-space-3)">
                 <div style=${shadowSwatch(name)}></div>
-                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                  >shadow-${name}</code
-                >
-              </div>`,
+                <code>shadow-${name}</code>
+              </div>
+            `,
           )}
         </div>
       </div>
 
       <div style="display:grid;gap:var(--ds-space-4)">
         <h3 style=${GROUP_LABEL}>Border width</h3>
-        <div style=${TABLE}>
-          ${BORDER_STEPS.map(
-            ([name, val], i) =>
-              html` <div style=${bodyRow('9rem 4rem 1fr', i)}>
-                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                  >border-${name}</code
-                >
-                <span style=${NUM_CELL}>${val}</span>
-                <div style="height:${val};background:var(--ds-color-fg);border-radius:1px;max-width:120px"></div>
-              </div>`,
-          )}
-        </div>
+        <ds-table .rows=${borderRows} .columns=${borderColumns}></ds-table>
       </div>
-    </section>`,
+    </section>
+  `,
 };
 
-const DURATION_STEPS = Object.entries(duration) as [string, string][];
-const EASING_STEPS = Object.entries(easing) as [string, string][];
-const DURATION_USE: Record<string, string> = {
+const durationUse: Record<string, string> = {
   instant: 'Micro-interactions: toggle, checkbox check',
   fast: 'Hover states, icon swaps, badge updates',
   normal: 'Drawer open, popover appear, tab switch',
   slow: 'Panel slide, card expand, skeleton fade',
   slower: 'Full-page transitions, staggered list entry',
 };
-const EASING_USE: Record<string, string> = {
+const easingUse: Record<string, string> = {
   standard: 'Default for most transitions',
   emphasized: 'Attention-drawing, springy overshoot',
   enter: 'Elements entering the screen',
   exit: 'Elements leaving the screen',
 };
 
+function tokenRows(prefix: string, values: Record<string, string>, uses: Record<string, string>): readonly TokenRow[] {
+  return Object.entries(values).map(([name, value]) => ({ token: `${prefix}-${name}`, value, use: uses[name] }));
+}
+
+const usageColumns: readonly TableColumn<TokenRow>[] = [
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'value', field: 'value', label: 'Value', width: '14rem', render: (row) => code(row.value) },
+  { name: 'use', field: 'use', label: 'Use' },
+];
+
 export const Motion: Story = {
-  render: () =>
-    html` <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+  render: () => html`
+    <section style="display:grid;gap:var(--ds-space-8)">
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Duration</h3>
-        <div role="table" style=${TABLE}>
-          ${DURATION_STEPS.map(
-            ([name, val], i) =>
-              html` <div role="row" style=${bodyRow('9rem 4.5rem 1fr', i)}>
-                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                  >duration-${name}</code
-                >
-                <span role="cell" style=${NUM_CELL}>${val}</span>
-                <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
-                  >${DURATION_USE[name]}</span
-                >
-              </div>`,
-          )}
-        </div>
+        <ds-table .rows=${tokenRows('duration', duration, durationUse)} .columns=${usageColumns}></ds-table>
       </div>
-
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Easing</h3>
-        <div role="table" style=${TABLE}>
-          ${EASING_STEPS.map(
-            ([name, val], i) =>
-              html` <div role="row" style=${bodyRow('9rem 1fr 1fr', i)}>
-                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                  >easing-${name}</code
-                >
-                <code role="cell" style=${MONO_MUTED_CELL}>${val}</code>
-                <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
-                  >${EASING_USE[name]}</span
-                >
-              </div>`,
-          )}
-        </div>
+        <ds-table .rows=${tokenRows('easing', easing, easingUse)} .columns=${usageColumns}></ds-table>
       </div>
-    </section>`,
+    </section>
+  `,
 };
 
-const BREAKPOINT_STEPS = Object.entries(breakpoint) as [string, string][];
-const CONTAINER_STEPS = Object.entries(container) as [string, string][];
-const ZINDEX_STEPS = Object.entries(zIndex) as [string, string][];
-const ZINDEX_USE: Record<string, string> = {
+function barSwatch(value: string, color = 'var(--ds-color-accent-subtle)'): TemplateResult {
+  const style = joinStyles(
+    'display:block;height:6px',
+    `background:${color}`,
+    'border:1px solid var(--ds-color-accent)',
+    `max-width:min(${value},100%)`,
+  );
+  return html`<span aria-hidden="true" style=${style}></span>`;
+}
+
+const previewColumns: readonly TableColumn<TokenRow>[] = [
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'value', field: 'value', label: 'Value', width: '7rem' },
+  { name: 'preview', field: 'value', label: 'Preview', render: (row) => barSwatch(row.value) },
+];
+
+const zIndexUse: Record<string, string> = {
   base: 'Normal document flow',
   raised: 'Sticky elements within a section',
-  dropdown: 'Menus, autocomplete panels',
+  dropdown: 'Menus and autocomplete panels',
   sticky: 'Sticky headers and sidebars',
   overlay: 'Backdrop overlays behind modals',
-  modal: 'Dialogs, drawers, sheets',
+  modal: 'Dialogs, drawers, and sheets',
   toast: 'Notification toasts',
-  tooltip: 'Tooltips (Popover API top layer — z-index is a fallback)',
+  tooltip: 'Tooltip fallback when the Popover API top layer is unavailable',
 };
 
+function valueRows(prefix: string, values: Record<string, string>): readonly TokenRow[] {
+  return Object.entries(values).map(([name, value]) => ({ token: `${prefix}-${name}`, value }));
+}
+
 export const BreakpointsAndZIndex: Story = {
-  render: () =>
-    html` <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+  render: () => html`
+    <section style="display:grid;gap:var(--ds-space-8)">
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Breakpoints</h3>
-        <div role="table" style=${TABLE}>
-          ${BREAKPOINT_STEPS.map(
-            ([name, val], i) =>
-              html` <div role="row" style=${bodyRow('7rem 6rem 1fr', i)}>
-                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                  >breakpoint-${name}</code
-                >
-                <span role="cell" style=${NUM_CELL}>${val}</span>
-                <div role="cell" style=${barSwatch(val)}></div>
-              </div>`,
-          )}
-        </div>
+        <ds-table .rows=${valueRows('breakpoint', breakpoint)} .columns=${previewColumns}></ds-table>
       </div>
-
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Container max-widths</h3>
-        <div role="table" style=${TABLE}>
-          ${CONTAINER_STEPS.map(
-            ([name, val], i) =>
-              html` <div role="row" style=${bodyRow('7rem 4.5rem 1fr', i)}>
-                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                  >container-${name}</code
-                >
-                <span role="cell" style=${NUM_CELL}>${val}</span>
-                <div
-                  role="cell"
-                  style="height:6px;background:var(--ds-color-bg-muted);border-radius:2px;max-width:min(${val},100%)"
-                ></div>
-              </div>`,
-          )}
-        </div>
+        <ds-table .rows=${valueRows('container', container)} .columns=${previewColumns}></ds-table>
       </div>
-
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Z-index</h3>
-        <div role="table" style=${TABLE}>
-          ${ZINDEX_STEPS.map(
-            ([name, val], i) =>
-              html` <div role="row" style=${bodyRow('9rem 4rem 1fr', i)}>
-                <code role="cell" style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)"
-                  >z-index-${name}</code
-                >
-                <span role="cell" style=${NUM_CELL}>${val}</span>
-                <span role="cell" style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
-                  >${ZINDEX_USE[name]}</span
-                >
-              </div>`,
-          )}
-        </div>
+        <ds-table .rows=${tokenRows('z-index', zIndex, zIndexUse)} .columns=${usageColumns}></ds-table>
       </div>
-    </section>`,
+    </section>
+  `,
 };

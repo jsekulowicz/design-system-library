@@ -21,6 +21,15 @@ const LEGEND_BAR = joinStyles(
   'border-top:1px solid var(--ds-color-border)',
 );
 
+const PALETTE_LAYOUT = joinStyles(
+  'display:grid;gap:var(--ds-space-8)',
+  'font-family:var(--ds-font-body)',
+  'font-size:var(--ds-font-size-body-lg)',
+  'color:var(--ds-color-fg)',
+);
+
+const PAIRINGS_LAYOUT = PALETTE_LAYOUT.replace('var(--ds-space-8)', 'var(--ds-space-4)');
+
 export default meta;
 type Story = StoryObj;
 
@@ -143,7 +152,7 @@ const GROUPS: Group[] = [
 
 function swatchCard(s: Swatch): TemplateResult {
   return html` <figure
-    style="margin:0;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);overflow:hidden"
+    style="margin:0;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-xs);overflow:hidden"
   >
     <div style="height:56px;background:var(${s.token})" aria-hidden="true"></div>
     <figcaption style="padding:var(--ds-space-3);display:grid;gap:2px;background:var(--ds-color-bg-subtle)">
@@ -158,7 +167,7 @@ function swatchCard(s: Swatch): TemplateResult {
 
 export const SemanticPalette: Story = {
   render: () =>
-    html` <section style="display:grid;gap:var(--ds-space-8);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+    html` <section style=${PALETTE_LAYOUT}>
       ${GROUPS.map(
         (g) =>
           html` <div style="display:grid;gap:var(--ds-space-3)">
@@ -206,10 +215,10 @@ const PAIRINGS = [
 
 export const UsagePairings: Story = {
   render: () =>
-    html` <section style="display:grid;gap:var(--ds-space-4);font-family:var(--ds-font-body);color:var(--ds-color-fg)">
+    html` <section style=${PAIRINGS_LAYOUT}>
       ${PAIRINGS.map(
         (p) =>
-          html` <div style="border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-md);overflow:hidden">
+          html` <div style="border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-xs);overflow:hidden">
             <div style="padding:var(--ds-space-5);background:var(${p.bg});color:var(${p.fg})">
               <p style="margin:0;font-size:var(--ds-font-size-body-lg)">${p.sample}</p>
             </div>

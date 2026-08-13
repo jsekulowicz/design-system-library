@@ -5,6 +5,7 @@ import '@jsekulowicz/ds-components/table/define';
 
 type Story = StoryObj;
 interface UtilityRow {
+  [key: string]: unknown;
   group: string;
   classes: readonly string[];
   mapsTo: string;

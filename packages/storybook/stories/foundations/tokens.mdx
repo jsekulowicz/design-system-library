@@ -1,6 +1,5 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs/blocks';
 import * as TokensStories from './tokens.stories';
-import { Canvas } from '@storybook/addon-docs/blocks';
 
 <Meta of={TokensStories} />
 
@@ -22,21 +21,21 @@ CSS cascade layers guarantee consumer overrides win without `!important`:
 
 ### Shape
 
-Radius, shadow, and border-width tokens define component geometry and depth.
+Radius, shadow, and border-width tokens define component geometry and depth. Use `radius-xs` for standard controls and surfaces; reserve larger radii for deliberate emphasis and `radius-full` for circular or pill geometry.
 
-<Canvas of={TokensStories.Shape} />
+<Story of={TokensStories.Shape} />
 
 ### Motion
 
 Duration and easing tokens keep interaction timing consistent across components.
 
-<Canvas of={TokensStories.Motion} />
+<Story of={TokensStories.Motion} />
 
 ### Layout
 
 Breakpoints, container widths, and z-index tokens coordinate responsive structure and stacking.
 
-<Canvas of={TokensStories.BreakpointsAndZIndex} />
+<Story of={TokensStories.BreakpointsAndZIndex} />
 
 ## Theming
 

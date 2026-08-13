@@ -1,4 +1,4 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Story } from '@storybook/addon-docs/blocks';
 import * as UtilitiesStories from './utilities.stories';
 
 <Meta of={UtilitiesStories} />
@@ -31,7 +31,7 @@ CSS utility files are not tree-shaken at the individual class level. The package
 
 Spacing utilities use `--ds-space-*` tokens. Replace `{n}` with a supported spacing step: `0`, `1`, `2`, `3`, `4`, `5`, or `6`.
 
-<Canvas of={UtilitiesStories.Spacing} />
+<Story of={UtilitiesStories.Spacing} />
 
 Example:
 
@@ -43,7 +43,7 @@ Example:
 
 Layout utilities cover display, flex direction/wrapping, and alignment.
 
-<Canvas of={UtilitiesStories.Layout} />
+<Story of={UtilitiesStories.Layout} />
 
 Example:
 
@@ -55,7 +55,7 @@ Example:
 
 Typography utilities map to font family, font size, font weight, and line-height tokens.
 
-<Canvas of={UtilitiesStories.Typography} />
+<Story of={UtilitiesStories.Typography} />
 
 Example:
 

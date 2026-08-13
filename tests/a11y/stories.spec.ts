@@ -20,6 +20,15 @@ const stories = [
   'molecules-barchart--grouped',
   'molecules-heatmapcalendar--activity',
   'organisms-form--account-details',
+  'foundations-spacing--scale',
+  'foundations-theming--overridable-tokens',
+  'foundations-tokens--shape',
+  'foundations-tokens--motion',
+  'foundations-tokens--breakpoints-and-z-index',
+  'foundations-typography--type-scale',
+  'foundations-typography--size-guidance',
+  'foundations-typography--font-weights',
+  'foundations-typography--letter-spacing',
 ];
 
 for (const id of stories) {
