@@ -17,9 +17,9 @@ const meta: Meta = {
     messageSpace: { control: 'boolean' },
   },
   args: {
-    label: 'Voice',
-    description: 'How should clues be read aloud?',
-    value: 'light',
+    label: 'Audio guidance',
+    description: 'Choose how much spoken guidance is provided.',
+    value: 'brief',
     disabled: false,
     small: false,
     messageSpace: false,
@@ -31,14 +31,14 @@ type Story = StoryObj;
 
 const OPTIONS = [
   { value: 'off', label: 'Off' },
-  { value: 'light', label: 'Light' },
-  { value: 'natural', label: 'Natural' },
+  { value: 'brief', label: 'Brief' },
+  { value: 'full', label: 'Full' },
 ];
 
 const ICON_OPTIONS = [
   { value: 'off', label: 'Off', icon: 'speaker-x-mark' },
-  { value: 'light', label: 'Light', icon: 'speaker-wave' },
-  { value: 'natural', label: 'Natural', icon: 'sparkles' },
+  { value: 'brief', label: 'Brief', icon: 'speaker-wave' },
+  { value: 'full', label: 'Full', icon: 'sparkles' },
 ];
 
 export const Playground: Story = {
@@ -57,12 +57,12 @@ export const Playground: Story = {
 
 export const WithIcons: Story = {
   render: () => html`
-    <ds-segmented-control label="Voice" value="natural" .options=${ICON_OPTIONS}></ds-segmented-control>
+    <ds-segmented-control label="Audio guidance" value="full" .options=${ICON_OPTIONS}></ds-segmented-control>
   `,
 };
 
 export const Disabled: Story = {
   render: () => html`
-    <ds-segmented-control label="Voice" value="light" .options=${ICON_OPTIONS} disabled></ds-segmented-control>
+    <ds-segmented-control label="Audio guidance" value="brief" .options=${ICON_OPTIONS} disabled></ds-segmented-control>
   `,
 };

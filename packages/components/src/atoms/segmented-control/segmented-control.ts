@@ -100,7 +100,7 @@ export class DsSegmentedControl extends DsElement {
         ?disabled=${this.disabled || option.disabled}
         @ds-click=${() => this.#select(option)}
       >
-        ${option.icon ? html`<ds-icon slot="leading" name=${option.icon} size="sm"></ds-icon>` : nothing}
+        ${option.icon ? html`<ds-icon slot="leading" name=${option.icon} size="lg"></ds-icon>` : nothing}
         ${option.label}
       </ds-button>
     `;

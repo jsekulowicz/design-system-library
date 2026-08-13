@@ -141,7 +141,7 @@ describe('<ds-segmented-control>', () => {
     el.value = 'off';
     await el.updateComplete;
 
-    expect(el.shadowRoot!.querySelector('ds-icon')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('ds-icon')?.getAttribute('size')).toBe('lg');
   });
 
   it('keeps a single tab stop on the selected segment (roving tabindex)', async () => {
