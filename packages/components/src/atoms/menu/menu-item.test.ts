@@ -95,7 +95,7 @@ describe('<ds-menu-item>', () => {
     const el = await mount<DsMenuItem>(`
       <ds-menu-item>
         Save As
-        <span slot="description">…</span>
+        <span slot="description">...</span>
       </ds-menu-item>
     `);
     expect(el.primaryText).toBe('Save As');

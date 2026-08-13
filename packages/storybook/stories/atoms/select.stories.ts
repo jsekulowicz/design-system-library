@@ -15,8 +15,8 @@ const options = [
   { label: 'Operations', value: 'ops', disabled: true, icon: { name: 'cog-6-tooth', color: '#0891b2' } },
 ];
 
-// Displayed verbatim in the "Show code" panel so examples show how options —
-// including per-option icons — are defined alongside the component markup.
+// Displayed verbatim in the "Show code" panel so examples show how options -
+// including per-option icons - are defined alongside the component markup.
 const OPTIONS_SRC = `import '@jsekulowicz/ds-components/select/define';
 import '@jsekulowicz/ds-components/icon/define';
 import '@jsekulowicz/ds-components/icon/squares-2x2';
@@ -167,7 +167,7 @@ export const WithHint: Story = {
     docs: {
       description: {
         story:
-          'A `hint` renders a sticky note at the top of the open dropdown — use it to explain, for the whole menu, why a choice is unavailable (here, why "Operations" is disabled). It is visible the moment the dropdown opens, for mouse and keyboard users alike, rather than only on hovering the disabled option. Pair it with a per-option `disabledReason` for the screen-reader description on that option. Open the select to see it.',
+          'A `hint` renders a sticky note at the top of the open dropdown - use it to explain, for the whole menu, why a choice is unavailable (here, why "Operations" is disabled). It is visible the moment the dropdown opens, for mouse and keyboard users alike, rather than only on hovering the disabled option. Pair it with a per-option `disabledReason` for the screen-reader description on that option. Open the select to see it.',
       },
       source: {
         code: src(
@@ -346,7 +346,7 @@ ${LEADING}
 };
 
 export const MultipleWithIcons: Story = {
-  name: 'Multiple — icons on tiles',
+  name: 'Multiple - icons on tiles',
   parameters: {
     docs: {
       story: { height: '200px' },
@@ -379,7 +379,7 @@ ${LEADING}
 };
 
 export const MultiplePreselected: Story = {
-  name: 'Multiple — preselected + maxLines',
+  name: 'Multiple - preselected + maxLines',
   parameters: {
     docs: {
       story: { height: '320px' },
@@ -413,25 +413,25 @@ ${LEADING}
   `,
 };
 
-// Long, sentence-like labels (e.g. crossword clues) to show option wrapping.
+// Long, sentence-like labels demonstrate option wrapping.
 const longOptions = [
   {
-    label: 'Líquido transparente, incoloro e inodoro que forma ríos, lagos y mares',
-    value: 'agua',
+    label: 'Billing history, payment methods, and downloadable account invoices',
+    value: 'billing',
   },
-  { label: 'Conjunto de pasos y técnicas para preparar un plato de comida', value: 'receta' },
-  { label: 'Persona que se dedica a escribir obras literarias', value: 'autor' },
+  { label: 'Email, mobile, and in-product notification preferences', value: 'notifications' },
+  { label: 'Language, time zone, date, and number formatting preferences', value: 'regional' },
 ];
 
 const LONG_OPTIONS_SRC = `import '@jsekulowicz/ds-components/select/define';
 
 const options = [
   {
-    label: 'Líquido transparente, incoloro e inodoro que forma ríos, lagos y mares',
-    value: 'agua',
+    label: 'Billing history, payment methods, and downloadable account invoices',
+    value: 'billing',
   },
-  { label: 'Conjunto de pasos y técnicas para preparar un plato de comida', value: 'receta' },
-  { label: 'Persona que se dedica a escribir obras literarias', value: 'autor' },
+  { label: 'Email, mobile, and in-product notification preferences', value: 'notifications' },
+  { label: 'Language, time zone, date, and number formatting preferences', value: 'regional' },
 ];`;
 
 export const LongOptionsWrap: Story = {
@@ -441,20 +441,22 @@ export const LongOptionsWrap: Story = {
       story: { height: '240px' },
       description: {
         story:
-          'Dropdown options wrap onto multiple lines instead of truncating with an ellipsis, so long labels (such as full crossword clues) can be read in full. Open the select to see the wrapped options; an option keeps its single-line height as a baseline and grows only when its text wraps, and the closed trigger still truncates the selected value to one line. `ds-searchable-select` shares the same option and wraps identically.',
+          'Dropdown options wrap onto multiple lines instead of truncating with an ellipsis, so long labels can be read in full. Open the select to see the wrapped options; an option keeps its single-line height as a baseline and grows only when its text wraps, and the closed trigger still truncates the selected value to one line. `ds-searchable-select` shares the same option and wraps identically.',
       },
       source: {
-        code: `${LONG_OPTIONS_SRC}\n\nhtml\`\n  <ds-select label="Clue" placeholder="Pick a clue" .options=\${options}></ds-select>\n\`;`,
+        code: `${LONG_OPTIONS_SRC}\n\nhtml\`\n  <ds-select label="Settings section" placeholder="Choose a section" .options=\${options}></ds-select>\n\`;`,
       },
     },
   },
-  render: () => html` <ds-select label="Clue" placeholder="Pick a clue" .options=${longOptions}></ds-select> `,
+  render: () => html`
+    <ds-select label="Settings section" placeholder="Choose a section" .options=${longOptions}></ds-select>
+  `,
 };
 
 const scaleOptions = [
-  { label: 'Easy', value: 'easy' },
-  { label: 'Medium', value: 'medium' },
-  { label: 'Hard', value: 'hard' },
+  { label: 'Low', value: 'low' },
+  { label: 'Normal', value: 'normal' },
+  { label: 'High', value: 'high' },
 ];
 
 const squares = (filled: number) => html`
@@ -470,9 +472,9 @@ const squares = (filled: number) => html`
   </span>
 `;
 
-const PROJECTED_SRC = `<ds-select label="Difficulty" .options=\${options}>
-  <span slot="option:easy"><my-scale value="1"></my-scale> Easy</span>
-  <span slot="selected:easy"><my-scale value="1"></my-scale> Easy</span>
+const PROJECTED_SRC = `<ds-select label="Priority" .options=\${options}>
+  <span slot="option:low"><my-scale value="1"></my-scale> Low</span>
+  <span slot="selected:low"><my-scale value="1"></my-scale> Low</span>
   <!-- one node per option, per surface -->
 </ds-select>`;
 
@@ -483,13 +485,13 @@ export const ProjectedOptionContent: Story = {
       story: { height: '240px' },
       description: {
         story:
-          'An option renders framework-owned content through the `option:{value}` slot, falling back to its `label` when nothing is projected. `selected:{value}` covers the trigger and `tile:{value}` the tiles of a `multiple` select — a node can only be projected once, so each surface takes its own. Keep projected content inside the 36px row the listbox virtualises on. `ds-searchable-select` has the same `option:` and `tile:` slots, but no `selected:`: its single-value trigger is a text input.',
+          'An option renders framework-owned content through the `option:{value}` slot, falling back to its `label` when nothing is projected. `selected:{value}` covers the trigger and `tile:{value}` the tiles of a `multiple` select - a node can only be projected once, so each surface takes its own. Keep projected content inside the 36px row the listbox virtualises on. `ds-searchable-select` has the same `option:` and `tile:` slots, but no `selected:`: its single-value trigger is a text input.',
       },
       source: { code: PROJECTED_SRC },
     },
   },
   render: () => html`
-    <ds-select label="Difficulty" placeholder="Pick a difficulty" .options=${scaleOptions}>
+    <ds-select label="Priority" placeholder="Choose a priority" .options=${scaleOptions}>
       ${scaleOptions.map(
         (option, index) => html`
           <span slot="option:${option.value}" style="display:inline-flex;gap:8px;align-items:center">

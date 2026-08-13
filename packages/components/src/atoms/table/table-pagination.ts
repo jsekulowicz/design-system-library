@@ -17,7 +17,7 @@ const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
  * @summary Pagination controls emitting page-change events. Presentation-only; consumer owns paging state.
  * @slot prev-label - Content of the Previous button.
  * @slot next-label - Content of the Next button.
- * @slot summary - Replaces the default "Showing X–Y of Z" summary.
+ * @slot summary - Replaces the default "Showing X-Y of Z" summary.
  * @event ds-page-change - Emitted when the user picks a page. Detail: `{ page, pageSize }`.
  * @event ds-page-size-change - Emitted when page size changes. Detail: `{ pageSize, page }`.
  * @csspart nav - The `<nav>` wrapper.
@@ -31,7 +31,7 @@ const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
  * @csspart prev-next-label - The text label inside the Previous / Next buttons. Hidden by default below 480px (compact mode); style this part to override.
  * @csspart size-selector - The size `<select>` wrapper.
  * @csspart summary - The summary region.
- * @attr compact - Reflected boolean attribute toggled automatically when the component is narrower than 480px. In compact mode the prev/next labels collapse to icons, the visible page count drops to "first … current … last", and `sibling-count` is forced to 0.
+ * @attr compact - Reflected boolean attribute toggled automatically when the component is narrower than 480px. In compact mode the prev/next labels collapse to icons, the visible page count drops to "first ... current ... last", and `sibling-count` is forced to 0.
  */
 export class DsTablePagination extends DsElement {
   static override styles = [...DsElement.styles, tablePaginationStyles];
@@ -122,7 +122,7 @@ export class DsTablePagination extends DsElement {
 
   #renderItem(item: PaginationRangeItem, current: number): TemplateResult {
     if (item === 'ellipsis-start' || item === 'ellipsis-end') {
-      return html`<li part="item item-ellipsis" class="ellipsis" aria-hidden="true">…</li>`;
+      return html`<li part="item item-ellipsis" class="ellipsis" aria-hidden="true">...</li>`;
     }
     return this.#renderButton(item, current);
   }
@@ -172,7 +172,7 @@ export class DsTablePagination extends DsElement {
   #renderSummary(current: number): TemplateResult {
     const start = this.total === 0 ? 0 : (current - 1) * this.pageSize + 1;
     const end = Math.min(current * this.pageSize, this.total);
-    const fallback = this.total === 0 ? 'No results' : `Showing ${start}–${end} of ${this.total}`;
+    const fallback = this.total === 0 ? 'No results' : `Showing ${start}-${end} of ${this.total}`;
     return html`<div class="summary" part="summary" role="status" aria-live="polite">
       <slot name="summary">${fallback}</slot>
     </div>`;

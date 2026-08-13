@@ -10,7 +10,7 @@ import '@jsekulowicz/ds-components/tabs/define';
 
 A single navigation link. Renders an `<a>` (or `<span>` when disabled) with optional leading icon and a `current` state that maps to `aria-current="page"` and a visible active style.
 
-`ds-nav-item` is the link primitive used inside `ds-sidenav` (sidebar). The consumer owns the `current` state — the parent does not coordinate which item is active. Set `current` based on the URL.
+`ds-nav-item` is the link primitive used inside `ds-sidenav` (sidebar). The consumer owns the `current` state - the parent does not coordinate which item is active. Set `current` based on the URL.
 
 ## Anatomy
 
@@ -21,7 +21,7 @@ A single navigation link. Renders an `<a>` (or `<span>` when disabled) with opti
 </ds-nav-item>
 ```
 
-Items live in `ds-sidenav` as a flex column. When the closest ancestor is a `ds-sidenav[collapsed]`, the label is visually clipped — only the icon remains visible. The accessible name is preserved.
+Items live in `ds-sidenav` as a flex column. When the closest ancestor is a `ds-sidenav[collapsed]`, the label is visually clipped - only the icon remains visible. The accessible name is preserved.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -43,12 +43,12 @@ Items live in `ds-sidenav` as a flex column. When the closest ancestor is a `ds-
       <h3>Do</h3>
       <ul>
         <li>Set <code>current</code> on exactly one item per nav region, based on the active URL.</li>
-        <li>Provide an <code>icon</code> slot when the item will appear inside a collapsible <code>ds-sidenav</code> — collapsed mode hides the label.</li>
+        <li>Provide an <code>icon</code> slot when the item will appear inside a collapsible <code>ds-sidenav</code> - collapsed mode hides the label.</li>
         <li>Pair <code>target="_blank"</code> with <code>rel="noopener"</code> for external links.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Don't use <code>ds-nav-item</code> for inline document links — use <code>ds-link</code> for those.</li>
+        <li>Don't use <code>ds-nav-item</code> for inline document links - use <code>ds-link</code> for those.</li>
         <li>Don't disable items as a navigation gate; route the user to a "coming soon" page instead so they can read why.</li>
       </ul>
       <h3>Accessibility</h3>

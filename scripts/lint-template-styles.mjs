@@ -44,7 +44,7 @@ for (const { file, line, length } of violations) {
 console.error(
   `\nAn attribute value is atomic to Prettier: it moves the attribute onto its own line but never breaks` +
     `\ninside it, so these stay over printWidth (${printWidth}) forever. Interpolating the value does not help` +
-    '\neither — an interpolated attribute is just as atomic. Hoist it to a constant outside the template:' +
+    '\neither - an interpolated attribute is just as atomic. Hoist it to a constant outside the template:' +
     '\n\n  const ROW = joinStyles("display:grid", "gap:var(--ds-space-3)");\n  html`<div style=${ROW}>`\n',
 );
 process.exit(1);

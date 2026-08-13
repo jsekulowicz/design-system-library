@@ -62,7 +62,7 @@ describe('ScrollFadeController', () => {
 
   it('ignores a couple of px of overflow from rounding and inline layout', async () => {
     // A 2rem fade painted over content that overflows by 2px reads as a cut-off
-    // row — see the ds-checkbox line-box fix in toggle-control.styles.ts.
+    // row - see the ds-checkbox line-box fix in toggle-control.styles.ts.
     expect(await fadeOf(createScroller(202, 200))).toEqual({ top: OPAQUE, bottom: OPAQUE });
   });
 

@@ -146,9 +146,9 @@ describe('<ds-dialog>', () => {
   it('uses aria-labelledby pointing at the slotted title by default', async () => {
     const el = await mount<DsDialog>(TEMPLATE);
     const dialog = getDialogEl(el);
-    const labelledBy = dialog.getAttribute('aria-labelledby');
-    expect(labelledBy).toBeTruthy();
-    const heading = el.shadowRoot!.getElementById(labelledBy!);
+    const labeledBy = dialog.getAttribute('aria-labelledby');
+    expect(labeledBy).toBeTruthy();
+    const heading = el.shadowRoot!.getElementById(labeledBy!);
     expect(heading?.tagName.toLowerCase()).toBe('h2');
     expect(dialog.getAttribute('aria-label')).toBeNull();
   });
@@ -163,7 +163,7 @@ describe('<ds-dialog>', () => {
   it('exports the ds-card surface and body parts so consumers can override them', async () => {
     const el = await mount<DsDialog>(TEMPLATE);
     const card = el.shadowRoot!.querySelector('ds-card')!;
-    // Without exportparts, ds-dialog::part(card) would hit the ds-card host —
+    // Without exportparts, ds-dialog::part(card) would hit the ds-card host -
     // where the max-height set on ds-card::part(card) is unreachable.
     expect(card.getAttribute('exportparts')).toBe('card,body');
     expect(card.hasAttribute('part')).toBe(false);

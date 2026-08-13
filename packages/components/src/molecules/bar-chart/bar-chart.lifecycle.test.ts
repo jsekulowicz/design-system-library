@@ -4,20 +4,20 @@ import type { BarChartSeries } from './types.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-interface Turn {
-  turn: number;
-  Jess: number;
-  Marco: number;
-  Andrew: number;
+interface MetricRow {
+  period: number;
+  Website: number;
+  Mobile: number;
+  Partners: number;
 }
 
-const ROWS: readonly Turn[] = [
-  { turn: 1, Jess: 3, Marco: 2, Andrew: 4 },
-  { turn: 2, Jess: 2, Marco: 4, Andrew: 3 },
-  { turn: 3, Jess: 5, Marco: 5, Andrew: 4 },
+const ROWS: readonly MetricRow[] = [
+  { period: 1, Website: 3, Mobile: 2, Partners: 4 },
+  { period: 2, Website: 2, Mobile: 4, Partners: 3 },
+  { period: 3, Website: 5, Mobile: 5, Partners: 4 },
 ];
 
-const SERIES: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
+const SERIES: readonly BarChartSeries[] = [{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }];
 
 beforeAll(() => {
   if (!customElements.get('ds-bar-chart')) {
@@ -50,11 +50,11 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
     } as unknown as typeof ResizeObserver;
 
     try {
-      const el = await mountWithProps<DsBarChart<Turn>>(
+      const el = await mountWithProps<DsBarChart<MetricRow>>(
         '<ds-bar-chart></ds-bar-chart>',
         {
           data: ROWS,
-          domain: 'turn',
+          domain: 'period',
           series: SERIES,
         },
         'ds-bar-chart',
@@ -91,11 +91,11 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
     });
 
     try {
-      const el = await mountWithProps<DsBarChart<Turn>>(
+      const el = await mountWithProps<DsBarChart<MetricRow>>(
         '<ds-bar-chart></ds-bar-chart>',
         {
           data: ROWS,
-          domain: 'turn',
+          domain: 'period',
           series: SERIES,
         },
         'ds-bar-chart',
@@ -129,11 +129,11 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
     } as unknown as typeof ResizeObserver;
 
     try {
-      const el = await mountWithProps<DsBarChart<Turn>>(
+      const el = await mountWithProps<DsBarChart<MetricRow>>(
         '<ds-bar-chart></ds-bar-chart>',
         {
           data: ROWS,
-          domain: 'turn',
+          domain: 'period',
           series: SERIES,
           loading: true,
         },

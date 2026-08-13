@@ -16,7 +16,7 @@ export const segmentedControlStyles = css`
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
-    /* The track colour showing through is the hairline frame and dividers. */
+    /* The track color showing through is the hairline frame and dividers. */
     gap: 1px;
     padding: 1px;
     background: var(--ds-color-border-subtle);
@@ -26,7 +26,7 @@ export const segmentedControlStyles = css`
   .segment {
     min-width: 0;
   }
-  /* Lift above neighbours so the focus ring isn't painted over. */
+  /* Lift above neighbors so the focus ring isn't painted over. */
   .segment:focus-within {
     position: relative;
     z-index: var(--ds-z-index-raised);

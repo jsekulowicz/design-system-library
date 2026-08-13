@@ -7,11 +7,11 @@ import '@jsekulowicz/ds-components/tabs/define';
 
 # Progress Bar
 
-Determinate horizontal progress indicator. `value` and `max` drive the fill, and an optional label rides on a small chip centred over the bar so it stays legible against any fill colour.
+Determinate horizontal progress indicator. `value` and `max` drive the fill, and an optional label rides on a small chip centered over the bar so it stays legible against any fill color.
 
 ## Anatomy
 
-A `track` containing a coloured `indicator` (the fill) and a centred `label` chip. The track carries `role="progressbar"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow`, so the value is announced without any extra markup.
+A `track` containing a colored `indicator` (the fill) and a centered `label` chip. The track carries `role="progressbar"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow`, so the value is announced without any extra markup.
 
 <ds-tabs value="api">
   <ds-tab slot="tab" value="api">API</ds-tab>
@@ -30,13 +30,13 @@ A `track` containing a coloured `indicator` (the fill) and a centred `label` chi
   </p>
   <ul>
     <li>
-      <code>::part(track)</code> — height, track background and radius.
+      <code>::part(track)</code> - height, track background and radius.
     </li>
     <li>
-      <code>::part(indicator)</code> — the fill colour.
+      <code>::part(indicator)</code> - the fill color.
     </li>
     <li>
-      <code>::part(label)</code> — the centred label chip.
+      <code>::part(label)</code> - the centered label chip.
     </li>
   </ul>
   <pre>
@@ -54,12 +54,12 @@ ds-progress-bar::part(indicator) { background: var(--ds-color-accent); }`}</code
     <ul>
       <li>Use it for determinate progress where the share complete is known (levels, quotas, uploads).</li>
       <li>Put the readout in the label slot (e.g. <code>3 / 7</code> or <code>60%</code>) instead of repeating it nearby.</li>
-      <li>Recolour the fill with <code>::part(indicator)</code> to carry meaning — e.g. a warning tone near a limit.</li>
+      <li>Recolor the fill with <code>::part(indicator)</code> to carry meaning - e.g. a warning tone near a limit.</li>
     </ul>
     <h3>Don't</h3>
     <ul>
       <li>Don't use it for indeterminate work with no measurable progress.</li>
-      <li>Don't rely on the fill colour alone to convey state — keep the label informative.</li>
+      <li>Don't rely on the fill color alone to convey state - keep the label informative.</li>
       <li>Don't put long text in the label; the chip is sized for a short readout.</li>
     </ul>
     <h3>Accessibility</h3>

@@ -5,14 +5,14 @@ import * as ThemingStories from './theming.stories';
 
 # Theming
 
-The system uses a **three-layer token architecture**. Override only the layer you need — you never touch component source code.
+The system uses a **three-layer token architecture**. Override only the layer you need - you never touch component source code.
 
 ```
-Primitive layer   —  raw values: #4A72CC, 1rem, 8px, 120ms
+Primitive layer   -  raw values: #4A72CC, 1rem, 8px, 120ms
        ↓
-Semantic layer    —  roles: --ds-color-accent, --ds-radius-xs, --ds-duration-fast
+Semantic layer    -  roles: --ds-color-accent, --ds-radius-xs, --ds-duration-fast
        ↓
-Component layer   —  ds-button reads --ds-color-accent, not the hex
+Component layer   -  ds-button reads --ds-color-accent, not the hex
 ```
 
 Every `ds-*` component references semantic tokens exclusively. Changing a semantic token propagates automatically to every component that uses it.
@@ -27,7 +27,7 @@ This is the same contract demonstrated in the Tokens foundation page: components
 
 Set overrides on any ancestor element. They cascade into every shadow root via CSS custom property inheritance.
 
-**Page-level** — targets the whole app:
+**Page-level** - targets the whole app:
 
 ```css
 :root {
@@ -37,7 +37,7 @@ Set overrides on any ancestor element. They cascade into every shadow root via C
 }
 ```
 
-**Scoped to a region** — targets one section or component:
+**Scoped to a region** - targets one section or component:
 
 ```html
 <div style="--ds-color-accent: #1F7A7A; --ds-radius-xs: 12px;">
@@ -45,7 +45,7 @@ Set overrides on any ancestor element. They cascade into every shadow root via C
 </div>
 ```
 
-**Dark mode** is applied by the theme controller setting `data-ds-theme="dark"` on `<html>`. All semantic tokens resolve to their dark counterparts automatically — no extra overrides needed.
+**Dark mode** is applied by the theme controller setting `data-ds-theme="dark"` on `<html>`. All semantic tokens resolve to their dark counterparts automatically - no extra overrides needed.
 
 ## Live playground
 

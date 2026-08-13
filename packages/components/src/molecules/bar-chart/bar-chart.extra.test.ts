@@ -4,20 +4,20 @@ import type { BarChartSeries } from './types.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-interface Turn {
-  turn: number;
-  Jess: number;
-  Marco: number;
-  Andrew: number;
+interface MetricRow {
+  period: number;
+  Website: number;
+  Mobile: number;
+  Partners: number;
 }
 
-const ROWS: readonly Turn[] = [
-  { turn: 1, Jess: 3, Marco: 2, Andrew: 4 },
-  { turn: 2, Jess: 2, Marco: 4, Andrew: 3 },
-  { turn: 3, Jess: 5, Marco: 5, Andrew: 4 },
+const ROWS: readonly MetricRow[] = [
+  { period: 1, Website: 3, Mobile: 2, Partners: 4 },
+  { period: 2, Website: 2, Mobile: 4, Partners: 3 },
+  { period: 3, Website: 5, Mobile: 5, Partners: 4 },
 ];
 
-const SERIES: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
+const SERIES: readonly BarChartSeries[] = [{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }];
 
 beforeAll(() => {
   if (!customElements.get('ds-bar-chart')) {
@@ -34,12 +34,12 @@ beforeEach(() => {
   } as unknown as typeof ResizeObserver;
 });
 
-async function mountChart(props: Partial<DsBarChart<Turn>> = {}): Promise<DsBarChart<Turn>> {
-  const el = await mountWithProps<DsBarChart<Turn>>(
+async function mountChart(props: Partial<DsBarChart<MetricRow>> = {}): Promise<DsBarChart<MetricRow>> {
+  const el = await mountWithProps<DsBarChart<MetricRow>>(
     '<ds-bar-chart></ds-bar-chart>',
     {
       data: ROWS,
-      domain: 'turn',
+      domain: 'period',
       series: SERIES,
       ...props,
     },
@@ -64,10 +64,10 @@ describe('<ds-bar-chart> extra coverage', () => {
   });
 
   it('renders axis labels and hides legend when disabled', async () => {
-    const el = await mountChart({ xAxisLabel: 'Turns', yAxisLabel: 'Points', showLegend: false, title: '' });
+    const el = await mountChart({ xAxisLabel: 'Periods', yAxisLabel: 'Events', showLegend: false, title: '' });
     const svgText = el.shadowRoot!.querySelector('svg')?.textContent ?? '';
-    expect(svgText).toContain('Turns');
-    expect(svgText).toContain('Points');
+    expect(svgText).toContain('Periods');
+    expect(svgText).toContain('Events');
 
     const caption = el.shadowRoot!.querySelector('.visually-hidden table caption')?.textContent;
     expect(caption).toContain('Bar chart data');

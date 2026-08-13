@@ -21,12 +21,12 @@ type BarChartSeries = {
 
 ```html
 <ds-bar-chart
-  title="Game turns"
+  title="Weekly activity"
   .data=${rows}
-  domain="turnOrdinalNumber"
-  .series=${[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
-  x-axis-label="Turn"
-  y-axis-label="Score"
+  domain="week"
+  .series=${[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]}
+  x-axis-label="Week"
+  y-axis-label="Events"
   stacked
 ></ds-bar-chart>
 ```
@@ -54,14 +54,14 @@ Setting `stacked` collapses each group into a single bar of stacked segments (su
       <ul>
         <li>Use stacked mode when the total per group is meaningful (totals, cumulative values).</li>
         <li>Use grouped mode when comparing individual series within each group matters more than the total.</li>
-        <li>Format values and domain labels with <code>.formatValue</code> / <code>.formatDomain</code> — the chart, tooltip, SR table, and live region all share the same formatting.</li>
-        <li>Provide a <code>title</code> — it's used to build the chart's accessible name.</li>
+        <li>Format values and domain labels with <code>.formatValue</code> / <code>.formatDomain</code> - the chart, tooltip, SR table, and live region all share the same formatting.</li>
+        <li>Provide a <code>title</code> - it's used to build the chart's accessible name.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Don't mix series with very different value ranges in one chart — the smaller ones disappear.</li>
+        <li>Don't mix series with very different value ranges in one chart - the smaller ones disappear.</li>
         <li>Don't hide the legend when there are two or more series.</li>
-        <li>Don't rely on color alone to distinguish series — also rely on legend order + tooltip labels.</li>
+        <li>Don't rely on color alone to distinguish series - also rely on legend order + tooltip labels.</li>
       </ul>
       <h3>Accessibility</h3>
       <ul>
@@ -69,7 +69,7 @@ Setting `stacked` collapses each group into a single bar of stacked segments (su
         <li><kbd>Tab</kbd> enters the chart at the active group; <kbd>←</kbd> / <kbd>→</kbd> move between groups; <kbd>Home</kbd> / <kbd>End</kbd> jump to first / last; <kbd>Esc</kbd> clears the active group.</li>
         <li>A visually-hidden <code>&lt;table&gt;</code> sits outside the graphic and mirrors the full data, so it can be navigated with real table semantics.</li>
         <li>An <code>aria-live="polite"</code> region announces the active group and all its values when focus or hover changes.</li>
-        <li>Palette colors come from <code>--ds-color-chart-1</code>…<code>--ds-color-chart-6</code>; override per-series via <code>color</code>.</li>
+        <li>Palette colors come from <code>--ds-color-chart-1</code>...<code>--ds-color-chart-6</code>; override per-series via <code>color</code>.</li>
       </ul>
     </ds-tab-panel>
 

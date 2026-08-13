@@ -16,7 +16,7 @@ export function buildPaginationRange({
   const total = Math.max(1, Math.floor(totalPages));
   const current = clamp(Math.floor(currentPage), 1, total);
   const siblings = Math.max(0, Math.floor(siblingCount));
-  // Floor of 3 keeps "first … current … last" available to compact callers.
+  // Floor of 3 keeps "first ... current ... last" available to compact callers.
   const maxVisible = Math.max(3, Math.floor(maxVisiblePages));
 
   if (total <= maxVisible) {

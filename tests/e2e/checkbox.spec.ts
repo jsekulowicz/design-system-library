@@ -4,7 +4,7 @@ const storyUrl = '/iframe.html?id=atoms-checkbox--states&viewMode=story';
 
 // A ds-checkbox is an inline-level box, so it sits on a line box in its parent.
 // If its own box is shorter than the text it renders, that line box ends up
-// taller than the host and the difference reads as content to scroll — which
+// taller than the host and the difference reads as content to scroll - which
 // makes a ds-dialog body paint a scroll fade over content that fits.
 test.describe('ds-checkbox line box', () => {
   test('adds no height beyond its own box to the line it sits on', async ({ page }) => {

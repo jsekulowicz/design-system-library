@@ -1,5 +1,5 @@
 /* Self-hosted DS fonts (General Sans / Source Serif 4 / JetBrains Mono).
-   Bundled locally so visual snapshots are deterministic — see fonts/.
+   Bundled locally so visual snapshots are deterministic - see fonts/.
    Regenerate with scripts/vendor-fonts.mjs. */
 @font-face {
   font-family: 'General Sans';

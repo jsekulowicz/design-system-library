@@ -114,7 +114,7 @@ export const Square: Story = {
 
 export const Loading: Story = {
   args: { loading: true },
-  render: (args) => html` <ds-button ?loading=${args['loading']}>Saving…</ds-button> `,
+  render: (args) => html` <ds-button ?loading=${args['loading']}>Saving...</ds-button> `,
 };
 
 export const LoadingLabel: Story = {
@@ -130,7 +130,7 @@ export const LoadingLabel: Story = {
         }}
         >Toggle loading</ds-button
       >
-      <ds-button data-demo loading-label="Playing…">
+      <ds-button data-demo loading-label="Playing...">
         <ds-icon slot="leading" name="magnifying-glass" size="sm"></ds-icon>
         Preview
       </ds-button>
@@ -139,7 +139,7 @@ export const LoadingLabel: Story = {
         No loading label
       </ds-button>
       <div style="width: 22rem;">
-        <ds-button data-demo full-width loading-label="Saving…">Save changes</ds-button>
+        <ds-button data-demo full-width loading-label="Saving...">Save changes</ds-button>
       </div>
     </div>
   `,

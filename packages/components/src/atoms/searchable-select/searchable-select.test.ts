@@ -4,7 +4,7 @@ import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 // jsdom 25 does not implement ElementInternals ARIA reflection (ariaLabel, ariaDescription).
-// Stub them so tests focus on component behaviour, not platform internals.
+// Stub them so tests focus on component behavior, not platform internals.
 beforeAll(() => {
   const proto = DsSearchableSelect.prototype as unknown as Record<string, () => void>;
   proto['setAriaLabel'] = () => {};
@@ -85,7 +85,7 @@ describe('<ds-searchable-select>', () => {
       getOption(el, 'React').click();
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
-      // Click trigger again — no focus event fires since input is still focused
+      // Click trigger again - no focus event fires since input is still focused
       clickTrigger(el);
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();

@@ -7,11 +7,11 @@ import '@jsekulowicz/ds-components/table/define';
 
 # Table
 
-Semantic data table driven by `rows` + `columns` props. Cell content is fully customizable via per-column render functions (the closest Lit idiom to Vue3 scoped slots). Sorting and pagination are separate presentation-only primitives — the parent owns the data state.
+Semantic data table driven by `rows` + `columns` props. Cell content is fully customizable via per-column render functions (the closest Lit idiom to Vue3 scoped slots). Sorting and pagination are separate presentation-only primitives - the parent owns the data state.
 
 ## Anatomy
 
-A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls, and — when `row-key` is set — per-cell slots (`cell:<name>:<rowKey>`) let you project framework-rendered content into individual cells (see below). On narrow containers, the default `responsive="stack"` mode turns each row into a labelled stack using column labels; long labels and values wrap instead of forcing horizontal overflow while the table headers stay available to assistive technology. Use `responsive="scroll"` to keep the classic horizontally scrollable table. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state plus a screen-reader status; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
+A `ds-table` host takes `.rows` (array of row objects) and `.columns` (array of `TableColumn` descriptors). Each column declares a `field` that maps to a row property and, optionally, a `render(row, index)` function that returns any Lit template or string. Per-column header slots (`header-<name>`) let you drop in `ds-table-sort-button` or other header controls, and - when `row-key` is set - per-cell slots (`cell:<name>:<rowKey>`) let you project framework-rendered content into individual cells (see below). On narrow containers, the default `responsive="stack"` mode turns each row into a labeled stack using column labels; long labels and values wrap instead of forcing horizontal overflow while the table headers stay available to assistive technology. Use `responsive="scroll"` to keep the classic horizontally scrollable table. Set the `loading` property to `true` when refreshing known data, and customize the overlay with `slot="loading"`. Loading with no rows renders the skeleton state plus a screen-reader status; loading with existing rows renders the overlay. When columns have not been initialized yet, the table renders a skeleton using `skeleton-rows` and `skeleton-columns`.
 
 ### Column render as scoped-slot equivalent
 
@@ -34,11 +34,11 @@ const columns: TableColumn<Person>[] = [
 ];
 ```
 
-The `render` function receives the full row object and index — any component, markup, or formatting can go inside the cell.
+The `render` function receives the full row object and index - any component, markup, or formatting can go inside the cell.
 
 ### Per-cell slots (projecting framework content)
 
-When `row-key` is set, every cell is also exposed as a named slot `cell:{columnName}:{rowKey}`, with the column's `render`/`field` value as **fallback**. This lets a framework (Vue, React, …) project real component instances — keeping their own reactivity, context, and event handlers — into a cell instead of returning Lit templates. Tables without `row-key`, or cells with nothing projected, render exactly as before.
+When `row-key` is set, every cell is also exposed as a named slot `cell:{columnName}:{rowKey}`, with the column's `render`/`field` value as **fallback**. This lets a framework (Vue, React, ...) project real component instances - keeping their own reactivity, context, and event handlers - into a cell instead of returning Lit templates. Tables without `row-key`, or cells with nothing projected, render exactly as before.
 
 ```html
 <ds-table .rows="${rows}" .columns="${columns}" row-key="id">
@@ -47,11 +47,11 @@ When `row-key` is set, every cell is also exposed as a named slot `cell:{columnN
 </ds-table>
 ```
 
-A wrapper (Vue `DataTable`, a React binding, …) typically renders one projected element per row for the columns that opt in, so callers write a scoped slot per column rather than wiring slot names by hand.
+A wrapper (Vue `DataTable`, a React binding, ...) typically renders one projected element per row for the columns that opt in, so callers write a scoped slot per column rather than wiring slot names by hand.
 
 ### Pinned columns
 
-Set `.pinnedColumns` to an array of column `name`s to freeze them into a contiguous left region while the rest of the table scrolls horizontally. Any column is eligible, not just the leftmost — pinning a column never implies pinning the columns before it. Pinned columns are gathered on the left in their **original relative order**, and a separator (plus a shadow that fades in once the body is scrolled sideways) marks the boundary. The prop is fully controlled, so the consuming app owns the value and can persist/restore it.
+Set `.pinnedColumns` to an array of column `name`s to freeze them into a contiguous left region while the rest of the table scrolls horizontally. Any column is eligible, not just the leftmost - pinning a column never implies pinning the columns before it. Pinned columns are gathered on the left in their **original relative order**, and a separator (plus a shadow that fades in once the body is scrolled sideways) marks the boundary. The prop is fully controlled, so the consuming app owns the value and can persist/restore it.
 
 ```html
 <ds-table .rows=${rows} .columns=${columns} .pinnedColumns=${['name', 'status']}></ds-table>
@@ -93,18 +93,18 @@ Column widths are measured at runtime, so pinned columns keep their natural widt
       <h3>Do</h3>
       <ul>
         <li>Use <code>render(row)</code> on columns for custom cell content (badges, links, formatted numbers).</li>
-        <li>Keep sorting and pagination state in the parent — pass <code>sortState</code> and paging props in, handle events to update.</li>
-        <li>Slot <code>ds-table-pagination</code> into <code>footer</code> — its <code>ds-page-change</code> makes the table scroll itself back to the top so the new page starts at row one.</li>
+        <li>Keep sorting and pagination state in the parent - pass <code>sortState</code> and paging props in, handle events to update.</li>
+        <li>Slot <code>ds-table-pagination</code> into <code>footer</code> - its <code>ds-page-change</code> makes the table scroll itself back to the top so the new page starts at row one.</li>
         <li>Right-align numeric columns via <code>align: 'right'</code>.</li>
-        <li>Mark columns sortable only when <code>sortable: true</code> — this wires <code>aria-sort</code>.</li>
+        <li>Mark columns sortable only when <code>sortable: true</code> - this wires <code>aria-sort</code>.</li>
         <li>Provide <code>.rowActionLabel</code> for clickable rows so the keyboard action names the row, e.g. <code>Open Ada Lovelace</code>.</li>
         <li>Use <code>responsive="scroll"</code> only when horizontal comparison across columns matters on small screens.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Don't expect the table to sort or paginate on its own — it's data-driven and presentation-only.</li>
-        <li>Don't use clickable rows when every row contains many competing primary actions — add a dedicated action column instead.</li>
-        <li>Don't use tables for layout — use CSS grid instead.</li>
+        <li>Don't expect the table to sort or paginate on its own - it's data-driven and presentation-only.</li>
+        <li>Don't use clickable rows when every row contains many competing primary actions - add a dedicated action column instead.</li>
+        <li>Don't use tables for layout - use CSS grid instead.</li>
       </ul>
       <h3>Accessibility</h3>
       <ul>

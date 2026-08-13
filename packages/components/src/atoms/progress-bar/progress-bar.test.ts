@@ -63,7 +63,7 @@ describe('<ds-progress-bar>', () => {
     const empty = await mount<DsProgressBar>('<ds-progress-bar value="10"></ds-progress-bar>');
     expect(empty.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(true);
 
-    const labelled = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
-    expect(labelled.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
+    const labeled = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
+    expect(labeled.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
   });
 });

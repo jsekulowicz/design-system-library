@@ -3,60 +3,60 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { BarChartSeries } from '@jsekulowicz/ds-components/bar-chart';
 import '@jsekulowicz/ds-components/bar-chart/define';
 
-interface Turn {
-  turnOrdinalNumber: number;
-  Jess: number;
-  Marco: number;
-  Andrew: number;
-  Stacey: number;
+interface ActivityPoint {
+  week: number;
+  Website: number;
+  Mobile: number;
+  Partners: number;
+  Retail: number;
 }
 
-const TURNS: readonly Turn[] = [
-  { turnOrdinalNumber: 1, Jess: 3, Marco: 2, Andrew: 4, Stacey: 2 },
-  { turnOrdinalNumber: 2, Jess: 2, Marco: 4, Andrew: 3, Stacey: 5 },
-  { turnOrdinalNumber: 3, Jess: 5, Marco: 5, Andrew: 4, Stacey: 6 },
-  { turnOrdinalNumber: 4, Jess: 4, Marco: 5, Andrew: 2, Stacey: 3 },
-  { turnOrdinalNumber: 5, Jess: 3, Marco: 3, Andrew: 6, Stacey: 1 },
-  { turnOrdinalNumber: 6, Jess: 1, Marco: 2, Andrew: 1, Stacey: 3 },
-  { turnOrdinalNumber: 7, Jess: 3, Marco: 3, Andrew: 3, Stacey: 6 },
-  { turnOrdinalNumber: 8, Jess: 1, Marco: 2, Andrew: 3, Stacey: 0 },
-  { turnOrdinalNumber: 9, Jess: 3, Marco: 2, Andrew: 2, Stacey: 4 },
-  { turnOrdinalNumber: 10, Jess: 4, Marco: 2, Andrew: 2, Stacey: 2 },
-  { turnOrdinalNumber: 11, Jess: 3, Marco: 2, Andrew: 6, Stacey: 4 },
-  { turnOrdinalNumber: 12, Jess: 3, Marco: 9, Andrew: 4, Stacey: 4 },
-  { turnOrdinalNumber: 13, Jess: 4, Marco: 3, Andrew: 3, Stacey: 3 },
+const WEEKLY_ACTIVITY: readonly ActivityPoint[] = [
+  { week: 1, Website: 3, Mobile: 2, Partners: 4, Retail: 2 },
+  { week: 2, Website: 2, Mobile: 4, Partners: 3, Retail: 5 },
+  { week: 3, Website: 5, Mobile: 5, Partners: 4, Retail: 6 },
+  { week: 4, Website: 4, Mobile: 5, Partners: 2, Retail: 3 },
+  { week: 5, Website: 3, Mobile: 3, Partners: 6, Retail: 1 },
+  { week: 6, Website: 1, Mobile: 2, Partners: 1, Retail: 3 },
+  { week: 7, Website: 3, Mobile: 3, Partners: 3, Retail: 6 },
+  { week: 8, Website: 1, Mobile: 2, Partners: 3, Retail: 0 },
+  { week: 9, Website: 3, Mobile: 2, Partners: 2, Retail: 4 },
+  { week: 10, Website: 4, Mobile: 2, Partners: 2, Retail: 2 },
+  { week: 11, Website: 3, Mobile: 2, Partners: 6, Retail: 4 },
+  { week: 12, Website: 3, Mobile: 9, Partners: 4, Retail: 4 },
+  { week: 13, Website: 4, Mobile: 3, Partners: 3, Retail: 3 },
 ];
 
-const THREE_PLAYERS: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
+const THREE_CHANNELS: readonly BarChartSeries[] = [{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }];
 
-const FOUR_PLAYERS: readonly BarChartSeries[] = [
-  { key: 'Jess' },
-  { key: 'Marco' },
-  { key: 'Andrew' },
-  { key: 'Stacey' },
+const FOUR_CHANNELS: readonly BarChartSeries[] = [
+  { key: 'Website' },
+  { key: 'Mobile' },
+  { key: 'Partners' },
+  { key: 'Retail' },
 ];
 
-const TURNS_SOURCE = `// Each row is one turn; the extra fields are per-player scores.
-const turns = [
-  { turnOrdinalNumber: 1,  Jess: 3, Marco: 2, Andrew: 4, Stacey: 2 },
-  { turnOrdinalNumber: 2,  Jess: 2, Marco: 4, Andrew: 3, Stacey: 5 },
-  { turnOrdinalNumber: 3,  Jess: 5, Marco: 5, Andrew: 4, Stacey: 6 },
-  // ... 9 more turns
-  { turnOrdinalNumber: 13, Jess: 4, Marco: 3, Andrew: 3, Stacey: 3 },
+const ACTIVITY_SOURCE = `// Each row is one week; the extra fields are per-channel totals.
+const activity = [
+  { week: 1,  Website: 3, Mobile: 2, Partners: 4, Retail: 2 },
+  { week: 2,  Website: 2, Mobile: 4, Partners: 3, Retail: 5 },
+  { week: 3,  Website: 5, Mobile: 5, Partners: 4, Retail: 6 },
+  // ... 9 more rows
+  { week: 13, Website: 4, Mobile: 3, Partners: 3, Retail: 3 },
 ];`;
 
-const THREE_PLAYERS_SOURCE = `// One entry per series; \`key\` matches a field on each data row.
+const THREE_CHANNELS_SOURCE = `// One entry per series; \`key\` matches a field on each data row.
 const series = [
-  { key: 'Jess' },
-  { key: 'Marco' },
-  { key: 'Andrew' },
+  { key: 'Website' },
+  { key: 'Mobile' },
+  { key: 'Partners' },
 ];`;
 
-const FOUR_PLAYERS_SOURCE = `const series = [
-  { key: 'Jess' },
-  { key: 'Marco' },
-  { key: 'Andrew' },
-  { key: 'Stacey' },
+const FOUR_CHANNELS_SOURCE = `const series = [
+  { key: 'Website' },
+  { key: 'Mobile' },
+  { key: 'Partners' },
+  { key: 'Retail' },
 ];`;
 
 function chartSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
@@ -82,18 +82,18 @@ const meta: Meta = {
     formatDomain: { control: false },
   },
   args: {
-    data: TURNS,
-    domain: 'turnOrdinalNumber',
-    series: THREE_PLAYERS,
+    data: WEEKLY_ACTIVITY,
+    domain: 'week',
+    series: THREE_CHANNELS,
     stacked: false,
-    xAxisLabel: 'Turn',
-    yAxisLabel: 'Score',
-    title: 'Game turns — scores',
+    xAxisLabel: 'Week',
+    yAxisLabel: 'Events',
+    title: 'Weekly activity',
     height: 320,
     showLegend: true,
     loading: false,
     loadingLabel: 'Loading...',
-    formatDomain: (value: unknown) => `Turn ${value}`,
+    formatDomain: (value: unknown) => `Week ${value}`,
   },
 };
 
@@ -124,15 +124,15 @@ export const Grouped: Story = {
     docs: {
       source: {
         code: chartSnippet({
-          lead: [TURNS_SOURCE, THREE_PLAYERS_SOURCE],
+          lead: [ACTIVITY_SOURCE, THREE_CHANNELS_SOURCE],
           tag: `  <ds-bar-chart
-    title="Game turns — scores"
-    .data=\${turns}
-    domain="turnOrdinalNumber"
+    title="Weekly activity"
+    .data=\${activity}
+    domain="week"
     .series=\${series}
-    x-axis-label="Turn"
-    y-axis-label="Score"
-    .formatDomain=\${(v) => \`Turn \${v}\`}
+    x-axis-label="Week"
+    y-axis-label="Events"
+    .formatDomain=\${(v) => \`Week \${v}\`}
   ></ds-bar-chart>`,
         }),
       },
@@ -144,21 +144,21 @@ export const Loading: Story = {
   render: () => html`
     <ds-bar-chart
       loading
-      title="Game turns — scores"
+      title="Weekly activity"
       height="320"
-      .data=${TURNS}
-      domain="turnOrdinalNumber"
-      .series=${THREE_PLAYERS}
-      x-axis-label="Turn"
-      y-axis-label="Score"
-      .formatDomain=${(v: unknown) => `Turn ${v}`}
+      .data=${WEEKLY_ACTIVITY}
+      domain="week"
+      .series=${THREE_CHANNELS}
+      x-axis-label="Week"
+      y-axis-label="Events"
+      .formatDomain=${(v: unknown) => `Week ${v}`}
     ></ds-bar-chart>
   `,
 };
 
 export const InitialLoading: Story = {
   render: () => html`
-    <ds-bar-chart loading title="Game turns — scores" height="320" .series=${THREE_PLAYERS}></ds-bar-chart>
+    <ds-bar-chart loading title="Weekly activity" height="320" .series=${THREE_CHANNELS}></ds-bar-chart>
   `,
 };
 
@@ -166,29 +166,29 @@ export const Stacked: Story = {
   render: () => html`
     <ds-bar-chart
       stacked
-      title="Game turns — stacked scores"
-      .data=${TURNS}
-      domain="turnOrdinalNumber"
-      .series=${THREE_PLAYERS}
-      x-axis-label="Turn"
-      y-axis-label="Total score"
-      .formatDomain=${(v: unknown) => `Turn ${v}`}
+      title="Weekly activity - stacked"
+      .data=${WEEKLY_ACTIVITY}
+      domain="week"
+      .series=${THREE_CHANNELS}
+      x-axis-label="Week"
+      y-axis-label="Total events"
+      .formatDomain=${(v: unknown) => `Week ${v}`}
     ></ds-bar-chart>
   `,
   parameters: {
     docs: {
       source: {
         code: chartSnippet({
-          lead: [TURNS_SOURCE, THREE_PLAYERS_SOURCE],
+          lead: [ACTIVITY_SOURCE, THREE_CHANNELS_SOURCE],
           tag: `  <ds-bar-chart
     stacked
-    title="Game turns — stacked scores"
-    .data=\${turns}
-    domain="turnOrdinalNumber"
+    title="Weekly activity - stacked"
+    .data=\${activity}
+    domain="week"
     .series=\${series}
-    x-axis-label="Turn"
-    y-axis-label="Total score"
-    .formatDomain=\${(v) => \`Turn \${v}\`}
+    x-axis-label="Week"
+    y-axis-label="Total events"
+    .formatDomain=\${(v) => \`Week \${v}\`}
   ></ds-bar-chart>`,
         }),
       },
@@ -200,29 +200,29 @@ export const FourSeriesStacked: Story = {
   render: () => html`
     <ds-bar-chart
       stacked
-      title="Game turns — all four players"
-      .data=${TURNS}
-      domain="turnOrdinalNumber"
-      .series=${FOUR_PLAYERS}
-      x-axis-label="Turn"
-      y-axis-label="Total score"
-      .formatDomain=${(v: unknown) => `Turn ${v}`}
+      title="Weekly activity - all four channels"
+      .data=${WEEKLY_ACTIVITY}
+      domain="week"
+      .series=${FOUR_CHANNELS}
+      x-axis-label="Week"
+      y-axis-label="Total events"
+      .formatDomain=${(v: unknown) => `Week ${v}`}
     ></ds-bar-chart>
   `,
   parameters: {
     docs: {
       source: {
         code: chartSnippet({
-          lead: [TURNS_SOURCE, FOUR_PLAYERS_SOURCE],
+          lead: [ACTIVITY_SOURCE, FOUR_CHANNELS_SOURCE],
           tag: `  <ds-bar-chart
     stacked
-    title="Game turns — all four players"
-    .data=\${turns}
-    domain="turnOrdinalNumber"
+    title="Weekly activity - all four channels"
+    .data=\${activity}
+    domain="week"
     .series=\${series}
-    x-axis-label="Turn"
-    y-axis-label="Total score"
-    .formatDomain=\${(v) => \`Turn \${v}\`}
+    x-axis-label="Week"
+    y-axis-label="Total events"
+    .formatDomain=\${(v) => \`Week \${v}\`}
   ></ds-bar-chart>`,
         }),
       },
@@ -233,11 +233,11 @@ export const FourSeriesStacked: Story = {
 export const FewGroups: Story = {
   render: () => html`
     <ds-bar-chart
-      .data=${TURNS.slice(0, 3)}
-      domain="turnOrdinalNumber"
-      .series=${THREE_PLAYERS}
-      x-axis-label="Turn"
-      y-axis-label="Score"
+      .data=${WEEKLY_ACTIVITY.slice(0, 3)}
+      domain="week"
+      .series=${THREE_CHANNELS}
+      x-axis-label="Week"
+      y-axis-label="Events"
     ></ds-bar-chart>
   `,
   parameters: {
@@ -245,19 +245,19 @@ export const FewGroups: Story = {
       source: {
         code: chartSnippet({
           lead: [
-            `const turns = [
-  { turnOrdinalNumber: 1, Jess: 3, Marco: 2, Andrew: 4, Stacey: 2 },
-  { turnOrdinalNumber: 2, Jess: 2, Marco: 4, Andrew: 3, Stacey: 5 },
-  { turnOrdinalNumber: 3, Jess: 5, Marco: 5, Andrew: 4, Stacey: 6 },
+            `const activity = [
+  { week: 1, Website: 3, Mobile: 2, Partners: 4, Retail: 2 },
+  { week: 2, Website: 2, Mobile: 4, Partners: 3, Retail: 5 },
+  { week: 3, Website: 5, Mobile: 5, Partners: 4, Retail: 6 },
 ];`,
-            THREE_PLAYERS_SOURCE,
+            THREE_CHANNELS_SOURCE,
           ],
           tag: `  <ds-bar-chart
-    .data=\${turns}
-    domain="turnOrdinalNumber"
+    .data=\${activity}
+    domain="week"
     .series=\${series}
-    x-axis-label="Turn"
-    y-axis-label="Score"
+    x-axis-label="Week"
+    y-axis-label="Events"
   ></ds-bar-chart>`,
         }),
       },
@@ -268,19 +268,19 @@ export const FewGroups: Story = {
 export const ManyGroups: Story = {
   render: () => {
     const many = Array.from({ length: 30 }, (_, i) => ({
-      turnOrdinalNumber: i + 1,
-      Jess: 3 + ((i * 7) % 6),
-      Marco: 2 + ((i * 3) % 7),
-      Andrew: 1 + ((i * 5) % 6),
-      Stacey: 2 + ((i * 2) % 5),
+      week: i + 1,
+      Website: 3 + ((i * 7) % 6),
+      Mobile: 2 + ((i * 3) % 7),
+      Partners: 1 + ((i * 5) % 6),
+      Retail: 2 + ((i * 2) % 5),
     }));
     return html`
       <ds-bar-chart
         .data=${many}
-        domain="turnOrdinalNumber"
-        .series=${FOUR_PLAYERS}
-        x-axis-label="Turn"
-        y-axis-label="Score"
+        domain="week"
+        .series=${FOUR_CHANNELS}
+        x-axis-label="Week"
+        y-axis-label="Events"
       ></ds-bar-chart>
     `;
   },
@@ -289,22 +289,22 @@ export const ManyGroups: Story = {
       source: {
         code: chartSnippet({
           lead: [
-            `// 30 generated turns to exercise tick decimation and label rotation.
-const turns = Array.from({ length: 30 }, (_, i) => ({
-  turnOrdinalNumber: i + 1,
-  Jess:   3 + ((i * 7) % 6),
-  Marco:  2 + ((i * 3) % 7),
-  Andrew: 1 + ((i * 5) % 6),
-  Stacey: 2 + ((i * 2) % 5),
+            `// 30 generated activity to exercise tick decimation and label rotation.
+const activity = Array.from({ length: 30 }, (_, i) => ({
+  week: i + 1,
+  Website:   3 + ((i * 7) % 6),
+  Mobile:  2 + ((i * 3) % 7),
+  Partners: 1 + ((i * 5) % 6),
+  Retail: 2 + ((i * 2) % 5),
 }));`,
-            FOUR_PLAYERS_SOURCE,
+            FOUR_CHANNELS_SOURCE,
           ],
           tag: `  <ds-bar-chart
-    .data=\${turns}
-    domain="turnOrdinalNumber"
+    .data=\${activity}
+    domain="week"
     .series=\${series}
-    x-axis-label="Turn"
-    y-axis-label="Score"
+    x-axis-label="Week"
+    y-axis-label="Events"
   ></ds-bar-chart>`,
         }),
       },
@@ -379,17 +379,17 @@ const monthFmt = new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numer
 export const CustomColors: Story = {
   render: () => html`
     <ds-bar-chart
-      .data=${TURNS}
-      domain="turnOrdinalNumber"
+      .data=${WEEKLY_ACTIVITY}
+      domain="week"
       .series=${
         [
-          { key: 'Jess', color: '#e2341d' },
-          { key: 'Marco', color: '#4a72cc' },
-          { key: 'Andrew', color: '#1f7a48' },
+          { key: 'Website', color: '#e2341d' },
+          { key: 'Mobile', color: '#4a72cc' },
+          { key: 'Partners', color: '#1f7a48' },
         ] as BarChartSeries[]
       }
-      x-axis-label="Turn"
-      y-axis-label="Score"
+      x-axis-label="Week"
+      y-axis-label="Events"
     ></ds-bar-chart>
   `,
   parameters: {
@@ -397,20 +397,20 @@ export const CustomColors: Story = {
       source: {
         code: chartSnippet({
           lead: [
-            TURNS_SOURCE,
+            ACTIVITY_SOURCE,
             `// Each series may provide its own \`color\` to override the default palette.
 const series = [
-  { key: 'Jess',   color: '#e2341d' },
-  { key: 'Marco',  color: '#4a72cc' },
-  { key: 'Andrew', color: '#1f7a48' },
+  { key: 'Website',   color: '#e2341d' },
+  { key: 'Mobile',  color: '#4a72cc' },
+  { key: 'Partners', color: '#1f7a48' },
 ];`,
           ],
           tag: `  <ds-bar-chart
-    .data=\${turns}
-    domain="turnOrdinalNumber"
+    .data=\${activity}
+    domain="week"
     .series=\${series}
-    x-axis-label="Turn"
-    y-axis-label="Score"
+    x-axis-label="Week"
+    y-axis-label="Events"
   ></ds-bar-chart>`,
         }),
       },
@@ -423,9 +423,9 @@ export const CompactHeight: Story = {
     <div style="max-width: 420px;">
       <ds-bar-chart
         height="180"
-        .data=${TURNS.slice(0, 7)}
-        domain="turnOrdinalNumber"
-        .series=${THREE_PLAYERS}
+        .data=${WEEKLY_ACTIVITY.slice(0, 7)}
+        domain="week"
+        .series=${THREE_CHANNELS}
       ></ds-bar-chart>
     </div>
   `,
@@ -433,12 +433,12 @@ export const CompactHeight: Story = {
     docs: {
       source: {
         code: chartSnippet({
-          lead: [`const turns = [/* first 7 turns */];`, THREE_PLAYERS_SOURCE],
+          lead: [`const activity = [/* first 7 activity */];`, THREE_CHANNELS_SOURCE],
           tag: `  <div style="max-width: 420px;">
     <ds-bar-chart
       height="180"
-      .data=\${turns}
-      domain="turnOrdinalNumber"
+      .data=\${activity}
+      domain="week"
       .series=\${series}
     ></ds-bar-chart>
   </div>`,

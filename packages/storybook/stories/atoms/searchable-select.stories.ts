@@ -185,7 +185,7 @@ class SbCountrySearch extends LitElement {
       <ds-searchable-select
         label="Country"
         placeholder="Select a country"
-        search-placeholder="Search countries…"
+        search-placeholder="Search countries..."
         .options=${this._options}
         .value=${this._value}
         @ds-search=${this.#onSearch}
@@ -226,7 +226,7 @@ class SbDisciplineSearch extends LitElement {
       <ds-searchable-select
         label="Discipline"
         placeholder="Pick a discipline"
-        search-placeholder="Search disciplines…"
+        search-placeholder="Search disciplines..."
         .options=${this._options}
         .value=${this._value}
         @ds-search=${this.#onSearch}
@@ -268,7 +268,7 @@ html\`
   <ds-searchable-select
     label="Discipline"
     placeholder="Pick a discipline"
-    search-placeholder="Search disciplines…"
+    search-placeholder="Search disciplines..."
     .options=\${options}
     @ds-search=\${onSearch}
     @ds-change=\${(e) => (value = e.detail.value)}
@@ -284,7 +284,7 @@ import '@jsekulowicz/ds-components/icon/magnifying-glass';
 const COUNTRIES = [
   { value: 'af', label: '🇦🇫 Afghanistan' },
   { value: 'al', label: '🇦🇱 Albania' },
-  // …160+ countries
+  // ...160+ countries
   { value: 'us', label: '🇺🇸 United States' },
 ];
 
@@ -298,7 +298,7 @@ html\`
   <ds-searchable-select
     label="Country"
     placeholder="Select a country"
-    search-placeholder="Search countries…"
+    search-placeholder="Search countries..."
     .options=\${options}
     @ds-search=\${onSearch}
     @ds-change=\${(e) => (value = e.detail.value)}
@@ -337,7 +337,7 @@ const meta: Meta = {
     hint: '',
     error: 'Please select a discipline.',
     placeholder: 'Pick a discipline',
-    searchPlaceholder: 'Search disciplines…',
+    searchPlaceholder: 'Search disciplines...',
     size: 'md',
     disabled: false,
     required: false,
@@ -404,12 +404,12 @@ export const WithHint: Story = {
       story: { height: '270px' },
       description: {
         story:
-          'A `hint` renders a sticky note at the top of the open dropdown — visible the moment it opens, for mouse and keyboard users alike, rather than only on hovering a disabled option (here, why "Operations" is disabled). Pair it with a per-option `disabledReason` for the screen-reader description on that option. Open the field to see it.',
+          'A `hint` renders a sticky note at the top of the open dropdown - visible the moment it opens, for mouse and keyboard users alike, rather than only on hovering a disabled option (here, why "Operations" is disabled). Pair it with a per-option `disabledReason` for the screen-reader description on that option. Open the field to see it.',
       },
       source: {
         code: DISCIPLINE_SOURCE.replace(
-          '    search-placeholder="Search disciplines…"',
-          '    search-placeholder="Search disciplines…"\n    hint="Operations is set by an administrator."',
+          '    search-placeholder="Search disciplines..."',
+          '    search-placeholder="Search disciplines..."\n    hint="Operations is set by an administrator."',
         ),
       },
     },
@@ -418,7 +418,7 @@ export const WithHint: Story = {
     <ds-searchable-select
       label="Discipline"
       placeholder="Pick a discipline"
-      search-placeholder="Search disciplines…"
+      search-placeholder="Search disciplines..."
       hint="Operations is set by an administrator."
       .options=${DISCIPLINES}
       @ds-search=${(e: CustomEvent<{ query: string }>) => {
@@ -445,7 +445,7 @@ export const Loading: Story = {
       story: { height: '80px' },
       source: {
         code: `html\`
-  <ds-searchable-select label="Country" placeholder="Loading options…" loading>
+  <ds-searchable-select label="Country" placeholder="Loading options..." loading>
     <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
   </ds-searchable-select>
 \`;`,
@@ -453,7 +453,7 @@ export const Loading: Story = {
     },
   },
   render: () => html`
-    <ds-searchable-select label="Country" placeholder="Loading options…" ?loading=${true}>
+    <ds-searchable-select label="Country" placeholder="Loading options..." ?loading=${true}>
       <ds-icon slot="leading" name="magnifying-glass"></ds-icon>
     </ds-searchable-select>
   `,
@@ -477,7 +477,7 @@ class SbCountryMultiSearch extends LitElement {
       <ds-searchable-select
         label="Countries"
         placeholder="Select countries"
-        search-placeholder="Search countries…"
+        search-placeholder="Search countries..."
         ?multiple=${true}
         .maxLines=${2}
         .options=${this._options}
@@ -513,7 +513,7 @@ class SbRequiredDisciplineSearch extends LitElement {
       <ds-searchable-select
         label="Discipline"
         placeholder="Pick a discipline"
-        search-placeholder="Search disciplines…"
+        search-placeholder="Search disciplines..."
         description="This field is required."
         ?required=${true}
         .options=${this._options}
@@ -541,8 +541,8 @@ export const Required: Story = {
           "let value = 'engineering';\nlet options = DISCIPLINES;",
         )
           .replace(
-            '    search-placeholder="Search disciplines…"',
-            '    search-placeholder="Search disciplines…"\n    description="This field is required."\n    required',
+            '    search-placeholder="Search disciplines..."',
+            '    search-placeholder="Search disciplines..."\n    description="This field is required."\n    required',
           )
           .replace('    @ds-search=', '    .value=${value}\n    @ds-search='),
       },
@@ -552,7 +552,7 @@ export const Required: Story = {
 };
 
 export const MultipleCountries: Story = {
-  name: 'Multiple — Countries (maxLines=2)',
+  name: 'Multiple - Countries (maxLines=2)',
   parameters: {
     docs: {
       story: { height: '330px' },
@@ -563,7 +563,7 @@ html\`
   <ds-searchable-select
     label="Countries"
     placeholder="Select countries"
-    search-placeholder="Search countries…"
+    search-placeholder="Search countries..."
     multiple
     .maxLines=\${2}
     .options=\${options}

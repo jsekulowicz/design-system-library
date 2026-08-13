@@ -14,7 +14,7 @@ const meta: Meta = {
   },
   args: {
     value: '1,248',
-    label: 'Crosswords played',
+    label: 'Tasks completed',
     hint: 'Up 12% this month',
     loading: false,
   },

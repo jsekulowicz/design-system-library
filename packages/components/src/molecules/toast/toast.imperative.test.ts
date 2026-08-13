@@ -49,9 +49,9 @@ describe('toast() imperative API', () => {
   });
 
   it('controller.update() applies new properties to the live toast', async () => {
-    const controller = toast({ heading: 'Loading…', tone: 'info' });
+    const controller = toast({ heading: 'Loading...', tone: 'info' });
     const el = document.querySelector('ds-toast') as DsToast;
-    expect(el.heading).toBe('Loading…');
+    expect(el.heading).toBe('Loading...');
 
     controller.update({ heading: 'Saved', tone: 'success' });
     await el.updateComplete;

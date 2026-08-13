@@ -5,7 +5,7 @@ because a tool cannot check them.
 
 ## Formatting
 
-Prettier owns formatting. `.prettierrc.json` is the single source of truth — `printWidth` 120,
+Prettier owns formatting. `.prettierrc.json` is the single source of truth - `printWidth` 120,
 single quotes, trailing commas. `pnpm format:check` gates CI.
 
 The repo ships `.vscode/settings.json` pinning Prettier as the formatter for every language it
@@ -29,7 +29,7 @@ button/
   index.ts              re-exports the class and its public types
 ```
 
-Every component needs a matching `exports` entry in `packages/components/package.json` — both
+Every component needs a matching `exports` entry in `packages/components/package.json` - both
 `./<name>` and `./<name>/define`. Prefer splitting a file over letting it pass ~150 lines.
 
 ## TypeScript
@@ -45,7 +45,7 @@ Every component needs a matching `exports` entry in `packages/components/package
 - `private _name` **only** where a decorator forces it: `@state` and `@query` cannot decorate a
   `#private` field under `experimentalDecorators`. The leading underscore is required there
   (`naming-convention`), so the two forms stay visually distinct.
-- No `protected` — nothing in this library is designed for subclassing outside the package.
+- No `protected` - nothing in this library is designed for subclassing outside the package.
 
 ## Lit templates
 
@@ -58,7 +58,7 @@ Every component needs a matching `exports` entry in `packages/components/package
 
   `nothing` in an attribute binding puts `Symbol(undefined)` into the bound type, which
   `no-incompatible-type-binding` rejects and which hides real type errors from the analyzer.
-  `nothing` in **child** position (`${cond ? html`…` : nothing}`) is correct and stays.
+  `nothing` in **child** position (`${cond ? html`...` : nothing}`) is correct and stays.
 
 - Properties forwarded to a typed attribute must use a typed union, not `string`. `ds-core`
   exports `AriaRole`, `AriaBoolean`, `AriaChecked`, `AriaInvalid`, `AriaHasPopup`, `LinkTarget`
@@ -68,7 +68,7 @@ Every component needs a matching `exports` entry in `packages/components/package
 - Events are named `ds-*` and emitted through `this.emit()` from `DsElement`.
 
 - Every component class carries a JSDoc block with `@tag` and `@summary`, plus `@slot`,
-  `@csspart`, `@cssprop` and `@event` as applicable. These are not decoration — they generate
+  `@csspart`, `@cssprop` and `@event` as applicable. These are not decoration - they generate
   `custom-elements.json`, the Storybook API tables and the React wrappers. One terse line each.
 
 ## Comments
@@ -86,7 +86,7 @@ Reach for `packages/components/src/shared/` before writing a second copy:
 
 | Module                      | Use for                                                               |
 | --------------------------- | --------------------------------------------------------------------- |
-| `slot-presence.ts`          | reactive "is this slot filled?" state — the default for `_hasX` flags |
+| `slot-presence.ts`          | reactive "is this slot filled?" state - the default for `_hasX` flags |
 | `slots.ts`                  | the underlying predicates, when a controller is overkill              |
 | `modal-surface.ts`          | the native `<dialog>` lifecycle shared by `ds-dialog` / `ds-drawer`   |
 | `roving-focus.ts`           | arrow/Home/End index resolution for roving-tabindex widgets           |
@@ -115,14 +115,14 @@ satisfies that range with react-dom 18 and pairs it against react 19
 react-dom 18 reads, so Storybook's preview throws on load, no custom element upgrades, and every
 e2e and a11y test times out waiting for elements that never render.
 
-It reproduces only from a clean `--frozen-lockfile` install, which is what CI does — a local
+It reproduces only from a clean `--frozen-lockfile` install, which is what CI does - a local
 `node_modules` that has drifted through incremental installs will happily keep working. Reproduce
 with `scripts/visual-docker.sh test:e2e`.
 
 ## TypeScript version
 
 Pinned at **6.0.3** across every workspace. TypeScript 7 (the native compiler) was tried and
-rolled back — two blockers, both in tools that consume the compiler API:
+rolled back - two blockers, both in tools that consume the compiler API:
 
 - `typescript-eslint@8.66.0` declares `>=4.8.4 <6.1.0` and **errors out** on TS 7 rather than
   warning, so every `pnpm lint` fails.
@@ -133,12 +133,12 @@ The compiler itself is fine: build, declaration emit under `experimentalDecorato
 tools ship TS 7 support.
 
 TS 6 no longer picks up `@types` packages from an ancestor `node_modules`. A workspace that uses
-node builtins needs its own `@types/node` **and** an explicit `"types": ["node"]` — see
+node builtins needs its own `@types/node` **and** an explicit `"types": ["node"]` - see
 `packages/tokens/tsconfig.json`.
 
 ## Linting the templates
 
 `pnpm lint:lit` (eslint-plugin-lit) and `pnpm lint:lit:analyzer` both run in CI. The analyzer CLI
 takes globs rather than a project, so it builds its own program and **type-dependent rules see
-`any`** — it catches template and CSS syntax, not binding types. Binding types are checked in the
+`any`** - it catches template and CSS syntax, not binding types. Binding types are checked in the
 editor by `ts-lit-plugin`, registered in each package's tsconfig.

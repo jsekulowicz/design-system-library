@@ -114,7 +114,7 @@ describe('<ds-table-pagination>', () => {
 
   it('renders summary text', async () => {
     const el = await mountPagination({ page: 2, pageSize: 10, total: 100 });
-    expect(el.shadowRoot!.textContent).toContain('Showing 11–20 of 100');
+    expect(el.shadowRoot!.textContent).toContain('Showing 11-20 of 100');
   });
 
   it('renders "No results" summary when total is 0', async () => {
@@ -137,7 +137,7 @@ describe('<ds-table-pagination>', () => {
     el.compact = true;
     await el.updateComplete;
     // Compact mode caps the range at three items + first/last: with
-    // currentPage = 50 we expect [1, …, 50, …, 100].
+    // currentPage = 50 we expect [1, ..., 50, ..., 100].
     const pageButtons = Array.from(el.shadowRoot!.querySelectorAll('button[aria-label^="Page "]'));
     const pages = pageButtons.map((b) => Number(b.getAttribute('aria-label')!.replace('Page ', '')));
     expect(pages).toEqual([1, 50, 100]);

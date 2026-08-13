@@ -15,7 +15,7 @@ export const navItemStyles = [
       color: var(--ds-color-fg-subtle);
       cursor: not-allowed;
     }
-    /* Redefined here so a consumer's accent-coloured icon dims with the label. */
+    /* Redefined here so a consumer's accent-colored icon dims with the label. */
     :host([disabled]) {
       --ds-color-accent: var(--ds-color-fg-subtle);
     }

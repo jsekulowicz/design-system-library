@@ -58,7 +58,7 @@ export const dialogStyles = css`
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }
-  /* Normalise slotted h1-h6 so UA defaults don't compound with .title-text. */
+  /* Normalize slotted h1-h6 so UA defaults don't compound with .title-text. */
   .title-text ::slotted(*) {
     font: inherit;
     margin: 0;

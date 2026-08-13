@@ -4,20 +4,20 @@ import type { BarChartSeries } from './types.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-interface Turn {
-  turn: number;
-  Jess: number;
-  Marco: number;
-  Andrew: number;
+interface MetricRow {
+  period: number;
+  Website: number;
+  Mobile: number;
+  Partners: number;
 }
 
-const ROWS: readonly Turn[] = [
-  { turn: 1, Jess: 3, Marco: 2, Andrew: 4 },
-  { turn: 2, Jess: 2, Marco: 4, Andrew: 3 },
-  { turn: 3, Jess: 5, Marco: 5, Andrew: 4 },
+const ROWS: readonly MetricRow[] = [
+  { period: 1, Website: 3, Mobile: 2, Partners: 4 },
+  { period: 2, Website: 2, Mobile: 4, Partners: 3 },
+  { period: 3, Website: 5, Mobile: 5, Partners: 4 },
 ];
 
-const SERIES: readonly BarChartSeries[] = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
+const SERIES: readonly BarChartSeries[] = [{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }];
 
 beforeAll(() => {
   if (!customElements.get('ds-bar-chart')) {
@@ -34,12 +34,12 @@ beforeEach(() => {
   } as unknown as typeof ResizeObserver;
 });
 
-async function mountChart(props: Partial<DsBarChart<Turn>> = {}): Promise<DsBarChart<Turn>> {
-  const el = await mountWithProps<DsBarChart<Turn>>(
+async function mountChart(props: Partial<DsBarChart<MetricRow>> = {}): Promise<DsBarChart<MetricRow>> {
+  const el = await mountWithProps<DsBarChart<MetricRow>>(
     '<ds-bar-chart></ds-bar-chart>',
     {
       data: ROWS,
-      domain: 'turn',
+      domain: 'period',
       series: SERIES,
       ...props,
     },
@@ -80,10 +80,10 @@ describe('<ds-bar-chart> edge coverage', () => {
 
   it('covers narrow x-axis band branches and rotated labels', async () => {
     const rows = Array.from({ length: 40 }, (_, index) => ({
-      turn: index + 1,
-      Jess: index % 3,
-      Marco: index % 5,
-      Andrew: index % 7,
+      period: index + 1,
+      Website: index % 3,
+      Mobile: index % 5,
+      Partners: index % 7,
     }));
     const el = await mountChart({ data: rows });
 
@@ -103,8 +103,8 @@ describe('<ds-bar-chart> edge coverage', () => {
 
   it('covers null-domain and missing-series fallbacks in tooltip/live/sr output', async () => {
     const el = await mountChart({
-      data: [{ turn: null as unknown as number, Jess: 0, Marco: 0, Andrew: 0 }],
-      series: [{ key: 'Jess' }, { key: 'Ghost' }],
+      data: [{ period: null as unknown as number, Website: 0, Mobile: 0, Partners: 0 }],
+      series: [{ key: 'Website' }, { key: 'Missing' }],
       stacked: true,
     });
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
@@ -112,10 +112,10 @@ describe('<ds-bar-chart> edge coverage', () => {
     await el.updateComplete;
 
     const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
-    expect(tooltip.textContent).toContain('Ghost');
+    expect(tooltip.textContent).toContain('Missing');
     expect(tooltip.textContent).toContain('0');
     const srTable = el.shadowRoot!.querySelector('.visually-hidden table') as HTMLTableElement;
-    expect(srTable.textContent).toContain('Ghost');
+    expect(srTable.textContent).toContain('Missing');
   });
 
   it('handles out-of-range active index safely in live text and focus ring rendering', async () => {

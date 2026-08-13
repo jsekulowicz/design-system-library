@@ -39,7 +39,7 @@ describe('<ds-top-bar>', () => {
     `);
     expect(el.shadowRoot!.querySelector('slot[name="brand"]')).not.toBeNull();
     expect(el.shadowRoot!.querySelector('slot[name="actions"]')).not.toBeNull();
-    // No default slot — the bar intentionally does not own primary nav links.
+    // No default slot - the bar intentionally does not own primary nav links.
     expect(el.shadowRoot!.querySelector('slot:not([name])')).toBeNull();
   });
 
@@ -48,7 +48,7 @@ describe('<ds-top-bar>', () => {
     // Full-width chrome (height + border-bottom + bg) lives on nav itself.
     expect(css).toMatch(/nav\s*{[^}]*height:\s*48px/);
     // The inner wrapper holds the 16px symmetric padding and centers
-    // brand + actions horizontally — its width is capped by the
+    // brand + actions horizontally - its width is capped by the
     // optional --ds-top-bar-content-max-width custom property.
     expect(css).toMatch(/\.inner\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
     expect(css).toMatch(/\.inner\s*{[^}]*align-items:\s*center/);

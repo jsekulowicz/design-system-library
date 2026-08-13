@@ -168,7 +168,7 @@ export function FormControlMixin<TBase extends LitCtor>(
      *  backed by a native input override this. */
     syncValidity(): void {}
 
-    /** Reveals validation state without waiting for the user — what a
+    /** Reveals validation state without waiting for the user - what a
      *  rejected submit needs, since the field that blocked it is exactly
      *  the one nobody has visited. */
     showValidity(): void {

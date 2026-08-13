@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Framework usage
 
-Every component is a native web component, so it runs anywhere the DOM does. The only thing that differs is how you pass **non-string props** (arrays, objects, functions) — frameworks set these as JS properties, not HTML attributes.
+Every component is a native web component, so it runs anywhere the DOM does. The only thing that differs is how you pass **non-string props** (arrays, objects, functions) - frameworks set these as JS properties, not HTML attributes.
 
 Each component ships a `define` side-effect module that registers the custom element with the browser. Import it once at your app's entry point:
 
@@ -13,7 +13,7 @@ import '@jsekulowicz/ds-tokens/theme-default.css';
 import '@jsekulowicz/ds-components/bar-chart/define';
 ```
 
-String and boolean props work the same everywhere — just attributes. The sections below focus on the non-string cases.
+String and boolean props work the same everywhere - just attributes. The sections below focus on the non-string cases.
 
 ## Lit / vanilla Lit templates
 
@@ -25,14 +25,14 @@ import '@jsekulowicz/ds-components/bar-chart/define';
 
 html`
   <ds-bar-chart
-    title="Game turns"
-    domain="turnOrdinalNumber"
-    x-axis-label="Turn"
-    y-axis-label="Score"
+    title="Weekly activity"
+    domain="week"
+    x-axis-label="Week"
+    y-axis-label="Events"
     stacked
     .data=${rows}
-    .series=${[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
-    .formatDomain=${(v) => `Turn ${v}`}
+    .series=${[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]}
+    .formatDomain=${(v) => `Week ${v}`}
     @ds-bar-focus=${(e) => console.log(e.detail)}
   ></ds-bar-chart>
 `;
@@ -42,27 +42,27 @@ Without the dot, `data` would be coerced to the string `"[object Object]"`.
 
 ## React
 
-The repo ships React wrappers generated with `@lit/react` under the `@jsekulowicz/ds-react` package. Use them exactly like regular React components — no dots, no ref juggling:
+The repo ships React wrappers generated with `@lit/react` under the `@jsekulowicz/ds-react` package. Use them exactly like regular React components - no dots, no ref juggling:
 
 ```tsx
 import { BarChart } from '@jsekulowicz/ds-react';
 
 <BarChart
-  title="Game turns"
-  domain="turnOrdinalNumber"
-  xAxisLabel="Turn"
-  yAxisLabel="Score"
+  title="Weekly activity"
+  domain="week"
+  xAxisLabel="Week"
+  yAxisLabel="Events"
   stacked
   data={rows}
-  series={[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]}
-  formatDomain={(v) => `Turn ${v}`}
+  series={[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]}
+  formatDomain={(v) => `Week ${v}`}
   onDsBarFocus={(e) => console.log(e.detail)}
 />;
 ```
 
 Rules of thumb:
 
-- Every component has a matching wrapper in `@jsekulowicz/ds-react` (`Button`, `Breadcrumb`, `BarChart`, `Table`, …).
+- Every component has a matching wrapper in `@jsekulowicz/ds-react` (`Button`, `Breadcrumb`, `BarChart`, `Table`, ...).
 - Kebab-case attributes become camelCase props (`x-axis-label` → `xAxisLabel`).
 - Custom events are camelCased with an `onDs` prefix (`ds-bar-focus` → `onDsBarFocus`, `ds-change` → `onDsChange`).
 - The wrapper sets React props as DOM properties on the underlying element, so arrays and functions pass through as real values, not stringified.
@@ -83,19 +83,19 @@ app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith('ds-');
 app.mount('#app');
 ```
 
-Then in templates, use `:prop="…"` for non-string values — Vue sets them as JS properties on custom elements automatically:
+Then in templates, use `:prop="..."` for non-string values - Vue sets them as JS properties on custom elements automatically:
 
 ```html
 <template>
   <ds-bar-chart
-    title="Game turns"
-    domain="turnOrdinalNumber"
-    x-axis-label="Turn"
-    y-axis-label="Score"
+    title="Weekly activity"
+    domain="week"
+    x-axis-label="Week"
+    y-axis-label="Events"
     stacked
     :data="rows"
-    :series="[{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }]"
-    :format-domain="v => `Turn ${v}`"
+    :series="[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]"
+    :format-domain="v => `Week ${v}`"
     @ds-bar-focus="onBarFocus"
   />
 </template>
@@ -120,10 +120,10 @@ export class AppModule {}
 
 ```html
 <ds-bar-chart
-  title="Game turns"
-  domain="turnOrdinalNumber"
-  x-axis-label="Turn"
-  y-axis-label="Score"
+  title="Weekly activity"
+  domain="week"
+  x-axis-label="Week"
+  y-axis-label="Events"
   stacked
   [data]="rows"
   [series]="series"
@@ -139,19 +139,19 @@ Square-bracket syntax (`[data]="rows"`) binds to the DOM property; parentheses (
 Attributes only carry strings, so set complex values with JS property assignment after the element is in the DOM:
 
 ```html
-<ds-bar-chart domain="turnOrdinalNumber" x-axis-label="Turn" y-axis-label="Score" stacked></ds-bar-chart>
+<ds-bar-chart domain="week" x-axis-label="Week" y-axis-label="Events" stacked></ds-bar-chart>
 
 <script type="module">
   import '@jsekulowicz/ds-components/bar-chart/define';
 
   const chart = document.querySelector('ds-bar-chart');
   chart.data = rows;
-  chart.series = [{ key: 'Jess' }, { key: 'Marco' }, { key: 'Andrew' }];
-  chart.formatDomain = (v) => `Turn ${v}`;
+  chart.series = [{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }];
+  chart.formatDomain = (v) => `Week ${v}`;
   chart.addEventListener('ds-bar-focus', (e) => console.log(e.detail));
 </script>
 ```
 
 ## Events
 
-Custom events are plain `CustomEvent`s that bubble and cross shadow boundaries, so any listener works — `.addEventListener('ds-change', …)` (vanilla), `@ds-change="…"` (Vue), `onDsChange={…}` (React), `(ds-change)="…"` (Angular). The `detail` payload is the same everywhere; types are exported from each component's subpath (e.g. `import type { BarChartFocusDetail } from '@jsekulowicz/ds-components/bar-chart'`).
+Custom events are plain `CustomEvent`s that bubble and cross shadow boundaries, so any listener works - `.addEventListener('ds-change', ...)` (vanilla), `@ds-change="..."` (Vue), `onDsChange={...}` (React), `(ds-change)="..."` (Angular). The `detail` payload is the same everywhere; types are exported from each component's subpath (e.g. `import type { BarChartFocusDetail } from '@jsekulowicz/ds-components/bar-chart'`).

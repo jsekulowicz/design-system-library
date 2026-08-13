@@ -21,7 +21,7 @@ A `ds-breadcrumb` host wraps any number of `ds-breadcrumb-item` children in ance
 </ds-breadcrumb>
 ```
 
-`ds-breadcrumb-item` forwards standard `<a>` attributes — `href`, `target`, `rel`, `download`, `hreflang`, `type`, `referrerpolicy` — so consumers control routing themselves (including SPA navigation via intercepted clicks).
+`ds-breadcrumb-item` forwards standard `<a>` attributes - `href`, `target`, `rel`, `download`, `hreflang`, `type`, `referrerpolicy` - so consumers control routing themselves (including SPA navigation via intercepted clicks).
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -55,14 +55,14 @@ A `ds-breadcrumb` host wraps any number of `ds-breadcrumb-item` children in ance
       <h3>Do</h3>
       <ul>
         <li>Order items from the topmost ancestor to the current page, left to right.</li>
-        <li>Omit <code>href</code> on the final item — the parent marks it current automatically.</li>
+        <li>Omit <code>href</code> on the final item - the parent marks it current automatically.</li>
         <li>Pair <code>target="_blank"</code> with <code>rel="noopener"</code> (and optionally <code>rel="noreferrer"</code>) for external links.</li>
-        <li>Keep labels short — one or two words per crumb.</li>
+        <li>Keep labels short - one or two words per crumb.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Don't use a breadcrumb for a single-page workflow — it's for hierarchy, not step progress.</li>
-        <li>Don't link the last crumb — it represents the page the user is already on.</li>
+        <li>Don't use a breadcrumb for a single-page workflow - it's for hierarchy, not step progress.</li>
+        <li>Don't link the last crumb - it represents the page the user is already on.</li>
         <li>Don't truncate labels with ellipsis unless space is genuinely constrained; prefer flatter IA.</li>
       </ul>
       <h3>Accessibility</h3>

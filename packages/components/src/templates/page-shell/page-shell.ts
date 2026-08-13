@@ -41,7 +41,7 @@ export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPo
  * @slot default - Scrollable main content. A direct `ds-scrollable-page` child remains supported for standalone scrollable-page composition.
  * @slot footer - Footer content.
  * @cssprop --ds-page-shell-max-width - Outer cap for the shell's content column. Header inner
- *   Content and the aside + main row centre at this width. Defaults to `none`; chrome stays full-bleed.
+ *   Content and the aside + main row center at this width. Defaults to `none`; chrome stays full-bleed.
  * @cssprop --ds-page-shell-menu-toggle-size - Box size of the mobile navigation toggle button.
  *   Defaults to `var(--ds-size-sm)`. Set to e.g. `var(--ds-size-md)` to match full-size action buttons.
  * @cssprop --ds-page-shell-page-padding-block - Block padding for page header and content. Defaults to `var(--ds-space-5)` and `var(--ds-space-4)` below desktop.

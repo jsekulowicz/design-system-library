@@ -56,11 +56,11 @@ const sizeOptions = [
   { value: 'large', label: 'Large' },
 ];
 
-const difficultyOptions = [
-  { value: 'any', label: 'Any difficulty' },
-  { value: 'easy', label: 'Easy' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'hard', label: 'Hard' },
+const statusOptions = [
+  { value: 'any', label: 'Any status' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'review', label: 'In review' },
+  { value: 'published', label: 'Published' },
 ];
 
 export const WithFormFields: Story = {
@@ -69,7 +69,7 @@ export const WithFormFields: Story = {
     docs: {
       description: {
         story:
-          'A typical filter panel: title + close pinned at the top, scrollable form body, footer with Reset / Apply. Tab through the selects — focus rings paint fully on all sides, same as the dialog body.',
+          'A typical filter panel: title + close pinned at the top, scrollable form body, footer with Reset / Apply. Tab through the selects - focus rings paint fully on all sides, same as the dialog body.',
       },
     },
   },
@@ -80,8 +80,8 @@ export const WithFormFields: Story = {
         <span slot="title">Filters</span>
         <div class="form">
           <ds-select label="Size" .options=${sizeOptions} value="any"></ds-select>
-          <ds-select label="Difficulty" .options=${difficultyOptions} value="any"></ds-select>
-          <ds-text-field label="Theme" placeholder="e.g. food, travel"></ds-text-field>
+          <ds-select label="Status" .options=${statusOptions} value="any"></ds-select>
+          <ds-text-field label="Owner" placeholder="e.g. Alex Morgan"></ds-text-field>
         </div>
         <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDrawer}> Reset </ds-button>
         <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDrawer}> Apply </ds-button>
@@ -103,7 +103,7 @@ export const CustomHeight: Story = {
     docs: {
       description: {
         story:
-          'A drawer that stops short of the full viewport — under a fixed app bar, say — sets `--ds-drawer-height`. The panel and its card share the property, so the card can never outgrow the panel box.',
+          'A drawer that stops short of the full viewport - under a fixed app bar, say - sets `--ds-drawer-height`. The panel and its card share the property, so the card can never outgrow the panel box.',
       },
     },
   },

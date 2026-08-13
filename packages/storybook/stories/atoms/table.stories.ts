@@ -314,7 +314,7 @@ export const ScrollBodyWithPagination: Story = {
     docs: {
       description: {
         story:
-          'With the `scroll-body` attribute, only the body scrolls — the header row and the ' +
+          'With the `scroll-body` attribute, only the body scrolls - the header row and the ' +
           'pagination footer stay pinned. The scrollbar is hidden and overflow is signalled by ' +
           'top/bottom fades (the top fade is offset below the header). The host needs a bounded ' +
           'height; here the table fills a 13rem flex column.',
@@ -367,7 +367,7 @@ export const PinnedColumns: Story = {
       description: {
         story:
           'Pass `pinnedColumns` (an array of column `name`s) to freeze columns into a contiguous ' +
-          'left region while the rest scrolls horizontally. Any column is eligible — here `status` ' +
+          'left region while the rest scrolls horizontally. Any column is eligible - here `status` ' +
           '(the 3rd column) is pinned alongside `name` without pinning `role` in between; the pinned ' +
           'columns keep their original relative order. A separator marks the edge and a shadow fades ' +
           'in once the body is scrolled sideways.',
@@ -382,7 +382,7 @@ export const PinnedColumns: Story = {
     </style>
     <div class="pin-demo">
       <ds-table responsive="scroll" .rows=${PEOPLE} .columns=${WIDE_COLUMNS} .pinnedColumns=${['name', 'status']}>
-        <span slot="caption">Scroll sideways — Name and Status stay pinned</span>
+        <span slot="caption">Scroll sideways - Name and Status stay pinned</span>
       </ds-table>
     </div>
   `,
@@ -523,7 +523,7 @@ export const EmptyState: Story = {
 export const WithCaptionAndToolbar: Story = {
   render: () => html`
     <ds-table .rows=${PEOPLE.slice(0, 5)} .columns=${RICH_COLUMNS}>
-      <span slot="caption">Team roster — Q2 snapshot</span>
+      <span slot="caption">Team roster - Q2 snapshot</span>
       <div slot="toolbar" style="display: flex; gap: var(--ds-space-2); align-items: flex-end;">
         <ds-text-field label="Filter by name" size="sm"></ds-text-field>
         <ds-button variant="secondary" size="sm">Export CSV</ds-button>

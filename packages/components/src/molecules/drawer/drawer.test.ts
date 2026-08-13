@@ -153,9 +153,9 @@ describe('<ds-drawer>', () => {
   it('uses aria-labelledby pointing at the slotted title by default', async () => {
     const el = await mount<DsDrawer>(TEMPLATE);
     const dialog = getDialogEl(el);
-    const labelledBy = dialog.getAttribute('aria-labelledby');
-    expect(labelledBy).toBeTruthy();
-    const heading = el.shadowRoot!.getElementById(labelledBy!);
+    const labeledBy = dialog.getAttribute('aria-labelledby');
+    expect(labeledBy).toBeTruthy();
+    const heading = el.shadowRoot!.getElementById(labeledBy!);
     expect(heading?.tagName.toLowerCase()).toBe('h2');
     expect(dialog.getAttribute('aria-label')).toBeNull();
   });

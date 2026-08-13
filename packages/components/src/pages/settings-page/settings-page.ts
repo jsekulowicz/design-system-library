@@ -10,7 +10,7 @@ export interface SettingsSection {
 
 /**
  * @tag ds-settings-page
- * @summary Composition example — settings page with sticky nav and slotted sections.
+ * @summary Composition example - settings page with sticky nav and slotted sections.
  * @slot default - One or more `<section id="...">` blocks matching the nav items.
  */
 export class DsSettingsPage extends DsElement {

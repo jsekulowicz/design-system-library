@@ -73,7 +73,7 @@ export const Rows: Story = {
     docs: {
       description: {
         story:
-          '`rows` sizes the field to exactly that many text rows. Set it to match the expected input length — a one-line note vs. a long description.',
+          '`rows` sizes the field to exactly that many text rows. Set it to match the expected input length - a one-line note vs. a long description.',
       },
     },
   },
@@ -120,7 +120,7 @@ export const Disabled: Story = {
     <ds-text-area
       label="Bio"
       description="This field cannot be edited right now."
-      value="Crossword enthusiast and part-time setter."
+      value="Product designer focused on accessible interfaces."
       disabled
     ></ds-text-area>
   `,

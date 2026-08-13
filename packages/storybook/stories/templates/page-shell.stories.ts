@@ -117,7 +117,7 @@ export const NoAside: Story = {
           </h1>
           <p>
             Leave the <code>aside</code> slot empty and the page shell auto-collapses to a single column on every
-            viewport — the hamburger toggle, drawer, and aside region don't render. Useful for focused, single-purpose
+            viewport - the hamburger toggle, drawer, and aside region don't render. Useful for focused, single-purpose
             tools that don't need a global <code>ds-sidenav</code>.
           </p>
         </article>
@@ -148,7 +148,7 @@ export const ConstrainedWidth: Story = {
             Capped shell
           </h1>
           <p>
-            This story opts into <code>--ds-page-shell-max-width: 90rem</code> to show the centred column cap. The
+            This story opts into <code>--ds-page-shell-max-width: 90rem</code> to show the centered column cap. The
             default PageShell stories use the fluid <code>none</code>
             value.
           </p>
@@ -264,7 +264,7 @@ export const OverflowingMain: Story = {
           When main has more content than fits, a thin vertical scrollbar appears at the inline-end. Because main
           reserves a scrollbar gutter on both inline edges (<code>scrollbar-gutter: stable both-edges</code>), the
           inline-start and inline-end visible empty bands stay equal in width whether or not the scrollbar is currently
-          rendered — so the page doesn't shift horizontally when overflow toggles on or off.
+          rendered - so the page doesn't shift horizontally when overflow toggles on or off.
         </p>
         ${Array.from(
           { length: 30 },

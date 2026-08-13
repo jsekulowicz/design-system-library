@@ -46,7 +46,7 @@ function ApiTable({ title, items }: { title: string; items: Entry[] }) {
               <td>
                 <code>{item.name || 'default'}</code>
               </td>
-              <td>{item.description ?? '—'}</td>
+              <td>{item.description ?? '-'}</td>
             </tr>
           ))}
         </tbody>

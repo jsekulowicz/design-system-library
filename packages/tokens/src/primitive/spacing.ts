@@ -1,5 +1,5 @@
 // 4px base scale. Every step is a multiple of 4 (in rem: 0.25rem per 4px at the 16px root default).
-// Rems, not pixels, so spacing scales with the user's root font size — a user who bumps
+// Rems, not pixels, so spacing scales with the user's root font size - a user who bumps
 // their browser's default text size gets proportionally larger paddings and gaps.
 export const space = {
   0: '0',

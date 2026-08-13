@@ -67,7 +67,7 @@ export const tableStyles = css`
     display: none;
   }
 
-  /* Flex so non-text cell content centres against text cells. */
+  /* Flex so non-text cell content centers against text cells. */
   .cell-content {
     display: flex;
     align-items: center;

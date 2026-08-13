@@ -4,7 +4,7 @@ import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 // jsdom 25 does not implement ElementInternals ARIA reflection (ariaLabel, ariaDescription).
-// Stub them so tests focus on component behaviour, not platform internals.
+// Stub them so tests focus on component behavior, not platform internals.
 beforeAll(() => {
   const proto = DsSelect.prototype as unknown as Record<string, () => void>;
   proto['setAriaLabel'] = () => {};
@@ -269,7 +269,7 @@ describe('<ds-select>', () => {
       expect(events[0]?.detail).toEqual({ value: '' });
     });
 
-    it('re-renders after clearing — clear button disappears and placeholder shows', async () => {
+    it('re-renders after clearing - clear button disappears and placeholder shows', async () => {
       const el = await mountSelect({ clearable: true, value: 'react', placeholder: 'Pick one' });
       el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
       await el.updateComplete;

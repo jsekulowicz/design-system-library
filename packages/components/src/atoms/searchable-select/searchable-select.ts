@@ -53,7 +53,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ type: Array }) options: SelectOption[] = [];
   @property({ reflect: true }) size: SelectSize = 'md';
   @property() placeholder = '';
-  @property({ attribute: 'search-placeholder' }) searchPlaceholder = 'Search…';
+  @property({ attribute: 'search-placeholder' }) searchPlaceholder = 'Search...';
   @property() label = '';
   @property() description = '';
   @property() hint = '';

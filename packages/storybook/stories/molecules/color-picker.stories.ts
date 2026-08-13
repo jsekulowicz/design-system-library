@@ -147,20 +147,20 @@ export const CompactInTextField: Story = {
   name: 'Compact in text field',
   render: () => html`
     <div style="display: grid; gap: var(--ds-space-4);">
-      <ds-text-field label="Player 1" placeholder="e.g. Bob">
+      <ds-text-field label="Primary brand" placeholder="e.g. Marketing site">
         <ds-color-picker
           slot="leading"
           compact
-          placeholder="Player color"
+          placeholder="Brand color"
           value="#EF4444"
           .colors=${brandColors}
         ></ds-color-picker>
       </ds-text-field>
-      <ds-text-field label="Player 2" placeholder="e.g. Alice">
+      <ds-text-field label="Secondary brand" placeholder="e.g. Help center">
         <ds-color-picker
           slot="leading"
           compact
-          placeholder="Player color"
+          placeholder="Brand color"
           value="#2563EB"
           .colors=${brandColors}
         ></ds-color-picker>

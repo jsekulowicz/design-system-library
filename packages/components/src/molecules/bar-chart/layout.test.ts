@@ -51,21 +51,21 @@ describe('generateTicks', () => {
 describe('groupData', () => {
   it('extracts series values and totals, preserving row order', () => {
     const rows = [
-      { turn: 1, Jess: 3, Marco: 2 },
-      { turn: 2, Jess: 2, Marco: 4 },
+      { period: 1, Website: 3, Mobile: 2 },
+      { period: 2, Website: 2, Mobile: 4 },
     ];
-    const groups = groupData(rows, 'turn', ['Jess', 'Marco']);
+    const groups = groupData(rows, 'period', ['Website', 'Mobile']);
     expect(groups).toHaveLength(2);
     expect(groups[0].domain).toBe(1);
-    expect(groups[0].values).toEqual({ Jess: 3, Marco: 2 });
+    expect(groups[0].values).toEqual({ Website: 3, Mobile: 2 });
     expect(groups[0].total).toBe(5);
     expect(groups[1].total).toBe(6);
   });
 
   it('fills missing or non-numeric values with 0', () => {
-    const rows = [{ turn: 1, Jess: 3 }];
-    const groups = groupData(rows, 'turn', ['Jess', 'Ghost']);
-    expect(groups[0].values).toEqual({ Jess: 3, Ghost: 0 });
+    const rows = [{ period: 1, Website: 3 }];
+    const groups = groupData(rows, 'period', ['Website', 'Missing']);
+    expect(groups[0].values).toEqual({ Website: 3, Missing: 0 });
     expect(groups[0].total).toBe(3);
   });
 });

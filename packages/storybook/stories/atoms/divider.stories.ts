@@ -49,7 +49,7 @@ export const SeparatingFormSections: Story = {
   render: () => html`
     <section style=${SECTION_LAYOUT}>
       <h3 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-sm)">Profile</h3>
-      <p style="margin:0;color:var(--ds-color-fg-muted)">Name, email, avatar — visible to your team.</p>
+      <p style="margin:0;color:var(--ds-color-fg-muted)">Name, email, avatar - visible to your team.</p>
       <ds-divider></ds-divider>
       <h3 style="margin:0;font-family:var(--ds-font-display);font-size:var(--ds-font-size-heading-sm)">Preferences</h3>
       <p style="margin:0;color:var(--ds-color-fg-muted)">Theme, notifications, keyboard shortcuts.</p>

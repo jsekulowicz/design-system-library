@@ -95,7 +95,7 @@ export function renderSubtext(
   if (invalid && error) {
     return html`
       <p class="error" role="alert">
-        <!-- Heroicons 2.2.0 — 16/solid: exclamation-circle -->
+        <!-- Heroicons 2.2.0 - 16/solid: exclamation-circle -->
         <svg class="error-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
           <path
             fill-rule="evenodd"

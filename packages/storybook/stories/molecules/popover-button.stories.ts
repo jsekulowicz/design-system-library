@@ -68,7 +68,7 @@ export const SlottedTrigger: Story = {
       <ds-button slot="trigger" variant="ghost" aria-label="Notifications">Notifications</ds-button>
       <section aria-label="Notifications" style=${NOTIFICATIONS_PANEL}>
         <strong>Notifications</strong>
-        <p>Your crossword was approved.</p>
+        <p>Your request was approved.</p>
       </section>
     </ds-popover-button>
   `,

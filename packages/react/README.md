@@ -20,11 +20,11 @@ import { Button } from '@jsekulowicz/ds-react';
 React 19 passes unknown props to custom elements as attributes (and as properties where one
 exists), so basic interop no longer needs a wrapper. What the wrappers still buy you:
 
-- **Typed props** — `variant`, `size` and friends are checked against the component's own union
+- **Typed props** - `variant`, `size` and friends are checked against the component's own union
   types instead of accepted as arbitrary strings.
-- **Custom events as props** — `onDsClick`, `onDsChange` and the rest. React has no built-in
+- **Custom events as props** - `onDsClick`, `onDsChange` and the rest. React has no built-in
   mapping from a `ds-*` CustomEvent to a prop; `@lit/react` wires the listener for you.
-- **Non-serialisable props** — objects and arrays are set as properties, not stringified.
+- **Non-serializable props** - objects and arrays are set as properties, not stringified.
 
 On React 18 the wrappers are required for all of the above. The `peerDependencies` range is
 `>=18`; both are supported.

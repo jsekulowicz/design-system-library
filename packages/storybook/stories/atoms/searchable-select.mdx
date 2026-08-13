@@ -11,7 +11,7 @@ A virtualized select with a search input. Emits `ds-search` so the parent can fi
 
 ## Anatomy
 
-Extends `ds-select` with a search input above the listbox. The parent owns filtering — the component only reports queries via `ds-search`. Each row is a `ds-select-option` (documented under [Select → API](?path=/docs/atoms-select--docs)).
+Extends `ds-select` with a search input above the listbox. The parent owns filtering - the component only reports queries via `ds-search`. Each row is a `ds-select-option` (documented under [Select → API](?path=/docs/atoms-select--docs)).
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -33,14 +33,14 @@ Extends `ds-select` with a search input above the listbox. The parent owns filte
       <h3>Do</h3>
       <ul>
         <li>Use for long option lists (20+) where typing is faster than scrolling.</li>
-        <li>Debounce async queries on the parent — the component emits every keystroke.</li>
+        <li>Debounce async queries on the parent - the component emits every keystroke.</li>
         <li>Use <code>loading</code> while options are being fetched to signal progress and block accidental opens.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Don't use for small lists — <code>ds-select</code> is simpler and faster to scan.</li>
-        <li>Don't filter client-side if the options are paginated server-side — listen to <code>ds-search</code> and refetch.</li>
-        <li>Don't block typing while <code>loading</code> — only the open state is blocked.</li>
+        <li>Don't use for small lists - <code>ds-select</code> is simpler and faster to scan.</li>
+        <li>Don't filter client-side if the options are paginated server-side - listen to <code>ds-search</code> and refetch.</li>
+        <li>Don't block typing while <code>loading</code> - only the open state is blocked.</li>
       </ul>
       <h3>Accessibility</h3>
       <ul>

@@ -56,7 +56,7 @@ export const WrappingContent: Story = {
     <div style=${WRAPPING_FRAME_STYLE}>
       <ds-tooltip placement="bottom">
         <ds-button variant="ghost" size="sm">Contributions</ds-button>
-        <span slot="tip"> Approved crosswords created by the player and accepted word or clue suggestions </span>
+        <span slot="tip"> Approved contributions and accepted suggestions from your team </span>
       </ds-tooltip>
     </div>
   `,

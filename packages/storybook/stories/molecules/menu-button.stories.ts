@@ -58,9 +58,9 @@ const CHEVRON_DOWN_ICON = html`<svg viewBox="0 0 16 16" width="16" height="16" f
 
 const PLAYGROUND_SOURCE = `<ds-menu-button placement="bottom-start">
   <ds-button slot="trigger" variant="secondary" size="md">
-    <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">…</svg>
+    <svg slot="leading" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">...</svg>
     Edit
-    <svg slot="trailing" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">…</svg>
+    <svg slot="trailing" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">...</svg>
   </ds-button>
   <ds-menu-item value="duplicate">Duplicate</ds-menu-item>
   <ds-menu-item value="rename">Rename</ds-menu-item>
@@ -73,7 +73,7 @@ export const Playground: Story = {
     docs: {
       description: {
         story:
-          'Use `slot="trigger"` to put a `ds-button` (or any element) inside the trigger. The component wires up `aria-haspopup`, `aria-expanded`, `aria-controls`, click, and keyboard handling automatically — so the slotted button is free to use its own `leading` / `trailing` slots for icons.',
+          'Use `slot="trigger"` to put a `ds-button` (or any element) inside the trigger. The component wires up `aria-haspopup`, `aria-expanded`, `aria-controls`, click, and keyboard handling automatically - so the slotted button is free to use its own `leading` / `trailing` slots for icons.',
       },
       source: { code: PLAYGROUND_SOURCE },
     },
@@ -144,7 +144,7 @@ export const WithHeaderFooter: Story = {
       <ds-menu-item value="globex">Globex</ds-menu-item>
       <ds-menu-item value="initech">Initech</ds-menu-item>
       <span slot="footer">
-        <ds-menu-item value="manage">Manage workspaces…</ds-menu-item>
+        <ds-menu-item value="manage">Manage workspaces...</ds-menu-item>
       </span>
     </ds-menu-button>
   `,

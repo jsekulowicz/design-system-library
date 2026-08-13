@@ -7,13 +7,13 @@ import '@jsekulowicz/ds-components/tabs/define';
 
 # Toast
 
-Transient notification anchored to a corner of the viewport. Use it for feedback after a user action — "Saved", "Item moved to trash", "Couldn't connect" — when the user shouldn't have to read it but should be able to. For static, in-flow messages that live with the content, reach for `ds-alert` instead.
+Transient notification anchored to a corner of the viewport. Use it for feedback after a user action - "Saved", "Item moved to trash", "Couldn't connect" - when the user shouldn't have to read it but should be able to. For static, in-flow messages that live with the content, reach for `ds-alert` instead.
 
 ## Anatomy
 
 A `ds-toast-stack` is a fixed-position queue at one of four corners; it holds `ds-toast` children. You can author either declaratively (a stack with toasts inside) or imperatively via `toast()`, which lazily creates a singleton stack on `<body>` for the requested placement and returns a controller you can `dismiss()` or `update()`.
 
-Each toast composes a heading, body (default slot), and an optional `actions` slot for a follow-up button (Undo, Retry). Tone maps to a semantic colour (info / success / warning / danger), drawn from the same tokens as `ds-alert` for consistency.
+Each toast composes a heading, body (default slot), and an optional `actions` slot for a follow-up button (Undo, Retry). Tone maps to a semantic color (info / success / warning / danger), drawn from the same tokens as `ds-alert` for consistency.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -38,7 +38,7 @@ toast.success('Saved', { body: 'Your changes are live.' });
 
 const ctl = toast({
 tone: 'info',
-heading: 'Uploading…',
+heading: 'Uploading...',
 duration: 0, // sticky
 placement: 'top-right',
 });
@@ -53,7 +53,7 @@ ctl.dismiss();`}</code></pre>
     <ds-tab-panel value="guidelines">
       <h3>Do</h3>
       <ul>
-        <li>Reach for a toast after a user action that succeeded or failed — "Saved", "Item moved to trash", "Couldn't save".</li>
+        <li>Reach for a toast after a user action that succeeded or failed - "Saved", "Item moved to trash", "Couldn't save".</li>
         <li>Keep the heading verb-led and short. The body, if needed, fits on one line.</li>
         <li>Pair destructive confirmations with an <code>actions</code> slot containing an Undo button.</li>
         <li>Use <code>danger</code> tone (which is sticky by default) when the user must acknowledge the message.</li>
@@ -63,7 +63,7 @@ ctl.dismiss();`}</code></pre>
         <li>Don't fire toasts as a substitute for inline validation. Form errors belong with the field.</li>
         <li>Don't queue more than a handful at once. The default cap is 5; if you're hitting it, you're probably announcing too much.</li>
         <li>Don't auto-dismiss something the user must read or act on. Set <code>duration={0}</code> to make it sticky.</li>
-        <li>Don't put critical actions only in a toast — they vanish on their own. The action should also be reachable from the page.</li>
+        <li>Don't put critical actions only in a toast - they vanish on their own. The action should also be reachable from the page.</li>
       </ul>
       <h3>Accessibility</h3>
       <ul>

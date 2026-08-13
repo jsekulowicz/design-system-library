@@ -25,13 +25,13 @@ A native `<form>` in shadow DOM. Child controls participate via `ElementInternal
     <ds-tab-panel value="guidelines">
       <h3>Do</h3>
       <ul>
-        <li>Let the form own submission — listen for <code>ds-submit</code> rather than binding to each input.</li>
+        <li>Let the form own submission - listen for <code>ds-submit</code> rather than binding to each input.</li>
         <li>Use the <code>actions</code> slot for form buttons. It aligns actions left on tablet/desktop and right on mobile.</li>
         <li>Surface server-side errors by setting each control's <code>invalid</code> and <code>error</code> props after submission.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Don't disable the submit button as the only validation signal — always show an inline error.</li>
+        <li>Don't disable the submit button as the only validation signal - always show an inline error.</li>
         <li>Don't bypass native validation by validating only on submit; controls should report as the user types.</li>
         <li>Don't nest forms; split the flow across views if it's getting that deep.</li>
       </ul>

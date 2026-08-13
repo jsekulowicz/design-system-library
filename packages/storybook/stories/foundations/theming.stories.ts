@@ -47,13 +47,13 @@ interface OverrideRow {
 
 const overrideRows: readonly OverrideRow[] = [
   {
-    group: 'Brand colour',
+    group: 'Brand color',
     tokens: ['--ds-color-accent', '--ds-color-accent-hover', '--ds-color-accent-active', '--ds-color-accent-subtle'],
     effect: 'Buttons, links, badges, and focus rings',
   },
   {
     group: 'Radii',
-    tokens: ['--ds-radius-xs', '…', '--ds-radius-full'],
+    tokens: ['--ds-radius-xs', '...', '--ds-radius-full'],
     effect: 'radius-xs is the standard-surface default; larger values are deliberate overrides',
   },
   {
@@ -63,12 +63,12 @@ const overrideRows: readonly OverrideRow[] = [
   },
   { group: 'Display font', tokens: ['--ds-font-display'], effect: 'Headings that use the display typeface' },
   {
-    group: 'Surface colours',
+    group: 'Surface colors',
     tokens: ['--ds-color-bg', '--ds-color-bg-subtle', '--ds-color-bg-muted'],
     effect: 'Page and card backgrounds',
   },
   {
-    group: 'Status colours',
+    group: 'Status colors',
     tokens: ['--ds-color-success', '--ds-color-warning', '--ds-color-danger'],
     effect: 'Alert banners and validation states',
   },
@@ -76,7 +76,7 @@ const overrideRows: readonly OverrideRow[] = [
 
 function tokenList(tokens: readonly string[]): TemplateResult {
   return html`<span style="display:flex;flex-wrap:wrap;gap:var(--ds-space-1)">
-    ${tokens.map((token) => (token === '…' ? token : html`<code>${token}</code>`))}
+    ${tokens.map((token) => (token === '...' ? token : html`<code>${token}</code>`))}
   </span>`;
 }
 

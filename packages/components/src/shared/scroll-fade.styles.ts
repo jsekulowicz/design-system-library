@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 // The mask must be declared on the scroller, not :host: a custom property resolves its
 // inner var()s against the element it is declared on, and the controller sets the
-// fade colours on the scroller. Hence the two scroller selectors below.
+// fade colors on the scroller. Hence the two scroller selectors below.
 export const scrollFadeStyles = css`
   ds-card::part(body),
   .scroll,

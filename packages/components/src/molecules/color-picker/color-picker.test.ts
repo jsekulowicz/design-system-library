@@ -214,7 +214,7 @@ describe('<ds-color-picker>', () => {
       compact: true,
       label: '',
       messageSpace: true,
-      placeholder: 'Player color',
+      placeholder: 'Brand color',
       value: '#0ea5e9',
     });
     await el.updateComplete;
@@ -224,7 +224,7 @@ describe('<ds-color-picker>', () => {
     expect(el.shadowRoot!.querySelector('.subtext-spacer')).toBeNull();
     expect(el.shadowRoot!.querySelector('.trigger-text')).toBeNull();
     expect(el.shadowRoot!.querySelector('ds-icon[name="swatch"]')).toBeTruthy();
-    expect(getTrigger(el).getAttribute('label')).toContain('Player color');
+    expect(getTrigger(el).getAttribute('label')).toContain('Brand color');
     expect(getTrigger(el).getAttribute('style')).toContain('--color-picker-compact-bg:#0EA5E9');
     expect(getTrigger(el).getAttribute('style')).toContain('--color-picker-compact-fg:var(--ds-color-fg)');
 

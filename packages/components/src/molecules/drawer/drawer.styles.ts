@@ -91,7 +91,7 @@ export const drawerStyles = css`
   .title-text {
     margin: 0;
     flex: 1;
-    /* Flex-centre: otherwise the h2's line-height inflates the row. */
+    /* Flex-center: otherwise the h2's line-height inflates the row. */
     display: flex;
     align-items: center;
     line-height: var(--ds-line-height-none);

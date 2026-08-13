@@ -379,7 +379,7 @@ describe('<ds-select> label, size and icons', () => {
   });
 
   // Measuring picks startIdx, which picks the next row measured: two heights can point at each other.
-  it('settles when neighbouring rows measure differently', async () => {
+  it('settles when neighboring rows measure differently', async () => {
     const MANY = Array.from({ length: 200 }, (_, index) => ({
       value: `v${index}`,
       label: `Option ${index}`,

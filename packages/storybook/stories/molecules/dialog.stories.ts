@@ -64,17 +64,17 @@ export const ScrollingBody: Story = {
 };
 
 const sampleOptions = [
-  { value: 'any', label: 'Any difficulty' },
-  { value: 'easy', label: 'Easy' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'hard', label: 'Hard' },
+  { value: 'any', label: 'Any format' },
+  { value: 'brief', label: 'Brief' },
+  { value: 'standard', label: 'Standard' },
+  { value: 'detailed', label: 'Detailed' },
 ];
 
 const sampleSizes = [
-  { value: 'any', label: 'Any size' },
-  { value: 'small', label: 'Small' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'large', label: 'Large' },
+  { value: 'any', label: 'Any layout' },
+  { value: 'compact', label: 'Compact' },
+  { value: 'standard', label: 'Standard' },
+  { value: 'spacious', label: 'Spacious' },
 ];
 
 export const WithFormFields: Story = {
@@ -83,27 +83,27 @@ export const WithFormFields: Story = {
     docs: {
       description: {
         story:
-          'Selects and text fields fill the dialog body inline-wise, so their focus rings sit right at the body clip edge. Tab through the controls — the ring must paint fully on all sides. If the left/right sides are shaved off, the body clip-overflow fix has regressed.',
+          'Selects and text fields fill the dialog body inline-wise, so their focus rings sit right at the body clip edge. Tab through the controls - the ring must paint fully on all sides. If the left/right sides are shaved off, the body clip-overflow fix has regressed.',
       },
     },
   },
   render: () => html`
     <div>
       <ds-button @ds-click=${openDialog}>Open form dialog</ds-button>
-      <ds-dialog size="sm" label="Pick a crossword for me">
-        <span slot="title">Pick for me</span>
-        <p>Give us a few hints and we'll pick a puzzle that fits.</p>
+      <ds-dialog size="sm" label="Choose a report template">
+        <span slot="title">Choose a template</span>
+        <p>Set a few preferences and we'll suggest a suitable report template.</p>
         <div class="form">
-          <ds-select label="Difficulty" .options=${sampleOptions} value="any"></ds-select>
-          <ds-select label="Size" .options=${sampleSizes} value="any"></ds-select>
+          <ds-select label="Format" .options=${sampleOptions} value="any"></ds-select>
+          <ds-select label="Layout" .options=${sampleSizes} value="any"></ds-select>
           <ds-text-field
-            label="Theme"
-            description="Optional — leave blank for any theme"
-            placeholder="e.g. food, travel"
+            label="Topic"
+            description="Optional - leave blank for any topic"
+            placeholder="e.g. finance, operations"
           ></ds-text-field>
         </div>
         <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}> Cancel </ds-button>
-        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Pick a crossword </ds-button>
+        <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Choose template </ds-button>
       </ds-dialog>
       <style>
         .form {
@@ -132,7 +132,7 @@ export const TrailingCheckbox: Story = {
       <ds-dialog size="sm" label="Report a problem">
         <span slot="title">Report a problem</span>
         <p>Tell us what went wrong and we'll take a look.</p>
-        <ds-checkbox>Include a copy of the puzzle</ds-checkbox>
+        <ds-checkbox>Include a copy of the diagnostic report</ds-checkbox>
         <ds-button slot="footer" variant="ghost" @ds-click=${closeNearestDialog}> Cancel </ds-button>
         <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Send </ds-button>
       </ds-dialog>
@@ -146,7 +146,7 @@ export const CustomMaxHeight: Story = {
     docs: {
       description: {
         story:
-          'Apps that need a tighter cap than the default `min(90vh, 720px)` — to stay clear of phone toolbars, say — set `--ds-dialog-max-height`. The dialog and its card share the property, so the card can never outgrow the dialog box.',
+          'Apps that need a tighter cap than the default `min(90vh, 720px)` - to stay clear of phone toolbars, say - set `--ds-dialog-max-height`. The dialog and its card share the property, so the card can never outgrow the dialog box.',
       },
     },
   },
@@ -170,7 +170,7 @@ export const NotDismissible: Story = {
     <div>
       <ds-button @ds-click=${openDialog}>Open blocking dialog</ds-button>
       <ds-dialog ?dismissible=${false}>
-        <span slot="title">Saving changes…</span>
+        <span slot="title">Saving changes...</span>
         <p>The Escape key and backdrop are disabled. Choose an action to continue.</p>
         <ds-button slot="footer" variant="primary" @ds-click=${closeNearestDialog}> Got it </ds-button>
       </ds-dialog>

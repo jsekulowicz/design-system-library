@@ -66,7 +66,7 @@ describe('<ds-color-picker-swatch>', () => {
     expect(events).toHaveLength(0);
   });
 
-  it('sets the check colour when an update lands after the view is gone', async () => {
+  it('sets the check color when an update lands after the view is gone', async () => {
     const el = await mountSwatch({ selected: true, value: '#FDE68A' });
     const real = globalThis.getComputedStyle;
 

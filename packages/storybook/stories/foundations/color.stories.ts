@@ -82,7 +82,7 @@ const GROUPS: Group[] = [
   {
     name: 'Accent',
     swatches: [
-      { token: '--ds-color-accent', label: 'Accent', desc: 'Brand colour. Filled buttons, active links, focus rings.' },
+      { token: '--ds-color-accent', label: 'Accent', desc: 'Brand color. Filled buttons, active links, focus rings.' },
       { token: '--ds-color-accent-hover', label: 'Accent hover', desc: 'One step darker on pointer hover.' },
       { token: '--ds-color-accent-active', label: 'Accent active', desc: 'Two steps darker on press / current state.' },
       {
@@ -140,12 +140,12 @@ const GROUPS: Group[] = [
   {
     name: 'Chart',
     swatches: [
-      { token: '--ds-color-chart-1', label: 'Chart 1 — Cobalt', desc: 'Primary data series.' },
-      { token: '--ds-color-chart-2', label: 'Chart 2 — Teal', desc: 'Second series.' },
-      { token: '--ds-color-chart-3', label: 'Chart 3 — Amber', desc: 'Third series.' },
-      { token: '--ds-color-chart-4', label: 'Chart 4 — Plum', desc: 'Fourth series.' },
-      { token: '--ds-color-chart-5', label: 'Chart 5 — Green', desc: 'Fifth series.' },
-      { token: '--ds-color-chart-6', label: 'Chart 6 — Violet', desc: 'Sixth series.' },
+      { token: '--ds-color-chart-1', label: 'Chart 1 - Cobalt', desc: 'Primary data series.' },
+      { token: '--ds-color-chart-2', label: 'Chart 2 - Teal', desc: 'Second series.' },
+      { token: '--ds-color-chart-3', label: 'Chart 3 - Amber', desc: 'Third series.' },
+      { token: '--ds-color-chart-4', label: 'Chart 4 - Plum', desc: 'Fourth series.' },
+      { token: '--ds-color-chart-5', label: 'Chart 5 - Green', desc: 'Fifth series.' },
+      { token: '--ds-color-chart-6', label: 'Chart 6 - Violet', desc: 'Sixth series.' },
     ],
   },
 ];

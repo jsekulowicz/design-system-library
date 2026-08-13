@@ -132,14 +132,14 @@ describe('<ds-button>', () => {
   });
 
   it('keeps the spinner in flow with a loading label so the wider state sets the width', async () => {
-    const el = await mount<DsButton>('<ds-button loading loading-label="Saving…">Save</ds-button>');
+    const el = await mount<DsButton>('<ds-button loading loading-label="Saving...">Save</ds-button>');
 
     expect(el.shadowRoot!.querySelector('.loading-overlay')).toBeNull();
     expect(el.shadowRoot!.querySelector('.labels .spinner')).not.toBeNull();
   });
 
   it('reserves the spinner while idle once loading-label is set', async () => {
-    const el = await mount<DsButton>('<ds-button loading-label="Saving…">Save</ds-button>');
+    const el = await mount<DsButton>('<ds-button loading-label="Saving...">Save</ds-button>');
     const spinner = el.shadowRoot!.querySelector('.spinner') as SVGElement;
 
     expect(spinner).not.toBeNull();
@@ -147,7 +147,7 @@ describe('<ds-button>', () => {
   });
 
   it('swaps to the loading label and hides the idle twin from assistive tech', async () => {
-    const el = await mount<DsButton>('<ds-button loading-label="Saving…">Save</ds-button>');
+    const el = await mount<DsButton>('<ds-button loading-label="Saving...">Save</ds-button>');
     const twins = () => Array.from(el.shadowRoot!.querySelectorAll('.labels .stack-item'));
 
     expect(twins()).toHaveLength(2);
@@ -159,7 +159,7 @@ describe('<ds-button>', () => {
 
     expect(twins()[0]!.getAttribute('aria-hidden')).toBe('true');
     expect(twins()[1]!.getAttribute('aria-hidden')).toBeNull();
-    expect(twins()[1]!.textContent).toContain('Saving…');
+    expect(twins()[1]!.textContent).toContain('Saving...');
   });
 
   it('renders bare slots when no loading affordance is in play', async () => {

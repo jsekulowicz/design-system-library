@@ -69,10 +69,10 @@ interface GuidanceRow {
 
 const guidanceRows: readonly GuidanceRow[] = [
   { range: 'body-sm', role: 'Captions, helper text, badges, and timestamps' },
-  { range: 'body-md – body-lg', role: 'Body copy, UI labels, and form fields' },
-  { range: 'heading-xs – heading-sm', role: 'Card titles and nested section headings' },
+  { range: 'body-md - body-lg', role: 'Body copy, UI labels, and form fields' },
+  { range: 'heading-xs - heading-sm', role: 'Card titles and nested section headings' },
   { range: 'heading-md', role: 'Page and main section headings' },
-  { range: 'heading-lg – heading-3xl', role: 'Editorial headings, feature titles, and display text' },
+  { range: 'heading-lg - heading-3xl', role: 'Editorial headings, feature titles, and display text' },
 ];
 
 const guidanceColumns: readonly TableColumn<GuidanceRow>[] = [
@@ -125,7 +125,7 @@ export const FontFamilies: Story = {
           (family) => html`
             <figure style=${card('var(--ds-space-5)')}>
               <figcaption style="display:grid;gap:4px">
-                <strong>${family.label} — ${family.name}</strong>
+                <strong>${family.label} - ${family.name}</strong>
                 <code style=${MONO_MUTED_CELL}>${family.token}</code>
                 <p style=${joinStyles('margin:0', MUTED_CELL)}>${family.note}</p>
               </figcaption>

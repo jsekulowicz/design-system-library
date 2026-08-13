@@ -15,7 +15,7 @@ const wrap = (value: number, count: number): number => ((value % count) + count)
 
 /**
  * Resolve the index a roving-tabindex widget (radiogroup, segmented control,
- * tablist…) should move to for a given key. Wraps, skips disabled entries, and returns
+ * tablist...) should move to for a given key. Wraps, skips disabled entries, and returns
  * `null` when the key isn't a navigation key so callers can leave the event untouched.
  */
 export function resolveRovingTarget({

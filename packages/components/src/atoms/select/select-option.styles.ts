@@ -5,7 +5,7 @@ export const selectOptionStyles = css`
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
-    /* A floor, not the row height — the listbox measures a row rather than assume it. */
+    /* A floor, not the row height - the listbox measures a row rather than assume it. */
     min-height: 36px;
     box-sizing: border-box;
     padding: var(--ds-space-2) var(--ds-space-3);

@@ -52,7 +52,7 @@ describe('<ds-text-field> character counter', () => {
     expect(el.shadowRoot!.querySelector('.field-footer .char-count')).toBeNull();
   });
 
-  it('still counts an unlabelled field', async () => {
+  it('still counts an unlabeled field', async () => {
     const el = await mount<DsTextField>('<ds-text-field char-count max-length="15"></ds-text-field>');
 
     expect(counter(el)?.textContent).toBe('0/15');
