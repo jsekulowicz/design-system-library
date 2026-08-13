@@ -8,7 +8,7 @@ export const dividerStyles = css`
   }
   :host([orientation='vertical']) {
     display: inline-block;
-    height: 1em;
+    min-height: 1em;
     align-self: stretch;
     margin-block: 0;
     margin-inline: var(--ds-space-3);
@@ -22,5 +22,6 @@ export const dividerStyles = css`
   :host([orientation='vertical']) [part='line'] {
     width: 1px;
     height: 100%;
+    min-height: 1em;
   }
 `;
