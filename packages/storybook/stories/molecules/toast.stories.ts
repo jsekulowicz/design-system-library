@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/toast/define';
 import '@jsekulowicz/ds-components/button/define';
 import { toast, type ToastPlacement } from '@jsekulowicz/ds-components/toast';
+import { persistentStory } from '../shared/persistent-story';
 
 const meta: Meta = {
   title: 'Molecules/Toast',
@@ -13,51 +14,63 @@ const meta: Meta = {
     duration: { control: { type: 'number', min: 0, step: 500 } },
     dismissible: { control: 'boolean' },
   },
-  args: { tone: 'info', heading: 'Saved', duration: 5000, dismissible: true },
+  args: { tone: 'info', heading: 'Saved', duration: 0, dismissible: true },
 };
 
 export default meta;
 type Story = StoryObj;
 
 export const Playground: Story = {
-  render: (args) => html`
-    <ds-toast
-      tone=${args['tone']}
-      heading=${args['heading']}
-      duration=${args['duration']}
-      ?dismissible=${args['dismissible']}
-    >
-      Your changes are live.
-    </ds-toast>
-  `,
+  render: (args) =>
+    persistentStory(
+      () => html`
+        <ds-toast
+          tone=${args['tone']}
+          heading=${args['heading']}
+          duration=${args['duration']}
+          ?dismissible=${args['dismissible']}
+        >
+          Your changes are live.
+        </ds-toast>
+      `,
+    ),
 };
 
 export const Tones: Story = {
-  render: () => html`
-    <div style="display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:420px">
-      <ds-toast tone="info" heading="Heads up" duration=${0}> We've added a new collaborator role. </ds-toast>
-      <ds-toast tone="success" heading="Saved" duration=${0}> Your changes are live. </ds-toast>
-      <ds-toast tone="warning" heading="Heads up" duration=${0}> You have unsaved drafts in another tab. </ds-toast>
-      <ds-toast tone="danger" heading="Couldn't save" duration=${0}> Network error. Please try again. </ds-toast>
-    </div>
-  `,
+  render: () =>
+    persistentStory(
+      () => html`
+        <div style="display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:420px">
+          <ds-toast tone="info" heading="Heads up" duration=${0}> We've added a new collaborator role. </ds-toast>
+          <ds-toast tone="success" heading="Saved" duration=${0}> Your changes are live. </ds-toast>
+          <ds-toast tone="warning" heading="Heads up" duration=${0}> You have unsaved drafts in another tab. </ds-toast>
+          <ds-toast tone="danger" heading="Couldn't save" duration=${0}> Network error. Please try again. </ds-toast>
+        </div>
+      `,
+    ),
 };
 
 export const WithAction: Story = {
-  render: () => html`
-    <ds-toast tone="success" heading="Item moved to trash" duration=${0}>
-      It will be deleted permanently in 30 days.
-      <ds-button slot="actions" variant="ghost" size="sm">Undo</ds-button>
-    </ds-toast>
-  `,
+  render: () =>
+    persistentStory(
+      () => html`
+        <ds-toast tone="success" heading="Item moved to trash" duration=${0}>
+          It will be deleted permanently in 30 days.
+          <ds-button slot="actions" variant="ghost" size="sm">Undo</ds-button>
+        </ds-toast>
+      `,
+    ),
 };
 
 export const StickyDanger: Story = {
-  render: () => html`
-    <ds-toast tone="danger" heading="Couldn't connect" duration=${0}>
-      Check your connection and try again. Sticky until dismissed.
-    </ds-toast>
-  `,
+  render: () =>
+    persistentStory(
+      () => html`
+        <ds-toast tone="danger" heading="Couldn't connect" duration=${0}>
+          Check your connection and try again. Sticky until dismissed.
+        </ds-toast>
+      `,
+    ),
 };
 
 export const Imperative: Story = {
