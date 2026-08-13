@@ -9,7 +9,8 @@ const meta: Meta = {
   argTypes: {
     name: {
       control: { type: 'text' },
-      description: 'Heroicon name in kebab-case. Browse all icons at [heroicons.com](https://heroicons.com).',
+      description:
+        'Heroicon name in kebab-case. Browse all icons at <a href="https://heroicons.com" target="_blank" rel="noopener noreferrer">heroicons.com</a>.',
     },
     size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] },
   },
