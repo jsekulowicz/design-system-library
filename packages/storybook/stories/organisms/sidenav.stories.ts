@@ -7,6 +7,24 @@ import '@jsekulowicz/ds-components/icon/define';
 import '@jsekulowicz/ds-components/icon/home';
 import '@jsekulowicz/ds-components/icon/cog-6-tooth';
 import '@jsekulowicz/ds-components/icon/clock';
+import '@jsekulowicz/ds-components/icon/chevron-left';
+import '@jsekulowicz/ds-components/icon/chevron-right';
+import { joinStyles } from '../shared/styles';
+
+const COLLAPSE_SHELL = joinStyles(
+  'width:min(100%,32rem)',
+  'height:520px',
+  'display:grid',
+  'grid-template-rows:auto 1fr',
+  'border:1px solid var(--ds-color-border)',
+);
+const COLLAPSE_HEADER = joinStyles(
+  'display:flex',
+  'align-items:center',
+  'justify-content:space-between',
+  'padding:var(--ds-space-3)',
+  'border-bottom:1px solid var(--ds-color-border)',
+);
 
 const meta: Meta = {
   title: 'Organisms/Sidenav',
@@ -16,6 +34,16 @@ const meta: Meta = {
 
 export default meta;
 type Story = StoryObj;
+
+function toggleDemoSidenav(event: Event): void {
+  const button = event.currentTarget as HTMLElement;
+  const demo = button.closest<HTMLElement>('[data-collapse-demo]');
+  const sidenav = demo?.querySelector('ds-sidenav');
+  const icon = button.querySelector('ds-icon');
+  const collapsed = sidenav?.toggleAttribute('collapsed') ?? false;
+  button.setAttribute('label', collapsed ? 'Expand navigation' : 'Collapse navigation');
+  icon?.setAttribute('name', collapsed ? 'chevron-right' : 'chevron-left');
+}
 
 export const Basic: Story = {
   render: () => html`
@@ -89,33 +117,29 @@ export const Collapsed: Story = {
 
 export const CollapseToggle: Story = {
   render: () => html`
-    <div style="height:520px;display:flex">
-      <ds-sidenav id="toggle-sidenav">
-        <strong slot="header">Brand</strong>
-        <ds-nav-item href="/" current>
-          <ds-icon slot="icon" name="home" size="lg"></ds-icon>
-          Overview
-        </ds-nav-item>
-        <ds-nav-item href="/activity">
-          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
-          Activity
-        </ds-nav-item>
-        <ds-nav-item href="/settings">
-          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
-          Settings
-        </ds-nav-item>
-        <ds-button
-          slot="footer"
-          size="sm"
-          variant="ghost"
-          @click=${(event: Event) => {
-            const sidenav = (event.currentTarget as HTMLElement).closest('ds-sidenav');
-            sidenav?.toggleAttribute('collapsed');
-          }}
-        >
-          Toggle collapse
+    <div data-collapse-demo style=${COLLAPSE_SHELL}>
+      <header style=${COLLAPSE_HEADER}>
+        <strong>Brand</strong>
+        <ds-button size="sm" variant="ghost" square label="Collapse navigation" @ds-click=${toggleDemoSidenav}>
+          <ds-icon slot="leading" name="chevron-left" size="lg"></ds-icon>
         </ds-button>
-      </ds-sidenav>
+      </header>
+      <div style="display:flex;min-height:0;background:var(--ds-color-bg-subtle)">
+        <ds-sidenav id="toggle-sidenav">
+          <ds-nav-item href="/" current>
+            <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+            Overview
+          </ds-nav-item>
+          <ds-nav-item href="/activity">
+            <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+            Activity
+          </ds-nav-item>
+          <ds-nav-item href="/settings">
+            <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+            Settings
+          </ds-nav-item>
+        </ds-sidenav>
+      </div>
     </div>
   `,
 };
