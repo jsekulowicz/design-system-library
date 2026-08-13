@@ -18,7 +18,7 @@ export const breadcrumbItemStyles = css`
     /* Widens the focus ring without changing the link's footprint. */
     padding: var(--ds-space-1) 2px;
     margin-inline: -2px;
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     transition: color var(--ds-duration-fast) var(--ds-easing-standard);
   }
   a:hover {

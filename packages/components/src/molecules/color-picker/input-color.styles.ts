@@ -15,7 +15,7 @@ export const inputColorStyles = css`
     height: 100%;
     padding: 1px;
     border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg);
     cursor: pointer;
   }

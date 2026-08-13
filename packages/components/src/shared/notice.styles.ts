@@ -7,7 +7,7 @@ export const noticeStyles = css`
     align-items: flex-start;
     gap: var(--ds-space-3);
     padding: var(--ds-space-4);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     border-left: 3px solid var(--ds-color-accent);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);

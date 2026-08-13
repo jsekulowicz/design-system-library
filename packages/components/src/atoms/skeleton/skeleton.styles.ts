@@ -33,7 +33,7 @@ export const skeletonStyles = css`
 
   :host([variant='rectangle']) .item {
     height: var(--ds-skeleton-height, 6rem);
-    border-radius: var(--ds-skeleton-radius, var(--ds-radius-sm));
+    border-radius: var(--ds-skeleton-radius, var(--ds-radius-xs));
   }
 
   :host([variant='circle']) {

@@ -20,7 +20,7 @@ export const heatmapCalendarStyles = css`
     gap: var(--ds-space-2);
     padding: var(--ds-space-2);
     outline: none;
-    border-radius: var(--ds-radius-md);
+    border-radius: var(--ds-radius-xs);
   }
 
   .frame:focus-visible {
@@ -83,7 +83,7 @@ export const heatmapCalendarStyles = css`
     background: var(--ds-color-bg-inverse);
     color: var(--ds-color-fg-inverse);
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-md);
+    border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgb(0 0 0 / 18%));
     text-align: center;
     z-index: var(--ds-z-index-raised);

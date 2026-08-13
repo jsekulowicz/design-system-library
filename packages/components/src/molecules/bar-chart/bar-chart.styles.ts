@@ -14,7 +14,7 @@ export const barChartStyles = css`
     position: relative;
     width: 100%;
     outline: none;
-    border-radius: var(--ds-radius-md);
+    border-radius: var(--ds-radius-xs);
   }
 
   .frame:focus-visible {
@@ -111,7 +111,7 @@ export const barChartStyles = css`
     background: var(--ds-color-bg-inverse);
     color: var(--ds-color-fg-inverse);
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-md);
+    border-radius: var(--ds-radius-xs);
     padding: var(--ds-space-2) var(--ds-space-3);
     font-size: var(--ds-font-size-body-md);
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));

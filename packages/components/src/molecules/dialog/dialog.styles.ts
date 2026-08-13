@@ -11,7 +11,7 @@ export const dialogStyles = css`
     color: inherit;
     width: calc(100% - var(--ds-space-4));
     max-height: var(--ds-dialog-max-height, min(90vh, 720px));
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-md);
     overflow: visible;
   }

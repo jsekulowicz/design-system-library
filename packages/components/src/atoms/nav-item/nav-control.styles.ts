@@ -16,7 +16,7 @@ export const navControlStyles = css`
     gap: var(--ds-space-2);
     padding: var(--ds-space-2) var(--ds-space-3);
     border: 0;
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     background: transparent;
     color: var(--ds-color-fg-muted);
     font-family: var(--ds-font-body);

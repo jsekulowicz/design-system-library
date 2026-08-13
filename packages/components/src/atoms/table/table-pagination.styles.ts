@@ -36,7 +36,7 @@ export const tablePaginationStyles = css`
     background: transparent;
     color: var(--ds-color-fg);
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     font: inherit;
     cursor: pointer;
     display: inline-flex;
@@ -88,7 +88,7 @@ export const tablePaginationStyles = css`
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     font: inherit;
   }
   select:focus-visible {

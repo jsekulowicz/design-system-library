@@ -10,7 +10,7 @@ export const colorPickerSwatchStyles = css`
     width: var(--color-picker-swatch-size, 28px);
     min-width: var(--color-picker-swatch-size, 28px);
     border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     background: var(--color-picker-value, transparent);
     cursor: pointer;
   }

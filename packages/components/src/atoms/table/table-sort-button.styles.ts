@@ -16,7 +16,7 @@ export const tableSortButtonStyles = css`
     padding: var(--ds-space-1);
     font: inherit;
     cursor: pointer;
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
   }
   button:focus-visible {
     outline: none;

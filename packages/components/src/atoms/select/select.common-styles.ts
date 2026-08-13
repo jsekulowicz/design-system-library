@@ -144,7 +144,7 @@ export const selectCommonStyles = css`
     overflow-y: auto;
     background: var(--ds-color-bg);
     border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-md);
     /* Thin, subtle scrollbar with a transparent track (matching the shell's
        main content) instead of the wide, bright default that painted over

@@ -14,7 +14,7 @@ export const cardStyles = css`
     gap: var(--ds-space-4);
     padding: var(--ds-space-6);
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
     transition:

@@ -4,7 +4,7 @@ export const menuItemStyles = css`
   :host {
     display: block;
     cursor: pointer;
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-lg);

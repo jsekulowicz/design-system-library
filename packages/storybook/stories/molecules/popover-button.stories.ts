@@ -9,7 +9,7 @@ import { joinStyles } from '../shared/styles';
 const PANEL_SURFACE = joinStyles(
   'padding:16px',
   'border:1px solid var(--ds-color-border)',
-  'border-radius:var(--ds-radius-md)',
+  'border-radius:var(--ds-radius-xs)',
   'background:var(--ds-color-bg)',
   'box-shadow:var(--ds-shadow-lg)',
 );

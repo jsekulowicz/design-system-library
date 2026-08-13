@@ -16,7 +16,7 @@ export const loadingOverlayStyles = css`
   .loading-overlay-label {
     padding: var(--ds-space-2) var(--ds-space-3);
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg);
     box-shadow: var(--ds-shadow-sm, 0 1px 2px rgba(15, 23, 42, 0.12));
     font-weight: var(--ds-font-weight-medium);

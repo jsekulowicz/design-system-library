@@ -22,7 +22,7 @@ const meta: Meta = {
 
 const FIELDSET_BOX = joinStyles(
   'border:1px solid var(--ds-color-border)',
-  'border-radius:var(--ds-radius-sm)',
+  'border-radius:var(--ds-radius-xs)',
   'padding:var(--ds-space-4)',
   'display:grid;gap:var(--ds-space-2)',
   'margin:0',

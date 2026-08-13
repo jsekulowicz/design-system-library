@@ -22,7 +22,7 @@ export const buttonStyles = css`
     padding: 0 var(--ds-space-2);
     height: var(--ds-button-size);
     min-width: var(--ds-button-min-width);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     border: 1px solid transparent;
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-lg);

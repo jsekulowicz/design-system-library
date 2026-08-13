@@ -6,7 +6,7 @@ export const menuStyles = css`
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-md);
     overflow: hidden;
     min-width: 180px;

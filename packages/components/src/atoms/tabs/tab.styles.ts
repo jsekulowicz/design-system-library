@@ -35,7 +35,7 @@ export const tabStyles = css`
     border-bottom-color: var(--ds-color-accent);
   }
   :host(:focus-visible) .tab {
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-focus);
   }
 `;

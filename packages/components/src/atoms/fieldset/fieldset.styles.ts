@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const fieldsetStyles = css`
   .fieldset {
     border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     margin: 0;
     padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-3);
     min-inline-size: 0;

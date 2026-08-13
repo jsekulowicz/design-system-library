@@ -7,7 +7,7 @@ export const fieldControlStyles = css`
   .field-control {
     background: var(--ds-color-bg);
     border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     transition:
       border-color var(--ds-duration-fast) var(--ds-easing-standard),
       box-shadow var(--ds-duration-fast) var(--ds-easing-standard);

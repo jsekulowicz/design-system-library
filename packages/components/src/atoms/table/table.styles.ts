@@ -21,7 +21,7 @@ export const tableStyles = css`
     overflow-x: auto;
     overscroll-behavior-x: none;
     border: 1px solid var(--ds-color-border-subtle);
-    border-radius: var(--ds-radius-md);
+    border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg);
   }
 
@@ -78,10 +78,10 @@ export const tableStyles = css`
     border-bottom: 0;
   }
   tbody tr:last-child td:first-child {
-    border-bottom-left-radius: calc(var(--ds-radius-md) - 1px);
+    border-bottom-left-radius: calc(var(--ds-radius-xs) - 1px);
   }
   tbody tr:last-child td:last-child {
-    border-bottom-right-radius: calc(var(--ds-radius-md) - 1px);
+    border-bottom-right-radius: calc(var(--ds-radius-xs) - 1px);
   }
 
   tbody tr:nth-child(even) td {

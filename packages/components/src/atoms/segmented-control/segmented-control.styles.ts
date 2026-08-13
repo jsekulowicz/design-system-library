@@ -20,7 +20,7 @@ export const segmentedControlStyles = css`
     gap: 1px;
     padding: 1px;
     background: var(--ds-color-border-subtle);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     max-width: 100%;
   }
   .segment {
@@ -34,7 +34,7 @@ export const segmentedControlStyles = css`
   /* Drop the button min-width floor so the grid drives sizing. */
   .segment::part(button) {
     min-width: 0;
-    border-radius: calc(var(--ds-radius-sm) - 1px);
+    border-radius: calc(var(--ds-radius-xs) - 1px);
   }
   .segment[variant='ghost']::part(button) {
     background: var(--ds-color-bg);

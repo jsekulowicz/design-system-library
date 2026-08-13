@@ -5,7 +5,7 @@ export const tabPanelStyles = css`
     display: block;
   }
   :host(:focus-visible) {
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-focus);
   }
 `;

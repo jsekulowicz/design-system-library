@@ -35,7 +35,7 @@ export const colorPickerStyles = css`
     gap: var(--ds-space-3);
     padding: var(--ds-space-1) var(--ds-space-3);
     border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
     height: auto;
@@ -82,7 +82,7 @@ export const colorPickerStyles = css`
     width: 24px;
     height: 24px;
     border: 1px solid var(--ds-color-border-strong);
-    border-radius: var(--ds-radius-sm);
+    border-radius: var(--ds-radius-xs);
     flex: 0 0 auto;
   }
   :host([compact]) .preview {
