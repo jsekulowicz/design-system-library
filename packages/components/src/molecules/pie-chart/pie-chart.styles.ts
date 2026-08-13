@@ -66,7 +66,11 @@ export const pieChartStyles = css`
 
   .center {
     position: absolute;
-    inset: 0;
+    left: 50%;
+    top: 50%;
+    width: var(--pie-center-size, 0%);
+    height: var(--pie-center-size, 0%);
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,17 +78,28 @@ export const pieChartStyles = css`
     gap: var(--ds-space-1);
     pointer-events: none;
     text-align: center;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .center-value {
     font-size: var(--ds-font-size-heading-sm);
     font-weight: var(--ds-font-weight-bold);
     font-variant-numeric: tabular-nums;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .center-label {
     color: var(--ds-color-fg-muted);
     font-size: var(--ds-font-size-body-sm);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .center ::slotted(*) {
+    max-width: 100%;
+    max-height: 100%;
   }
 
   .empty {

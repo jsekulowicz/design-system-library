@@ -9,6 +9,7 @@ import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-overlay.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { isKeyboardFocus, sliceIndexFrom } from './pie-focus.js';
+import { centerContentSizeFor } from './pie-geometry.js';
 import { pieChartStyles } from './pie-chart.styles.js';
 import { preparePieSlices, sliceTotal } from './pie-layout.js';
 import { renderPieSvg } from './pie-chart-svg.js';
@@ -34,7 +35,7 @@ import type { PieChartDatum, PieRenderContext, PieSlice } from './types.js';
  * @csspart slice - Each focusable slice group.
  * @csspart tooltip - The floating tooltip container.
  * @csspart legend - The legend wrapper.
- * @csspart center - The donut centre container.
+ * @csspart center - The donut center container.
  */
 export class DsPieChart extends DsElement {
   static override styles = [...DsElement.styles, pieChartStyles, loadingOverlayStyles];
@@ -118,7 +119,7 @@ export class DsPieChart extends DsElement {
       >
         <div
           class="canvas"
-          style="--pie-size:${this.size}px"
+          style="--pie-size:${this.size}px;--pie-center-size:${centerContentSizeFor(this.donut, this.innerRadius)}%"
           @pointerover=${this.#onPointerOver}
           @pointerleave=${this.#onPointerLeave}
         >

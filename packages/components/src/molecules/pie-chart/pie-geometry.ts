@@ -6,6 +6,7 @@ export const RADIUS = 33;
 export const LABEL_RADIUS = RADIUS + 6;
 const FULL_CIRCLE = Math.PI * 2;
 const LABEL_MIN_PERCENT = 3;
+const CENTER_STROKE_CLEARANCE = 1;
 
 export interface Point {
   x: number;
@@ -27,6 +28,11 @@ export function innerRadiusFor(donut: boolean, ratio: number): number {
     return 0;
   }
   return RADIUS * Math.min(0.9, Math.max(0, ratio));
+}
+
+export function centerContentSizeFor(donut: boolean, ratio: number): number {
+  const holeDiameter = Math.max(0, innerRadiusFor(donut, ratio) * 2 - CENTER_STROKE_CLEARANCE);
+  return Number((holeDiameter * Math.SQRT1_2).toFixed(3));
 }
 
 function ringPath(outer: number, inner: number): string {

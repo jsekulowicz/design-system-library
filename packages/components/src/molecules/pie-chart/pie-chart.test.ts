@@ -145,12 +145,20 @@ describe('<ds-pie-chart>', () => {
     expect(slices(el)[0]!.getAttribute('aria-label')).toBe('Organic: $50, 50.0%');
   });
 
-  it('shows the total in the donut centre and hides it from assistive tech', async () => {
+  it('shows the total in the donut center and hides it from assistive tech', async () => {
     const el = await mountPieChart({ donut: true });
     const center = el.shadowRoot!.querySelector('.center')!;
+    const canvas = el.shadowRoot!.querySelector<HTMLElement>('.canvas')!;
     expect(center.getAttribute('aria-hidden')).toBe('true');
     expect(center.querySelector('.center-value')!.textContent?.trim()).toBe('100');
     expect(center.querySelector('slot')!.getAttribute('name')).toBe('center');
+    expect(canvas.style.getPropertyValue('--pie-center-size')).toBe('27.294%');
+  });
+
+  it('clamps the center content size to the supported donut radius', async () => {
+    const el = await mountPieChart({ donut: true, innerRadius: 4 });
+    const canvas = el.shadowRoot!.querySelector<HTMLElement>('.canvas')!;
+    expect(canvas.style.getPropertyValue('--pie-center-size')).toBe('41.295%');
   });
 
   it('renders a skeleton while loading and a message when there is no data', async () => {

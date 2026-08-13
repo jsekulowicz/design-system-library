@@ -1,6 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { preparePieSlices, computeSliceAngles, sliceTotal } from './pie-layout.js';
-import { arcPath, innerRadiusFor, labelPlacement, polarPoint, RADIUS, CENTER } from './pie-geometry.js';
+import {
+  arcPath,
+  centerContentSizeFor,
+  innerRadiusFor,
+  labelPlacement,
+  polarPoint,
+  RADIUS,
+  CENTER,
+} from './pie-geometry.js';
 import type { PieChartDatum } from './types.js';
 
 const OPTIONS = { maxSlices: 0, otherThreshold: 0, otherLabel: 'Other' };
@@ -138,14 +146,14 @@ describe('zero-value slices', () => {
     const slices = preparePieSlices(
       [
         { label: 'some', value: 5 },
-        { label: 'none', value: 0, color: 'grey' },
+        { label: 'none', value: 0, color: 'gray' },
       ],
       { ...OPTIONS, includeZeroSlices: true },
     );
     expect(slices.map((s) => s.label)).toEqual(['some', 'none']);
     expect(slices[1]!.percent).toBe(0);
     expect(slices[1]!.endAngle).toBe(slices[1]!.startAngle);
-    expect(slices[1]!.color).toBe('grey');
+    expect(slices[1]!.color).toBe('gray');
   });
 
   it('never folds zero-value entries into the Other slice', () => {
@@ -168,7 +176,7 @@ describe('zero-value slices', () => {
 });
 
 describe('pie geometry', () => {
-  it('draws a wedge from the centre for a pie', () => {
+  it('draws a wedge from the center for a pie', () => {
     const [slice] = preparePieSlices(DATA, OPTIONS);
     const path = arcPath(slice!, RADIUS, 0);
     expect(path.startsWith(`M ${CENTER} ${CENTER}`)).toBe(true);
@@ -194,7 +202,12 @@ describe('pie geometry', () => {
     expect(innerRadiusFor(true, -1)).toBe(0);
   });
 
-  it('places the twelve o clock point directly above the centre', () => {
+  it('fits center content inside the circular hole with stroke clearance', () => {
+    expect(centerContentSizeFor(true, 0.6)).toBe(27.294);
+    expect(centerContentSizeFor(false, 0.6)).toBe(0);
+  });
+
+  it('places the twelve o clock point directly above the center', () => {
     const point = polarPoint(RADIUS, -Math.PI / 2);
     expect(point.x).toBeCloseTo(CENTER);
     expect(point.y).toBeCloseTo(CENTER - RADIUS);
