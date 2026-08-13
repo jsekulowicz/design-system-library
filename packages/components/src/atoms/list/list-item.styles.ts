@@ -4,7 +4,7 @@ export const listItemStyles = css`
   :host {
     display: block;
   }
-  li {
+  [part='item'] {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
@@ -12,8 +12,8 @@ export const listItemStyles = css`
     padding: var(--ds-space-2) var(--ds-space-3);
     background: transparent;
   }
-  :host-context(ds-list[density='compact']) li,
-  :host([compact]) li {
+  :host-context(ds-list[density='compact']) [part='item'],
+  :host([compact]) [part='item'] {
     padding: var(--ds-space-1) var(--ds-space-3);
   }
   .leading,

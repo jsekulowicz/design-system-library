@@ -16,7 +16,7 @@ export class DsListItem extends DsElement {
   readonly #slots = new SlotPresenceController(this, ['leading', 'trailing']);
 
   override render(): TemplateResult {
-    return html`<li part="item">
+    return html`<div role="listitem" part="item">
       <div class="leading" ?hidden=${!this.#slots.has('leading')}>
         <slot name="leading" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
@@ -24,6 +24,6 @@ export class DsListItem extends DsElement {
       <div class="trailing" ?hidden=${!this.#slots.has('trailing')}>
         <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
       </div>
-    </li>`;
+    </div>`;
   }
 }

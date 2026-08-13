@@ -5,6 +5,7 @@ import '@jsekulowicz/ds-components/icon/define';
 import '@jsekulowicz/ds-components/icon/check';
 import '@jsekulowicz/ds-components/icon/chevron-right';
 import '@jsekulowicz/ds-components/badge/define';
+import '@jsekulowicz/ds-components/link/define';
 
 const meta: Meta = {
   title: 'Atoms/List',
@@ -57,15 +58,15 @@ export const NavigationLinks: Story = {
   render: () => html`
     <ds-list style="max-width:32rem">
       <ds-list-item>
-        <strong>Overview</strong>
+        <ds-link href="#overview">Overview</ds-link>
         <ds-icon slot="trailing" name="chevron-right"></ds-icon>
       </ds-list-item>
       <ds-list-item>
-        <strong>Activity</strong>
+        <ds-link href="#activity">Activity</ds-link>
         <ds-icon slot="trailing" name="chevron-right"></ds-icon>
       </ds-list-item>
       <ds-list-item>
-        <strong>Settings</strong>
+        <ds-link href="#settings">Settings</ds-link>
         <ds-icon slot="trailing" name="chevron-right"></ds-icon>
       </ds-list-item>
     </ds-list>

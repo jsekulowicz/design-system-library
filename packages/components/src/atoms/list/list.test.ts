@@ -37,6 +37,13 @@ describe('<ds-list>', () => {
 });
 
 describe('<ds-list-item>', () => {
+  it('exposes a composed listitem role without an orphaned shadow li', async () => {
+    const el = await mount<DsListItem>('<ds-list-item>One</ds-list-item>');
+    const item = el.shadowRoot!.querySelector('[part="item"]')!;
+    expect(item.getAttribute('role')).toBe('listitem');
+    expect(el.shadowRoot!.querySelector('li')).toBeNull();
+  });
+
   it('exposes leading, default and trailing slots', async () => {
     const el = await mount<DsListItem>(`
       <ds-list-item>
