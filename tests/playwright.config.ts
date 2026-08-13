@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = 6006;
+const port = Number(process.env['STORYBOOK_PORT'] ?? 6006);
 const baseURL = `http://localhost:${port}`;
 const isCI = Boolean(process.env['CI']);
 

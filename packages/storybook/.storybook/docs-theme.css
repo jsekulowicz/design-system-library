@@ -81,7 +81,7 @@ p {
   border-color: var(--ds-color-border);
 }
 
-/* Syntax-highlighter injects coloured <span> tokens inside <pre>; override
+/* Syntax-highlighter injects colored <span> tokens inside <pre>; override
    so they stay readable in both themes instead of staying light on dark bg. */
 .sbdocs pre span {
   color: var(--ds-color-fg) !important;
@@ -136,7 +136,7 @@ p {
 
 /* Iframe is sized to the active viewport setting via a CSS variable
    the viewport toolbar writes on documentElement (mobile / tablet /
-   desktop -> 360px / 768px / 100%). The min(100%, …) cap keeps the
+   desktop -> 360px / 768px / 100%). The min(100%, ...) cap keeps the
    iframe inside narrow panels. The wrapper above already matches
    this size so visually there are no rails inside the canvas. */
 .sbdocs iframe[id^='iframe-'] {
@@ -147,7 +147,7 @@ p {
   margin-right: auto !important;
 }
 
-/* Source toolbar (Show code + copy) — kill contrasting backgrounds and the
+/* Source toolbar (Show code + copy) - kill contrasting backgrounds and the
    top-left border-radius that creates a dot behind each action button. */
 .sbdocs .sb-bar,
 .sbdocs-preview-actions,
@@ -211,7 +211,7 @@ p {
   border-color: var(--ds-color-border) !important;
 }
 
-/* Type pill — scoped to Description (col 2) + Default (col 3) so the Name
+/* Type pill - scoped to Description (col 2) + Default (col 3) so the Name
    span (col 1) and radio labels inside the Control cell (col 4) stay plain. */
 .sbdocs .docblock-argstable tbody td:nth-of-type(2) span[class],
 .sbdocs .docblock-argstable tbody td:nth-of-type(3) span[class] {
@@ -250,7 +250,7 @@ p {
 }
 
 /* The boolean toggle uses an absolute, full-size checkbox as an invisible
-   click surface — keep it transparent so the True/False spans remain visible. */
+   click surface - keep it transparent so the True/False spans remain visible. */
 .sbdocs .docblock-argstable label:has(> input[type='checkbox']) > input[type='checkbox'] {
   background: transparent !important;
   border: 0 !important;

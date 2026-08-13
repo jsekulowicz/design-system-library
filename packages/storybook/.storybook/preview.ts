@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/web-components-vite';
 import { addons } from 'storybook/internal/preview-api';
+import { setupDocsReadiness } from './docs-readiness.js';
 import { DocsPage } from './docs-page.js';
 import '@jsekulowicz/ds-tokens/theme-default.css';
 import '@jsekulowicz/ds-components/define';
@@ -123,6 +124,7 @@ channel.on(DS_VIEWPORT_CHANGED, (payload: ViewportPayload) => {
 applyTheme(normalizeTheme(readStorage(THEME_STORAGE_KEY)));
 applyViewport(readInitialViewport(), false);
 setupStoryIframeThemeSync();
+setupDocsReadiness();
 
 const preview: Preview = {
   parameters: {

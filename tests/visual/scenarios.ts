@@ -32,8 +32,35 @@ export const visualScenarios: VisualScenario[] = [
     beforeCapture: openSelect,
   },
   staticStory('select-multiple-icons', 'atoms-select--multiple-with-icons'),
+  {
+    name: 'select-multiple-selected',
+    storyId: 'atoms-select--multiple',
+    themes,
+    viewports: desktop,
+    beforeCapture: selectFirstMultipleOption,
+  },
   staticStory('pie-chart', 'molecules-piechart--playground'),
   staticStory('pie-chart-donut', 'molecules-piechart--donut'),
+  staticStory('pie-chart-formatters', 'molecules-piechart--with-formatters'),
+  staticStory('bar-chart-formatters', 'molecules-barchart--with-formatters'),
+  staticStory('divider-inline', 'atoms-divider--inline-with-text'),
+  staticStory('menu-header-footer', 'atoms-menu--with-header-footer'),
+  staticStory('segmented-control-icons', 'atoms-segmentedcontrol--with-icons'),
+  responsiveStory('tooltip-viewport-constraint', 'atoms-tooltip--viewport-constraint'),
+  {
+    name: 'searchable-select-multiple-selected',
+    storyId: 'atoms-searchableselect--multiple-countries',
+    themes,
+    viewports: desktop,
+    beforeCapture: selectFirstMultipleOption,
+  },
+  {
+    name: 'sidenav-collapsed',
+    storyId: 'organisms-sidenav--collapse-toggle',
+    themes,
+    viewports: desktop,
+    beforeCapture: collapseSidenav,
+  },
   {
     name: 'searchable-select-open',
     storyId: 'atoms-searchableselect--countries',
@@ -85,6 +112,16 @@ function responsiveStory(name: string, storyId: string): VisualScenario {
 async function openSelect(page: Page): Promise<void> {
   await page.getByRole('combobox', { name: 'Discipline' }).click();
   await page.getByRole('option', { name: 'Design' }).waitFor();
+}
+
+async function selectFirstMultipleOption(page: Page): Promise<void> {
+  await page.getByRole('combobox').click();
+  await page.getByRole('option').first().click();
+}
+
+async function collapseSidenav(page: Page): Promise<void> {
+  await page.getByRole('button', { name: 'Collapse navigation' }).click();
+  await page.locator('ds-sidenav[collapsed]').waitFor();
 }
 
 async function openSearchableSelect(page: Page): Promise<void> {
