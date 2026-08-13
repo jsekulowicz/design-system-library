@@ -82,7 +82,7 @@ function setupPopoverHarness(el: DsTooltip): PopoverHarness {
 describe('<ds-tooltip>', () => {
   it('uses a responsive viewport-safe width with a consumer override', () => {
     expect(tooltipStyles.cssText).toContain(
-      'max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100vw - var(--ds-space-4)))',
+      'max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100% - var(--ds-space-2)))',
     );
   });
 
@@ -92,7 +92,17 @@ describe('<ds-tooltip>', () => {
     expect(css).toContain('white-space: normal');
     expect(css).toContain('overflow-wrap: anywhere');
     expect(css).toContain('text-align: start');
-    expect(css).toContain('max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100vw - var(--ds-space-4)))');
+    expect(css).toContain('width: fit-content');
+    expect(css).toContain('max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100% - var(--ds-space-2)))');
+  });
+
+  it('constrains horizontal placements between the trigger and viewport edge', () => {
+    const css = tooltipStyles.cssText;
+
+    expect(css).toMatch(
+      /:host\(\[placement='right'\]\) \.tooltip\s*{[^}]*position-area: right[^}]*justify-self: start/s,
+    );
+    expect(css).toMatch(/:host\(\[placement='left'\]\) \.tooltip\s*{[^}]*position-area: left[^}]*justify-self: end/s);
   });
 
   it('stays safe when popover APIs are unavailable', async () => {

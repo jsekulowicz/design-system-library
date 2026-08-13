@@ -90,15 +90,54 @@ test('vertical Divider fills the inline row height', async ({ page }) => {
 });
 
 test('Tooltip expands on desktop and remains viewport-safe on mobile', async ({ page }) => {
+  for (const width of [320, 360, 768, 1280]) {
+    await page.setViewportSize({ width, height: 500 });
+    await openStory(page, 'atoms-tooltip--viewport-constraint');
+    const tooltip = page.getByRole('tooltip');
+    const trigger = page.getByRole('button', { name: 'Info' });
+    const geometry = await Promise.all([
+      tooltip.evaluate((element) => element.getBoundingClientRect().toJSON()),
+      trigger.evaluate((element) => element.getBoundingClientRect().toJSON()),
+    ]);
+    const [tooltipBox, triggerBox] = geometry;
+    expect(tooltipBox.left).toBeGreaterThanOrEqual(triggerBox.right + 4);
+    expect(tooltipBox.right).toBeLessThanOrEqual(width);
+    expect(tooltipBox.left).toBeGreaterThanOrEqual(0);
+    if (width >= 768) {
+      expect(tooltipBox.width).toBeGreaterThan(256);
+      expect(tooltipBox.width).toBeLessThanOrEqual(384);
+    } else {
+      expect(tooltipBox.width).toBeLessThan(384);
+    }
+  }
+});
+
+test('Tooltip flips inline when its requested side has no room', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 500 });
+  await openStory(page, 'atoms-tooltip--viewport-constraint');
+  await page.locator('ds-tooltip').evaluate((host) => {
+    host.parentElement!.style.justifyContent = 'flex-end';
+  });
+  const tooltip = await page.getByRole('tooltip').evaluate((element) => element.getBoundingClientRect().toJSON());
+  const trigger = await page
+    .getByRole('button', { name: 'Info' })
+    .evaluate((element) => element.getBoundingClientRect().toJSON());
+  expect(tooltip.right).toBeLessThanOrEqual(trigger.left - 4);
+  expect(tooltip.left).toBeGreaterThanOrEqual(0);
+});
+
+test('Tooltip stays next to its trigger when placed on the left', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 500 });
   await openStory(page, 'atoms-tooltip--viewport-constraint');
-  const tooltip = page.getByRole('tooltip');
-  const desktopWidth = await tooltip.evaluate((element) => element.getBoundingClientRect().width);
-  expect(desktopWidth).toBeGreaterThan(256);
-
-  await page.setViewportSize({ width: 320, height: 500 });
-  const mobileBox = await tooltip.evaluate((element) => element.getBoundingClientRect().toJSON());
-  expect(mobileBox.width).toBeLessThanOrEqual(304);
-  expect(mobileBox.left).toBeGreaterThanOrEqual(0);
-  expect(mobileBox.right).toBeLessThanOrEqual(320);
+  await page.locator('ds-tooltip').evaluate((host) => {
+    host.parentElement!.style.justifyContent = 'center';
+    host.setAttribute('placement', 'left');
+  });
+  const tooltip = await page.getByRole('tooltip').evaluate((element) => element.getBoundingClientRect().toJSON());
+  const trigger = await page
+    .getByRole('button', { name: 'Info' })
+    .evaluate((element) => element.getBoundingClientRect().toJSON());
+  expect(tooltip.right).toBeLessThanOrEqual(trigger.left - 4);
+  expect(tooltip.right).toBeGreaterThanOrEqual(trigger.left - 5);
+  expect(tooltip.left).toBeGreaterThanOrEqual(0);
 });

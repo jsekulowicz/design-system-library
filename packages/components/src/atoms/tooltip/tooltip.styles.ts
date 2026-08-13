@@ -28,7 +28,7 @@ export const tooltipStyles = css`
     margin: var(--ds-space-1);
     inset: auto;
     border: none;
-    width: max-content;
+    width: fit-content;
     height: auto;
     overflow: hidden;
     overflow-wrap: anywhere;
@@ -42,7 +42,7 @@ export const tooltipStyles = css`
     line-height: var(--ds-line-height-normal);
     padding: var(--ds-space-1) var(--ds-space-3);
     border-radius: var(--ds-radius-xs);
-    max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100vw - var(--ds-space-4)));
+    max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100% - var(--ds-space-2)));
     pointer-events: none;
   }
   :host([placement='bottom']) .tooltip {
@@ -51,10 +51,12 @@ export const tooltipStyles = css`
   }
   :host([placement='left']) .tooltip {
     position-area: left;
+    justify-self: end;
     position-try-fallbacks: flip-inline;
   }
   :host([placement='right']) .tooltip {
     position-area: right;
+    justify-self: start;
     position-try-fallbacks: flip-inline;
   }
 
