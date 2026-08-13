@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { DsMenu } from './menu.js';
 import type { DsMenuItem } from './menu-item.js';
+import { menuStyles } from './menu.styles.js';
 import './define.js';
 import { mount, resetTestDom } from '../../test-utils/mount.js';
 
@@ -26,6 +27,12 @@ function getMenuRegion(host: DsMenu): HTMLElement {
 }
 
 describe('<ds-menu>', () => {
+  it('uses consistent normal-case body typography for header and footer', () => {
+    expect(menuStyles.cssText).toContain('font-size: var(--ds-font-size-body-lg)');
+    expect(menuStyles.cssText).not.toContain('text-transform: uppercase');
+    expect(menuStyles.cssText).not.toContain('letter-spacing: var(--ds-letter-spacing-wide)');
+  });
+
   it('exposes role=menu with aria-orientation and aria-label on the inner region', async () => {
     const el = await mount<DsMenu>(TEMPLATE);
     const region = getMenuRegion(el);
@@ -121,7 +128,7 @@ describe('<ds-menu>', () => {
       <ds-menu label="View">
         <span slot="header">Group</span>
         <ds-menu-item>One</ds-menu-item>
-        <span slot="footer">Manage…</span>
+        <span slot="footer">Manage...</span>
       </ds-menu>
     `);
     await el.updateComplete;

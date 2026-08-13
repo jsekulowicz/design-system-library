@@ -2,6 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { joinStyles } from '../shared/styles';
 import '@jsekulowicz/ds-components/menu/define';
+import '@jsekulowicz/ds-components/link/define';
 
 const meta: Meta = {
   title: 'Atoms/Menu',
@@ -84,13 +85,11 @@ export const RichItems: Story = {
 export const WithHeaderFooter: Story = {
   render: () => html`
     <ds-menu label="Workspace" @ds-select=${logSelect}>
-      <span slot="header">Switch to</span>
+      <span slot="header">Workspaces</span>
       <ds-menu-item value="acme">Acme Corp</ds-menu-item>
       <ds-menu-item value="globex">Globex</ds-menu-item>
       <ds-menu-item value="initech">Initech</ds-menu-item>
-      <span slot="footer">
-        <ds-menu-item value="manage">Manage workspaces…</ds-menu-item>
-      </span>
+      <ds-link slot="footer" href="#manage-workspaces">Manage workspaces</ds-link>
     </ds-menu>
   `,
 };
