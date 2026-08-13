@@ -21,6 +21,7 @@ function isPopoverElement(el: Element | null): el is PopoverElement {
  * @slot tip - The tooltip content (can be any HTML).
  * @csspart anchor - The wrapper around the trigger element.
  * @csspart tooltip - The tooltip bubble. Rendered in the Popover API top layer so it escapes ancestor overflow; positioned with CSS anchor positioning relative to the trigger.
+ * @cssprop [--ds-tooltip-max-width=24rem] - Maximum tooltip width before the viewport safety cap applies.
  */
 export class DsTooltip extends DsElement {
   static override styles = [...DsElement.styles, tooltipStyles];
@@ -105,7 +106,7 @@ export class DsTooltip extends DsElement {
       try {
         tooltip.showPopover();
       } catch {
-        // ignore — possibly unsupported
+        // ignore - possibly unsupported
       }
     }
   };

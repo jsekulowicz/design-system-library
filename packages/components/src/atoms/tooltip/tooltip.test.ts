@@ -1,5 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DsTooltip } from './tooltip.js';
+import { tooltipStyles } from './tooltip.styles.js';
 import './define.js';
 import { mount, resetTestDom } from '../../test-utils/mount.js';
 
@@ -79,13 +80,19 @@ function setupPopoverHarness(el: DsTooltip): PopoverHarness {
 }
 
 describe('<ds-tooltip>', () => {
+  it('uses a responsive viewport-safe width with a consumer override', () => {
+    expect(tooltipStyles.cssText).toContain(
+      'max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100vw - var(--ds-space-4)))',
+    );
+  });
+
   it('wraps content independently of the trigger context', () => {
     const css = DsTooltip.styles.map((style) => style.cssText).join('\n');
 
     expect(css).toContain('white-space: normal');
     expect(css).toContain('overflow-wrap: anywhere');
     expect(css).toContain('text-align: start');
-    expect(css).toContain('max-width: min(16rem, calc(100vw - var(--ds-space-4)))');
+    expect(css).toContain('max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100vw - var(--ds-space-4)))');
   });
 
   it('stays safe when popover APIs are unavailable', async () => {
@@ -100,7 +107,7 @@ describe('<ds-tooltip>', () => {
     const harness = setupPopoverHarness(el);
 
     // Placement is reflected to the host attribute, which drives the CSS
-    // anchor positioning (position-area) — there's no JS positioning anymore.
+    // anchor positioning (position-area) - there's no JS positioning anymore.
     for (const placement of ['top', 'right', 'bottom', 'left'] as const) {
       harness.setOpenState(false);
       el.placement = placement;
