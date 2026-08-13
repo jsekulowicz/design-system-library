@@ -17,6 +17,7 @@ const DATA = sampleActivity();
 const meta: Meta = {
   title: 'Molecules/HeatmapCalendar',
   component: 'ds-heatmap-calendar',
+  parameters: { docs: { collapsedObjectControls: ['data'] } },
   argTypes: {
     data: { control: 'object' },
     endDate: { control: 'text' },
@@ -37,14 +38,14 @@ const meta: Meta = {
     endDate: '2026-07-13',
     months: 6,
     weekStart: 'monday',
-    title: 'Crosswords played',
+    title: 'Daily activity',
     cellSize: 12,
     cellGap: 3,
     showLegend: true,
     loading: false,
     color: 'var(--ds-color-chart-1)',
     locale: 'en',
-    formatValue: (value: number) => `${value} ${value === 1 ? 'play' : 'plays'}`,
+    formatValue: (value: number) => `${value} ${value === 1 ? 'event' : 'events'}`,
   },
 };
 
@@ -75,13 +76,13 @@ export const Activity: Story = {
 
 export const Loading: Story = {
   render: () => html`
-    <ds-heatmap-calendar loading end-date="2026-07-13" months="6" title="Crosswords played"></ds-heatmap-calendar>
+    <ds-heatmap-calendar loading end-date="2026-07-13" months="6" title="Daily activity"></ds-heatmap-calendar>
   `,
 };
 
 export const Empty: Story = {
   render: () => html`
-    <ds-heatmap-calendar .data=${[]} end-date="2026-07-13" months="6" title="Crosswords played"></ds-heatmap-calendar>
+    <ds-heatmap-calendar .data=${[]} end-date="2026-07-13" months="6" title="Daily activity"></ds-heatmap-calendar>
   `,
 };
 
@@ -92,7 +93,7 @@ export const SundayFirst: Story = {
       end-date="2026-07-13"
       months="6"
       week-start="sunday"
-      title="Crosswords played"
+      title="Daily activity"
     ></ds-heatmap-calendar>
   `,
 };

@@ -1,6 +1,7 @@
-import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Stories } from '@storybook/addon-docs/blocks';
 import * as HeatmapCalendarStories from './heatmap-calendar.stories';
 import { ComponentApi } from '../../.storybook/api-blocks';
+import { CollapsedControls } from '../../.storybook/collapsed-controls';
 import '@jsekulowicz/ds-components/heatmap-calendar/define';
 
 <Meta of={HeatmapCalendarStories} />
@@ -11,7 +12,7 @@ A rolling calendar heatmap for showing activity intensity by date. Dates use `YY
 
 ```html
 <ds-heatmap-calendar
-  title="Crosswords played"
+  title="Daily activity"
   .data=${[{ date: '2026-07-13', value: 4 }]}
   end-date="2026-07-13"
   months="12"
@@ -26,7 +27,7 @@ A rolling calendar heatmap for showing activity intensity by date. Dates use `YY
 <ds-tab-panel value="api">
   <Canvas of={HeatmapCalendarStories.Activity} />
   <h3>Props</h3>
-  <Controls of={HeatmapCalendarStories.Activity} />
+  <CollapsedControls of={HeatmapCalendarStories.Activity} />
   <ComponentApi tag="ds-heatmap-calendar" />
 </ds-tab-panel>
 
@@ -37,7 +38,7 @@ A rolling calendar heatmap for showing activity intensity by date. Dates use `YY
   <ds-tab-panel value="guidelines">
     <h3>Accessibility</h3>
     <ul>
-      <li>Each day cell is a real focusable element (<code>role="graphics-symbol"</code>) with a roving tabindex, inside an SVG exposed as a <code>graphics-document</code> — no <code>role="application"</code>, so browse mode keeps working. Focusing an off-screen week scrolls it into view.</li>
+      <li>Each day cell is a real focusable element (<code>role="graphics-symbol"</code>) with a roving tabindex, inside an SVG exposed as a <code>graphics-document</code> - no <code>role="application"</code>, so browse mode keeps working. Focusing an off-screen week scrolls it into view.</li>
       <li><kbd>↑</kbd> / <kbd>↓</kbd> move one day and <kbd>←</kbd> / <kbd>→</kbd> move one week.</li>
       <li><kbd>Home</kbd> / <kbd>End</kbd> jump to the first / last visible date; <kbd>Esc</kbd> clears the active date.</li>
       <li>A hidden table sits outside the graphic and exposes every visible date and value independently of color, with real table semantics.</li>

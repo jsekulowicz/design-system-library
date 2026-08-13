@@ -1,5 +1,6 @@
-import { Title, Description, Primary, Controls, Stories, useOf } from '@storybook/addon-docs/blocks';
+import { Title, Description, Primary, Stories, useOf } from '@storybook/addon-docs/blocks';
 import { ComponentApi } from './api-blocks.js';
+import { CollapsedControls } from './collapsed-controls.js';
 
 export function DocsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,7 +12,7 @@ export function DocsPage() {
       <Description />
       <Primary />
       <h2>Props</h2>
-      <Controls />
+      <CollapsedControls />
       {tag ? <ComponentApi tag={tag} /> : null}
       <Stories />
     </>
