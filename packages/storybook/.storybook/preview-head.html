@@ -60,20 +60,39 @@
 
   .sb-preparing-story .sb-loader,
   .sb-preparing-docs .sb-loader {
+    box-sizing: border-box;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: -1.25rem 0 0 -1.25rem;
+    border-style: solid !important;
+    border-width: 3px !important;
     border-color: color-mix(in srgb, var(--ds-preview-loading-muted) 35%, transparent);
     border-top-color: var(--ds-preview-loading-accent);
+    border-radius: 50%;
+    animation: ds-loading-spin 0.7s linear infinite !important;
     mix-blend-mode: normal;
+  }
+
+  @keyframes ds-loading-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .sb-preparing-docs {
     align-items: center;
     flex-direction: column;
+    gap: 1rem;
     justify-content: center;
   }
 
+  body.sb-show-preparing-docs > .sb-preparing-docs {
+    display: flex !important;
+  }
+
   .sb-preparing-docs .sb-previewBlock {
-    width: 4rem;
-    height: 4rem;
+    width: 2.5rem;
+    height: 2.5rem;
     margin: 0;
     border: 0;
     background: transparent;
@@ -86,7 +105,7 @@
   }
 
   .sb-preparing-docs .sb-previewBlock_body {
-    height: 4rem;
+    height: 2.5rem;
     border: 0;
     background: transparent;
   }

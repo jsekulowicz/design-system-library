@@ -1,20 +1,124 @@
 <script>
   (function () {
+    function getLoadingKind() {
+      const path = new URLSearchParams(location.search).get('path') || '';
+      if (path.indexOf('/docs/') === 0) {
+        return 'docs';
+      }
+      if (path.indexOf('/story/') === 0) {
+        return 'story';
+      }
+      return 'storybook';
+    }
+
+    const loadingKind = getLoadingKind();
+    document.documentElement.setAttribute('data-ds-loading-kind', loadingKind);
     try {
-      var theme = localStorage.getItem('ds-storybook-theme') === 'dark' ? 'dark' : 'light';
+      const theme = localStorage.getItem('ds-storybook-theme') === 'dark' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-ds-theme', theme);
     } catch (_error) {
       document.documentElement.setAttribute('data-ds-theme', 'light');
     }
+
+    function getLoadingLabel() {
+      if (loadingKind === 'docs') {
+        return 'Loading documentation...';
+      }
+      if (loadingKind === 'story') {
+        return 'Loading story...';
+      }
+      return 'Loading Storybook...';
+    }
+
+    function preparePreviewLoader() {
+      const loader = document.querySelector('#preview-loader');
+      const wrapper = loader && loader.parentElement;
+      if (!loader || !wrapper) {
+        return false;
+      }
+      const label = getLoadingLabel();
+      wrapper.setAttribute('role', 'status');
+      wrapper.setAttribute('aria-live', 'polite');
+      wrapper.setAttribute('aria-label', label);
+      loader.setAttribute('aria-hidden', 'true');
+      return true;
+    }
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      function () {
+        if (preparePreviewLoader()) {
+          return;
+        }
+        const observer = new MutationObserver(function () {
+          if (preparePreviewLoader()) {
+            observer.disconnect();
+          }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+      },
+      { once: true },
+    );
   })();
 </script>
 <style>
-  html[data-ds-theme='dark'] div:has(> #preview-loader) {
-    background: #222425 !important;
+  html[data-ds-theme='light'] {
+    --ds-manager-loading-bg: #faf8f5;
+    --ds-manager-loading-muted: #6f7375;
+    --ds-manager-loading-accent: #4a72cc;
   }
 
-  html[data-ds-theme='light'] div:has(> #preview-loader) {
-    background: #faf8f5 !important;
+  html[data-ds-theme='dark'] {
+    --ds-manager-loading-bg: #222425;
+    --ds-manager-loading-muted: #a8acad;
+    --ds-manager-loading-accent: #6a95e8;
+  }
+
+  div:has(> #preview-loader) {
+    align-items: center !important;
+    background: var(--ds-manager-loading-bg) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    justify-content: center !important;
+  }
+
+  div:has(> #preview-loader)::after {
+    color: var(--ds-manager-loading-muted);
+    font:
+      500 1rem/1.5 system-ui,
+      sans-serif;
+  }
+
+  html[data-ds-loading-kind='docs'] div:has(> #preview-loader)::after {
+    content: 'Loading documentation...';
+  }
+
+  html[data-ds-loading-kind='story'] div:has(> #preview-loader)::after {
+    content: 'Loading story...';
+  }
+
+  html[data-ds-loading-kind='storybook'] div:has(> #preview-loader)::after {
+    content: 'Loading Storybook...';
+  }
+
+  #preview-loader {
+    position: static !important;
+    inset: auto !important;
+    box-sizing: border-box !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    margin: 0 !important;
+    border: 3px solid color-mix(in srgb, var(--ds-manager-loading-muted) 35%, transparent) !important;
+    border-top-color: var(--ds-manager-loading-accent) !important;
+    border-radius: 50% !important;
+    animation: ds-loading-spin 0.7s linear infinite !important;
+  }
+
+  @keyframes ds-loading-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   /* Give Storybook's toolbar IconButton a visible accent highlight when

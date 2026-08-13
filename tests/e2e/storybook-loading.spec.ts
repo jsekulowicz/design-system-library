@@ -13,6 +13,10 @@ test('story loading is themed before the story module resolves', async ({ page }
   await expect(page.locator('.sb-preparing-story')).toHaveAttribute('aria-label', 'Loading story...');
   await expect(page.locator('html')).toHaveAttribute('data-ds-theme', 'dark');
   await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(34, 36, 37)');
+  await expect(loader).toHaveCSS('width', '40px');
+  await expect(loader).toHaveCSS('height', '40px');
+  await expect(loader).toHaveCSS('border-top-width', '3px');
+  await expect(loader).toHaveCSS('animation-duration', '0.7s');
   await navigation;
 });
 
@@ -26,6 +30,9 @@ test('docs use a stable loading gate until content and fonts are ready', async (
   await expect(loader).toBeVisible();
   await expect(loader).toHaveAttribute('role', 'status');
   await expect(loader).toHaveAttribute('aria-label', 'Loading documentation...');
+  await expect(loader).toHaveCSS('display', 'flex');
+  await expect(loader).toHaveCSS('align-items', 'center');
+  await expect(loader).toHaveCSS('justify-content', 'center');
   await expect
     .poll(() => loader.evaluate((element) => getComputedStyle(element, '::after').content))
     .toContain('Loading documentation...');
@@ -217,6 +224,111 @@ test('nested story frames show a themed spinner before their document loads', as
   await expect(handoff).resolves.toBe(true);
   await navigation;
   await expect(page.locator(`[id="${loadingFrameId}"]`)).not.toHaveAttribute('data-ds-story-loading', 'true');
+});
+
+test('manager and preview use the same centered documentation loader', async ({ page }) => {
+  let releaseDocsModule: (() => void) | undefined;
+  let signalDocsModule: (() => void) | undefined;
+  const docsModuleRequested = new Promise<void>((resolve) => {
+    signalDocsModule = resolve;
+  });
+  const docsModuleReleased = new Promise<void>((resolve) => {
+    releaseDocsModule = resolve;
+  });
+  await page.route(/\/assets\/spacing(?:\.mdx)?-[^/]+\.js$/, async (route) => {
+    signalDocsModule?.();
+    await docsModuleReleased;
+    await route.continue();
+  });
+  let releasePreview: (() => void) | undefined;
+  let signalPreview: (() => void) | undefined;
+  const previewRequested = new Promise<void>((resolve) => {
+    signalPreview = resolve;
+  });
+  const previewReleased = new Promise<void>((resolve) => {
+    releasePreview = resolve;
+  });
+  await page.route(/\/iframe\.html(?:\?|$)/, async (route) => {
+    signalPreview?.();
+    await previewReleased;
+    await route.continue();
+  });
+
+  const navigation = page.goto('/?path=/docs/foundations-spacing--docs');
+  await previewRequested;
+  const managerLoader = page.locator('div:has(> #preview-loader)');
+  await expect(managerLoader).toBeVisible();
+  await expect(managerLoader).toHaveAttribute('role', 'status');
+  await expect(managerLoader).toHaveAttribute('aria-label', 'Loading documentation...');
+  await expect(managerLoader).toHaveCSS('align-items', 'center');
+  await expect(managerLoader).toHaveCSS('justify-content', 'center');
+  await expect(page.locator('html')).toHaveAttribute('data-ds-loading-kind', 'docs');
+  await expect
+    .poll(() => managerLoader.evaluate((element) => getComputedStyle(element, '::after').content))
+    .toContain('Loading documentation...');
+  const managerSpinner = page.locator('#preview-loader');
+  await expect(managerSpinner).toHaveCSS('position', 'static');
+  await expect(managerSpinner).toHaveCSS('margin', '0px');
+  const managerSpinnerStyle = await managerSpinner.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return [
+      style.width,
+      style.height,
+      style.borderTopWidth,
+      style.animationDuration,
+      style.borderTopColor,
+      style.borderRightColor,
+    ];
+  });
+  const managerSpinnerCenter = await managerSpinner.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+  });
+  const managerLabelStyle = await managerLoader.evaluate((element) => {
+    const style = getComputedStyle(element, '::after');
+    return [style.color, style.fontFamily, style.fontSize, style.fontWeight, style.lineHeight];
+  });
+  releasePreview?.();
+  await docsModuleRequested;
+
+  const preview = page.frameLocator('#storybook-preview-iframe');
+  const docsLoader = preview.locator('.sb-preparing-docs');
+  const previewSpinner = docsLoader.locator('.sb-loader');
+  await expect(docsLoader).toBeVisible();
+  await expect
+    .poll(() => docsLoader.evaluate((element) => getComputedStyle(element, '::after').content))
+    .toContain('Loading documentation...');
+  const previewSpinnerStyle = await previewSpinner.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return [
+      style.width,
+      style.height,
+      style.borderTopWidth,
+      style.animationDuration,
+      style.borderTopColor,
+      style.borderRightColor,
+    ];
+  });
+  const previewSpinnerCenter = await previewSpinner.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const frameRect = window.frameElement?.getBoundingClientRect();
+    return {
+      x: rect.x + (frameRect?.x ?? 0) + rect.width / 2,
+      y: rect.y + (frameRect?.y ?? 0) + rect.height / 2,
+    };
+  });
+  const previewLabelStyle = await docsLoader.evaluate((element) => {
+    const style = getComputedStyle(element, '::after');
+    return [style.color, style.fontFamily, style.fontSize, style.fontWeight, style.lineHeight];
+  });
+  expect(previewSpinnerStyle).toEqual(managerSpinnerStyle);
+  expect(previewSpinnerCenter.x).toBeCloseTo(managerSpinnerCenter.x, 1);
+  expect(previewSpinnerCenter.y).toBeCloseTo(managerSpinnerCenter.y, 1);
+  expect(previewLabelStyle).toEqual(managerLabelStyle);
+  releaseDocsModule?.();
+  await navigation;
+  await expect(preview.locator('.sbdocs-content')).toBeVisible();
+  await expect(preview.locator('.sb-preparing-docs')).toBeHidden();
 });
 
 test('preview initialization survives unavailable local storage', async ({ page }) => {
