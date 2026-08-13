@@ -1,5 +1,22 @@
 # @jsekulowicz/ds-components
 
+## 0.65.1
+
+### Patch Changes
+
+- 2e2186a: Constrain PieChart donut center content to the configured inner radius.
+- dd1af19: Render SegmentedControl option icons at the large icon size.
+- 2817f3c: Use consistent body typography and spacing for Menu header and footer regions.
+- 7537161: Render every Toast tone on an opaque surface in light and dark themes.
+- 6fff9f7: Normalize user-facing defaults and public documentation to American English and ASCII punctuation.
+- f0fa1b1: Allow Tooltips to grow to 24rem on larger viewports, stay within their available placement area, and expose
+  `--ds-tooltip-max-width` for overrides.
+- 8cfd57e: Reserve Y-axis space from formatted BarChart tick labels so the axis title never overlaps them.
+- 240caf4: Expose list item semantics without rendering orphaned list elements inside component shadow roots.
+- 1c0be41: Keep Select and SearchableSelect at their configured height when the first multiple-selection tile appears.
+- fa42eef: Let vertical dividers stretch to the available cross-axis height.
+- eb8f08e: Use the `radius-xs` token as the default for standard controls and surfaces while preserving geometry-driven rounded shapes.
+
 ## 0.65.0
 
 ### Minor Changes
