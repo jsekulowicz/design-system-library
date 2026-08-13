@@ -11,6 +11,8 @@ Responsive grouped or stacked bar chart. Pass rows via `.data`, a `domain` field
 
 ## Anatomy
 
+The chart combines labeled axes, grouped or stacked bars, an optional legend, interactive value tooltips, and a hidden data table. Rows come from `.data`; `.series` maps row fields to the bars and legend.
+
 ```ts
 type BarChartSeries = {
   key: string; // property name on each row

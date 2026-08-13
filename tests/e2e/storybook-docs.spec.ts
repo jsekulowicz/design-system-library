@@ -77,3 +77,17 @@ test('ScrollablePage and PageShell examples use the documented typography', asyn
     await expect(paragraph).toHaveCSS('font-family', /General Sans/);
   }
 });
+
+test('component documentation introduces every structure with Anatomy', async ({ page }) => {
+  for (const id of [
+    'atoms-skeleton--docs',
+    'molecules-heatmapcalendar--docs',
+    'molecules-stattile--docs',
+    'templates-scrollablepage--docs',
+  ]) {
+    await openDocs(page, id);
+    const anatomy = page.getByRole('heading', { level: 2, name: 'Anatomy' });
+    await expect(anatomy).toHaveCount(1);
+    await expect(anatomy.locator('xpath=following-sibling::*[1][self::p]')).toBeVisible();
+  }
+});

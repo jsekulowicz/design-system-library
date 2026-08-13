@@ -11,6 +11,8 @@ Part-to-whole chart, rendered as a pie or a donut. Pass rows via `.data`; each r
 
 ## Anatomy
 
+The chart combines slices, outside percentage labels, an optional legend, interactive value tooltips, and a hidden data table. Donut mode adds a center region that shows the formatted total or custom `center` slot content.
+
 ```ts
 type PieChartDatum = {
   label: string; // slice name, used in the legend, tooltip and SR table

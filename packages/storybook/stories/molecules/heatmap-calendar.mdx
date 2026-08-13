@@ -10,6 +10,10 @@ import '@jsekulowicz/ds-components/heatmap-calendar/define';
 
 A rolling calendar heatmap for showing activity intensity by date. Dates use `YYYY-MM-DD` strings and are laid out without local-time parsing.
 
+## Anatomy
+
+The calendar combines month and weekday labels, one focusable cell per date, and a legend that maps color intensity to values. Pass dated values through `.data`; `end-date`, `months`, and `week-start` define the visible range.
+
 ```html
 <ds-heatmap-calendar
   title="Daily activity"

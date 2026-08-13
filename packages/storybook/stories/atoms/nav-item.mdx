@@ -14,6 +14,8 @@ A single navigation link. Renders an `<a>` (or `<span>` when disabled) with opti
 
 ## Anatomy
 
+The item is a navigation link with an optional `icon` slot and a text label. Its `current` state provides both the visible selection treatment and `aria-current="page"`.
+
 ```html
 <ds-nav-item href="/" current>
   <ds-icon slot="icon" name="home" size="lg"></ds-icon>

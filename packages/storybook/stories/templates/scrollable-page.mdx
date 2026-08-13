@@ -8,6 +8,10 @@ import { ComponentApi } from '../../.storybook/api-blocks';
 
 Page region with an optional non-scrolling header and an edge-aligned content scrollbar. The header is structurally outside the scroller rather than sticky-positioned. It composes directly inside `ds-page-shell`, which automatically lets it own main padding and scrolling.
 
+## Anatomy
+
+The optional `header` slot stays outside the scrolling region, while default-slot content fills and scrolls within the remaining space. The component is intended to be the single content child of `ds-page-shell`.
+
 ```html
 <ds-scrollable-page>
   <header slot="header">

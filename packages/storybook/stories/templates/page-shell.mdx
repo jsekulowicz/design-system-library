@@ -11,6 +11,8 @@ Application frame that arranges a sticky header, a scrollable aside, a main cont
 
 ## Anatomy
 
+The shell separates application chrome into named regions around its main content area. Optional regions disappear entirely when their slots are empty.
+
 - **header** - sticky top bar with full-bleed border + backdrop blur. Inner content (`brand` slot left, `header-actions` slot right) follows the same `--ds-page-shell-max-width` as the body.
 - **aside** - side column; collapses below the header under the tablet breakpoint. When the slot is empty the column, hamburger toggle, and drawer are not rendered (single-section apps). Add `aside-toggle` to render a desktop-only control that switches the start aside between its full and compact states.
 - **page header** - optional non-scrolling content supplied through the `page-header` slot.
