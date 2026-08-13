@@ -165,6 +165,10 @@ p {
   outline-offset: -2px !important;
 }
 
+.sbdocs .sbdocs-preview-actions button + button {
+  border-inline-start: 1px solid var(--ds-color-border) !important;
+}
+
 /* ===== Storybook ArgsTable (Props) ===== */
 /* Emotion applies hash classes on thead/tbody/tr with hard-coded colors.
    The stable parent is .docblock-argstable so we cascade broadly from it. */
