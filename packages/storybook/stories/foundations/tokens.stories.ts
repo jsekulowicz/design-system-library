@@ -155,7 +155,7 @@ function barSwatch(value: string, color = 'var(--ds-color-accent-subtle)'): Temp
     'display:block;height:6px',
     `background:${color}`,
     'border:1px solid var(--ds-color-accent)',
-    `max-width:min(${value},100%)`,
+    `width:min(${value},100%)`,
   );
   return html`<span aria-hidden="true" style=${style}></span>`;
 }
