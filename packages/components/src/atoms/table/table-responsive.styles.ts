@@ -75,10 +75,46 @@ export const tableResponsiveStyles = css`
       display: grid;
       grid-template-columns: minmax(7rem, 38%) minmax(0, 1fr);
       gap: var(--ds-space-3);
-      align-items: start;
+      align-items: center;
+      min-block-size: var(--ds-space-10);
       min-width: 0;
       overflow-wrap: anywhere;
       text-align: left;
+    }
+
+    :host(:not([responsive='scroll'])) .align-right .cell-content,
+    :host(:not([responsive='scroll'])) .align-center .cell-content {
+      justify-content: flex-start;
+    }
+
+    :host(:not([responsive='scroll'])) table:not(.skeleton-table) tbody tr:last-child td {
+      border-bottom: 1px solid var(--ds-color-border-subtle);
+    }
+
+    :host(:not([responsive='scroll'])) table:not(.skeleton-table) tbody tr td:last-child {
+      border-bottom: 0;
+    }
+
+    :host(:not([responsive='scroll'])) tbody tr:last-child td:first-child,
+    :host(:not([responsive='scroll'])) tbody tr:last-child td:last-child {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+
+    :host(:not([responsive='scroll'])) tbody tr:nth-child(even) td,
+    :host(:not([responsive='scroll'])) tbody tr:nth-child(even) td.pinned {
+      background: transparent;
+    }
+
+    :host(:not([responsive='scroll'])) th.pinned,
+    :host(:not([responsive='scroll'])) td.pinned {
+      position: static;
+      background: transparent;
+    }
+
+    :host(:not([responsive='scroll'])) th.pin-edge,
+    :host(:not([responsive='scroll'])) td.pin-edge {
+      box-shadow: none;
     }
 
     :host(:not([responsive='scroll'])) .cell-label {
@@ -89,7 +125,15 @@ export const tableResponsiveStyles = css`
       overflow-wrap: anywhere;
     }
 
-    :host(:not([responsive='scroll'])) tbody td[data-label=''],
+    :host(:not([responsive='scroll'])) tbody td[data-label=''] {
+      display: flex;
+      align-items: center;
+    }
+
+    :host(:not([responsive='scroll'])) tbody td[data-label=''] .cell-content {
+      flex: 1 1 auto;
+    }
+
     :host(:not([responsive='scroll'])) tbody td.empty {
       display: block;
     }
@@ -102,6 +146,7 @@ export const tableResponsiveStyles = css`
 
     :host(:not([responsive='scroll'])) .skeleton-table tbody td {
       padding: 0;
+      min-block-size: 0;
       border-bottom: 0;
       background: transparent;
     }
