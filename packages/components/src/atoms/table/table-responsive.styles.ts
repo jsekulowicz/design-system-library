@@ -77,6 +77,7 @@ export const tableResponsiveStyles = css`
       gap: var(--ds-space-3);
       align-items: start;
       align-content: center;
+      padding-block: var(--ds-space-1);
       min-block-size: var(--ds-space-10);
       min-width: 0;
       overflow-wrap: anywhere;
