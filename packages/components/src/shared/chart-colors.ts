@@ -1,10 +1,12 @@
 const DEFAULT_CHART_COLORS: readonly string[] = [
   'var(--ds-color-chart-1)',
-  'var(--ds-color-chart-2)',
   'var(--ds-color-chart-3)',
+  'var(--ds-color-chart-2)',
   'var(--ds-color-chart-4)',
   'var(--ds-color-chart-5)',
   'var(--ds-color-chart-6)',
+  'var(--ds-color-chart-7)',
+  'var(--ds-color-chart-8)',
 ];
 
 export function colorForIndex(index: number): string {
