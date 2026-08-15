@@ -73,12 +73,36 @@ Every component needs a matching `exports` entry in `packages/components/package
 
 ## Comments
 
-Only for _why_. If a comment explains what a name means, rename the symbol; if it explains what a
-block does, extract a function. Keep the ones that record a browser quirk, a spec constraint or a
-deliberate trade-off, and keep them to one line.
+**Don't write them.** Put the explanation in a name instead — of the symbol, the extracted
+function, or the test. A name travels with the code, survives a move between files, and cannot
+drift out of date the way a comment can.
 
-No comments in CSS. Load-bearing constraints belong in the component's `@cssprop`/`@csspart`
-JSDoc, where consumers actually read them.
+This applies to the _why_ comments too, which is the part people get wrong. A trade-off worth
+recording is worth naming:
+
+```ts
+// no
+// Overlay, not a flex item: inline space would resize the button on load.
+function plainContent(loading: boolean) { … }
+
+// yes
+function contentWithSpinnerOverlaidOnTop(loading: boolean) { … }
+```
+
+The name is longer than a typical one, and that is the point: it states the constraint at every
+call site rather than only where the function is declared. Reach for the same move with a named
+constant, a named watcher callback, or a test whose title _is_ the scenario:
+
+```ts
+it('exposes exactly one focusable element so the link is a single tab stop', …)
+```
+
+What genuinely cannot be named — a browser bug with an issue number, a spec citation — belongs in
+the component's `@tag`/`@attr`/`@cssprop`/`@csspart` JSDoc, which consumers actually read and which
+`custom-elements.json` publishes. Anything about _this release_ rather than _this code_ belongs in
+the changeset.
+
+No comments in CSS, ever.
 
 ## Shared code
 
