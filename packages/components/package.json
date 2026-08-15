@@ -333,6 +333,14 @@
       "types": "./dist/molecules/pie-chart/define.d.ts",
       "import": "./dist/molecules/pie-chart/define.js"
     },
+    "./share-bar": {
+      "types": "./dist/molecules/share-bar/index.d.ts",
+      "import": "./dist/molecules/share-bar/index.js"
+    },
+    "./share-bar/define": {
+      "types": "./dist/molecules/share-bar/define.d.ts",
+      "import": "./dist/molecules/share-bar/define.js"
+    },
     "./heatmap-calendar": {
       "types": "./dist/molecules/heatmap-calendar/index.d.ts",
       "import": "./dist/molecules/heatmap-calendar/index.js"

@@ -73,6 +73,7 @@ export {
   type PieSlice,
   type PieChartSliceDetail,
 } from './molecules/pie-chart/index.js';
+export { DsShareBar, type ShareBarDatum, type ShareBarSegment } from './molecules/share-bar/index.js';
 export {
   DsHeatmapCalendar,
   type HeatmapDay,

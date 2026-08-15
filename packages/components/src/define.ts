@@ -32,6 +32,7 @@ import './molecules/menu-button/define.js';
 import './molecules/popover-button/define.js';
 import './molecules/bar-chart/define.js';
 import './molecules/pie-chart/define.js';
+import './molecules/share-bar/define.js';
 import './molecules/heatmap-calendar/define.js';
 import './molecules/alert/define.js';
 import './organisms/form/define.js';

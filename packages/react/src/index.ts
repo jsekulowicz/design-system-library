@@ -39,6 +39,7 @@ export { SearchableSelect } from './ds-searchable-select.js';
 export { SegmentedControl } from './ds-segmented-control.js';
 export { Select } from './ds-select.js';
 export { SettingsPage } from './ds-settings-page.js';
+export { ShareBar } from './ds-share-bar.js';
 export { Sidenav } from './ds-sidenav.js';
 export { Skeleton } from './ds-skeleton.js';
 export { StatTile } from './ds-stat-tile.js';

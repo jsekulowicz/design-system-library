@@ -1,0 +1,46 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ShareBarStories from './share-bar.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={ShareBarStories} />
+
+# Share bar
+
+A single stacked bar showing how one total splits across categories, with a legend naming each share.
+
+## Anatomy
+
+The title names the measure, the bar shows the split, and the legend maps each color to a label and its rounded percentage. Categories keep the order they were passed in, so an ordered scale such as difficulty reads left to right rather than largest first. Segment colors come from the shared chart ramp in an order that never places two neighboring hues side by side.
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+<ds-tab-panel value="api">
+  <Canvas of={ShareBarStories.Playground} />
+  <h3>Props</h3>
+  <Controls of={ShareBarStories.Playground} />
+  <ComponentApi tag="ds-share-bar" />
+</ds-tab-panel>
+
+<ds-tab-panel value="examples">
+  <Stories includePrimary={false} />
+</ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Do</h3>
+    <ul>
+      <li>Use it for parts of one whole, where the shares add up to 100%.</li>
+      <li>Set <code>max-segments</code> when the category count is open-ended, so the tail collapses into one <code>Other</code> share instead of running out of distinct colors.</li>
+      <li>Translate <code>other-label</code> and <code>empty-label</code> in the consuming app: the component ships English defaults and carries no i18n.</li>
+    </ul>
+    <h3>Don't</h3>
+    <ul>
+      <li>Don't use it to compare unrelated totals - reach for <code>ds-bar-chart</code>.</li>
+      <li>Don't rely on color alone to identify a share; keep the legend on unless the labels appear next to the bar some other way.</li>
+      <li>Don't pass more than eight categories without an <code>Other</code> rollup - beyond the ramp, colors repeat.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>
