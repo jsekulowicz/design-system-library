@@ -75,7 +75,8 @@ export const tableResponsiveStyles = css`
       display: grid;
       grid-template-columns: minmax(7rem, 38%) minmax(0, 1fr);
       gap: var(--ds-space-3);
-      align-items: center;
+      align-items: start;
+      align-content: center;
       min-block-size: var(--ds-space-10);
       min-width: 0;
       overflow-wrap: anywhere;
