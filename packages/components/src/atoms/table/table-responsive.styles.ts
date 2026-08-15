@@ -101,8 +101,7 @@ export const tableResponsiveStyles = css`
       border-end-end-radius: 0;
     }
 
-    :host(:not([responsive='scroll'])) tbody tr:nth-child(even) td,
-    :host(:not([responsive='scroll'])) tbody tr:nth-child(even) td.pinned {
+    :host(:not([responsive='scroll'])) tbody tr:nth-child(even):not(:hover):not(:has(.row-action:focus-visible)) td {
       background: transparent;
     }
 
