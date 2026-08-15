@@ -1,9 +1,10 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import type { AriaBoolean, AriaChecked, AriaHasPopup, AriaInvalid, AriaRole } from '@jsekulowicz/ds-core';
-import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
+import type { AriaBoolean, AriaChecked, AriaHasPopup, AriaInvalid, AriaRole, LinkTarget } from '@jsekulowicz/ds-core';
+import { spinnerStyles } from '../../shared/spinner.js';
+import { buttonContent } from './button-content.js';
 import { buttonStyles } from './button.styles.js';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
@@ -19,7 +20,8 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @slot trailing - Icon or adornment rendered after the label.
  * @attr {boolean} square - Forces an icon-sized square button and ignores the text-button min width.
  * @attr {string} loading-label - Label shown while loading. Pins the button to the wider of the two states.
- * @csspart button - The internal `<button>` element.
+ * @attr {string} href - Renders an `<a>` instead of a `<button>`, so a button-shaped link is one tab stop.
+ * @csspart button - The internal `<button>`, or the `<a>` when `href` is set.
  * @csspart spinner - The loading spinner SVG.
  * @cssprop --ds-spinner-size - Loading spinner diameter.
  * @cssprop --ds-button-solid - Primary variant background.
@@ -43,6 +45,9 @@ export class DsButton extends DsElement {
   @property({ type: Boolean, reflect: true }) square = false;
   @property() label?: string;
   @property({ attribute: 'loading-label' }) loadingLabel?: string;
+  @property() href?: string;
+  @property() target?: LinkTarget;
+  @property() rel?: string;
   @property({ attribute: 'aria-controls' }) ariaControlsAttr?: string;
   @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: AriaBoolean;
   @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: AriaHasPopup;
@@ -53,7 +58,7 @@ export class DsButton extends DsElement {
   @property({ attribute: false }) tabIndexAttr?: number;
 
   override focus(options?: FocusOptions): void {
-    this.renderRoot.querySelector<HTMLButtonElement>('button')?.focus(options);
+    this.renderRoot.querySelector<HTMLElement>('.btn')?.focus(options);
   }
 
   #handleClick = (event: MouseEvent): void => {
@@ -62,7 +67,7 @@ export class DsButton extends DsElement {
       event.stopImmediatePropagation();
       return;
     }
-    if (this.type === 'submit' || this.type === 'reset') {
+    if (this.href === undefined && (this.type === 'submit' || this.type === 'reset')) {
       this.#submitHostForm();
     }
     this.emit('ds-click', { detail: { originalEvent: event } });
@@ -85,7 +90,11 @@ export class DsButton extends DsElement {
     return host?.shadowRoot?.querySelector('form') ?? null;
   }
 
-  override render(): TemplateResult {
+  #isInoperable(): boolean {
+    return this.disabled || this.loading;
+  }
+
+  #renderButton(): TemplateResult {
     return html`
       <button
         part="button"
@@ -93,7 +102,7 @@ export class DsButton extends DsElement {
         type=${this.type}
         role=${ifDefined(this.roleAttr)}
         tabindex=${ifDefined(this.tabIndexAttr)}
-        aria-disabled=${this.disabled || this.loading ? 'true' : 'false'}
+        aria-disabled=${this.#isInoperable() ? 'true' : 'false'}
         aria-busy=${this.loading ? 'true' : 'false'}
         aria-checked=${ifDefined(this.ariaCheckedAttr)}
         aria-controls=${ifDefined(this.ariaControlsAttr)}
@@ -103,42 +112,35 @@ export class DsButton extends DsElement {
         aria-label=${ifDefined(this.label)}
         @click=${this.#handleClick}
       >
-        ${this.loadingLabel ? this.#renderLabelStack() : this.#renderPlainContent()}
+        ${buttonContent(this.loading, this.loadingLabel)}
       </button>
     `;
   }
 
-  // Overlay, not a flex item: inline space would resize the button on load.
-  #renderPlainContent(): TemplateResult {
+  #renderLink(): TemplateResult {
     return html`
-      <span class="content ${this.loading ? 'is-hidden' : ''}">
-        <slot name="leading"></slot>
-        <slot></slot>
-        <slot name="trailing"></slot>
-      </span>
-      ${this.loading ? html`<span class="loading-overlay">${spinnerTemplate()}</span>` : nothing}
+      <a
+        part="button"
+        class="btn ds-focus-ring"
+        href=${ifDefined(this.href)}
+        target=${ifDefined(this.target)}
+        rel=${ifDefined(this.rel)}
+        role=${ifDefined(this.roleAttr)}
+        tabindex=${ifDefined(this.tabIndexAttr)}
+        aria-disabled=${this.#isInoperable() ? 'true' : 'false'}
+        aria-busy=${this.loading ? 'true' : 'false'}
+        aria-controls=${ifDefined(this.ariaControlsAttr)}
+        aria-expanded=${ifDefined(this.ariaExpandedAttr)}
+        aria-haspopup=${ifDefined(this.ariaHasPopupAttr)}
+        aria-label=${ifDefined(this.label)}
+        @click=${this.#handleClick}
+      >
+        ${buttonContent(this.loading, this.loadingLabel)}
+      </a>
     `;
   }
 
-  // A loading label stays in flow; one grid cell sizes to the wider state.
-  #renderLabelStack(): TemplateResult {
-    return html`
-      <span class="stack labels">
-        <span
-          class="stack-item ${this.loading ? 'is-hidden' : ''}"
-          aria-hidden=${ifDefined(this.loading ? 'true' : undefined)}
-        >
-          <slot name="leading"></slot>
-          <slot></slot>
-        </span>
-        <span
-          class="stack-item ${this.loading ? '' : 'is-hidden'}"
-          aria-hidden=${ifDefined(this.loading ? undefined : 'true')}
-        >
-          ${spinnerTemplate(this.loading ? '' : 'is-hidden')} ${this.loadingLabel}
-        </span>
-      </span>
-      <slot name="trailing"></slot>
-    `;
+  override render(): TemplateResult {
+    return this.href === undefined ? this.#renderButton() : this.#renderLink();
   }
 }

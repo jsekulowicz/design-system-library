@@ -149,3 +149,16 @@ export const Disabled: Story = {
   args: { disabled: true },
   render: (args) => html` <ds-button ?disabled=${args['disabled']}>Unavailable</ds-button> `,
 };
+
+export const AsLink: Story = {
+  render: () => html`
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <ds-button href="#as-link">Log in</ds-button>
+      <ds-button href="#as-link" variant="secondary">Register</ds-button>
+      <ds-button href="https://example.com" target="_blank" rel="noopener noreferrer" variant="ghost">
+        External
+      </ds-button>
+      <ds-button href="#as-link" disabled>Unavailable</ds-button>
+    </div>
+  `,
+};

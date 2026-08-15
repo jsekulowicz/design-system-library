@@ -169,3 +169,72 @@ describe('<ds-button>', () => {
     expect(el.shadowRoot!.querySelector('.spinner')).toBeNull();
   });
 });
+
+describe('<ds-button href>', () => {
+  it('renders an anchor instead of a button so a wrapper link is unnecessary', async () => {
+    const el = await mount<DsButton>('<ds-button href="/login">Log in</ds-button>');
+    const anchor = el.shadowRoot!.querySelector('a');
+
+    expect(el.shadowRoot!.querySelector('button')).toBeNull();
+    expect(anchor).not.toBeNull();
+    expect(anchor!.getAttribute('href')).toBe('/login');
+    expect(anchor!.getAttribute('part')).toBe('button');
+    expect(anchor!.classList.contains('btn')).toBe(true);
+  });
+
+  it('exposes exactly one focusable element so the link is a single tab stop', async () => {
+    const el = await mount<DsButton>('<ds-button href="/login">Log in</ds-button>');
+    const focusable = el.shadowRoot!.querySelectorAll('a, button');
+
+    expect(focusable).toHaveLength(1);
+  });
+
+  it('forwards target and rel', async () => {
+    const el = await mount<DsButton>('<ds-button href="/x" target="_blank" rel="noopener">Go</ds-button>');
+    const anchor = el.shadowRoot!.querySelector('a')!;
+
+    expect(anchor.getAttribute('target')).toBe('_blank');
+    expect(anchor.getAttribute('rel')).toBe('noopener');
+  });
+
+  it('focuses the anchor', async () => {
+    const el = await mount<DsButton>('<ds-button href="/login">Log in</ds-button>');
+
+    el.focus();
+
+    expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector('a'));
+  });
+
+  it('keeps the loading affordances a plain button has', async () => {
+    const el = await mount<DsButton>('<ds-button href="/x" loading loading-label="Loading...">Go</ds-button>');
+
+    expect(el.shadowRoot!.querySelector('a .labels')).not.toBeNull();
+    expect(el.shadowRoot!.querySelector('a')!.getAttribute('aria-busy')).toBe('true');
+  });
+
+  it('marks a disabled link and swallows its activation', async () => {
+    const el = await mount<DsButton>('<ds-button href="/x" disabled>Go</ds-button>');
+    const anchor = el.shadowRoot!.querySelector('a')!;
+    const clicked = vi.fn();
+    el.addEventListener('ds-click', clicked);
+
+    const event = new MouseEvent('click', { bubbles: true, cancelable: true });
+    anchor.dispatchEvent(event);
+
+    expect(anchor.getAttribute('aria-disabled')).toBe('true');
+    expect(event.defaultPrevented).toBe(true);
+    expect(clicked).not.toHaveBeenCalled();
+  });
+
+  it('never submits a surrounding form, even when type says submit', async () => {
+    const el = await mount<DsButton>('<ds-form><ds-button href="/x" type="submit">Go</ds-button></ds-form>').then(
+      (form) => form.querySelector('ds-button') as DsButton,
+    );
+    const submit = vi.fn((event: Event) => event.preventDefault());
+    (el.closest('ds-form') as DsForm).shadowRoot!.querySelector('form')!.addEventListener('submit', submit);
+
+    el.shadowRoot!.querySelector('a')!.click();
+
+    expect(submit).not.toHaveBeenCalled();
+  });
+});

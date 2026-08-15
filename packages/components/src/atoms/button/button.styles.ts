@@ -32,6 +32,8 @@ export const buttonStyles = css`
     cursor: pointer;
     background: transparent;
     color: var(--ds-color-fg);
+    text-decoration: none;
+    box-sizing: border-box;
     transition:
       background var(--ds-duration-fast) var(--ds-easing-standard),
       color var(--ds-duration-fast) var(--ds-easing-standard),
