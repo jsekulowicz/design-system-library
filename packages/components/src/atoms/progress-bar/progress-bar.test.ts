@@ -66,4 +66,16 @@ describe('<ds-progress-bar>', () => {
     const labeled = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
     expect(labeled.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
   });
+
+  it('keeps a text-only label after the host is moved in the light DOM', async () => {
+    const el = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
+    expect(el.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
+
+    const destination = document.createElement('div');
+    el.parentElement!.append(destination);
+    destination.append(el);
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
+  });
 });
