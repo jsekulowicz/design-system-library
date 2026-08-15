@@ -46,6 +46,8 @@ export const semanticLight = {
     'chart-4': '#B83280',
     'chart-5': '#2B8A3E',
     'chart-6': '#7B3FE4',
+    'chart-7': '#64748B',
+    'chart-8': '#9F1239',
   },
   space,
   font: {

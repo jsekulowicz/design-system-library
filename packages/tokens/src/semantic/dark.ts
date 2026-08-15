@@ -37,5 +37,7 @@ export const semanticDark = {
     'chart-4': '#F472B6',
     'chart-5': '#70E380',
     'chart-6': '#B995FF',
+    'chart-7': '#94A3B8',
+    'chart-8': '#FB7185',
   },
 } as const;
