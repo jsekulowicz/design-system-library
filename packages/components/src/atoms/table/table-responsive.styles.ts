@@ -118,6 +118,10 @@ export const tableResponsiveStyles = css`
       box-shadow: none;
     }
 
+    :host(:not([responsive='scroll'])) .cell-content {
+      min-block-size: 1lh;
+    }
+
     :host(:not([responsive='scroll'])) .cell-label {
       display: block;
       color: var(--ds-color-fg-muted);
@@ -129,6 +133,7 @@ export const tableResponsiveStyles = css`
     :host(:not([responsive='scroll'])) tbody td[data-label=''] {
       display: flex;
       align-items: center;
+      padding-block: var(--ds-space-2);
     }
 
     :host(:not([responsive='scroll'])) tbody td[data-label=''] .cell-content {
