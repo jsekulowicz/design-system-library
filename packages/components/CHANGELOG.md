@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.67.4
+
+### Patch Changes
+
+- 2a11e98: Allow deferred custom elemenets registration. Set **DS_DEFER_CUSTOM_ELEMENTS** global variable before running flushCustomElementDefinitions() and before running main.ts file in order to filter and register only the required custom elements at the initial load.
+
 ## 0.67.3
 
 ### Patch Changes
