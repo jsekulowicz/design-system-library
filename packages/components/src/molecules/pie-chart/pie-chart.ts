@@ -2,7 +2,6 @@ import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import '../../atoms/skeleton/define.js';
 import { colorForIndex } from '../../shared/chart-colors.js';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';

@@ -2,8 +2,6 @@ import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import '../../atoms/button/define.js';
-import '../../atoms/menu/define.js';
 import { PopoverController, syncPopoverPanel } from '../../shared/popover-controller.js';
 import { SlottedTriggerController } from '../../shared/slotted-trigger.js';
 import { menuButtonStyles } from './menu-button.styles.js';

@@ -1,8 +1,8 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/skeleton/define.js';
 import { DsStatTile } from './stat-tile.js';
 
-if (!customElements.get('ds-stat-tile')) {
-  customElements.define('ds-stat-tile', DsStatTile);
-}
+defineCustomElement('ds-stat-tile', DsStatTile);
 
 declare global {
   interface HTMLElementTagNameMap {

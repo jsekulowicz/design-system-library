@@ -4,8 +4,6 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { segmentedControlStyles } from './segmented-control.styles.js';
-import '../button/define.js';
-import '../icon/define.js';
 
 export interface SegmentedControlOption {
   value: string;

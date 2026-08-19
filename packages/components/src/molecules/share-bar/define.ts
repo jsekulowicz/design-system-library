@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsShareBar } from './share-bar.js';
 
-if (!customElements.get('ds-share-bar')) {
-  customElements.define('ds-share-bar', DsShareBar);
-}
+defineCustomElement('ds-share-bar', DsShareBar);
 
 declare global {
   interface HTMLElementTagNameMap {

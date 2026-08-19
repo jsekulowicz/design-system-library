@@ -3,8 +3,6 @@ import type { ButtonVariant } from '../../atoms/button/button.js';
 import type { DsToast, ToastTone } from './toast.js';
 import type { DsToastStack, ToastPlacement } from './toast-stack.js';
 
-import '../../atoms/button/define.js';
-
 export interface ToastAction {
   label: string;
   onClick: (controller: ToastController) => void;

@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsLink } from './link.js';
 
-if (!customElements.get('ds-link')) {
-  customElements.define('ds-link', DsLink);
-}
+defineCustomElement('ds-link', DsLink);
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -2,11 +2,7 @@ import { html, nothing, LitElement, type PropertyValues, type TemplateResult } f
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
-import '../../atoms/button/define.js';
-import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/swatch.js';
-import '../../atoms/text-field/define.js';
-import '../card/define.js';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { ColorPickerCustomInputs } from './color-picker-custom-inputs.js';
 import { ColorPickerPopover } from './color-picker-popover.js';

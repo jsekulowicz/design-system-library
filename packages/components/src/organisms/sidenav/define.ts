@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsSidenav } from './sidenav.js';
 
-if (!customElements.get('ds-sidenav')) {
-  customElements.define('ds-sidenav', DsSidenav);
-}
+defineCustomElement('ds-sidenav', DsSidenav);
 
 declare global {
   interface HTMLElementTagNameMap {

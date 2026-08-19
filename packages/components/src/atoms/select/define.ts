@@ -1,12 +1,10 @@
+import { defineCustomElement } from '../../registration.js';
+import '../icon/define.js';
 import { DsSelect } from './select.js';
 import { DsSelectOption } from './select-option.js';
 
-if (!customElements.get('ds-select-option')) {
-  customElements.define('ds-select-option', DsSelectOption);
-}
-if (!customElements.get('ds-select')) {
-  customElements.define('ds-select', DsSelect);
-}
+defineCustomElement('ds-select-option', DsSelectOption);
+defineCustomElement('ds-select', DsSelect);
 
 declare global {
   interface HTMLElementTagNameMap {

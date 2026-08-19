@@ -18,13 +18,9 @@ import {
   renderMobileAsideEnd,
   type PageShellRenderContext,
 } from './page-shell-rendering.js';
-import '../../atoms/button/define.js';
-import '../../atoms/icon/define.js';
 import '../../atoms/icon/icons/bars-3.js';
 import '../../atoms/icon/icons/chevron-left.js';
 import '../../atoms/icon/icons/chevron-right.js';
-import '../../molecules/drawer/define.js';
-import '../../organisms/top-bar/define.js';
 
 export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPosition };
 

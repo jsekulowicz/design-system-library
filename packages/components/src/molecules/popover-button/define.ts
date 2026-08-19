@@ -1,10 +1,10 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/button/define.js';
 import { DsPopoverButton } from './popover-button.js';
 
 export { DsPopoverButton };
 
-if (!customElements.get('ds-popover-button')) {
-  customElements.define('ds-popover-button', DsPopoverButton);
-}
+defineCustomElement('ds-popover-button', DsPopoverButton);
 
 declare global {
   interface HTMLElementTagNameMap {

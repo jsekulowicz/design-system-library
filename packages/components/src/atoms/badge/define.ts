@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsBadge } from './badge.js';
 
-if (!customElements.get('ds-badge')) {
-  customElements.define('ds-badge', DsBadge);
-}
+defineCustomElement('ds-badge', DsBadge);
 
 declare global {
   interface HTMLElementTagNameMap {

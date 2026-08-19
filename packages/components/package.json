@@ -41,6 +41,10 @@
       "types": "./dist/define.d.ts",
       "import": "./dist/define.js"
     },
+    "./registration": {
+      "types": "./dist/registration.d.ts",
+      "import": "./dist/registration.js"
+    },
     "./button": {
       "types": "./dist/atoms/button/index.d.ts",
       "import": "./dist/atoms/button/index.js"

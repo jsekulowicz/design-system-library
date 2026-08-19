@@ -1,12 +1,10 @@
+import { defineCustomElement } from '../../registration.js';
+import '../icon/define.js';
 import { DsBreadcrumb } from './breadcrumb.js';
 import { DsBreadcrumbItem } from './breadcrumb-item.js';
 
-if (!customElements.get('ds-breadcrumb')) {
-  customElements.define('ds-breadcrumb', DsBreadcrumb);
-}
-if (!customElements.get('ds-breadcrumb-item')) {
-  customElements.define('ds-breadcrumb-item', DsBreadcrumbItem);
-}
+defineCustomElement('ds-breadcrumb', DsBreadcrumb);
+defineCustomElement('ds-breadcrumb-item', DsBreadcrumbItem);
 
 declare global {
   interface HTMLElementTagNameMap {

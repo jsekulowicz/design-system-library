@@ -1,8 +1,6 @@
 import { type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import '../card/define.js';
-import '../../atoms/button/define.js';
 import '../../atoms/icon/icons/x-mark.js';
 import { drawerStyles } from './drawer.styles.js';
 import { cardBodyScrollFadeStyles, scrollFadeStyles } from '../../shared/scroll-fade.styles.js';

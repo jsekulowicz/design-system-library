@@ -1,8 +1,11 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/button/define.js';
+import '../../atoms/icon/define.js';
+import '../../molecules/drawer/define.js';
+import '../../organisms/top-bar/define.js';
 import { DsPageShell } from './page-shell.js';
 
-if (!customElements.get('ds-page-shell')) {
-  customElements.define('ds-page-shell', DsPageShell);
-}
+defineCustomElement('ds-page-shell', DsPageShell);
 
 declare global {
   interface HTMLElementTagNameMap {

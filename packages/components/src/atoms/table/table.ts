@@ -2,7 +2,6 @@ import { html, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import '../skeleton/define.js';
 import { tableStyles } from './table.styles.js';
 import { tableResponsiveStyles } from './table-responsive.styles.js';
 import { tableScrollBodyStyles } from './table-scroll-body.styles.js';

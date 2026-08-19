@@ -2,7 +2,6 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
-import '../../atoms/skeleton/define.js';
 import { heatmapCalendarStyles } from './heatmap-calendar.styles.js';
 import { computeHeatmapLayout, parseDate } from './heatmap-layout.js';
 import { actionForKey } from './heatmap-interaction.js';

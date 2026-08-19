@@ -1,17 +1,12 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsTable } from './table.js';
 import { DsTableSortButton } from './table-sort-button.js';
 import { DsTablePagination } from './table-pagination.js';
 import '../skeleton/define.js';
 
-if (!customElements.get('ds-table')) {
-  customElements.define('ds-table', DsTable);
-}
-if (!customElements.get('ds-table-sort-button')) {
-  customElements.define('ds-table-sort-button', DsTableSortButton);
-}
-if (!customElements.get('ds-table-pagination')) {
-  customElements.define('ds-table-pagination', DsTablePagination);
-}
+defineCustomElement('ds-table', DsTable);
+defineCustomElement('ds-table-sort-button', DsTableSortButton);
+defineCustomElement('ds-table-pagination', DsTablePagination);
 
 declare global {
   interface HTMLElementTagNameMap {

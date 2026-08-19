@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsButton } from './button.js';
 
-if (!customElements.get('ds-button')) {
-  customElements.define('ds-button', DsButton);
-}
+defineCustomElement('ds-button', DsButton);
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -1,8 +1,8 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/skeleton/define.js';
 import { DsHeatmapCalendar } from './heatmap-calendar.js';
 
-if (!customElements.get('ds-heatmap-calendar')) {
-  customElements.define('ds-heatmap-calendar', DsHeatmapCalendar);
-}
+defineCustomElement('ds-heatmap-calendar', DsHeatmapCalendar);
 
 declare global {
   interface HTMLElementTagNameMap {

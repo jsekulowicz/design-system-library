@@ -1,8 +1,8 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/button/define.js';
 import { DsAlert } from './alert.js';
 
-if (!customElements.get('ds-alert')) {
-  customElements.define('ds-alert', DsAlert);
-}
+defineCustomElement('ds-alert', DsAlert);
 
 declare global {
   interface HTMLElementTagNameMap {

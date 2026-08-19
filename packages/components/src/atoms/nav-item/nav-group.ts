@@ -3,7 +3,6 @@ import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { navGroupStyles } from './nav-group.styles.js';
 import '../../atoms/icon/icons/chevron-down.js';
-import '../tooltip/define.js';
 
 /**
  * @tag ds-nav-group

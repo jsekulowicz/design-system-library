@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsCheckbox } from './checkbox.js';
 
-if (!customElements.get('ds-checkbox')) {
-  customElements.define('ds-checkbox', DsCheckbox);
-}
+defineCustomElement('ds-checkbox', DsCheckbox);
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -1,9 +1,9 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/button/define.js';
 import { DsDrawer } from './drawer.js';
 import '../card/define.js';
 
-if (!customElements.get('ds-drawer')) {
-  customElements.define('ds-drawer', DsDrawer);
-}
+defineCustomElement('ds-drawer', DsDrawer);
 
 declare global {
   interface HTMLElementTagNameMap {

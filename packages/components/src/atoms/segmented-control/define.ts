@@ -1,8 +1,9 @@
+import { defineCustomElement } from '../../registration.js';
+import '../button/define.js';
+import '../icon/define.js';
 import { DsSegmentedControl } from './segmented-control.js';
 
-if (!customElements.get('ds-segmented-control')) {
-  customElements.define('ds-segmented-control', DsSegmentedControl);
-}
+defineCustomElement('ds-segmented-control', DsSegmentedControl);
 
 declare global {
   interface HTMLElementTagNameMap {

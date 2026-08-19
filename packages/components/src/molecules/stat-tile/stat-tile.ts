@@ -1,7 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import '../../atoms/skeleton/define.js';
 import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { statTileStyles } from './stat-tile.styles.js';
 

@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsFieldset } from './fieldset.js';
 
-if (!customElements.get('ds-fieldset')) {
-  customElements.define('ds-fieldset', DsFieldset);
-}
+defineCustomElement('ds-fieldset', DsFieldset);
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -1,12 +1,9 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsList } from './list.js';
 import { DsListItem } from './list-item.js';
 
-if (!customElements.get('ds-list')) {
-  customElements.define('ds-list', DsList);
-}
-if (!customElements.get('ds-list-item')) {
-  customElements.define('ds-list-item', DsListItem);
-}
+defineCustomElement('ds-list', DsList);
+defineCustomElement('ds-list-item', DsListItem);
 
 declare global {
   interface HTMLElementTagNameMap {

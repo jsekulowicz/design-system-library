@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsIcon } from './icon.js';
 
-if (!customElements.get('ds-icon')) {
-  customElements.define('ds-icon', DsIcon);
-}
+defineCustomElement('ds-icon', DsIcon);
 
 declare global {
   interface HTMLElementTagNameMap {

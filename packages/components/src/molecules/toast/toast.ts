@@ -1,7 +1,6 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import '../../atoms/button/define.js';
 import '../../atoms/icon/icons/x-mark.js';
 import { noticeStyles } from '../../shared/notice.styles.js';
 import { toastStyles } from './toast.styles.js';

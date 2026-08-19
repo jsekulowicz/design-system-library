@@ -6,7 +6,6 @@ import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/f
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
 import { renderChevronDownIcon, renderClearButton, renderOptionIcon, renderSelectedTiles } from './select.shared.js';
-import '../icon/define.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
 import { selectCommonStyles } from './select.common-styles.js';

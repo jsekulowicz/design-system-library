@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsTextField } from './text-field.js';
 
-if (!customElements.get('ds-text-field')) {
-  customElements.define('ds-text-field', DsTextField);
-}
+defineCustomElement('ds-text-field', DsTextField);
 
 declare global {
   interface HTMLElementTagNameMap {

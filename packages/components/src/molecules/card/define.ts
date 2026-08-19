@@ -1,8 +1,7 @@
+import { defineCustomElement } from '../../registration.js';
 import { DsCard } from './card.js';
 
-if (!customElements.get('ds-card')) {
-  customElements.define('ds-card', DsCard);
-}
+defineCustomElement('ds-card', DsCard);
 
 declare global {
   interface HTMLElementTagNameMap {

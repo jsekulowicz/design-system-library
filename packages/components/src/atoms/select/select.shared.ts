@@ -2,7 +2,6 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { IconSize } from '../icon/icon.js';
 import { TILE_ROW_HEIGHT } from './select.common-styles.js';
-import '../icon/define.js';
 import '../icon/icons/x-mark.js';
 import '../icon/icons/chevron-down.js';
 

@@ -1,8 +1,8 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/skeleton/define.js';
 import { DsBarChart } from './bar-chart.js';
 
-if (!customElements.get('ds-bar-chart')) {
-  customElements.define('ds-bar-chart', DsBarChart);
-}
+defineCustomElement('ds-bar-chart', DsBarChart);
 
 declare global {
   interface HTMLElementTagNameMap {

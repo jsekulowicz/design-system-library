@@ -4,7 +4,6 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import type { LinkTarget } from '@jsekulowicz/ds-core';
 import { breadcrumbItemStyles } from './breadcrumb-item.styles.js';
-import '../icon/define.js';
 import '../icon/icons/chevron-right.js';
 
 /**

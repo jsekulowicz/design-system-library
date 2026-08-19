@@ -4,7 +4,6 @@ import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { spinnerTemplate } from '../../shared/spinner.js';
 import { navItemStyles } from './nav-item.styles.js';
-import '../tooltip/define.js';
 
 /**
  * @tag ds-nav-item

@@ -1,12 +1,10 @@
+import { defineCustomElement } from '../../registration.js';
+import '../../atoms/button/define.js';
 import { DsToast } from './toast.js';
 import { DsToastStack } from './toast-stack.js';
 
-if (!customElements.get('ds-toast')) {
-  customElements.define('ds-toast', DsToast);
-}
-if (!customElements.get('ds-toast-stack')) {
-  customElements.define('ds-toast-stack', DsToastStack);
-}
+defineCustomElement('ds-toast', DsToast);
+defineCustomElement('ds-toast-stack', DsToastStack);
 
 declare global {
   interface HTMLElementTagNameMap {

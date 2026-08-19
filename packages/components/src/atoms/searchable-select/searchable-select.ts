@@ -19,7 +19,6 @@ import { selectCommonStyles } from '../select/select.common-styles.js';
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import { highlightMatch } from './highlight-match.js';
 import type { SelectOption, SelectSize } from '../select/select.js';
-import '../icon/define.js';
 
 /**
  * @tag ds-searchable-select
