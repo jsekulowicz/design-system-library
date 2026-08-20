@@ -2,6 +2,7 @@ import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { pageShellStyles } from './page-shell.styles.js';
+import { pageShellMobileStyles } from './page-shell-mobile.styles.js';
 import { scrollFadeStyles } from '../../shared/scroll-fade.styles.js';
 import { ScrollFadeController } from '../../shared/scroll-fade-controller.js';
 import { hasAssignedContent, hasNamedSlotContent } from '../../shared/slots.js';
@@ -51,7 +52,7 @@ export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPo
  *   Detail: `{ side, state, previousState }`.
  */
 export class DsPageShell extends DsElement {
-  static override styles = [...DsElement.styles, scrollFadeStyles, pageShellStyles];
+  static override styles = [...DsElement.styles, scrollFadeStyles, pageShellStyles, pageShellMobileStyles];
 
   @property() brand = '';
   @property({ attribute: 'menu-label' }) menuLabel = 'Navigation menu';

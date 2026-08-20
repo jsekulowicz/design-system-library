@@ -2,7 +2,6 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoint } from '@jsekulowicz/ds-tokens';
 
 const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
-const belowMobileLayoutBreakpoint = unsafeCSS(`calc(${breakpoint.md} - 0.02px)`);
 
 export const pageShellStyles = css`
   :host {
@@ -251,71 +250,5 @@ export const pageShellStyles = css`
       --ds-page-shell-page-padding-block: var(--ds-space-4);
       --ds-page-shell-page-padding-inline: var(--ds-space-4);
     }
-  }
-
-  @media (max-width: ${belowMobileLayoutBreakpoint}) {
-    :host(:not([mobile-layout])) .aside-start-cluster,
-    :host(:not([mobile-layout])) .aside-end-cluster {
-      display: none;
-    }
-
-    :host(:not([mobile-layout])) .shell-body {
-      grid-template-columns: 1fr;
-    }
-
-    :host(:not([mobile-layout])) main {
-      grid-column: 1;
-    }
-
-    :host(:not([mobile-layout])) .menu-toggle {
-      display: inline-flex;
-    }
-  }
-
-  .menu-toggle {
-    display: none;
-  }
-  .menu-toggle::part(button) {
-    min-width: var(--ds-page-shell-menu-toggle-size, var(--ds-size-sm));
-    width: var(--ds-page-shell-menu-toggle-size, var(--ds-size-sm));
-    padding: 0;
-  }
-  :host([mobile-layout]) .menu-toggle {
-    display: inline-flex;
-  }
-
-  :host([mobile-layout]) .shell-body {
-    grid-template-columns: 1fr;
-  }
-  :host([mobile-layout]) main {
-    grid-column: 1;
-  }
-  :host([mobile-layout]) aside[part='aside-end'] {
-    display: none;
-  }
-  :host([mobile-layout]) ds-drawer[part='aside'] {
-    /* Top-layer modal; don't reserve a grid column when closed. */
-    display: contents;
-    --ds-drawer-card-padding: 0;
-    /* No gap under the title row; the sidenav's own top padding is the only
-       breathing room, so the nav sits close under the header. */
-    --ds-drawer-card-gap: 0;
-    /* Match ds-top-bar's 48px chrome height with inline-only padding. */
-    --ds-drawer-title-padding: 0 var(--ds-space-4);
-    --ds-drawer-title-min-height: 48px;
-    /* Match the top bar's brand size (ds-top-bar .brand) rather than the
-       drawer's larger default title. */
-    --ds-drawer-title-font-size: var(--ds-font-size-heading-sm);
-    --ds-drawer-title-bg: var(--ds-page-shell-drawer-header-bg, transparent);
-    --ds-drawer-title-fg: var(--ds-page-shell-drawer-header-fg, inherit);
-    --ds-drawer-title-border-color: var(--ds-page-shell-drawer-header-border-color, transparent);
-  }
-  :host([mobile-layout]) ds-drawer[part='aside'] ::slotted(ds-sidenav) {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 1 1 auto;
-    min-width: 0;
-    min-height: 0;
-    height: auto !important;
   }
 `;
