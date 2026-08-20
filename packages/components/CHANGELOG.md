@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.67.7
+
+### Patch Changes
+
+- db73b44: Remove invalid cross-shadow `aria-controls` references from page-shell navigation toggles while retaining their accessible labels and expanded state.
+
 ## 0.67.6
 
 ### Patch Changes
