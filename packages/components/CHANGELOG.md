@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.67.6
+
+### Patch Changes
+
+- dc4ed74: Keep the `ds-page-shell` prerender fallback and runtime mobile styles together in a focused stylesheet.
+
 ## 0.67.5
 
 ### Patch Changes
