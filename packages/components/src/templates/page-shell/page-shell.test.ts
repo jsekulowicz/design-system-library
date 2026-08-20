@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import type { DsButton } from '../../atoms/button/button.js';
 import { DsPageShell } from './page-shell.js';
 import './define.js';
 import { mount, resetTestDom } from '../../test-utils/mount.js';
@@ -149,6 +150,18 @@ describe('<ds-page-shell>', () => {
     expect(menuToggle).not.toBeNull();
     expect(menuToggle!.getAttribute('aria-expanded')).toBe('false');
     expect(el.hasAttribute('data-mobile-nav-open')).toBe(false);
+  });
+
+  it('does not emit aria-controls references across nested shadow roots', async () => {
+    const el = await mount<DsPageShell>(pageShellTemplate());
+    await forceDesktopLayout(el);
+    const toggles = el.shadowRoot!.querySelectorAll<DsButton>('ds-button.menu-toggle, ds-button.aside-toggle');
+
+    for (const toggle of toggles) {
+      await toggle.updateComplete;
+      expect(toggle.hasAttribute('aria-controls')).toBe(false);
+      expect(toggle.shadowRoot!.querySelector('button')!.hasAttribute('aria-controls')).toBe(false);
+    }
   });
 
   it('opens navigation and clears collapsed state from slotted aside', async () => {

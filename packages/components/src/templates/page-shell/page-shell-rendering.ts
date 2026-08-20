@@ -35,7 +35,6 @@ export function renderMenuToggle(ctx: PageShellRenderContext): TemplateResult | 
     label=${ctx.menuLabel}
     aria-label=${ctx.menuLabel}
     aria-expanded=${ctx.mobileNavOpen ? 'true' : 'false'}
-    aria-controls="mobile-aside"
     @click=${ctx.toggleMobileNav}
   >
     <ds-icon slot="leading" name="bars-3" size="3xl"></ds-icon>
@@ -83,7 +82,6 @@ export function renderDesktopEndCluster(ctx: PageShellRenderContext): TemplateRe
 
 interface AsideToggleOptions {
   side: 'start' | 'end';
-  controls: string;
   expanded: boolean;
   label: string;
   icon: 'chevron-left' | 'chevron-right';
@@ -91,7 +89,7 @@ interface AsideToggleOptions {
 }
 
 function renderAsideToggle(options: AsideToggleOptions): TemplateResult {
-  const { side, controls, expanded, label, icon, onClick } = options;
+  const { side, expanded, label, icon, onClick } = options;
   return html`<div
     class="aside-toggle-rail aside-toggle-${side}-rail"
     part="aside-toggle-rail aside-toggle-${side}-rail"
@@ -104,7 +102,6 @@ function renderAsideToggle(options: AsideToggleOptions): TemplateResult {
       square
       label=${label}
       aria-label=${label}
-      aria-controls=${controls}
       aria-expanded=${expanded ? 'true' : 'false'}
       @click=${onClick}
     >
@@ -120,7 +117,6 @@ function renderStartToggle(ctx: PageShellRenderContext): TemplateResult | null {
   const expanded = ctx.asideState === 'visible';
   return renderAsideToggle({
     side: 'start',
-    controls: 'desktop-aside',
     expanded,
     label: expanded ? 'Collapse primary navigation' : 'Expand primary navigation',
     icon: expanded ? 'chevron-left' : 'chevron-right',
@@ -135,7 +131,6 @@ function renderEndToggle(ctx: PageShellRenderContext): TemplateResult | null {
   const expanded = ctx.asideEndState === 'visible';
   return renderAsideToggle({
     side: 'end',
-    controls: 'desktop-aside-end',
     expanded,
     label: expanded ? 'Hide secondary navigation' : 'Show secondary navigation',
     icon: expanded ? 'chevron-right' : 'chevron-left',
