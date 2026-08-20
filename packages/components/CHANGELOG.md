@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.67.5
+
+### Patch Changes
+
+- 999b95c: Keep the prerendered `ds-page-shell` mobile fallback below 768px so its initial layout matches the component's runtime breakpoint without exposing desktop side navigation.
+
 ## 0.67.4
 
 ### Patch Changes
