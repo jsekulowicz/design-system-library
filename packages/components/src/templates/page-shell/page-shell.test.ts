@@ -446,6 +446,13 @@ describe('<ds-page-shell>', () => {
       expect(css).toMatch(/:host\(\[mobile-layout\]\)\s*\.menu-toggle\s*{[^}]*display:\s*inline-flex/);
     });
 
+    it('uses the below-768px boundary for the pre-upgrade mobile fallback', () => {
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
+      const fallback = css.match(/@media \(max-width: calc\(768px - 0\.02px\)\)\s*{([\s\S]*?)\n {2}\}/)?.[1];
+      expect(fallback).toMatch(/:host\(:not\(\[mobile-layout\]\)\)\s+\.aside-start-cluster/);
+      expect(fallback).toMatch(/:host\(:not\(\[mobile-layout\]\)\)\s+\.menu-toggle\s*{[^}]*display:\s*inline-flex/);
+    });
+
     it('lets the main grid track shrink while its inner region owns scrolling', () => {
       const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
       expect(css).toMatch(/main\s*{[^}]*min-width:\s*0/);

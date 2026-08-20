@@ -2,6 +2,7 @@ import { css, unsafeCSS } from 'lit';
 import { breakpoint } from '@jsekulowicz/ds-tokens';
 
 const belowDesktopBreakpoint = unsafeCSS(`calc(${breakpoint.lg} - 0.02px)`);
+const belowMobileLayoutBreakpoint = unsafeCSS(`calc(${breakpoint.md} - 0.02px)`);
 
 export const pageShellStyles = css`
   :host {
@@ -249,6 +250,25 @@ export const pageShellStyles = css`
     :host {
       --ds-page-shell-page-padding-block: var(--ds-space-4);
       --ds-page-shell-page-padding-inline: var(--ds-space-4);
+    }
+  }
+
+  @media (max-width: ${belowMobileLayoutBreakpoint}) {
+    :host(:not([mobile-layout])) .aside-start-cluster,
+    :host(:not([mobile-layout])) .aside-end-cluster {
+      display: none;
+    }
+
+    :host(:not([mobile-layout])) .shell-body {
+      grid-template-columns: 1fr;
+    }
+
+    :host(:not([mobile-layout])) main {
+      grid-column: 1;
+    }
+
+    :host(:not([mobile-layout])) .menu-toggle {
+      display: inline-flex;
     }
   }
 
