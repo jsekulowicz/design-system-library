@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.68.0
+
+### Minor Changes
+
+- fa97593: Expose `--ds-button-bg` and `--ds-button-fg` for custom primary palettes, with derived hover and active backgrounds and explicit state overrides.
+
 ## 0.67.7
 
 ### Patch Changes
