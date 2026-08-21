@@ -86,6 +86,14 @@ export const Colors: Story = {
   `,
 };
 
+export const CustomPalette: Story = {
+  render: () => html`
+    <ds-button style="--ds-button-bg: var(--ds-color-fg); --ds-button-fg: var(--ds-color-bg);">
+      Foreground palette
+    </ds-button>
+  `,
+};
+
 export const Sizes: Story = {
   render: () => html`
     <div style="display:flex;gap:var(--ds-space-3);align-items:center">

@@ -4,10 +4,14 @@ export const buttonStyles = css`
   :host {
     --ds-button-size: var(--ds-size-md);
     --ds-button-min-width: 4.5rem;
-    --ds-button-solid: var(--ds-color-accent);
-    --ds-button-solid-hover: var(--ds-color-accent-hover);
-    --ds-button-solid-active: var(--ds-color-accent-active);
-    --ds-button-on-solid: var(--ds-color-accent-fg);
+    --ds-button-bg: var(--ds-color-accent);
+    --ds-button-fg: var(--ds-color-accent-fg);
+    --ds-button-bg-hover: color-mix(in oklab, var(--ds-button-bg) 92%, var(--ds-button-fg));
+    --ds-button-bg-active: color-mix(in oklab, var(--ds-button-bg) 84%, var(--ds-button-fg));
+    --ds-button-solid: var(--ds-button-bg);
+    --ds-button-solid-hover: var(--ds-button-bg-hover);
+    --ds-button-solid-active: var(--ds-button-bg-active);
+    --ds-button-on-solid: var(--ds-button-fg);
     --ds-button-line: var(--ds-color-border-strong);
     --ds-button-text: var(--ds-color-fg);
     display: inline-flex;
@@ -92,17 +96,16 @@ export const buttonStyles = css`
     animation-play-state: paused;
   }
   :host([color='success']) {
-    /* No hover/active tokens exist for these colors; pin them to the solid. */
-    --ds-button-solid: var(--ds-color-success);
-    --ds-button-solid-hover: var(--ds-color-success);
-    --ds-button-solid-active: var(--ds-color-success);
+    --ds-button-bg: var(--ds-color-success);
+    --ds-button-bg-hover: var(--ds-color-success);
+    --ds-button-bg-active: var(--ds-color-success);
     --ds-button-line: var(--ds-color-success);
     --ds-button-text: var(--ds-color-success);
   }
   :host([color='danger']) {
-    --ds-button-solid: var(--ds-color-danger);
-    --ds-button-solid-hover: var(--ds-color-danger);
-    --ds-button-solid-active: var(--ds-color-danger);
+    --ds-button-bg: var(--ds-color-danger);
+    --ds-button-bg-hover: var(--ds-color-danger);
+    --ds-button-bg-active: var(--ds-color-danger);
     --ds-button-line: var(--ds-color-danger);
     --ds-button-text: var(--ds-color-danger);
   }

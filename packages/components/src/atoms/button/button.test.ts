@@ -168,6 +168,33 @@ describe('<ds-button>', () => {
     expect(el.shadowRoot!.querySelector('.stack')).toBeNull();
     expect(el.shadowRoot!.querySelector('.spinner')).toBeNull();
   });
+
+  it('derives primary interaction colors from the public palette', () => {
+    expect(buttonStyles.cssText).toContain('--ds-button-bg: var(--ds-color-accent)');
+    expect(buttonStyles.cssText).toContain('--ds-button-fg: var(--ds-color-accent-fg)');
+    expect(buttonStyles.cssText).toMatch(
+      /--ds-button-bg-hover:\s*color-mix\(\s*in oklab,\s*var\(--ds-button-bg\) 92%,\s*var\(--ds-button-fg\)/s,
+    );
+    expect(buttonStyles.cssText).toMatch(
+      /--ds-button-bg-active:\s*color-mix\(\s*in oklab,\s*var\(--ds-button-bg\) 84%,\s*var\(--ds-button-fg\)/s,
+    );
+  });
+
+  it('keeps the existing primary tint properties as compatibility aliases', () => {
+    expect(buttonStyles.cssText).toContain('--ds-button-solid: var(--ds-button-bg)');
+    expect(buttonStyles.cssText).toContain('--ds-button-solid-hover: var(--ds-button-bg-hover)');
+    expect(buttonStyles.cssText).toContain('--ds-button-solid-active: var(--ds-button-bg-active)');
+    expect(buttonStyles.cssText).toContain('--ds-button-on-solid: var(--ds-button-fg)');
+  });
+
+  it('makes semantic colors populate the public background palette', () => {
+    expect(buttonStyles.cssText).toMatch(
+      /:host\(\[color='success'\]\)[^{]*{[^}]*--ds-button-bg:\s*var\(--ds-color-success\)[^}]*--ds-button-bg-hover:\s*var\(--ds-color-success\)[^}]*--ds-button-bg-active:\s*var\(--ds-color-success\)/s,
+    );
+    expect(buttonStyles.cssText).toMatch(
+      /:host\(\[color='danger'\]\)[^{]*{[^}]*--ds-button-bg:\s*var\(--ds-color-danger\)[^}]*--ds-button-bg-hover:\s*var\(--ds-color-danger\)[^}]*--ds-button-bg-active:\s*var\(--ds-color-danger\)/s,
+    );
+  });
 });
 
 describe('<ds-button href>', () => {

@@ -23,11 +23,15 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @attr {string} href - Renders an `<a>` instead of a `<button>`, so a button-shaped link is one tab stop.
  * @csspart button - The internal `<button>`, or the `<a>` when `href` is set.
  * @csspart spinner - The loading spinner SVG.
+ * @cssprop --ds-button-bg - Primary variant background.
+ * @cssprop --ds-button-fg - Primary variant foreground.
+ * @cssprop --ds-button-bg-hover - Primary hover background; derived from background and foreground by default.
+ * @cssprop --ds-button-bg-active - Primary active background; derived from background and foreground by default.
  * @cssprop --ds-spinner-size - Loading spinner diameter.
- * @cssprop --ds-button-solid - Primary variant background.
- * @cssprop --ds-button-solid-hover - Primary variant hover background.
- * @cssprop --ds-button-solid-active - Primary variant active background.
- * @cssprop --ds-button-on-solid - Text color on the solid background.
+ * @cssprop --ds-button-solid - Legacy primary background override.
+ * @cssprop --ds-button-solid-hover - Legacy primary hover background override.
+ * @cssprop --ds-button-solid-active - Legacy primary active background override.
+ * @cssprop --ds-button-on-solid - Legacy primary foreground override.
  * @cssprop --ds-button-line - Secondary variant border color.
  * @cssprop --ds-button-text - Secondary/ghost variant text color.
  * @event ds-click - Emitted when the button is activated.
