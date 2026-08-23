@@ -73,7 +73,7 @@ Every component needs a matching `exports` entry in `packages/components/package
 
 ## Comments
 
-**Don't write them.** Put the explanation in a name instead — of the symbol, the extracted
+**Don't write them.** Put the explanation in a name instead - of the symbol, the extracted
 function, or the test. A name travels with the code, survives a move between files, and cannot
 drift out of date the way a comment can.
 
@@ -83,10 +83,10 @@ recording is worth naming:
 ```ts
 // no
 // Overlay, not a flex item: inline space would resize the button on load.
-function plainContent(loading: boolean) { … }
+function plainContent(loading: boolean) { ... }
 
 // yes
-function contentWithSpinnerOverlaidOnTop(loading: boolean) { … }
+function contentWithSpinnerOverlaidOnTop(loading: boolean) { ... }
 ```
 
 The name is longer than a typical one, and that is the point: it states the constraint at every
@@ -94,10 +94,10 @@ call site rather than only where the function is declared. Reach for the same mo
 constant, a named watcher callback, or a test whose title _is_ the scenario:
 
 ```ts
-it('exposes exactly one focusable element so the link is a single tab stop', …)
+it('exposes exactly one focusable element so the link is a single tab stop', ...)
 ```
 
-What genuinely cannot be named — a browser bug with an issue number, a spec citation — belongs in
+What genuinely cannot be named - a browser bug with an issue number, a spec citation - belongs in
 the component's `@tag`/`@attr`/`@cssprop`/`@csspart` JSDoc, which consumers actually read and which
 `custom-elements.json` publishes. Anything about _this release_ rather than _this code_ belongs in
 the changeset.

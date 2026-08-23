@@ -199,10 +199,10 @@ describe('<ds-checkbox>', () => {
   });
   describe('label presence', () => {
     it('offsets the box onto the first line only when there is a label', async () => {
-      const labelled = await mount<DsCheckbox>('<ds-checkbox>Pick me</ds-checkbox>');
+      const labeled = await mount<DsCheckbox>('<ds-checkbox>Pick me</ds-checkbox>');
       const bare = await mount<DsCheckbox>('<ds-checkbox></ds-checkbox>');
 
-      expect(labelled.shadowRoot!.querySelector('label')!.classList.contains('has-label')).toBe(true);
+      expect(labeled.shadowRoot!.querySelector('label')!.classList.contains('has-label')).toBe(true);
       expect(bare.shadowRoot!.querySelector('label')!.classList.contains('has-label')).toBe(false);
     });
   });
