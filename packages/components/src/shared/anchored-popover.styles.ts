@@ -7,7 +7,7 @@ export const anchoredPopoverStyles = css`
   }
   .control-wrap {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
   }
   .trigger-wrap {
     anchor-name: --ds-popover-trigger;

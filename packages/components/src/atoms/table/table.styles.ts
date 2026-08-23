@@ -27,7 +27,8 @@ export const tableStyles = css`
 
   table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     text-align: left;
   }
 
