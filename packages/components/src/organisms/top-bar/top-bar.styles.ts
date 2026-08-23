@@ -8,7 +8,7 @@ export const topBarStyles = css`
     /* Full-width chrome: background, border-bottom, and the fixed
        responsive height live on the nav itself so they always span
        the parent's full width regardless of the inner content cap. */
-    height: 48px;
+    height: calc(48px + 1px);
     background: var(--ds-top-bar-bg, var(--ds-color-bg));
     border-bottom: 1px solid var(--ds-color-border);
     font-family: var(--ds-font-body);

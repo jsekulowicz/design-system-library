@@ -42,4 +42,9 @@ export const iconStyles = css`
     height: 100%;
     display: block;
   }
+  @media (max-resolution: 1.5dppx) {
+    :host([size='2xl']) svg {
+      stroke-width: 1;
+    }
+  }
 `;

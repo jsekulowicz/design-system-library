@@ -181,6 +181,6 @@ export const selectCommonStyles = css`
     border-bottom: 1px solid var(--ds-color-border-strong);
     color: var(--ds-color-fg-muted);
     font-size: var(--ds-font-size-body-sm);
-    line-height: var(--ds-line-height-snug);
+    line-height: var(--ds-line-height-normal);
   }
 `;

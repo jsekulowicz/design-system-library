@@ -28,8 +28,8 @@ describe('<ds-stat-tile>', () => {
   it('uses the same reserved line box for loading and loaded values', () => {
     const css = DsStatTile.styles.map((style) => style.cssText).join('\n');
 
-    expect(css).toMatch(/\.value\s*{[^}]*min-height: calc\([^}]*--ds-line-height-snug[^}]*\)/s);
-    expect(css).toMatch(/\.value\s*{[^}]*line-height: var\(--ds-line-height-snug\)/s);
+    expect(css).toMatch(/\.value\s*{[^}]*min-height: calc\([^}]*--ds-line-height-tight[^}]*\)/s);
+    expect(css).toMatch(/\.value\s*{[^}]*line-height: var\(--ds-line-height-tight\)/s);
     expect(css).not.toMatch(/\.value ds-skeleton\s*{[^}]*padding/s);
   });
 

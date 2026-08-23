@@ -55,6 +55,7 @@ export const tableStyles = css`
     border-bottom: 1px solid var(--ds-color-border);
     /* No wrapping keeps the header row a constant height. */
     white-space: nowrap;
+    line-height: var(--ds-line-height-none);
   }
 
   tbody td {

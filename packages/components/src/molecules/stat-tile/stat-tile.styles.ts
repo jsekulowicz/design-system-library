@@ -22,11 +22,11 @@ export const statTileStyles = css`
   .value {
     display: flex;
     align-items: center;
-    min-height: calc(var(--ds-font-size-heading-lg) * var(--ds-line-height-snug));
+    min-height: calc(var(--ds-font-size-heading-lg) * var(--ds-line-height-tight));
     font-size: var(--ds-font-size-heading-lg);
     font-weight: var(--ds-font-weight-bold);
     font-variant-numeric: tabular-nums;
-    line-height: var(--ds-line-height-snug);
+    line-height: var(--ds-line-height-tight);
   }
 
   .label {
