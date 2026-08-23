@@ -105,6 +105,10 @@ export const barChartStyles = css`
     border-radius: var(--ds-radius-xs);
   }
 
+  .point-tooltip {
+    min-width: 120px;
+  }
+
   .tooltip-title {
     font-weight: var(--ds-font-weight-medium);
     margin-bottom: var(--ds-space-1);
