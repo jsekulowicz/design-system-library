@@ -62,3 +62,16 @@ export const Disabled: Story = {
     </div>
   `,
 };
+
+export const WrappingLabel: Story = {
+  render: () => html`
+    <div style="display:grid;gap:var(--ds-space-4);max-width:20rem">
+      <ds-radio name="wrapping" radiovalue="linked">
+        Ship it with the <a href="/terms" target="_blank" rel="noopener">Terms and Conditions</a> attached
+      </ds-radio>
+      <ds-radio name="wrapping" radiovalue="long">
+        A label long enough to wrap onto several lines keeps its dot on the first line, where reading starts
+      </ds-radio>
+    </div>
+  `,
+};

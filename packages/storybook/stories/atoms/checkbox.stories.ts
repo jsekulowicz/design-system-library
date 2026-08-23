@@ -55,3 +55,20 @@ export const States: Story = {
     </div>
   `,
 };
+
+export const WrappingLabel: Story = {
+  render: () => html`
+    <div style="display:grid;gap:var(--ds-space-4);max-width:20rem">
+      <ds-checkbox>
+        I agree with the <a href="/terms" target="_blank" rel="noopener">Terms and Conditions</a> and the
+        <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      </ds-checkbox>
+      <ds-checkbox checked>
+        A label long enough to wrap onto several lines keeps its box on the first line, where reading starts
+      </ds-checkbox>
+      <ds-checkbox message-space error="Please accept to continue" invalid>
+        I agree with the <a href="/terms" target="_blank" rel="noopener">Terms and Conditions</a>
+      </ds-checkbox>
+    </div>
+  `,
+};

@@ -2,6 +2,7 @@ import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
+import { hasInteractiveSlottedOrigin } from '../../shared/interactive-origin.js';
 import { radioStyles } from './radio.styles.js';
 
 /**
@@ -64,7 +65,17 @@ export class DsRadio extends FormControlMixin(DsElement) {
     this.emit('ds-change', { detail: { value: this.radioValue } });
   };
 
+  #onLabelClick = (event: MouseEvent): void => {
+    if (hasInteractiveSlottedOrigin(event, this.renderRoot)) {
+      return;
+    }
+    this.#select();
+  };
+
   #onKey = (event: KeyboardEvent): void => {
+    if (hasInteractiveSlottedOrigin(event, this.renderRoot)) {
+      return;
+    }
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
       this.#select();
@@ -72,7 +83,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
   };
 
   override render(): TemplateResult {
-    return html`<label @click=${this.#select} @keydown=${this.#onKey}>
+    return html`<label @click=${this.#onLabelClick} @keydown=${this.#onKey}>
       <input
         class="visually-hidden"
         type="radio"

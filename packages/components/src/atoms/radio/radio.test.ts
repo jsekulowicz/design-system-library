@@ -117,4 +117,38 @@ describe('<ds-radio>', () => {
     await el.updateComplete;
     expect(el.checked).toBe(true);
   });
+  describe('interactive slotted content', () => {
+    it('leaves a click on a link in the label unselected', async () => {
+      const el = await mount<DsRadio>(
+        '<ds-radio name="plan" radiovalue="a">Read the <a href="/terms">Terms</a></ds-radio>',
+      );
+
+      el.querySelector('a')!.click();
+      await el.updateComplete;
+
+      expect(el.checked).toBe(false);
+    });
+
+    it('leaves Enter to a link in the label instead of selecting', async () => {
+      const el = await mount<DsRadio>(
+        '<ds-radio name="plan" radiovalue="a">Read the <a href="/terms">Terms</a></ds-radio>',
+      );
+
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true, cancelable: true });
+      el.querySelector('a')!.dispatchEvent(event);
+      await el.updateComplete;
+
+      expect(el.checked).toBe(false);
+      expect(event.defaultPrevented).toBe(false);
+    });
+
+    it('still selects from plain text in the label', async () => {
+      const el = await mount<DsRadio>('<ds-radio name="plan" radiovalue="a">Plan <span>A</span></ds-radio>');
+
+      el.querySelector('span')!.click();
+      await el.updateComplete;
+
+      expect(el.checked).toBe(true);
+    });
+  });
 });

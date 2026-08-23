@@ -37,6 +37,32 @@ test.describe('ds-checkbox line box', () => {
 
     expect(probe.checkboxRow).toBeCloseTo(probe.textRow, 1);
   });
+
+  test('keeps its box on the first line of a wrapping label', async ({ page }) => {
+    await page.goto(storyUrl);
+    await mountProbes(page);
+
+    const probe = await page.evaluate(() => {
+      const row = document.getElementById('wrapping-row') as HTMLElement;
+      const checkbox = row.firstElementChild as HTMLElement;
+      const shadow = checkbox.shadowRoot!;
+      const box = shadow.querySelector('.control')!.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(checkbox);
+      const lineRects = [...range.getClientRects()].filter((rect) => rect.height > 0);
+      const firstLine = lineRects[0]!;
+      return {
+        lines: lineRects.length,
+        boxCenter: box.top + box.height / 2,
+        firstLineCenter: firstLine.top + firstLine.height / 2,
+        hostCenter: checkbox.getBoundingClientRect().height / 2 + checkbox.getBoundingClientRect().top,
+      };
+    });
+
+    expect(probe.lines).toBeGreaterThan(1);
+    expect(probe.boxCenter).toBeCloseTo(probe.firstLineCenter, 0);
+    expect(Math.abs(probe.boxCenter - probe.hostCenter)).toBeGreaterThan(2);
+  });
 });
 
 // Two block parents: one whose strut is shorter than the checkbox (line-height
@@ -55,6 +81,13 @@ async function mountProbes(page: Page): Promise<void> {
       row.innerHTML = '<ds-checkbox>Include a copy</ds-checkbox>';
       document.body.append(row);
     }
+    const wrapping = document.createElement('div');
+    wrapping.id = 'wrapping-row';
+    wrapping.setAttribute('style', 'width: 220px');
+    wrapping.innerHTML =
+      '<ds-checkbox>I agree with the Terms and Conditions and the Privacy Policy of this service</ds-checkbox>';
+    document.body.append(wrapping);
+
     const plain = document.createElement('div');
     plain.id = 'plain-row';
     plain.setAttribute('style', 'width: 320px; line-height: normal');

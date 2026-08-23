@@ -14,41 +14,8 @@ import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay } from '../../shared/loading-overlay.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
+import { isInteractiveElement } from '../../shared/interactive-origin.js';
 import type { ResolvedColumn, TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
-
-const INTERACTIVE_TAGS = new Set([
-  'a',
-  'button',
-  'input',
-  'select',
-  'textarea',
-  'label',
-  'ds-button',
-  'ds-link',
-  'ds-checkbox',
-  'ds-radio',
-  'ds-select',
-  'ds-searchable-select',
-  'ds-text-field',
-  'ds-table-sort-button',
-  'ds-table-pagination',
-]);
-
-const INTERACTIVE_ROLES = new Set([
-  'button',
-  'checkbox',
-  'link',
-  'menuitem',
-  'menuitemcheckbox',
-  'menuitemradio',
-  'option',
-  'radio',
-  'searchbox',
-  'slider',
-  'spinbutton',
-  'switch',
-  'textbox',
-]);
 
 const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
 const ROW_DRAG_THRESHOLD = 4;
@@ -228,12 +195,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
       if (node.tagName === 'TR') {
         return false;
       }
-      const tag = node.tagName.toLowerCase();
-      if (INTERACTIVE_TAGS.has(tag)) {
-        return true;
-      }
-      const role = node.getAttribute('role');
-      if (role && INTERACTIVE_ROLES.has(role)) {
+      if (isInteractiveElement(node)) {
         return true;
       }
     }

@@ -144,4 +144,41 @@ describe('<ds-checkbox>', () => {
       expect(el.shadowRoot!.querySelector('.description')?.textContent).toContain('Optional extra');
     });
   });
+  describe('interactive slotted content', () => {
+    it('leaves Enter to a link in the label instead of toggling', async () => {
+      const el = await mount<DsCheckbox>(
+        '<ds-checkbox>I agree with the <a href="/terms">Terms</a></ds-checkbox>',
+      );
+      const link = el.querySelector('a')!;
+
+      const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true, cancelable: true });
+      link.dispatchEvent(event);
+      await el.updateComplete;
+
+      expect(el.checked).toBe(false);
+      expect(event.defaultPrevented).toBe(false);
+    });
+
+    it('leaves Space to a link in the label instead of toggling', async () => {
+      const el = await mount<DsCheckbox>(
+        '<ds-checkbox>I agree with the <a href="/terms">Terms</a></ds-checkbox>',
+      );
+      const link = el.querySelector('a')!;
+
+      link.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true, cancelable: true }));
+      await el.updateComplete;
+
+      expect(el.checked).toBe(false);
+    });
+
+    it('still toggles for plain text in the label', async () => {
+      const el = await mount<DsCheckbox>('<ds-checkbox>I agree with the <span>Terms</span></ds-checkbox>');
+      const text = el.querySelector('span')!;
+
+      text.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true, cancelable: true }));
+      await el.updateComplete;
+
+      expect(el.checked).toBe(true);
+    });
+  });
 });

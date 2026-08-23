@@ -15,7 +15,7 @@ export const toggleControlStyles = css`
   label {
     cursor: inherit;
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--ds-space-2);
     /* Room for descenders: line-height 1 makes the host shorter than its own text. */
     line-height: var(--ds-line-height-snug);
@@ -27,6 +27,7 @@ export const toggleControlStyles = css`
   .control {
     width: 1rem;
     height: 1rem;
+    margin-block-start: calc((var(--ds-line-height-snug) * 1em - 1rem) / 2);
     border: 2px solid var(--ds-color-border-strong);
     background: var(--ds-color-bg);
     display: inline-flex;
