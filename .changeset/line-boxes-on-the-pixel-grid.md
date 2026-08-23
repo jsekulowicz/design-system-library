@@ -27,3 +27,9 @@ pixel and pushed centered cell content off the grid.
 `ds-popover-button`'s wrapper is `inline-flex` rather than `inline-block`, so its
 trigger no longer sits in a baseline line box whose height moves with the
 inherited line-height.
+
+`ds-checkbox` and `ds-radio` center their box on the first line of the label from
+the used line height (`1lh`) rather than by re-deriving it from the line-height
+token. The token is no longer a bare multiplier, so multiplying it by `1em` gave a
+length times a length, which is invalid at computed-value time and silently
+dropped the offset, leaving the box flush with the top of the line box.

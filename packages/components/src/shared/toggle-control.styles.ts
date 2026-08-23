@@ -25,7 +25,7 @@ export const toggleControlStyles = css`
     align-self: baseline;
   }
   label.has-label .control {
-    margin-block-start: calc((var(--ds-line-height-snug) * 1em - 1rem) / 2);
+    margin-block-start: calc((1lh - 1rem) / 2);
   }
   .control {
     width: 1rem;

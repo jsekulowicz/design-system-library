@@ -17,6 +17,13 @@ describe('toggle control typography', () => {
     expect(toggleControlStyles.cssText).toMatch(/\[part~='label'\]\s*{[^}]*align-self: baseline/s);
   });
 
+  it('centers the box on the first line from the used line height, not from the token', () => {
+    const offset = toggleControlStyles.cssText.match(/has-label[^{]*{([^}]*)}/s)?.[1] ?? '';
+
+    expect(offset).toContain('1lh');
+    expect(offset).not.toContain('--ds-line-height');
+  });
+
   it('keeps labels above grouped fields at the small font size', () => {
     expect(formFieldStyles.cssText).toMatch(/\.label\s*{[^}]*font-size: var\(--ds-font-size-body-md\)/s);
   });
