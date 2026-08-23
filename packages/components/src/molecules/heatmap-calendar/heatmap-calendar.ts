@@ -25,7 +25,9 @@ import type { HeatmapDay, HeatmapLayout, HeatmapRenderContext, HeatmapWeekStart 
  * @event ds-heatmap-focus - Emitted when the active day changes. Detail: `{ date, value, level }`.
  * @csspart chart - The focusable calendar frame, including the legend.
  * @csspart scroller - The horizontally scrollable calendar viewport.
- * @csspart tooltip - The floating tooltip container.
+ * @csspart tooltip - The floating tooltip container. Rendered in the Popover API top layer and positioned against the active data point with CSS anchor positioning, so ancestor overflow cannot clip it.
+ * @cssprop [--ds-point-tooltip-min-width=8rem] - Minimum tooltip width.
+ * @cssprop [--ds-point-tooltip-max-width=14rem] - Maximum tooltip width before the viewport cap applies.
  * @csspart legend - The value intensity legend.
  */
 export class DsHeatmapCalendar extends DsElement {

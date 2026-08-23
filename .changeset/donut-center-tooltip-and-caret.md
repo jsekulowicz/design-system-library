@@ -22,7 +22,10 @@ the edge. `bar-chart-tooltip-position.ts` and the heatmap's scroll-offset state
 are gone with it; the heatmap no longer re-renders on every scroll frame.
 
 Chart tooltips now carry `data-open` rather than `hidden`, and their element is
-`.point-tooltip`. The heatmap tooltip's count and date sit on their own lines
+`.point-tooltip`. Their width is tunable through `--ds-point-tooltip-min-width`
+and `--ds-point-tooltip-max-width`; bar and heatmap previously disagreed on a
+minimum (120px against 8rem) for no reason, and both now take the shared
+default. The heatmap tooltip's count and date sit on their own lines
 again, which the shared bubble had collapsed onto one.
 
 A multi-select trigger pins its caret and any leading icon to the first row

@@ -68,7 +68,6 @@ export const heatmapCalendarStyles = css`
   }
 
   .point-tooltip {
-    min-width: 8rem;
     text-align: center;
   }
 

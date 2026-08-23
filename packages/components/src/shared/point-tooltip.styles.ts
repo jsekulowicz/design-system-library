@@ -21,6 +21,7 @@ export const pointTooltipStyles = css`
     margin: var(--ds-space-2);
     box-sizing: border-box;
     width: max-content;
+    min-width: var(--ds-point-tooltip-min-width, 8rem);
     max-width: min(var(--ds-point-tooltip-max-width, 14rem), calc(100vw - var(--ds-space-4)));
     padding: var(--ds-space-2) var(--ds-space-3);
     border: 1px solid var(--ds-color-border);

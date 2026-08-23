@@ -34,7 +34,9 @@ import type { PieChartDatum, PieRenderContext, PieSlice } from './types.js';
  * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
  * @csspart chart - The chart frame, including the legend.
  * @csspart slice - Each focusable slice group.
- * @csspart tooltip - The floating tooltip container.
+ * @csspart tooltip - The floating tooltip container. Rendered in the Popover API top layer and positioned against the active data point with CSS anchor positioning, so ancestor overflow cannot clip it.
+ * @cssprop [--ds-point-tooltip-min-width=8rem] - Minimum tooltip width.
+ * @cssprop [--ds-point-tooltip-max-width=14rem] - Maximum tooltip width before the viewport cap applies.
  * @csspart legend - The legend wrapper.
  * @csspart center - The donut center container.
  */

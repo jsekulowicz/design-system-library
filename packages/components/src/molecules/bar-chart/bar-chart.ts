@@ -21,7 +21,9 @@ import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js
  * @slot loading - Replaces the loading message shown during a data refresh.
  * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
  * @csspart chart - The internal `<svg>` element.
- * @csspart tooltip - The floating tooltip container.
+ * @csspart tooltip - The floating tooltip container. Rendered in the Popover API top layer and positioned against the active data point with CSS anchor positioning, so ancestor overflow cannot clip it.
+ * @cssprop [--ds-point-tooltip-min-width=8rem] - Minimum tooltip width.
+ * @cssprop [--ds-point-tooltip-max-width=14rem] - Maximum tooltip width before the viewport cap applies.
  * @csspart legend - The legend wrapper.
  */
 export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {

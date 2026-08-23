@@ -66,6 +66,7 @@ function chartSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
 const meta: Meta = {
   title: 'Molecules/BarChart',
   component: 'ds-bar-chart',
+  parameters: { docs: { story: { inline: false, height: '420px' } } },
   argTypes: {
     data: { control: 'object' },
     domain: { control: 'text' },

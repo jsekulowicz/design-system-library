@@ -17,7 +17,9 @@ const DATA = sampleActivity();
 const meta: Meta = {
   title: 'Molecules/HeatmapCalendar',
   component: 'ds-heatmap-calendar',
-  parameters: { docs: { collapsedObjectControls: ['data'] } },
+  parameters: {
+    docs: { collapsedObjectControls: ['data'], story: { inline: false, height: '240px' } },
+  },
   argTypes: {
     data: { control: 'object' },
     endDate: { control: 'text' },
