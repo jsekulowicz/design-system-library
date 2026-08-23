@@ -1,8 +1,7 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, FormControlMixin, hasInteractiveSlottedOrigin } from '@jsekulowicz/ds-core';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
-import { hasInteractiveSlottedOrigin } from '../../shared/interactive-origin.js';
 import { radioStyles } from './radio.styles.js';
 
 /**
@@ -66,14 +65,14 @@ export class DsRadio extends FormControlMixin(DsElement) {
   };
 
   #onLabelClick = (event: MouseEvent): void => {
-    if (hasInteractiveSlottedOrigin(event, this.renderRoot)) {
+    if (hasInteractiveSlottedOrigin(event, this)) {
       return;
     }
     this.#select();
   };
 
   #onKey = (event: KeyboardEvent): void => {
-    if (hasInteractiveSlottedOrigin(event, this.renderRoot)) {
+    if (hasInteractiveSlottedOrigin(event, this)) {
       return;
     }
     if (event.key === ' ' || event.key === 'Enter') {

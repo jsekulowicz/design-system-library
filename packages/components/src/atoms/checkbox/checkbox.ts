@@ -1,9 +1,8 @@
 import { html, svg, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
-import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, FormControlMixin, hasInteractiveSlottedOrigin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
-import { hasInteractiveSlottedOrigin } from '../../shared/interactive-origin.js';
 import { checkboxStyles } from './checkbox.styles.js';
 
 /**
@@ -51,7 +50,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   };
 
   #onKey = (event: KeyboardEvent): void => {
-    if (hasInteractiveSlottedOrigin(event, this.renderRoot)) {
+    if (hasInteractiveSlottedOrigin(event, this)) {
       return;
     }
     if (event.key === ' ' || event.key === 'Enter') {

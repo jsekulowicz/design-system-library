@@ -121,4 +121,26 @@ describe('FormControlMixin', () => {
     pressEnter(el);
     expect(form.requestSubmit).toHaveBeenCalledOnce();
   });
+  describe('interactive content in the control', () => {
+    it('leaves Enter to a link inside the control instead of submitting', () => {
+      const { form, el } = mountInForm();
+      const link = document.createElement('a');
+      link.href = '/terms';
+      el.appendChild(link);
+
+      const event = pressEnter(link);
+
+      expect(form.requestSubmit).not.toHaveBeenCalled();
+      expect(event.defaultPrevented).toBe(false);
+    });
+
+    it('still submits for Enter on the control itself', () => {
+      const { form, el } = mountInForm();
+
+      const event = pressEnter(el);
+
+      expect(form.requestSubmit).toHaveBeenCalledOnce();
+      expect(event.defaultPrevented).toBe(true);
+    });
+  });
 });

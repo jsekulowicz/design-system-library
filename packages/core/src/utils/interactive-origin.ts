@@ -40,12 +40,16 @@ export function isInteractiveElement(node: Element): boolean {
   return role !== null && INTERACTIVE_ROLES.has(role);
 }
 
-export function hasInteractiveSlottedOrigin(event: Event, root: Node): boolean {
+export function hasInteractiveSlottedOrigin(event: Event, host: Element): boolean {
+  const root = host.shadowRoot;
   for (const node of event.composedPath()) {
+    if (node === host) {
+      return false;
+    }
     if (!(node instanceof Element)) {
       continue;
     }
-    if (node.getRootNode() === root) {
+    if (root !== null && node.getRootNode() === root) {
       return false;
     }
     if (isInteractiveElement(node)) {

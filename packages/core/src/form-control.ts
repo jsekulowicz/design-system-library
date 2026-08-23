@@ -1,5 +1,6 @@
 import type { LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
+import { hasInteractiveSlottedOrigin } from './utils/interactive-origin.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T = object> = new (...args: any[]) => T;
@@ -64,6 +65,9 @@ export function FormControlMixin<TBase extends LitCtor>(
 
     #handleImplicitSubmit = (event: KeyboardEvent): void => {
       if (event.key !== 'Enter' || event.defaultPrevented || event.isComposing) {
+        return;
+      }
+      if (hasInteractiveSlottedOrigin(event, this as unknown as Element)) {
         return;
       }
       if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {

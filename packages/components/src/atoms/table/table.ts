@@ -1,7 +1,7 @@
 import { html, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement } from '@jsekulowicz/ds-core';
+import { DsElement, isInteractiveElement } from '@jsekulowicz/ds-core';
 import { tableStyles } from './table.styles.js';
 import { tableResponsiveStyles } from './table-responsive.styles.js';
 import { tableScrollBodyStyles } from './table-scroll-body.styles.js';
@@ -14,7 +14,6 @@ import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay } from '../../shared/loading-overlay.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
-import { isInteractiveElement } from '../../shared/interactive-origin.js';
 import type { ResolvedColumn, TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
 
 const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
