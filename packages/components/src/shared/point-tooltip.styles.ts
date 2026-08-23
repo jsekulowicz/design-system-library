@@ -1,14 +1,6 @@
 import { css } from 'lit';
 
 export const pointTooltipStyles = css`
-  @position-try --ds-point-tooltip-start {
-    justify-self: start;
-  }
-
-  @position-try --ds-point-tooltip-end {
-    justify-self: end;
-  }
-
   .point-anchor {
     position: absolute;
     width: 0;
@@ -24,11 +16,7 @@ export const pointTooltipStyles = css`
     position-try-fallbacks:
       flip-block,
       flip-inline,
-      flip-block flip-inline,
-      --ds-point-tooltip-start,
-      --ds-point-tooltip-end,
-      flip-block --ds-point-tooltip-start,
-      flip-block --ds-point-tooltip-end;
+      flip-block flip-inline;
     inset: auto;
     margin: var(--ds-space-2);
     box-sizing: border-box;
