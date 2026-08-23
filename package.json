@@ -28,6 +28,7 @@
     "test:e2e": "pnpm --filter @ds/tests test:e2e",
     "test:a11y": "pnpm --filter @ds/tests test:a11y",
     "test:visual": "pnpm --filter @ds/tests test:visual",
+    "test:e2e:docker": "scripts/visual-docker.sh test:e2e",
     "test:visual:docker": "scripts/visual-docker.sh test:visual",
     "test:visual:update:docker": "scripts/visual-docker.sh test:visual:update",
     "test:visual:update:ci": "node scripts/request-visual-snapshots.mjs",

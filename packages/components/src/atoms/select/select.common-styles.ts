@@ -41,6 +41,7 @@ export const selectCommonStyles = css`
   .trigger-multiple {
     --ds-select-trigger-block-padding: max(1px, calc((var(--ds-select-size) - ${TILE_HEIGHT + 2}px) / 2));
     --ds-select-caret-size: 1.25rem;
+    --ds-select-tiles-outgrow-search: 4;
     position: relative;
     height: auto;
     min-height: var(--ds-select-size);
@@ -63,16 +64,13 @@ export const selectCommonStyles = css`
   }
   .tiles {
     display: flex;
-    flex: 1 1 0;
+    flex: var(--ds-select-tiles-outgrow-search, 1) 1 0;
     flex-wrap: wrap;
     gap: ${TILE_GAP}px;
     min-width: 0;
   }
   .trigger-multiple:has(.tiles) .search-input {
-    flex: 0 1 0;
-  }
-  .trigger-multiple.open:has(.tiles) .search-input {
-    flex: 1 1 100%;
+    flex: 1 1 0;
   }
   .tile {
     display: inline-flex;

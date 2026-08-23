@@ -15,6 +15,7 @@ beforeEach(() => resetTestDom());
 
 async function mountCalendar(props: Partial<DsHeatmapCalendar> = {}): Promise<DsHeatmapCalendar> {
   return mountWithProps<DsHeatmapCalendar>('<ds-heatmap-calendar></ds-heatmap-calendar>', {
+    locale: 'en-US',
     endDate: '2026-07-13',
     months: 1,
     data: [

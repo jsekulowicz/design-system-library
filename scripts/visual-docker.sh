@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# Run the visual regression suite inside the pinned Playwright container so local
-# rendering is byte-identical to CI. Pass a tests-package script as the first arg.
+# Run a browser suite inside the pinned Playwright container so local rendering is
+# byte-identical to CI. Pass a tests-package script as the first arg. Only the
+# visual suite needs this; e2e is deterministic on the host and far faster there.
 #
-#   scripts/visual-docker.sh                 # check against committed baselines
+#   scripts/visual-docker.sh                      # check against committed baselines
 #   scripts/visual-docker.sh test:visual:update   # regenerate baselines
+#   scripts/visual-docker.sh test:e2e             # reproduce a CI-only e2e failure
 set -euo pipefail
 
 readonly IMAGE="mcr.microsoft.com/playwright:v1.62.1-noble"

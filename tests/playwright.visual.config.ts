@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = Number(process.env['STORYBOOK_PORT'] ?? 6006);
+const port = Number(process.env['STORYBOOK_PORT'] ?? 6007);
 const baseURL = `http://localhost:${port}`;
 const isCI = Boolean(process.env['CI']);
 const snapshotDir = process.env['VISUAL_SNAPSHOT_DIR'] ?? '{testDir}/__screenshots__';
@@ -77,9 +77,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm -F @ds/storybook preview',
+    command: `pnpm -F @ds/storybook exec http-server storybook-static -p ${port}`,
     url: baseURL,
-    reuseExistingServer: !isCI,
+    reuseExistingServer: false,
     stdout: 'pipe',
     stderr: 'pipe',
     timeout: 120_000,
