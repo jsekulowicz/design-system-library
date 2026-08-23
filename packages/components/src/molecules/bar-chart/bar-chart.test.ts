@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsBarChart } from './bar-chart.js';
-import { tooltipPosition } from './bar-chart-tooltip-position.js';
 import type { BarChartSeries } from './types.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
@@ -111,11 +110,6 @@ describe('<ds-bar-chart>', () => {
     expect(el.shadowRoot!.querySelector('.frame')?.getAttribute('aria-busy')).toBe('true');
   });
 
-  it('places a tall tooltip below a bar when it would overflow above the chart', () => {
-    expect(tooltipPosition(104, 144, 320)).toBe('below');
-    expect(tooltipPosition(240, 144, 320)).toBe('above');
-  });
-
   it('renders one bar-group per data row', async () => {
     const el = await mountBarChart();
     expect(groups(el)).toHaveLength(3);
@@ -218,25 +212,25 @@ describe('<ds-bar-chart>', () => {
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
     await el.updateComplete;
-    const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
-    expect(tooltip.hasAttribute('hidden')).toBe(false);
+    const tooltip = el.shadowRoot!.querySelector('.point-tooltip') as HTMLElement;
+    expect(tooltip.hasAttribute('data-open')).toBe(true);
     expect(tooltip.textContent).toContain('1');
     expect(tooltip.textContent).toContain('Website');
 
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
     await el.updateComplete;
-    expect(tooltip.hasAttribute('hidden')).toBe(true);
+    expect(tooltip.hasAttribute('data-open')).toBe(false);
   });
 
-  it('keeps the tooltip inside the chart width for edge groups', async () => {
+  it('anchors the tooltip to the active group rather than the chart edge', async () => {
     const el = await mountBarChart();
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
 
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'End' }));
     await el.updateComplete;
 
-    const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
-    expect(Number.parseFloat(tooltip.style.left)).toBeLessThan(600 - 110);
+    const anchor = el.shadowRoot!.querySelector('.point-anchor') as HTMLElement;
+    expect(Number.parseFloat(anchor.style.left)).toBeGreaterThan(0);
   });
 
   it('uses series label and color overrides when provided', async () => {

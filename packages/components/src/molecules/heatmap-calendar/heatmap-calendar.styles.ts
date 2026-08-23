@@ -67,40 +67,6 @@ export const heatmapCalendarStyles = css`
     stroke-width: 2;
   }
 
-  .tooltip {
-    position: absolute;
-    display: grid;
-    gap: 2px;
-    pointer-events: none;
-    left: clamp(
-      calc(4rem + var(--ds-space-2)),
-      calc(var(--heatmap-tooltip-x) - var(--heatmap-scroll-left) + var(--ds-space-2)),
-      calc(100% - 4rem - var(--ds-space-2))
-    );
-    top: calc(var(--heatmap-tooltip-y) + var(--ds-space-2));
-    min-width: 8rem;
-    padding: var(--ds-space-2) var(--ds-space-3);
-    background: var(--ds-color-bg-inverse);
-    color: var(--ds-color-fg-inverse);
-    border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-xs);
-    box-shadow: var(--ds-shadow-md, 0 4px 12px rgb(0 0 0 / 18%));
-    text-align: center;
-    z-index: var(--ds-z-index-raised);
-  }
-
-  .tooltip[data-position='above'] {
-    transform: translate(-50%, calc(-100% - 6px));
-  }
-
-  .tooltip[data-position='below'] {
-    transform: translate(-50%, 6px);
-  }
-
-  .tooltip[hidden] {
-    display: none;
-  }
-
   .tooltip span {
     color: inherit;
     font-size: var(--ds-font-size-body-sm);

@@ -139,40 +139,6 @@ export const pieChartStyles = css`
     font-variant-numeric: tabular-nums;
   }
 
-  .tooltip-anchor {
-    position: absolute;
-    width: 0;
-    height: 0;
-    anchor-name: --ds-pie-tooltip-anchor;
-  }
-
-  .tooltip {
-    position: fixed;
-    position-anchor: --ds-pie-tooltip-anchor;
-    position-try-fallbacks:
-      flip-inline,
-      flip-block,
-      flip-inline flip-block;
-    inset: auto;
-    margin: var(--ds-space-1);
-    pointer-events: none;
-    background: var(--ds-color-bg-inverse);
-    color: var(--ds-color-fg-inverse);
-    border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-xs);
-    padding: var(--ds-space-2) var(--ds-space-3);
-    font-size: var(--ds-font-size-body-md);
-    box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
-    width: max-content;
-    max-width: min(220px, calc(100vw - var(--ds-space-4)));
-    box-sizing: border-box;
-    z-index: var(--ds-z-index-raised);
-  }
-
-  .tooltip[hidden] {
-    display: none;
-  }
-
   .tooltip-title {
     font-weight: var(--ds-font-weight-medium);
     margin-bottom: var(--ds-space-1);

@@ -1,5 +1,6 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { CENTER, RADIUS, VIEWBOX_SIZE, midAngle, polarPoint } from './pie-geometry.js';
+import { renderPointTooltip, type PointTooltipArea } from '../../shared/point-tooltip.js';
 import type { PieRenderContext, PieSlice } from './types.js';
 
 export function sliceAriaLabel(ctx: PieRenderContext, slice: PieSlice): string {
@@ -24,40 +25,31 @@ export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]):
 }
 
 /* Anchored on the arc edge and pushed outward, so the tooltip never covers the
-   slice it describes. The browser flips the placement when the viewport is
-   tighter than the preferred side. */
-function tooltipPosition(slice: PieSlice): { left: number; top: number; area: string } {
+   slice it describes. */
+function tooltipPosition(slice: PieSlice): { left: string; top: string; area: PointTooltipArea } {
   const point = polarPoint(RADIUS + 2, midAngle(slice));
+  const block = point.y < CENTER ? 'top' : 'bottom';
+  const inline = point.x < CENTER ? 'left' : 'right';
   return {
-    left: (point.x / VIEWBOX_SIZE) * 100,
-    top: (point.y / VIEWBOX_SIZE) * 100,
-    area: `${point.y < CENTER ? 'top' : 'bottom'} ${point.x < CENTER ? 'left' : 'right'}`,
+    left: `${(point.x / VIEWBOX_SIZE) * 100}%`,
+    top: `${(point.y / VIEWBOX_SIZE) * 100}%`,
+    area: `${block} ${inline}` as PointTooltipArea,
   };
 }
 
 export function renderPieTooltip(ctx: PieRenderContext, slices: readonly PieSlice[]): TemplateResult {
   const slice = ctx.activeIndex == null ? undefined : slices[ctx.activeIndex];
-  const position = slice ? tooltipPosition(slice) : { left: 50, top: 50, area: 'top right' };
-  return html`
-    <div class="tooltip-anchor" style="left:${position.left}%; top:${position.top}%"></div>
-    <div
-      class="tooltip"
-      part="tooltip"
-      role="tooltip"
-      aria-hidden="true"
-      ?hidden=${!slice}
-      style="position-area:${position.area}"
-    >
-      ${
-        slice
-          ? html`
-              <div class="tooltip-title">${slice.label}</div>
-              <div class="tooltip-row-value">${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})</div>
-            `
-          : nothing
-      }
-    </div>
-  `;
+  const position = slice ? tooltipPosition(slice) : { left: '50%', top: '50%', area: 'top' as PointTooltipArea };
+  return renderPointTooltip({
+    open: ctx.activeIndex != null,
+    ...position,
+    content: html`
+      <div class="tooltip-title">${slice ? slice.label : ''}</div>
+      <div class="tooltip-row-value">
+        ${slice ? `${ctx.formatValue(slice.value)} (${ctx.formatPercent(slice.percent)})` : ''}
+      </div>
+    `,
+  });
 }
 
 export function renderPieLegend(ctx: PieRenderContext, slices: readonly PieSlice[]): TemplateResult {

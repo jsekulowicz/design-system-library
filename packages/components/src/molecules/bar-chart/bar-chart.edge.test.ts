@@ -111,7 +111,7 @@ describe('<ds-bar-chart> edge coverage', () => {
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }));
     await el.updateComplete;
 
-    const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
+    const tooltip = el.shadowRoot!.querySelector('.point-tooltip') as HTMLElement;
     expect(tooltip.textContent).toContain('Missing');
     expect(tooltip.textContent).toContain('0');
     const srTable = el.shadowRoot!.querySelector('.visually-hidden table') as HTMLTableElement;

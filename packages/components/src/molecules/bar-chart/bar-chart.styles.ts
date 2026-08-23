@@ -105,41 +105,6 @@ export const barChartStyles = css`
     border-radius: var(--ds-radius-xs);
   }
 
-  .tooltip {
-    position: absolute;
-    pointer-events: none;
-    background: var(--ds-color-bg-inverse);
-    color: var(--ds-color-fg-inverse);
-    border: 1px solid var(--ds-color-border);
-    border-radius: var(--ds-radius-xs);
-    padding: var(--ds-space-2) var(--ds-space-3);
-    font-size: var(--ds-font-size-body-md);
-    box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
-    min-width: 120px;
-    width: max-content;
-    max-width: min(220px, calc(100% - 16px));
-    box-sizing: border-box;
-    z-index: var(--ds-z-index-raised);
-  }
-
-  .tooltip[data-position='above'] {
-    transform: translate(-50%, -100%);
-    margin-top: -8px;
-  }
-
-  .tooltip[data-position='below'] {
-    transform: translate(-50%, 0);
-    margin-top: 8px;
-  }
-
-  .tooltip[data-position='contained'] {
-    transform: translateX(-50%);
-  }
-
-  .tooltip[hidden] {
-    display: none;
-  }
-
   .tooltip-title {
     font-weight: var(--ds-font-weight-medium);
     margin-bottom: var(--ds-space-1);

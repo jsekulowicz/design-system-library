@@ -104,7 +104,7 @@ describe('<ds-bar-chart> extra coverage', () => {
 
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await el.updateComplete;
-    const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
+    const tooltip = el.shadowRoot!.querySelector('.point-tooltip') as HTMLElement;
     expect(tooltip.textContent).toContain('Total');
 
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));

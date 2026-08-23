@@ -3,12 +3,13 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state, query } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { barChartStyles } from './bar-chart.styles.js';
+import { pointTooltipStyles } from '../../shared/point-tooltip.styles.js';
+import { syncPointTooltip } from '../../shared/point-tooltip.js';
 import { colorForIndex } from '../../shared/chart-colors.js';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-overlay.js';
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
-import { positionTooltip } from './bar-chart-tooltip-position.js';
 import { renderChartSvg } from './bar-chart-svg.js';
 import { liveText, renderLegend, renderSrTable, renderTooltip, rootAriaLabel } from './bar-chart-overlays.js';
 import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js';
@@ -24,7 +25,7 @@ import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js
  * @csspart legend - The legend wrapper.
  */
 export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
-  static override styles = [...DsElement.styles, barChartStyles, loadingOverlayStyles];
+  static override styles = [...DsElement.styles, barChartStyles, loadingOverlayStyles, pointTooltipStyles];
 
   @property({ attribute: false }) data: readonly T[] = [];
   @property() domain: keyof T & string = '' as keyof T & string;
@@ -63,7 +64,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       this.#remeasureNextFrame();
     }
     if (!this.loading) {
-      positionTooltip(this._frame);
+      syncPointTooltip(this.shadowRoot, this._activeIndex != null);
       if (this.data.length > 0 && this.series.length > 0) {
         this.#hasInitialized = true;
       }

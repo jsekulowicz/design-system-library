@@ -1,9 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { activeGroupHeight, type ChartLayout } from './chart-layout.js';
 import type { BarChartGroup, BarChartRow, ChartRenderContext } from './types.js';
-
-const TOOLTIP_MAX_WIDTH = 220;
-const TOOLTIP_EDGE_GAP = 8;
+import { renderPointTooltip } from '../../shared/point-tooltip.js';
 
 export function rootAriaLabel(ctx: ChartRenderContext, groupCount: number): string {
   const base = ctx.title || 'Bar chart';
@@ -28,33 +26,19 @@ export function liveText<T extends BarChartRow>(ctx: ChartRenderContext, groups:
   return `${groupAriaLabel(ctx, g)}.`;
 }
 
-function tooltipLeft(x: number, width: number): number {
-  const tooltipWidth = Math.min(TOOLTIP_MAX_WIDTH, Math.max(0, width - TOOLTIP_EDGE_GAP * 2));
-  const half = tooltipWidth / 2;
-  if (half === 0) {
-    return x;
-  }
-  return Math.min(Math.max(x, half + TOOLTIP_EDGE_GAP), width - half - TOOLTIP_EDGE_GAP);
-}
-
 export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, layout: ChartLayout<T>): TemplateResult {
   const { bands, groups, margin, innerHeight } = layout;
-  const hidden = ctx.activeIndex == null;
   const group = ctx.activeIndex != null ? groups[ctx.activeIndex] : undefined;
   const band = ctx.activeIndex != null ? bands[ctx.activeIndex] : undefined;
-  const x = tooltipLeft(band ? margin.left + band.innerX + band.innerWidth / 2 : 0, layout.width);
+  const x = band ? margin.left + band.innerX + band.innerWidth / 2 : 0;
   const maxHeight = activeGroupHeight(layout, ctx.activeIndex, ctx.stacked);
   const barTopY = margin.top + (innerHeight - maxHeight);
-  return html`
-    <div
-      class="tooltip"
-      part="tooltip"
-      role="tooltip"
-      data-anchor-top=${barTopY}
-      data-position="above"
-      ?hidden=${hidden}
-      style="left:${x}px; top:${barTopY}px"
-    >
+  return renderPointTooltip({
+    open: ctx.activeIndex != null,
+    left: `${x}px`,
+    top: `${barTopY}px`,
+    area: 'top',
+    content: html`
       ${
         group
           ? html`
@@ -81,8 +65,8 @@ export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, la
             `
           : nothing
       }
-    </div>
-  `;
+    `,
+  });
 }
 
 export function renderLegend(ctx: ChartRenderContext): TemplateResult {

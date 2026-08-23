@@ -2,6 +2,7 @@ import { html, type TemplateResult } from 'lit';
 import { HEATMAP_LEFT, HEATMAP_TOP } from './heatmap-calendar-svg.js';
 import { cellAriaLabel } from './heatmap-formatters.js';
 import type { HeatmapCell, HeatmapLayout, HeatmapRenderContext } from './types.js';
+import { renderPointAnchor, renderPointTooltipBubble } from '../../shared/point-tooltip.js';
 
 function activeCell(ctx: HeatmapRenderContext, layout: HeatmapLayout): HeatmapCell | undefined {
   return ctx.activeIndex == null ? undefined : layout.cells[ctx.activeIndex];
@@ -17,24 +18,23 @@ export function heatmapLiveText(ctx: HeatmapRenderContext, layout: HeatmapLayout
   return cell ? `${cellAriaLabel(ctx, cell)}.` : '';
 }
 
-export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
+export function renderHeatmapAnchor(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
   const cell = activeCell(ctx, layout);
   const step = ctx.cellSize + ctx.cellGap;
-  const placeBelow = Boolean(cell && cell.row < 2);
   const left = cell ? HEATMAP_LEFT + cell.column * step + ctx.cellSize / 2 : 0;
-  const top = cell ? HEATMAP_TOP + cell.row * step + (placeBelow ? ctx.cellSize : 0) : 0;
-  return html`
-    <div
-      class="tooltip"
-      part="tooltip"
-      role="tooltip"
-      data-position=${placeBelow ? 'below' : 'above'}
-      ?hidden=${!cell}
-      style="--heatmap-tooltip-x:${left}px; --heatmap-tooltip-y:${top}px"
-    >
+  const top = cell ? HEATMAP_TOP + cell.row * step + ctx.cellSize / 2 : 0;
+  return renderPointAnchor(`${left}px`, `${top}px`);
+}
+
+export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
+  const cell = activeCell(ctx, layout);
+  return renderPointTooltipBubble({
+    area: cell && cell.row < 2 ? 'bottom' : 'top',
+    open: Boolean(cell),
+    content: html`
       ${cell ? html`<strong>${ctx.formatValue(cell.value)}</strong><span>${ctx.formatDate(cell.date)}</span>` : ''}
-    </div>
-  `;
+    `,
+  });
 }
 
 export function renderHeatmapLegend(ctx: HeatmapRenderContext): TemplateResult {

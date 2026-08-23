@@ -3,6 +3,8 @@ import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import { heatmapCalendarStyles } from './heatmap-calendar.styles.js';
+import { pointTooltipStyles } from '../../shared/point-tooltip.styles.js';
+import { syncPointTooltip } from '../../shared/point-tooltip.js';
 import { computeHeatmapLayout, parseDate } from './heatmap-layout.js';
 import { actionForKey } from './heatmap-interaction.js';
 import { defaultDateFormatter, monthFormatter, todayDate, weekdayLabels } from './heatmap-formatters.js';
@@ -12,6 +14,7 @@ import {
   heatmapLiveText,
   renderHeatmapLegend,
   renderHeatmapSrTable,
+  renderHeatmapAnchor,
   renderHeatmapTooltip,
 } from './heatmap-calendar-overlays.js';
 import type { HeatmapDay, HeatmapLayout, HeatmapRenderContext, HeatmapWeekStart } from './types.js';
@@ -26,7 +29,7 @@ import type { HeatmapDay, HeatmapLayout, HeatmapRenderContext, HeatmapWeekStart 
  * @csspart legend - The value intensity legend.
  */
 export class DsHeatmapCalendar extends DsElement {
-  static override styles = [...DsElement.styles, heatmapCalendarStyles];
+  static override styles = [...DsElement.styles, heatmapCalendarStyles, pointTooltipStyles];
 
   @property({ attribute: false }) data: readonly HeatmapDay[] = [];
   @property({ attribute: 'end-date' }) endDate = todayDate();
@@ -43,7 +46,6 @@ export class DsHeatmapCalendar extends DsElement {
   @property() locale?: string;
 
   @state() private _width = 0;
-  @state() private _scrollLeft = 0;
   @state() private _activeIndex: number | null = null;
   @state() private _focusMode: 'keyboard' | 'pointer' | null = null;
   @query('.scroller') private _scroller!: HTMLElement;
@@ -54,6 +56,10 @@ export class DsHeatmapCalendar extends DsElement {
     if (typeof requestAnimationFrame !== 'undefined') {
       requestAnimationFrame(() => this.#measure());
     }
+  }
+
+  override updated(): void {
+    syncPointTooltip(this.shadowRoot, this._activeIndex != null);
   }
 
   override disconnectedCallback(): void {
@@ -84,19 +90,14 @@ export class DsHeatmapCalendar extends DsElement {
       <div
         class="frame"
         part="chart"
-        style="--heatmap-scroll-left:${this._scrollLeft}px"
         @keydown=${this.#onKeydown}
         @focusin=${this.#onFocusIn}
         @focusout=${this.#onFocusOut}
       >
-        <div
-          class="scroller"
-          part="scroller"
-          @scroll=${this.#onScroll}
-          @pointermove=${this.#onPointerMove}
-          @pointerleave=${this.#clearPointer}
-        >
-          <div class="canvas" style="--heatmap-viewport-width:${this._width}px">${renderHeatmapSvg(ctx, layout)}</div>
+        <div class="scroller" part="scroller" @pointermove=${this.#onPointerMove} @pointerleave=${this.#clearPointer}>
+          <div class="canvas" style="--heatmap-viewport-width:${this._width}px">
+            ${renderHeatmapSvg(ctx, layout)}${renderHeatmapAnchor(ctx, layout)}
+          </div>
         </div>
         ${renderHeatmapTooltip(ctx, layout)} ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
       </div>
@@ -186,10 +187,6 @@ export class DsHeatmapCalendar extends DsElement {
     if (this._focusMode === 'pointer') {
       this.#clearActive();
     }
-  };
-
-  #onScroll = (): void => {
-    this._scrollLeft = this._scroller.scrollLeft;
   };
 
   #clearActive = (): void => {

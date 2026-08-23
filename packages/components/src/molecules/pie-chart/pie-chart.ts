@@ -10,6 +10,8 @@ import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { isKeyboardFocus, sliceIndexFrom } from './pie-focus.js';
 import { centerContentSizeFor } from './pie-geometry.js';
 import { pieChartStyles } from './pie-chart.styles.js';
+import { pointTooltipStyles } from '../../shared/point-tooltip.styles.js';
+import { syncPointTooltip } from '../../shared/point-tooltip.js';
 import { preparePieSlices, sliceTotal } from './pie-layout.js';
 import { renderPieSvg } from './pie-chart-svg.js';
 import {
@@ -37,7 +39,7 @@ import type { PieChartDatum, PieRenderContext, PieSlice } from './types.js';
  * @csspart center - The donut center container.
  */
 export class DsPieChart extends DsElement {
-  static override styles = [...DsElement.styles, pieChartStyles, loadingOverlayStyles];
+  static override styles = [...DsElement.styles, pieChartStyles, pointTooltipStyles, loadingOverlayStyles];
 
   @property({ attribute: false }) data: readonly PieChartDatum[] = [];
   @property() override title = '';
@@ -64,6 +66,7 @@ export class DsPieChart extends DsElement {
     if (!this.loading && this.#slices().length > 0) {
       this.#hasInitialized = true;
     }
+    syncPointTooltip(this.shadowRoot, this._activeIndex != null);
   }
 
   #slices(): PieSlice[] {

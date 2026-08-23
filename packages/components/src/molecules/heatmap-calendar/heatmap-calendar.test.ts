@@ -86,7 +86,7 @@ describe('<ds-heatmap-calendar>', () => {
     const element = await mountCalendar();
     const frame = element.shadowRoot!.querySelector('.frame')!;
     const scroller = element.shadowRoot!.querySelector('.scroller')!;
-    const tooltip = element.shadowRoot!.querySelector('.tooltip')!;
+    const tooltip = element.shadowRoot!.querySelector('.point-tooltip')!;
     const legend = element.shadowRoot!.querySelector('.legend')!;
 
     expect(frame.contains(tooltip)).toBe(true);
@@ -101,19 +101,7 @@ describe('<ds-heatmap-calendar>', () => {
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
     await element.updateComplete;
 
-    expect(element.shadowRoot!.querySelector('.tooltip')?.getAttribute('data-position')).toBe('below');
-  });
-
-  it('keeps tooltip coordinates in sync with horizontal scrolling', async () => {
-    const element = await mountCalendar();
-    const frame = element.shadowRoot!.querySelector<HTMLElement>('.frame')!;
-    const scroller = element.shadowRoot!.querySelector<HTMLElement>('.scroller')!;
-    Object.defineProperty(scroller, 'scrollLeft', { configurable: true, value: 48 });
-
-    scroller.dispatchEvent(new Event('scroll'));
-    await element.updateComplete;
-
-    expect(frame.style.getPropertyValue('--heatmap-scroll-left')).toBe('48px');
+    expect(element.shadowRoot!.querySelector('.point-tooltip')?.getAttribute('style')).toContain('bottom');
   });
 
   it('navigates by day and week and emits focus details', async () => {
@@ -138,11 +126,11 @@ describe('<ds-heatmap-calendar>', () => {
     const frame = element.shadowRoot!.querySelector('.frame')!;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
     await element.updateComplete;
-    expect(element.shadowRoot!.querySelector('.tooltip')?.hasAttribute('hidden')).toBe(false);
-    expect(element.shadowRoot!.querySelector('.tooltip')?.textContent).toContain('4');
+    expect(element.shadowRoot!.querySelector('.point-tooltip')?.hasAttribute('data-open')).toBe(true);
+    expect(element.shadowRoot!.querySelector('.point-tooltip')?.textContent).toContain('4');
 
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await element.updateComplete;
-    expect(element.shadowRoot!.querySelector('.tooltip')?.hasAttribute('hidden')).toBe(true);
+    expect(element.shadowRoot!.querySelector('.point-tooltip')?.hasAttribute('data-open')).toBe(false);
   });
 });
