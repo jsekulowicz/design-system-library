@@ -146,9 +146,7 @@ describe('<ds-checkbox>', () => {
   });
   describe('interactive slotted content', () => {
     it('leaves Enter to a link in the label instead of toggling', async () => {
-      const el = await mount<DsCheckbox>(
-        '<ds-checkbox>I agree with the <a href="/terms">Terms</a></ds-checkbox>',
-      );
+      const el = await mount<DsCheckbox>('<ds-checkbox>I agree with the <a href="/terms">Terms</a></ds-checkbox>');
       const link = el.querySelector('a')!;
 
       const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true, cancelable: true });
@@ -160,9 +158,7 @@ describe('<ds-checkbox>', () => {
     });
 
     it('leaves Space to a link in the label instead of toggling', async () => {
-      const el = await mount<DsCheckbox>(
-        '<ds-checkbox>I agree with the <a href="/terms">Terms</a></ds-checkbox>',
-      );
+      const el = await mount<DsCheckbox>('<ds-checkbox>I agree with the <a href="/terms">Terms</a></ds-checkbox>');
       const link = el.querySelector('a')!;
 
       link.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, composed: true, cancelable: true }));
@@ -179,6 +175,15 @@ describe('<ds-checkbox>', () => {
       await el.updateComplete;
 
       expect(el.checked).toBe(true);
+    });
+  });
+  describe('label presence', () => {
+    it('offsets the box onto the first line only when there is a label', async () => {
+      const labelled = await mount<DsCheckbox>('<ds-checkbox>Pick me</ds-checkbox>');
+      const bare = await mount<DsCheckbox>('<ds-checkbox></ds-checkbox>');
+
+      expect(labelled.shadowRoot!.querySelector('label')!.classList.contains('has-label')).toBe(true);
+      expect(bare.shadowRoot!.querySelector('label')!.classList.contains('has-label')).toBe(false);
     });
   });
 });

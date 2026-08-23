@@ -1,6 +1,7 @@
 import { html, svg, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin, hasInteractiveSlottedOrigin } from '@jsekulowicz/ds-core';
+import { DEFAULT_SLOT, SlotPresenceController } from '../../shared/slot-presence.js';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { checkboxStyles } from './checkbox.styles.js';
@@ -13,6 +14,8 @@ import { checkboxStyles } from './checkbox.styles.js';
  */
 export class DsCheckbox extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, toggleControlStyles, formFieldStyles, checkboxStyles];
+
+  readonly #slots = new SlotPresenceController(this, [DEFAULT_SLOT]);
 
   @property({ type: Boolean, reflect: true }) checked = false;
   @property({ type: Boolean, reflect: true }) indeterminate = false;
@@ -50,18 +53,19 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   };
 
   #onKey = (event: KeyboardEvent): void => {
+    if (event.key !== ' ' && event.key !== 'Enter') {
+      return;
+    }
     if (hasInteractiveSlottedOrigin(event, this)) {
       return;
     }
-    if (event.key === ' ' || event.key === 'Enter') {
-      event.preventDefault();
-      if (this.disabled) {
-        return;
-      }
-      this.markInteracted();
-      this.checked = !this.checked;
-      this.emit('ds-change', { detail: { checked: this.checked } });
+    event.preventDefault();
+    if (this.disabled) {
+      return;
     }
+    this.markInteracted();
+    this.checked = !this.checked;
+    this.emit('ds-change', { detail: { checked: this.checked } });
   };
 
   #blockClickWhenDisabled = (event: MouseEvent): void => {
@@ -76,7 +80,11 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
       ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`
       : svg`<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`;
     return html`<div class="stack">
-      <label @click=${this.#blockClickWhenDisabled} @keydown=${this.#onKey}>
+      <label
+        class=${this.#slots.has(DEFAULT_SLOT) ? 'has-label' : ''}
+        @click=${this.#blockClickWhenDisabled}
+        @keydown=${this.#onKey}
+      >
         <input
           class="visually-hidden"
           type="checkbox"
@@ -91,7 +99,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
         <span class="control" part="box" aria-hidden="true">
           <svg class="check" viewBox="0 0 16 16" fill="currentColor">${mark}</svg>
         </span>
-        <span part="label"><slot></slot></span>
+        <span part="label"><slot @slotchange=${this.#slots.handleSlotChange}></slot></span>
       </label>
       ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
     </div>`;

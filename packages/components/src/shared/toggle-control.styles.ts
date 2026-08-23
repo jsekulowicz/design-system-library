@@ -24,10 +24,12 @@ export const toggleControlStyles = css`
   [part~='label'] {
     align-self: baseline;
   }
+  label.has-label .control {
+    margin-block-start: calc((var(--ds-line-height-snug) * 1em - 1rem) / 2);
+  }
   .control {
     width: 1rem;
     height: 1rem;
-    margin-block-start: calc((var(--ds-line-height-snug) * 1em - 1rem) / 2);
     border: 2px solid var(--ds-color-border-strong);
     background: var(--ds-color-bg);
     display: inline-flex;

@@ -1,6 +1,7 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin, hasInteractiveSlottedOrigin } from '@jsekulowicz/ds-core';
+import { DEFAULT_SLOT, SlotPresenceController } from '../../shared/slot-presence.js';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { radioStyles } from './radio.styles.js';
 
@@ -12,6 +13,8 @@ import { radioStyles } from './radio.styles.js';
  */
 export class DsRadio extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, toggleControlStyles, radioStyles];
+
+  readonly #slots = new SlotPresenceController(this, [DEFAULT_SLOT]);
 
   @property({ type: Boolean, reflect: true }) checked = false;
   @property() radioValue = '';
@@ -72,17 +75,22 @@ export class DsRadio extends FormControlMixin(DsElement) {
   };
 
   #onKey = (event: KeyboardEvent): void => {
+    if (event.key !== ' ' && event.key !== 'Enter') {
+      return;
+    }
     if (hasInteractiveSlottedOrigin(event, this)) {
       return;
     }
-    if (event.key === ' ' || event.key === 'Enter') {
-      event.preventDefault();
-      this.#select();
-    }
+    event.preventDefault();
+    this.#select();
   };
 
   override render(): TemplateResult {
-    return html`<label @click=${this.#onLabelClick} @keydown=${this.#onKey}>
+    return html`<label
+      class=${this.#slots.has(DEFAULT_SLOT) ? 'has-label' : ''}
+      @click=${this.#onLabelClick}
+      @keydown=${this.#onKey}
+    >
       <input
         class="visually-hidden"
         type="radio"
@@ -95,7 +103,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
         @click=${this.#onInputClick}
       />
       <span class="control" part="dot" aria-hidden="true"></span>
-      <span part="label"><slot></slot></span>
+      <span part="label"><slot @slotchange=${this.#slots.handleSlotChange}></slot></span>
     </label>`;
   }
 }
