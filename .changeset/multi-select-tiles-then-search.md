@@ -12,5 +12,8 @@ with the field, immediately to its left.
 The field no longer reserves a column of its own beside the tiles, which used to
 leave a gap between them, and the tiles no longer stretch past their content.
 
+The field also keeps the height of a tile row, so its text sits level with the
+search icon and the caret whether or not an overflow counter shares the row.
+
 `--ds-select-search-width` sets how much room the field asks for, and
 `--ds-select-leading-size` the space reserved for a leading icon.

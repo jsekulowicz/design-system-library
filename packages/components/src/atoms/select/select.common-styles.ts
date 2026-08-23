@@ -85,6 +85,7 @@ export const selectCommonStyles = css`
   }
   .trigger-multiple:has(.tiles) .search-input {
     flex: 1 1 var(--ds-select-search-width);
+    min-height: ${TILE_HEIGHT}px;
   }
   .tile {
     display: inline-flex;
