@@ -41,7 +41,8 @@ export const selectCommonStyles = css`
   .trigger-multiple {
     --ds-select-trigger-block-padding: max(1px, calc((var(--ds-select-size) - ${TILE_HEIGHT + 2}px) / 2));
     --ds-select-caret-size: 1.25rem;
-    --ds-select-tiles-outgrow-search: 4;
+    --ds-select-search-width: 10rem;
+    --ds-select-leading-size: 1.25rem;
     position: relative;
     height: auto;
     min-height: var(--ds-select-size);
@@ -57,6 +58,19 @@ export const selectCommonStyles = css`
     height: ${TILE_HEIGHT}px;
     align-items: center;
   }
+  .trigger-multiple:has(.search-input) {
+    flex-wrap: wrap-reverse;
+  }
+  .trigger-multiple:has(.search-input):has(.leading:not([hidden])) {
+    padding-inline-start: calc(var(--ds-space-3) + var(--ds-select-leading-size) + var(--ds-space-2));
+  }
+  .trigger-multiple:has(.search-input) .leading {
+    position: absolute;
+    top: calc(var(--ds-select-trigger-block-padding) + (${TILE_HEIGHT}px - var(--ds-select-leading-size)) / 2);
+    inset-inline-start: var(--ds-space-3);
+    height: var(--ds-select-leading-size);
+    align-self: center;
+  }
   .trigger-multiple .caret {
     position: absolute;
     top: calc(var(--ds-select-trigger-block-padding) + (${TILE_HEIGHT}px - var(--ds-select-caret-size)) / 2);
@@ -64,13 +78,13 @@ export const selectCommonStyles = css`
   }
   .tiles {
     display: flex;
-    flex: var(--ds-select-tiles-outgrow-search, 1) 1 0;
+    flex: 0 1 auto;
     flex-wrap: wrap;
     gap: ${TILE_GAP}px;
     min-width: 0;
   }
   .trigger-multiple:has(.tiles) .search-input {
-    flex: 1 1 0;
+    flex: 1 1 var(--ds-select-search-width);
   }
   .tile {
     display: inline-flex;

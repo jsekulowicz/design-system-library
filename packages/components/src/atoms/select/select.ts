@@ -5,7 +5,13 @@ import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
-import { renderChevronDownIcon, renderClearButton, renderOptionIcon, renderSelectedTiles } from './select.shared.js';
+import {
+  renderChevronDownIcon,
+  renderClearButton,
+  renderOptionIcon,
+  renderOverflowTile,
+  renderSelectedTiles,
+} from './select.shared.js';
 import { DropdownController } from './dropdown-controller.js';
 import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
 import { selectCommonStyles } from './select.common-styles.js';
@@ -292,7 +298,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           </span>
           ${
             hasTiles
-              ? this.#renderTiles()
+              ? html`${renderOverflowTile(this.#dropdown.overflowCount)}${this.#renderTiles()}`
               : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
                   ${
                     selectedOption

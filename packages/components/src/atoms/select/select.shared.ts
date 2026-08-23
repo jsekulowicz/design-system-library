@@ -113,16 +113,17 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
   </span>`;
 }
 
+/** Sits outside the tile list so it keeps its place on the first row as tiles wrap. */
+export function renderOverflowTile(count: number): TemplateResult | typeof nothing {
+  if (count <= 0) {
+    return nothing;
+  }
+  return html`<span class="tile tile-overflow" aria-label="${count} more selected">+${count}</span>`;
+}
+
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {
   const style = options.maxLines ? `max-height:${options.maxLines * TILE_ROW_HEIGHT - 4}px;overflow:hidden` : '';
   return html` <div class="tiles" style=${style}>
-    ${
-      options.overflowCount > 0
-        ? html` <span class="tile tile-overflow" aria-label="${options.overflowCount} more selected">
-            +${options.overflowCount}
-          </span>`
-        : nothing
-    }
     ${options.values.map((value, index) =>
       renderTile({
         value,

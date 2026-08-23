@@ -1,9 +1,6 @@
 import { css } from 'lit';
 
 export const searchableSelectStyles = css`
-  .trigger {
-    flex-wrap: wrap;
-  }
   .trigger:focus-within {
     border-color: var(--ds-color-accent);
     box-shadow: var(--ds-shadow-focus);

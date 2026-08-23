@@ -11,6 +11,7 @@ import {
   renderChevronDownIcon,
   renderClearButton,
   renderOptionIcon,
+  renderOverflowTile,
   renderSelectedTiles,
 } from '../select/select.shared.js';
 import { DropdownController } from '../select/dropdown-controller.js';
@@ -356,6 +357,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             <slot name="leading" ?hidden=${Boolean(selectedIcon)} @slotchange=${this.#dropdown.onLeadingChange}></slot>
           </span>
           ${hasTiles ? this.#renderTiles() : nothing}
+          ${hasTiles ? renderOverflowTile(this.#dropdown.overflowCount) : nothing}
           <input
             id="search-input"
             class="search-input"
@@ -368,7 +370,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             aria-activedescendant=${ifDefined(activeDesc)}
             aria-disabled=${this.disabled ? 'true' : 'false'}
             .value=${live(displayValue)}
-            placeholder=${hasTiles ? '' : open ? this.searchPlaceholder : this.placeholder}
+            placeholder=${open ? this.searchPlaceholder : hasTiles ? '' : this.placeholder}
             ?readonly=${this.disabled}
             @focus=${this.#onFocus}
             @input=${this.#onSearchInput}
