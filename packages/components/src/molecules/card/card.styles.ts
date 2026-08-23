@@ -76,6 +76,7 @@ export const cardStyles = css`
   ::slotted([slot='title']) {
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-heading-md);
+    line-height: var(--ds-line-height-tight);
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
     margin: 0;

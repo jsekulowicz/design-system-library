@@ -24,29 +24,29 @@ export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]):
 }
 
 /* Anchored on the arc edge and pushed outward, so the tooltip never covers the
-   slice it describes. */
-function tooltipPosition(slice: PieSlice): { left: number; top: number; transform: string } {
+   slice it describes. The browser flips the placement when the viewport is
+   tighter than the preferred side. */
+function tooltipPosition(slice: PieSlice): { left: number; top: number; area: string } {
   const point = polarPoint(RADIUS + 2, midAngle(slice));
-  const horizontal = point.x < CENTER ? '-100%' : '0';
-  const vertical = point.y < CENTER ? '-100%' : '0';
   return {
     left: (point.x / VIEWBOX_SIZE) * 100,
     top: (point.y / VIEWBOX_SIZE) * 100,
-    transform: `translate(${horizontal}, ${vertical})`,
+    area: `${point.y < CENTER ? 'top' : 'bottom'} ${point.x < CENTER ? 'left' : 'right'}`,
   };
 }
 
 export function renderPieTooltip(ctx: PieRenderContext, slices: readonly PieSlice[]): TemplateResult {
   const slice = ctx.activeIndex == null ? undefined : slices[ctx.activeIndex];
-  const position = slice ? tooltipPosition(slice) : { left: 50, top: 50, transform: 'none' };
+  const position = slice ? tooltipPosition(slice) : { left: 50, top: 50, area: 'top right' };
   return html`
+    <div class="tooltip-anchor" style="left:${position.left}%; top:${position.top}%"></div>
     <div
       class="tooltip"
       part="tooltip"
       role="tooltip"
       aria-hidden="true"
       ?hidden=${!slice}
-      style="left:${position.left}%; top:${position.top}%; transform:${position.transform}"
+      style="position-area:${position.area}"
     >
       ${
         slice

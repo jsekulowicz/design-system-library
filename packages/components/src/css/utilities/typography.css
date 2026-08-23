@@ -25,12 +25,15 @@
   }
   .ds-text-xl {
     font-size: var(--ds-font-size-heading-md);
+    line-height: var(--ds-line-height-tight);
   }
   .ds-text-2xl {
     font-size: var(--ds-font-size-heading-lg);
+    line-height: var(--ds-line-height-tight);
   }
   .ds-text-3xl {
     font-size: var(--ds-font-size-heading-xl);
+    line-height: var(--ds-line-height-tight);
   }
 
   .ds-font-normal {

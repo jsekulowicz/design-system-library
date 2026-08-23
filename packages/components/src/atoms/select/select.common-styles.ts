@@ -39,13 +39,26 @@ export const selectCommonStyles = css`
     pointer-events: none;
   }
   .trigger-multiple {
+    --ds-select-trigger-block-padding: max(1px, calc((var(--ds-select-size) - ${TILE_HEIGHT + 2}px) / 2));
+    --ds-select-caret-size: 1.25rem;
+    position: relative;
     height: auto;
     min-height: var(--ds-select-size);
-    padding: max(1px, calc((var(--ds-select-size) - ${TILE_HEIGHT + 2}px) / 2)) var(--ds-space-3);
+    padding: var(--ds-select-trigger-block-padding) var(--ds-space-3);
+    padding-inline-end: calc(var(--ds-space-3) + var(--ds-select-caret-size) + var(--ds-space-2));
     flex-wrap: wrap;
     align-items: center;
     gap: var(--ds-space-2);
     overflow: visible;
+  }
+  .trigger-multiple .leading {
+    height: ${TILE_HEIGHT}px;
+    align-items: center;
+  }
+  .trigger-multiple .caret {
+    position: absolute;
+    top: calc(var(--ds-select-trigger-block-padding) + (${TILE_HEIGHT}px - var(--ds-select-caret-size)) / 2);
+    inset-inline-end: var(--ds-space-3);
   }
   .tiles {
     display: flex;

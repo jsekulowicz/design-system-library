@@ -70,6 +70,7 @@ export const pieChartStyles = css`
     top: 50%;
     width: var(--pie-center-size, 0%);
     height: var(--pie-center-size, 0%);
+    container-type: inline-size;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
@@ -83,16 +84,19 @@ export const pieChartStyles = css`
   }
 
   .center-value {
-    font-size: var(--ds-font-size-heading-sm);
+    --ds-pie-center-value-widest-em: 4.25;
+    font-size: min(var(--ds-font-size-heading-sm), calc(100cqi / var(--ds-pie-center-value-widest-em)));
     font-weight: var(--ds-font-weight-bold);
     font-variant-numeric: tabular-nums;
+    line-height: var(--ds-line-height-none);
     max-width: 100%;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
   }
 
   .center-label {
     color: var(--ds-color-fg-muted);
     font-size: var(--ds-font-size-body-sm);
+    line-height: var(--ds-line-height-tight);
     max-width: 100%;
     overflow-wrap: anywhere;
   }
@@ -135,8 +139,22 @@ export const pieChartStyles = css`
     font-variant-numeric: tabular-nums;
   }
 
-  .tooltip {
+  .tooltip-anchor {
     position: absolute;
+    width: 0;
+    height: 0;
+    anchor-name: --ds-pie-tooltip-anchor;
+  }
+
+  .tooltip {
+    position: fixed;
+    position-anchor: --ds-pie-tooltip-anchor;
+    position-try-fallbacks:
+      flip-inline,
+      flip-block,
+      flip-inline flip-block;
+    inset: auto;
+    margin: var(--ds-space-1);
     pointer-events: none;
     background: var(--ds-color-bg-inverse);
     color: var(--ds-color-fg-inverse);
@@ -146,7 +164,7 @@ export const pieChartStyles = css`
     font-size: var(--ds-font-size-body-md);
     box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.18));
     width: max-content;
-    max-width: min(220px, 100%);
+    max-width: min(220px, calc(100vw - var(--ds-space-4)));
     box-sizing: border-box;
     z-index: var(--ds-z-index-raised);
   }

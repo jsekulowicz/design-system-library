@@ -36,6 +36,7 @@ export const formStyles = css`
     margin: 0 0 var(--ds-space-4);
     font-family: var(--ds-font-display);
     font-size: var(--ds-font-size-heading-md);
+    line-height: var(--ds-line-height-tight);
     letter-spacing: var(--ds-letter-spacing-display);
     color: var(--ds-color-fg);
   }
