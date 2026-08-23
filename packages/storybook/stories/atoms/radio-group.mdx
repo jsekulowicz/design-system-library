@@ -41,6 +41,14 @@ A shadow-DOM fieldset that coordinates a set of radios sharing the same `name`. 
 
     <ds-tab-panel value="examples">
       <Stories includePrimary={false} />
+
+      <h3>Labels that wrap</h3>
+      <p>
+        A label is free to run onto several lines, and to carry links. The dot holds the first line, where reading
+        starts, rather than centering itself on the whole block, and a <code>ds-link</code> inside the label
+        activates instead of selecting the radio.
+      </p>
+      <Canvas of={RadioStories.WrappingLabel} />
     </ds-tab-panel>
 
     <ds-tab-panel value="guidelines">

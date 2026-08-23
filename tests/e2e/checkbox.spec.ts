@@ -99,5 +99,6 @@ async function mountProbes(page: Page): Promise<void> {
       (el) => (el as HTMLElement & { updateComplete: Promise<unknown> }).updateComplete,
     );
     await Promise.all(pending);
+    await document.fonts.ready;
   });
 }

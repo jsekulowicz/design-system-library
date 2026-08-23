@@ -1,6 +1,8 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/checkbox/define';
+import '@jsekulowicz/ds-components/link/define';
+import '@jsekulowicz/ds-components/card/define';
 
 const meta: Meta = {
   title: 'Atoms/Checkbox',
@@ -58,17 +60,25 @@ export const States: Story = {
 
 export const WrappingLabel: Story = {
   render: () => html`
-    <div style="display:grid;gap:var(--ds-space-4);max-width:20rem">
-      <ds-checkbox>
-        I agree with the <a href="/terms" target="_blank" rel="noopener">Terms and Conditions</a> and the
-        <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>
-      </ds-checkbox>
-      <ds-checkbox checked>
-        A label long enough to wrap onto several lines keeps its box on the first line, where reading starts
-      </ds-checkbox>
-      <ds-checkbox message-space error="Please accept to continue" invalid>
-        I agree with the <a href="/terms" target="_blank" rel="noopener">Terms and Conditions</a>
-      </ds-checkbox>
-    </div>
+    <ds-card style="max-inline-size: 22rem">
+      <h3 slot="title">Create your account</h3>
+      <div style="display:grid;gap:var(--ds-space-5)">
+        <ds-checkbox message-space>
+          I agree with the
+          <ds-link href="/terms" target="_blank">Terms and Conditions</ds-link>
+          and the
+          <ds-link href="/privacy" target="_blank">Privacy Policy</ds-link>
+        </ds-checkbox>
+        <ds-checkbox checked>
+          A label with no links in it at all, long enough that it runs onto three or four lines, so the box has
+          somewhere to drift to if it ever stops holding the first line
+        </ds-checkbox>
+        <ds-checkbox message-space invalid error="Please accept to continue">
+          I agree with the
+          <ds-link href="/terms" target="_blank">Terms and Conditions</ds-link>
+        </ds-checkbox>
+        <ds-checkbox>Short label, one line</ds-checkbox>
+      </div>
+    </ds-card>
   `,
 };

@@ -1,6 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DsCheckbox } from './checkbox.js';
 import './define.js';
+import '../link/define.js';
 import { mount, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
@@ -165,6 +166,25 @@ describe('<ds-checkbox>', () => {
       await el.updateComplete;
 
       expect(el.checked).toBe(false);
+    });
+
+    it('leaves Enter to a custom element link, whose anchor is in its own shadow root', async () => {
+      const el = await mount<DsCheckbox>(
+        '<ds-checkbox>I agree with the <ds-link href="/terms">Terms</ds-link></ds-checkbox>',
+      );
+      const anchor = el.querySelector('ds-link')!.shadowRoot!.querySelector('a')!;
+
+      const event = new KeyboardEvent('keydown', {
+        key: 'Enter',
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+      });
+      anchor.dispatchEvent(event);
+      await el.updateComplete;
+
+      expect(el.checked).toBe(false);
+      expect(event.defaultPrevented).toBe(false);
     });
 
     it('still toggles for plain text in the label', async () => {

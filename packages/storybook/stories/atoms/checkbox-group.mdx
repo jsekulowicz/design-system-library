@@ -41,6 +41,17 @@ A shadow-DOM fieldset that wraps any number of `ds-checkbox` children. The group
 
     <ds-tab-panel value="examples">
       <Stories includePrimary={false} />
+
+      <h3>Single checkbox states</h3>
+      <Canvas of={CheckboxStories.States} />
+
+      <h3>Labels that wrap</h3>
+      <p>
+        A label is free to run onto several lines, and to carry links. The box holds the first line, where reading
+        starts, rather than centering itself on the whole block, and a <code>ds-link</code> inside the label
+        activates on click and Enter instead of toggling the box.
+      </p>
+      <Canvas of={CheckboxStories.WrappingLabel} />
     </ds-tab-panel>
 
     <ds-tab-panel value="guidelines">

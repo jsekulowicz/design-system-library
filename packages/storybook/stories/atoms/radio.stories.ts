@@ -2,6 +2,8 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import { joinStyles } from '../shared/styles';
 import '@jsekulowicz/ds-components/radio/define';
+import '@jsekulowicz/ds-components/link/define';
+import '@jsekulowicz/ds-components/card/define';
 
 const meta: Meta = {
   title: 'Atoms/Radio',
@@ -65,13 +67,20 @@ export const Disabled: Story = {
 
 export const WrappingLabel: Story = {
   render: () => html`
-    <div style="display:grid;gap:var(--ds-space-4);max-width:20rem">
-      <ds-radio name="wrapping" radiovalue="linked">
-        Ship it with the <a href="/terms" target="_blank" rel="noopener">Terms and Conditions</a> attached
-      </ds-radio>
-      <ds-radio name="wrapping" radiovalue="long">
-        A label long enough to wrap onto several lines keeps its dot on the first line, where reading starts
-      </ds-radio>
-    </div>
+    <ds-card style="max-inline-size: 22rem">
+      <h3 slot="title">Pick a plan</h3>
+      <div style="display:grid;gap:var(--ds-space-5)">
+        <ds-radio name="wrapping" radiovalue="linked">
+          Ship it under the
+          <ds-link href="/terms" target="_blank">Terms and Conditions</ds-link>
+          agreed at sign-up, renewed every year
+        </ds-radio>
+        <ds-radio name="wrapping" radiovalue="long">
+          A label with no links in it at all, long enough that it runs onto three or four lines, so the dot has
+          somewhere to drift to if it ever stops holding the first line
+        </ds-radio>
+        <ds-radio name="wrapping" radiovalue="short">Short label, one line</ds-radio>
+      </div>
+    </ds-card>
   `,
 };
