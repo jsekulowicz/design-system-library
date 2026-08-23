@@ -22,15 +22,18 @@ the edge. `bar-chart-tooltip-position.ts` and the heatmap's scroll-offset state
 are gone with it; the heatmap no longer re-renders on every scroll frame.
 
 Chart tooltips now carry `data-open` rather than `hidden`, and their element is
-`.point-tooltip`.
+`.point-tooltip`. The heatmap tooltip's count and date sit on their own lines
+again, which the shared bubble had collapsed onto one.
 
-A multi-select trigger keeps its caret on the first row, centered against the
-leading icon, instead of letting it wrap below the selected tiles once they
-fill the row. The tiles reserve room for it rather than running underneath, and
-the first row keeps the height of a tile so the caret lines up whether or not
-the tiles share that row. A multi-select that already has tiles no longer shows
-a placeholder at all - it only ever appeared clipped to whatever width the
-tiles left over.
+A multi-select trigger pins its caret and any leading icon to the first row
+rather than letting them drift: the caret used to wrap below the tiles once they
+filled a row, and the icon centered itself against the whole stack of tiles.
+Selected tiles now share that first row and wrap one at a time instead of moving
+as a block, and the search field no longer reserves a column beside them - it
+collapses while the field is closed and takes a row of its own once opened, so a
+tile that fits on the first row stays there. A multi-select that already has
+tiles shows no placeholder at all; it only ever appeared clipped to whatever
+width the tiles left over.
 
 The `.ds-text-xl`, `.ds-text-2xl` and `.ds-text-3xl` utilities and the card,
 dialog and form titles now declare their own leading. At those sizes the

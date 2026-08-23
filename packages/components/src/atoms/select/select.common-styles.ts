@@ -41,7 +41,6 @@ export const selectCommonStyles = css`
   .trigger-multiple {
     --ds-select-trigger-block-padding: max(1px, calc((var(--ds-select-size) - ${TILE_HEIGHT + 2}px) / 2));
     --ds-select-caret-size: 1.25rem;
-    --ds-select-search-min-width: 4rem;
     position: relative;
     height: auto;
     min-height: var(--ds-select-size);
@@ -53,6 +52,7 @@ export const selectCommonStyles = css`
     overflow: visible;
   }
   .trigger-multiple .leading {
+    align-self: flex-start;
     height: ${TILE_HEIGHT}px;
     align-items: center;
   }
@@ -69,7 +69,10 @@ export const selectCommonStyles = css`
     min-width: 0;
   }
   .trigger-multiple:has(.tiles) .search-input {
-    flex: 0 1 var(--ds-select-search-min-width);
+    flex: 0 1 0;
+  }
+  .trigger-multiple.open:has(.tiles) .search-input {
+    flex: 1 1 100%;
   }
   .tile {
     display: inline-flex;

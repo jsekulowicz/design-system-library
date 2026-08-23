@@ -67,7 +67,11 @@ export const heatmapCalendarStyles = css`
     stroke-width: 2;
   }
 
-  .tooltip span {
+  .tooltip-title {
+    font-weight: var(--ds-font-weight-medium);
+  }
+
+  .tooltip-date {
     color: inherit;
     font-size: var(--ds-font-size-body-sm);
   }

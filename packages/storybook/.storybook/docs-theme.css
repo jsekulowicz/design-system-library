@@ -102,6 +102,10 @@ p {
   border-radius: 0 !important;
 }
 
+.sbdocs .docblock-source button {
+  margin-left: 0 !important;
+}
+
 .sbdocs hr {
   border-color: var(--ds-color-border);
 }

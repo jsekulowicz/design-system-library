@@ -32,7 +32,14 @@ export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapL
     area: cell && cell.row < 2 ? 'bottom' : 'top',
     open: Boolean(cell),
     content: html`
-      ${cell ? html`<strong>${ctx.formatValue(cell.value)}</strong><span>${ctx.formatDate(cell.date)}</span>` : ''}
+      ${
+        cell
+          ? html`
+              <div class="tooltip-title">${ctx.formatValue(cell.value)}</div>
+              <div class="tooltip-date">${ctx.formatDate(cell.date)}</div>
+            `
+          : ''
+      }
     `,
   });
 }
