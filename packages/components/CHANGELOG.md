@@ -1,5 +1,110 @@
 # @jsekulowicz/ds-components
 
+## 0.69.0
+
+### Minor Changes
+
+- af8fe63: Fix three layout problems the base line-height exposed, and one it did not.
+
+  `ds-pie-chart`'s donut center no longer leaves a text line box taller than the
+  text it holds: the value gets `none` leading and the label `tight`. The value
+  also stops breaking mid-number - `overflow-wrap: anywhere` split `$315,900`
+  across two lines - and instead scales down to the width of the donut hole,
+  capped at `heading-sm`, so nothing changes at normal chart sizes and small
+  charts shrink the number rather than mangling it. Tune the assumed widest value
+  with `--ds-pie-center-value-widest-em`.
+
+  `ds-pie-chart`, `ds-bar-chart` and `ds-heatmap-calendar` share one point-anchored
+  tooltip. Each had rolled its own bubble styling and its own placement maths -
+  percentage offsets, a measured above/below/contained switch, a scroll-compensated
+  `clamp()` - and each could be clipped by the screen edge on a narrow viewport.
+  The shared one renders in the Popover API top layer, so no ancestor overflow or
+  transform can trap it, and CSS anchor positioning flips or realigns it away from
+  the edge. `bar-chart-tooltip-position.ts` and the heatmap's scroll-offset state
+  are gone with it; the heatmap no longer re-renders on every scroll frame.
+
+  Chart tooltips now carry `data-open` rather than `hidden`, and their element is
+  `.point-tooltip`. Their width is tunable through `--ds-point-tooltip-min-width`
+  and `--ds-point-tooltip-max-width`; bar and heatmap previously disagreed on a
+  minimum (120px against 8rem) for no reason, and both now take the shared
+  default. The heatmap tooltip's count and date sit on their own lines
+  again, which the shared bubble had collapsed onto one.
+
+  A multi-select trigger pins its caret and any leading icon to the first row
+  rather than letting them drift: the caret used to wrap below the tiles once they
+  filled a row, and the icon centered itself against the whole stack of tiles.
+  Selected tiles now share that first row and wrap one at a time instead of moving
+  as a block, and the search field no longer reserves a column beside them - it
+  collapses while the field is closed and takes a row of its own once opened, so a
+  tile that fits on the first row stays there. A multi-select that already has
+  tiles shows no placeholder at all; it only ever appeared clipped to whatever
+  width the tiles left over.
+
+  The `.ds-text-xl`, `.ds-text-2xl` and `.ds-text-3xl` utilities and the card,
+  dialog and form titles now declare their own leading. At those sizes the
+  inherited body line-height was shorter than the font.
+
+- f30d17b: Land text and centered content on whole pixels.
+
+  Nothing set a base line-height, so any element that did not reach for a token
+  fell through to CSS `normal` - 21.5px for the body font at 16px. On a 1x display
+  that put a majority of the page on half pixels, and everything centered below a
+  run of text inherited the offset. `:root` now carries
+  `line-height: var(--ds-line-height-normal)`.
+
+  The line-height tokens are emitted as `round(up, <multiplier>em, 2px)` instead of
+  bare multipliers, so every font-size pairs with every line-height to give a whole,
+  even line box. Previously `snug` was fractional at five of the ten font sizes, and
+  `tight` and `relaxed` were fractional at `body-md` and `heading-xs`. Because `em`
+  resolves at the element using the token, this also holds when a consumer overrides
+  a component's font-size through a part. Values are computed at computed-value time
+  and cost nothing at runtime. This raises no browser floor: the library already
+  requires CSS anchor positioning, which lands later than `round()` everywhere.
+
+  `ds-table` switches to `border-collapse: separate`. Collapsed 1px borders are
+  split across adjacent cells, which started every cell's content box on a half
+  pixel and pushed centered cell content off the grid.
+
+  `ds-popover-button`'s wrapper is `inline-flex` rather than `inline-block`, so its
+  trigger no longer sits in a baseline line box whose height moves with the
+  inherited line-height.
+
+  `ds-checkbox` and `ds-radio` center their box on the first line of the label from
+  the used line height (`1lh`) rather than by re-deriving it from the line-height
+  token. The token is no longer a bare multiplier, so multiplying it by `1em` gave a
+  length times a length, which is invalid at computed-value time and silently
+  dropped the offset, leaving the box flush with the top of the line box.
+
+### Patch Changes
+
+- 56665e9: A multi-select trigger no longer grows a row when the search field opens. The
+  field used to claim a full row of its own once tiles existed, which changed the
+  trigger's height the moment a first tile was selected. It now shares the tile
+  rows, and the tiles simply outgrow it, so a tile that fits beside the leading
+  icon still stays there.
+- 315c7ec: A searchable multi-select lays its trigger out the way it reads: selected tiles
+  first, then the search field filling what is left of the row. Once the tiles no
+  longer fit beside the field the rows invert, so the field keeps the first row -
+  level with the search icon and the caret - and the tiles stack underneath it
+  rather than pushing the field out of reach. The overflow counter always travels
+  with the field, immediately to its left.
+
+  The field no longer reserves a column of its own beside the tiles, which used to
+  leave a gap between them, and the tiles no longer stretch past their content.
+
+  The field also keeps the height of a tile row, so its text sits level with the
+  search icon and the caret whether or not an overflow counter shares the row, and
+  it keeps its placeholder once something is selected - reading as a prompt to
+  search rather than the idle prompt to choose. It reserves that room regardless,
+  so hiding the text only made the row look empty and left mouse users guessing
+  where to click.
+
+  `--ds-select-search-width` sets how much room the field asks for, and
+  `--ds-select-leading-size` the space reserved for a leading icon.
+
+- Updated dependencies [f30d17b]
+  - @jsekulowicz/ds-tokens@0.69.0
+
 ## 0.68.2
 
 ### Patch Changes
