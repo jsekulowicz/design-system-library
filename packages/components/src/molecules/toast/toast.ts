@@ -21,6 +21,7 @@ const DEFAULT_DURATION_BY_TONE: Record<ToastTone, number> = {
  * @slot default - Body text.
  * @slot actions - Optional action row (e.g. an Undo button).
  * @csspart toast - The internal toast container.
+ * @cssprop --ds-toast-bg - Toast surface fill. Defaults to --ds-color-bg-subtle.
  * @event ds-dismiss - Fires when the toast is removed. Detail: `{ reason: 'timeout' | 'user' | 'programmatic' }`.
  */
 export class DsToast extends DsElement {

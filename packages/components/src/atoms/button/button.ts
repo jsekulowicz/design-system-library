@@ -27,7 +27,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @cssprop --ds-button-fg - Primary variant foreground.
  * @cssprop --ds-button-bg-hover - Primary hover background; derived from background and foreground by default.
  * @cssprop --ds-button-bg-active - Primary active background; derived from background and foreground by default.
- * @cssprop --ds-spinner-size - Loading spinner diameter.
+ * @cssprop --ds-spinner-size - Loading spinner diameter. With `loading-label`, defaults to ds-icon's `lg` size so the label does not shift; override it when the leading icon is a different size.
  * @cssprop --ds-button-solid - Legacy primary background override.
  * @cssprop --ds-button-solid-hover - Legacy primary hover background override.
  * @cssprop --ds-button-solid-active - Legacy primary active background override.

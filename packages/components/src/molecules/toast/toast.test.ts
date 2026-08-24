@@ -14,7 +14,13 @@ afterEach(() => {
 
 describe('<ds-toast>', () => {
   it('uses an opaque surface for every tone', () => {
-    expect(toastStyles.cssText).toMatch(/:host\(\[tone\]\) \.notice\s*{[^}]*background: var\(--ds-color-bg\)/s);
+    expect(toastStyles.cssText).toMatch(
+      /:host\(\[tone\]\) \.notice\s*{[^}]*background: var\(--ds-toast-bg, var\(--ds-color-bg-subtle\)\)/s,
+    );
+  });
+
+  it('separates its surface from the page background', () => {
+    expect(toastStyles.cssText).not.toMatch(/:host\(\[tone\]\) \.notice\s*{[^}]*background: var\(--ds-color-bg\)/s);
   });
 
   it('maps tone to role and aria-live', async () => {

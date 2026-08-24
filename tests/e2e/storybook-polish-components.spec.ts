@@ -25,11 +25,11 @@ test('static toasts restore while imperative toasts dismiss', async ({ page }) =
   await expect(page.locator('ds-toast')).toHaveCount(0);
 });
 
-for (const [theme, expectedBackground] of [
-  ['light', 'rgb(250, 248, 245)'],
-  ['dark', 'rgb(34, 36, 37)'],
+for (const [theme, expectedBackground, pageBackground] of [
+  ['light', 'rgb(242, 239, 234)', 'rgb(250, 248, 245)'],
+  ['dark', 'rgb(43, 45, 46)', 'rgb(34, 36, 37)'],
 ] as const) {
-  test(`Toast tones use opaque ${theme} surfaces`, async ({ page }) => {
+  test(`Toast tones use opaque ${theme} surfaces set apart from the page`, async ({ page }) => {
     await page.addInitScript((nextTheme) => localStorage.setItem('ds-storybook-theme', nextTheme), theme);
     await openStory(page, 'molecules-toast--tones');
     const surfaces = await page.locator('ds-toast').evaluateAll((toasts) =>
@@ -43,6 +43,7 @@ for (const [theme, expectedBackground] of [
     );
     expect(surfaces).toHaveLength(4);
     expect(surfaces).toEqual(Array.from({ length: 4 }, () => ({ background: expectedBackground, opacity: '1' })));
+    expect(expectedBackground).not.toBe(pageBackground);
   });
 }
 

@@ -14,7 +14,7 @@ export const toastStyles = css`
     flex-direction: column;
     align-items: stretch;
     gap: var(--ds-space-2);
-    background: var(--ds-color-bg);
+    background: var(--ds-toast-bg, var(--ds-color-bg-subtle));
     box-shadow: var(--ds-shadow-md);
   }
   :host(:focus-visible) .notice {

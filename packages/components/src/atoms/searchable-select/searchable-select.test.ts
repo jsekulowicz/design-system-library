@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsSearchableSelect } from './searchable-select.js';
+import { searchableSelectStyles } from './searchable-select.styles.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
@@ -359,6 +360,15 @@ describe('<ds-searchable-select>', () => {
     it('does not show clear button when required but nothing is selected', async () => {
       const el = await mountSearchableSelect({ required: true });
       expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
+  });
+
+  describe('loading', () => {
+    it('sizes the spinner like the caret it replaces and adds no box of its own', () => {
+      const spinnerRule = /\.spinner\s*{([^}]*)}/s.exec(searchableSelectStyles.cssText)?.[1] ?? '';
+
+      expect(spinnerRule).toMatch(/--ds-spinner-size:\s*1\.25rem/);
+      expect(spinnerRule).not.toMatch(/margin/);
     });
   });
 

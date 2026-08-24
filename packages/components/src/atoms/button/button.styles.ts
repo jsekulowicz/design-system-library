@@ -89,6 +89,9 @@ export const buttonStyles = css`
     align-items: center;
     gap: var(--ds-space-2);
   }
+  .stack-item .spinner {
+    --ds-spinner-size: 1.125rem;
+  }
   .is-hidden {
     visibility: hidden;
   }

@@ -138,6 +138,10 @@ describe('<ds-button>', () => {
     expect(el.shadowRoot!.querySelector('.labels .spinner')).not.toBeNull();
   });
 
+  it('sizes the in-flow spinner like a default leading icon so the label holds still', () => {
+    expect(buttonStyles.cssText).toMatch(/\.stack-item \.spinner\s*{[^}]*--ds-spinner-size:\s*1\.125rem/s);
+  });
+
   it('reserves the spinner while idle once loading-label is set', async () => {
     const el = await mount<DsButton>('<ds-button loading-label="Saving...">Save</ds-button>');
     const spinner = el.shadowRoot!.querySelector('.spinner') as SVGElement;
