@@ -370,7 +370,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             aria-activedescendant=${ifDefined(activeDesc)}
             aria-disabled=${this.disabled ? 'true' : 'false'}
             .value=${live(displayValue)}
-            placeholder=${open ? this.searchPlaceholder : hasTiles ? '' : this.placeholder}
+            placeholder=${open || hasTiles ? this.searchPlaceholder : this.placeholder}
             ?readonly=${this.disabled}
             @focus=${this.#onFocus}
             @input=${this.#onSearchInput}
