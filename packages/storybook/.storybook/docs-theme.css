@@ -443,6 +443,25 @@ p {
   box-sizing: border-box;
 }
 
+@media (max-width: 1024px) {
+  .sbdocs .docblock-argstable th:nth-child(2),
+  .sbdocs .docblock-argstable td:nth-child(2),
+  .sbdocs .docblock-argstable th:nth-child(3),
+  .sbdocs .docblock-argstable td:nth-child(3) {
+    display: none !important;
+  }
+
+  .sbdocs .docblock-argstable th:nth-child(1),
+  .sbdocs .docblock-argstable td:nth-child(1) {
+    width: 30% !important;
+  }
+
+  .sbdocs .docblock-argstable th:nth-child(4),
+  .sbdocs .docblock-argstable td:nth-child(4) {
+    width: 70% !important;
+  }
+}
+
 @media (max-width: 600px) {
   .sbdocs.sbdocs-wrapper,
   .sbdocs-wrapper {

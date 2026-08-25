@@ -98,3 +98,29 @@ test('Props tables fit their container and text controls resize vertically', asy
     }
   }
 });
+
+test('Props tables prioritize names and controls up to tablet width', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 760 });
+  await openDocs(page, 'forms-radiogroup--docs');
+  const table = page.locator('.docblock-argstable').first();
+
+  await expect(table.locator('th').nth(1)).toBeHidden();
+  await expect(table.locator('th').nth(2)).toBeHidden();
+  await expect(table.locator('th').nth(3)).toHaveText('Control');
+  expect(
+    await table
+      .locator('textarea')
+      .first()
+      .evaluate((element) => element.getBoundingClientRect().width),
+  ).toBeGreaterThan(180);
+  expect(await table.locator('xpath=..').evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  await table.locator('textarea').first().fill('Mobile billing');
+  await expect(page.getByRole('group', { name: 'Mobile billing' })).toBeVisible();
+
+  await page.setViewportSize({ width: 1024, height: 760 });
+  await expect(table.locator('th').nth(1)).toBeHidden();
+  await expect(table.locator('th').nth(2)).toBeHidden();
+  await page.setViewportSize({ width: 1025, height: 760 });
+  await expect(table.locator('th').nth(1)).toBeVisible();
+  await expect(table.locator('th').nth(2)).toBeVisible();
+});
