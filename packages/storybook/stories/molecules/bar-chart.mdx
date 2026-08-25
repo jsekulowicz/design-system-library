@@ -21,16 +21,20 @@ type BarChartSeries = {
 };
 ```
 
-```html
-<ds-bar-chart
-  title="Weekly activity"
-  .data=${rows}
-  domain="week"
-  .series=${[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]}
-  x-axis-label="Week"
-  y-axis-label="Events"
-  stacked
-></ds-bar-chart>
+```ts
+import { html } from 'lit';
+
+html`
+  <ds-bar-chart
+    title="Weekly activity"
+    .data=${rows}
+    domain="week"
+    .series=${[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]}
+    x-axis-label="Week"
+    y-axis-label="Events"
+    stacked
+  ></ds-bar-chart>
+`;
 ```
 
 Setting `stacked` collapses each group into a single bar of stacked segments (sum of series). Leaving it off renders one bar per series, side-by-side, with a gap between groups.
@@ -42,9 +46,9 @@ Setting `stacked` collapses each group into a single bar of stacked segments (su
 
     <ds-tab-panel value="api">
       <Canvas of={BarChartStories.Grouped} />
-      <h3>Props</h3>
-      <Controls of={BarChartStories.Grouped} />
       <ComponentApi tag="ds-bar-chart" />
+      <h3>Playground controls</h3>
+      <Controls of={BarChartStories.Grouped} />
     </ds-tab-panel>
 
     <ds-tab-panel value="examples">

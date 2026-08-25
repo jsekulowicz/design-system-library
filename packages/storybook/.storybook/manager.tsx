@@ -2,6 +2,7 @@ import React from 'react';
 import { addons, types, useStorybookApi, useStorybookState } from 'storybook/manager-api';
 import { IconButton } from 'storybook/internal/components';
 import { getFriendlyDocsLabel } from './storybook-search-labels';
+import { setupMobileBreadcrumb } from './storybook-mobile-breadcrumb';
 import { setupRecentDocsRelabeling } from './storybook-search-relabeling';
 
 type ViewportKey = 'mobile' | 'tablet' | 'desktop';
@@ -112,6 +113,7 @@ addons.setConfig({
   },
 });
 setupRecentDocsRelabeling();
+setupMobileBreadcrumb();
 
 function ThemeToolbar(): React.ReactElement {
   const channel = addons.getChannel();

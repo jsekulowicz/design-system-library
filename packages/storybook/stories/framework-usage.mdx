@@ -4,20 +4,33 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Framework usage
 
-Every component is a native web component, so it runs anywhere the DOM does. The only thing that differs is how you pass **non-string props** (arrays, objects, functions) - frameworks set these as JS properties, not HTML attributes.
+Complete the [Introduction Quick start](?path=/docs/introduction--docs) before using these framework-specific
+patterns. Every component is a native custom element; frameworks mainly differ in how they pass arrays, objects,
+functions, and custom events.
 
-Each component ships a `define` side-effect module that registers the custom element with the browser. Import it once at your app's entry point:
+The examples use the same values throughout:
 
 ```ts
-import '@jsekulowicz/ds-tokens/theme-default.css';
-import '@jsekulowicz/ds-components/bar-chart/define';
+const rows = [
+  { week: 1, Website: 24, Mobile: 18, Partners: 9 },
+  { week: 2, Website: 31, Mobile: 22, Partners: 12 },
+];
+
+const series = [{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }];
+function formatDomain(value) {
+  return `Week ${value}`;
+}
+function onBarFocus(event) {
+  console.log(event.detail);
+}
 ```
 
-String and boolean props work the same everywhere - just attributes. The sections below focus on the non-string cases.
+String attributes work consistently across frameworks. HTML boolean attributes are presence-based: `stacked`
+enables the property, while omitting it disables the property. Writing `stacked="false"` still enables it.
 
-## Lit / vanilla Lit templates
+## Lit
 
-Use a leading dot to tell Lit's parser to set a JS property instead of an attribute:
+Import the component's `define` module once, then use a leading dot for non-string properties and `@` for events.
 
 ```ts
 import { html } from 'lit';
@@ -31,18 +44,29 @@ html`
     y-axis-label="Events"
     stacked
     .data=${rows}
-    .series=${[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]}
-    .formatDomain=${(v) => `Week ${v}`}
-    @ds-bar-focus=${(e) => console.log(e.detail)}
+    .series=${series}
+    .formatDomain=${formatDomain}
+    @ds-bar-focus=${onBarFocus}
   ></ds-bar-chart>
 `;
 ```
 
-Without the dot, `data` would be coerced to the string `"[object Object]"`.
+Without the dot, an array or object can be coerced to the string `"[object Object]"`.
 
 ## React
 
-The repo ships React wrappers generated with `@lit/react` under the `@jsekulowicz/ds-react` package. Use them exactly like regular React components - no dots, no ref juggling:
+Install the typed React wrappers in an existing React application:
+
+```sh
+pnpm add @jsekulowicz/ds-react
+```
+
+```sh
+npm install @jsekulowicz/ds-react
+```
+
+The wrapper package supports React 18 and newer. Import the theme once as shown in Quick start, then use the wrappers
+like regular React components:
 
 ```tsx
 import { BarChart } from '@jsekulowicz/ds-react';
@@ -54,36 +78,49 @@ import { BarChart } from '@jsekulowicz/ds-react';
   yAxisLabel="Events"
   stacked
   data={rows}
-  series={[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]}
-  formatDomain={(v) => `Week ${v}`}
-  onDsBarFocus={(e) => console.log(e.detail)}
+  series={series}
+  formatDomain={formatDomain}
+  onDsBarFocus={onBarFocus}
 />;
 ```
 
-Rules of thumb:
-
-- Every component has a matching wrapper in `@jsekulowicz/ds-react` (`Button`, `Breadcrumb`, `BarChart`, `Table`, ...).
 - Kebab-case attributes become camelCase props (`x-axis-label` → `xAxisLabel`).
-- Custom events are camelCased with an `onDs` prefix (`ds-bar-focus` → `onDsBarFocus`, `ds-change` → `onDsChange`).
-- The wrapper sets React props as DOM properties on the underlying element, so arrays and functions pass through as real values, not stringified.
+- Custom events use camel-cased `onDs` props (`ds-bar-focus` → `onDsBarFocus`).
+- Arrays, objects, and functions pass through as DOM properties.
 
-## Vue 3
+## Vue 3 with Vite
 
-Vue 3 needs two one-time setup steps: mark `ds-` elements as custom, and import the `define` side-effect for each component you use.
+Custom-element recognition is a template compiler option. Configure it in `vite.config.ts`:
 
 ```ts
-// main.ts
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+
+export default defineConfig({
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('ds-'),
+        },
+      },
+    }),
+  ],
+});
+```
+
+Register the component at the application entry point:
+
+```ts
 import { createApp } from 'vue';
 import '@jsekulowicz/ds-tokens/theme-default.css';
 import '@jsekulowicz/ds-components/bar-chart/define';
 import App from './App.vue';
 
-const app = createApp(App);
-app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith('ds-');
-app.mount('#app');
+createApp(App).mount('#app');
 ```
 
-Then in templates, use `:prop="..."` for non-string values - Vue sets them as JS properties on custom elements automatically:
+Vue chooses DOM properties for declared custom-element properties, so normal bindings work for non-string values:
 
 ```html
 <template>
@@ -94,29 +131,47 @@ Then in templates, use `:prop="..."` for non-string values - Vue sets them as JS
     y-axis-label="Events"
     stacked
     :data="rows"
-    :series="[{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }]"
-    :format-domain="v => `Week ${v}`"
+    :series="series"
+    :format-domain="formatDomain"
     @ds-bar-focus="onBarFocus"
   />
 </template>
 ```
 
-Vue maps kebab-case template attributes (`:format-domain`) to camelCase JS properties (`formatDomain`) on custom elements.
+Use Vue's `.prop` binding modifier only when a value must be forced to a DOM property.
 
-## Angular
+## Angular with NgModule
 
-Tell the Angular compiler to allow unknown elements, then use property binding for non-strings:
+Add `CUSTOM_ELEMENTS_SCHEMA` to the module that owns the consuming template:
 
 ```ts
-// app.module.ts (or a standalone component's @Component)
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import '@jsekulowicz/ds-components/bar-chart/define';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class ChartsModule {}
 ```
+
+## Angular standalone component
+
+Standalone components declare the schema in their `@Component` metadata:
+
+```ts
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import '@jsekulowicz/ds-components/bar-chart/define';
+
+@Component({
+  selector: 'app-chart',
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: './chart.component.html',
+})
+export class ChartComponent {}
+```
+
+Both Angular configurations use property and event bindings in the template:
 
 ```html
 <ds-bar-chart
@@ -127,16 +182,14 @@ export class AppModule {}
   stacked
   [data]="rows"
   [series]="series"
-  [formatDomain]="formatTurn"
+  [formatDomain]="formatDomain"
   (ds-bar-focus)="onBarFocus($event)"
 ></ds-bar-chart>
 ```
 
-Square-bracket syntax (`[data]="rows"`) binds to the DOM property; parentheses (`(ds-bar-focus)`) listen for custom events.
+## Plain HTML and JavaScript
 
-## Plain HTML + JavaScript
-
-Attributes only carry strings, so set complex values with JS property assignment after the element is in the DOM:
+Set non-string values as DOM properties after the element exists:
 
 ```html
 <ds-bar-chart domain="week" x-axis-label="Week" y-axis-label="Events" stacked></ds-bar-chart>
@@ -144,14 +197,23 @@ Attributes only carry strings, so set complex values with JS property assignment
 <script type="module">
   import '@jsekulowicz/ds-components/bar-chart/define';
 
+  const rows = [
+    { week: 1, Website: 24, Mobile: 18, Partners: 9 },
+    { week: 2, Website: 31, Mobile: 22, Partners: 12 },
+  ];
   const chart = document.querySelector('ds-bar-chart');
   chart.data = rows;
   chart.series = [{ key: 'Website' }, { key: 'Mobile' }, { key: 'Partners' }];
-  chart.formatDomain = (v) => `Week ${v}`;
-  chart.addEventListener('ds-bar-focus', (e) => console.log(e.detail));
+  chart.formatDomain = (value) => `Week ${value}`;
+  chart.addEventListener('ds-bar-focus', (event) => console.log(event.detail));
 </script>
 ```
 
-## Events
+## Events and types
 
-Custom events are plain `CustomEvent`s that bubble and cross shadow boundaries, so any listener works - `.addEventListener('ds-change', ...)` (vanilla), `@ds-change="..."` (Vue), `onDsChange={...}` (React), `(ds-change)="..."` (Angular). The `detail` payload is the same everywhere; types are exported from each component's subpath (e.g. `import type { BarChartFocusDetail } from '@jsekulowicz/ds-components/bar-chart'`).
+Custom events bubble and cross shadow boundaries. Their `detail` payload is the same in every framework, and event
+types are exported from each component subpath:
+
+```ts
+import type { BarChartFocusDetail } from '@jsekulowicz/ds-components/bar-chart';
+```

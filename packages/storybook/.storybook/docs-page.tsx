@@ -11,9 +11,9 @@ export function DocsPage() {
       <Title />
       <Description />
       <Primary />
-      <h2>Props</h2>
-      <CollapsedControls />
       {tag ? <ComponentApi tag={tag} /> : null}
+      <h2>Playground controls</h2>
+      <CollapsedControls />
       <Stories />
     </>
   );

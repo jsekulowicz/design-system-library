@@ -26,15 +26,15 @@ A shadow-DOM fieldset that wraps any number of `ds-checkbox` children. The group
 
         <ds-tab-panel value="ds-checkbox-group">
           <Canvas of={CheckboxGroupStories.Playground} />
-          <h3>Props</h3>
-          <Controls of={CheckboxGroupStories.Playground} />
           <ComponentApi tag="ds-checkbox-group" />
+          <h3>Playground controls</h3>
+          <Controls of={CheckboxGroupStories.Playground} />
         </ds-tab-panel>
         <ds-tab-panel value="ds-checkbox">
           <Canvas of={CheckboxStories.Playground} />
-          <h3>Props</h3>
-          <Controls of={CheckboxStories.Playground} />
           <ComponentApi tag="ds-checkbox" />
+          <h3>Playground controls</h3>
+          <Controls of={CheckboxStories.Playground} />
         </ds-tab-panel>
       </ds-tabs>
     </ds-tab-panel>
@@ -46,11 +46,11 @@ A shadow-DOM fieldset that wraps any number of `ds-checkbox` children. The group
       <Canvas of={CheckboxStories.States} />
 
       <h3>Labels that wrap</h3>
-      <p>
+      <div className="ds-doc-paragraph">
         A label is free to run onto several lines, and to carry links. The box holds the first line, where reading
         starts, rather than centering itself on the whole block, and a <code>ds-link</code> inside the label
         activates on click and Enter instead of toggling the box.
-      </p>
+      </div>
       <Canvas of={CheckboxStories.WrappingLabel} />
     </ds-tab-panel>
 

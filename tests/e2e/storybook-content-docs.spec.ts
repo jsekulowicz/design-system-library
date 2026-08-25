@@ -1,0 +1,70 @@
+import { expect, test, type Page } from '@playwright/test';
+
+async function openDocs(page: Page, id: string): Promise<void> {
+  await page.goto(`/iframe.html?id=${id}&viewMode=docs`);
+  await page.locator('.sbdocs-content').waitFor();
+}
+
+test('Introduction provides a complete install and registration path', async ({ page }) => {
+  await openDocs(page, 'introduction--docs');
+
+  await expect(page.getByText('pnpm add @jsekulowicz/ds-tokens @jsekulowicz/ds-components')).toBeVisible();
+  await expect(page.getByText('npm install @jsekulowicz/ds-tokens @jsekulowicz/ds-components')).toBeVisible();
+  await expect(page.getByText("import '@jsekulowicz/ds-tokens/theme-default.css';")).toBeVisible();
+  await expect(page.getByText(/ds-tokens\/dist\/theme-default\.css/)).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'GitHub repository' })).toHaveAttribute(
+    'href',
+    'https://github.com/jsekulowicz/design-system-library',
+  );
+});
+
+test('Framework usage documents build-time Vue setup and React installation', async ({ page }) => {
+  await openDocs(page, 'framework-usage--docs');
+
+  await expect(page.getByText('pnpm add @jsekulowicz/ds-react')).toBeVisible();
+  await expect(page.getByText("isCustomElement: (tag) => tag.startsWith('ds-'),")).toBeVisible();
+  await expect(page.getByText(/app\.config\.compilerOptions\.isCustomElement/)).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Angular standalone component' })).toBeVisible();
+  await expect(page.getByText(/stacked="false" still enables it/)).toBeVisible();
+});
+
+test('component API includes import paths and complete property metadata', async ({ page }) => {
+  await openDocs(page, 'atoms-button--docs');
+
+  await expect(page.getByText("import '@jsekulowicz/ds-components/button/define';")).toBeVisible();
+  const properties = page.locator('.ds-properties-table');
+  await expect(properties).toBeVisible();
+  await expect(properties.getByRole('row', { name: /^href href / })).toBeVisible();
+  await expect(properties.getByRole('row', { name: /^loadingLabel loading-label / })).toBeVisible();
+  await expect(properties.getByRole('row', { name: /^variant variant ButtonVariant 'primary'/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Playground controls' })).toBeVisible();
+});
+
+test('documentation source links resolve to the repository', async ({ page }) => {
+  await openDocs(page, 'foundations-spacing--docs');
+
+  await expect(page.getByRole('link', { name: 'packages/tokens/src/primitive/spacing.test.ts' })).toHaveAttribute(
+    'href',
+    'https://github.com/jsekulowicz/design-system-library/blob/main/packages/tokens/src/primitive/spacing.test.ts',
+  );
+});
+
+test('component documentation does not nest paragraphs', async ({ page }) => {
+  for (const id of [
+    'atoms-button--docs',
+    'atoms-checkboxgroup--docs',
+    'atoms-progress-bar--docs',
+    'atoms-radiogroup--docs',
+    'molecules-toast--docs',
+  ]) {
+    await openDocs(page, id);
+    await expect(page.locator('p p')).toHaveCount(0);
+  }
+});
+
+test('compact Storybook navigation does not repeat the active docs label', async ({ page }) => {
+  await page.setViewportSize({ width: 480, height: 900 });
+  await page.goto('/?path=/docs/atoms-button--docs');
+
+  await expect(page.getByRole('button', { name: 'Open navigation menu' })).toHaveText('Atoms/Button');
+});

@@ -20,9 +20,9 @@ A native `<button>` lives in shadow DOM, styled via `::part(button)`. Slots for 
 
     <ds-tab-panel value="api">
       <Canvas of={ButtonStories.Playground} />
-      <h3>Props</h3>
-      <Controls of={ButtonStories.Playground} />
       <ComponentApi tag="ds-button" />
+      <h3>Playground controls</h3>
+      <Controls of={ButtonStories.Playground} />
     </ds-tab-panel>
 
     <ds-tab-panel value="examples">
@@ -31,12 +31,12 @@ A native `<button>` lives in shadow DOM, styled via `::part(button)`. Slots for 
 
     <ds-tab-panel value="guidelines">
       <h3>Custom primary palettes</h3>
-      <p>
+      <div className="ds-doc-paragraph">
         Set <code>--ds-button-bg</code> and <code>--ds-button-fg</code> on a primary button.
         Hover and active backgrounds are derived by mixing 8% and 16% toward the foreground;
         set <code>--ds-button-bg-hover</code> or <code>--ds-button-bg-active</code> when a palette
         needs explicit states.
-      </p>
+      </div>
       <h3>Do</h3>
       <ul>
         <li>Use one <code>primary</code> per surface - the clearest next step for the user.</li>

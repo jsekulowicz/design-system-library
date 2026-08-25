@@ -58,6 +58,7 @@ html[data-ds-view-mode='docs'] body {
 }
 
 .sbdocs p:not(.sb-story *),
+.sbdocs .ds-doc-paragraph,
 .sbdocs li:not(.sb-story *) {
   color: var(--ds-color-fg);
   font-family: var(--ds-font-body);
@@ -70,6 +71,10 @@ html[data-ds-view-mode='docs'] body {
 }
 
 p {
+  margin-block: var(--ds-space-2);
+}
+
+.ds-doc-paragraph {
   margin-block: var(--ds-space-2);
 }
 
@@ -297,6 +302,15 @@ p {
   border: 0 !important;
 }
 
+.sbdocs div:has(> .docblock-argstable) {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.sbdocs .docblock-argstable {
+  min-width: 40rem;
+}
+
 /* ===== API tables rendered by ComponentApi ===== */
 .ds-api-table {
   width: 100%;
@@ -305,6 +319,20 @@ p {
   margin: var(--ds-space-3) 0 var(--ds-space-6);
   background: transparent !important;
   color: var(--ds-color-fg);
+}
+
+.ds-api-table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.ds-properties-table {
+  min-width: 56rem;
+  table-layout: auto;
+}
+
+.ds-component-import {
+  overflow-x: auto;
 }
 
 .ds-api-table thead th {

@@ -4,22 +4,47 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Design System Library
 
-A framework-agnostic design system built with Lit web components, TypeScript, Storybook, Playwright, and axe-core.
+A framework-agnostic component library built with Lit web components and TypeScript. Use it directly in HTML or
+through Lit, React, Vue, and Angular.
 
-The project documents reusable UI components, design tokens, accessibility checks, and framework wrappers for portfolio and implementation reference.
+The library provides reusable components, design tokens, accessible interaction patterns, and typed React wrappers.
 
-Live docs: [https://jsekulowicz.github.io/design-system-library](https://jsekulowicz.github.io/design-system-library)
+Source code: [GitHub repository](https://github.com/jsekulowicz/design-system-library)
 
 ## Quick start
 
+Install the token and component packages with your preferred package manager.
+
+### pnpm
+
+```sh
+pnpm add @jsekulowicz/ds-tokens @jsekulowicz/ds-components
+```
+
+### npm
+
+```sh
+npm install @jsekulowicz/ds-tokens @jsekulowicz/ds-components
+```
+
+Import the default theme and register only the components you use at your application entry point.
+
 ```ts
-import '@jsekulowicz/ds-tokens/dist/theme-default.css';
+import '@jsekulowicz/ds-tokens/theme-default.css';
 import '@jsekulowicz/ds-components/button/define';
 ```
+
+Registered components work like native HTML elements.
 
 ```html
 <ds-button variant="primary">Ship it</ds-button>
 ```
+
+Continue with [Framework usage](?path=/docs/framework-usage--docs) for Lit, React, Vue, Angular, and plain JavaScript
+integration patterns.
+
+> The published packages and source repository are currently `UNLICENSED`. Installation does not grant permission to
+> copy, modify, or redistribute the code.
 
 ## Principles
 

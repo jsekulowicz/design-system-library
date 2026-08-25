@@ -66,8 +66,6 @@ Column widths are measured at runtime, so pinned columns keep their natural widt
 
     <ds-tab-panel value="api">
       <Canvas of={TableStories.Basic} />
-      <h3>Props</h3>
-      <Controls of={TableStories.Basic} />
       <ds-tabs value="ds-table">
         <ds-tab slot="tab" value="ds-table">ds-table</ds-tab>
         <ds-tab slot="tab" value="ds-table-sort-button">ds-table-sort-button</ds-tab>
@@ -83,6 +81,8 @@ Column widths are measured at runtime, so pinned columns keep their natural widt
           <ComponentApi tag="ds-table-pagination" />
         </ds-tab-panel>
       </ds-tabs>
+      <h3>Playground controls</h3>
+      <Controls of={TableStories.Basic} />
     </ds-tab-panel>
 
     <ds-tab-panel value="examples">
