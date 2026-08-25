@@ -8,7 +8,7 @@ const meta: Meta = {
   component: 'ds-tooltip',
   parameters: {
     layout: 'fullscreen',
-    docs: { story: { inline: false, height: '180px' } },
+    docs: { story: { inline: true } },
   },
   argTypes: {
     placement: {
@@ -24,7 +24,7 @@ export default meta;
 type Story = StoryObj;
 
 const CENTERED_FRAME_STYLE =
-  'box-sizing:border-box;height:100vh;display:flex;align-items:center;justify-content:center';
+  'box-sizing:border-box;height:180px;display:flex;align-items:center;justify-content:center';
 const PLACEMENTS_FRAME_STYLE = `${CENTERED_FRAME_STYLE};padding:var(--ds-space-4);gap:var(--ds-space-4);flex-wrap:wrap`;
 const EDGE_FRAME_STYLE = `${CENTERED_FRAME_STYLE};padding:var(--ds-space-4);justify-content:flex-start`;
 const WRAPPING_FRAME_STYLE = `${CENTERED_FRAME_STYLE};text-align:right;white-space:nowrap`;

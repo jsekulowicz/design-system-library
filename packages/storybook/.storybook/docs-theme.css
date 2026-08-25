@@ -90,6 +90,11 @@ p {
   border-color: var(--ds-color-border);
 }
 
+.sbdocs .sb-story code:not(pre code) {
+  justify-self: start;
+  width: fit-content;
+}
+
 /* Syntax-highlighter injects colored <span> tokens inside <pre>; override
    so they stay readable in both themes instead of staying light on dark bg. */
 .sbdocs pre span {

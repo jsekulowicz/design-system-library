@@ -189,7 +189,7 @@ test('nested story frames show a themed spinner before their document loads', as
     await route.continue();
   });
 
-  const navigation = page.goto('/iframe.html?id=atoms-tooltip--docs&viewMode=docs');
+  const navigation = page.goto('/iframe.html?id=organisms-topbar--docs&viewMode=docs');
   await requestStarted;
   const loadingFrame = page.locator('iframe[data-ds-story-loading="true"]').first();
   await expect(loadingFrame).toBeVisible();
@@ -263,6 +263,7 @@ test('manager and preview use the same centered documentation loader', async ({ 
   await expect(managerLoader).toHaveAttribute('aria-label', 'Loading documentation...');
   await expect(managerLoader).toHaveCSS('align-items', 'center');
   await expect(managerLoader).toHaveCSS('justify-content', 'center');
+  await expect(managerLoader).toHaveCSS('scrollbar-gutter', 'stable');
   await expect(page.locator('html')).toHaveAttribute('data-ds-loading-kind', 'docs');
   await expect
     .poll(() => managerLoader.evaluate((element) => getComputedStyle(element, '::after').content))
@@ -295,6 +296,7 @@ test('manager and preview use the same centered documentation loader', async ({ 
   const preview = page.frameLocator('#storybook-preview-iframe');
   const docsLoader = preview.locator('.sb-preparing-docs');
   const previewSpinner = docsLoader.locator('.sb-loader');
+  await expect(preview.locator('html')).toHaveCSS('scrollbar-gutter', 'stable');
   await expect(docsLoader).toBeVisible();
   await expect
     .poll(() => docsLoader.evaluate((element) => getComputedStyle(element, '::after').content))

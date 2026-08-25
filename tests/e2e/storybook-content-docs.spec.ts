@@ -64,6 +64,30 @@ test('component docs combine interactive controls with complete property metadat
   );
 });
 
+for (const [name, id, tag] of [
+  ['BarChart', 'molecules-barchart--docs', 'ds-bar-chart'],
+  ['PieChart', 'molecules-piechart--docs', 'ds-pie-chart'],
+  ['HeatmapCalendar', 'molecules-heatmapcalendar--docs', 'ds-heatmap-calendar'],
+] as const) {
+  test(`${name} Props update its primary example`, async ({ page }) => {
+    await openDocs(page, id);
+    const propsTable = page.getByRole('heading', { name: 'Props' }).locator('xpath=following::table[1]');
+    const titleControl = propsTable.getByRole('row', { name: /title Sets title/ }).getByRole('textbox');
+    const updatedTitle = `${name} controlled title`;
+
+    await titleControl.fill(updatedTitle);
+    await expect(page.locator(tag).first()).toHaveJSProperty('title', updatedTitle);
+  });
+}
+
+test('Tooltip Props update its primary example', async ({ page }) => {
+  await openDocs(page, 'atoms-tooltip--docs');
+  const propsTable = page.getByRole('heading', { name: 'Props' }).locator('xpath=following::table[1]');
+
+  await propsTable.getByRole('radio', { name: 'right' }).check();
+  await expect(page.locator('ds-tooltip').first()).toHaveJSProperty('placement', 'right');
+});
+
 test('documentation source links resolve to the repository', async ({ page }) => {
   await openDocs(page, 'foundations-spacing--docs');
 

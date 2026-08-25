@@ -14,6 +14,27 @@ test('spacing examples use intrinsic inline-code labels', async ({ page }) => {
   await expect(code).not.toHaveCSS('width', '96px');
 });
 
+test('foundation grid token labels keep intrinsic backgrounds', async ({ page }) => {
+  for (const [id, label] of [
+    ['foundations-tokens--docs', 'radius-none'],
+    ['foundations-tokens--docs', 'shadow-none'],
+    ['foundations-typography--docs', '--ds-font-display'],
+    ['foundations-color--docs', '--ds-color-bg'],
+  ] as const) {
+    await openDocs(page, id);
+    const code = page
+      .locator('.sb-story code')
+      .filter({ hasText: new RegExp(`^${label}$`) })
+      .first();
+    const widths = await code.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return { background: element.getBoundingClientRect().width, text: range.getBoundingClientRect().width };
+    });
+    expect(widths.background - widths.text).toBeLessThan(12);
+  }
+});
+
 test('Copy code has a visible separator from the preceding action', async ({ page }) => {
   await openDocs(page, 'atoms-divider--docs');
   const copy = page.getByRole('button', { name: 'Copy code' }).first();
@@ -52,14 +73,15 @@ test('story frames preserve scroll chaining', async ({ page }) => {
   await expect(page.locator('body')).toHaveCSS('overscroll-behavior-y', 'auto');
 });
 
-test('wheel input over a Tooltip preview scrolls its documentation page', async ({ page }) => {
+test('wheel input over an inline Tooltip preview scrolls its documentation page', async ({ page }) => {
   await page.goto('/?path=/docs/atoms-tooltip--docs');
   const preview = page.frameLocator('#storybook-preview-iframe');
   const docs = preview.locator('.sbdocs-content');
   await expect(docs).toBeVisible();
-  const storyFrame = preview.locator('iframe[id^="iframe--"]').first();
-  await storyFrame.scrollIntoViewIfNeeded();
-  await storyFrame.hover();
+  const story = preview.locator('.sb-story').first();
+  await expect(preview.locator('iframe[id^="iframe--"]')).toHaveCount(0);
+  await story.scrollIntoViewIfNeeded();
+  await story.hover();
   const before = await docs.evaluate(() => window.scrollY);
   await page.mouse.wheel(0, 500);
   await expect.poll(() => docs.evaluate(() => window.scrollY)).toBeGreaterThan(before);

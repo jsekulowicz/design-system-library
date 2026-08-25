@@ -18,7 +18,7 @@ const meta: Meta = {
   title: 'Molecules/HeatmapCalendar',
   component: 'ds-heatmap-calendar',
   parameters: {
-    docs: { collapsedObjectControls: ['data'], story: { inline: false, height: '240px' } },
+    docs: { collapsedObjectControls: ['data'], story: { inline: true } },
   },
   argTypes: {
     data: { control: 'object' },
