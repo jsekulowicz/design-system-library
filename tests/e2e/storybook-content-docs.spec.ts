@@ -44,9 +44,7 @@ test('component docs combine interactive controls with complete property metadat
   await expect(
     propsTable.getByRole('row', { name: /loadingLabel.*Label shown while loading.*string.*undefined/ }),
   ).toBeVisible();
-  await expect(
-    propsTable.getByRole('row', { name: /fullWidth.*Enables or disables full width.*boolean.*false/ }),
-  ).toBeVisible();
+  await expect(propsTable.getByRole('row', { name: /fullWidth.*boolean.*false/ })).toBeVisible();
   await expect(propsHeading).toHaveJSProperty('tagName', 'H3');
 
   const propsPrecedesImport = await propsHeading.evaluate((heading) =>
@@ -72,7 +70,10 @@ for (const [name, id, tag] of [
   test(`${name} Props update its primary example`, async ({ page }) => {
     await openDocs(page, id);
     const propsTable = page.getByRole('heading', { name: 'Props' }).locator('xpath=following::table[1]');
-    const titleControl = propsTable.getByRole('row', { name: /title Sets title/ }).getByRole('textbox');
+    const titleControl = propsTable
+      .getByRole('cell', { name: 'title', exact: true })
+      .locator('xpath=..')
+      .getByRole('textbox');
     const updatedTitle = `${name} controlled title`;
 
     await titleControl.fill(updatedTitle);

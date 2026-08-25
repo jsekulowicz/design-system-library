@@ -26,11 +26,14 @@ test('foundation grid token labels keep intrinsic backgrounds', async ({ page })
       .locator('.sb-story code')
       .filter({ hasText: new RegExp(`^${label}$`) })
       .first();
+    await expect(code).toBeVisible();
     const widths = await code.evaluate((element) => {
       const range = document.createRange();
       range.selectNodeContents(element);
       return { background: element.getBoundingClientRect().width, text: range.getBoundingClientRect().width };
     });
+    expect(widths.text).toBeGreaterThan(0);
+    expect(widths.background).toBeGreaterThanOrEqual(widths.text);
     expect(widths.background - widths.text).toBeLessThan(12);
   }
 });

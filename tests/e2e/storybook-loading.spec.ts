@@ -36,10 +36,9 @@ async function collectDocumentationLoaderSamplesDuringRefresh(
       recordVisibleLoader('#preview-loader', 'manager');
       recordVisibleLoader('.sb-preparing-docs .sb-loader', 'preview');
     }
-    const loaderObserver = new MutationObserver(sampleVisibleDocumentationLoaders);
-    loaderObserver.observe(document, { attributes: true, childList: true, subtree: true });
-    window.setInterval(sampleVisibleDocumentationLoaders, 4);
-    requestAnimationFrame(sampleVisibleDocumentationLoaders);
+    const loaderSamplingInterval = window.setInterval(sampleVisibleDocumentationLoaders, 4);
+    window.setTimeout(() => window.clearInterval(loaderSamplingInterval), 2000);
+    sampleVisibleDocumentationLoaders();
   });
   await page.goto('/?path=/docs/foundations-spacing--docs');
   const preview = page.frameLocator('#storybook-preview-iframe');

@@ -21,22 +21,12 @@ function displayOptions(options: readonly unknown[] | undefined): string | undef
     .join(' | ');
 }
 
-function getPropertyDescription(property: ComponentPropertyDocumentation): string {
-  if (property.description) {
-    return property.description;
-  }
-  const readableName = property.name.replaceAll(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
-  const purpose = property.type?.text === 'boolean' ? `Enables or disables ${readableName}.` : `Sets ${readableName}.`;
-  const attribute = property.attribute ? ` HTML attribute: \`${property.attribute}\`.` : '';
-  return `${purpose}${attribute}`;
-}
-
 function enrichArgumentType(argumentType: StrictInputType, property: ComponentPropertyDocumentation): StrictInputType {
   const typeSummary = displayOptions(argumentType.options) ?? property.type?.text;
   const defaultSummary = displayValue(property.default);
   return {
     ...argumentType,
-    description: argumentType.description ?? getPropertyDescription(property),
+    description: argumentType.description ?? property.description,
     table: {
       ...argumentType.table,
       defaultValue: argumentType.table?.defaultValue ?? (defaultSummary ? { summary: defaultSummary } : undefined),
