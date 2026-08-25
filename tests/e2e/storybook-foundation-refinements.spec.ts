@@ -23,21 +23,24 @@ test('Theming shows clearly labeled brand examples with their token overrides', 
   await expect(page.locator('.ds-brand-example-code').filter({ hasText: '--ds-radius-xs: 12px;' })).toBeVisible();
 });
 
-test('dark-mode shadow examples use a contrasting preview surface', async ({ page }) => {
+test('dark-mode shadow examples remain visibly distinct', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('ds-storybook-theme', 'dark'));
   await openDocs(page, 'foundations-tokens--docs');
-  const label = storyCode(page, 'shadow-md');
-  const preview = label.locator('xpath=preceding-sibling::div[1]');
-  const tile = preview.locator(':scope > div');
+  const labels = ['shadow-none', 'shadow-sm', 'shadow-md', 'shadow-lg'];
+  const samples = labels.map((label) => storyCode(page, label).locator('xpath=preceding-sibling::div[1]'));
+  const appearances = await Promise.all(
+    samples.map((sample) =>
+      sample.evaluate((element) => ({
+        canvas: getComputedStyle(element).backgroundColor,
+        surface: getComputedStyle(element.firstElementChild!).backgroundColor,
+        shadow: getComputedStyle(element.firstElementChild!).boxShadow,
+      })),
+    ),
+  );
 
-  await expect(preview).toBeVisible();
-  const colors = await preview.evaluate((element) => ({
-    preview: getComputedStyle(element).backgroundColor,
-    tile: getComputedStyle(element.firstElementChild!).backgroundColor,
-    shadow: getComputedStyle(element.firstElementChild!).boxShadow,
-  }));
-  expect(colors.preview).not.toBe(colors.tile);
-  expect(colors.shadow).not.toBe('none');
+  expect(new Set(appearances.map(({ shadow }) => shadow)).size).toBe(labels.length);
+  expect(new Set(appearances.map(({ canvas }) => canvas))).toEqual(new Set(['rgb(226, 226, 227)']));
+  expect(new Set(appearances.map(({ surface }) => surface))).toEqual(new Set(['rgb(250, 248, 245)']));
 });
 
 test('foundation descriptions and token labels use the 14px body size', async ({ page }) => {

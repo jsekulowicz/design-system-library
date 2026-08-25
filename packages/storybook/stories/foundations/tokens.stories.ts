@@ -1,7 +1,7 @@
 import { html, type TemplateResult } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { TableColumn } from '@jsekulowicz/ds-components/table';
-import { border, breakpoint, container, duration, easing, radius, shadow, zIndex } from '@jsekulowicz/ds-tokens';
+import { border, breakpoint, color, container, duration, easing, radius, shadow, zIndex } from '@jsekulowicz/ds-tokens';
 import '@jsekulowicz/ds-components/table/define';
 import { GROUP_LABEL, joinStyles } from '../shared/styles';
 
@@ -31,8 +31,8 @@ const SHAPE_LAYOUT = joinStyles(
   'color:var(--ds-color-fg)',
 );
 const SHADOW_PREVIEW = joinStyles(
-  'padding:var(--ds-space-4)',
-  'background:color-mix(in srgb,var(--ds-color-bg-muted) 75%,var(--ds-color-fg-muted) 25%)',
+  'padding:var(--ds-space-6)',
+  `background:${color.ink[800]}`,
   'border-radius:var(--ds-radius-xs)',
 );
 
@@ -47,8 +47,8 @@ function radiusSwatch(value: string): string {
 
 function shadowSwatch(name: string): string {
   return joinStyles(
-    'height:64px',
-    'background:var(--ds-color-bg)',
+    'height:56px',
+    `background:${color.ink[1000]}`,
     'border-radius:var(--ds-radius-xs)',
     `box-shadow:var(--ds-shadow-${name})`,
   );
