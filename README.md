@@ -16,7 +16,7 @@ Live Storybook docs: https://jsekulowicz.github.io/design-system-library
 
 ## Components
 
-**Actions** - `ds-button`, `ds-link`, `ds-share-bar`
+**Actions** - `ds-button`, `ds-link`
 
 **Forms** - `ds-checkbox`, `ds-checkbox-group`, `ds-color-picker`, `ds-color-picker-input-color`, `ds-color-picker-swatch`, `ds-color-picker-swatch-group`, `ds-fieldset`, `ds-form`, `ds-radio`, `ds-radio-group`, `ds-range-input`, `ds-searchable-select`, `ds-segmented-control`, `ds-select`, `ds-select-option`, `ds-text-area`, `ds-text-field`
 
@@ -26,7 +26,7 @@ Live Storybook docs: https://jsekulowicz.github.io/design-system-library
 
 **Overlays** - `ds-dialog`, `ds-drawer`, `ds-popover-button`, `ds-tooltip`
 
-**Data Display** - `ds-badge`, `ds-bar-chart`, `ds-card`, `ds-divider`, `ds-heatmap-calendar`, `ds-icon`, `ds-list`, `ds-list-item`, `ds-pie-chart`, `ds-stat-tile`, `ds-table`, `ds-table-pagination`, `ds-table-sort-button`
+**Data Display** - `ds-badge`, `ds-bar-chart`, `ds-card`, `ds-divider`, `ds-heatmap-calendar`, `ds-icon`, `ds-list`, `ds-list-item`, `ds-pie-chart`, `ds-share-bar`, `ds-stat-tile`, `ds-table`, `ds-table-pagination`, `ds-table-sort-button`
 
 **Layout** - `ds-footer`, `ds-page-shell`, `ds-scrollable-page`
 

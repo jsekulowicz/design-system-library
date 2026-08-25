@@ -26,7 +26,7 @@
     "**/dist": true,
     "**/coverage": true,
     "**/storybook-static": true,
-    "packages/components/src/atoms/icon/icons": true,
+    "packages/components/src/data-display/icon/icons": true,
     "packages/react/src": true
   }
 }

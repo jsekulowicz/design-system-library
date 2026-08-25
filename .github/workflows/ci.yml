@@ -30,7 +30,7 @@ jobs:
         run: pnpm build
 
       - name: Generated code matches its generators
-        run: git diff --exit-code -- packages/components/src/atoms/icon/icons packages/react/src
+        run: git diff --exit-code -- packages/components/src/data-display/icon/icons packages/react/src
 
       - name: Format check
         run: pnpm format:check

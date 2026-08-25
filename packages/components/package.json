@@ -338,12 +338,12 @@
       "import": "./dist/data-display/pie-chart/define.js"
     },
     "./share-bar": {
-      "types": "./dist/actions/share-bar/index.d.ts",
-      "import": "./dist/actions/share-bar/index.js"
+      "types": "./dist/data-display/share-bar/index.d.ts",
+      "import": "./dist/data-display/share-bar/index.js"
     },
     "./share-bar/define": {
-      "types": "./dist/actions/share-bar/define.d.ts",
-      "import": "./dist/actions/share-bar/define.js"
+      "types": "./dist/data-display/share-bar/define.d.ts",
+      "import": "./dist/data-display/share-bar/define.js"
     },
     "./heatmap-calendar": {
       "types": "./dist/data-display/heatmap-calendar/index.d.ts",

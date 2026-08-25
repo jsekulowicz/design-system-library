@@ -12,6 +12,7 @@ test('ds-button variants story renders all variants', async ({ page }) => {
 
 test('loading never shrinks the button, and loading-label pins its width', async ({ page }) => {
   await page.goto('/iframe.html?id=actions-button--loading-label&viewMode=story');
+  await page.evaluate(() => document.fonts.ready);
   const demos = page.locator('ds-button[data-demo]');
   await expect(demos).toHaveCount(3);
 

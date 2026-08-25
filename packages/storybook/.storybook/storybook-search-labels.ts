@@ -1,4 +1,14 @@
-const STORYBOOK_CATEGORIES = ['Foundations', 'Atoms', 'Molecules', 'Organisms', 'Templates', 'Pages'] as const;
+const STORYBOOK_CATEGORIES = [
+  'Foundations',
+  'Actions',
+  'Forms',
+  'Navigation',
+  'Feedback',
+  'Overlays',
+  'Data Display',
+  'Layout',
+  'Patterns',
+] as const;
 let shouldUseFriendlyDocsLabels = true;
 
 interface StorybookLabelItem {

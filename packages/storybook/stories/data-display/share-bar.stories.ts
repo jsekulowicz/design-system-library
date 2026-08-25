@@ -40,7 +40,7 @@ function shareSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
 }
 
 const meta: Meta = {
-  title: 'Actions/ShareBar',
+  title: 'Data Display/ShareBar',
   component: 'ds-share-bar',
   argTypes: {
     data: { control: 'object' },

@@ -1,44 +1,52 @@
 import './actions/button/define.js';
-import './overlays/tooltip/define.js';
-import './data-display/badge/define.js';
-import './feedback/skeleton/define.js';
-import './feedback/progress-bar/define.js';
-import './data-display/divider/define.js';
-import './data-display/list/define.js';
-import './data-display/icon/define.js';
 import './actions/link/define.js';
-import './forms/text-field/define.js';
-import './forms/range-input/define.js';
+
+import './data-display/badge/define.js';
+import './data-display/bar-chart/define.js';
+import './data-display/card/define.js';
+import './data-display/divider/define.js';
+import './data-display/heatmap-calendar/define.js';
+import './data-display/icon/define.js';
+import './data-display/list/define.js';
+import './data-display/pie-chart/define.js';
+import './data-display/share-bar/define.js';
+import './data-display/stat-tile/define.js';
+import './data-display/table/define.js';
+
+import './feedback/alert/define.js';
+import './feedback/progress-bar/define.js';
+import './feedback/skeleton/define.js';
+import './feedback/toast/define.js';
+
 import './forms/checkbox/define.js';
 import './forms/checkbox-group/define.js';
+import './forms/color-picker/define.js';
+import './forms/fieldset/define.js';
+import './forms/form/define.js';
 import './forms/radio/define.js';
 import './forms/radio-group/define.js';
-import './forms/fieldset/define.js';
+import './forms/range-input/define.js';
+import './forms/searchable-select/define.js';
 import './forms/segmented-control/define.js';
 import './forms/select/define.js';
-import './forms/searchable-select/define.js';
-import './navigation/tabs/define.js';
-import './data-display/table/define.js';
-import './navigation/breadcrumb/define.js';
-import './navigation/nav-item/define.js';
-import './navigation/menu/define.js';
-import './data-display/card/define.js';
-import './data-display/stat-tile/define.js';
-import './overlays/dialog/define.js';
-import './overlays/drawer/define.js';
-import './feedback/toast/define.js';
-import './forms/color-picker/define.js';
-import './navigation/menu-button/define.js';
-import './overlays/popover-button/define.js';
-import './data-display/bar-chart/define.js';
-import './data-display/pie-chart/define.js';
-import './actions/share-bar/define.js';
-import './data-display/heatmap-calendar/define.js';
-import './feedback/alert/define.js';
-import './forms/form/define.js';
-import './navigation/top-bar/define.js';
-import './navigation/sidenav/define.js';
+import './forms/text-area/define.js';
+import './forms/text-field/define.js';
+
 import './layout/footer/define.js';
 import './layout/page-shell/define.js';
 import './layout/scrollable-page/define.js';
+
+import './navigation/breadcrumb/define.js';
+import './navigation/menu/define.js';
+import './navigation/menu-button/define.js';
+import './navigation/nav-item/define.js';
+import './navigation/sidenav/define.js';
+import './navigation/tabs/define.js';
+import './navigation/top-bar/define.js';
+
+import './overlays/dialog/define.js';
+import './overlays/drawer/define.js';
+import './overlays/popover-button/define.js';
+import './overlays/tooltip/define.js';
+
 import './patterns/settings-page/define.js';
