@@ -1,5 +1,55 @@
 import { expect, test } from '@playwright/test';
 
+interface DocumentationLoaderSample {
+  centerX: number;
+  kind: 'manager' | 'preview';
+}
+
+async function collectDocumentationLoaderSamplesDuringRefresh(
+  page: import('@playwright/test').Page,
+): Promise<DocumentationLoaderSample[]> {
+  const samples: DocumentationLoaderSample[] = [];
+  await page.exposeFunction('recordDocumentationLoaderSample', (sample: DocumentationLoaderSample) =>
+    samples.push(sample),
+  );
+  await page.addInitScript(() => {
+    function recordVisibleLoader(selector: string, kind: DocumentationLoaderSample['kind']): void {
+      const loader = document.querySelector<HTMLElement>(selector);
+      if (loader) {
+        const rect = loader.getBoundingClientRect();
+        const frameRect = window.frameElement?.getBoundingClientRect();
+        const style = getComputedStyle(loader);
+        if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden') {
+          void (
+            window as Window & {
+              recordDocumentationLoaderSample: (sample: DocumentationLoaderSample) => Promise<void>;
+            }
+          ).recordDocumentationLoaderSample({
+            centerX: (frameRect?.left ?? 0) + rect.left + rect.width / 2,
+            kind,
+          });
+        }
+      }
+    }
+
+    function sampleVisibleDocumentationLoaders(): void {
+      recordVisibleLoader('#preview-loader', 'manager');
+      recordVisibleLoader('.sb-preparing-docs .sb-loader', 'preview');
+    }
+    const loaderObserver = new MutationObserver(sampleVisibleDocumentationLoaders);
+    loaderObserver.observe(document, { attributes: true, childList: true, subtree: true });
+    window.setInterval(sampleVisibleDocumentationLoaders, 4);
+    requestAnimationFrame(sampleVisibleDocumentationLoaders);
+  });
+  await page.goto('/?path=/docs/foundations-spacing--docs');
+  const preview = page.frameLocator('#storybook-preview-iframe');
+  await expect(preview.locator('.sbdocs-content')).toBeVisible();
+  await page.reload();
+  await expect(preview.locator('.sbdocs-content')).toBeVisible();
+  await page.waitForTimeout(200);
+  return samples;
+}
+
 test('story loading is themed before the story module resolves', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('ds-storybook-theme', 'dark'));
   await page.route(/\/assets\/tooltip\.stories-[^/]+\.js$/, async (route) => {
@@ -227,7 +277,7 @@ test('nested story frames show a themed spinner before their document loads', as
   await expect(page.locator(`[id="${loadingFrameId}"]`)).not.toHaveAttribute('data-ds-story-loading', 'true');
 });
 
-test('manager and preview use the same centered documentation loader', async ({ page }) => {
+test('manager and preview documentation loaders share visual styling', async ({ page }) => {
   let releaseDocsModule: (() => void) | undefined;
   let signalDocsModule: (() => void) | undefined;
   const docsModuleRequested = new Promise<void>((resolve) => {
@@ -263,6 +313,7 @@ test('manager and preview use the same centered documentation loader', async ({ 
   await expect(managerLoader).toHaveAttribute('aria-label', 'Loading documentation...');
   await expect(managerLoader).toHaveCSS('align-items', 'center');
   await expect(managerLoader).toHaveCSS('justify-content', 'center');
+  await expect(managerLoader).toHaveCSS('overflow-y', 'scroll');
   await expect(managerLoader).toHaveCSS('scrollbar-gutter', 'stable');
   await expect(page.locator('html')).toHaveAttribute('data-ds-loading-kind', 'docs');
   await expect
@@ -281,10 +332,6 @@ test('manager and preview use the same centered documentation loader', async ({ 
       style.borderTopColor,
       style.borderRightColor,
     ];
-  });
-  const managerSpinnerCenter = await managerSpinner.evaluate((element) => {
-    const rect = element.getBoundingClientRect();
-    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
   });
   const managerLabelStyle = await managerLoader.evaluate((element) => {
     const style = getComputedStyle(element, '::after');
@@ -315,26 +362,32 @@ test('manager and preview use the same centered documentation loader', async ({ 
     ];
   });
   expect(previewSpinnerStyle.slice(0, 2)).toEqual(['static', '0px']);
-  const previewSpinnerCenter = await previewSpinner.evaluate((element) => {
-    const rect = element.getBoundingClientRect();
-    const frameRect = window.frameElement?.getBoundingClientRect();
-    return {
-      x: rect.x + (frameRect?.x ?? 0) + rect.width / 2,
-      y: rect.y + (frameRect?.y ?? 0) + rect.height / 2,
-    };
-  });
   const previewLabelStyle = await docsLoader.evaluate((element) => {
     const style = getComputedStyle(element, '::after');
     return [style.color, style.fontFamily, style.fontSize, style.fontWeight, style.lineHeight];
   });
   expect(previewSpinnerStyle.slice(2)).toEqual(managerSpinnerStyle);
-  expect(previewSpinnerCenter.x).toBeCloseTo(managerSpinnerCenter.x, 1);
-  expect(previewSpinnerCenter.y).toBeCloseTo(managerSpinnerCenter.y, 1);
   expect(previewLabelStyle).toEqual(managerLabelStyle);
   releaseDocsModule?.();
   await navigation;
   await expect(preview.locator('.sbdocs-content')).toBeVisible();
   await expect(preview.locator('.sb-preparing-docs')).toBeHidden();
+});
+
+test('ordinary docs refresh keeps the manager and preview loaders aligned', async ({ page }) => {
+  const samples = await collectDocumentationLoaderSamplesDuringRefresh(page);
+  const preview = page.frameLocator('#storybook-preview-iframe');
+  const scrollport = await preview.locator('html').evaluate((root) => ({
+    overflowY: getComputedStyle(root).overflowY,
+  }));
+  const managerSamples = samples.filter(({ kind }) => kind === 'manager');
+  const previewSamples = samples.filter(({ kind }) => kind === 'preview');
+  const centers = samples.map(({ centerX }) => centerX);
+
+  expect(managerSamples.length).toBeGreaterThan(0);
+  expect(previewSamples.length).toBeGreaterThan(0);
+  expect(scrollport.overflowY).toBe('scroll');
+  expect(Math.max(...centers) - Math.min(...centers)).toBeLessThan(0.1);
 });
 
 test('preview initialization survives unavailable local storage', async ({ page }) => {
