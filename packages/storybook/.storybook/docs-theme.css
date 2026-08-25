@@ -57,6 +57,22 @@ html[data-ds-view-mode='docs'] body {
   font-size: var(--ds-font-size-heading-sm) !important;
 }
 
+.sbdocs h2:not(.sb-story *),
+.sbdocs h3:not(.sb-story *),
+.sbdocs h4:not(.sb-story *),
+.sbdocs h5:not(.sb-story *),
+.sbdocs h6:not(.sb-story *) {
+  margin-block-end: var(--ds-space-3) !important;
+}
+
+.sbdocs h2:not(.sb-story *) + *,
+.sbdocs h3:not(.sb-story *) + *,
+.sbdocs h4:not(.sb-story *) + *,
+.sbdocs h5:not(.sb-story *) + *,
+.sbdocs h6:not(.sb-story *) + * {
+  margin-block-start: 0 !important;
+}
+
 .sbdocs p:not(.sb-story *),
 .sbdocs .ds-doc-paragraph,
 .sbdocs li:not(.sb-story *) {
@@ -298,6 +314,13 @@ p {
   background: var(--ds-color-bg) !important;
   color: var(--ds-color-fg) !important;
   border: 1px solid var(--ds-color-border) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.sbdocs .docblock-argstable textarea {
+  resize: vertical !important;
+  width: 100% !important;
 }
 
 /* The boolean toggle uses an absolute, full-size checkbox as an invisible
@@ -309,11 +332,36 @@ p {
 
 .sbdocs div:has(> .docblock-argstable) {
   max-width: 100%;
-  overflow-x: auto;
+  overflow-x: clip;
 }
 
 .sbdocs .docblock-argstable {
-  min-width: 40rem;
+  width: 100%;
+  min-width: 0;
+  margin-inline: 0 !important;
+  table-layout: fixed;
+}
+
+.sbdocs .docblock-argstable th,
+.sbdocs .docblock-argstable td {
+  min-width: 0 !important;
+  overflow-wrap: anywhere;
+}
+
+.sbdocs .docblock-argstable th:nth-child(1) {
+  width: 20%;
+}
+
+.sbdocs .docblock-argstable th:nth-child(2) {
+  width: 35%;
+}
+
+.sbdocs .docblock-argstable th:nth-child(3) {
+  width: 15%;
+}
+
+.sbdocs .docblock-argstable th:nth-child(4) {
+  width: 30%;
 }
 
 /* ===== API tables rendered by ComponentApi ===== */
@@ -321,7 +369,7 @@ p {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  margin: var(--ds-space-3) 0 var(--ds-space-6);
+  margin: 0 0 var(--ds-space-6);
   background: transparent !important;
   color: var(--ds-color-fg);
 }
@@ -331,8 +379,34 @@ p {
   overflow-x: auto;
 }
 
-.ds-component-import {
+.sbdocs .ds-component-import {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-block: 0 var(--ds-space-6) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
   overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.sbdocs .ds-component-import code {
+  display: block;
+  width: max-content;
+  padding: 0 !important;
+}
+
+.ds-brand-example-code {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 !important;
+  overflow-x: auto;
+}
+
+.ds-brand-example-code code {
+  display: block;
+  width: max-content;
 }
 
 .ds-api-table thead th {
@@ -367,4 +441,16 @@ p {
 
 * {
   box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .sbdocs.sbdocs-wrapper,
+  .sbdocs-wrapper {
+    padding-inline: 0 !important;
+  }
+
+  .sbdocs.sbdocs-content,
+  .sbdocs-content {
+    padding-inline: var(--ds-space-4) !important;
+  }
 }

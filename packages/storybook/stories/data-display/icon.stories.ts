@@ -51,7 +51,7 @@ export const Sizes: Story = {
               style="
         color:var(--ds-color-fg-muted);
         font-family:var(--ds-font-body);
-        font-size:var(--ds-font-size-body-sm);
+        font-size:var(--ds-font-size-body-md);
         font-weight:var(--ds-font-weight-medium);
       "
             >

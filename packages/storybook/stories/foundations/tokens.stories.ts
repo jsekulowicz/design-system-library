@@ -30,6 +30,11 @@ const SHAPE_LAYOUT = joinStyles(
   'font-size:var(--ds-font-size-body-lg)',
   'color:var(--ds-color-fg)',
 );
+const SHADOW_PREVIEW = joinStyles(
+  'padding:var(--ds-space-4)',
+  'background:color-mix(in srgb,var(--ds-color-bg-muted) 75%,var(--ds-color-fg-muted) 25%)',
+  'border-radius:var(--ds-radius-xs)',
+);
 
 function radiusSwatch(value: string): string {
   return joinStyles(
@@ -47,6 +52,12 @@ function shadowSwatch(name: string): string {
     'border-radius:var(--ds-radius-xs)',
     `box-shadow:var(--ds-shadow-${name})`,
   );
+}
+
+function shadowPreview(name: string): TemplateResult {
+  return html`<div aria-hidden="true" style=${SHADOW_PREVIEW}>
+    <div style=${shadowSwatch(name)}></div>
+  </div>`;
 }
 
 const borderRows: readonly TokenRow[] = Object.entries(border).map(([name, value]) => ({
@@ -95,7 +106,7 @@ export const Shape: Story = {
           ${Object.keys(shadow).map(
             (name) => html`
               <div style="display:grid;gap:var(--ds-space-3)">
-                <div style=${shadowSwatch(name)}></div>
+                ${shadowPreview(name)}
                 <code>shadow-${name}</code>
               </div>
             `,

@@ -9,7 +9,7 @@ const meta: Meta = {
 
 const SWATCH_META = joinStyles(
   'margin:0',
-  'font-size:var(--ds-font-size-body-sm)',
+  'font-size:var(--ds-font-size-body-md)',
   'color:var(--ds-color-fg-subtle)',
   'margin-top:var(--ds-space-1)',
 );
@@ -157,7 +157,7 @@ function swatchCard(s: Swatch): TemplateResult {
     <div style="height:56px;background:var(${s.token})" aria-hidden="true"></div>
     <figcaption style="padding:var(--ds-space-3);display:grid;gap:2px;background:var(--ds-color-bg-subtle)">
       <strong style="font-size:var(--ds-font-size-body-md)">${s.label}</strong>
-      <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)"
+      <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md);color:var(--ds-color-fg-muted)"
         >${s.token}</code
       >
       <p style=${SWATCH_META}>${s.desc}</p>
@@ -223,13 +223,13 @@ export const UsagePairings: Story = {
               <p style="margin:0;font-size:var(--ds-font-size-body-lg)">${p.sample}</p>
             </div>
             <div style=${LEGEND_BAR}>
-              <span style="font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted);min-width:14rem"
+              <span style="font-size:var(--ds-font-size-body-md);color:var(--ds-color-fg-muted);min-width:14rem"
                 >${p.label}</span
               >
               <div style="display:flex;align-items:center;gap:var(--ds-space-2)">
-                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">${p.bg}</code>
-                <span style="color:var(--ds-color-fg-subtle);font-size:var(--ds-font-size-body-sm)">+</span>
-                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-sm)">${p.fg}</code>
+                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">${p.bg}</code>
+                <span style="color:var(--ds-color-fg-subtle);font-size:var(--ds-font-size-body-md)">+</span>
+                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">${p.fg}</code>
               </div>
             </div>
           </div>`,

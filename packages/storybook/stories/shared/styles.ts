@@ -6,10 +6,10 @@ export function joinStyles(...parts: string[]): string {
 
 export const SECTION =
   'display:grid;gap:var(--ds-space-5);font-family:var(--ds-font-body);font-size:var(--ds-font-size-body-lg);color:var(--ds-color-fg)';
-export const MUTED_CELL = 'font-size:var(--ds-font-size-body-sm);color:var(--ds-color-fg-muted)';
+export const MUTED_CELL = 'font-size:var(--ds-font-size-body-md);color:var(--ds-color-fg-muted)';
 export const MONO_MUTED_CELL = joinStyles(
   'font-family:var(--ds-font-mono)',
-  'font-size:var(--ds-font-size-body-sm)',
+  'font-size:var(--ds-font-size-body-md)',
   'color:var(--ds-color-fg-muted)',
 );
 
