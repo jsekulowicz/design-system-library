@@ -2,7 +2,7 @@ import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { emit } from '@jsekulowicz/ds-core';
-import type { CardElevation } from '../molecules/card/card.js';
+import type { CardElevation } from '../data-display/card/card.js';
 import { ScrollFadeController } from './scroll-fade-controller.js';
 import { closeNestedDialogs } from './nested-dialogs.js';
 

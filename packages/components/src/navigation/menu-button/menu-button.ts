@@ -1,0 +1,165 @@
+import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { property, query, state } from 'lit/decorators.js';
+import { DsElement } from '@jsekulowicz/ds-core';
+import { PopoverController, syncPopoverPanel } from '../../shared/popover-controller.js';
+import { SlottedTriggerController } from '../../shared/slotted-trigger.js';
+import { menuButtonStyles } from './menu-button.styles.js';
+import type { ButtonSize, ButtonVariant } from '../../actions/button/button.js';
+import type { DsMenuItem } from '../menu/menu-item.js';
+import type { PopoverPlacement } from '../../shared/popover-placement.js';
+
+export type MenuButtonPlacement = PopoverPlacement;
+
+const PANEL_ID = 'panel';
+const OPEN_KEYS = new Set(['ArrowDown', 'ArrowUp', 'Enter', ' ']);
+
+/**
+ * @tag ds-menu-button
+ * @summary WAI-ARIA menu button: pairs a trigger with `ds-menu` and owns open/close, focus return, and click-outside.
+ * @slot trigger - Optional. Override the default `<ds-button>` trigger (e.g. icon-only button or avatar).
+ * @slot default - `ds-menu-item` children, forwarded into the inner `<ds-menu>`.
+ * @slot header - Forwarded to the inner `<ds-menu>` header slot.
+ * @slot footer - Forwarded to the inner `<ds-menu>` footer slot.
+ * @csspart trigger - The default trigger button (only rendered when `trigger` slot is empty).
+ * @csspart panel - The popover panel.
+ * @csspart menu - The inner `<ds-menu>` element.
+ * @event ds-select - Bubbles from the inner `<ds-menu>` when an item is activated. Detail: `{ value, originalEvent }`. The menu is closed automatically.
+ * @event ds-open - Fires when the menu opens.
+ * @event ds-close - Fires when the menu closes.
+ */
+export class DsMenuButton extends DsElement {
+  static override styles = [...DsElement.styles, menuButtonStyles];
+
+  @property() label = '';
+  @property() variant: ButtonVariant = 'secondary';
+  @property() size: ButtonSize = 'md';
+  @property({ type: Boolean, reflect: true }) disabled = false;
+  @property({ reflect: true }) placement: MenuButtonPlacement = 'bottom-start';
+  @property({ type: Boolean, reflect: true }) open = false;
+  @property({ attribute: 'menu-label' }) menuLabel = '';
+
+  @state() private _hasTriggerSlot = false;
+
+  @query('#trigger') private _triggerEl?: HTMLElement;
+  @query(`#${PANEL_ID}`) private _panelEl?: HTMLElement & {
+    showPopover?: () => void;
+  };
+
+  #popover = new PopoverController(this, {
+    focusTrigger: () => this.#focusTrigger(),
+    onOpen: () => {
+      this.open = true;
+      this.emit('ds-open', { detail: {} });
+    },
+    onClose: () => {
+      this.open = false;
+      this.emit('ds-close', { detail: {} });
+    },
+  });
+
+  #slottedTrigger = new SlottedTriggerController({
+    isOpen: () => this.#popover.open,
+    isDisabled: () => this.disabled,
+    toggle: () => this.#popover.toggle(),
+    onTriggerKeydown: (event) => this.#onTriggerKeydown(event),
+    onSlotChange: (hasTrigger) => {
+      this._hasTriggerSlot = hasTrigger;
+    },
+  });
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.#popover.disconnect();
+    this.#slottedTrigger.detach();
+  }
+
+  override willUpdate(changed: PropertyValues): void {
+    if (changed.has('open') && this.open !== this.#popover.open) {
+      if (this.open) {
+        this.#popover.show();
+      } else {
+        this.#popover.hide();
+      }
+    }
+  }
+
+  override updated(): void {
+    this.#slottedTrigger.syncAria(PANEL_ID, 'menu');
+    syncPopoverPanel(this._panelEl, this.#popover.open);
+  }
+
+  #focusTrigger(): void {
+    if (this._hasTriggerSlot) {
+      this.#slottedTrigger.focus();
+      return;
+    }
+    const inner = this._triggerEl?.shadowRoot?.querySelector<HTMLButtonElement>('button');
+    (inner ?? this._triggerEl)?.focus();
+  }
+
+  #focusFirstItem(): void {
+    const item = this.querySelector<DsMenuItem>('ds-menu-item:not([disabled])');
+    item?.focus();
+  }
+
+  #onDsClick = (): void => {
+    if (this.disabled) {
+      return;
+    }
+    this.#popover.toggle();
+  };
+
+  #onSelect = (): void => {
+    this.#popover.hide(true);
+  };
+
+  #onTriggerKeydown = (event: KeyboardEvent): void => {
+    if (OPEN_KEYS.has(event.key)) {
+      event.preventDefault();
+      this.#popover.show(() => this.#focusFirstItem());
+      return;
+    }
+    this.#popover.onEscapeKeydown(event);
+  };
+
+  override render(): TemplateResult {
+    return html`<div class="control-wrap" @keydown=${this.#popover.onEscapeKeydown}>
+      ${this.#renderTrigger()} ${this.#popover.open ? this.#renderPanel() : nothing}
+    </div>`;
+  }
+
+  #renderTrigger(): TemplateResult {
+    return html`<div class="trigger-wrap">
+      <slot name="trigger" @slotchange=${this.#slottedTrigger.onSlotChange}></slot>
+      ${this._hasTriggerSlot ? nothing : this.#renderDefaultTrigger()}
+    </div>`;
+  }
+
+  #renderDefaultTrigger(): TemplateResult {
+    return html`<ds-button
+      id="trigger"
+      part="trigger"
+      variant=${this.variant}
+      size=${this.size}
+      ?disabled=${this.disabled}
+      aria-haspopup="menu"
+      aria-expanded=${this.#popover.open ? 'true' : 'false'}
+      aria-controls=${ifDefined(this.#popover.open ? PANEL_ID : undefined)}
+      @ds-click=${this.#onDsClick}
+      @keydown=${this.#onTriggerKeydown}
+    >
+      ${this.label}
+    </ds-button>`;
+  }
+
+  #renderPanel(): TemplateResult {
+    return html`<div id=${PANEL_ID} class="panel" part="panel" popover="manual">
+      <ds-menu part="menu" label=${ifDefined(this.menuLabel || this.label || undefined)} @ds-select=${this.#onSelect}>
+        <slot name="header" slot="header"></slot>
+        <slot></slot>
+        <slot name="footer" slot="footer"></slot>
+      </ds-menu>
+    </div>`;
+  }
+}

@@ -29,7 +29,7 @@ test('Framework usage documents build-time Vue setup and React installation', as
 });
 
 test('component docs combine interactive controls with complete property metadata', async ({ page }) => {
-  await openDocs(page, 'atoms-button--docs');
+  await openDocs(page, 'actions-button--docs');
 
   await expect(page.getByText("import '@jsekulowicz/ds-components/button/define';")).toBeVisible();
   await expect(page.locator('.ds-properties-table')).toHaveCount(0);
@@ -63,9 +63,9 @@ test('component docs combine interactive controls with complete property metadat
 });
 
 for (const [name, id, tag] of [
-  ['BarChart', 'molecules-barchart--docs', 'ds-bar-chart'],
-  ['PieChart', 'molecules-piechart--docs', 'ds-pie-chart'],
-  ['HeatmapCalendar', 'molecules-heatmapcalendar--docs', 'ds-heatmap-calendar'],
+  ['BarChart', 'data-display-barchart--docs', 'ds-bar-chart'],
+  ['PieChart', 'data-display-piechart--docs', 'ds-pie-chart'],
+  ['HeatmapCalendar', 'data-display-heatmapcalendar--docs', 'ds-heatmap-calendar'],
 ] as const) {
   test(`${name} Props update its primary example`, async ({ page }) => {
     await openDocs(page, id);
@@ -82,7 +82,7 @@ for (const [name, id, tag] of [
 }
 
 test('Tooltip Props update its primary example', async ({ page }) => {
-  await openDocs(page, 'atoms-tooltip--docs');
+  await openDocs(page, 'overlays-tooltip--docs');
   const propsTable = page.getByRole('heading', { name: 'Props' }).locator('xpath=following::table[1]');
 
   await propsTable.getByRole('radio', { name: 'right' }).check();
@@ -100,11 +100,11 @@ test('documentation source links resolve to the repository', async ({ page }) =>
 
 test('component documentation does not nest paragraphs', async ({ page }) => {
   for (const id of [
-    'atoms-button--docs',
-    'atoms-checkboxgroup--docs',
-    'atoms-progress-bar--docs',
-    'atoms-radiogroup--docs',
-    'molecules-toast--docs',
+    'actions-button--docs',
+    'forms-checkboxgroup--docs',
+    'feedback-progress-bar--docs',
+    'forms-radiogroup--docs',
+    'feedback-toast--docs',
   ]) {
     await openDocs(page, id);
     await expect(page.locator('p p')).toHaveCount(0);
@@ -113,7 +113,7 @@ test('component documentation does not nest paragraphs', async ({ page }) => {
 
 test('compact Storybook navigation does not repeat the active docs label', async ({ page }) => {
   await page.setViewportSize({ width: 480, height: 900 });
-  await page.goto('/?path=/docs/atoms-button--docs');
+  await page.goto('/?path=/docs/actions-button--docs');
 
-  await expect(page.getByRole('button', { name: 'Open navigation menu' })).toHaveText('Atoms/Button');
+  await expect(page.getByRole('button', { name: 'Open navigation menu' })).toHaveText('Actions/Button');
 });

@@ -1,0 +1,56 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as SegmentedControlStories from './segmented-control.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={SegmentedControlStories} />
+
+# SegmentedControl
+
+Single-select control rendering a connected row of mutually-exclusive options, each with an optional leading icon. An inline, token-styled alternative to a dropdown when there are only a few choices.
+
+## Anatomy
+
+A visible field `label` (with an optional `description`) above a shadow-DOM `radiogroup` of `ds-button` segments - matching the layout of other form fields like `ds-select` and `ds-text-field`. Exposes a single `value`, takes its choices from the `options` array, and emits `ds-change` when the selection changes.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={SegmentedControlStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={SegmentedControlStories.Playground} />
+      <ComponentApi tag="ds-segmented-control" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Always provide a <code>label</code> - it becomes the group's accessible name.</li>
+        <li>Keep the list short and easy to read - 2-5 options is ideal.</li>
+        <li>Pre-select a sensible default so users aren't forced into an arbitrary choice.</li>
+        <li>Use short, parallel option labels; add an <code>icon</code> only when it aids recognition.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use for long option lists - prefer <code>ds-select</code>.</li>
+        <li>Don't use for independent toggles - compose checkboxes in a <code>ds-checkbox-group</code>.</li>
+        <li>Don't put destructive or irreversible actions on a segment; it's a value picker, not a button row.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Rendered as a <code>role="radiogroup"</code> whose <code>ds-button</code> segments expose <code>role="radio"</code> with <code>aria-checked</code> on the focusable element.</li>
+        <li>Follows the radiogroup keyboard pattern: <code>Tab</code> moves focus in and out of the control as a single stop (landing on the selected segment), and <code>←/→/↑/↓</code> plus <code>Home/End</code> move between options - selection follows focus. Disabled options are skipped and movement wraps at the ends.</li>
+        <li>The <code>label</code> renders as a visible field label and is also applied as the group's <code>aria-label</code>.</li>
+        <li>Icon-only meaning is avoided - each segment keeps a visible text label.</li>
+        <li>When an option provides an <code>icon</code>, import its glyph in the host (e.g. <code>@jsekulowicz/ds-components/icon/sparkles</code>).</li>
+      </ul>
+    </ds-tab-panel>
+
+  </ds-tabs>

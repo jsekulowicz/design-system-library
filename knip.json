@@ -19,7 +19,7 @@
     "packages/components": {
       "entry": ["src/index.ts", "src/define.ts", "src/**/define.ts", "custom-elements-manifest.config.mjs"],
       "project": ["src/**"],
-      "ignore": ["src/atoms/icon/icons/**"]
+      "ignore": ["src/data-display/icon/icons/**"]
     },
     "packages/react": {
       "entry": ["src/index.ts", "scripts/generate-wrappers.ts"],

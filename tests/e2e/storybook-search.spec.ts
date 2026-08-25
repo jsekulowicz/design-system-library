@@ -2,9 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 
 const recentDocs = [
   { id: 'introduction--docs', label: 'Introduction', path: 'Introduction' },
-  { id: 'organisms-topbar--docs', label: 'TopBar', path: 'Organisms/TopBar' },
-  { id: 'templates-pageshell--docs', label: 'PageShell', path: 'Templates/PageShell' },
-  { id: 'pages-settingspage--docs', label: 'SettingsPage', path: 'Pages/SettingsPage' },
+  { id: 'navigation-topbar--docs', label: 'TopBar', path: 'Navigation/TopBar' },
+  { id: 'layout-pageshell--docs', label: 'PageShell', path: 'Layout/PageShell' },
+  { id: 'patterns-settingspage--docs', label: 'SettingsPage', path: 'Patterns/SettingsPage' },
 ] as const;
 
 test('empty search recent docs use page names instead of Docs', async ({ page }) => {
@@ -16,7 +16,7 @@ test('empty search recent docs use page names instead of Docs', async ({ page })
   await expect(topBarLabel).toHaveJSProperty('textContent', 'Docs');
   await expect(topBarLabel).toHaveAttribute('data-ds-docs-label', 'TopBar');
   await expectRenderedLabel(topBarLabel, 'TopBar');
-  await expect(page.locator('[data-ds-docs-label="OrganismsTopBar"]')).toHaveCount(0);
+  await expect(page.locator('[data-ds-docs-label="NavigationTopBar"]')).toHaveCount(0);
 });
 
 test('empty search recent docs labels stay centered without growing rows', async ({ page }) => {

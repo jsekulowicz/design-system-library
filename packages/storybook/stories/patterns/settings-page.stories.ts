@@ -1,0 +1,220 @@
+import { html } from 'lit';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import '@jsekulowicz/ds-components/page-shell/define';
+import '@jsekulowicz/ds-components/sidenav/define';
+import '@jsekulowicz/ds-components/nav-item/define';
+import '@jsekulowicz/ds-components/breadcrumb/define';
+import '@jsekulowicz/ds-components/footer/define';
+import '@jsekulowicz/ds-components/link/define';
+import '@jsekulowicz/ds-components/settings-page/define';
+import '@jsekulowicz/ds-components/form/define';
+import '@jsekulowicz/ds-components/text-field/define';
+import '@jsekulowicz/ds-components/select/define';
+import '@jsekulowicz/ds-components/checkbox/define';
+import '@jsekulowicz/ds-components/button/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/home';
+import '@jsekulowicz/ds-components/icon/cog-6-tooth';
+import '@jsekulowicz/ds-components/icon/clock';
+import '@jsekulowicz/ds-components/icon/magnifying-glass';
+import '@jsekulowicz/ds-components/icon/briefcase';
+import '@jsekulowicz/ds-components/icon/user';
+import '@jsekulowicz/ds-components/icon/users';
+import '@jsekulowicz/ds-components/icon/key';
+import '@jsekulowicz/ds-components/icon/bell';
+import '@jsekulowicz/ds-components/icon/book-open';
+import '@jsekulowicz/ds-components/icon/puzzle-piece';
+
+const meta: Meta = {
+  title: 'Patterns/SettingsPage',
+  component: 'ds-settings-page',
+  parameters: {
+    layout: 'fullscreen',
+    // Full-viewport page; docs renders it in an iframe so the page-shell
+    // chrome has an isolated viewport box. Per-story `height` controls
+    // that iframe.
+    docs: { story: { inline: false } },
+  },
+};
+
+export default meta;
+type Story = StoryObj;
+
+const FRAME_HEIGHT = 480;
+const STORY_HEIGHT = `${FRAME_HEIGHT + 40}px`;
+const PAGE_SHELL_STYLE = 'min-height:0;height:100%;--ds-page-shell-max-width:none';
+
+const timezones = [
+  { label: 'UTC', value: 'utc' },
+  { label: 'Europe / Warsaw', value: 'waw' },
+  { label: 'America / New York', value: 'nyc' },
+];
+
+function frameStyle(): string {
+  if (typeof window !== 'undefined' && window.localStorage.getItem('ds-storybook-visual-test') === 'true') {
+    return 'height:100vh;overflow:hidden';
+  }
+  return `height:${FRAME_HEIGHT}px;overflow:clip;border-bottom:1px solid var(--ds-color-border)`;
+}
+
+export const PageWithSidenav: Story = {
+  name: 'Page with sidenav',
+  parameters: { docs: { story: { height: STORY_HEIGHT } } },
+  render: () => renderPage(true),
+};
+
+export const PageWithoutSidenav: Story = {
+  name: 'Page without sidenav',
+  parameters: { docs: { story: { height: STORY_HEIGHT } } },
+  render: () => renderPage(false),
+};
+
+function renderPage(withSidenav: boolean) {
+  return html`
+    <style>
+      [id^='story--patterns-settingspage--'] {
+        overflow: hidden;
+      }
+    </style>
+    <div style=${frameStyle()}>
+      <ds-page-shell brand="Brand" style=${PAGE_SHELL_STYLE} ?aside-toggle=${withSidenav}>
+        ${withSidenav ? renderSidenav() : null} ${renderBreadcrumb()} ${renderSettingsPage()} ${renderFooter()}
+      </ds-page-shell>
+    </div>
+  `;
+}
+
+function renderSidenav() {
+  return html`
+    <ds-sidenav slot="aside">
+      <ds-nav-item href="#">
+        <ds-icon slot="icon" name="home" size="lg"></ds-icon>
+        Overview
+      </ds-nav-item>
+      <ds-nav-item href="#">
+        <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+        Activity
+      </ds-nav-item>
+      <ds-nav-item href="#">
+        <ds-icon slot="icon" name="magnifying-glass" size="lg"></ds-icon>
+        Search
+      </ds-nav-item>
+      <ds-nav-group label="Workspace" expanded>
+        <ds-icon slot="icon" name="briefcase" size="lg"></ds-icon>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+          General
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="users" size="lg"></ds-icon>
+          Members
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="puzzle-piece" size="lg"></ds-icon>
+          Integrations
+        </ds-nav-item>
+      </ds-nav-group>
+      <ds-nav-group label="Account" expanded>
+        <ds-icon slot="icon" name="user" size="lg"></ds-icon>
+        <ds-nav-item href="#" current>
+          <ds-icon slot="icon" name="cog-6-tooth" size="lg"></ds-icon>
+          Settings
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="user" size="lg"></ds-icon>
+          Profile
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="key" size="lg"></ds-icon>
+          Security
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="bell" size="lg"></ds-icon>
+          Notifications
+        </ds-nav-item>
+      </ds-nav-group>
+      <ds-nav-group label="Help">
+        <ds-icon slot="icon" name="book-open" size="lg"></ds-icon>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="book-open" size="lg"></ds-icon>
+          Documentation
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="magnifying-glass" size="lg"></ds-icon>
+          Support
+        </ds-nav-item>
+        <ds-nav-item href="#">
+          <ds-icon slot="icon" name="clock" size="lg"></ds-icon>
+          Changelog
+        </ds-nav-item>
+      </ds-nav-group>
+    </ds-sidenav>
+  `;
+}
+
+function renderBreadcrumb() {
+  return html`
+    <ds-breadcrumb label="Settings breadcrumbs" style="margin-bottom:var(--ds-space-4)">
+      <ds-breadcrumb-item href="#">
+        <ds-icon slot="leading" name="home" size="sm"></ds-icon>
+        Brand
+      </ds-breadcrumb-item>
+      <ds-breadcrumb-item href="#">Workspace</ds-breadcrumb-item>
+      <ds-breadcrumb-item href="#">Account</ds-breadcrumb-item>
+      <ds-breadcrumb-item>Settings</ds-breadcrumb-item>
+    </ds-breadcrumb>
+  `;
+}
+
+function renderSettingsPage() {
+  return html`
+    <ds-settings-page heading="Settings" description="Studio preferences, billing, and the other plumbing.">
+      <section id="profile" style="display:grid;gap:var(--ds-space-4)">
+        <ds-form header="Profile">
+          <ds-text-field label="Display name" value="Jan Sekułowicz"></ds-text-field>
+          <ds-text-field label="Email" value="jan@example.com" type="email"></ds-text-field>
+          <ds-select label="Timezone" .options=${timezones} .value=${'waw'}></ds-select>
+          <ds-text-field label="Bio" value="Design systems engineer."></ds-text-field>
+          <ds-button slot="actions" variant="primary" size="sm">Save profile</ds-button>
+        </ds-form>
+      </section>
+      <section id="security" style="display:grid;gap:var(--ds-space-4)">
+        <ds-form header="Security">
+          <ds-text-field label="Current password" type="password"></ds-text-field>
+          <ds-text-field label="New password" type="password"></ds-text-field>
+          <ds-text-field label="Confirm new password" type="password"></ds-text-field>
+          <ds-button slot="actions" variant="primary" size="sm">Update password</ds-button>
+        </ds-form>
+      </section>
+      <section id="notifications" style="display:grid;gap:var(--ds-space-4)">
+        <ds-form header="Notifications">
+          <ds-checkbox checked>Digest email on Mondays</ds-checkbox>
+          <ds-checkbox>Ping me on build failures</ds-checkbox>
+          <ds-checkbox checked>Weekly activity summary</ds-checkbox>
+          <ds-button slot="actions" variant="primary" size="sm">Save preferences</ds-button>
+        </ds-form>
+      </section>
+      <section id="billing" style="display:grid;gap:var(--ds-space-4)">
+        <ds-form header="Billing">
+          <ds-text-field label="Billing email" value="billing@example.com" type="email"></ds-text-field>
+          <p style="margin:0;color:var(--ds-color-fg-muted);font-size:var(--ds-font-size-body-md)">
+            Studio plan · renews 30 April 2027.
+          </p>
+          <div slot="actions" style="display:flex;gap:var(--ds-space-2)">
+            <ds-button variant="secondary" size="sm">Manage billing</ds-button>
+            <ds-button variant="ghost" size="sm">Cancel plan</ds-button>
+          </div>
+        </ds-form>
+      </section>
+    </ds-settings-page>
+  `;
+}
+
+function renderFooter() {
+  return html`
+    <ds-footer slot="footer">
+      <span slot="start">© 2026 Brand</span>
+      <ds-link slot="end" href="#" variant="quiet">Privacy</ds-link>
+    </ds-footer>
+  `;
+}

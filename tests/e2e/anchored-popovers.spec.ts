@@ -39,7 +39,7 @@ async function openFixture(page: Page, selector: string): Promise<Locator> {
 test.use({ viewport: { width: 320, height: 480 } });
 
 test('menu button flips above a trigger at the bottom edge', async ({ page }) => {
-  await page.goto('/iframe.html?id=molecules-menubutton--playground&viewMode=story');
+  await page.goto('/iframe.html?id=navigation-menubutton--playground&viewMode=story');
   await page.locator('ds-menu-button').waitFor();
   await page.evaluate(() => {
     document.body.innerHTML = `<ds-menu-button placement="bottom-end" style="position:fixed;right:0;bottom:0">
@@ -57,7 +57,7 @@ test('menu button flips above a trigger at the bottom edge', async ({ page }) =>
 });
 
 test('popover button constrains wide content to a small viewport', async ({ page }) => {
-  await page.goto('/iframe.html?id=molecules-popoverbutton--playground&viewMode=story');
+  await page.goto('/iframe.html?id=overlays-popoverbutton--playground&viewMode=story');
   await page.locator('ds-popover-button').waitFor();
   await page.evaluate(() => {
     document.body.innerHTML = `<ds-popover-button placement="bottom-end" style="position:fixed;right:0;top:0">

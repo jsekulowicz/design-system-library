@@ -49,7 +49,9 @@ function toEventPropName(event: string): string {
 }
 
 function resolveSubpath(modulePath: string): string {
-  const match = modulePath.match(/src\/(?:atoms|molecules|organisms|templates|pages)\/([^/]+)\//);
+  const match = modulePath.match(
+    /src\/(?:actions|forms|navigation|feedback|overlays|data-display|layout|patterns)\/([^/]+)\//,
+  );
   if (!match) {
     throw new Error(`Cannot derive subpath from ${modulePath}`);
   }

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { buttonStyles } from '../atoms/button/button.styles.js';
-import { menuStyles } from '../atoms/menu/menu.styles.js';
-import { progressBarStyles } from '../atoms/progress-bar/progress-bar.styles.js';
-import { selectCommonStyles } from '../atoms/select/select.common-styles.js';
-import { tableResponsiveStyles } from '../atoms/table/table-responsive.styles.js';
-import { tableStyles } from '../atoms/table/table.styles.js';
-import { cardStyles } from '../molecules/card/card.styles.js';
-import { dialogStyles } from '../molecules/dialog/dialog.styles.js';
-import { statTileStyles } from '../molecules/stat-tile/stat-tile.styles.js';
+import { buttonStyles } from '../actions/button/button.styles.js';
+import { menuStyles } from '../navigation/menu/menu.styles.js';
+import { progressBarStyles } from '../feedback/progress-bar/progress-bar.styles.js';
+import { selectCommonStyles } from '../forms/select/select.common-styles.js';
+import { tableResponsiveStyles } from '../data-display/table/table-responsive.styles.js';
+import { tableStyles } from '../data-display/table/table.styles.js';
+import { cardStyles } from '../data-display/card/card.styles.js';
+import { dialogStyles } from '../overlays/dialog/dialog.styles.js';
+import { statTileStyles } from '../data-display/stat-tile/stat-tile.styles.js';
 import { fieldControlStyles } from './field-control.styles.js';
 
 const standardSurfaceStyles = [

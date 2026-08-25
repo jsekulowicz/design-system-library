@@ -72,7 +72,7 @@ const guidanceRows: readonly GuidanceRow[] = [
   { range: 'body-md - body-lg', role: 'Body copy, UI labels, and form fields' },
   { range: 'heading-xs - heading-sm', role: 'Card titles and nested section headings' },
   { range: 'heading-md', role: 'Page and main section headings' },
-  { range: 'heading-lg - heading-3xl', role: 'Editorial headings, feature titles, and display text' },
+  { range: 'heading-lg - heading-3xl', role: 'Prominent page headings, feature titles, and display text' },
 ];
 
 const guidanceColumns: readonly TableColumn<GuidanceRow>[] = [
@@ -89,24 +89,33 @@ const FAMILIES = [
     token: '--ds-font-display',
     label: 'Display',
     name: 'Source Serif 4',
-    note: 'Workhorse serif. Headlines, page titles, calm brand moments.',
-    sample: 'A measured voice for practical interfaces.',
+    note: 'Serif font for headings and page titles.',
+    sample: 'Example heading in the display font.',
   },
   {
     token: '--ds-font-body',
     label: 'Body',
     name: 'General Sans',
-    note: 'Humanist sans. Body copy, UI labels, any prose.',
-    sample: 'Clean and legible at any size, across long paragraphs and tight UI chrome alike.',
+    note: 'Sans-serif font for body copy, labels, and other interface text.',
+    sample: 'This font stays readable in paragraphs and compact interface layouts.',
   },
   {
     token: '--ds-font-mono',
     label: 'Mono',
     name: 'JetBrains Mono',
-    note: 'Monospaced. Code blocks, token values, technical metadata.',
+    note: 'Monospace font for code, token names, and technical values.',
     sample: "const value = token('--ds-space-4');",
   },
 ];
+
+const FONT_FAMILY_TOKEN = joinStyles(
+  MONO_MUTED_CELL,
+  'display:block',
+  'width:fit-content',
+  'align-self:start',
+  'padding:0',
+  'line-height:1',
+);
 
 function familySample(token: string): string {
   return joinStyles(
@@ -126,7 +135,7 @@ export const FontFamilies: Story = {
             <figure style=${card('var(--ds-space-5)')}>
               <figcaption style="display:grid;gap:4px">
                 <strong>${family.label} - ${family.name}</strong>
-                <code style=${MONO_MUTED_CELL}>${family.token}</code>
+                <code style=${FONT_FAMILY_TOKEN}>${family.token}</code>
                 <p style=${joinStyles('margin:0', MUTED_CELL)}>${family.note}</p>
               </figcaption>
               <p style=${familySample(family.token)}>${family.sample}</p>
@@ -167,7 +176,7 @@ export const FontWeights: Story = {
 };
 
 const PROSE =
-  'Spacing between lines determines whether text feels crowded or open. Tighter leading suits large display type; more relaxed leading aids comprehension in body paragraphs.';
+  'Line spacing determines whether text feels crowded or open. Use less space for large headings and more space for body paragraphs.';
 const STEP_TOKEN = 'font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)';
 const STEP_VALUE = joinStyles('display:block', MUTED_CELL, 'margin-top:2px');
 

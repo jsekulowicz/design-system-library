@@ -1,6 +1,6 @@
 # Design System Library
 
-A framework-agnostic design system built on **Lit** web components, organized by **atomic design**, themeable via a three-tier token layer, responsive by default, tree-shakable (JS and CSS), and accessible to WCAG 2.2 AA.
+A framework-agnostic design system built on **Lit** web components, grouped by purpose, themeable via a three-tier token layer, responsive by default, tree-shakable (JS and CSS), and accessible to WCAG 2.2 AA.
 
 Live Storybook docs: https://jsekulowicz.github.io/design-system-library
 
@@ -10,21 +10,27 @@ Live Storybook docs: https://jsekulowicz.github.io/design-system-library
 | ----------------------------------------------------- | --------------------------------------------------------------------------------- |
 | [`@jsekulowicz/ds-tokens`](./packages/tokens)         | Design tokens (primitive + semantic layers) + generated CSS themes                |
 | [`@jsekulowicz/ds-core`](./packages/core)             | `DsElement` base class, `FormControlMixin` (ElementInternals), controllers, utils |
-| [`@jsekulowicz/ds-components`](./packages/components) | Web components (atoms → molecules → organisms → templates → pages)                |
+| [`@jsekulowicz/ds-components`](./packages/components) | Web components grouped by user-facing purpose                                     |
 | [`@jsekulowicz/ds-react`](./packages/react)           | Thin React wrappers generated from the Custom Elements Manifest via `@lit/react`  |
 | [`@ds/storybook`](./packages/storybook)               | Storybook docs site (live examples, API tables, design intent, foundations)       |
 
 ## Components
 
-**Atoms** - `ds-badge`, `ds-breadcrumb`, `ds-breadcrumb-item`, `ds-button`, `ds-checkbox`, `ds-checkbox-group`, `ds-divider`, `ds-fieldset`, `ds-icon`, `ds-link`, `ds-list`, `ds-list-item`, `ds-menu`, `ds-menu-item`, `ds-nav-group`, `ds-nav-item`, `ds-progress-bar`, `ds-radio`, `ds-radio-group`, `ds-range-input`, `ds-searchable-select`, `ds-segmented-control`, `ds-select`, `ds-select-option`, `ds-skeleton`, `ds-tab`, `ds-tab-panel`, `ds-table`, `ds-table-pagination`, `ds-table-sort-button`, `ds-tabs`, `ds-text-area`, `ds-text-field`, `ds-tooltip`
+**Actions** - `ds-button`, `ds-link`, `ds-share-bar`
 
-**Molecules** - `ds-alert`, `ds-bar-chart`, `ds-card`, `ds-color-picker`, `ds-color-picker-input-color`, `ds-color-picker-swatch`, `ds-color-picker-swatch-group`, `ds-dialog`, `ds-drawer`, `ds-heatmap-calendar`, `ds-menu-button`, `ds-pie-chart`, `ds-stat-tile`, `ds-toast`, `ds-toast-stack`
+**Forms** - `ds-checkbox`, `ds-checkbox-group`, `ds-color-picker`, `ds-color-picker-input-color`, `ds-color-picker-swatch`, `ds-color-picker-swatch-group`, `ds-fieldset`, `ds-form`, `ds-radio`, `ds-radio-group`, `ds-range-input`, `ds-searchable-select`, `ds-segmented-control`, `ds-select`, `ds-select-option`, `ds-text-area`, `ds-text-field`
 
-**Organisms** - `ds-footer`, `ds-form`, `ds-sidenav`, `ds-top-bar`
+**Navigation** - `ds-breadcrumb`, `ds-breadcrumb-item`, `ds-menu`, `ds-menu-button`, `ds-menu-item`, `ds-nav-group`, `ds-nav-item`, `ds-sidenav`, `ds-tab`, `ds-tab-panel`, `ds-tabs`, `ds-top-bar`
 
-**Templates** - `ds-page-shell`, `ds-scrollable-page`
+**Feedback** - `ds-alert`, `ds-progress-bar`, `ds-skeleton`, `ds-toast`, `ds-toast-stack`
 
-**Pages** - `ds-settings-page`
+**Overlays** - `ds-dialog`, `ds-drawer`, `ds-popover-button`, `ds-tooltip`
+
+**Data Display** - `ds-badge`, `ds-bar-chart`, `ds-card`, `ds-divider`, `ds-heatmap-calendar`, `ds-icon`, `ds-list`, `ds-list-item`, `ds-pie-chart`, `ds-stat-tile`, `ds-table`, `ds-table-pagination`, `ds-table-sort-button`
+
+**Layout** - `ds-footer`, `ds-page-shell`, `ds-scrollable-page`
+
+**Patterns** - `ds-settings-page`
 
 ## Getting started
 

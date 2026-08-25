@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const storyUrl = '/iframe.html?id=organisms-form--account-details&viewMode=story';
+const storyUrl = '/iframe.html?id=forms-form--account-details&viewMode=story';
 
 test.describe('ds-form native submission', () => {
   test('invalid fields block submit and emit ds-invalid', async ({ page }) => {

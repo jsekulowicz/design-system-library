@@ -1,16 +1,16 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { DsCheckbox } from '../atoms/checkbox/checkbox.js';
-import { DsCheckboxGroup } from '../atoms/checkbox-group/checkbox-group.js';
-import { DsFieldset } from '../atoms/fieldset/fieldset.js';
-import { DsRadioGroup } from '../atoms/radio-group/radio-group.js';
-import { DsRangeInput } from '../atoms/range-input/range-input.js';
-import { DsSearchableSelect } from '../atoms/searchable-select/searchable-select.js';
-import { DsSegmentedControl } from '../atoms/segmented-control/segmented-control.js';
-import { DsSelect } from '../atoms/select/select.js';
-import { DsTextArea } from '../atoms/text-area/text-area.js';
-import { DsTextField } from '../atoms/text-field/text-field.js';
-import { DsColorPicker } from '../molecules/color-picker/color-picker.js';
-import '../atoms/text-field/define.js';
+import { DsCheckbox } from '../forms/checkbox/checkbox.js';
+import { DsCheckboxGroup } from '../forms/checkbox-group/checkbox-group.js';
+import { DsFieldset } from '../forms/fieldset/fieldset.js';
+import { DsRadioGroup } from '../forms/radio-group/radio-group.js';
+import { DsRangeInput } from '../forms/range-input/range-input.js';
+import { DsSearchableSelect } from '../forms/searchable-select/searchable-select.js';
+import { DsSegmentedControl } from '../forms/segmented-control/segmented-control.js';
+import { DsSelect } from '../forms/select/select.js';
+import { DsTextArea } from '../forms/text-area/text-area.js';
+import { DsTextField } from '../forms/text-field/text-field.js';
+import { DsColorPicker } from '../forms/color-picker/color-picker.js';
+import '../forms/text-field/define.js';
 import { formFieldStyles } from './form-field.js';
 import { mount, resetTestDom } from '../test-utils/mount.js';
 

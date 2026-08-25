@@ -34,7 +34,7 @@ export default defineConfig({
         'src/**/utils/**',
         'src/test-utils/**',
         'src/**/*.styles.ts',
-        'src/atoms/icon/icons/**',
+        'src/data-display/icon/icons/**',
       ],
       excludeAfterRemap: true,
       reportOnFailure: true,

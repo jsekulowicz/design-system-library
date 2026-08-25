@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const storyUrl = '/iframe.html?id=atoms-checkbox--states&viewMode=story';
+const storyUrl = '/iframe.html?id=forms-checkbox--states&viewMode=story';
 
 // A ds-checkbox is an inline-level box, so it sits on a line box in its parent.
 // If its own box is shorter than the text it renders, that line box ends up

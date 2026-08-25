@@ -55,7 +55,7 @@ test('story loading is themed before the story module resolves', async ({ page }
     await new Promise((resolve) => setTimeout(resolve, 500));
     await route.continue();
   });
-  const navigation = page.goto('/iframe.html?id=atoms-tooltip--playground&viewMode=story');
+  const navigation = page.goto('/iframe.html?id=overlays-tooltip--playground&viewMode=story');
   const loader = page.locator('.sb-preparing-story .sb-loader');
   await expect(loader).toBeVisible();
   await expect(page.locator('.sb-preparing-story')).toHaveAttribute('role', 'status');
@@ -107,7 +107,7 @@ test('docs remain hidden while asynchronous code blocks render', async ({ page }
     await route.continue();
   });
 
-  const navigation = page.goto('/iframe.html?id=molecules-heatmapcalendar--docs&viewMode=docs');
+  const navigation = page.goto('/iframe.html?id=data-display-heatmapcalendar--docs&viewMode=docs');
   await highlighterRequested;
   await expect(page.locator('.sbdocs-content pre > div:only-child:empty')).toHaveCount(1);
   await expect(page.locator('html')).toHaveAttribute('data-ds-docs-ready', 'false');
@@ -121,7 +121,7 @@ test('docs remain hidden while asynchronous code blocks render', async ({ page }
 });
 
 test('docs remain hidden until the initial layout stops changing', async ({ page }) => {
-  const navigation = page.goto('/iframe.html?id=atoms-button--docs&viewMode=docs');
+  const navigation = page.goto('/iframe.html?id=actions-button--docs&viewMode=docs');
   await page.locator('.sbdocs-content').waitFor({ state: 'attached' });
   await page.evaluate(
     () =>
@@ -164,11 +164,11 @@ test('docs navigation reapplies the loading gate before revealing the next page'
     await route.continue();
   });
 
-  await page.goto('/?path=/docs/atoms-button--docs');
+  await page.goto('/?path=/docs/actions-button--docs');
   const preview = page.frameLocator('#storybook-preview-iframe');
   await expect(preview.locator('html')).toHaveAttribute('data-ds-docs-ready', 'true');
 
-  const link = page.locator('a[href*="/docs/molecules-heatmapcalendar--docs"]').first();
+  const link = page.locator('a[href*="/docs/data-display-heatmapcalendar--docs"]').first();
   await link.click();
   await highlighterRequested;
   await expect(preview.locator('html')).toHaveAttribute('data-ds-docs-ready', 'false');
@@ -189,13 +189,13 @@ test('docs navigation reapplies the loading gate before revealing the next page'
 });
 
 test('cached docs navigation skips the stability overlay', async ({ page }) => {
-  await page.goto('/?path=/docs/atoms-button--docs');
+  await page.goto('/?path=/docs/actions-button--docs');
   const preview = page.frameLocator('#storybook-preview-iframe');
   await expect(preview.getByRole('heading', { name: 'Button', level: 1 })).toBeVisible();
 
-  await page.locator('a[href*="/docs/molecules-heatmapcalendar--docs"]').first().click();
+  await page.locator('a[href*="/docs/data-display-heatmapcalendar--docs"]').first().click();
   await expect(preview.getByRole('heading', { name: 'HeatmapCalendar', level: 1 })).toBeVisible();
-  await page.locator('a[href*="/docs/atoms-button--docs"]').first().click();
+  await page.locator('a[href*="/docs/actions-button--docs"]').first().click();
   await expect(preview.getByRole('heading', { name: 'Button', level: 1 })).toBeVisible();
 
   await preview.locator('html').evaluate((root) => {
@@ -208,7 +208,7 @@ test('cached docs navigation skips the stability overlay', async ({ page }) => {
     observer.observe(root, { attributeFilter: ['data-ds-docs-ready'], attributes: true });
   });
 
-  await page.locator('a[href*="/docs/molecules-heatmapcalendar--docs"]').first().click();
+  await page.locator('a[href*="/docs/data-display-heatmapcalendar--docs"]').first().click();
   await expect(preview.getByRole('heading', { name: 'HeatmapCalendar', level: 1 })).toBeVisible();
   await page.waitForTimeout(400);
   const readyHistory = await preview
@@ -238,7 +238,7 @@ test('nested story frames show a themed spinner before their document loads', as
     await route.continue();
   });
 
-  const navigation = page.goto('/iframe.html?id=organisms-topbar--docs&viewMode=docs');
+  const navigation = page.goto('/iframe.html?id=navigation-topbar--docs&viewMode=docs');
   await requestStarted;
   const loadingFrame = page.locator('iframe[data-ds-story-loading="true"]').first();
   await expect(loadingFrame).toBeVisible();
@@ -398,7 +398,7 @@ test('preview initialization survives unavailable local storage', async ({ page 
       throw new DOMException('Storage disabled', 'SecurityError');
     };
   });
-  await page.goto('/iframe.html?id=atoms-tooltip--playground&viewMode=story');
+  await page.goto('/iframe.html?id=overlays-tooltip--playground&viewMode=story');
   await expect(page.locator('ds-tooltip')).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('data-ds-theme', 'light');
 });

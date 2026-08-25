@@ -1,0 +1,74 @@
+import { html } from 'lit';
+import type { Meta, StoryObj } from '@storybook/web-components-vite';
+import '@jsekulowicz/ds-components/list/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/check';
+import '@jsekulowicz/ds-components/icon/chevron-right';
+import '@jsekulowicz/ds-components/badge/define';
+import '@jsekulowicz/ds-components/link/define';
+
+const meta: Meta = {
+  title: 'Data Display/List',
+  component: 'ds-list',
+  argTypes: {
+    variant: {
+      control: { type: 'inline-radio' },
+      options: ['plain', 'bordered'],
+    },
+  },
+  args: { variant: 'bordered' },
+};
+
+export default meta;
+type Story = StoryObj;
+
+export const Playground: Story = {
+  render: (args) => html`
+    <ds-list variant=${args['variant']} style="max-width:32rem">
+      <ds-list-item>
+        <span slot="leading"><ds-icon name="check"></ds-icon></span>
+        Verify your email address
+        <ds-badge slot="trailing" tone="success">Done</ds-badge>
+      </ds-list-item>
+      <ds-list-item>
+        <span slot="leading"><ds-icon name="check"></ds-icon></span>
+        Add a profile photo
+        <ds-badge slot="trailing" tone="warning">Pending</ds-badge>
+      </ds-list-item>
+      <ds-list-item>
+        <span slot="leading"><ds-icon name="check"></ds-icon></span>
+        Invite a teammate
+        <ds-badge slot="trailing" tone="neutral">Optional</ds-badge>
+      </ds-list-item>
+    </ds-list>
+  `,
+};
+
+export const Plain: Story = {
+  render: () => html`
+    <ds-list variant="plain" style="max-width:32rem">
+      <ds-list-item>First item</ds-list-item>
+      <ds-list-item>Second item</ds-list-item>
+      <ds-list-item>Third item</ds-list-item>
+    </ds-list>
+  `,
+};
+
+export const NavigationLinks: Story = {
+  render: () => html`
+    <ds-list style="max-width:32rem">
+      <ds-list-item>
+        <ds-link href="#overview">Overview</ds-link>
+        <ds-icon slot="trailing" name="chevron-right"></ds-icon>
+      </ds-list-item>
+      <ds-list-item>
+        <ds-link href="#activity">Activity</ds-link>
+        <ds-icon slot="trailing" name="chevron-right"></ds-icon>
+      </ds-list-item>
+      <ds-list-item>
+        <ds-link href="#settings">Settings</ds-link>
+        <ds-icon slot="trailing" name="chevron-right"></ds-icon>
+      </ds-list-item>
+    </ds-list>
+  `,
+};

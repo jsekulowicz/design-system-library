@@ -1,26 +1,26 @@
-export { DsButton, type ButtonVariant, type ButtonSize, type ButtonType } from './atoms/button/index.js';
-export { DsTooltip, type TooltipPlacement } from './atoms/tooltip/index.js';
-export { DsBadge, type BadgeTone } from './atoms/badge/index.js';
-export { DsSkeleton, type SkeletonVariant } from './atoms/skeleton/index.js';
-export { DsProgressBar } from './atoms/progress-bar/index.js';
-export { DsDivider, type DividerOrientation } from './atoms/divider/index.js';
-export { DsList, DsListItem, type ListVariant, type ListDensity } from './atoms/list/index.js';
-export { DsIcon, registerIcon, getIcon, type IconSize } from './atoms/icon/index.js';
-export { DsLink, type LinkVariant } from './atoms/link/index.js';
-export { DsTextField, type TextFieldType, type TextFieldSize } from './atoms/text-field/index.js';
-export { DsRangeInput, type RangeInputSize } from './atoms/range-input/index.js';
-export { DsCheckbox } from './atoms/checkbox/index.js';
-export { DsCheckboxGroup } from './atoms/checkbox-group/index.js';
-export { DsRadio } from './atoms/radio/index.js';
-export { DsRadioGroup } from './atoms/radio-group/index.js';
-export { DsFieldset, type FieldsetOrientation } from './atoms/fieldset/index.js';
-export { DsSegmentedControl, type SegmentedControlOption } from './atoms/segmented-control/index.js';
-export { DsSelect, type SelectOption, type SelectSize } from './atoms/select/index.js';
-export { DsSearchableSelect } from './atoms/searchable-select/index.js';
-export { DsTabs, DsTab, DsTabPanel } from './atoms/tabs/index.js';
-export { DsBreadcrumb, DsBreadcrumbItem } from './atoms/breadcrumb/index.js';
-export { DsNavItem, DsNavGroup } from './atoms/nav-item/index.js';
-export { DsMenu, DsMenuItem } from './atoms/menu/index.js';
+export { DsButton, type ButtonVariant, type ButtonSize, type ButtonType } from './actions/button/index.js';
+export { DsTooltip, type TooltipPlacement } from './overlays/tooltip/index.js';
+export { DsBadge, type BadgeTone } from './data-display/badge/index.js';
+export { DsSkeleton, type SkeletonVariant } from './feedback/skeleton/index.js';
+export { DsProgressBar } from './feedback/progress-bar/index.js';
+export { DsDivider, type DividerOrientation } from './data-display/divider/index.js';
+export { DsList, DsListItem, type ListVariant, type ListDensity } from './data-display/list/index.js';
+export { DsIcon, registerIcon, getIcon, type IconSize } from './data-display/icon/index.js';
+export { DsLink, type LinkVariant } from './actions/link/index.js';
+export { DsTextField, type TextFieldType, type TextFieldSize } from './forms/text-field/index.js';
+export { DsRangeInput, type RangeInputSize } from './forms/range-input/index.js';
+export { DsCheckbox } from './forms/checkbox/index.js';
+export { DsCheckboxGroup } from './forms/checkbox-group/index.js';
+export { DsRadio } from './forms/radio/index.js';
+export { DsRadioGroup } from './forms/radio-group/index.js';
+export { DsFieldset, type FieldsetOrientation } from './forms/fieldset/index.js';
+export { DsSegmentedControl, type SegmentedControlOption } from './forms/segmented-control/index.js';
+export { DsSelect, type SelectOption, type SelectSize } from './forms/select/index.js';
+export { DsSearchableSelect } from './forms/searchable-select/index.js';
+export { DsTabs, DsTab, DsTabPanel } from './navigation/tabs/index.js';
+export { DsBreadcrumb, DsBreadcrumbItem } from './navigation/breadcrumb/index.js';
+export { DsNavItem, DsNavGroup } from './navigation/nav-item/index.js';
+export { DsMenu, DsMenuItem } from './navigation/menu/index.js';
 export {
   DsTable,
   DsTableSortButton,
@@ -37,10 +37,10 @@ export {
   type TablePageSizeChangeDetail,
   type PaginationRangeItem,
   type PaginationRangeInput,
-} from './atoms/table/index.js';
-export { DsCard, type CardElevation, type CardOrientation } from './molecules/card/index.js';
-export { DsStatTile } from './molecules/stat-tile/index.js';
-export { DsDialog, type DialogSize } from './molecules/dialog/index.js';
+} from './data-display/table/index.js';
+export { DsCard, type CardElevation, type CardOrientation } from './data-display/card/index.js';
+export { DsStatTile } from './data-display/stat-tile/index.js';
+export { DsDialog, type DialogSize } from './overlays/dialog/index.js';
 export {
   DsToast,
   DsToastStack,
@@ -50,30 +50,30 @@ export {
   type ToastPlacement,
   type ToastOptions,
   type ToastController,
-} from './molecules/toast/index.js';
+} from './feedback/toast/index.js';
 export {
   DsColorPicker,
   DsColorPickerInputColor,
   DsColorPickerSwatch,
   DsColorPickerSwatchGroup,
   type ColorPickerOption,
-} from './molecules/color-picker/index.js';
-export { DsMenuButton, type MenuButtonPlacement } from './molecules/menu-button/index.js';
-export { DsPopoverButton, type PopoverPlacement } from './molecules/popover-button/index.js';
+} from './forms/color-picker/index.js';
+export { DsMenuButton, type MenuButtonPlacement } from './navigation/menu-button/index.js';
+export { DsPopoverButton, type PopoverPlacement } from './overlays/popover-button/index.js';
 export {
   DsBarChart,
   type BarChartSeries,
   type BarChartRow,
   type BarChartGroup,
   type BarChartFocusDetail,
-} from './molecules/bar-chart/index.js';
+} from './data-display/bar-chart/index.js';
 export {
   DsPieChart,
   type PieChartDatum,
   type PieSlice,
   type PieChartSliceDetail,
-} from './molecules/pie-chart/index.js';
-export { DsShareBar, type ShareBarDatum, type ShareBarSegment } from './molecules/share-bar/index.js';
+} from './data-display/pie-chart/index.js';
+export { DsShareBar, type ShareBarDatum, type ShareBarSegment } from './actions/share-bar/index.js';
 export {
   DsHeatmapCalendar,
   type HeatmapDay,
@@ -82,12 +82,12 @@ export {
   type HeatmapCell,
   type HeatmapLayout,
   type HeatmapMonthLabel,
-} from './molecules/heatmap-calendar/index.js';
-export { DsAlert, type AlertTone } from './molecules/alert/index.js';
-export { DsForm } from './organisms/form/index.js';
-export { DsTopBar } from './organisms/top-bar/index.js';
-export { DsSidenav } from './organisms/sidenav/index.js';
-export { DsFooter } from './organisms/footer/index.js';
-export { DsPageShell } from './templates/page-shell/index.js';
-export { DsScrollablePage } from './templates/scrollable-page/index.js';
-export { DsSettingsPage, type SettingsSection } from './pages/settings-page/index.js';
+} from './data-display/heatmap-calendar/index.js';
+export { DsAlert, type AlertTone } from './feedback/alert/index.js';
+export { DsForm } from './forms/form/index.js';
+export { DsTopBar } from './navigation/top-bar/index.js';
+export { DsSidenav } from './navigation/sidenav/index.js';
+export { DsFooter } from './layout/footer/index.js';
+export { DsPageShell } from './layout/page-shell/index.js';
+export { DsScrollablePage } from './layout/scrollable-page/index.js';
+export { DsSettingsPage, type SettingsSection } from './patterns/settings-page/index.js';

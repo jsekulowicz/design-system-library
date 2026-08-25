@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('ds-button variants story renders all variants', async ({ page }) => {
-  await page.goto('/iframe.html?id=atoms-button--variants&viewMode=story');
+  await page.goto('/iframe.html?id=actions-button--variants&viewMode=story');
   const variants = ['primary', 'secondary', 'ghost'];
   const buttons = page.locator('ds-button');
   await expect(buttons).toHaveCount(variants.length);
@@ -11,7 +11,7 @@ test('ds-button variants story renders all variants', async ({ page }) => {
 });
 
 test('loading never shrinks the button, and loading-label pins its width', async ({ page }) => {
-  await page.goto('/iframe.html?id=atoms-button--loading-label&viewMode=story');
+  await page.goto('/iframe.html?id=actions-button--loading-label&viewMode=story');
   const demos = page.locator('ds-button[data-demo]');
   await expect(demos).toHaveCount(3);
 
@@ -28,7 +28,7 @@ test('loading never shrinks the button, and loading-label pins its width', async
 
 test('spinner keeps animating under prefers-reduced-motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/iframe.html?id=atoms-button--loading&viewMode=story');
+  await page.goto('/iframe.html?id=actions-button--loading&viewMode=story');
 
   const duration = await page.locator('ds-button').evaluate((el) => {
     const spinner = el.shadowRoot!.querySelector('.spinner')!;
@@ -39,7 +39,7 @@ test('spinner keeps animating under prefers-reduced-motion', async ({ page }) =>
 });
 
 test('disabled ds-button does not emit ds-click', async ({ page }) => {
-  await page.goto('/iframe.html?id=atoms-button--disabled&viewMode=story');
+  await page.goto('/iframe.html?id=actions-button--disabled&viewMode=story');
   const counter = '__click_count';
   await page.evaluate((key) => {
     (window as unknown as Record<string, number>)[key] = 0;

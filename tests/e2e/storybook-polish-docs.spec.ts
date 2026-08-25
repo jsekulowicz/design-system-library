@@ -19,6 +19,8 @@ test('foundation grid token labels keep intrinsic backgrounds', async ({ page })
     ['foundations-tokens--docs', 'radius-none'],
     ['foundations-tokens--docs', 'shadow-none'],
     ['foundations-typography--docs', '--ds-font-display'],
+    ['foundations-typography--docs', '--ds-font-body'],
+    ['foundations-typography--docs', '--ds-font-mono'],
     ['foundations-color--docs', '--ds-color-bg'],
   ] as const) {
     await openDocs(page, id);
@@ -38,15 +40,41 @@ test('foundation grid token labels keep intrinsic backgrounds', async ({ page })
   }
 });
 
+test('font family token backgrounds have the same height and no padding', async ({ page }) => {
+  await openDocs(page, 'foundations-typography--docs');
+  const tokens = ['--ds-font-display', '--ds-font-body', '--ds-font-mono'];
+  const metrics = [];
+
+  for (const token of tokens) {
+    const code = page
+      .locator('.sb-story code')
+      .filter({ hasText: new RegExp(`^${token}$`) })
+      .first();
+    await expect(code).toBeVisible();
+    metrics.push(
+      await code.evaluate((element) => {
+        const styles = getComputedStyle(element);
+        return {
+          height: element.getBoundingClientRect().height,
+          paddingBlock: Number.parseFloat(styles.paddingTop) + Number.parseFloat(styles.paddingBottom),
+        };
+      }),
+    );
+  }
+
+  expect(metrics.every(({ paddingBlock }) => paddingBlock === 0)).toBe(true);
+  expect(Math.max(...metrics.map(({ height }) => height)) - Math.min(...metrics.map(({ height }) => height))).toBe(0);
+});
+
 test('Copy code has a visible separator from the preceding action', async ({ page }) => {
-  await openDocs(page, 'atoms-divider--docs');
+  await openDocs(page, 'data-display-divider--docs');
   const copy = page.getByRole('button', { name: 'Copy code' }).first();
   await expect(copy).toHaveCSS('border-left-style', 'solid');
   await expect(copy).toHaveCSS('border-left-width', '1px');
 });
 
 test('Heatmap data starts folded and remains expandable', async ({ page }) => {
-  await openDocs(page, 'molecules-heatmapcalendar--docs');
+  await openDocs(page, 'data-display-heatmapcalendar--docs');
   const data = page.getByRole('button', { name: 'data :' });
   await expect(data).toHaveAttribute('aria-expanded', 'false');
   await data.click();
@@ -70,14 +98,14 @@ test('dark docs root covers overscroll with the active theme', async ({ page }) 
 });
 
 test('story frames preserve scroll chaining', async ({ page }) => {
-  await page.goto('/iframe.html?id=atoms-tooltip--viewport-constraint&viewMode=story');
+  await page.goto('/iframe.html?id=overlays-tooltip--viewport-constraint&viewMode=story');
   await expect(page.locator('html')).toHaveAttribute('data-ds-view-mode', 'story');
   await expect(page.locator('html')).toHaveCSS('overscroll-behavior-y', 'auto');
   await expect(page.locator('body')).toHaveCSS('overscroll-behavior-y', 'auto');
 });
 
 test('wheel input over an inline Tooltip preview scrolls its documentation page', async ({ page }) => {
-  await page.goto('/?path=/docs/atoms-tooltip--docs');
+  await page.goto('/?path=/docs/overlays-tooltip--docs');
   const preview = page.frameLocator('#storybook-preview-iframe');
   const docs = preview.locator('.sbdocs-content');
   await expect(docs).toBeVisible();
@@ -91,7 +119,7 @@ test('wheel input over an inline Tooltip preview scrolls its documentation page'
 });
 
 test('Icon docs open Heroicons safely in a new tab', async ({ page }) => {
-  await openDocs(page, 'atoms-icon--docs');
+  await openDocs(page, 'data-display-icon--docs');
   const links = page.locator('a[href="https://heroicons.com"]');
   await expect(links).toHaveCount(2);
   for (const link of await links.all()) {
@@ -101,14 +129,14 @@ test('Icon docs open Heroicons safely in a new tab', async ({ page }) => {
 });
 
 test('List navigation example contains real links', async ({ page }) => {
-  await page.goto('/iframe.html?id=atoms-list--navigation-links&viewMode=story');
+  await page.goto('/iframe.html?id=data-display-list--navigation-links&viewMode=story');
   for (const name of ['Overview', 'Activity', 'Settings']) {
     await expect(page.getByRole('link', { name })).toHaveAttribute('href', `#${name.toLowerCase()}`);
   }
 });
 
 test('Menu footer is a link outside the menu role tree', async ({ page }) => {
-  await page.goto('/iframe.html?id=atoms-menu--with-header-footer&viewMode=story');
+  await page.goto('/iframe.html?id=navigation-menu--with-header-footer&viewMode=story');
   await expect(page.getByRole('link', { name: 'Manage workspaces' })).toBeVisible();
   await expect(page.getByRole('menuitem', { name: 'Manage workspaces' })).toHaveCount(0);
 });

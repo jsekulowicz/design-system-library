@@ -1,6 +1,6 @@
 import { test, expect, type Locator, type Page } from '@playwright/test';
 
-const storyUrl = '/iframe.html?id=molecules-colorpicker--playground&viewMode=story';
+const storyUrl = '/iframe.html?id=forms-colorpicker--playground&viewMode=story';
 
 test.describe('ds-color-picker', () => {
   test('selects a predefined swatch', async ({ page }) => {

@@ -60,8 +60,8 @@ test('foundation tables use ds-table instead of hand-built or Markdown tables', 
 
 test('ScrollablePage and PageShell examples use the documented typography', async ({ page }) => {
   for (const id of [
-    'templates-scrollablepage--with-non-scrolling-header',
-    'templates-pageshell--non-scrolling-page-header',
+    'layout-scrollablepage--with-non-scrolling-header',
+    'layout-pageshell--non-scrolling-page-header',
   ]) {
     await openStory(page, id);
     const root = page.locator('#storybook-root');
@@ -80,10 +80,10 @@ test('ScrollablePage and PageShell examples use the documented typography', asyn
 
 test('component documentation introduces every structure with Anatomy', async ({ page }) => {
   for (const id of [
-    'atoms-skeleton--docs',
-    'molecules-heatmapcalendar--docs',
-    'molecules-stattile--docs',
-    'templates-scrollablepage--docs',
+    'feedback-skeleton--docs',
+    'data-display-heatmapcalendar--docs',
+    'data-display-stattile--docs',
+    'layout-scrollablepage--docs',
   ]) {
     await openDocs(page, id);
     const anatomy = page.getByRole('heading', { level: 2, name: 'Anatomy' });

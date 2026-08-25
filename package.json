@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Framework-agnostic design system built on Lit web components, atomic design, token-based theming.",
+  "description": "Framework-agnostic design system built on Lit web components with token-based theming.",
   "packageManager": "pnpm@11.0.9",
   "engines": {
     "node": ">=20"

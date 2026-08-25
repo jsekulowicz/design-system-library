@@ -6,7 +6,7 @@ async function openStory(page: Page, id: string): Promise<void> {
 }
 
 test('Sidenav collapse controls stay outside the collapsed navigation', async ({ page }) => {
-  await openStory(page, 'organisms-sidenav--collapse-toggle');
+  await openStory(page, 'navigation-sidenav--collapse-toggle');
   await page.getByRole('button', { name: 'Collapse navigation' }).click();
   await expect(page.locator('ds-sidenav')).toHaveAttribute('collapsed', '');
   await expect(page.getByText('Brand', { exact: true })).toBeVisible();
@@ -14,11 +14,11 @@ test('Sidenav collapse controls stay outside the collapsed navigation', async ({
 });
 
 test('static toasts restore while imperative toasts dismiss', async ({ page }) => {
-  await openStory(page, 'molecules-toast--playground');
+  await openStory(page, 'feedback-toast--playground');
   await page.getByRole('button', { name: 'Dismiss' }).click();
   await expect(page.locator('ds-toast')).toHaveCount(1);
 
-  await openStory(page, 'molecules-toast--imperative');
+  await openStory(page, 'feedback-toast--imperative');
   await page.getByRole('button', { name: 'Success' }).click();
   await expect(page.locator('ds-toast')).toHaveCount(1);
   await page.getByRole('button', { name: 'Dismiss' }).click();
@@ -31,7 +31,7 @@ for (const [theme, expectedBackground, pageBackground] of [
 ] as const) {
   test(`Toast tones use opaque ${theme} surfaces set apart from the page`, async ({ page }) => {
     await page.addInitScript((nextTheme) => localStorage.setItem('ds-storybook-theme', nextTheme), theme);
-    await openStory(page, 'molecules-toast--tones');
+    await openStory(page, 'feedback-toast--tones');
     const surfaces = await page.locator('ds-toast').evaluateAll((toasts) =>
       toasts.map((toast) => {
         const notice = toast.shadowRoot!.querySelector('.notice')!;
@@ -47,7 +47,7 @@ for (const [theme, expectedBackground, pageBackground] of [
   });
 }
 
-for (const story of ['atoms-select--multiple', 'atoms-searchableselect--multiple-countries']) {
+for (const story of ['forms-select--multiple', 'forms-searchableselect--multiple-countries']) {
   test(`${story} keeps its height when the first tile is selected`, async ({ page }) => {
     await openStory(page, story);
     const host = page.locator(story.includes('searchable') ? 'ds-searchable-select' : 'ds-select');
@@ -74,7 +74,7 @@ for (const story of ['atoms-select--multiple', 'atoms-searchableselect--multiple
 }
 
 test('vertical Divider fills the inline row height', async ({ page }) => {
-  await openStory(page, 'atoms-divider--inline-with-text');
+  await openStory(page, 'data-display-divider--inline-with-text');
   const dimensions = await page
     .locator('ds-divider')
     .first()
@@ -93,7 +93,7 @@ test('vertical Divider fills the inline row height', async ({ page }) => {
 test('Tooltip expands on desktop and remains viewport-safe on mobile', async ({ page }) => {
   for (const width of [320, 360, 768, 1280]) {
     await page.setViewportSize({ width, height: 500 });
-    await openStory(page, 'atoms-tooltip--viewport-constraint');
+    await openStory(page, 'overlays-tooltip--viewport-constraint');
     const tooltip = page.getByRole('tooltip');
     const trigger = page.getByRole('button', { name: 'Info' });
     const geometry = await Promise.all([
@@ -115,7 +115,7 @@ test('Tooltip expands on desktop and remains viewport-safe on mobile', async ({ 
 
 test('Tooltip flips inline when its requested side has no room', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 500 });
-  await openStory(page, 'atoms-tooltip--viewport-constraint');
+  await openStory(page, 'overlays-tooltip--viewport-constraint');
   await page.locator('ds-tooltip').evaluate((host) => {
     host.parentElement!.style.justifyContent = 'flex-end';
   });
@@ -129,7 +129,7 @@ test('Tooltip flips inline when its requested side has no room', async ({ page }
 
 test('Tooltip stays next to its trigger when placed on the left', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 500 });
-  await openStory(page, 'atoms-tooltip--viewport-constraint');
+  await openStory(page, 'overlays-tooltip--viewport-constraint');
   await page.locator('ds-tooltip').evaluate((host) => {
     host.parentElement!.style.justifyContent = 'center';
     host.setAttribute('placement', 'left');

@@ -5,8 +5,8 @@ import * as TypographyStories from './typography.stories';
 
 # Typography
 
-The system ships three typefaces with distinct roles, ten size steps, four weights, five line heights, and four letter-spacing values.
-Every combination is intentional - the tokens encode the decisions so individual components never hard-code a font or size.
+The system includes three typefaces, ten size steps, four weights, five line heights, and four letter-spacing values.
+The tokens keep these choices consistent so components do not hard-code fonts or sizes.
 
 As with other foundation tokens, consume semantic typography tokens (`--ds-font-*`, `--ds-font-size-*`, `--ds-line-height-*`) instead of literal values.
 
@@ -17,21 +17,21 @@ Two role-based scales cover interface and prose text (`body-sm` through `body-lg
 <Story of={TypographyStories.TypeScale} />
 
 The scale is **not linear**. Body text occupies a tight 12px-16px range, while the heading scale expands from 18px to 64px.
-This mirrors how typographic contrast works in practice: small UI text lives in a tight band, while display type needs room to breathe.
+This keeps interface text within a small, readable range while allowing headings to create a clear hierarchy.
 
 ### Size guidance by role
 
 <Story of={TypographyStories.SizeGuidance} />
 
-Page-level `h1`s use `heading-md` (24px) by default-large enough to anchor the page while keeping toolbars and breadcrumbs part of the same UI surface. Reach for `heading-lg` and above only when you genuinely want an editorial moment.
+Page-level `h1`s use `heading-md` (24px) by default. Use `heading-lg` and above when a page needs a more prominent title.
 
 ## Font families
 
-Three typefaces have distinct roles and should not be interchanged.
+Use each font for the content it is designed for.
 
 <Story of={TypographyStories.FontFamilies} />
 
-- **Source Serif 4** (`--ds-font-display`) - a workhorse serif. Use for headlines, page titles, and calm brand moments. Do not use for body copy or UI labels.
+- **Source Serif 4** (`--ds-font-display`) - use for headings and page titles, not body copy or interface labels.
 - **General Sans** (`--ds-font-body`) - the default for everything else: paragraphs, buttons, form labels, nav items.
 - **JetBrains Mono** (`--ds-font-mono`) - reserved for code blocks and technical values (token names, version strings, file paths).
 
@@ -41,29 +41,29 @@ Use `regular` for body text, `medium` for labels, `semibold` for headings, and `
 
 <Story of={TypographyStories.FontWeights} />
 
-General Sans supports all four weights with genuine optical differentiation. Source Serif 4 is used at `semibold`/`bold` for display headings only - lighter weights at large sizes risk losing contrast.
+General Sans supports all four weights. Use Source Serif 4 at `semibold` or `bold` for headings so the text has enough contrast.
 
 ## Line heights
 
-Five steps range from `none` for single-line controls to `relaxed` for long-form prose. Pair tighter values with large sizes and looser values with body copy.
+Five steps range from `none` for single-line controls to `relaxed` for long-form text. Use smaller line heights with large text and larger line heights with body copy.
 
 <Story of={TypographyStories.LineHeights} />
 
 Pair line height with size, not just context:
 
-- **`none` (1)** - single-line control text (buttons, tabs), where any leading only grows the box.
-- **`tight` (1.25)** - single-line headings at `heading-3xl`, where cap-height ascenders create implied leading.
-- **`snug` (1.375)** - two-to-three line display headings, `heading-xl`-`heading-2xl`, and dense UI text.
+- **`none` (1)** - single-line control text such as buttons and tabs.
+- **`tight` (1.25)** - single-line headings at `heading-3xl`.
+- **`snug` (1.375)** - headings that wrap to two or three lines, and compact interface text.
 - **`normal` (1.5)** - the default for UI text, labels, form fields, and short runs of body copy.
 - **`relaxed` (1.75)** - long-form prose in docs pages or article layouts.
 
 ## Letter spacing
 
-Four values cover optically tight display headings through spaced-out uppercase labels. `normal` applies no adjustment.
+Four values cover headings and uppercase labels. `normal` applies no adjustment.
 
 <Story of={TypographyStories.LetterSpacing} />
 
-- **`tight` (−0.02 em)** - optically tightens large display type at `heading-3xl`, whose letterforms open up at scale.
-- **`display` (−0.01 em)** - a lighter tightening for `heading-xl`-`heading-2xl` headings.
+- **`tight` (−0.02 em)** - reduces the spacing in large `heading-3xl` text.
+- **`display` (−0.01 em)** - slightly reduces spacing in `heading-xl` and `heading-2xl` text.
 - **`normal` (0)** - the default; no adjustment.
 - **`wide` (+0.04 em)** - always paired with `text-transform: uppercase` on small caps (categories, labels, nav group headings). Never widen lowercase body copy.
