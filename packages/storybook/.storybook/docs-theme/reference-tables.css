@@ -1,0 +1,85 @@
+.ds-api-table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.ds-api-table {
+  width: 100%;
+  margin: 0 0 var(--ds-space-6);
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: transparent !important;
+  color: var(--ds-color-fg);
+}
+
+.sbdocs .ds-component-import {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-block: 0 var(--ds-space-6) !important;
+  padding: 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.sbdocs .ds-component-import code,
+.ds-brand-example-code code {
+  display: block;
+  width: max-content;
+}
+
+.sbdocs .ds-component-import code {
+  padding: 0 !important;
+}
+
+.ds-brand-example-code {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 !important;
+  overflow-x: auto;
+}
+
+.ds-api-table thead th {
+  border-bottom: 1px solid var(--ds-color-border) !important;
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.ds-api-table tbody tr,
+.ds-api-table tbody td {
+  border-bottom: 1px solid var(--ds-color-border-subtle) !important;
+  background: transparent !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.ds-api-table th,
+.ds-api-table td {
+  padding: var(--ds-space-2) var(--ds-space-3);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: break-word;
+}
+
+.ds-api-table col.ds-api-col-name {
+  width: 30%;
+}
+
+.ds-api-table col.ds-api-col-description {
+  width: 70%;
+}
+
+.ds-breakpoints-table-compact {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .ds-breakpoints-table-full {
+    display: none;
+  }
+
+  .ds-breakpoints-table-compact {
+    display: block;
+  }
+}

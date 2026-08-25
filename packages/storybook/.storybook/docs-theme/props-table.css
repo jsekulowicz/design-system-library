@@ -1,0 +1,115 @@
+.sbdocs .docblock-argstable,
+.sbdocs .docblock-argstable-head,
+.sbdocs .docblock-argstable-body,
+.sbdocs .docblock-argstable tr,
+.sbdocs .docblock-argstable td,
+.sbdocs .docblock-argstable th {
+  border-color: var(--ds-color-border-subtle) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable-head th {
+  border-bottom: 1px solid var(--ds-color-border) !important;
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable td *,
+.sbdocs .docblock-argstable th * {
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable tbody td:nth-of-type(2) span[class],
+.sbdocs .docblock-argstable tbody td:nth-of-type(3) span[class] {
+  border-color: var(--ds-color-border) !important;
+  background: var(--ds-color-bg-subtle) !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) {
+  border: 1px solid var(--ds-color-border) !important;
+  background: var(--ds-color-bg-muted) !important;
+}
+
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) span {
+  background: transparent !important;
+  color: var(--ds-color-fg-muted) !important;
+}
+
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) input:checked ~ span:last-of-type,
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) input:not(:checked) ~ span:first-of-type {
+  background: var(--ds-color-accent) !important;
+  box-shadow: none !important;
+  color: var(--ds-color-accent-fg) !important;
+}
+
+.sbdocs .docblock-argstable input:not([type='checkbox']):not([type='radio']),
+.sbdocs .docblock-argstable select,
+.sbdocs .docblock-argstable textarea {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  border: 1px solid var(--ds-color-border) !important;
+  background: var(--ds-color-bg) !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable textarea {
+  width: 100% !important;
+  resize: vertical !important;
+}
+
+.sbdocs .docblock-argstable label:has(> input[type='checkbox']) > input[type='checkbox'] {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.sbdocs div:has(> .docblock-argstable) {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.sbdocs .docblock-argstable {
+  width: 100%;
+  min-width: 0;
+  margin-inline: 0 !important;
+  table-layout: fixed;
+}
+
+.sbdocs .docblock-argstable th,
+.sbdocs .docblock-argstable td {
+  min-width: 0 !important;
+  overflow-wrap: anywhere;
+}
+
+.sbdocs .docblock-argstable th:nth-child(1) {
+  width: 20%;
+}
+
+.sbdocs .docblock-argstable th:nth-child(2) {
+  width: 35%;
+}
+
+.sbdocs .docblock-argstable th:nth-child(3) {
+  width: 15%;
+}
+
+.sbdocs .docblock-argstable th:nth-child(4) {
+  width: 30%;
+}
+
+@media (max-width: 1024px) {
+  .sbdocs .docblock-argstable :is(th, td):is(:nth-child(2), :nth-child(3)) {
+    display: none !important;
+  }
+
+  .sbdocs .docblock-argstable :is(th, td):nth-child(1) {
+    width: 30% !important;
+  }
+
+  .sbdocs .docblock-argstable :is(th, td):nth-child(4) {
+    width: 70% !important;
+  }
+}

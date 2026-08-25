@@ -149,17 +149,21 @@ test('Breakpoints hides its Preview below 1024px and wraps large values', async 
 });
 
 test('Font family cards stay compact, left-aligned, and wrap when needed', async ({ page }) => {
-  await page.setViewportSize({ width: 1000, height: 760 });
+  await page.setViewportSize({ width: 1280, height: 760 });
   await openDocs(page, 'foundations-typography--docs');
   const cards = page.locator('.ds-font-family-card');
   const wideBoxes = await cards.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect()));
 
   expect(wideBoxes).toHaveLength(3);
-  expect(wideBoxes.every(({ width }) => width <= 320)).toBe(true);
+  expect(new Set(wideBoxes.map(({ width }) => width)).size).toBe(1);
+  expect(new Set(wideBoxes.map(({ height }) => height)).size).toBe(1);
+  expect(wideBoxes[0]!.width).toBe(320);
   expect(wideBoxes.map(({ top }) => top)).toEqual([wideBoxes[0]!.top, wideBoxes[0]!.top, wideBoxes[0]!.top]);
 
   await page.setViewportSize({ width: 760, height: 760 });
   const narrowBoxes = await cards.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect()));
+  expect(new Set(narrowBoxes.map(({ width }) => width)).size).toBe(1);
+  expect(new Set(narrowBoxes.map(({ height }) => height)).size).toBe(1);
   expect(narrowBoxes[2]!.top).toBeGreaterThan(narrowBoxes[0]!.top);
   expect(narrowBoxes[2]!.left).toBe(narrowBoxes[0]!.left);
 });
