@@ -45,7 +45,7 @@ test('foundation tables use ds-table instead of hand-built or Markdown tables', 
   const expectedTableCounts = {
     'foundations-spacing--docs': 1,
     'foundations-theming--docs': 1,
-    'foundations-tokens--docs': 6,
+    'foundations-tokens--docs': 7,
     'foundations-typography--docs': 4,
     'foundations-utilities--docs': 3,
   };

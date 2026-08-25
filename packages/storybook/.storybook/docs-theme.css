@@ -443,6 +443,20 @@ p {
   box-sizing: border-box;
 }
 
+.ds-breakpoints-table-compact {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .ds-breakpoints-table-full {
+    display: none;
+  }
+
+  .ds-breakpoints-table-compact {
+    display: block;
+  }
+}
+
 @media (max-width: 1024px) {
   .sbdocs .docblock-argstable th:nth-child(2),
   .sbdocs .docblock-argstable td:nth-child(2),

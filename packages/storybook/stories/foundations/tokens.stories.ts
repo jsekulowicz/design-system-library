@@ -171,10 +171,48 @@ function barSwatch(value: string, color = 'var(--ds-color-accent-subtle)'): Temp
   return html`<span aria-hidden="true" style=${style}></span>`;
 }
 
-const previewColumns: readonly TableColumn<TokenRow>[] = [
+const valueColumns: readonly TableColumn<TokenRow>[] = [
   { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
   { name: 'value', field: 'value', label: 'Value', width: '7rem' },
+];
+
+const previewColumns: readonly TableColumn<TokenRow>[] = [
+  ...valueColumns,
   { name: 'preview', field: 'value', label: 'Preview', render: (row) => barSwatch(row.value) },
+];
+
+const BREAKPOINT_SEGMENT_WIDTH = 512;
+const BREAKPOINT_PREVIEW = joinStyles('display:flex', 'flex-wrap:wrap', 'row-gap:var(--ds-space-1)', 'width:100%');
+
+function breakpointSegments(value: string): number[] {
+  const pixels = Number.parseFloat(value);
+  const fullSegments = Math.floor(pixels / BREAKPOINT_SEGMENT_WIDTH);
+  const remainder = pixels % BREAKPOINT_SEGMENT_WIDTH;
+  return [...Array<number>(fullSegments).fill(BREAKPOINT_SEGMENT_WIDTH), ...(remainder > 0 ? [remainder] : [])];
+}
+
+function breakpointSegmentStyle(width: number): string {
+  return joinStyles(
+    'display:block',
+    `flex:0 0 ${width}px`,
+    'max-width:100%',
+    'height:6px',
+    'background:var(--ds-color-accent-subtle)',
+    'border:1px solid var(--ds-color-accent)',
+  );
+}
+
+function breakpointSwatch(value: string): TemplateResult {
+  return html`<span aria-hidden="true" class="ds-breakpoint-preview" style=${BREAKPOINT_PREVIEW}>
+    ${breakpointSegments(value).map(
+      (width) => html`<span class="ds-breakpoint-preview-segment" style=${breakpointSegmentStyle(width)}></span>`,
+    )}
+  </span>`;
+}
+
+const breakpointPreviewColumns: readonly TableColumn<TokenRow>[] = [
+  ...valueColumns,
+  { name: 'preview', field: 'value', label: 'Preview', render: (row) => breakpointSwatch(row.value) },
 ];
 
 const zIndexUse: Record<string, string> = {
@@ -197,7 +235,16 @@ export const BreakpointsAndZIndex: Story = {
     <section style="display:grid;gap:var(--ds-space-8)">
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Breakpoints</h3>
-        <ds-table .rows=${valueRows('breakpoint', breakpoint)} .columns=${previewColumns}></ds-table>
+        <ds-table
+          class="ds-breakpoints-table-full"
+          .rows=${valueRows('breakpoint', breakpoint)}
+          .columns=${breakpointPreviewColumns}
+        ></ds-table>
+        <ds-table
+          class="ds-breakpoints-table-compact"
+          .rows=${valueRows('breakpoint', breakpoint)}
+          .columns=${valueColumns}
+        ></ds-table>
       </div>
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Container max-widths</h3>

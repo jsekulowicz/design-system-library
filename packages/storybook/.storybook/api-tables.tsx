@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { ComponentDocumentationEntry, ComponentPropertyDocumentation } from './custom-elements-manifest.js';
 
 function displayDocumentationValue(value: unknown): string {
@@ -5,6 +6,17 @@ function displayDocumentationValue(value: unknown): string {
     return '-';
   }
   return typeof value === 'string' ? value : JSON.stringify(value);
+}
+
+function renderInlineCode(value: string | undefined): ReactNode {
+  if (!value) {
+    return '-';
+  }
+  return value
+    .split(/(`[^`]+`)/g)
+    .map((part, index) =>
+      part.startsWith('`') && part.endsWith('`') ? <code key={index}>{part.slice(1, -1)}</code> : part,
+    );
 }
 
 export function ComponentDocumentationTable({ title, items }: { title: string; items: ComponentDocumentationEntry[] }) {
@@ -28,7 +40,7 @@ export function ComponentDocumentationTable({ title, items }: { title: string; i
                 <td>
                   <code>{item.name || 'default'}</code>
                 </td>
-                <td>{item.description ?? '-'}</td>
+                <td>{renderInlineCode(item.description)}</td>
               </tr>
             ))}
           </tbody>
@@ -69,7 +81,7 @@ export function ComponentPropertyDocumentationTable({ items }: { items: Componen
                 <td>
                   <code>{displayDocumentationValue(item.default)}</code>
                 </td>
-                <td>{item.description ?? '-'}</td>
+                <td>{renderInlineCode(item.description)}</td>
               </tr>
             ))}
           </tbody>

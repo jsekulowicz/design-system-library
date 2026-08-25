@@ -116,6 +116,20 @@ const FONT_FAMILY_TOKEN = joinStyles(
   'padding:0',
   'line-height:1',
 );
+const FONT_FAMILY_LAYOUT = joinStyles(
+  'display:flex',
+  'flex-wrap:wrap',
+  'gap:var(--ds-space-4)',
+  'align-items:stretch',
+  'justify-content:flex-start',
+);
+const FONT_FAMILY_CARD = joinStyles(
+  card('var(--ds-space-5)'),
+  'flex:1 1 16rem',
+  'max-width:20rem',
+  'min-width:0',
+  'margin:0',
+);
 
 function familySample(token: string): string {
   return joinStyles(
@@ -129,10 +143,10 @@ function familySample(token: string): string {
 export const FontFamilies: Story = {
   render: () => html`
     <section style=${SECTION}>
-      <div style=${autoGrid('240px')}>
+      <div class="ds-font-family-cards" style=${FONT_FAMILY_LAYOUT}>
         ${FAMILIES.map(
           (family) => html`
-            <figure style=${card('var(--ds-space-5)')}>
+            <figure class="ds-font-family-card" style=${FONT_FAMILY_CARD}>
               <figcaption style="display:grid;gap:4px">
                 <strong>${family.label} - ${family.name}</strong>
                 <code style=${FONT_FAMILY_TOKEN}>${family.token}</code>

@@ -124,3 +124,54 @@ test('Props tables prioritize names and controls up to tablet width', async ({ p
   await expect(table.locator('th').nth(1)).toBeVisible();
   await expect(table.locator('th').nth(2)).toBeVisible();
 });
+
+test('Breakpoints hides its Preview below 1024px and wraps large values', async ({ page }) => {
+  await page.setViewportSize({ width: 1023, height: 760 });
+  await openDocs(page, 'foundations-tokens--docs');
+  const fullTable = page.locator('.ds-breakpoints-table-full');
+  const compactTable = page.locator('.ds-breakpoints-table-compact');
+
+  await expect(fullTable).toBeHidden();
+  await expect(compactTable).toBeVisible();
+  await expect(compactTable.locator('th')).toHaveText(['Token', 'Value']);
+
+  await page.setViewportSize({ width: 1024, height: 760 });
+  await expect(fullTable).toBeVisible();
+  await expect(compactTable).toBeHidden();
+  await expect(fullTable.locator('th')).toHaveText(['Token', 'Value', 'Preview']);
+
+  const largeBreakpoint = fullTable.locator('tr').filter({ hasText: 'breakpoint-lg' });
+  const segments = largeBreakpoint.locator('.ds-breakpoint-preview-segment');
+  await expect(segments).toHaveCount(2);
+  const boxes = await segments.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect()));
+  expect(boxes.map(({ width }) => width)).toEqual([512, 512]);
+  expect(boxes[1]!.top).toBeGreaterThan(boxes[0]!.top);
+});
+
+test('Font family cards stay compact, left-aligned, and wrap when needed', async ({ page }) => {
+  await page.setViewportSize({ width: 1000, height: 760 });
+  await openDocs(page, 'foundations-typography--docs');
+  const cards = page.locator('.ds-font-family-card');
+  const wideBoxes = await cards.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect()));
+
+  expect(wideBoxes).toHaveLength(3);
+  expect(wideBoxes.every(({ width }) => width <= 320)).toBe(true);
+  expect(wideBoxes.map(({ top }) => top)).toEqual([wideBoxes[0]!.top, wideBoxes[0]!.top, wideBoxes[0]!.top]);
+
+  await page.setViewportSize({ width: 760, height: 760 });
+  const narrowBoxes = await cards.evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect()));
+  expect(narrowBoxes[2]!.top).toBeGreaterThan(narrowBoxes[0]!.top);
+  expect(narrowBoxes[2]!.left).toBe(narrowBoxes[0]!.left);
+});
+
+test('API table descriptions render backtick-delimited content as inline code', async ({ page }) => {
+  await openDocs(page, 'navigation-menubutton--docs');
+  const slotsTable = page.getByRole('heading', { name: 'Slots' }).locator('xpath=following-sibling::div[1]');
+  const eventsTable = page.getByRole('heading', { name: 'Events' }).locator('xpath=following-sibling::div[1]');
+
+  await expect(slotsTable.locator('code').filter({ hasText: /^<ds-button>$/ })).toBeVisible();
+  await expect(slotsTable.locator('code').filter({ hasText: /^ds-menu-item$/ })).toBeVisible();
+  await expect(eventsTable.locator('code').filter({ hasText: /^\{ value, originalEvent \}$/ })).toBeVisible();
+  expect(await slotsTable.textContent()).not.toContain('`');
+  expect(await eventsTable.textContent()).not.toContain('`');
+});
