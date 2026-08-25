@@ -63,7 +63,6 @@
     box-sizing: border-box;
     width: 2.5rem;
     height: 2.5rem;
-    margin: -1.25rem 0 0 -1.25rem;
     border-style: solid !important;
     border-width: 3px !important;
     border-color: color-mix(in srgb, var(--ds-color-fg-muted, var(--ds-preview-loading-muted)) 35%, transparent);
@@ -71,6 +70,16 @@
     border-radius: 50%;
     animation: ds-loading-spin 0.7s linear infinite !important;
     mix-blend-mode: normal;
+  }
+
+  .sb-preparing-story .sb-loader {
+    margin: -1.25rem 0 0 -1.25rem;
+  }
+
+  .sb-preparing-docs .sb-loader {
+    position: static !important;
+    inset: auto !important;
+    margin: 0 !important;
   }
 
   @keyframes ds-loading-spin {

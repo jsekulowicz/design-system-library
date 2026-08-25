@@ -28,16 +28,40 @@ test('Framework usage documents build-time Vue setup and React installation', as
   await expect(page.getByText(/stacked="false" still enables it/)).toBeVisible();
 });
 
-test('component API includes import paths and complete property metadata', async ({ page }) => {
+test('component docs combine interactive controls with complete property metadata', async ({ page }) => {
   await openDocs(page, 'atoms-button--docs');
 
   await expect(page.getByText("import '@jsekulowicz/ds-components/button/define';")).toBeVisible();
-  const properties = page.locator('.ds-properties-table');
-  await expect(properties).toBeVisible();
-  await expect(properties.getByRole('row', { name: /^href href / })).toBeVisible();
-  await expect(properties.getByRole('row', { name: /^loadingLabel loading-label / })).toBeVisible();
-  await expect(properties.getByRole('row', { name: /^variant variant ButtonVariant 'primary'/ })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Playground controls' })).toBeVisible();
+  await expect(page.locator('.ds-properties-table')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Playground controls' })).toHaveCount(0);
+
+  const propsHeading = page.getByRole('heading', { name: 'Props' });
+  const propsTable = propsHeading.locator('xpath=following::table[1]');
+  await expect(propsHeading).toBeVisible();
+  await expect(
+    propsTable.getByRole('row', { name: /variant.*'primary'.*'secondary'.*'ghost'.*'primary'/ }),
+  ).toBeVisible();
+  await expect(
+    propsTable.getByRole('row', { name: /loadingLabel.*Label shown while loading.*string.*undefined/ }),
+  ).toBeVisible();
+  await expect(
+    propsTable.getByRole('row', { name: /fullWidth.*Enables or disables full width.*boolean.*false/ }),
+  ).toBeVisible();
+  await expect(propsHeading).toHaveJSProperty('tagName', 'H3');
+
+  const propsPrecedesImport = await propsHeading.evaluate((heading) =>
+    Boolean(
+      heading.compareDocumentPosition(document.querySelector('.ds-component-import')!) &
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    ),
+  );
+  expect(propsPrecedesImport).toBe(true);
+
+  await propsTable.getByRole('radio', { name: 'secondary' }).check();
+  await expect(page.locator('ds-button').filter({ hasText: 'Ship it' }).first()).toHaveAttribute(
+    'variant',
+    'secondary',
+  );
 });
 
 test('documentation source links resolve to the repository', async ({ page }) => {

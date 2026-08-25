@@ -48,8 +48,8 @@ const VIEWPORTS: ViewportPreset[] = [
   { key: 'desktop', title: 'Computer', icon: <ComputerDesktopIcon /> },
 ];
 
-const DS_THEME_CHANGED = 'ds/theme-changed';
-const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
+const DESIGN_SYSTEM_THEME_CHANGED = 'ds/theme-changed';
+const DESIGN_SYSTEM_VIEWPORT_CHANGED = 'ds/viewport-changed';
 const THEME_STORAGE_KEY = 'ds-storybook-theme';
 const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
 const FIXED_DESKTOP_TITLES = new Set(['Introduction', 'Framework usage']);
@@ -122,7 +122,7 @@ function ThemeToolbar(): React.ReactElement {
   React.useEffect(() => {
     document.documentElement.setAttribute('data-ds-theme', theme);
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-    channel.emit(DS_THEME_CHANGED, { theme });
+    channel.emit(DESIGN_SYSTEM_THEME_CHANGED, { theme });
   }, [channel, theme]);
 
   return (
@@ -159,7 +159,7 @@ function ViewportToolbar(): React.ReactElement | null {
     if (!fixedDesktopPage) {
       window.localStorage.setItem(VIEWPORT_STORAGE_KEY, viewport);
     }
-    channel.emit(DS_VIEWPORT_CHANGED, { persist: !fixedDesktopPage, viewport: effectiveViewport });
+    channel.emit(DESIGN_SYSTEM_VIEWPORT_CHANGED, { persist: !fixedDesktopPage, viewport: effectiveViewport });
   }, [channel, effectiveViewport, fixedDesktopPage, viewport]);
 
   function updateViewport(value: ViewportKey): void {

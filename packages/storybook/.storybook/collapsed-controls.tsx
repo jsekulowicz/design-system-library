@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, type ComponentProps } from 'react';
 import { Controls, useOf } from '@storybook/addon-docs/blocks';
 
-interface ResolvedMeta {
+interface ResolvedStoryMetadata {
   csfFile?: {
     meta?: {
       parameters?: {
@@ -29,7 +29,7 @@ function collapseNamedControls(root: HTMLElement, pendingNames: Set<string>): vo
 
 export function CollapsedControls(props: CollapsedControlsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const resolved = useOf('meta', ['meta']) as ResolvedMeta;
+  const resolved = useOf('meta', ['meta']) as ResolvedStoryMetadata;
   const names = resolved.csfFile?.meta?.parameters?.docs?.collapsedObjectControls ?? [];
   const namesKey = names.join('\0');
 

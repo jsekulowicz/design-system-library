@@ -326,11 +326,6 @@ p {
   overflow-x: auto;
 }
 
-.ds-properties-table {
-  min-width: 56rem;
-  table-layout: auto;
-}
-
 .ds-component-import {
   overflow-x: auto;
 }

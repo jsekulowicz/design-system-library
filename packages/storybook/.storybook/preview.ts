@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/web-components-vite';
 import { addons } from 'storybook/internal/preview-api';
+import { enrichArgumentTypesFromCustomElementsManifest } from './component-arg-types.js';
 import { setupDocsReadiness } from './docs-readiness.js';
 import { DocsPage } from './docs-page.js';
 import '@jsekulowicz/ds-tokens/theme-default.css';
@@ -11,13 +12,13 @@ type ThemeKey = 'light' | 'dark';
 type ViewportKey = 'mobile' | 'tablet' | 'desktop';
 type ViewportPayload = { viewport?: ViewportKey; persist?: boolean } | ViewportKey;
 
-const DS_THEME_CHANGED = 'ds/theme-changed';
-const DS_VIEWPORT_CHANGED = 'ds/viewport-changed';
-const THEME_ATTR = 'data-ds-theme';
+const DESIGN_SYSTEM_THEME_CHANGED = 'ds/theme-changed';
+const DESIGN_SYSTEM_VIEWPORT_CHANGED = 'ds/viewport-changed';
+const THEME_ATTRIBUTE = 'data-ds-theme';
 const THEME_STORAGE_KEY = 'ds-storybook-theme';
 const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
 const STORY_IFRAME_SELECTOR = 'iframe[id^="iframe--"]';
-const STORY_LOADING_ATTR = 'data-ds-story-loading';
+const STORY_LOADING_ATTRIBUTE = 'data-ds-story-loading';
 const storyReadyObservers = new WeakMap<HTMLIFrameElement, MutationObserver>();
 
 function normalizeTheme(value: unknown): ThemeKey {
@@ -45,7 +46,7 @@ function writeStorage(key: string, value: string): void {
 }
 
 function applyTheme(theme: ThemeKey): void {
-  document.documentElement.setAttribute(THEME_ATTR, theme);
+  document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
   writeStorage(THEME_STORAGE_KEY, theme);
   syncStoryIframeThemes(theme);
 }
@@ -78,12 +79,12 @@ function readInitialViewport(): ViewportKey {
 }
 
 function readAppliedTheme(): ThemeKey {
-  return normalizeTheme(document.documentElement.getAttribute(THEME_ATTR));
+  return normalizeTheme(document.documentElement.getAttribute(THEME_ATTRIBUTE));
 }
 
 function syncStoryIframeTheme(iframe: HTMLIFrameElement, theme = readAppliedTheme()): void {
   const root = iframe.contentDocument?.documentElement;
-  root?.setAttribute(THEME_ATTR, theme);
+  root?.setAttribute(THEME_ATTRIBUTE, theme);
 }
 
 function isStoryIframeSettled(iframe: HTMLIFrameElement): boolean {
@@ -94,13 +95,13 @@ function isStoryIframeSettled(iframe: HTMLIFrameElement): boolean {
 function finishStoryIframeLoad(iframe: HTMLIFrameElement): void {
   storyReadyObservers.get(iframe)?.disconnect();
   storyReadyObservers.delete(iframe);
-  iframe.removeAttribute(STORY_LOADING_ATTR);
+  iframe.removeAttribute(STORY_LOADING_ATTRIBUTE);
 }
 
 function markStoryIframeLoading(iframe: HTMLIFrameElement): void {
   storyReadyObservers.get(iframe)?.disconnect();
   storyReadyObservers.delete(iframe);
-  iframe.setAttribute(STORY_LOADING_ATTR, 'true');
+  iframe.setAttribute(STORY_LOADING_ATTRIBUTE, 'true');
 }
 
 function trackStoryIframeReadiness(iframe: HTMLIFrameElement): void {
@@ -170,11 +171,11 @@ function setupStoryIframeThemeSync(): void {
 }
 
 const channel = addons.getChannel();
-channel.on(DS_THEME_CHANGED, (payload: { theme?: ThemeKey } | ThemeKey) => {
+channel.on(DESIGN_SYSTEM_THEME_CHANGED, (payload: { theme?: ThemeKey } | ThemeKey) => {
   const theme = typeof payload === 'string' ? payload : payload.theme;
   applyTheme(normalizeTheme(theme));
 });
-channel.on(DS_VIEWPORT_CHANGED, (payload: ViewportPayload) => {
+channel.on(DESIGN_SYSTEM_VIEWPORT_CHANGED, (payload: ViewportPayload) => {
   const viewport = typeof payload === 'string' ? payload : payload.viewport;
   const persist = typeof payload === 'string' ? true : payload.persist !== false;
   applyViewport(normalizeViewport(viewport), persist);
@@ -186,6 +187,7 @@ setupStoryIframeThemeSync();
 setupDocsReadiness();
 
 const preview: Preview = {
+  argTypesEnhancers: [enrichArgumentTypesFromCustomElementsManifest],
   parameters: {
     controls: { expanded: true },
     backgrounds: { disabled: true },

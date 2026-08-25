@@ -22,12 +22,12 @@ Each toast composes a heading, body (default slot), and an optional `actions` sl
 
     <ds-tab-panel value="api">
       <Canvas of={ToastStories.Playground} />
+      <h3>Props</h3>
+      <Controls of={ToastStories.Playground} />
       <h3>ds-toast</h3>
       <ComponentApi tag="ds-toast" />
       <h3>ds-toast-stack</h3>
       <ComponentApi tag="ds-toast-stack" />
-      <h3>Playground controls</h3>
-      <Controls of={ToastStories.Playground} />
       <h3>Imperative <code>toast()</code> API</h3>
       <div className="ds-doc-paragraph">
         Imported from <code>@jsekulowicz/ds-components/toast</code>. Lazy-mounts a <code>ds-toast-stack</code> on <code>document.body</code> for the requested placement (default <code>'bottom-right'</code>) and returns a controller you can dismiss or update.

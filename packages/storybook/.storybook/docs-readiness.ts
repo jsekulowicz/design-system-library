@@ -1,8 +1,8 @@
 import { DOCS_RENDERED, STORY_CHANGED } from 'storybook/internal/core-events';
 import { addons } from 'storybook/internal/preview-api';
 
-const DOCS_LAYOUT_QUIET_MS = 250;
-const PENDING_DOCS_SELECTOR = '.sbdocs-content pre > div:only-child:empty';
+const DOCUMENTATION_LAYOUT_QUIET_MILLISECONDS = 250;
+const PENDING_DOCUMENTATION_SELECTOR = '.sbdocs-content pre > div:only-child:empty';
 const settledDocsIds = new Set<string>();
 let docsLoadGeneration = 0;
 
@@ -26,7 +26,7 @@ function waitForSelector(selector: string): Promise<void> {
 }
 
 function waitForPendingDocsRenderers(): Promise<void> {
-  return waitForMutation(() => !document.querySelector(PENDING_DOCS_SELECTOR));
+  return waitForMutation(() => !document.querySelector(PENDING_DOCUMENTATION_SELECTOR));
 }
 
 function getUndefinedDocsTags(): Set<string> {
@@ -70,7 +70,7 @@ function waitForDocsImages(): Promise<void> {
 
 function hasPendingDocsLayout(): boolean {
   return (
-    Boolean(document.querySelector(PENDING_DOCS_SELECTOR)) ||
+    Boolean(document.querySelector(PENDING_DOCUMENTATION_SELECTOR)) ||
     getUndefinedDocsTags().size > 0 ||
     getDocsImages().some((image) => !image.complete)
   );
@@ -94,7 +94,7 @@ function waitForQuietDocsLayout(): Promise<void> {
     };
     const restart = () => {
       window.clearTimeout(timer);
-      timer = window.setTimeout(finish, DOCS_LAYOUT_QUIET_MS);
+      timer = window.setTimeout(finish, DOCUMENTATION_LAYOUT_QUIET_MILLISECONDS);
     };
     const mutationObserver = new MutationObserver(restart);
     const resizeObserver = new ResizeObserver(restart);

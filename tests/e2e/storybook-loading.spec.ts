@@ -15,6 +15,7 @@ test('story loading is themed before the story module resolves', async ({ page }
   await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(34, 36, 37)');
   await expect(loader).toHaveCSS('width', '40px');
   await expect(loader).toHaveCSS('height', '40px');
+  await expect(loader).toHaveCSS('position', 'absolute');
   await expect(loader).toHaveCSS('border-top-width', '3px');
   await expect(loader).toHaveCSS('animation-duration', '0.7s');
   await navigation;
@@ -301,6 +302,8 @@ test('manager and preview use the same centered documentation loader', async ({ 
   const previewSpinnerStyle = await previewSpinner.evaluate((element) => {
     const style = getComputedStyle(element);
     return [
+      style.position,
+      style.margin,
       style.width,
       style.height,
       style.borderTopWidth,
@@ -309,6 +312,7 @@ test('manager and preview use the same centered documentation loader', async ({ 
       style.borderRightColor,
     ];
   });
+  expect(previewSpinnerStyle.slice(0, 2)).toEqual(['static', '0px']);
   const previewSpinnerCenter = await previewSpinner.evaluate((element) => {
     const rect = element.getBoundingClientRect();
     const frameRect = window.frameElement?.getBoundingClientRect();
@@ -321,7 +325,7 @@ test('manager and preview use the same centered documentation loader', async ({ 
     const style = getComputedStyle(element, '::after');
     return [style.color, style.fontFamily, style.fontSize, style.fontWeight, style.lineHeight];
   });
-  expect(previewSpinnerStyle).toEqual(managerSpinnerStyle);
+  expect(previewSpinnerStyle.slice(2)).toEqual(managerSpinnerStyle);
   expect(previewSpinnerCenter.x).toBeCloseTo(managerSpinnerCenter.x, 1);
   expect(previewSpinnerCenter.y).toBeCloseTo(managerSpinnerCenter.y, 1);
   expect(previewLabelStyle).toEqual(managerLabelStyle);
