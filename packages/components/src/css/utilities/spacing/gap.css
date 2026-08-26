@@ -1,0 +1,67 @@
+@layer ds.utilities {
+  .ds-gap-0 {
+    gap: var(--ds-space-0);
+  }
+  .ds-gap-1 {
+    gap: var(--ds-space-1);
+  }
+  .ds-gap-2 {
+    gap: var(--ds-space-2);
+  }
+  .ds-gap-3 {
+    gap: var(--ds-space-3);
+  }
+  .ds-gap-4 {
+    gap: var(--ds-space-4);
+  }
+  .ds-gap-5 {
+    gap: var(--ds-space-5);
+  }
+  .ds-gap-6 {
+    gap: var(--ds-space-6);
+  }
+
+  .ds-gap-x-0 {
+    column-gap: var(--ds-space-0);
+  }
+  .ds-gap-x-1 {
+    column-gap: var(--ds-space-1);
+  }
+  .ds-gap-x-2 {
+    column-gap: var(--ds-space-2);
+  }
+  .ds-gap-x-3 {
+    column-gap: var(--ds-space-3);
+  }
+  .ds-gap-x-4 {
+    column-gap: var(--ds-space-4);
+  }
+  .ds-gap-x-5 {
+    column-gap: var(--ds-space-5);
+  }
+  .ds-gap-x-6 {
+    column-gap: var(--ds-space-6);
+  }
+
+  .ds-gap-y-0 {
+    row-gap: var(--ds-space-0);
+  }
+  .ds-gap-y-1 {
+    row-gap: var(--ds-space-1);
+  }
+  .ds-gap-y-2 {
+    row-gap: var(--ds-space-2);
+  }
+  .ds-gap-y-3 {
+    row-gap: var(--ds-space-3);
+  }
+  .ds-gap-y-4 {
+    row-gap: var(--ds-space-4);
+  }
+  .ds-gap-y-5 {
+    row-gap: var(--ds-space-5);
+  }
+  .ds-gap-y-6 {
+    row-gap: var(--ds-space-6);
+  }
+}
