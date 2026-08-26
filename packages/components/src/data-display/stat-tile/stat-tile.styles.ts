@@ -22,7 +22,7 @@ export const statTileStyles = css`
   .value {
     display: flex;
     align-items: center;
-    min-height: calc(var(--ds-font-size-heading-lg) * var(--ds-line-height-tight));
+    min-height: 1lh;
     font-size: var(--ds-font-size-heading-lg);
     font-weight: var(--ds-font-weight-bold);
     font-variant-numeric: tabular-nums;

@@ -28,9 +28,15 @@ describe('<ds-stat-tile>', () => {
   it('uses the same reserved line box for loading and loaded values', () => {
     const css = DsStatTile.styles.map((style) => style.cssText).join('\n');
 
-    expect(css).toMatch(/\.value\s*{[^}]*min-height: calc\([^}]*--ds-line-height-tight[^}]*\)/s);
+    expect(css).toMatch(/\.value\s*{[^}]*min-height: 1lh/s);
     expect(css).toMatch(/\.value\s*{[^}]*line-height: var\(--ds-line-height-tight\)/s);
     expect(css).not.toMatch(/\.value ds-skeleton\s*{[^}]*padding/s);
+  });
+
+  it('never multiplies a line-height token, which resolves to a length', () => {
+    const css = DsStatTile.styles.map((style) => style.cssText).join('\n');
+
+    expect(css).not.toMatch(/\*\s*var\(--ds-line-height-/);
   });
 
   it('shows consumer-provided hint content', async () => {
