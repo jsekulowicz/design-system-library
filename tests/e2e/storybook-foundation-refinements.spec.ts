@@ -61,8 +61,24 @@ test('mobile docs reserve only 16px on each side of the content', async ({ page 
 
   expect(await heading.evaluate((element) => element.getBoundingClientRect().left)).toBe(16);
   await expect(page.locator('.sbdocs-wrapper')).toHaveCSS('padding-left', '0px');
+  await expect(page.locator('.sbdocs-wrapper')).toHaveCSS('padding-top', '16px');
+  await expect(page.locator('.sbdocs-wrapper')).toHaveCSS('padding-bottom', '32px');
   await expect(page.locator('.sbdocs-content')).toHaveCSS('padding-left', '16px');
   await expect(page.locator('.sbdocs-content')).toHaveCSS('padding-right', '16px');
+});
+
+test('mobile API table code values wrap inside their cells', async ({ page }) => {
+  await page.setViewportSize({ width: 380, height: 760 });
+  await openDocs(page, 'layout-scrollablepage--docs');
+  const table = page.getByRole('heading', { name: 'CSS Variables' }).locator('xpath=following-sibling::div[1]');
+  const codeValues = table.locator('code');
+
+  await expect(codeValues.first()).toHaveCSS('white-space', 'normal');
+  expect(
+    await codeValues.evaluateAll((elements) =>
+      elements.every((element) => element.scrollWidth <= element.parentElement!.clientWidth),
+    ),
+  ).toBe(true);
 });
 
 test('component API sections use 12px heading gaps and an intrinsic import background', async ({ page }) => {

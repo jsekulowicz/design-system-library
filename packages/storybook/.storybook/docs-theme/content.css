@@ -91,6 +91,7 @@ p,
 @media (max-width: 600px) {
   .sbdocs.sbdocs-wrapper {
     padding-inline: 0 !important;
+    padding-block: var(--ds-space-4) var(--ds-space-8) !important;
   }
 
   .sbdocs.sbdocs-content {

@@ -30,9 +30,6 @@ body {
   vertical-align: top;
   line-height: 1.5;
 }
-.ds-api-table td:first-child {
-  white-space: nowrap;
-}
 .ds-api-table code {
   font-family: var(--ds-font-mono, 'JetBrains Mono', monospace);
   font-size: 0.875em;
@@ -40,6 +37,8 @@ body {
   color: var(--ds-color-fg, #0b0b0c);
   padding: 0.15em 0.4em;
   border-radius: var(--ds-radius-xs, 2px);
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 #storybook-docs,
