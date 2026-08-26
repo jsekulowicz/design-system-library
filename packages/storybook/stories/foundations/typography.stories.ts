@@ -125,9 +125,9 @@ const FONT_FAMILY_LAYOUT = joinStyles(
 );
 const FONT_FAMILY_CARD = joinStyles(
   card('var(--ds-space-5)'),
-  'flex:0 1 20rem',
-  'width:20rem',
-  'max-width:20rem',
+  'flex:0 1 18rem',
+  'width:18rem',
+  'max-width:18rem',
   'height:15rem',
   'min-width:0',
   'margin:0',

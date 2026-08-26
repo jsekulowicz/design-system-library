@@ -173,7 +173,7 @@ test('Font family cards stay compact, left-aligned, and wrap when needed', async
   expect(wideBoxes).toHaveLength(3);
   expect(new Set(wideBoxes.map(({ width }) => width)).size).toBe(1);
   expect(new Set(wideBoxes.map(({ height }) => height)).size).toBe(1);
-  expect(wideBoxes[0]!.width).toBe(320);
+  expect(wideBoxes[0]!.width).toBe(288);
   expect(wideBoxes.map(({ top }) => top)).toEqual([wideBoxes[0]!.top, wideBoxes[0]!.top, wideBoxes[0]!.top]);
 
   await page.setViewportSize({ width: 760, height: 760 });
