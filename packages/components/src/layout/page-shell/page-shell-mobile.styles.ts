@@ -30,6 +30,7 @@ export const pageShellMobileStyles = css`
   .menu-toggle::part(button) {
     min-width: var(--ds-page-shell-menu-toggle-size, var(--ds-size-sm));
     width: var(--ds-page-shell-menu-toggle-size, var(--ds-size-sm));
+    height: var(--ds-page-shell-menu-toggle-size, var(--ds-size-sm));
     padding: 0;
   }
 
