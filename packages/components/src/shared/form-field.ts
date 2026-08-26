@@ -23,18 +23,14 @@ export const formFieldStyles: CSSResult = css`
   }
   .description {
     margin: 0;
-    font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
-    line-height: var(--ds-line-height-none);
   }
   .error {
     margin: 0;
     display: flex;
     align-items: center;
     gap: var(--ds-space-1);
-    font-size: var(--ds-font-size-body-sm);
     color: var(--ds-color-fg-muted);
-    line-height: var(--ds-line-height-none);
   }
   /* 1em, not 1rem: a 16px icon would set the row height on its own. */
   .error-icon {
@@ -46,7 +42,9 @@ export const formFieldStyles: CSSResult = css`
   .description,
   .error,
   .subtext-spacer {
-    min-block-size: calc(var(--ds-font-size-body-sm) * var(--ds-line-height-none));
+    font-size: var(--ds-font-size-body-sm);
+    line-height: var(--ds-line-height-none);
+    min-block-size: 1lh;
   }
   .subtext-spacer {
     margin: 0;

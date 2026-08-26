@@ -63,15 +63,23 @@ describe('field message space', () => {
     expect(footer(el)!.querySelector('.error')).not.toBeNull();
   });
 
-  it('reserves exactly one line, measured from the tokens', () => {
-    expect(formFieldStyles.cssText).toContain(
-      'min-block-size: calc(var(--ds-font-size-body-sm) * var(--ds-line-height-none))',
+  // The spacer carries no text, so it can only be floored by a line box it
+  // sizes itself - hence the shared typography rather than a floor alone.
+  it('reserves one line on the message row, spacer included', () => {
+    expect(formFieldStyles.cssText).toMatch(
+      /\.description,\s*\.error,\s*\.subtext-spacer\s*{[^}]*font-size: var\(--ds-font-size-body-sm\)[^}]*line-height: var\(--ds-line-height-none\)[^}]*min-block-size: 1lh/,
     );
+  });
+
+  it('never multiplies a line-height token, which resolves to a length', () => {
+    expect(formFieldStyles.cssText).not.toMatch(/\*\s*var\(--ds-line-height-/);
   });
 
   // Both must track the same token, or the taller one sets the row height.
   it('sizes the message text and its icon off the same step', () => {
-    expect(formFieldStyles.cssText).toMatch(/\.error\s*{[^}]*line-height: var\(--ds-line-height-none\)/s);
+    expect(formFieldStyles.cssText).toMatch(
+      /\.description,\s*\.error,\s*\.subtext-spacer\s*{[^}]*line-height: var\(--ds-line-height-none\)/,
+    );
     expect(formFieldStyles.cssText).toMatch(/\.error-icon\s*{[^}]*width: 1em/s);
     expect(formFieldStyles.cssText).not.toMatch(/\.error-icon\s*{[^}]*width: 1rem/s);
   });
