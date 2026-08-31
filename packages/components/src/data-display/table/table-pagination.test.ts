@@ -207,6 +207,11 @@ describe('<ds-table-pagination>', () => {
       expect(el.shadowRoot!.querySelector('label')?.textContent).toContain('Filas por página');
     });
 
+    it('leaves a placeholder named after an inherited object member alone', async () => {
+      const el = await mountPagination({ summaryLabel: '{start} of {constructor}' });
+      expect(el.shadowRoot!.querySelector('[part~="summary"]')?.textContent?.trim()).toBe('1 of {constructor}');
+    });
+
     it('leaves an unknown placeholder alone rather than printing undefined', async () => {
       const el = await mountPagination({ summaryLabel: '{start} of {nope}' });
       expect(el.shadowRoot!.querySelector('[part~="summary"]')?.textContent?.trim()).toBe('1 of {nope}');

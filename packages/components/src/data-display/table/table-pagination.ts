@@ -10,7 +10,9 @@ const COMPACT_WIDTH_PX = 480;
 const COMPACT_MAX_VISIBLE = 3;
 
 function format(template: string, values: Record<string, number>): string {
-  return template.replace(/\{(\w+)\}/g, (whole, key: string) => (key in values ? String(values[key]) : whole));
+  return template.replace(/\{(\w+)\}/g, (whole, key: string) =>
+    Object.hasOwn(values, key) ? String(values[key]) : whole,
+  );
 }
 
 const ICON_PREV = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4l-4 4 4 4"/></svg>`;
@@ -220,7 +222,7 @@ export class DsTablePagination extends DsElement {
         )}
         ${
           this.hidePageNumbers
-            ? html`<span class="ellipsis"> ${format(this.pageOfLabel, { page: current, total: totalPages })} </span>`
+            ? html`<span class="ellipsis">${format(this.pageOfLabel, { page: current, total: totalPages })}</span>`
             : html`<ul class="list" part="list">
                 ${this.#range().map((i) => this.#renderItem(i, current))}
               </ul>`
