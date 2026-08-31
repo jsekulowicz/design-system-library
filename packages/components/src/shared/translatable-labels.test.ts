@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeAll, beforeEach } from 'vitest';
 import { html, render } from 'lit';
 import { mount, mountWithProps, resetTestDom } from '../test-utils/mount.js';
 import { renderClearButton, renderOverflowTile, renderSelectedTiles } from '../forms/select/select.shared.js';
@@ -31,6 +31,13 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+  resetTestDom();
+});
+
+// Not just beforeEach: these mount modals whose scroll-fade controller retries
+// on a frame loop, and the last test of the file would otherwise leave one
+// attached with the retry chain still running as the environment tears down.
+afterEach(() => {
   resetTestDom();
 });
 

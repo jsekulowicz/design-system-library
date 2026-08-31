@@ -13,6 +13,7 @@ export class ScrollFadeController implements ReactiveController {
   #resize?: ResizeObserver;
   #mutation?: MutationObserver;
   #frame = 0;
+  #retry = 0;
 
   constructor(host: ReactiveControllerHost, getScroller: () => HTMLElement | null | undefined) {
     this.#getScroller = getScroller;
@@ -31,6 +32,18 @@ export class ScrollFadeController implements ReactiveController {
     this.#detach();
   }
 
+  // Guarded like ResizeObserver and MutationObserver below: a host can update
+  // in an environment that has no frame loop, and an unguarded call throws.
+  #raf(callback: FrameRequestCallback): number {
+    return typeof requestAnimationFrame === 'function' ? requestAnimationFrame(callback) : 0;
+  }
+
+  #cancelRaf(handle: number): void {
+    if (handle && typeof cancelAnimationFrame === 'function') {
+      cancelAnimationFrame(handle);
+    }
+  }
+
   #tryAttach(attempt = 0): void {
     const el = this.#getScroller();
     if (el && el === this.#scroller) {
@@ -39,8 +52,13 @@ export class ScrollFadeController implements ReactiveController {
     }
     if (!el) {
       // The scroller may live in a nested shadow root that hasn't rendered yet.
-      if (attempt < 10) {
-        requestAnimationFrame(() => this.#tryAttach(attempt + 1));
+      // Tracked so #detach can cancel it: a host that disconnects mid-retry
+      // would otherwise leave the rest of the chain running against nothing.
+      if (attempt < 10 && !this.#retry) {
+        this.#retry = this.#raf(() => {
+          this.#retry = 0;
+          this.#tryAttach(attempt + 1);
+        });
       }
       return;
     }
@@ -68,10 +86,10 @@ export class ScrollFadeController implements ReactiveController {
     this.#resize = undefined;
     this.#mutation = undefined;
     this.#scroller = null;
-    if (this.#frame) {
-      cancelAnimationFrame(this.#frame);
-      this.#frame = 0;
-    }
+    this.#cancelRaf(this.#frame);
+    this.#frame = 0;
+    this.#cancelRaf(this.#retry);
+    this.#retry = 0;
   }
 
   #onScroll = (): void => this.#schedule();
@@ -80,7 +98,7 @@ export class ScrollFadeController implements ReactiveController {
     if (this.#frame) {
       return;
     }
-    this.#frame = requestAnimationFrame(() => {
+    this.#frame = this.#raf(() => {
       this.#frame = 0;
       this.#update();
     });
