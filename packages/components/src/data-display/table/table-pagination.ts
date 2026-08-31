@@ -2,18 +2,13 @@ import { html, svg, nothing, type TemplateResult, type SVGTemplateResult } from 
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { formatLabel } from '../../shared/format-label.js';
 import { tablePaginationStyles } from './table-pagination.styles.js';
 import { buildPaginationRange, type PaginationRangeItem } from './pagination-range.js';
 
 // Matches breakpoint.sm so it lines up with ds-table's own stack breakpoint.
 const COMPACT_WIDTH_PX = 480;
 const COMPACT_MAX_VISIBLE = 3;
-
-function format(template: string, values: Record<string, number>): string {
-  return template.replace(/\{(\w+)\}/g, (whole, key: string) =>
-    Object.hasOwn(values, key) ? String(values[key]) : whole,
-  );
-}
 
 const ICON_PREV = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4l-4 4 4 4"/></svg>`;
 const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>`;
@@ -135,7 +130,7 @@ export class DsTablePagination extends DsElement {
         <button
           part="button"
           type="button"
-          aria-label=${format(this.pageLabel, { page })}
+          aria-label=${formatLabel(this.pageLabel, { page })}
           aria-current=${ifDefined(isCurrent ? 'page' : undefined)}
           @click=${() => this.#emitPage(page)}
         >
@@ -197,7 +192,8 @@ export class DsTablePagination extends DsElement {
   #renderSummary(current: number): TemplateResult {
     const start = this.total === 0 ? 0 : (current - 1) * this.pageSize + 1;
     const end = Math.min(current * this.pageSize, this.total);
-    const fallback = this.total === 0 ? this.emptyLabel : format(this.summaryLabel, { start, end, total: this.total });
+    const fallback =
+      this.total === 0 ? this.emptyLabel : formatLabel(this.summaryLabel, { start, end, total: this.total });
     return html`<div class="summary" part="summary" role="status" aria-live="polite">
       <slot name="summary">${fallback}</slot>
     </div>`;
@@ -222,7 +218,7 @@ export class DsTablePagination extends DsElement {
         )}
         ${
           this.hidePageNumbers
-            ? html`<span class="ellipsis">${format(this.pageOfLabel, { page: current, total: totalPages })}</span>`
+            ? html`<span class="ellipsis">${formatLabel(this.pageOfLabel, { page: current, total: totalPages })}</span>`
             : html`<ul class="list" part="list">
                 ${this.#range().map((i) => this.#renderItem(i, current))}
               </ul>`

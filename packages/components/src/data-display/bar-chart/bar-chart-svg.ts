@@ -17,7 +17,7 @@ export function renderChartSvg<T extends BarChartRow>(
   return html`
     <svg
       role="graphics-document"
-      aria-roledescription="bar chart"
+      aria-roledescription=${ctx.roleDescription}
       aria-labelledby=${chartTitleId(ctx.uid)}
       viewBox="0 0 ${width} ${height}"
       width=${width}

@@ -12,7 +12,7 @@ export function renderPieSvg(ctx: PieRenderContext, slices: readonly PieSlice[])
     <svg
       viewBox="0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}"
       role="graphics-document"
-      aria-roledescription="pie chart"
+      aria-roledescription=${ctx.roleDescription}
       aria-labelledby=${chartTitleId(ctx.uid)}
     >
       ${slices.map((slice, index) => renderSlice(ctx, slice, index, inner))} ${renderFocusRing(ctx, slices, inner)}

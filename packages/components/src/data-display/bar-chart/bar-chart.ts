@@ -40,6 +40,14 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   @property({ type: Boolean, reflect: true, attribute: 'show-legend' }) showLegend = true;
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ attribute: 'loading-label' }) loadingLabel = 'Loading...';
+  @property({ attribute: 'chart-label' }) chartLabel = 'Bar chart';
+  @property({ attribute: 'data-table-label' }) dataTableLabel = 'Bar chart data';
+  @property({ attribute: 'summary-label' }) summaryLabel = '{title}: {groups} groups, series: {series}.';
+  @property({ attribute: 'stacked-summary-label' })
+  stackedSummaryLabel = '{title}: {groups} stacked groups, series: {series}.';
+  @property({ attribute: 'group-total-label' }) groupTotalLabel = ', total {total}';
+  @property({ attribute: 'total-header' }) totalHeader = 'Total';
+  @property({ attribute: 'role-description' }) roleDescription = 'bar chart';
   @property({ attribute: false }) formatValue?: (v: number) => string;
   @property({ attribute: false }) formatDomain?: (v: unknown) => string;
   @property({ attribute: false }) formatTooltipTitle?: (v: unknown) => string;
@@ -127,6 +135,13 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         return this.formatDomain ? this.formatDomain(v) : String(v ?? '');
       },
       ...(this.barColor === undefined ? {} : { barColor: this.barColor }),
+      chartLabel: this.chartLabel,
+      dataTableLabel: this.dataTableLabel,
+      summaryLabel: this.summaryLabel,
+      stackedSummaryLabel: this.stackedSummaryLabel,
+      groupTotalLabel: this.groupTotalLabel,
+      totalHeader: this.totalHeader,
+      roleDescription: this.roleDescription,
     };
   }
 
@@ -153,7 +168,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
           class="frame loading-frame"
           style="height:${this.height}px"
           aria-busy="true"
-          aria-label=${this.title || 'Bar chart'}
+          aria-label=${this.title || this.chartLabel}
         >
           <ds-skeleton variant="rectangle" width="100%" height="${this.height}px"></ds-skeleton>
           ${renderLoadingStatus(loadingContent)}

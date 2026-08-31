@@ -1,17 +1,21 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { activeGroupHeight, type ChartLayout } from './chart-layout.js';
 import type { BarChartGroup, BarChartRow, ChartRenderContext } from './types.js';
+import { formatLabel } from '../../shared/format-label.js';
 import { renderPointTooltip } from '../../shared/point-tooltip.js';
 
 export function rootAriaLabel(ctx: ChartRenderContext, groupCount: number): string {
-  const base = ctx.title || 'Bar chart';
-  const seriesLabels = ctx.series.map((s) => ctx.seriesLabel(s)).join(', ');
-  return `${base}: ${groupCount} ${ctx.stacked ? 'stacked ' : ''}groups, series: ${seriesLabels}.`;
+  const template = ctx.stacked ? ctx.stackedSummaryLabel : ctx.summaryLabel;
+  return formatLabel(template, {
+    title: ctx.title || ctx.chartLabel,
+    groups: groupCount,
+    series: ctx.series.map((s) => ctx.seriesLabel(s)).join(', '),
+  });
 }
 
 export function groupAriaLabel<T extends BarChartRow>(ctx: ChartRenderContext, group: BarChartGroup<T>): string {
   const parts = ctx.series.map((s) => `${ctx.seriesLabel(s)} ${ctx.formatValue(group.values[s.key] ?? 0)}`);
-  const total = ctx.stacked ? `, total ${ctx.formatValue(group.total)}` : '';
+  const total = ctx.stacked ? formatLabel(ctx.groupTotalLabel, { total: ctx.formatValue(group.total) }) : '';
   return `${ctx.formatTooltipTitle(group.domain)}: ${parts.join(', ')}${total}`;
 }
 
@@ -56,7 +60,7 @@ export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, la
                 ${
                   ctx.stacked
                     ? html`
-                        <li class="tooltip-row-label">Total</li>
+                        <li class="tooltip-row-label">${ctx.totalHeader}</li>
                         <li class="tooltip-row-value">${ctx.formatValue(group.total)}</li>
                       `
                     : nothing
@@ -92,13 +96,13 @@ export function renderSrTable<T extends BarChartRow>(
     <div class="visually-hidden">
       <table>
         <caption>
-          ${ctx.title || 'Bar chart data'}
+          ${ctx.title || ctx.dataTableLabel}
         </caption>
         <thead>
           <tr>
             <th scope="col">${ctx.xAxisLabel ?? ctx.domainKey}</th>
             ${ctx.series.map((s) => html`<th scope="col">${ctx.seriesLabel(s)}</th>`)}
-            ${ctx.stacked ? html`<th scope="col">Total</th>` : nothing}
+            ${ctx.stacked ? html`<th scope="col">${ctx.totalHeader}</th>` : nothing}
           </tr>
         </thead>
         <tbody>

@@ -31,6 +31,7 @@ export class DsToast extends DsElement {
   @property() heading?: string;
   @property({ type: Number }) duration?: number;
   @property({ type: Boolean, reflect: true }) dismissible = true;
+  @property({ attribute: 'dismiss-label' }) dismissLabel = 'Dismiss';
 
   /** Where to send focus when dismissed; set by `focusOnShow`. */
   restoreFocusTo: HTMLElement | null = null;
@@ -178,7 +179,7 @@ export class DsToast extends DsElement {
                 variant="ghost"
                 size="sm"
                 square
-                label="Dismiss"
+                label=${this.dismissLabel}
                 @click=${this.#onDismissClick}
               >
                 <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>

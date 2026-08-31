@@ -57,6 +57,10 @@ export class DsPageShell extends DsElement {
   @property() brand = '';
   @property({ attribute: 'menu-label' }) menuLabel = 'Navigation menu';
   @property({ attribute: 'end-label' }) endLabel = 'Secondary navigation';
+  @property({ attribute: 'collapse-aside-label' }) collapseAsideLabel = 'Collapse primary navigation';
+  @property({ attribute: 'expand-aside-label' }) expandAsideLabel = 'Expand primary navigation';
+  @property({ attribute: 'hide-aside-end-label' }) hideAsideEndLabel = 'Hide secondary navigation';
+  @property({ attribute: 'show-aside-end-label' }) showAsideEndLabel = 'Show secondary navigation';
   @property({ type: Boolean, reflect: true, attribute: 'aside-toggle' }) asideToggle = false;
   @property({ type: Boolean, reflect: true, attribute: 'aside-end-toggle' }) asideEndToggle = false;
   @property({ reflect: true, attribute: 'aside-state' }) asideState: PageShellAsideState = 'visible';
@@ -244,6 +248,10 @@ export class DsPageShell extends DsElement {
       brand: this.brand,
       menuLabel: this.menuLabel,
       endLabel: this.endLabel,
+      collapseAsideLabel: this.collapseAsideLabel,
+      expandAsideLabel: this.expandAsideLabel,
+      hideAsideEndLabel: this.hideAsideEndLabel,
+      showAsideEndLabel: this.showAsideEndLabel,
       asideState: this.asideState,
       asideEndState: this.asideEndState,
       mobileNavOpen: this._mobileNavOpen,

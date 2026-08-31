@@ -61,6 +61,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
   @property({ type: Boolean, reflect: true }) multiple = false;
+  @property({ attribute: 'remove-label' }) removeLabel = 'Remove {label}';
+  @property({ attribute: 'overflow-label' }) overflowLabel = '{count} more selected';
+  @property({ attribute: 'clear-label' }) clearLabel = 'Clear selection';
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Array }) values: string[] = [];
@@ -302,6 +305,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   #renderTiles = (): TemplateResult =>
     renderSelectedTiles({
+      removeLabel: this.removeLabel,
       values: this.values,
       focusedTileIndex: this.#dropdown.focusedTileIndex,
       overflowCount: this.#dropdown.overflowCount,
@@ -357,7 +361,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             <slot name="leading" ?hidden=${Boolean(selectedIcon)} @slotchange=${this.#dropdown.onLeadingChange}></slot>
           </span>
           ${hasTiles ? this.#renderTiles() : nothing}
-          ${hasTiles ? renderOverflowTile(this.#dropdown.overflowCount) : nothing}
+          ${hasTiles ? renderOverflowTile(this.#dropdown.overflowCount, this.overflowLabel) : nothing}
           <input
             id="search-input"
             class="search-input"
@@ -378,10 +382,14 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
           />
           ${
             hasClearBtn
-              ? renderClearButton((event: Event) => {
-                  event.stopPropagation();
-                  this.#clear();
-                }, this.#onClearKeydown)
+              ? renderClearButton(
+                  (event: Event) => {
+                    event.stopPropagation();
+                    this.#clear();
+                  },
+                  this.#onClearKeydown,
+                  this.clearLabel,
+                )
               : nothing
           }
           ${this.loading ? spinnerTemplate() : renderChevronDownIcon()}

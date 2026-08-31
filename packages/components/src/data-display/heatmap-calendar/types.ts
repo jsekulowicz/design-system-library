@@ -39,4 +39,13 @@ export interface HeatmapRenderContext {
   formatDate(date: string): string;
   formatMonth(date: string): string;
   weekdayLabels: readonly string[];
+  calendarLabel: string;
+  dataTableLabel: string;
+  summaryLabel: string;
+  legendLabel: string;
+  legendLessLabel: string;
+  legendMoreLabel: string;
+  dateHeader: string;
+  valueHeader: string;
+  roleDescription: string;
 }

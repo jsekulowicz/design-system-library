@@ -36,6 +36,13 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   @property({ type: Array }) colors: ColorPickerOption[] = [];
   @property() label = '';
   @property() placeholder = 'Select a color';
+  @property({ attribute: 'picker-label' }) pickerLabel = 'Color picker';
+  @property({ attribute: 'compact-label' }) compactLabel = 'Select color';
+  @property({ attribute: 'hex-label' }) hexLabel = 'Hex code';
+  @property({ attribute: 'hex-placeholder' }) hexPlaceholder = 'Hex code (#RRGGBB)';
+  @property({ attribute: 'clear-label' }) clearLabel = 'Clear';
+  @property({ attribute: 'done-label' }) doneLabel = 'Done';
+  @property({ attribute: 'custom-label' }) customLabel = 'Custom color';
   @property() description = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
@@ -149,7 +156,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   }
 
   #fieldAccessibleName(): string | null {
-    return this.label || (this.compact ? this.placeholder || 'Select color' : null);
+    return this.label || (this.compact ? this.placeholder || this.compactLabel : null);
   }
 
   #focusTrigger(): void {
@@ -238,7 +245,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   }
 
   #triggerAccessibleName(current: string, selected?: ColorPickerOption): string {
-    const base = this.label || this.placeholder || 'Select color';
+    const base = this.label || this.placeholder || this.compactLabel;
     if (!current) {
       return base;
     }
@@ -264,18 +271,18 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       class="panel"
       part="panel"
       role="dialog"
-      aria-label=${this.#fieldAccessibleName() || 'Color picker'}
+      aria-label=${this.#fieldAccessibleName() || this.pickerLabel}
     >
       <ds-card elevation="md">
-        <span slot="title" class="panel-title"> ${this.#fieldAccessibleName() || 'Color picker'} </span>
+        <span slot="title" class="panel-title"> ${this.#fieldAccessibleName() || this.pickerLabel} </span>
         ${options.length ? this.#renderSwatches(options, current) : nothing} ${this.#renderCustomInputs()}
         <div slot="footer" class="panel-actions">
           ${
             this.clearable
-              ? html`<ds-button variant="ghost" size="sm" @ds-click=${this.#clear}>Clear</ds-button>`
+              ? html`<ds-button variant="ghost" size="sm" @ds-click=${this.#clear}>${this.clearLabel}</ds-button>`
               : nothing
           }
-          <ds-button variant="primary" size="sm" @ds-click=${this.#commitAndClose}>Done</ds-button>
+          <ds-button variant="primary" size="sm" @ds-click=${this.#commitAndClose}>${this.doneLabel}</ds-button>
         </div>
       </ds-card>
     </div>`;
@@ -295,7 +302,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     const validationError = this.#customInputs.validationError;
 
     return html`<section class="section" aria-labelledby="custom-label">
-      <div id="custom-label" class="section-label">Custom color</div>
+      <div id="custom-label" class="section-label">${this.customLabel}</div>
       <div class="custom-row">
         <ds-color-picker-input-color
           class="native-color"
@@ -306,9 +313,9 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
         ></ds-color-picker-input-color>
         <ds-text-field
           class="hex-input"
-          input-label="Hex code"
+          input-label=${this.hexLabel}
           size="sm"
-          placeholder="Hex code (#RRGGBB)"
+          placeholder=${this.hexPlaceholder}
           .value=${this.#customInputs.textValue}
           .error=${validationError}
           ?disabled=${this.disabled}

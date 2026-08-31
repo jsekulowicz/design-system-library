@@ -53,6 +53,16 @@ export class DsPieChart extends DsElement {
   @property({ type: Number, attribute: 'max-slices' }) maxSlices = 0;
   @property({ type: Number, attribute: 'other-threshold' }) otherThreshold = 0;
   @property({ attribute: 'other-label' }) otherLabel = 'Other';
+  @property({ attribute: 'chart-label' }) chartLabel = 'Pie chart';
+  @property({ attribute: 'donut-label' }) donutLabel = 'Donut chart';
+  @property({ attribute: 'data-table-label' }) dataTableLabel = 'Pie chart data';
+  @property({ attribute: 'summary-label' }) summaryLabel = '{title}: {slices} slices, total {total}.';
+  @property({ attribute: 'empty-label' }) emptyLabel = 'No data';
+  @property({ attribute: 'category-header' }) categoryHeader = 'Category';
+  @property({ attribute: 'value-header' }) valueHeader = 'Value';
+  @property({ attribute: 'share-header' }) shareHeader = 'Share';
+  @property({ attribute: 'total-header' }) totalHeader = 'Total';
+  @property({ attribute: 'role-description' }) roleDescription = 'pie chart';
   @property({ type: Boolean, attribute: 'include-zero-slices' }) includeZeroSlices = false;
   @property({ type: Number, attribute: 'min-slice-percent' }) minSlicePercent = 1;
   @property({ type: Boolean, reflect: true }) loading = false;
@@ -94,6 +104,15 @@ export class DsPieChart extends DsElement {
       sliceColor: (slice, index) => slice.color ?? colorForIndex(index),
       formatValue: (value) => (this.formatValue ? this.formatValue(value) : String(value)),
       formatPercent: (percent) => (this.formatPercent ? this.formatPercent(percent) : `${Math.round(percent)}%`),
+      chartLabel: this.chartLabel,
+      donutLabel: this.donutLabel,
+      dataTableLabel: this.dataTableLabel,
+      summaryLabel: this.summaryLabel,
+      categoryHeader: this.categoryHeader,
+      valueHeader: this.valueHeader,
+      shareHeader: this.shareHeader,
+      totalHeader: this.totalHeader,
+      roleDescription: this.roleDescription,
     };
   }
 
@@ -107,7 +126,7 @@ export class DsPieChart extends DsElement {
     if (slices.length === 0) {
       return html`
         <div class="frame" part="chart" style="height:${this.size}px">
-          <div class="empty">No data</div>
+          <div class="empty">${this.emptyLabel}</div>
         </div>
       `;
     }
@@ -139,7 +158,12 @@ export class DsPieChart extends DsElement {
 
   #renderLoading(loadingContent: TemplateResult): TemplateResult {
     return html`
-      <div class="frame" part="chart" aria-busy="true" aria-label=${this.title || 'Pie chart'}>
+      <div
+        class="frame"
+        part="chart"
+        aria-busy="true"
+        aria-label=${this.title || (this.donut ? this.donutLabel : this.chartLabel)}
+      >
         <div class="canvas" style="--pie-size:${this.size}px">
           <ds-skeleton variant="circle" width="100%"></ds-skeleton>
         </div>

@@ -46,6 +46,15 @@ export class DsHeatmapCalendar extends DsElement {
   @property({ attribute: false }) formatValue?: (value: number) => string;
   @property({ attribute: false }) formatDate?: (date: string) => string;
   @property() locale?: string;
+  @property({ attribute: 'calendar-label' }) calendarLabel = 'Activity calendar';
+  @property({ attribute: 'data-table-label' }) dataTableLabel = 'Activity calendar data';
+  @property({ attribute: 'summary-label' }) summaryLabel = '{title}: {days} days.';
+  @property({ attribute: 'legend-label' }) legendLabel = 'Value intensity from less to more';
+  @property({ attribute: 'legend-less-label' }) legendLessLabel = 'Less';
+  @property({ attribute: 'legend-more-label' }) legendMoreLabel = 'More';
+  @property({ attribute: 'date-header' }) dateHeader = 'Date';
+  @property({ attribute: 'value-header' }) valueHeader = 'Value';
+  @property({ attribute: 'role-description' }) roleDescription = 'activity calendar';
 
   @state() private _width = 0;
   @state() private _activeIndex: number | null = null;
@@ -76,7 +85,7 @@ export class DsHeatmapCalendar extends DsElement {
     if (this.loading) {
       const dimensions = heatmapDimensions(ctx, layout);
       return html`
-        <div class="frame loading-frame" part="chart" aria-busy="true" aria-label=${this.title || 'Activity calendar'}>
+        <div class="frame loading-frame" part="chart" aria-busy="true" aria-label=${this.title || this.calendarLabel}>
           <div class="scroller" part="scroller">
             <ds-skeleton
               variant="rectangle"
@@ -129,6 +138,15 @@ export class DsHeatmapCalendar extends DsElement {
       formatDate,
       formatMonth: monthFormatter(this.locale),
       weekdayLabels: weekdayLabels(this.locale, this.weekStart),
+      calendarLabel: this.calendarLabel,
+      dataTableLabel: this.dataTableLabel,
+      summaryLabel: this.summaryLabel,
+      legendLabel: this.legendLabel,
+      legendLessLabel: this.legendLessLabel,
+      legendMoreLabel: this.legendMoreLabel,
+      dateHeader: this.dateHeader,
+      valueHeader: this.valueHeader,
+      roleDescription: this.roleDescription,
     };
   }
 

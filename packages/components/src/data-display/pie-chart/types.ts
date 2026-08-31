@@ -36,4 +36,13 @@ export interface PieRenderContext {
   sliceColor(slice: PieSlice, index: number): string;
   formatValue(value: number): string;
   formatPercent(percent: number): string;
+  chartLabel: string;
+  donutLabel: string;
+  dataTableLabel: string;
+  summaryLabel: string;
+  categoryHeader: string;
+  valueHeader: string;
+  shareHeader: string;
+  totalHeader: string;
+  roleDescription: string;
 }

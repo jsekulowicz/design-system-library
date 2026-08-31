@@ -6,6 +6,10 @@ export interface PageShellRenderContext {
   brand: string;
   menuLabel: string;
   endLabel: string;
+  collapseAsideLabel: string;
+  expandAsideLabel: string;
+  hideAsideEndLabel: string;
+  showAsideEndLabel: string;
   asideState: PageShellAsideState;
   asideEndState: PageShellAsideEndState;
   mobileNavOpen: boolean;
@@ -118,7 +122,7 @@ function renderStartToggle(ctx: PageShellRenderContext): TemplateResult | null {
   return renderAsideToggle({
     side: 'start',
     expanded,
-    label: expanded ? 'Collapse primary navigation' : 'Expand primary navigation',
+    label: expanded ? ctx.collapseAsideLabel : ctx.expandAsideLabel,
     icon: expanded ? 'chevron-left' : 'chevron-right',
     onClick: ctx.toggleAsideState,
   });
@@ -132,7 +136,7 @@ function renderEndToggle(ctx: PageShellRenderContext): TemplateResult | null {
   return renderAsideToggle({
     side: 'end',
     expanded,
-    label: expanded ? 'Hide secondary navigation' : 'Show secondary navigation',
+    label: expanded ? ctx.hideAsideEndLabel : ctx.showAsideEndLabel,
     icon: expanded ? 'chevron-right' : 'chevron-left',
     onClick: ctx.toggleAsideEndState,
   });

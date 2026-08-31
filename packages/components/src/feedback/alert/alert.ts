@@ -21,6 +21,7 @@ export class DsAlert extends DsElement {
   @property({ reflect: true }) tone: AlertTone = 'info';
   @property() heading?: string;
   @property({ type: Boolean, reflect: true }) dismissible = false;
+  @property({ attribute: 'dismiss-label' }) dismissLabel = 'Dismiss';
   @property({ type: Boolean }) announceOnConnect = false;
 
   override connectedCallback(): void {
@@ -51,7 +52,7 @@ export class DsAlert extends DsElement {
               variant="ghost"
               size="sm"
               square
-              label="Dismiss"
+              label=${this.dismissLabel}
               @click=${this.#dismiss}
             >
               <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>

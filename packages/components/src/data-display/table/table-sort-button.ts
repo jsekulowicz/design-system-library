@@ -1,6 +1,7 @@
 import { html, svg, type TemplateResult, type SVGTemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { formatLabel } from '../../shared/format-label.js';
 import { tableSortButtonStyles } from './table-sort-button.styles.js';
 import type { TableSortDirection } from './types.js';
 
@@ -30,6 +31,10 @@ export class DsTableSortButton extends DsElement {
   static override styles = [...DsElement.styles, tableSortButtonStyles];
 
   @property({ reflect: true }) direction: TableSortDirection = null;
+  @property({ attribute: 'sort-label' }) sortLabel = 'Sort';
+  @property({ attribute: 'sort-by-label' }) sortByLabel = 'Sort by {column}';
+  @property({ attribute: 'ascending-label' }) ascendingLabel = '{name} (ascending)';
+  @property({ attribute: 'descending-label' }) descendingLabel = '{name} (descending)';
   @property() column?: string;
 
   #onClick = (): void => {
@@ -48,12 +53,12 @@ export class DsTableSortButton extends DsElement {
   }
 
   #ariaLabel(): string {
-    const name = this.column ? `Sort by ${this.column}` : 'Sort';
+    const name = this.column ? formatLabel(this.sortByLabel, { column: this.column }) : this.sortLabel;
     if (this.direction === 'asc') {
-      return `${name} (ascending)`;
+      return formatLabel(this.ascendingLabel, { name });
     }
     if (this.direction === 'desc') {
-      return `${name} (descending)`;
+      return formatLabel(this.descendingLabel, { name });
     }
     return name;
   }

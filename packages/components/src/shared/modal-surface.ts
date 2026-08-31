@@ -10,6 +10,7 @@ export interface ModalSurfaceHost extends ReactiveControllerHost, HTMLElement {
   open: boolean;
   dismissible: boolean;
   label: string;
+  closeLabel: string;
   readonly uid: string;
 }
 
@@ -110,7 +111,7 @@ export class ModalSurfaceController implements ReactiveController {
             variant="ghost"
             size="sm"
             square
-            label="Close"
+            label=${this.#host.closeLabel}
             @click=${this.#onCloseButtonClick}
           >
             <ds-icon slot="leading" name="x-mark" size="2xl"></ds-icon>

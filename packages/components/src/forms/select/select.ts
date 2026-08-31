@@ -60,6 +60,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
   @property({ type: Boolean, reflect: true }) multiple = false;
+  @property({ attribute: 'remove-label' }) removeLabel = 'Remove {label}';
+  @property({ attribute: 'overflow-label' }) overflowLabel = '{count} more selected';
+  @property({ attribute: 'clear-label' }) clearLabel = 'Clear selection';
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Array }) values: string[] = [];
   @property({ type: Number }) maxLines?: number;
@@ -236,6 +239,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
 
   #renderTiles = (): TemplateResult =>
     renderSelectedTiles({
+      removeLabel: this.removeLabel,
       values: this.values,
       focusedTileIndex: this.#dropdown.focusedTileIndex,
       overflowCount: this.#dropdown.overflowCount,
@@ -298,7 +302,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           </span>
           ${
             hasTiles
-              ? html`${renderOverflowTile(this.#dropdown.overflowCount)}${this.#renderTiles()}`
+              ? html`${renderOverflowTile(this.#dropdown.overflowCount, this.overflowLabel)}${this.#renderTiles()}`
               : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
                   ${
                     selectedOption
@@ -309,10 +313,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
           }
           ${
             hasClearBtn
-              ? renderClearButton((event: Event) => {
-                  event.stopPropagation();
-                  this.#clear();
-                }, this.#onClearKeydown)
+              ? renderClearButton(
+                  (event: Event) => {
+                    event.stopPropagation();
+                    this.#clear();
+                  },
+                  this.#onClearKeydown,
+                  this.clearLabel,
+                )
               : nothing
           }
           ${renderChevronDownIcon()}

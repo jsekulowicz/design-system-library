@@ -3,14 +3,17 @@ import { HEATMAP_LEFT, HEATMAP_TOP } from './heatmap-calendar-svg.js';
 import { cellAriaLabel } from './heatmap-formatters.js';
 import type { HeatmapCell, HeatmapLayout, HeatmapRenderContext } from './types.js';
 import { renderPointAnchor, renderPointTooltipBubble } from '../../shared/point-tooltip.js';
+import { formatLabel } from '../../shared/format-label.js';
 
 function activeCell(ctx: HeatmapRenderContext, layout: HeatmapLayout): HeatmapCell | undefined {
   return ctx.activeIndex == null ? undefined : layout.cells[ctx.activeIndex];
 }
 
 export function heatmapAriaLabel(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
-  const title = ctx.title || 'Activity calendar';
-  return `${title}: ${layout.cells.length} days.`;
+  return formatLabel(ctx.summaryLabel, {
+    title: ctx.title || ctx.calendarLabel,
+    days: layout.cells.length,
+  });
 }
 
 export function heatmapLiveText(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
@@ -46,12 +49,12 @@ export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapL
 
 export function renderHeatmapLegend(ctx: HeatmapRenderContext): TemplateResult {
   return html`
-    <div class="legend" part="legend" aria-label="Value intensity from less to more">
-      <span>Less</span>
+    <div class="legend" part="legend" aria-label=${ctx.legendLabel}>
+      <span>${ctx.legendLessLabel}</span>
       ${[0, 1, 2, 3, 4].map(
         (level) => html`<span class="legend-cell level-${level}" style="--heatmap-color:${ctx.color}"></span>`,
       )}
-      <span>More</span>
+      <span>${ctx.legendMoreLabel}</span>
     </div>
   `;
 }
@@ -61,12 +64,12 @@ export function renderHeatmapSrTable(ctx: HeatmapRenderContext, layout: HeatmapL
     <div class="visually-hidden" id="${ctx.uid}-desc">
       <table>
         <caption>
-          ${ctx.title || 'Activity calendar data'}
+          ${ctx.title || ctx.dataTableLabel}
         </caption>
         <thead>
           <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Value</th>
+            <th scope="col">${ctx.dateHeader}</th>
+            <th scope="col">${ctx.valueHeader}</th>
           </tr>
         </thead>
         <tbody>

@@ -2,15 +2,19 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { CENTER, RADIUS, VIEWBOX_SIZE, midAngle, polarPoint } from './pie-geometry.js';
 import { renderPointTooltip, type PointTooltipArea } from '../../shared/point-tooltip.js';
 import type { PieRenderContext, PieSlice } from './types.js';
+import { formatLabel } from '../../shared/format-label.js';
 
 export function sliceAriaLabel(ctx: PieRenderContext, slice: PieSlice): string {
   return `${slice.label}: ${ctx.formatValue(slice.value)}, ${ctx.formatPercent(slice.percent)}`;
 }
 
 export function pieSummaryText(ctx: PieRenderContext, slices: readonly PieSlice[]): string {
-  const shape = ctx.donut ? 'Donut chart' : 'Pie chart';
-  const base = ctx.title || shape;
-  return `${base}: ${slices.length} slices, total ${ctx.formatValue(ctx.total)}.`;
+  const shape = ctx.donut ? ctx.donutLabel : ctx.chartLabel;
+  return formatLabel(ctx.summaryLabel, {
+    title: ctx.title || shape,
+    slices: slices.length,
+    total: ctx.formatValue(ctx.total),
+  });
 }
 
 export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]): string {
@@ -73,13 +77,13 @@ export function renderPieSrTable(ctx: PieRenderContext, slices: readonly PieSlic
     <div class="visually-hidden">
       <table>
         <caption>
-          ${ctx.title || 'Pie chart data'}
+          ${ctx.title || ctx.dataTableLabel}
         </caption>
         <thead>
           <tr>
-            <th scope="col">Category</th>
-            <th scope="col">Value</th>
-            <th scope="col">Share</th>
+            <th scope="col">${ctx.categoryHeader}</th>
+            <th scope="col">${ctx.valueHeader}</th>
+            <th scope="col">${ctx.shareHeader}</th>
           </tr>
         </thead>
         <tbody>
@@ -95,7 +99,7 @@ export function renderPieSrTable(ctx: PieRenderContext, slices: readonly PieSlic
         </tbody>
         <tfoot>
           <tr>
-            <th scope="row">Total</th>
+            <th scope="row">${ctx.totalHeader}</th>
             <td>${ctx.formatValue(ctx.total)}</td>
             <td>${ctx.formatPercent(100)}</td>
           </tr>

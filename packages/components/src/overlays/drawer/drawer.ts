@@ -30,6 +30,7 @@ export class DsDrawer extends DsElement {
   @property({ type: Boolean, reflect: true }) open = false;
   @property() label = '';
   @property({ type: Boolean, reflect: true }) dismissible = true;
+  @property({ attribute: 'close-label' }) closeLabel = 'Close';
   @property({ reflect: true }) size: DrawerSize = 'sm';
   @property({ reflect: true }) side: DrawerSide = 'start';
 

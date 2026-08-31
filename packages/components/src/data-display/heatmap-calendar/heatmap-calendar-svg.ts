@@ -28,7 +28,7 @@ export function renderHeatmapSvg(ctx: HeatmapRenderContext, layout: HeatmapLayou
   return svg`
     <svg
       role="graphics-document"
-      aria-roledescription="activity calendar"
+      aria-roledescription=${ctx.roleDescription}
       aria-labelledby=${chartTitleId(ctx.uid)}
       width=${width}
       height=${height}

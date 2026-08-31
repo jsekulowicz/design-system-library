@@ -19,6 +19,7 @@ export class DsSettingsPage extends DsElement {
   @property() heading = 'Settings';
   @property() description = '';
   @property({ type: Array }) sections: SettingsSection[] = [];
+  @property({ attribute: 'sections-label' }) sectionsLabel = 'Settings sections';
   @state() private _activeId = '';
 
   #escapeId(value: string): string {
@@ -45,7 +46,7 @@ export class DsSettingsPage extends DsElement {
       ${
         hasNav
           ? html`<div class="grid">
-              <nav aria-label="Settings sections" part="nav">
+              <nav aria-label=${this.sectionsLabel} part="nav">
                 ${this.sections.map(
                   (section) =>
                     html`<a

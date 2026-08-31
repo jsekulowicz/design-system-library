@@ -4,6 +4,7 @@ import type { IconSize } from '../../data-display/icon/icon.js';
 import { TILE_ROW_HEIGHT } from './select.common-styles.js';
 import '../../data-display/icon/icons/x-mark.js';
 import '../../data-display/icon/icons/chevron-down.js';
+import { formatLabel } from '../../shared/format-label.js';
 
 export interface OptionIcon {
   name: string;
@@ -46,6 +47,7 @@ interface TileListTemplateOptions {
   labelFor: (value: string) => string;
   iconFor?: (value: string) => OptionIcon | undefined;
   onRemove: (value: string) => void;
+  removeLabel: string;
 }
 
 interface TileTemplateOptions {
@@ -54,6 +56,7 @@ interface TileTemplateOptions {
   icon?: OptionIcon;
   isFocused: boolean;
   onRemove: (value: string) => void;
+  removeLabel: string;
 }
 
 export function getVisibleTileCount(valueCount: number, overflowCount: number): number {
@@ -101,7 +104,7 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
       class="tile-remove"
       type="button"
       tabindex="-1"
-      aria-label="Remove ${options.label}"
+      aria-label=${formatLabel(options.removeLabel, { label: options.label })}
       @pointerdown=${(event: Event) => event.preventDefault()}
       @click=${(event: Event) => {
         event.stopPropagation();
@@ -114,11 +117,11 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
 }
 
 /** Sits outside the tile list so it keeps its place on the first row as tiles wrap. */
-export function renderOverflowTile(count: number): TemplateResult | typeof nothing {
+export function renderOverflowTile(count: number, overflowLabel: string): TemplateResult | typeof nothing {
   if (count <= 0) {
     return nothing;
   }
-  return html`<span class="tile tile-overflow" aria-label="${count} more selected">+${count}</span>`;
+  return html`<span class="tile tile-overflow" aria-label=${formatLabel(overflowLabel, { count })}>+${count}</span>`;
 }
 
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {
@@ -131,6 +134,7 @@ export function renderSelectedTiles(options: TileListTemplateOptions): TemplateR
         icon: options.iconFor?.(value),
         isFocused: options.focusedTileIndex === index,
         onRemove: options.onRemove,
+        removeLabel: options.removeLabel,
       }),
     )}
   </div>`;
@@ -139,14 +143,9 @@ export function renderSelectedTiles(options: TileListTemplateOptions): TemplateR
 export function renderClearButton(
   onClear: (event: Event) => void,
   onKeydown: (event: KeyboardEvent) => void,
+  clearLabel: string,
 ): TemplateResult {
-  return html` <button
-    class="clear-btn"
-    type="button"
-    aria-label="Clear selection"
-    @click=${onClear}
-    @keydown=${onKeydown}
-  >
+  return html` <button class="clear-btn" type="button" aria-label=${clearLabel} @click=${onClear} @keydown=${onKeydown}>
     <ds-icon name="x-mark" size="xl"></ds-icon>
   </button>`;
 }

@@ -36,4 +36,11 @@ export interface ChartRenderContext {
   formatDomain(value: unknown): string;
   formatTooltipTitle(value: unknown): string;
   barColor?(domain: unknown, seriesKey: string): string | undefined;
+  chartLabel: string;
+  dataTableLabel: string;
+  summaryLabel: string;
+  stackedSummaryLabel: string;
+  groupTotalLabel: string;
+  totalHeader: string;
+  roleDescription: string;
 }
