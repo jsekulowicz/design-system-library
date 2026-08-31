@@ -9,6 +9,10 @@ import { buildPaginationRange, type PaginationRangeItem } from './pagination-ran
 const COMPACT_WIDTH_PX = 480;
 const COMPACT_MAX_VISIBLE = 3;
 
+function format(template: string, values: Record<string, number>): string {
+  return template.replace(/\{(\w+)\}/g, (whole, key: string) => (key in values ? String(values[key]) : whole));
+}
+
 const ICON_PREV = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4l-4 4 4 4"/></svg>`;
 const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>`;
 
@@ -32,6 +36,14 @@ const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
  * @csspart size-selector - The size `<select>` wrapper.
  * @csspart summary - The summary region.
  * @attr compact - Reflected boolean attribute toggled automatically when the component is narrower than 480px. In compact mode the prev/next labels collapse to icons, the visible page count drops to "first ... current ... last", and `sibling-count` is forced to 0.
+ * @attr label - Accessible name of the `<nav>` landmark. Defaults to "Pagination".
+ * @attr prev-page-label - Accessible name of the Previous button. Defaults to "Previous page".
+ * @attr next-page-label - Accessible name of the Next button. Defaults to "Next page".
+ * @attr page-label - Accessible name of a page button. `{page}` is substituted. Defaults to "Page {page}".
+ * @attr page-of-label - Visible text when `hide-page-numbers` is set. `{page}` and `{total}` are substituted. Defaults to "Page {page} of {total}".
+ * @attr rows-per-page-label - Label and accessible name of the page-size select. Defaults to "Rows per page".
+ * @attr summary-label - Default summary text. `{start}`, `{end}` and `{total}` are substituted. Defaults to "Showing {start}-{end} of {total}".
+ * @attr empty-label - Summary text when `total` is 0. Defaults to "No results".
  */
 export class DsTablePagination extends DsElement {
   static override styles = [...DsElement.styles, tablePaginationStyles];
@@ -43,6 +55,17 @@ export class DsTablePagination extends DsElement {
   @property({ type: Number, reflect: true, attribute: 'max-visible-pages' }) maxVisiblePages = 7;
   @property({ type: Number, reflect: true, attribute: 'sibling-count' }) siblingCount = 1;
   @property({ type: Boolean, reflect: true, attribute: 'hide-page-numbers' }) hidePageNumbers = false;
+
+  // Every user-facing string is a property so a consumer can translate it; the
+  // defaults are what the component rendered before they existed.
+  @property() label = 'Pagination';
+  @property({ attribute: 'prev-page-label' }) prevPageLabel = 'Previous page';
+  @property({ attribute: 'next-page-label' }) nextPageLabel = 'Next page';
+  @property({ attribute: 'page-label' }) pageLabel = 'Page {page}';
+  @property({ attribute: 'page-of-label' }) pageOfLabel = 'Page {page} of {total}';
+  @property({ attribute: 'rows-per-page-label' }) rowsPerPageLabel = 'Rows per page';
+  @property({ attribute: 'summary-label' }) summaryLabel = 'Showing {start}-{end} of {total}';
+  @property({ attribute: 'empty-label' }) emptyLabel = 'No results';
 
   // Reflected so consumer styles can react without re-deriving the breakpoint.
   @property({ type: Boolean, reflect: true }) compact = false;
@@ -110,7 +133,7 @@ export class DsTablePagination extends DsElement {
         <button
           part="button"
           type="button"
-          aria-label=${`Page ${page}`}
+          aria-label=${format(this.pageLabel, { page })}
           aria-current=${ifDefined(isCurrent ? 'page' : undefined)}
           @click=${() => this.#emitPage(page)}
         >
@@ -160,8 +183,8 @@ export class DsTablePagination extends DsElement {
     return html`
       <div class="size" part="size-selector">
         <label
-          >Rows per page
-          <select aria-label="Rows per page" .value=${String(this.pageSize)} @change=${this.#onSizeChange}>
+          >${this.rowsPerPageLabel}
+          <select aria-label=${this.rowsPerPageLabel} .value=${String(this.pageSize)} @change=${this.#onSizeChange}>
             ${this.pageSizeOptions.map((n) => html`<option value=${n} ?selected=${n === this.pageSize}>${n}</option>`)}
           </select>
         </label>
@@ -172,7 +195,7 @@ export class DsTablePagination extends DsElement {
   #renderSummary(current: number): TemplateResult {
     const start = this.total === 0 ? 0 : (current - 1) * this.pageSize + 1;
     const end = Math.min(current * this.pageSize, this.total);
-    const fallback = this.total === 0 ? 'No results' : `Showing ${start}-${end} of ${this.total}`;
+    const fallback = this.total === 0 ? this.emptyLabel : format(this.summaryLabel, { start, end, total: this.total });
     return html`<div class="summary" part="summary" role="status" aria-live="polite">
       <slot name="summary">${fallback}</slot>
     </div>`;
@@ -185,10 +208,10 @@ export class DsTablePagination extends DsElement {
     const isLast = current >= totalPages;
     return html`
       ${this.#renderSummary(current)}
-      <nav part="nav" aria-label="Pagination">
+      <nav part="nav" aria-label=${this.label}>
         ${this.#renderPrevNext(
           ICON_PREV,
-          'Previous page',
+          this.prevPageLabel,
           'button-prev',
           current - 1,
           isFirst,
@@ -197,12 +220,12 @@ export class DsTablePagination extends DsElement {
         )}
         ${
           this.hidePageNumbers
-            ? html`<span class="ellipsis">Page ${current} of ${totalPages}</span>`
+            ? html`<span class="ellipsis"> ${format(this.pageOfLabel, { page: current, total: totalPages })} </span>`
             : html`<ul class="list" part="list">
                 ${this.#range().map((i) => this.#renderItem(i, current))}
               </ul>`
         }
-        ${this.#renderPrevNext(ICON_NEXT, 'Next page', 'button-next', current + 1, isLast, 'next-label', 'Next')}
+        ${this.#renderPrevNext(ICON_NEXT, this.nextPageLabel, 'button-next', current + 1, isLast, 'next-label', 'Next')}
         ${this.#renderSize()}
       </nav>
     `;

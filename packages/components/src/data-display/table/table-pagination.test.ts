@@ -151,4 +151,65 @@ describe('<ds-table-pagination>', () => {
     expect(css).toContain('select:focus-visible');
     expect(css).toContain('box-shadow: var(--ds-shadow-focus)');
   });
+
+  describe('translatable labels', () => {
+    it('names the nav landmark', async () => {
+      const el = await mountPagination({ label: 'Paginación' });
+      expect(el.shadowRoot!.querySelector('nav')?.getAttribute('aria-label')).toBe('Paginación');
+    });
+
+    it('names the previous and next buttons', async () => {
+      const el = await mountPagination({
+        page: 2,
+        prevPageLabel: 'Página anterior',
+        nextPageLabel: 'Página siguiente',
+      });
+      expect(getButton(el, 'Página anterior')?.disabled).toBe(false);
+      expect(getButton(el, 'Página siguiente')?.disabled).toBe(false);
+    });
+
+    it('substitutes the page number into a page button label', async () => {
+      const el = await mountPagination({ pageLabel: 'Página {page}' });
+      expect(getButton(el, 'Página 3')).not.toBeNull();
+    });
+
+    it('substitutes the range into the summary', async () => {
+      const el = await mountPagination({
+        total: 69,
+        pageSize: 30,
+        page: 2,
+        summaryLabel: 'Mostrando {start}-{end} de {total}',
+      });
+      expect(el.shadowRoot!.querySelector('[part~="summary"]')?.textContent?.trim()).toBe('Mostrando 31-60 de 69');
+    });
+
+    it('uses the empty label when nothing matched', async () => {
+      const el = await mountPagination({ total: 0, emptyLabel: 'Sin resultados' });
+      expect(el.shadowRoot!.querySelector('[part~="summary"]')?.textContent?.trim()).toBe('Sin resultados');
+    });
+
+    it('substitutes page and total into the hide-page-numbers text', async () => {
+      const el = await mountPagination({
+        hidePageNumbers: true,
+        page: 2,
+        pageOfLabel: 'Página {page} de {total}',
+      });
+      expect(el.shadowRoot!.textContent).toContain('Página 2 de 10');
+    });
+
+    it('labels the page-size select', async () => {
+      const el = await mountPagination({
+        pageSizeOptions: [10, 20],
+        rowsPerPageLabel: 'Filas por página',
+      });
+      const select = el.shadowRoot!.querySelector('select');
+      expect(select?.getAttribute('aria-label')).toBe('Filas por página');
+      expect(el.shadowRoot!.querySelector('label')?.textContent).toContain('Filas por página');
+    });
+
+    it('leaves an unknown placeholder alone rather than printing undefined', async () => {
+      const el = await mountPagination({ summaryLabel: '{start} of {nope}' });
+      expect(el.shadowRoot!.querySelector('[part~="summary"]')?.textContent?.trim()).toBe('1 of {nope}');
+    });
+  });
 });
