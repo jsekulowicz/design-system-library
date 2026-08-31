@@ -15,6 +15,8 @@ export interface ToastOptions {
   body?: TemplateResult | string;
   duration?: number;
   dismissible?: boolean;
+  /** Accessible name of the dismiss button. Defaults to the element's own. */
+  dismissLabel?: string;
   placement?: ToastPlacement;
   actions?: ((controller: ToastController) => TemplateResult) | ToastAction[];
   /** Pulls focus on show and pauses auto-dismiss while focused. For actionable toasts only. */
@@ -73,6 +75,9 @@ function applyProps(el: DsToast, options: ToastOptions): void {
   }
   if (options.duration !== undefined) {
     el.duration = options.duration;
+  }
+  if (options.dismissLabel !== undefined) {
+    el.dismissLabel = options.dismissLabel;
   }
   if (options.dismissible !== undefined) {
     el.dismissible = options.dismissible;

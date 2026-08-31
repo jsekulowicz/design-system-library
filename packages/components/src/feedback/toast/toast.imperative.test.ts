@@ -145,4 +145,10 @@ describe('toast() imperative API', () => {
     expect(a.id).not.toBe(b.id);
     expect(a.id).toMatch(/^ds-toast-/);
   });
+
+  it('names the dismiss button on the toast it creates', () => {
+    toast({ body: 'x', dismissLabel: 'Descartar' });
+    const el = document.querySelector('ds-toast') as DsToast;
+    expect(el.dismissLabel).toBe('Descartar');
+  });
 });
