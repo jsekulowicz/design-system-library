@@ -21,6 +21,13 @@ describe('<ds-nav-item>', () => {
     expect(link!.getAttribute('href')).toBe('/docs');
   });
 
+  it('omits blank target and rel instead of rendering them empty', async () => {
+    const el = await mount<DsNavItem>('<ds-nav-item href="/docs" target="" rel="">Home</ds-nav-item>');
+    const link = el.shadowRoot!.querySelector('a')!;
+    expect(link.hasAttribute('target')).toBe(false);
+    expect(link.hasAttribute('rel')).toBe(false);
+  });
+
   it('sets aria-current="page" when current', async () => {
     const el = await mount<DsNavItem>('<ds-nav-item href="/" current>Home</ds-nav-item>');
     const link = el.shadowRoot!.querySelector('a')!;

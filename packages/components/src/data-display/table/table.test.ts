@@ -196,6 +196,12 @@ describe('<ds-table>', () => {
     expect(headers[0].hasAttribute('aria-sort')).toBe(false);
   });
 
+  it('treats a blank sort state as unsorted', async () => {
+    const el = await mountTable({ sortState: { name: '', direction: null } });
+    const headers = el.shadowRoot!.querySelectorAll('thead th');
+    expect(headers[0].hasAttribute('aria-sort')).toBe(false);
+  });
+
   it('sets aria-sort="descending" for desc sort direction', async () => {
     const sortState: TableSortState = { name: 'name', direction: 'desc' };
     const el = await mountTable({ sortState });

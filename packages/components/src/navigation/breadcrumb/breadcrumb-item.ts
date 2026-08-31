@@ -1,7 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
-import { DsElement } from '@jsekulowicz/ds-core';
+import { DsElement, omitWhenBlank } from '@jsekulowicz/ds-core';
 import type { LinkTarget } from '@jsekulowicz/ds-core';
 import { breadcrumbItemStyles } from './breadcrumb-item.styles.js';
 import '../../data-display/icon/icons/chevron-right.js';
@@ -43,12 +43,12 @@ export class DsBreadcrumbItem extends DsElement {
       <a
         part="link"
         href=${this.href ?? '#'}
-        target=${ifDefined(this.target)}
-        rel=${ifDefined(this.rel)}
-        download=${ifDefined(this.download)}
-        hreflang=${ifDefined(this.hreflang)}
-        type=${ifDefined(this.type)}
-        referrerpolicy=${ifDefined(this.referrerpolicy)}
+        target=${ifDefined(omitWhenBlank(this.target))}
+        rel=${ifDefined(omitWhenBlank(this.rel))}
+        download=${ifDefined(omitWhenBlank(this.download))}
+        hreflang=${ifDefined(omitWhenBlank(this.hreflang))}
+        type=${ifDefined(omitWhenBlank(this.type))}
+        referrerpolicy=${ifDefined(omitWhenBlank(this.referrerpolicy))}
       >
         ${this.#renderLabel()}
       </a>

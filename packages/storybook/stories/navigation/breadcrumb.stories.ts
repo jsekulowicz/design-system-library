@@ -55,6 +55,11 @@ export const ItemPlayground: Story = {
   },
   args: {
     href: '/products',
+    rel: '',
+    download: '',
+    hreflang: '',
+    type: '',
+    referrerpolicy: '',
     current: false,
     last: false,
   },

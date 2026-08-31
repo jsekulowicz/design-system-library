@@ -78,6 +78,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
   @property({ attribute: false }) columns: readonly TableColumn<T>[] = [];
   /** Column `name`s (any order) to freeze into a contiguous left region; original relative order is preserved. */
   @property({ attribute: false }) pinnedColumns: readonly string[] = [];
+  /** Active sort. `null`, or a state whose `name` matches no column or whose `direction` is `null`, renders unsorted. */
   @property({ attribute: false }) sortState: TableSortState | null = null;
   @property({ attribute: false }) rowActionLabel?: (row: T, index: number) => string;
   @property({ type: Boolean, reflect: true, attribute: 'clickable-rows' }) clickableRows = false;

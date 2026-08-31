@@ -228,6 +228,14 @@ describe('<ds-button href>', () => {
     expect(anchor.getAttribute('rel')).toBe('noopener');
   });
 
+  it('omits blank target and rel instead of rendering them empty', async () => {
+    const el = await mount<DsButton>('<ds-button href="/x" target="" rel="">Go</ds-button>');
+    const anchor = el.shadowRoot!.querySelector('a')!;
+
+    expect(anchor.hasAttribute('target')).toBe(false);
+    expect(anchor.hasAttribute('rel')).toBe(false);
+  });
+
   it('focuses the anchor', async () => {
     const el = await mount<DsButton>('<ds-button href="/login">Log in</ds-button>');
 

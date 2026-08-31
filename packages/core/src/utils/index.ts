@@ -3,6 +3,7 @@ export { nextId } from './id.js';
 export { announce } from './live-region.js';
 export { emit, type DsEventOptions } from './event.js';
 export { isInteractiveElement, hasInteractiveSlottedOrigin } from './interactive-origin.js';
+export { omitWhenBlank } from './attributes.js';
 export type {
   AriaRole,
   AriaBoolean,

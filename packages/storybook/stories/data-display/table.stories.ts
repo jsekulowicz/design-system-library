@@ -197,7 +197,7 @@ const meta: Meta = {
     rows: PEOPLE.slice(0, 4),
     columns: BASIC_COLUMNS,
     pinnedColumns: [],
-    sortState: null,
+    sortState: { name: '', direction: null },
     clickableRows: false,
     loading: false,
     skeletonRows: 5,

@@ -1,7 +1,7 @@
 import { html, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement } from '@jsekulowicz/ds-core';
+import { DsElement, omitWhenBlank } from '@jsekulowicz/ds-core';
 import type { AriaBoolean, AriaChecked, AriaHasPopup, AriaInvalid, AriaRole, LinkTarget } from '@jsekulowicz/ds-core';
 import { spinnerStyles } from '../../shared/spinner.js';
 import { buttonContent } from './button-content.js';
@@ -127,8 +127,8 @@ export class DsButton extends DsElement {
         part="button"
         class="btn ds-focus-ring"
         href=${ifDefined(this.href)}
-        target=${ifDefined(this.target)}
-        rel=${ifDefined(this.rel)}
+        target=${ifDefined(omitWhenBlank(this.target))}
+        rel=${ifDefined(omitWhenBlank(this.rel))}
         role=${ifDefined(this.roleAttr)}
         tabindex=${ifDefined(this.tabIndexAttr)}
         aria-disabled=${this.#isInoperable() ? 'true' : 'false'}

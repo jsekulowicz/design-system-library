@@ -26,6 +26,16 @@ describe('<ds-breadcrumb-item>', () => {
     expect(link!.getAttribute('href')).toBe('/home');
   });
 
+  it('omits blank anchor attributes instead of rendering them empty', async () => {
+    const el = await mount<DsBreadcrumbItem>(
+      '<ds-breadcrumb-item href="/x" target="" rel="" download="" hreflang="" type="" referrerpolicy="">Home</ds-breadcrumb-item>',
+    );
+    const link = el.shadowRoot!.querySelector('a')!;
+    for (const name of ['target', 'rel', 'download', 'hreflang', 'type', 'referrerpolicy']) {
+      expect(link.hasAttribute(name)).toBe(false);
+    }
+  });
+
   it('forwards target, rel, download, hreflang, type, referrerpolicy to the <a>', async () => {
     const el = await mount<DsBreadcrumbItem>(
       '<ds-breadcrumb-item href="/x" target="_blank" rel="noopener" download="file.pdf" hreflang="en" type="application/pdf" referrerpolicy="no-referrer">Home</ds-breadcrumb-item>',

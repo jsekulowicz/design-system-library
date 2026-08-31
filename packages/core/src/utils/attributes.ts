@@ -147,3 +147,10 @@ export type AutocompleteToken =
   | 'url'
   | 'username'
   | 'work';
+
+export function omitWhenBlank<T extends string>(value: T | null | undefined): T | undefined {
+  if (value === null || value === undefined || value === '') {
+    return undefined;
+  }
+  return value;
+}

@@ -25,6 +25,7 @@ const meta: Meta = {
   },
   args: {
     href: '/docs',
+    rel: '',
     current: false,
     disabled: false,
     loading: false,

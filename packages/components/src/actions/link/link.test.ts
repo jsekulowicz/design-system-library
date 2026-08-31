@@ -42,6 +42,13 @@ describe('<ds-link>', () => {
     expect(anchor.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
+  it('omits a blank target instead of rendering it empty', async () => {
+    const el = await mount<DsLink>('<ds-link href="/" target="">Docs</ds-link>');
+    const anchor = el.shadowRoot!.querySelector('a')!;
+
+    expect(anchor.hasAttribute('target')).toBe(false);
+  });
+
   it('omits rel when not external and target is not _blank', async () => {
     const el = await mount<DsLink>('<ds-link href="/" target="_self">Docs</ds-link>');
     const anchor = el.shadowRoot!.querySelector('a')!;
