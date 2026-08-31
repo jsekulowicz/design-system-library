@@ -1,5 +1,28 @@
 # @jsekulowicz/ds-components
 
+## 0.71.0
+
+### Minor Changes
+
+- 949466d: Let `ds-table-pagination` be translated. Its summary and prev/next button text were already slottable, but the strings a screen reader depends on were not: the `<nav>` landmark, both button accessible names, each page button's "Page N", and the page-size select were English literals with no way past them, as was the "Page N of M" text `hide-page-numbers` renders. A Spanish page read as Spanish and announced as English.
+
+  Every user-facing string is now a property, defaulting to what the component rendered before: `label`, `prev-page-label`, `next-page-label`, `page-label`, `page-of-label`, `rows-per-page-label`, `summary-label` and `empty-label`. The three that need values interpolate `{page}`, `{total}`, `{start}` and `{end}`; an unrecognised placeholder is left alone rather than printed as `undefined`.
+
+  `summary-label` is worth preferring over the `summary` slot: the component already clamps `page` to the last real page, and a consumer that rebuilds the sentence itself has to repeat that clamping or print a range that does not exist.
+
+  Nothing changes for consumers who set none of them.
+
+### Patch Changes
+
+- ccff9b5: Blank anchor attributes are now omitted instead of rendered empty. `ds-breadcrumb-item` (`target`, `rel`, `download`, `hreflang`, `type`, `referrerpolicy`), `ds-nav-item` and `ds-button` (`target`, `rel`) and `ds-link` (`target`) treated an empty string as a value and passed it through, so binding an unset field produced `rel=""` on the `<a>`. They now drop the attribute, matching what an unset property already did.
+
+  One case changes behaviour rather than just markup: `download=""` on an `<a>` means "download this, deriving the filename from the URL", so a `ds-breadcrumb-item` given an empty `download` used to download and now navigates. Pass a filename, or `download` as a bare attribute on your own anchor, if you relied on it.
+
+  `@jsekulowicz/ds-core` exports the `omitWhenBlank` helper this uses.
+
+- Updated dependencies [ccff9b5]
+  - @jsekulowicz/ds-core@0.71.0
+
 ## 0.70.0
 
 ### Minor Changes
