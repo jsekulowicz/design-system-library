@@ -1,6 +1,16 @@
 import { describe, it, expect, afterEach, beforeAll, beforeEach } from 'vitest';
 import { html, render } from 'lit';
 import { mount, mountWithProps, resetTestDom } from '../test-utils/mount.js';
+import type { DsAlert } from '../feedback/alert/alert.js';
+import type { DsBarChart } from '../data-display/bar-chart/bar-chart.js';
+import type { DsColorPicker } from '../forms/color-picker/color-picker.js';
+import type { DsDialog } from '../overlays/dialog/dialog.js';
+import type { DsDrawer } from '../overlays/drawer/drawer.js';
+import type { DsHeatmapCalendar } from '../data-display/heatmap-calendar/heatmap-calendar.js';
+import type { DsPieChart } from '../data-display/pie-chart/pie-chart.js';
+import type { DsSettingsPage } from '../patterns/settings-page/settings-page.js';
+import type { DsTableSortButton } from '../data-display/table/table-sort-button.js';
+import type { DsToast } from '../feedback/toast/toast.js';
 import { renderClearButton, renderOverflowTile, renderSelectedTiles } from '../forms/select/select.shared.js';
 import '../overlays/dialog/define.js';
 import '../overlays/drawer/define.js';
@@ -41,8 +51,6 @@ afterEach(() => {
   resetTestDom();
 });
 
-type Modal = HTMLElement & { updateComplete: Promise<unknown> };
-
 function labelOf(el: HTMLElement, selector: string): string | null {
   return el.shadowRoot!.querySelector(selector)?.getAttribute('label') ?? null;
 }
@@ -53,7 +61,7 @@ function ariaOf(el: HTMLElement, selector: string): string | null {
 
 describe('every component names its own controls in the consumer language', () => {
   it('names the dialog close button', async () => {
-    const el = await mountWithProps<Modal>('<ds-dialog open>x</ds-dialog>', {
+    const el = await mountWithProps<DsDialog>('<ds-dialog open>x</ds-dialog>', {
       closeLabel: 'Cerrar',
     });
     await el.updateComplete;
@@ -61,7 +69,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('names the drawer close button', async () => {
-    const el = await mountWithProps<Modal>('<ds-drawer open>x</ds-drawer>', {
+    const el = await mountWithProps<DsDrawer>('<ds-drawer open>x</ds-drawer>', {
       closeLabel: 'Cerrar',
     });
     await el.updateComplete;
@@ -69,21 +77,21 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('names the alert dismiss button', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-alert dismissible>x</ds-alert>', {
+    const el = await mountWithProps<DsAlert>('<ds-alert dismissible>x</ds-alert>', {
       dismissLabel: 'Descartar',
     });
     expect(labelOf(el, '[part~="close-button"]')).toBe('Descartar');
   });
 
   it('names the toast dismiss button', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-toast>x</ds-toast>', {
+    const el = await mountWithProps<DsToast>('<ds-toast>x</ds-toast>', {
       dismissLabel: 'Descartar',
     });
     expect(labelOf(el, '[part~="close-button"]')).toBe('Descartar');
   });
 
   it('names the settings page section nav', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-settings-page></ds-settings-page>', {
+    const el = await mountWithProps<DsSettingsPage>('<ds-settings-page></ds-settings-page>', {
       sections: [{ id: 'a', label: 'A' }],
       sectionsLabel: 'Secciones',
     });
@@ -91,7 +99,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('names the table sort button and its direction suffix', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-table-sort-button></ds-table-sort-button>', {
+    const el = await mountWithProps<DsTableSortButton>('<ds-table-sort-button></ds-table-sort-button>', {
       column: 'Palabra',
       direction: 'asc',
       sortByLabel: 'Ordenar por {column}',
@@ -101,7 +109,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('names the pie chart root', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-pie-chart></ds-pie-chart>', {
+    const el = await mountWithProps<DsPieChart>('<ds-pie-chart></ds-pie-chart>', {
       data: [{ label: 'a', value: 1 }],
       chartLabel: 'Gráfico circular',
     });
@@ -109,7 +117,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('names the bar chart root', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-bar-chart></ds-bar-chart>', {
+    const el = await mountWithProps<DsBarChart>('<ds-bar-chart></ds-bar-chart>', {
       data: [{ domain: 'a', value: 1 }],
       series: [{ key: 'value', label: 'v' }],
       chartLabel: 'Gráfico de barras',
@@ -118,7 +126,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('names the heatmap legend and labels both of its ends', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-heatmap-calendar></ds-heatmap-calendar>', {
+    const el = await mountWithProps<DsHeatmapCalendar>('<ds-heatmap-calendar></ds-heatmap-calendar>', {
       data: [{ date: '2026-01-01', value: 1 }],
       legendLabel: 'Intensidad',
       legendLessLabel: 'Menos',
@@ -131,10 +139,10 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('names the color picker panel once it is open', async () => {
-    const el = await mountWithProps<HTMLElement & { updateComplete: Promise<unknown> }>(
-      '<ds-color-picker></ds-color-picker>',
-      { colors: [{ value: '#fff', label: 'White' }], pickerLabel: 'Selector de color' },
-    );
+    const el = await mountWithProps<DsColorPicker>('<ds-color-picker></ds-color-picker>', {
+      colors: [{ value: '#fff', label: 'White' }],
+      pickerLabel: 'Selector de color',
+    });
     const trigger = el.shadowRoot!.querySelector('#trigger');
     trigger?.shadowRoot?.querySelector('button')?.click();
     await el.updateComplete;
@@ -169,7 +177,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('writes the pie chart empty state in the consumer language', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-pie-chart></ds-pie-chart>', {
+    const el = await mountWithProps<DsPieChart>('<ds-pie-chart></ds-pie-chart>', {
       data: [],
       emptyLabel: 'Sin datos',
       categoryHeader: 'Categoría',
@@ -178,7 +186,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('writes the bar chart total header in the consumer language', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-bar-chart stacked></ds-bar-chart>', {
+    const el = await mountWithProps<DsBarChart>('<ds-bar-chart stacked></ds-bar-chart>', {
       data: [{ domain: 'a', value: 1 }],
       series: [{ key: 'value', label: 'v' }],
       totalHeader: 'Suma',
@@ -187,7 +195,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('writes the heatmap table headers in the consumer language', async () => {
-    const el = await mountWithProps<HTMLElement>('<ds-heatmap-calendar></ds-heatmap-calendar>', {
+    const el = await mountWithProps<DsHeatmapCalendar>('<ds-heatmap-calendar></ds-heatmap-calendar>', {
       data: [{ date: '2026-01-01', value: 1 }],
       dateHeader: 'Fecha',
       valueHeader: 'Valor',
@@ -198,15 +206,12 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('writes the color picker panel buttons in the consumer language', async () => {
-    const el = await mountWithProps<HTMLElement & { updateComplete: Promise<unknown> }>(
-      '<ds-color-picker clearable></ds-color-picker>',
-      {
-        colors: [{ value: '#fff', label: 'White' }],
-        clearLabel: 'Borrar',
-        doneLabel: 'Hecho',
-        customLabel: 'Color personalizado',
-      },
-    );
+    const el = await mountWithProps<DsColorPicker>('<ds-color-picker clearable></ds-color-picker>', {
+      colors: [{ value: '#fff', label: 'White' }],
+      clearLabel: 'Borrar',
+      doneLabel: 'Hecho',
+      customLabel: 'Color personalizado',
+    });
     el.shadowRoot!.querySelector('#trigger')?.shadowRoot?.querySelector('button')?.click();
     await el.updateComplete;
     const html = el.shadowRoot!.innerHTML;
@@ -215,16 +220,16 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('announces each chart role description in the consumer language', async () => {
-    const pie = await mountWithProps<HTMLElement>('<ds-pie-chart></ds-pie-chart>', {
+    const pie = await mountWithProps<DsPieChart>('<ds-pie-chart></ds-pie-chart>', {
       data: [{ label: 'a', value: 1 }],
       roleDescription: 'gráfico circular',
     });
-    const bar = await mountWithProps<HTMLElement>('<ds-bar-chart></ds-bar-chart>', {
+    const bar = await mountWithProps<DsBarChart>('<ds-bar-chart></ds-bar-chart>', {
       data: [{ domain: 'a', value: 1 }],
       series: [{ key: 'value', label: 'v' }],
       roleDescription: 'gráfico de barras',
     });
-    const heatmap = await mountWithProps<HTMLElement>('<ds-heatmap-calendar></ds-heatmap-calendar>', {
+    const heatmap = await mountWithProps<DsHeatmapCalendar>('<ds-heatmap-calendar></ds-heatmap-calendar>', {
       data: [{ date: '2026-01-01', value: 1 }],
       roleDescription: 'calendario de actividad',
     });
@@ -236,7 +241,7 @@ describe('every component names its own controls in the consumer language', () =
   });
 
   it('keeps English when a consumer sets nothing', async () => {
-    const el = await mount<Modal>('<ds-dialog open>x</ds-dialog>');
+    const el = await mount<DsDialog>('<ds-dialog open>x</ds-dialog>');
     await el.updateComplete;
     expect(labelOf(el, '[part~="close-button"]')).toBe('Close');
   });
