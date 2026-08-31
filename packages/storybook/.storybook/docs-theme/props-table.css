@@ -29,6 +29,23 @@
   color: var(--ds-color-fg) !important;
 }
 
+.sbdocs .docblock-argstable button[id^='set-'] {
+  border: 1px solid var(--ds-color-border) !important;
+  border-radius: 0 !important;
+  background: var(--ds-color-bg-subtle) !important;
+  box-shadow: none !important;
+  color: var(--ds-color-fg) !important;
+}
+
+.sbdocs .docblock-argstable button[id^='set-']:hover:not(:disabled) {
+  background: var(--ds-color-bg-muted) !important;
+}
+
+.sbdocs .docblock-argstable button[id^='set-']:focus-visible {
+  outline: 2px solid var(--ds-color-focus) !important;
+  outline-offset: -2px !important;
+}
+
 .sbdocs .docblock-argstable label:has(> input[type='checkbox']) {
   border: 1px solid var(--ds-color-border) !important;
   background: var(--ds-color-bg-muted) !important;

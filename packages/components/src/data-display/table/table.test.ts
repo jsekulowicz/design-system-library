@@ -125,6 +125,11 @@ describe('<ds-table>', () => {
     expect(el.shadowRoot!.querySelector('tbody tr td')?.textContent).toContain('Ada');
   });
 
+  it('treats an empty row-key as unset', async () => {
+    const el = await mountTable({ rowKey: '' });
+    expect(el.shadowRoot!.querySelector('tbody slot[name^="cell:"]')).toBeNull();
+  });
+
   it('projects light-DOM content into a cell slot', async () => {
     const el = await mountWithProps<DsTable<Person>>(
       '<ds-table row-key="id"><span slot="cell:name:1">PROJECTED</span></ds-table>',

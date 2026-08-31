@@ -202,6 +202,7 @@ const meta: Meta = {
     loading: false,
     skeletonRows: 5,
     skeletonColumns: 4,
+    rowKey: '',
     responsive: 'stack',
     scrollBody: false,
   },
