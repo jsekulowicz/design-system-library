@@ -82,7 +82,10 @@ export function countOverflowTiles(tilesElement?: HTMLElement, maxLines?: number
     return 0;
   }
   const tiles = Array.from(tilesElement.querySelectorAll<HTMLElement>('.tile[data-value]'));
-  return tiles.filter((tile) => tile.offsetTop >= maxLines * TILE_ROW_HEIGHT).length;
+  // Relative to the first tile: ds-searchable-select sits its tiles below a
+  // search input, and an absolute threshold reads that gap as overflow.
+  const firstRowTop = tiles[0]?.offsetTop ?? 0;
+  return tiles.filter((tile) => tile.offsetTop - firstRowTop >= maxLines * TILE_ROW_HEIGHT).length;
 }
 
 export function queueTaskOnce(options: QueueTaskOptions): void {
