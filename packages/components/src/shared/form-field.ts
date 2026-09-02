@@ -84,15 +84,22 @@ export function renderFieldLabel(label: string, required: boolean, forId: string
   `;
 }
 
+/** `lh` is the element's own line-height, so this reserves exactly N rendered rows. */
+function reservedRowsStyle(lines: number): string {
+  return lines > 0 ? `min-height:calc(${lines} * 1lh)` : '';
+}
+
 export function renderSubtext(
   description: string,
   error: string,
   invalid: boolean,
   messageSpace = false,
+  descriptionLines = 0,
 ): TemplateResult | typeof nothing {
+  const reserveRows = reservedRowsStyle(descriptionLines);
   if (invalid && error) {
     return html`
-      <p class="error" role="alert">
+      <p class="error" role="alert" style=${reserveRows}>
         <!-- Heroicons 2.2.0 - 16/solid: exclamation-circle -->
         <svg class="error-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
           <path
@@ -106,7 +113,10 @@ export function renderSubtext(
     `;
   }
   if (description) {
-    return html`<p class="description">${description}</p>`;
+    return html`<p class="description" style=${reserveRows}>${description}</p>`;
+  }
+  if (descriptionLines > 0) {
+    return html`<p class="description" style=${reserveRows} aria-hidden="true"></p>`;
   }
   return messageSpace ? html`<p class="subtext-spacer" aria-hidden="true"></p>` : nothing;
 }

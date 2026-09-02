@@ -25,6 +25,8 @@ export class DsSegmentedControl extends DsElement {
 
   @property() label = '';
   @property() description = '';
+  /** Rows of subtext to hold; set it to the tallest description this control switches between. */
+  @property({ type: Number, attribute: 'description-lines' }) descriptionLines = 0;
   @property() value = '';
   @property({ type: Array }) options: SegmentedControlOption[] = [];
   @property({ type: Boolean, reflect: true }) disabled = false;
@@ -110,7 +112,7 @@ export class DsSegmentedControl extends DsElement {
       <div class="group" id="group" role="radiogroup" aria-label=${this.label} part="group" @keydown=${this.#onKeydown}>
         ${this.options.map((option, index) => this.#renderSegment(option, index))}
       </div>
-      ${renderSubtext(this.description, '', false, this.messageSpace)}
+      ${renderSubtext(this.description, '', false, this.messageSpace, this.descriptionLines)}
     `;
   }
 }
