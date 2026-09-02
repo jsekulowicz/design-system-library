@@ -172,13 +172,18 @@ describe('<ds-select>', () => {
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
 
-    it('shows clear button when required and a value is selected', async () => {
-      const el = await mountSelect({ required: true, value: 'react' });
+    it('shows clear button when clearable and a value is selected', async () => {
+      const el = await mountSelect({ clearable: true, value: 'react' });
       expect(el.shadowRoot!.querySelector('.clear-btn')).not.toBeNull();
     });
 
-    it('does not show clear button when required but nothing is selected', async () => {
-      const el = await mountSelect({ required: true });
+    it('does not show clear button when clearable but nothing is selected', async () => {
+      const el = await mountSelect({ clearable: true });
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
+
+    it('does not show clear button for a required select', async () => {
+      const el = await mountSelect({ required: true, value: 'react' });
       expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
     });
   });

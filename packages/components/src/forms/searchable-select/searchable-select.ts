@@ -345,7 +345,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     const current = typeof this.value === 'string' ? this.value : '';
     const open = this.#dropdown.open;
     const hasTiles = this.multiple && this.values.length > 0;
-    const hasClearBtn = (this.clearable || this.required) && (this.multiple ? this.values.length > 0 : current !== '');
+    const hasClearBtn = this.clearable && (this.multiple ? this.values.length > 0 : current !== '');
     const displayValue = open ? this._search : !this.multiple ? (this._labelMap.get(current) ?? '') : '';
     const activeDesc = open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
     const selectedIcon = !open && !this.multiple && current ? this._iconMap.get(current) : undefined;

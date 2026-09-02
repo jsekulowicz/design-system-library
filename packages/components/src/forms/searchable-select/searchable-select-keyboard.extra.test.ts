@@ -36,8 +36,8 @@ async function mountSearchable(props: Partial<DsSearchableSelect> = {}): Promise
 }
 
 describe('<ds-searchable-select> extra coverage', () => {
-  it('handles focus and search/clear pathways for required single select', async () => {
-    const el = await mountSearchable({ required: true, value: 'react' });
+  it('handles focus and search/clear pathways for a required, clearable single select', async () => {
+    const el = await mountSearchable({ required: true, clearable: true, value: 'react' });
     const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
 
     (el.shadowRoot!.querySelector('.clear-btn') as HTMLElement).click();

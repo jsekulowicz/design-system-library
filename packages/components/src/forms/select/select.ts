@@ -283,7 +283,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const open = this.#dropdown.open;
     const activeDesc = open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
     const hasTiles = this.multiple && this.values.length > 0;
-    const hasClearBtn = (this.clearable || this.required) && (this.multiple ? this.values.length > 0 : current !== '');
+    const hasClearBtn = this.clearable && (this.multiple ? this.values.length > 0 : current !== '');
     return html` ${this.label ? renderFieldLabel(this.label, this.required, 'trigger') : nothing}
       <div class="control-wrap">
         <div
