@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const SOURCE_EXTENSION = /\.(?:cjs|css|html|js|json|jsx|md|mdx|mjs|sh|svg|ts|tsx|txt|yaml|yml)$/;
 const EXCLUDED_PATHS = [
@@ -8,84 +8,67 @@ const EXCLUDED_PATHS = [
   /^packages\/components\/custom-elements\.json$/,
   /^scripts\/lint-copy\.mjs$/,
 ];
-const BRITISH_SPELLINGS = [
-  'analyse',
-  'analysed',
-  'analyses',
-  'analysing',
-  'behaviour',
-  'behaviours',
+// Stems taking -e/-es/-ed/-ing/-able/-ation/-ations, so every inflection is
+// covered rather than only the three forms someone thought to list.
+const BRITISH_ISE_STEMS = [
+  'analys',
+  'customis',
+  'finalis',
+  'initialis',
+  'normalis',
+  'optimis',
+  'organis',
+  'prioritis',
+  'recognis',
+  'serialis',
+  'visualis',
+];
+// Nouns taking an optional plural.
+const BRITISH_NOUNS = ['behaviour', 'centre', 'colour', 'favourite', 'licence', 'neighbour', 'recolour'];
+// Forms that fit neither shape.
+const BRITISH_IRREGULARS = [
   'cancelled',
   'cancelling',
-  'centre',
   'centred',
-  'centres',
   'centring',
-  'colour',
   'coloured',
-  'colours',
-  'customise',
-  'customised',
-  'customising',
-  'finalise',
-  'finalised',
-  'finalising',
-  'favourite',
-  'favourites',
+  'colouring',
+  'colourful',
   'grey',
-  'initialise',
-  'initialised',
-  'initialising',
   'labelled',
   'labelling',
-  'licence',
   'modelling',
-  'neighbour',
   'neighbouring',
-  'neighbours',
-  'normalise',
-  'normalised',
-  'normalising',
-  'optimise',
-  'optimised',
-  'optimising',
-  'organisation',
-  'organisations',
-  'organise',
-  'organised',
-  'organising',
-  'prioritise',
-  'prioritised',
-  'prioritising',
-  'recognise',
-  'recognised',
-  'recognising',
-  'recolour',
   'recoloured',
   'recolouring',
-  'serialisable',
-  'serialise',
-  'serialised',
-  'serialising',
   'unlabelled',
-  'visualise',
-  'visualised',
-  'visualising',
 ];
+
+const BRITISH_SPELLING_PATTERN = [
+  `(?:${BRITISH_ISE_STEMS.join('|')})(?:e|es|ed|ing|able|ation|ations)`,
+  `(?:${BRITISH_NOUNS.join('|')})s?`,
+  `(?:${BRITISH_IRREGULARS.join('|')})`,
+].join('|');
+
 const FORBIDDEN_COPY = [
   { pattern: /[…—–“”‘’]/u, message: 'typographic punctuation' },
   {
-    pattern: new RegExp(`\\b(?:${BRITISH_SPELLINGS.join('|')})\\b`, 'i'),
+    pattern: new RegExp(`\\b(?:${BRITISH_SPELLING_PATTERN})\\b`, 'i'),
     message: 'British English spelling',
   },
 ];
 
 function trackedSourceFiles() {
-  return execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' })
-    .split('\0')
-    .filter(Boolean)
-    .filter((file) => SOURCE_EXTENSION.test(file))
-    .filter((file) => !EXCLUDED_PATHS.some((pattern) => pattern.test(file)));
+  return (
+    execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' })
+      .split('\0')
+      .filter(Boolean)
+      .filter((file) => SOURCE_EXTENSION.test(file))
+      .filter((file) => !EXCLUDED_PATHS.some((pattern) => pattern.test(file)))
+      // `git ls-files` reads the index, which still lists a tracked file deleted
+      // from the working tree. There is nothing to read until the delete is staged.
+      .filter((file) => existsSync(file))
+  );
 }
 
 function violationsFor(file) {
