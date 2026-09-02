@@ -1,5 +1,53 @@
 # @jsekulowicz/ds-components
 
+## 0.74.0
+
+### Minor Changes
+
+- 9092cf4: Every field that renders a message row gains a `warning` property: a caution
+  about the value it holds, outranked by `error` and outranking `description`.
+  It announces politely and leaves the field valid, and the tone lives in the
+  icon so the text keeps body-copy contrast.
+
+  Without it a consumer with something to warn about had to build the row
+  itself, outside the field, where it could not inherit the field's own
+  spacing.
+
+- 623dd18: Make the "+n" overflow tile reachable, and harmonize where it sits.
+
+  `max-lines` clips a multi-select's tiles to a fixed number of rows and counts
+  what is hidden in a "+n" tile. That tile was a bare `<span>`, and keyboard tile
+  navigation deliberately stops at the visible tiles - so a selection scrolled
+  out of view could not be seen or removed at all, by mouse or by keyboard. It is
+  now a real button that fires `ds-overflow-click` (detail: `{ count }`), leaving
+  the consumer to show the full selection however suits them. React consumers get
+  it as `onDsOverflowClick`.
+
+  Two fixes alongside it:
+
+  - `ds-select` rendered the overflow tile before the tile list and
+    `ds-searchable-select` after it. Both now render it after, so the trigger
+    reads "tiles ... +3" either way.
+  - Removing a tile emitted `ds-change` but never marked the host interacted or
+    re-ran validation, unlike every other selection path. Emptying a required
+    multi-select by removing its last tile therefore still looked valid.
+
+- bcafa93: `required` no longer implies a clear button on `ds-select` and
+  `ds-searchable-select`. Required says a value must be there, so offering
+  one click to take it away worked against the field's own rule; re-picking
+  is what a select is for. Set `clearable` alongside `required` to keep it.
+- e2c47fb: Add `description-lines` to `ds-segmented-control`.
+
+  A description that changes with the selected option changes height with it,
+  and everything below the control moves. `description-lines` holds room for a
+  fixed number of subtext rows so the layout stays put - for whichever message
+  occupies the row, description or otherwise.
+
+  It takes a count rather than measuring: the control only ever sees one
+  description at a time and cannot know the longest of the set, so only the
+  consumer can say. Opt-in, for the same reason `message-space` is - 0.61.0
+  reserved those rows for everybody and 0.63.0 took it back out.
+
 ## 0.73.0
 
 ### Minor Changes
