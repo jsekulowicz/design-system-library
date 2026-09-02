@@ -31,6 +31,8 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
   @property() label = '';
   @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, attribute: 'show-value' }) showValue = false;
@@ -134,7 +136,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
         />
         ${this.showValue ? html`<output part="value" for="input">${current}</output>` : nothing}
       </div>
-      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
+      ${renderSubtext(this)}
     `;
   }
 }

@@ -18,6 +18,8 @@ export class DsCheckboxGroup extends DsElement {
   @property() label = '';
   @property() name = '';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() error = '';
   @property({ type: Array }) value: string[] = [];
   @property({ type: Boolean, reflect: true }) required = false;
@@ -98,7 +100,7 @@ export class DsCheckboxGroup extends DsElement {
           <slot @slotchange=${this.#onSlotChange}></slot>
         </div>
       </fieldset>
-      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
+      ${renderSubtext(this)}
     `;
   }
 }

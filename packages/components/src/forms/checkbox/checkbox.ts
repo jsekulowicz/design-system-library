@@ -22,6 +22,8 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property() checkboxValue = '';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() error = '';
   @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
 
@@ -101,7 +103,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
         </span>
         <span part="label"><slot @slotchange=${this.#slots.handleSlotChange}></slot></span>
       </label>
-      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
+      ${renderSubtext(this)}
     </div>`;
   }
 }

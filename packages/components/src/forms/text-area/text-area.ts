@@ -37,6 +37,8 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   @property() label = '';
   @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
@@ -125,7 +127,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
         @focus=${this.#onFocus}
         @blur=${this.#onBlur}
       ></textarea>
-      ${renderFieldFooter(this.description, this.error, this.invalid, this.messageSpace)}
+      ${renderFieldFooter(this)}
     `;
   }
 }

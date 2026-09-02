@@ -58,6 +58,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ attribute: 'search-placeholder' }) searchPlaceholder = 'Search...';
   @property() label = '';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() hint = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
@@ -431,6 +433,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             : nothing
         }
       </div>
-      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}`;
+      ${renderSubtext(this)}`;
   }
 }

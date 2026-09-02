@@ -39,6 +39,8 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property() label = '';
   @property({ attribute: 'input-label' }) inputLabel = '';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
@@ -137,7 +139,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
           <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
         </span>
       </div>
-      ${renderFieldFooter(this.description, this.error, this.invalid, this.messageSpace)}
+      ${renderFieldFooter(this)}
     `;
   }
 }

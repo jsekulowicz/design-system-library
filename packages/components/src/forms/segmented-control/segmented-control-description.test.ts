@@ -35,6 +35,11 @@ describe('description-lines', () => {
     expect(paragraph?.getAttribute('aria-hidden')).toBe('true');
   });
 
+  it('holds the same space for a warning, which shares the row', async () => {
+    const el = await mount({ description: 'Short', warning: 'Careful', descriptionLines: 3 });
+    expect(el.shadowRoot?.querySelector<HTMLElement>('.warning')?.style.minHeight).toBe('calc(3lh)');
+  });
+
   it('reserves nothing unless asked, which is how it shipped', async () => {
     const el = await mount({ description: 'Short' });
     expect(description(el)?.style.minHeight).toBe('');

@@ -22,6 +22,8 @@ export class DsFieldset extends DsElement {
 
   @property() label = '';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() error = '';
   @property({ reflect: true }) orientation: FieldsetOrientation = 'horizontal';
   @property({ type: Boolean, reflect: true }) required = false;
@@ -46,7 +48,7 @@ export class DsFieldset extends DsElement {
           <slot></slot>
         </div>
       </fieldset>
-      ${renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
+      ${renderSubtext(this)}
     `;
   }
 }

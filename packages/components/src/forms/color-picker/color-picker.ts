@@ -44,6 +44,8 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   @property({ attribute: 'done-label' }) doneLabel = 'Done';
   @property({ attribute: 'custom-label' }) customLabel = 'Custom color';
   @property() description = '';
+  /** A caution about the current value; outranks `description` and leaves the field valid. */
+  @property() warning = '';
   @property() error = '';
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
@@ -204,7 +206,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
         ${this.#renderTrigger(current, selected)} ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>
-      ${this.compact ? nothing : renderSubtext(this.description, this.error, this.invalid, this.messageSpace)}
+      ${this.compact ? nothing : renderSubtext(this)}
     `;
   }
 
