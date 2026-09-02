@@ -10,6 +10,7 @@ export const Select = createComponent({
   events: {
     'onDsChange': 'ds-change' as EventName<CustomEvent>,
     'onDsScrollEnd': 'ds-scroll-end' as EventName<CustomEvent>,
+    'onDsOverflowClick': 'ds-overflow-click' as EventName<CustomEvent>,
   },
   displayName: 'Select',
 });

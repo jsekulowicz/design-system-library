@@ -116,12 +116,47 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
   </span>`;
 }
 
-/** Sits outside the tile list so it keeps its place on the first row as tiles wrap. */
-export function renderOverflowTile(count: number, overflowLabel: string): TemplateResult | typeof nothing {
+/**
+ * Activation for a button nested inside the trigger. Without it the trigger's own
+ * keydown handler sees the key first and preventDefaults it, canceling the click
+ * the browser would have synthesized - so the button never fires at all.
+ */
+export function triggerButtonKeydown(event: KeyboardEvent, activate: () => void): void {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.stopPropagation();
+    event.preventDefault();
+    activate();
+  }
+}
+
+/**
+ * The "+3" tile, for selections `maxLines` clipped out of view.
+ *
+ * A button, not a label: keyboard tile navigation cannot reach a hidden tile, so
+ * without it there is no way to see or remove what is behind the count. Consumers
+ * listen for `ds-overflow-click` and reveal the full selection however suits them.
+ */
+export function renderOverflowTile(
+  count: number,
+  overflowLabel: string,
+  onActivate?: () => void,
+): TemplateResult | typeof nothing {
   if (count <= 0) {
     return nothing;
   }
-  return html`<span class="tile tile-overflow" aria-label=${formatLabel(overflowLabel, { count })}>+${count}</span>`;
+  return html`<button
+    class="tile tile-overflow"
+    type="button"
+    aria-label=${formatLabel(overflowLabel, { count })}
+    @pointerdown=${(event: Event) => event.preventDefault()}
+    @keydown=${(event: KeyboardEvent) => triggerButtonKeydown(event, () => onActivate?.())}
+    @click=${(event: Event) => {
+      event.stopPropagation();
+      onActivate?.();
+    }}
+  >
+    +${count}
+  </button>`;
 }
 
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {

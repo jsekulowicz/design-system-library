@@ -11,9 +11,10 @@ import {
   renderOptionIcon,
   renderOverflowTile,
   renderSelectedTiles,
+  triggerButtonKeydown,
 } from './select.shared.js';
 import { DropdownController } from './dropdown-controller.js';
-import { clearKeydown, dropdownKeydown } from './dropdown-keydown.js';
+import { dropdownKeydown } from './dropdown-keydown.js';
 import { selectCommonStyles } from './select.common-styles.js';
 import { selectStyles } from './select.styles.js';
 
@@ -32,6 +33,7 @@ export interface SelectOption {
  * @summary Custom dropdown selector with label, description and validation feedback.
  * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
  * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
+ * @event ds-overflow-click - Fires when the "+n" tile is activated. Detail: `{ count: number }`. Keyboard tile navigation cannot reach a tile `max-lines` clipped, so this is the only way to offer the full selection.
  * @csspart trigger - The trigger button element.
  * @csspart listbox - The dropdown listbox container.
  * @csspart hint - The optional note shown above the options inside the listbox.
@@ -83,6 +85,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
     applyValues: (next) => {
       this.values = next;
       this.value = next.join(',');
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { values: next } });
     },
   });
@@ -211,13 +215,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
     }
   };
 
-  #onClearKeydown = (event: KeyboardEvent): void => clearKeydown(event, this.#clear);
+  #onClearKeydown = (event: KeyboardEvent): void => triggerButtonKeydown(event, this.#clear);
 
   #onTriggerKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) {
       return;
     }
-    if ((event.target as Element).classList.contains('clear-btn')) {
+    // Buttons nested in the trigger (clear, "+n") handle their own keys.
+    if (event.target !== this._triggerEl) {
       return;
     }
     if (
@@ -302,7 +307,9 @@ export class DsSelect extends FormControlMixin(DsElement) {
           </span>
           ${
             hasTiles
-              ? html`${renderOverflowTile(this.#dropdown.overflowCount, this.overflowLabel)}${this.#renderTiles()}`
+              ? html`${this.#renderTiles()}${renderOverflowTile(this.#dropdown.overflowCount, this.overflowLabel, () =>
+                  this.emit('ds-overflow-click', { detail: { count: this.#dropdown.overflowCount } }),
+                )}`
               : html`<span class=${selectedOption ? 'trigger-label' : 'trigger-label placeholder'}>
                   ${
                     selectedOption

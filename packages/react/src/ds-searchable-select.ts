@@ -11,6 +11,7 @@ export const SearchableSelect = createComponent({
     'onDsSearch': 'ds-search' as EventName<CustomEvent>,
     'onDsChange': 'ds-change' as EventName<CustomEvent>,
     'onDsScrollEnd': 'ds-scroll-end' as EventName<CustomEvent>,
+    'onDsOverflowClick': 'ds-overflow-click' as EventName<CustomEvent>,
   },
   displayName: 'SearchableSelect',
 });

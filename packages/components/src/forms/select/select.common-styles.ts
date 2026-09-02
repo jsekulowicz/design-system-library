@@ -113,7 +113,14 @@ export const selectCommonStyles = css`
     background: var(--ds-color-accent-subtle);
     border-color: var(--ds-color-accent);
     color: var(--ds-color-accent);
+    font-family: inherit;
+    font-size: var(--ds-font-size-body-md);
     font-weight: var(--ds-font-weight-medium);
+    line-height: var(--ds-line-height-none);
+    cursor: pointer;
+  }
+  .tile-overflow:focus-visible {
+    box-shadow: var(--ds-shadow-focus);
   }
   .tile-label {
     min-width: 0;

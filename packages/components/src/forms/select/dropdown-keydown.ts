@@ -66,11 +66,3 @@ export function dropdownKeydown(event: KeyboardEvent, ctx: KeydownContext): 'han
   }
   return 'pass';
 }
-
-export function clearKeydown(event: KeyboardEvent, clear: () => void): void {
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.stopPropagation();
-    event.preventDefault();
-    clear();
-  }
-}

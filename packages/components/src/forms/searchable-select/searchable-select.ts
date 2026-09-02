@@ -13,9 +13,10 @@ import {
   renderOptionIcon,
   renderOverflowTile,
   renderSelectedTiles,
+  triggerButtonKeydown,
 } from '../select/select.shared.js';
 import { DropdownController } from '../select/dropdown-controller.js';
-import { clearKeydown, dropdownKeydown } from '../select/dropdown-keydown.js';
+import { dropdownKeydown } from '../select/dropdown-keydown.js';
 import { selectCommonStyles } from '../select/select.common-styles.js';
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import { highlightMatch } from './highlight-match.js';
@@ -27,6 +28,7 @@ import type { SelectOption, SelectSize } from '../select/select.js';
  * @event ds-search - Fires on every keystroke. Detail: `{ query: string }`.
  * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
  * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
+ * @event ds-overflow-click - Fires when the "+n" tile is activated. Detail: `{ count: number }`. Keyboard tile navigation cannot reach a tile `max-lines` clipped, so this is the only way to offer the full selection.
  * @csspart trigger - The trigger container element.
  * @csspart listbox - The dropdown listbox container.
  * @csspart hint - The optional note shown above the options inside the listbox.
@@ -90,6 +92,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     applyValues: (next) => {
       this.values = next;
       this.value = next.join(',');
+      this.markInteracted();
+      this.syncValidity();
       this.emit('ds-change', { detail: { values: next } });
     },
     canOpen: () => !this.loading,
@@ -254,7 +258,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
   };
 
-  #onClearKeydown = (event: KeyboardEvent): void => clearKeydown(event, this.#clear);
+  #onClearKeydown = (event: KeyboardEvent): void => triggerButtonKeydown(event, this.#clear);
 
   #onKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) {
@@ -361,7 +365,13 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             <slot name="leading" ?hidden=${Boolean(selectedIcon)} @slotchange=${this.#dropdown.onLeadingChange}></slot>
           </span>
           ${hasTiles ? this.#renderTiles() : nothing}
-          ${hasTiles ? renderOverflowTile(this.#dropdown.overflowCount, this.overflowLabel) : nothing}
+          ${
+            hasTiles
+              ? renderOverflowTile(this.#dropdown.overflowCount, this.overflowLabel, () =>
+                  this.emit('ds-overflow-click', { detail: { count: this.#dropdown.overflowCount } }),
+                )
+              : nothing
+          }
           <input
             id="search-input"
             class="search-input"
