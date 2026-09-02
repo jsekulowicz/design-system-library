@@ -69,7 +69,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @property({ attribute: 'clear-label' }) clearLabel = 'Clear selection';
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Array }) values: string[] = [];
-  @property({ type: Number }) maxLines?: number;
+  @property({ type: Number, attribute: 'max-lines' }) maxLines?: number;
 
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;

@@ -68,9 +68,15 @@ export default [
       ...litRecommended.plugins,
       ...wcRecommended.plugins,
     },
+    // Components extend DsElement, not LitElement directly; without this the
+    // lit rules match nothing at all.
+    settings: { lit: { elementBaseClasses: ['LitElement', 'DsElement'] } },
     rules: {
       ...litRecommended.rules,
       ...wcRecommended.rules,
+      // Lit lowercases a property name for its default attribute, so a camelCase
+      // property silently answers to an all-lowercase one. Demand it be explicit.
+      'lit/attribute-names': ['error', { convention: 'kebab' }],
     },
   },
   ...storybook.configs['flat/recommended'],

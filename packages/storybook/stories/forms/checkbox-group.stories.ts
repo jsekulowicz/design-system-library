@@ -46,9 +46,9 @@ export const Playground: Story = {
       ?invalid=${args['invalid']}
       ?message-space=${args['messageSpace']}
     >
-      <ds-checkbox checkboxvalue="email">Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+      <ds-checkbox checkbox-value="email">Email</ds-checkbox>
+      <ds-checkbox checkbox-value="sms">SMS</ds-checkbox>
+      <ds-checkbox checkbox-value="push">Push notifications</ds-checkbox>
     </ds-checkbox-group>
   `,
 };
@@ -60,9 +60,9 @@ export const WithDescription: Story = {
       name="channels-desc"
       description="You can update these preferences in your account settings."
     >
-      <ds-checkbox checkboxvalue="email" checked>Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+      <ds-checkbox checkbox-value="email" checked>Email</ds-checkbox>
+      <ds-checkbox checkbox-value="sms">SMS</ds-checkbox>
+      <ds-checkbox checkbox-value="push">Push notifications</ds-checkbox>
     </ds-checkbox-group>
   `,
 };
@@ -76,9 +76,9 @@ export const Required: Story = {
       ?required=${true}
       ?invalid=${true}
     >
-      <ds-checkbox checkboxvalue="email">Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+      <ds-checkbox checkbox-value="email">Email</ds-checkbox>
+      <ds-checkbox checkbox-value="sms">SMS</ds-checkbox>
+      <ds-checkbox checkbox-value="push">Push notifications</ds-checkbox>
     </ds-checkbox-group>
   `,
 };
@@ -91,9 +91,9 @@ export const Disabled: Story = {
       description="These settings are managed by your organization."
       ?disabled=${true}
     >
-      <ds-checkbox checkboxvalue="email" checked>Email</ds-checkbox>
-      <ds-checkbox checkboxvalue="sms">SMS</ds-checkbox>
-      <ds-checkbox checkboxvalue="push">Push notifications</ds-checkbox>
+      <ds-checkbox checkbox-value="email" checked>Email</ds-checkbox>
+      <ds-checkbox checkbox-value="sms">SMS</ds-checkbox>
+      <ds-checkbox checkbox-value="push">Push notifications</ds-checkbox>
     </ds-checkbox-group>
   `,
 };

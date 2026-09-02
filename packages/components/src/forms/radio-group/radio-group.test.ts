@@ -34,8 +34,8 @@ describe('<ds-radio-group>', () => {
   it('wires child attributes and syncs checked radio from value', async () => {
     const el = await mount<DsRadioGroup>(`
       <ds-radio-group label="Plan" name="plan" required disabled value="pro">
-        <ds-radio radiovalue="basic">Basic</ds-radio>
-        <ds-radio radiovalue="pro">Pro</ds-radio>
+        <ds-radio radio-value="basic">Basic</ds-radio>
+        <ds-radio radio-value="pro">Pro</ds-radio>
       </ds-radio-group>
     `);
     const slot = el.shadowRoot!.querySelector('slot')!;
@@ -59,7 +59,7 @@ describe('<ds-radio-group>', () => {
   it('updates value and emits ds-change when child radio emits', async () => {
     const el = await mount<DsRadioGroup>(`
       <ds-radio-group label="Plan">
-        <ds-radio radiovalue="basic">Basic</ds-radio>
+        <ds-radio radio-value="basic">Basic</ds-radio>
       </ds-radio-group>
     `);
     const radio = el.querySelector<DsRadio>('ds-radio')!;
@@ -78,8 +78,8 @@ describe('<ds-radio-group>', () => {
   it('syncs checked radio from value on slotchange', async () => {
     const el = await mount<DsRadioGroup>(`
       <ds-radio-group label="Plan">
-        <ds-radio radiovalue="basic">Basic</ds-radio>
-        <ds-radio radiovalue="pro">Pro</ds-radio>
+        <ds-radio radio-value="basic">Basic</ds-radio>
+        <ds-radio radio-value="pro">Pro</ds-radio>
       </ds-radio-group>
     `);
     el.value = 'pro';
@@ -97,7 +97,7 @@ describe('<ds-radio-group>', () => {
   it('ignores ds-change events dispatched by the group itself', async () => {
     const el = await mount<DsRadioGroup>(`
       <ds-radio-group label="Plan">
-        <ds-radio radiovalue="basic">Basic</ds-radio>
+        <ds-radio radio-value="basic">Basic</ds-radio>
       </ds-radio-group>
     `);
     el.value = 'basic';
@@ -112,9 +112,9 @@ describe('<ds-radio-group>', () => {
   async function mountGroup(value = ''): Promise<DsRadioGroup> {
     const el = await mount<DsRadioGroup>(`
       <ds-radio-group label="Plan" name="plan">
-        <ds-radio radiovalue="basic">Basic</ds-radio>
-        <ds-radio radiovalue="pro">Pro</ds-radio>
-        <ds-radio radiovalue="team">Team</ds-radio>
+        <ds-radio radio-value="basic">Basic</ds-radio>
+        <ds-radio radio-value="pro">Pro</ds-radio>
+        <ds-radio radio-value="team">Team</ds-radio>
       </ds-radio-group>
     `);
     if (value) {

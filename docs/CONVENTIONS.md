@@ -47,6 +47,24 @@ Every component needs a matching `exports` entry in `packages/components/package
   (`naming-convention`), so the two forms stay visually distinct.
 - No `protected` - nothing in this library is designed for subclassing outside the package.
 
+## Attribute names
+
+Lit derives an attribute by **lowercasing** the property name, so `maxLines` answers to
+`maxlines`, not `max-lines`. That has cost us three silent bugs - a documented attribute that
+set nothing at all - so every multi-word property names its attribute outright:
+
+```ts
+@property({ attribute: 'max-lines', type: Number }) maxLines?: number;
+```
+
+`lit/attribute-names` enforces this with `convention: 'kebab'`. Disable it per-line only where
+the attribute has to keep a name the platform chose - `aria-controls` and `role` on `ds-button`,
+`novalidate` on `ds-form` - which is why those properties carry an `Attr` suffix.
+
+Note `settings.lit.elementBaseClasses` in `eslint.config.js`: eslint-plugin-lit only recognizes
+classes extending `LitElement`, and everything here extends `DsElement`. Without that setting
+every `lit/*` rule silently matches nothing.
+
 ## Lit templates
 
 - **Optional attributes use `ifDefined`**, never `?? nothing`:

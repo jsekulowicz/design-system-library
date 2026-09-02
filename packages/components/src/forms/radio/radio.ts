@@ -17,7 +17,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
   readonly #slots = new SlotPresenceController(this, [DEFAULT_SLOT]);
 
   @property({ type: Boolean, reflect: true }) checked = false;
-  @property() radioValue = '';
+  @property({ attribute: 'radio-value' }) radioValue = '';
   // Defaults to a normal tab stop so a standalone radio still works outside a group.
   @property({ type: Boolean, attribute: 'tab-stop' }) tabStop = true;
 

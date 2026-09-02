@@ -57,7 +57,7 @@ export class DsRadioGroup extends DsElement {
   };
 
   #radioValueOf(radio: RadioEl): string {
-    return radio.radioValue ?? radio.getAttribute('radiovalue') ?? '';
+    return radio.radioValue ?? radio.getAttribute('radio-value') ?? '';
   }
 
   #isRadioDisabledAt = (index: number): boolean => {

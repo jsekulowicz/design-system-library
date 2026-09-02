@@ -16,7 +16,9 @@ export class DsForm extends DsElement {
 
   @property() action = '';
   @property() method: 'get' | 'post' | 'dialog' = 'post';
+  // eslint-disable-next-line lit/attribute-names -- native <form> spells it novalidate.
   @property({ attribute: 'novalidate', type: Boolean }) noValidate = false;
+  // eslint-disable-next-line lit/attribute-names -- deliberately surfaced as title.
   @property({ attribute: 'title' }) header = '';
 
   #onSubmit = (event: SubmitEvent): void => {

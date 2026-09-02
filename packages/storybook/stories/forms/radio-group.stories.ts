@@ -46,9 +46,9 @@ export const Playground: Story = {
       ?invalid=${args['invalid']}
       ?message-space=${args['messageSpace']}
     >
-      <ds-radio radiovalue="monthly">Monthly</ds-radio>
-      <ds-radio radiovalue="quarterly">Quarterly</ds-radio>
-      <ds-radio radiovalue="yearly">Yearly (save 20%)</ds-radio>
+      <ds-radio radio-value="monthly">Monthly</ds-radio>
+      <ds-radio radio-value="quarterly">Quarterly</ds-radio>
+      <ds-radio radio-value="yearly">Yearly (save 20%)</ds-radio>
     </ds-radio-group>
   `,
 };
@@ -60,9 +60,9 @@ export const WithDescription: Story = {
       name="cadence-desc"
       description="You can change this any time from your account settings."
     >
-      <ds-radio radiovalue="monthly">Monthly</ds-radio>
-      <ds-radio radiovalue="quarterly">Quarterly</ds-radio>
-      <ds-radio radiovalue="yearly">Yearly (save 20%)</ds-radio>
+      <ds-radio radio-value="monthly">Monthly</ds-radio>
+      <ds-radio radio-value="quarterly">Quarterly</ds-radio>
+      <ds-radio radio-value="yearly">Yearly (save 20%)</ds-radio>
     </ds-radio-group>
   `,
 };
@@ -76,9 +76,9 @@ export const Required: Story = {
       ?required=${true}
       ?invalid=${true}
     >
-      <ds-radio radiovalue="monthly">Monthly</ds-radio>
-      <ds-radio radiovalue="quarterly">Quarterly</ds-radio>
-      <ds-radio radiovalue="yearly">Yearly (save 20%)</ds-radio>
+      <ds-radio radio-value="monthly">Monthly</ds-radio>
+      <ds-radio radio-value="quarterly">Quarterly</ds-radio>
+      <ds-radio radio-value="yearly">Yearly (save 20%)</ds-radio>
     </ds-radio-group>
   `,
 };
@@ -91,9 +91,9 @@ export const Disabled: Story = {
       description="This option cannot be changed right now."
       ?disabled=${true}
     >
-      <ds-radio radiovalue="monthly" checked>Monthly</ds-radio>
-      <ds-radio radiovalue="quarterly">Quarterly</ds-radio>
-      <ds-radio radiovalue="yearly">Yearly (save 20%)</ds-radio>
+      <ds-radio radio-value="monthly" checked>Monthly</ds-radio>
+      <ds-radio radio-value="quarterly">Quarterly</ds-radio>
+      <ds-radio radio-value="yearly">Yearly (save 20%)</ds-radio>
     </ds-radio-group>
   `,
 };

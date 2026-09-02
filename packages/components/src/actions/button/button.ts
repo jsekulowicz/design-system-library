@@ -52,6 +52,7 @@ export class DsButton extends DsElement {
   @property() href?: string;
   @property() target?: LinkTarget;
   @property() rel?: string;
+  /* eslint-disable lit/attribute-names -- the property is suffixed so the attribute can keep the real ARIA name. */
   @property({ attribute: 'aria-controls' }) ariaControlsAttr?: string;
   @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: AriaBoolean;
   @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: AriaHasPopup;
@@ -59,6 +60,7 @@ export class DsButton extends DsElement {
   // Bound onto the inner <button>, never the host: a host tabindex would add a stray tab stop.
   @property({ attribute: 'role' }) roleAttr?: AriaRole;
   @property({ attribute: 'aria-checked' }) ariaCheckedAttr?: AriaChecked;
+  /* eslint-enable lit/attribute-names */
   @property({ attribute: false }) tabIndexAttr?: number;
 
   override focus(options?: FocusOptions): void {

@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe('<ds-checkbox>', () => {
   it('syncs form value from checked and checkboxValue', async () => {
-    const el = await mount<DsCheckbox>('<ds-checkbox checkboxvalue="yes">Accept</ds-checkbox>');
+    const el = await mount<DsCheckbox>('<ds-checkbox checkbox-value="yes">Accept</ds-checkbox>');
     el.checked = true;
     await el.updateComplete;
     expect(el.value).toBe('yes');
@@ -204,6 +204,18 @@ describe('<ds-checkbox>', () => {
 
       expect(labeled.shadowRoot!.querySelector('label')!.classList.contains('has-label')).toBe(true);
       expect(bare.shadowRoot!.querySelector('label')!.classList.contains('has-label')).toBe(false);
+    });
+  });
+
+  describe('the checkbox-value attribute', () => {
+    it('reaches the property in its kebab-case form', async () => {
+      const el = await mount<DsCheckbox>('<ds-checkbox checkbox-value="email">Email</ds-checkbox>');
+      expect(el.checkboxValue).toBe('email');
+    });
+
+    it('no longer answers to the lowercase spelling Lit used to derive', async () => {
+      const el = await mount<DsCheckbox>('<ds-checkbox checkboxvalue="email">Email</ds-checkbox>');
+      expect(el.checkboxValue).toBe('');
     });
   });
 });

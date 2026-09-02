@@ -34,8 +34,8 @@ describe('<ds-checkbox-group>', () => {
   it('wires child attributes and syncs checked state from value', async () => {
     const el = await mount<DsCheckboxGroup>(`
       <ds-checkbox-group label="Features" name="feature" required disabled>
-        <ds-checkbox checkboxvalue="a">A</ds-checkbox>
-        <ds-checkbox checkboxvalue="b">B</ds-checkbox>
+        <ds-checkbox checkbox-value="a">A</ds-checkbox>
+        <ds-checkbox checkbox-value="b">B</ds-checkbox>
       </ds-checkbox-group>
     `);
     const slot = el.shadowRoot!.querySelector('slot')!;
@@ -63,8 +63,8 @@ describe('<ds-checkbox-group>', () => {
   it('collects selected values on child ds-change and emits group ds-change', async () => {
     const el = await mount<DsCheckboxGroup>(`
       <ds-checkbox-group label="Features">
-        <ds-checkbox checkboxvalue="a">A</ds-checkbox>
-        <ds-checkbox checkboxvalue="b">B</ds-checkbox>
+        <ds-checkbox checkbox-value="a">A</ds-checkbox>
+        <ds-checkbox checkbox-value="b">B</ds-checkbox>
       </ds-checkbox-group>
     `);
     const checkboxes = Array.from(el.querySelectorAll<DsCheckbox>('ds-checkbox'));
@@ -83,10 +83,10 @@ describe('<ds-checkbox-group>', () => {
     expect(events.at(-1)?.detail).toEqual({ values: ['a'] });
   });
 
-  it('falls back to checkboxvalue attribute and skips empty fallback values', async () => {
+  it('falls back to checkbox-value attribute and skips empty fallback values', async () => {
     const el = await mount<DsCheckboxGroup>(`
       <ds-checkbox-group label="Features">
-        <ds-checkbox checkboxvalue="from-attr">A</ds-checkbox>
+        <ds-checkbox checkbox-value="from-attr">A</ds-checkbox>
         <ds-checkbox>B</ds-checkbox>
       </ds-checkbox-group>
     `);
@@ -107,8 +107,8 @@ describe('<ds-checkbox-group>', () => {
   it('syncs checked state from preselected values on slotchange', async () => {
     const el = await mount<DsCheckboxGroup>(`
       <ds-checkbox-group label="Features">
-        <ds-checkbox checkboxvalue="a">A</ds-checkbox>
-        <ds-checkbox checkboxvalue="b">B</ds-checkbox>
+        <ds-checkbox checkbox-value="a">A</ds-checkbox>
+        <ds-checkbox checkbox-value="b">B</ds-checkbox>
       </ds-checkbox-group>
     `);
     el.value = ['b'];
@@ -126,7 +126,7 @@ describe('<ds-checkbox-group>', () => {
   it('ignores ds-change events dispatched by the group itself', async () => {
     const el = await mount<DsCheckboxGroup>(`
       <ds-checkbox-group label="Features">
-        <ds-checkbox checkboxvalue="a">A</ds-checkbox>
+        <ds-checkbox checkbox-value="a">A</ds-checkbox>
       </ds-checkbox-group>
     `);
     el.value = ['a'];

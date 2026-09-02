@@ -54,8 +54,8 @@ export const Playground: Story = {
     >
       <div style=${PREFERENCES_PANEL}>
         <ds-checkbox-group label="Display preferences" name="display-preferences">
-          <ds-checkbox checkboxvalue="compact-rows">Compact rows</ds-checkbox>
-          <ds-checkbox checkboxvalue="show-descriptions" checked>Show descriptions</ds-checkbox>
+          <ds-checkbox checkbox-value="compact-rows">Compact rows</ds-checkbox>
+          <ds-checkbox checkbox-value="show-descriptions" checked>Show descriptions</ds-checkbox>
         </ds-checkbox-group>
       </div>
     </ds-popover-button>

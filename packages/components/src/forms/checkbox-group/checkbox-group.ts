@@ -66,7 +66,7 @@ export class DsCheckboxGroup extends DsElement {
         el.removeAttribute('disabled');
       }
       if (syncChecked) {
-        const cv = el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '';
+        const cv = el.checkboxValue ?? el.getAttribute('checkbox-value') ?? '';
         if (this.value.includes(cv)) {
           el.setAttribute('checked', '');
         } else {
@@ -83,7 +83,7 @@ export class DsCheckboxGroup extends DsElement {
     event.stopImmediatePropagation();
     const values = this._checkboxes
       .filter((el) => el.checked === true)
-      .map((el) => el.checkboxValue ?? el.getAttribute('checkboxvalue') ?? '')
+      .map((el) => el.checkboxValue ?? el.getAttribute('checkbox-value') ?? '')
       .filter(Boolean);
     this.value = values;
     this.invalid = false;

@@ -71,7 +71,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Array }) values: string[] = [];
-  @property({ type: Number }) maxLines?: number;
+  @property({ type: Number, attribute: 'max-lines' }) maxLines?: number;
 
   @state() private _search = '';
 

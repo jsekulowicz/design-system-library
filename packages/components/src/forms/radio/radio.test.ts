@@ -15,7 +15,7 @@ beforeEach(() => {
 
 describe('<ds-radio>', () => {
   it('syncs form value from checked and radioValue', async () => {
-    const el = await mount<DsRadio>('<ds-radio radiovalue="primary">Primary</ds-radio>');
+    const el = await mount<DsRadio>('<ds-radio radio-value="primary">Primary</ds-radio>');
     el.checked = true;
     await el.updateComplete;
     expect(el.value).toBe('primary');
@@ -34,7 +34,7 @@ describe('<ds-radio>', () => {
 
   it('selects on click, unchecks siblings and emits ds-change', async () => {
     await mount(
-      '<div><ds-radio name="plan" radiovalue="a">A</ds-radio><ds-radio name="plan" radiovalue="b" checked>B</ds-radio></div>',
+      '<div><ds-radio name="plan" radio-value="a">A</ds-radio><ds-radio name="plan" radio-value="b" checked>B</ds-radio></div>',
     );
     const radios = Array.from(document.body.querySelectorAll<DsRadio>('ds-radio'));
     const [first, second] = radios;
@@ -51,7 +51,7 @@ describe('<ds-radio>', () => {
   });
 
   it('does not emit when clicking disabled or already selected radio', async () => {
-    const el = await mount<DsRadio>('<ds-radio radiovalue="a" checked disabled>A</ds-radio>');
+    const el = await mount<DsRadio>('<ds-radio radio-value="a" checked disabled>A</ds-radio>');
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
     el.shadowRoot!.querySelector('label')!.click();
@@ -61,7 +61,7 @@ describe('<ds-radio>', () => {
   });
 
   it('keeps a disabled radio focusable and announces its state', async () => {
-    const el = await mount<DsRadio>('<ds-radio radiovalue="a" disabled>A</ds-radio>');
+    const el = await mount<DsRadio>('<ds-radio radio-value="a" disabled>A</ds-radio>');
     const input = el.shadowRoot!.querySelector('input')!;
 
     expect(input.getAttribute('aria-disabled')).toBe('true');
@@ -70,7 +70,7 @@ describe('<ds-radio>', () => {
   });
 
   it('handles key selection for Space and Enter only', async () => {
-    const el = await mount<DsRadio>('<ds-radio radiovalue="a">A</ds-radio>');
+    const el = await mount<DsRadio>('<ds-radio radio-value="a">A</ds-radio>');
     const label = el.shadowRoot!.querySelector('label')!;
     label.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await el.updateComplete;
@@ -99,9 +99,9 @@ describe('<ds-radio>', () => {
 
     try {
       await mount(
-        '<div><ds-radio name="plan" radiovalue="a">A</ds-radio><ds-radio name="plan" radiovalue="b">B</ds-radio></div>',
+        '<div><ds-radio name="plan" radio-value="a">A</ds-radio><ds-radio name="plan" radio-value="b">B</ds-radio></div>',
       );
-      const first = document.body.querySelector<DsRadio>('ds-radio[radiovalue="a"]')!;
+      const first = document.body.querySelector<DsRadio>('ds-radio[radio-value="a"]')!;
       first.shadowRoot!.querySelector('label')!.click();
       await first.updateComplete;
       expect(calls).toContain('plan');
@@ -111,7 +111,7 @@ describe('<ds-radio>', () => {
   });
 
   it('keeps selection logic safe when root scope is not queryable', async () => {
-    const el = await mount<DsRadio>('<ds-radio name="plan" radiovalue="a">A</ds-radio>');
+    const el = await mount<DsRadio>('<ds-radio name="plan" radio-value="a">A</ds-radio>');
     (el as unknown as { getRootNode: () => object }).getRootNode = () => ({});
     el.shadowRoot!.querySelector('label')!.click();
     await el.updateComplete;
@@ -120,7 +120,7 @@ describe('<ds-radio>', () => {
   describe('interactive slotted content', () => {
     it('leaves a click on a link in the label unselected', async () => {
       const el = await mount<DsRadio>(
-        '<ds-radio name="plan" radiovalue="a">Read the <a href="/terms">Terms</a></ds-radio>',
+        '<ds-radio name="plan" radio-value="a">Read the <a href="/terms">Terms</a></ds-radio>',
       );
 
       el.querySelector('a')!.click();
@@ -131,7 +131,7 @@ describe('<ds-radio>', () => {
 
     it('leaves Enter to a link in the label instead of selecting', async () => {
       const el = await mount<DsRadio>(
-        '<ds-radio name="plan" radiovalue="a">Read the <a href="/terms">Terms</a></ds-radio>',
+        '<ds-radio name="plan" radio-value="a">Read the <a href="/terms">Terms</a></ds-radio>',
       );
 
       const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true, cancelable: true });
@@ -143,12 +143,24 @@ describe('<ds-radio>', () => {
     });
 
     it('still selects from plain text in the label', async () => {
-      const el = await mount<DsRadio>('<ds-radio name="plan" radiovalue="a">Plan <span>A</span></ds-radio>');
+      const el = await mount<DsRadio>('<ds-radio name="plan" radio-value="a">Plan <span>A</span></ds-radio>');
 
       el.querySelector('span')!.click();
       await el.updateComplete;
 
       expect(el.checked).toBe(true);
+    });
+  });
+
+  describe('the radio-value attribute', () => {
+    it('reaches the property in its kebab-case form', async () => {
+      const el = await mount<DsRadio>('<ds-radio radio-value="monthly">Monthly</ds-radio>');
+      expect(el.radioValue).toBe('monthly');
+    });
+
+    it('no longer answers to the lowercase spelling Lit used to derive', async () => {
+      const el = await mount<DsRadio>('<ds-radio radiovalue="monthly">Monthly</ds-radio>');
+      expect(el.radioValue).toBe('');
     });
   });
 });

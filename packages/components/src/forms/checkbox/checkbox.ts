@@ -20,7 +20,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) checked = false;
   @property({ type: Boolean, reflect: true }) indeterminate = false;
   @property({ type: Boolean, reflect: true }) invalid = false;
-  @property() checkboxValue = '';
+  @property({ attribute: 'checkbox-value' }) checkboxValue = '';
   @property() description = '';
   /** A caution about the current value; outranks `description` and leaves the field valid. */
   @property() warning = '';

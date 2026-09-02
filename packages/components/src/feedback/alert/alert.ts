@@ -22,7 +22,7 @@ export class DsAlert extends DsElement {
   @property() heading?: string;
   @property({ type: Boolean, reflect: true }) dismissible = false;
   @property({ attribute: 'dismiss-label' }) dismissLabel = 'Dismiss';
-  @property({ type: Boolean }) announceOnConnect = false;
+  @property({ type: Boolean, attribute: 'announce-on-connect' }) announceOnConnect = false;
 
   override connectedCallback(): void {
     super.connectedCallback();

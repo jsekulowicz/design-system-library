@@ -1,6 +1,32 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { countOverflowTiles } from './select.shared.js';
+import { mount, resetTestDom } from '../../test-utils/mount.js';
+import type { DsSelect } from './select.js';
+import type { DsSearchableSelect } from '../searchable-select/searchable-select.js';
+import './define.js';
+import '../searchable-select/define.js';
+
+beforeEach(resetTestDom);
+
+describe('the max-lines attribute', () => {
+  it('reaches ds-select in its documented kebab-case form', async () => {
+    const el = await mount<DsSelect>('<ds-select label="People" multiple max-lines="2"></ds-select>');
+    expect(el.maxLines).toBe(2);
+  });
+
+  it('reaches ds-searchable-select too', async () => {
+    const el = await mount<DsSearchableSelect>(
+      '<ds-searchable-select label="People" multiple max-lines="2"></ds-searchable-select>',
+    );
+    expect(el.maxLines).toBe(2);
+  });
+
+  it('is undefined when unset, so the whole tile list renders', async () => {
+    const el = await mount<DsSelect>('<ds-select label="People" multiple></ds-select>');
+    expect(el.maxLines).toBeUndefined();
+  });
+});
 
 function tileList(offsets: number[]): HTMLElement {
   const host = document.createElement('div');
