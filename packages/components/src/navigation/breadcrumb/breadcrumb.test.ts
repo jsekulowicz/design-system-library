@@ -83,4 +83,38 @@ describe('<ds-breadcrumb>', () => {
     const ol = el.shadowRoot!.querySelector('ol')!;
     expect(ol.getAttribute('role')).toBe('list');
   });
+
+  it('seats trailing content in the trail\'s own row', async () => {
+    const el = await mountBreadcrumb(`
+      <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
+      <ds-breadcrumb-item>Page</ds-breadcrumb-item>
+      <button slot="trailing">About</button>
+    `);
+    const wrapper = el.shadowRoot!.querySelector('[part="trailing"]')!;
+
+    expect(wrapper.parentElement!.tagName).toBe('OL');
+    expect((wrapper.querySelector('slot') as HTMLSlotElement).assignedElements()).toHaveLength(1);
+  });
+
+  it('keeps trailing content out of the list semantics', async () => {
+    const el = await mountBreadcrumb(`
+      <ds-breadcrumb-item>Page</ds-breadcrumb-item>
+      <button slot="trailing">About</button>
+    `);
+
+    expect(el.shadowRoot!.querySelector('[part="trailing"]')!.getAttribute('role')).toBe('none');
+  });
+
+  it('leaves trailing content out of the crumb sync', async () => {
+    const el = await mountBreadcrumb(`
+      <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
+      <ds-breadcrumb-item>Page</ds-breadcrumb-item>
+      <button slot="trailing">About</button>
+    `);
+    const [first, second] = items(el);
+
+    expect(first.hasAttribute('last')).toBe(false);
+    expect(second.hasAttribute('last')).toBe(true);
+    expect(el.querySelector('button')!.hasAttribute('current')).toBe(false);
+  });
 });

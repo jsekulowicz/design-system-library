@@ -26,4 +26,8 @@ export const breadcrumbStyles = css`
     display: inline-flex;
     align-items: center;
   }
+
+  [part='trailing'] {
+    display: contents;
+  }
 `;

@@ -8,8 +8,11 @@ import type { DsBreadcrumbItem } from './breadcrumb-item.js';
  * @tag ds-breadcrumb
  * @summary Navigational trail of ancestor pages. Marks the last slotted item as the current page.
  * @slot default - `ds-breadcrumb-item` children in ancestor-to-current order.
+ * @slot trailing - Controls that belong beside the current crumb. They join the trail's own
+ * flex row, so they follow the last crumb onto whichever line it wraps to.
  * @csspart nav - The internal `<nav>` element.
  * @csspart list - The ordered `<ol>` list.
+ * @csspart trailing - The wrapper around the trailing slot.
  */
 export class DsBreadcrumb extends DsElement {
   static override styles = [...DsElement.styles, breadcrumbStyles];
@@ -33,6 +36,7 @@ export class DsBreadcrumb extends DsElement {
       <nav part="nav" aria-label=${this.label}>
         <ol part="list" role="list">
           <slot @slotchange=${this.#sync}></slot>
+          <span part="trailing" role="none"><slot name="trailing"></slot></span>
         </ol>
       </nav>
     `;

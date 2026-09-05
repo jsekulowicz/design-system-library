@@ -1,8 +1,10 @@
 import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/breadcrumb/define';
+import '@jsekulowicz/ds-components/button/define';
 import '@jsekulowicz/ds-components/icon/define';
 import '@jsekulowicz/ds-components/icon/home';
+import '@jsekulowicz/ds-components/icon/information-circle';
 
 const meta: Meta = {
   title: 'Navigation/Breadcrumb',
@@ -126,5 +128,22 @@ export const OpensInNewTab: Story = {
       <ds-breadcrumb-item href="/guide">Guide</ds-breadcrumb-item>
       <ds-breadcrumb-item>Getting started</ds-breadcrumb-item>
     </ds-breadcrumb>
+  `,
+};
+
+export const WithTrailingControl: Story = {
+  render: () => html`
+    <div style="max-width: 26rem">
+      <ds-breadcrumb>
+        <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
+        <ds-breadcrumb-item href="/org">Acme</ds-breadcrumb-item>
+        <ds-breadcrumb-item href="/org/teams">Teams</ds-breadcrumb-item>
+        <ds-breadcrumb-item href="/org/teams/platform">Platform</ds-breadcrumb-item>
+        <ds-breadcrumb-item>Q2 Roadmap</ds-breadcrumb-item>
+        <ds-button slot="trailing" variant="ghost" size="sm" square label="About this page">
+          <ds-icon slot="leading" name="information-circle" size="lg"></ds-icon>
+        </ds-button>
+      </ds-breadcrumb>
+    </div>
   `,
 };
