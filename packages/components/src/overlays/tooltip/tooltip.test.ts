@@ -232,6 +232,13 @@ describe('<ds-tooltip>', () => {
     expect(harness.showCalls).toBe(0);
   });
 
+  it('lets the pointer reach a tip that is held open, and not one that follows it', () => {
+    const css = tooltipStyles.cssText.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ');
+
+    expect(css).toMatch(/\.tooltip \{[^}]* pointer-events: none; \}/);
+    expect(css).toContain(':host([open]) .tooltip { pointer-events: auto; user-select: text; }');
+  });
+
   it('stays safe when tooltip node is missing', async () => {
     const el = await mount<DsTooltip>('<ds-tooltip><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
     el.shadowRoot!.querySelector('.tooltip')?.remove();

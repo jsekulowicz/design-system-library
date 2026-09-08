@@ -49,6 +49,10 @@ export const tooltipStyles = css`
     max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100% - var(--ds-space-2)));
     pointer-events: none;
   }
+  :host([open]) .tooltip {
+    pointer-events: auto;
+    user-select: text;
+  }
   :host([placement='bottom']) .tooltip {
     position-area: bottom;
     position-try-fallbacks: flip-block, --ds-tooltip-bottom-start, --ds-tooltip-bottom-end;
