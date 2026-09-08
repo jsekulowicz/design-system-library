@@ -84,7 +84,7 @@ describe('<ds-breadcrumb>', () => {
     expect(ol.getAttribute('role')).toBe('list');
   });
 
-  it('seats trailing content in the trail\'s own row', async () => {
+  it("seats trailing content in the trail's own row", async () => {
     const el = await mountBreadcrumb(`
       <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
       <ds-breadcrumb-item>Page</ds-breadcrumb-item>
