@@ -27,7 +27,7 @@ export const tooltipStyles = css`
     position-try-fallbacks: flip-block, --ds-tooltip-top-start, --ds-tooltip-top-end;
     margin: var(--ds-space-1);
     inset: auto;
-    border: none;
+    border: 1px solid var(--ds-color-border);
     width: fit-content;
     height: auto;
     overflow: hidden;
@@ -35,8 +35,12 @@ export const tooltipStyles = css`
     text-align: start;
     white-space: normal;
     z-index: var(--ds-z-index-tooltip);
-    background: var(--ds-color-fg);
-    color: var(--ds-color-bg);
+    /* A surface in the page's own theme rather than an inverted chip: a tip
+       here carries a title and a paragraph, not a two-word hint, and reads as
+       part of the page it explains. */
+    background: var(--ds-color-bg);
+    color: var(--ds-color-fg);
+    box-shadow: var(--ds-shadow-md);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-md);
     line-height: var(--ds-line-height-normal);

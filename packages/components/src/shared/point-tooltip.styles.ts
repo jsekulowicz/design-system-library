@@ -26,8 +26,8 @@ export const pointTooltipStyles = css`
     padding: var(--ds-space-2) var(--ds-space-3);
     border: 1px solid var(--ds-color-border);
     border-radius: var(--ds-radius-xs);
-    background: var(--ds-color-bg-inverse);
-    color: var(--ds-color-fg-inverse);
+    background: var(--ds-color-bg);
+    color: var(--ds-color-fg);
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-md);
     line-height: var(--ds-line-height-tight);
