@@ -1,5 +1,25 @@
 # @jsekulowicz/ds-components
 
+## 0.76.0
+
+### Minor Changes
+
+- c14d6b0: A `ds-tooltip` held open by its consumer takes pointer events, so its text can
+  be selected and copied. A tip that follows the pointer still cannot: it sits
+  under the cursor, and taking the hover it is answering would make it flicker.
+  Only the component knows which of the two it is, which is why the rule lives
+  here rather than in a consumer's `::part(tooltip)`.
+- 9922e94: `ds-breadcrumb` takes a `trailing` slot for controls that belong beside the
+  current crumb. They join the trail's own flex row, so they follow the last
+  crumb onto whichever line it wraps to instead of sitting against the block.
+  The wrapper is `role="none"`, keeping the control out of the list semantics.
+- 71f1b94: Tooltips take the page's own colors instead of inverting them. `ds-tooltip` and
+  the chart point tooltip now paint on `--ds-color-bg` with `--ds-color-fg` text,
+  a hairline border and a shadow to lift them off what they cover. An inverted
+  chip suits a two-word hint; these carry a title and a paragraph, and a dark
+  panel in a light page read as a different surface from the one it explains -
+  next to a consumer's own themed tooltip it read as a bug.
+
 ## 0.75.0
 
 ### Minor Changes
