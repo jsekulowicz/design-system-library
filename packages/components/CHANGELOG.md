@@ -1,5 +1,61 @@
 # @jsekulowicz/ds-components
 
+## 0.77.0
+
+### Minor Changes
+
+- 0a5ad79: `ds-nav-group` exposes its heading label as a `label` part, the way `ds-nav-item`
+  already does, and its chevron as the `chevron` part the manifest has always
+  listed - that one was documented but never actually rendered, so a consumer
+  styling `::part(chevron)` was styling nothing.
+
+  The rest is documentation catching up with what the components already render.
+  Thirteen of them exposed parts the manifest never mentioned, so anyone reading
+  the API had no way to learn they were there: `ds-link`, `ds-badge`,
+  `ds-divider`, `ds-alert`, `ds-form`, `ds-list`, `ds-list-item`, `ds-toast`,
+  `ds-settings-page`, `ds-page-shell` and `ds-nav-group` itself, plus the
+  `loading` overlay on `ds-bar-chart` and `ds-pie-chart` that `ds-table` was
+  alone in documenting. Nothing about their rendering changes.
+
+  Two names went the other way. `ds-range-input` listed a `track` part, but the
+  track is the native slider's own pseudo-element and never was a separate element
+  to select; `--ds-range-track-height` and `--ds-range-thumb-size` are documented
+  in its place. `ds-color-picker` listed a `swatch` part that lives three shadow
+  roots down in `ds-color-picker-swatch`, which `::part()` does not reach. Neither
+  selector ever matched anything, so nothing that worked before stops working.
+
+  Every part the library renders is now documented, and every part it documents is
+  now rendered.
+
+- 1337419: Every field's label is now a `label` CSS part, so a consumer can size or place
+  it without redefining a type token on the host and hoping nothing else inside
+  reads that token. `ds-text-field`, `ds-text-area`, `ds-range-input`, `ds-select`,
+  `ds-searchable-select`, `ds-segmented-control` and `ds-color-picker` all render
+  the shared field label, so all seven gain it.
+
+  `ds-fieldset`, `ds-radio-group` and `ds-checkbox-group` name a group rather than
+  a single control, and their `<legend>` is styled by that same shared rule, so it
+  answers to `label` as well as the `legend` it has always answered to. One
+  selector now reaches the label of every field, whichever shape it is, which is
+  the point of having one.
+
+  What it unlocks: a label beside its control rather than above it. Laying the
+  host out as a row already puts the two on one line, but the label could not then
+  be told apart from the control's own text - `::part(label)` is what makes that
+  arrangement styleable, and the group keeps the accessible name its `label`
+  property gives it.
+
+  The char counter stays outside the part, as it stays outside the `<label>`: it
+  is not part of the field's name.
+
+  Nothing else moves, but a few long-standing parts get their first mention.
+  `ds-checkbox` and `ds-radio` word their labels differently - a slot rather than a
+  `label` property - and already exposed `label` beside `box` and `dot`, the group
+  fields already exposed `fieldset` and `legend`, and the text fields already
+  exposed `wrap`, `input` and the `field-header` row their character counter sits
+  in. Only the manifest never said so; it does now, so
+  every part a field offers is one a consumer can find.
+
 ## 0.76.0
 
 ### Minor Changes
