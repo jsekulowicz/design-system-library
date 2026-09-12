@@ -89,6 +89,14 @@ every `lit/*` rule silently matches nothing.
   `@csspart`, `@cssprop` and `@event` as applicable. These are not decoration - they generate
   `custom-elements.json`, the Storybook API tables and the React wrappers. One terse line each.
 
+- `pnpm lint:parts` holds the `@csspart` half of that to the templates: a rendered `part=` nobody
+  documents is unfindable, and a documented part nobody renders leaves `::part()` selecting
+  nothing. The checker follows TypeScript references and reads `html`/`svg` templates,
+  `setAttribute('part', ...)` calls and `exportparts` attributes. Runtime names are scoped to
+  their component in `scripts/lint-parts/check-parts.mjs` with a reason; each exception must
+  still match a documented name and a dynamic attribute. `pnpm test:lint-parts` runs its
+  regression tests.
+
 ## Comments
 
 **Don't write them.** Put the explanation in a name instead - of the symbol, the extracted

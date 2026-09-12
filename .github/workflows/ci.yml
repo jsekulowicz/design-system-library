@@ -45,6 +45,10 @@ jobs:
         run: pnpm lint:packaging
       - name: Lint template styles
         run: pnpm lint:template-styles
+      - name: Lint CSS parts
+        run: |
+          pnpm test:lint-parts
+          pnpm lint:parts
 
       - name: Lit static validation
         run: pnpm lint:lit
