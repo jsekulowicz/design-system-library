@@ -44,6 +44,20 @@ export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPo
  * @cssprop --ds-page-shell-page-padding-block - Block padding for page header and content. Defaults to `var(--ds-space-5)` and `var(--ds-space-4)` below desktop.
  * @cssprop --ds-page-shell-page-padding-inline - Inline padding for page header and content. Defaults to `var(--ds-space-5)` and `var(--ds-space-4)` below desktop.
  * @cssprop --ds-page-shell-page-header-gap - Space between a populated page header and the scrolling content. Defaults to `var(--ds-space-6)`.
+ * @csspart header - The top bar band.
+ * @csspart body - The row holding the asides and the main region.
+ * @csspart main - The main region between the asides.
+ * @csspart footer - The footer band, when a footer is slotted.
+ * @csspart aside - The primary navigation aside (a `ds-drawer` in the mobile layout).
+ * @csspart aside-end - The secondary navigation aside.
+ * @csspart aside-start-cluster - The primary aside and its toggle rail together, desktop only.
+ * @csspart aside-end-cluster - The secondary aside and its toggle rail together, desktop only.
+ * @csspart aside-toggle - Either desktop aside toggle button.
+ * @csspart aside-toggle-start - The primary aside toggle alone.
+ * @csspart aside-toggle-end - The secondary aside toggle alone.
+ * @csspart aside-toggle-rail - The strip a toggle sits in, desktop only.
+ * @csspart aside-toggle-start-rail - The primary toggle strip alone.
+ * @csspart aside-toggle-end-rail - The secondary toggle strip alone.
  * @csspart menu-toggle - The mobile navigation toggle button.
  * @csspart page-header - Optional non-scrolling page header.
  * @csspart main-scroller - Edge-aligned main scrolling region.

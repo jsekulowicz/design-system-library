@@ -9,6 +9,7 @@ import { SlotPresenceController } from '../../shared/slot-presence.js';
  * @slot leading - Optional content rendered before the main label (avatar, swatch, icon).
  * @slot default - Main label or input.
  * @slot trailing - Optional trailing content (action button, value, chevron).
+ * @csspart item - The row itself.
  */
 export class DsListItem extends DsElement {
   static override styles = [...DsElement.styles, listItemStyles];

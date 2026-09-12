@@ -15,9 +15,10 @@ export type RangeInputSize = 'sm' | 'md' | 'lg';
  * @event ds-change - Fired when the value is committed.
  * @csspart label - The field's own label element.
  * @csspart wrap - The row holding the slider and its value.
- * @csspart track - The slider track.
- * @csspart thumb - The native range input (draggable thumb).
+ * @csspart thumb - The native range input carrying the track and the draggable thumb.
  * @csspart value - The current-value output shown when `show-value` is set.
+ * @cssprop --ds-range-track-height - Thickness of the track, overriding the one the `size` sets.
+ * @cssprop --ds-range-thumb-size - Diameter of the thumb, overriding the one the `size` sets.
  */
 export class DsRangeInput extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, rangeInputStyles];

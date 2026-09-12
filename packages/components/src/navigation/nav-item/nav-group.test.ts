@@ -14,6 +14,22 @@ beforeEach(() => {
 });
 
 describe('<ds-nav-group>', () => {
+  it('exposes the heading label as a part, the way a nav item does', async () => {
+    const el = await mount<DsNavGroup>('<ds-nav-group label="Workspace"></ds-nav-group>');
+
+    expect(el.shadowRoot!.querySelector('[part="label"]')?.textContent).toBe('Workspace');
+  });
+
+  it('exposes the chevron as the part it has always documented', async () => {
+    const el = await mount<DsNavGroup>('<ds-nav-group label="Workspace"></ds-nav-group>');
+    expect(el.shadowRoot!.querySelector('[part="chevron"]')).not.toBeNull();
+
+    el.collapsible = false;
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('[part="chevron"]')).toBeNull();
+  });
+
   it('renders a <button> heading with the label', async () => {
     const el = await mount<DsNavGroup>(`
       <ds-nav-group label="Workspace">

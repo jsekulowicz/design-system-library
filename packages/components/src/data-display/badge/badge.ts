@@ -9,6 +9,7 @@ export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
  * @tag ds-badge
  * @summary Compact status indicator or tag.
  * @slot default - The badge label.
+ * @csspart badge - The badge surface.
  */
 export class DsBadge extends DsElement {
   static override styles = [...DsElement.styles, badgeStyles];

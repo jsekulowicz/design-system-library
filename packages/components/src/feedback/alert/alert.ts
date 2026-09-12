@@ -12,6 +12,8 @@ export type AlertTone = 'info' | 'success' | 'warning' | 'danger';
  * @summary Inline message with tone, optional title, and dismissal.
  * @slot default - Message body.
  * @slot actions - Optional action row below the message.
+ * @csspart alert - The alert surface.
+ * @csspart title - The heading, when one is set.
  * @csspart close-button - The dismiss button, when `dismissible` is set.
  * @event ds-dismiss - Fires when the close button is activated.
  */

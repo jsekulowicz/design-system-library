@@ -10,6 +10,7 @@ export type LinkVariant = 'inline' | 'quiet' | 'standalone';
  * @tag ds-link
  * @summary Accessible anchor styled by the design system.
  * @slot default - The link label.
+ * @csspart link - The `<a>` element.
  */
 export class DsLink extends DsElement {
   static override styles = [...DsElement.styles, linkStyles];

@@ -25,6 +25,7 @@ import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js
  * @cssprop [--ds-point-tooltip-min-width=8rem] - Minimum tooltip width.
  * @cssprop [--ds-point-tooltip-max-width=14rem] - Maximum tooltip width before the viewport cap applies.
  * @csspart legend - The legend wrapper.
+ * @csspart loading - Loading overlay rendered when `loading` is true.
  */
 export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   static override styles = [...DsElement.styles, barChartStyles, loadingOverlayStyles, pointTooltipStyles];

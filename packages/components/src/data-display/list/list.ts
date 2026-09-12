@@ -12,6 +12,7 @@ export type ListDensity = 'compact' | 'default';
  * @slot default - One or more `ds-list-item` children.
  * @attr {string} variant - `plain` (no surrounding border) or `bordered` (default).
  * @attr {string} density - `default` or `compact`.
+ * @csspart list - The `<ul>` element.
  */
 export class DsList extends DsElement {
   static override styles = [...DsElement.styles, listStyles];

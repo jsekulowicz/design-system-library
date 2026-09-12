@@ -11,7 +11,9 @@ import '../../data-display/icon/icons/chevron-down.js';
  * @slot icon - Optional leading icon for the heading. Required when `compact` is set.
  * @event ds-group-toggle - Fires when the user toggles the heading. Detail: `{ expanded: boolean }`.
  * @csspart heading - The internal `<button>` heading.
- * @csspart chevron - The chevron icon wrapper.
+ * @csspart icon - The icon slot wrapper, once an icon is slotted.
+ * @csspart label - The heading's own label text.
+ * @csspart chevron - The chevron icon, when the group is collapsible.
  * @csspart items - The nested items container.
  */
 export class DsNavGroup extends DsElement {
@@ -88,8 +90,8 @@ export class DsNavGroup extends DsElement {
       @click=${this.#onHeadingClick}
     >
       ${this.#renderIcon()}
-      <span class="label">${this.label}</span>
-      ${this.collapsible ? html`<ds-icon class="chevron" name="chevron-down" size="xl"></ds-icon>` : null}
+      <span class="label" part="label">${this.label}</span>
+      ${this.collapsible ? html`<ds-icon class="chevron" part="chevron" name="chevron-down" size="xl"></ds-icon>` : null}
     </button>`;
   }
 

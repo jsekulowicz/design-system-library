@@ -9,6 +9,7 @@ export type DividerOrientation = 'horizontal' | 'vertical';
  * @tag ds-divider
  * @summary A thin separator line. Horizontal by default, can be vertical.
  * @attr {string} orientation - 'horizontal' (default) or 'vertical'.
+ * @csspart line - The separator line.
  */
 export class DsDivider extends DsElement {
   static override styles = [...DsElement.styles, dividerStyles];

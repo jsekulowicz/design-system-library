@@ -25,7 +25,6 @@ import type { ColorPickerOption } from './types.js';
  * @csspart trigger - The field trigger button.
  * @csspart preview - The selected color preview swatch.
  * @csspart panel - The popover panel.
- * @csspart swatch - Each preset color swatch.
  */
 export class DsColorPicker extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, colorPickerStyles];

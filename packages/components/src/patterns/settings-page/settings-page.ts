@@ -12,6 +12,10 @@ export interface SettingsSection {
  * @tag ds-settings-page
  * @summary Composition example - settings page with sticky nav and slotted sections.
  * @slot default - One or more `<section id="...">` blocks matching the nav items.
+ * @csspart hero - The page header band.
+ * @csspart heading - The page heading inside the hero.
+ * @csspart nav - The sticky section navigation.
+ * @csspart sections - The container the sections lay out in.
  */
 export class DsSettingsPage extends DsElement {
   static override styles = [...DsElement.styles, settingsPageStyles];

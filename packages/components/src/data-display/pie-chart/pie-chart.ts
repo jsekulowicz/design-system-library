@@ -38,6 +38,7 @@ import type { PieChartDatum, PieRenderContext, PieSlice } from './types.js';
  * @cssprop [--ds-point-tooltip-min-width=8rem] - Minimum tooltip width.
  * @cssprop [--ds-point-tooltip-max-width=14rem] - Maximum tooltip width before the viewport cap applies.
  * @csspart legend - The legend wrapper.
+ * @csspart loading - Loading overlay rendered when `loading` is true.
  * @csspart center - The donut center container.
  */
 export class DsPieChart extends DsElement {

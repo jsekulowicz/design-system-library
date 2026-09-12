@@ -8,6 +8,10 @@ import { formStyles } from './form.styles.js';
  * @summary Layout + behavior shell for native <form> submission with slotted ds-field content.
  * @slot default - ds-field or raw fieldset markup.
  * @slot actions - Submit / cancel button row.
+ * @csspart form - The native `<form>` element.
+ * @csspart title - The heading, when one is set.
+ * @csspart section - The wrapper around the slotted fields.
+ * @csspart actions - The button row below the fields.
  * @event ds-submit - Fires on successful form submit with FormData detail.
  * @event ds-invalid - Fires when submit is prevented by invalid fields.
  */
