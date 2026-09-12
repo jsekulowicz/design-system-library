@@ -17,6 +17,7 @@ export interface SegmentedControlOption {
  * @tag ds-segmented-control
  * @summary Connected row of mutually exclusive options; an inline alternative to a dropdown.
  * @event ds-change - Fires when the selection changes. Detail: `{ value: string }`.
+ * @csspart label - The field's own label element.
  * @csspart group - The container that holds the segments.
  * @csspart segment - Each option button.
  */

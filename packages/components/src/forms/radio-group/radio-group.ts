@@ -17,6 +17,9 @@ type RadioEl = HTMLElement & {
  * @summary Groups ds-radio buttons with a shared label, name, and validation state.
  * @slot default - One or more ds-radio elements.
  * @event ds-change - Fires when the selected radio changes. Detail: `{ value: string }`.
+ * @csspart fieldset - The native `<fieldset>` element.
+ * @csspart legend - The legend that names the group.
+ * @csspart label - The legend, under the name every other field's label carries.
  */
 export class DsRadioGroup extends DsElement {
   static override styles = [...DsElement.styles, formFieldStyles, fieldGroupStyles];
@@ -139,7 +142,7 @@ export class DsRadioGroup extends DsElement {
   override render(): TemplateResult {
     return html`
       <fieldset class="fieldset" part="fieldset" @keydown=${this.#onKeydown}>
-        <legend class="label" part="legend">
+        <legend class="label" part="legend label">
           ${this.label} ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items">

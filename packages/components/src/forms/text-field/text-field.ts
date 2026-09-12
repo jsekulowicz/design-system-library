@@ -19,6 +19,10 @@ export type TextFieldSize = 'sm' | 'md' | 'lg';
  * @slot trailing - Adornment rendered after the input.
  * @event ds-input - Fired on every keystroke with the current value.
  * @event ds-change - Fired when the value is committed.
+ * @csspart label - The field's own label element.
+ * @csspart field-header - The row holding the label and the counter, when `char-count` is set.
+ * @csspart wrap - The bordered box holding the input and its adornments.
+ * @csspart input - The inner input element.
  */
 export class DsTextField extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, textFieldStyles];

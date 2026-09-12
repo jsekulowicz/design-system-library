@@ -21,6 +21,7 @@ import type { ColorPickerOption } from './types.js';
  * @summary Form-associated color picker with preset swatches and custom Hex RGB input.
  * @event ds-input - Fires on live custom color edits. Detail: `{ value }`.
  * @event ds-change - Fires when the committed color changes. Detail: `{ value }`.
+ * @csspart label - The field's own label element.
  * @csspart trigger - The field trigger button.
  * @csspart preview - The selected color preview swatch.
  * @csspart panel - The popover panel.

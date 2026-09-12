@@ -11,6 +11,9 @@ type CheckboxEl = HTMLElement & { checked?: boolean; checkboxValue?: string };
  * @summary Groups ds-checkbox elements with a shared label, name, and validation state.
  * @slot default - One or more ds-checkbox elements.
  * @event ds-change - Fires when any checkbox changes. Detail: `{ values: string[] }`.
+ * @csspart fieldset - The native `<fieldset>` element.
+ * @csspart legend - The legend that names the group.
+ * @csspart label - The legend, under the name every other field's label carries.
  */
 export class DsCheckboxGroup extends DsElement {
   static override styles = [...DsElement.styles, formFieldStyles, fieldGroupStyles];
@@ -93,7 +96,7 @@ export class DsCheckboxGroup extends DsElement {
   override render(): TemplateResult {
     return html`
       <fieldset class="fieldset" part="fieldset">
-        <legend class="label" part="legend">
+        <legend class="label" part="legend label">
           ${this.label} ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items">

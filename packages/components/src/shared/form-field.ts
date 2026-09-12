@@ -86,7 +86,7 @@ export const formFieldStyles: CSSResult = css`
 
 export function renderFieldLabel(label: string, required: boolean, forId: string, optional = false): TemplateResult {
   return html`
-    <label class="label" for=${forId}>
+    <label class="label" part="label" for=${forId}>
       <span> ${label} ${required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing} </span>
       ${optional ? html`<span class="optional" aria-hidden="true">optional</span>` : nothing}
     </label>

@@ -16,6 +16,8 @@ export type TextAreaResize = 'none' | 'vertical';
  * @summary Multi-line text input with native form participation via ElementInternals.
  * @event ds-input - Fired on every keystroke with the current value.
  * @event ds-change - Fired when the value is committed.
+ * @csspart label - The field's own label element.
+ * @csspart field-header - The row holding the label and the counter, when `char-count` is set.
  * @csspart input - The inner textarea element.
  */
 export class DsTextArea extends FormControlMixin(DsElement) {

@@ -10,6 +10,8 @@ import { radioStyles } from './radio.styles.js';
  * @summary Single option in a radio group; coordinates via `name` within the same form/root.
  * @slot default - The visible label.
  * @event ds-change - Fires when this radio becomes checked.
+ * @csspart label - The wrapper around the slotted label.
+ * @csspart dot - The circular control; the filled dot is drawn inside it.
  */
 export class DsRadio extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, toggleControlStyles, radioStyles];

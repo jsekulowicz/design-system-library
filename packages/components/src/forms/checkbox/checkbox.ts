@@ -11,6 +11,8 @@ import { checkboxStyles } from './checkbox.styles.js';
  * @summary Binary (or indeterminate) input that participates in native forms.
  * @slot default - The visible label.
  * @event ds-change - Fires when the checked state changes.
+ * @csspart label - The wrapper around the slotted label.
+ * @csspart box - The check box itself.
  */
 export class DsCheckbox extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, toggleControlStyles, formFieldStyles, checkboxStyles];

@@ -14,6 +14,7 @@ export type FieldsetOrientation = 'horizontal' | 'vertical';
  * @attr {boolean} borderless - Drops the box, leaving only the legend above the controls.
  * @csspart fieldset - The native `<fieldset>` element.
  * @csspart legend - The legend element.
+ * @csspart label - The legend, under the name every other field's label carries.
  * @csspart items - The row (or column) the grouped controls lay out in.
  * @cssprop [--ds-fieldset-gap=var(--ds-space-4)] - Space between the grouped controls.
  */
@@ -41,7 +42,7 @@ export class DsFieldset extends DsElement {
   override render(): TemplateResult {
     return html`
       <fieldset class="fieldset" part="fieldset">
-        <legend class="label" part="legend">
+        <legend class="label" part="legend label">
           ${this.label} ${this.required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing}
         </legend>
         <div class="items" part="items">

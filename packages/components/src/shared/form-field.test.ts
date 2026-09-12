@@ -10,6 +10,15 @@ import { DsSelect } from '../forms/select/select.js';
 import { DsTextArea } from '../forms/text-area/text-area.js';
 import { DsTextField } from '../forms/text-field/text-field.js';
 import { DsColorPicker } from '../forms/color-picker/color-picker.js';
+import '../forms/checkbox-group/define.js';
+import '../forms/color-picker/define.js';
+import '../forms/fieldset/define.js';
+import '../forms/radio-group/define.js';
+import '../forms/range-input/define.js';
+import '../forms/searchable-select/define.js';
+import '../forms/segmented-control/define.js';
+import '../forms/select/define.js';
+import '../forms/text-area/define.js';
 import '../forms/text-field/define.js';
 import { formFieldStyles } from './form-field.js';
 import { mount, resetTestDom } from '../test-utils/mount.js';
@@ -102,5 +111,42 @@ describe('field message space', () => {
       reflect: true,
       type: Boolean,
     });
+  });
+});
+
+describe('the field label a consumer can style', () => {
+  it.each([
+    '<ds-text-field label="Email"></ds-text-field>',
+    '<ds-text-area label="Reply"></ds-text-area>',
+    '<ds-range-input label="Brightness"></ds-range-input>',
+    '<ds-select label="Country"></ds-select>',
+    '<ds-searchable-select label="Country"></ds-searchable-select>',
+    '<ds-segmented-control label="View"></ds-segmented-control>',
+    '<ds-color-picker label="Accent"></ds-color-picker>',
+  ])('is a part on %s', async (markup) => {
+    const el = await mount<HTMLElement>(markup);
+
+    expect(el.shadowRoot!.querySelector('label.label')?.getAttribute('part')).toBe('label');
+  });
+
+  it.each([
+    '<ds-fieldset label="Difficulty"></ds-fieldset>',
+    '<ds-radio-group label="Size"></ds-radio-group>',
+    '<ds-checkbox-group label="Tags"></ds-checkbox-group>',
+  ])('reaches the legend of %s under the same name, without dropping its own', async (markup) => {
+    const el = await mount<HTMLElement>(markup);
+    const legend = el.shadowRoot!.querySelector('legend.label');
+
+    expect(legend!.matches('[part~="label"]')).toBe(true);
+    expect(legend!.matches('[part~="legend"]')).toBe(true);
+  });
+
+  it('leaves the char counter out of the part, since it is not the label', async () => {
+    const el = await mount<HTMLElement>('<ds-text-field label="Email" max-length="20" char-count></ds-text-field>');
+    const part = el.shadowRoot!.querySelector('[part="label"]');
+
+    expect(el.shadowRoot!.querySelector('.char-count')?.textContent).toBe('0/20');
+    expect(part!.querySelector('.char-count')).toBeNull();
+    expect(part!.textContent?.trim()).toBe('Email');
   });
 });

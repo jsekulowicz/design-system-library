@@ -12,7 +12,7 @@ describe('<ds-fieldset>', () => {
   it('renders the label as a legend on a native fieldset', async () => {
     const el = await mount<DsFieldset>('<ds-fieldset label="Difficulty"><span>min</span></ds-fieldset>');
 
-    const legend = el.shadowRoot!.querySelector('legend[part="legend"]')!;
+    const legend = el.shadowRoot!.querySelector('legend[part~="legend"]')!;
     expect(el.shadowRoot!.querySelector('fieldset[part="fieldset"]')).not.toBeNull();
     expect(legend.textContent).toContain('Difficulty');
   });

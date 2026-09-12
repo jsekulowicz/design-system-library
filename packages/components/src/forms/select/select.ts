@@ -34,6 +34,7 @@ export interface SelectOption {
  * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
  * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
  * @event ds-overflow-click - Fires when the "+n" tile is activated. Detail: `{ count: number }`. Keyboard tile navigation cannot reach a tile `max-lines` clipped, so this is the only way to offer the full selection.
+ * @csspart label - The field's own label element.
  * @csspart trigger - The trigger button element.
  * @csspart listbox - The dropdown listbox container.
  * @csspart hint - The optional note shown above the options inside the listbox.

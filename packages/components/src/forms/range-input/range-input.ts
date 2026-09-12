@@ -13,6 +13,8 @@ export type RangeInputSize = 'sm' | 'md' | 'lg';
  * @summary Slider for picking a numeric value within a range, with native form participation via ElementInternals.
  * @event ds-input - Fired continuously while dragging with the current numeric value.
  * @event ds-change - Fired when the value is committed.
+ * @csspart label - The field's own label element.
+ * @csspart wrap - The row holding the slider and its value.
  * @csspart track - The slider track.
  * @csspart thumb - The native range input (draggable thumb).
  * @csspart value - The current-value output shown when `show-value` is set.
