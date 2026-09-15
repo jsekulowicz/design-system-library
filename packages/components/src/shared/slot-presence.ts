@@ -31,7 +31,7 @@ export class SlotPresenceController implements ReactiveController {
   }
 
   handleSlotChange = (event: Event): void => {
-    const slot = event.target as HTMLSlotElement;
+    const slot = event.currentTarget as HTMLSlotElement;
     this.#set(slot.name, hasAssignedContent(slot));
   };
 
