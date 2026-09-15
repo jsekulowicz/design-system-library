@@ -163,6 +163,26 @@ describe('<ds-tooltip>', () => {
     expect(harness.hideCalls).toBe(2);
   });
 
+  it('stays down on hover when nothing filled the tip, rather than flashing an empty bubble', async () => {
+    const el = await mount<DsTooltip>('<ds-tooltip><button>Trigger</button></ds-tooltip>');
+    const harness = setupPopoverHarness(el);
+    const anchor = el.shadowRoot!.querySelector('.anchor') as HTMLElement;
+
+    anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    await el.updateComplete;
+
+    expect(harness.showCalls).toBe(0);
+  });
+
+  it('stays down while open is set but the tip is still empty', async () => {
+    const el = await mount<DsTooltip>('<ds-tooltip open><button>Trigger</button></ds-tooltip>');
+    const harness = setupPopoverHarness(el);
+
+    await el.updateComplete;
+
+    expect(harness.showCalls).toBe(0);
+  });
+
   it('shows immediately on hover when delay is zero', async () => {
     const el = await mount<DsTooltip>('<ds-tooltip><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
     const harness = setupPopoverHarness(el);

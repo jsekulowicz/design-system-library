@@ -46,7 +46,7 @@ describe('countOverflowTiles', () => {
     expect(countOverflowTiles(tileList([0, 0, 32, 32, 64, 64, 96, 96, 128, 128]), 3)).toBe(4);
   });
 
-  it('measures from the first tile, not from the offset parent', () => {
+  it('measures from the first tile, so a search input above them is not read as overflow', () => {
     const pushedDown = [41, 41, 73, 73, 105, 105, 137, 137, 169, 169];
     expect(countOverflowTiles(tileList(pushedDown), 3)).toBe(4);
   });

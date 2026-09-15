@@ -65,6 +65,94 @@ describe('the overflow tile', () => {
   it('renders nothing when everything fits', () => {
     expect(renderTile(0).querySelector('.tile-overflow')).toBeNull();
   });
+
+  it('carries a tooltip whose tip the consumer fills', () => {
+    const host = renderTile(2);
+    const tooltip = host.querySelector('ds-tooltip');
+
+    expect(tooltip).not.toBeNull();
+    expect(tooltip?.querySelector('.tile-overflow')).not.toBeNull();
+    expect(tooltip?.querySelector('slot[name="overflow-tip"]')?.getAttribute('slot')).toBe('tip');
+  });
+
+  it('takes focus when tapped, so the tip stays up until the reader leaves', () => {
+    const tile = renderTile(2).querySelector<HTMLButtonElement>('.tile-overflow')!;
+
+    tile.click();
+
+    expect(document.activeElement).toBe(tile);
+  });
+});
+
+function watchPopover(tooltip: Element): { shown: () => number } {
+  const bubble = tooltip.shadowRoot!.querySelector('.tooltip') as HTMLElement;
+  let shown = 0;
+  let open = false;
+  Object.assign(bubble, {
+    showPopover: () => {
+      shown += 1;
+      open = true;
+    },
+    hidePopover: () => {
+      open = false;
+    },
+  });
+  Object.defineProperty(bubble, 'matches', {
+    configurable: true,
+    value: (selector: string) => (selector === ':popover-open' ? open : false),
+  });
+  return { shown: () => shown };
+}
+
+async function hoverTile(tooltip: Element): Promise<void> {
+  tooltip.shadowRoot!.querySelector('.anchor')!.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+  await (tooltip as Element & { updateComplete: Promise<unknown> }).updateComplete;
+}
+
+function fillOverflowTip(el: DsSelect): HTMLElement {
+  const tip = document.createElement('span');
+  tip.slot = 'overflow-tip';
+  tip.textContent = 'Ada, Bo, Cy';
+  el.append(tip);
+  return tip;
+}
+
+describe('the overflow tip', () => {
+  it('stays down while the consumer has filled nothing', async () => {
+    const el = await mountOverflowing();
+    const tooltip = el.shadowRoot!.querySelector('ds-tooltip')!;
+    const popover = watchPopover(tooltip);
+
+    await hoverTile(tooltip);
+
+    expect(popover.shown()).toBe(0);
+  });
+
+  it('opens on hover once the tip is filled, even through the nested slot', async () => {
+    const el = await mountOverflowing();
+    const tooltip = el.shadowRoot!.querySelector('ds-tooltip')!;
+    const popover = watchPopover(tooltip);
+
+    fillOverflowTip(el);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await hoverTile(tooltip);
+
+    expect(popover.shown()).toBe(1);
+  });
+
+  it('goes quiet again once the consumer empties it', async () => {
+    const el = await mountOverflowing();
+    const tooltip = el.shadowRoot!.querySelector('ds-tooltip')!;
+    const popover = watchPopover(tooltip);
+    const tip = fillOverflowTip(el);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    tip.remove();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await hoverTile(tooltip);
+
+    expect(popover.shown()).toBe(0);
+  });
 });
 
 describe('activating the overflow tile by keyboard', () => {

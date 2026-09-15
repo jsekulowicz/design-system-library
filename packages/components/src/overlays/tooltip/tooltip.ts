@@ -1,9 +1,12 @@
 import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { tooltipStyles } from './tooltip.styles.js';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
+
+const TIP_SLOT = 'tip';
 
 interface PopoverElement extends HTMLElement {
   showPopover(): void;
@@ -25,6 +28,8 @@ function isPopoverElement(el: Element | null): el is PopoverElement {
  */
 export class DsTooltip extends DsElement {
   static override styles = [...DsElement.styles, tooltipStyles];
+
+  readonly #slots = new SlotPresenceController(this, [TIP_SLOT]);
 
   @property({ reflect: true }) placement: TooltipPlacement = 'top';
   @property({ type: Boolean, reflect: true }) open = false;
@@ -52,7 +57,7 @@ export class DsTooltip extends DsElement {
   }
 
   #shouldShow(): boolean {
-    return this.open || this._hovered || (!this.hoverOnly && this._focused);
+    return this.#slots.has(TIP_SLOT) && (this.open || this._hovered || (!this.hoverOnly && this._focused));
   }
 
   #clearHoverTimer = (): void => {
@@ -135,7 +140,7 @@ export class DsTooltip extends DsElement {
       >
         <slot></slot>
         <div role="tooltip" part="tooltip" class="tooltip" popover="manual">
-          <slot name="tip"></slot>
+          <slot name="tip" @slotchange=${this.#slots.handleSlotChange}></slot>
         </div>
       </div>
     `;

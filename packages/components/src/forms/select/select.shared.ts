@@ -4,6 +4,7 @@ import type { IconSize } from '../../data-display/icon/icon.js';
 import { TILE_ROW_HEIGHT } from './select.common-styles.js';
 import '../../data-display/icon/icons/x-mark.js';
 import '../../data-display/icon/icons/chevron-down.js';
+import '../../overlays/tooltip/define.js';
 import { formatLabel } from '../../shared/format-label.js';
 
 export interface OptionIcon {
@@ -82,10 +83,12 @@ export function countOverflowTiles(tilesElement?: HTMLElement, maxLines?: number
     return 0;
   }
   const tiles = Array.from(tilesElement.querySelectorAll<HTMLElement>('.tile[data-value]'));
-  // Relative to the first tile: ds-searchable-select sits its tiles below a
-  // search input, and an absolute threshold reads that gap as overflow.
   const firstRowTop = tiles[0]?.offsetTop ?? 0;
-  return tiles.filter((tile) => tile.offsetTop - firstRowTop >= maxLines * TILE_ROW_HEIGHT).length;
+  return tiles.filter((tile) => rowsBelowTheFirstTile(tile, firstRowTop) >= maxLines).length;
+}
+
+function rowsBelowTheFirstTile(tile: HTMLElement, firstRowTop: number): number {
+  return (tile.offsetTop - firstRowTop) / TILE_ROW_HEIGHT;
 }
 
 export function queueTaskOnce(options: QueueTaskOptions): void {
@@ -119,12 +122,7 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
   </span>`;
 }
 
-/**
- * Activation for a button nested inside the trigger. Without it the trigger's own
- * keydown handler sees the key first and preventDefaults it, canceling the click
- * the browser would have synthesized - so the button never fires at all.
- */
-export function triggerButtonKeydown(event: KeyboardEvent, activate: () => void): void {
+export function activateBeforeTheTriggerSwallowsTheKey(event: KeyboardEvent, activate: () => void): void {
   if (event.key === 'Enter' || event.key === ' ') {
     event.stopPropagation();
     event.preventDefault();
@@ -132,13 +130,6 @@ export function triggerButtonKeydown(event: KeyboardEvent, activate: () => void)
   }
 }
 
-/**
- * The "+3" tile, for selections `maxLines` clipped out of view.
- *
- * A button, not a label: keyboard tile navigation cannot reach a hidden tile, so
- * without it there is no way to see or remove what is behind the count. Consumers
- * listen for `ds-overflow-click` and reveal the full selection however suits them.
- */
 export function renderOverflowTile(
   count: number,
   overflowLabel: string,
@@ -147,19 +138,27 @@ export function renderOverflowTile(
   if (count <= 0) {
     return nothing;
   }
-  return html`<button
-    class="tile tile-overflow"
-    type="button"
-    aria-label=${formatLabel(overflowLabel, { count })}
-    @pointerdown=${(event: Event) => event.preventDefault()}
-    @keydown=${(event: KeyboardEvent) => triggerButtonKeydown(event, () => onActivate?.())}
-    @click=${(event: Event) => {
-      event.stopPropagation();
-      onActivate?.();
-    }}
-  >
-    +${count}
-  </button>`;
+  function holdTheTipOpenThenNotify(event: Event): void {
+    (event.currentTarget as HTMLElement).focus();
+    onActivate?.();
+  }
+  return html`<ds-tooltip class="tile-overflow-tip" placement="bottom">
+    <button
+      class="tile tile-overflow"
+      type="button"
+      aria-label=${formatLabel(overflowLabel, { count })}
+      @pointerdown=${(event: Event) => event.preventDefault()}
+      @keydown=${(event: KeyboardEvent) =>
+        activateBeforeTheTriggerSwallowsTheKey(event, () => holdTheTipOpenThenNotify(event))}
+      @click=${(event: Event) => {
+        event.stopPropagation();
+        holdTheTipOpenThenNotify(event);
+      }}
+    >
+      +${count}
+    </button>
+    <slot name="overflow-tip" slot="tip"></slot>
+  </ds-tooltip>`;
 }
 
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {

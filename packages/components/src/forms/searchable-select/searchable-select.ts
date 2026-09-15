@@ -13,7 +13,7 @@ import {
   renderOptionIcon,
   renderOverflowTile,
   renderSelectedTiles,
-  triggerButtonKeydown,
+  activateBeforeTheTriggerSwallowsTheKey,
 } from '../select/select.shared.js';
 import { DropdownController } from '../select/dropdown-controller.js';
 import { dropdownKeydown } from '../select/dropdown-keydown.js';
@@ -38,6 +38,7 @@ import type { SelectOption, SelectSize } from '../select/select.js';
  * @slot leading - A leading adornment for the trigger.
  * @slot option:{value} - Replaces an option's label in the listbox, in place of the search highlight. The listbox virtualises on one measured row, so keep every option the same height.
  * @slot tile:{value} - Replaces a selected tile's label when `multiple`. There is no `selected:` slot: the single-value trigger is a text input.
+ * @slot overflow-tip - Content for the tooltip the "+n" tile shows on hover and holds open once tapped. Left empty, the tile shows no tooltip.
  */
 export class DsSearchableSelect extends FormControlMixin(DsElement) {
   static override styles = [
@@ -261,7 +262,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
   };
 
-  #onClearKeydown = (event: KeyboardEvent): void => triggerButtonKeydown(event, this.#clear);
+  #onClearKeydown = (event: KeyboardEvent): void => activateBeforeTheTriggerSwallowsTheKey(event, this.#clear);
 
   #onKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) {
