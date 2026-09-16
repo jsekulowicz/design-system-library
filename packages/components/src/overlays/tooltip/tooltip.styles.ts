@@ -44,7 +44,7 @@ export const tooltipStyles = css`
     font-family: var(--ds-font-body);
     font-size: var(--ds-font-size-body-md);
     line-height: var(--ds-line-height-normal);
-    padding: var(--ds-space-1) var(--ds-space-3);
+    padding: var(--ds-tooltip-padding, var(--ds-space-1) var(--ds-space-3));
     border-radius: var(--ds-radius-xs);
     max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100% - var(--ds-space-2)));
     pointer-events: none;

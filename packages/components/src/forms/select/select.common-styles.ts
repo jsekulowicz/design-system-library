@@ -108,6 +108,10 @@ export const selectCommonStyles = css`
     border-color: var(--ds-color-accent);
     box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ds-color-accent) 35%, transparent);
   }
+  .tile-overflow-tip {
+    --ds-tooltip-padding: var(--ds-space-3);
+  }
+
   .tile-overflow {
     padding: 0 var(--ds-space-2);
     background: var(--ds-color-accent-subtle);

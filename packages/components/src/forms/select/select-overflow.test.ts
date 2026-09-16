@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsSelect } from './select.js';
 import './define.js';
 import { renderOverflowTile } from './select.shared.js';
+import { selectCommonStyles } from './select.common-styles.js';
 import { render } from 'lit';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
@@ -118,6 +119,10 @@ function fillOverflowTip(el: DsSelect): HTMLElement {
 }
 
 describe('the overflow tip', () => {
+  it('squares its padding, holding a panel of tiles rather than a one-line hint', () => {
+    expect(selectCommonStyles.cssText).toContain('--ds-tooltip-padding: var(--ds-space-3)');
+  });
+
   it('stays down while the consumer has filled nothing', async () => {
     const el = await mountOverflowing();
     const tooltip = el.shadowRoot!.querySelector('ds-tooltip')!;

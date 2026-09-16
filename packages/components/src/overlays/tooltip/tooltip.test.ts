@@ -86,6 +86,10 @@ describe('<ds-tooltip>', () => {
     );
   });
 
+  it('pads a one-line hint tighter above than beside, and lets a consumer square it', () => {
+    expect(tooltipStyles.cssText).toContain('padding: var(--ds-tooltip-padding, var(--ds-space-1) var(--ds-space-3))');
+  });
+
   it('wraps content independently of the trigger context', () => {
     const css = DsTooltip.styles.map((style) => style.cssText).join('\n');
 

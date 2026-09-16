@@ -25,6 +25,7 @@ function isPopoverElement(el: Element | null): el is PopoverElement {
  * @csspart anchor - The wrapper around the trigger element.
  * @csspart tooltip - The tooltip bubble. Rendered in the Popover API top layer so it escapes ancestor overflow; positioned with CSS anchor positioning relative to the trigger.
  * @cssprop [--ds-tooltip-max-width=24rem] - Maximum tooltip width before the viewport safety cap applies.
+ * @cssprop [--ds-tooltip-padding=var(--ds-space-1) var(--ds-space-3)] - Padding inside the bubble. The default is tuned for a one-line hint; set it square for a tip holding a panel of content.
  */
 export class DsTooltip extends DsElement {
   static override styles = [...DsElement.styles, tooltipStyles];
