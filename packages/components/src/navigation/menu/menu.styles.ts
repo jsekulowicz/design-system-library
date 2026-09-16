@@ -27,7 +27,7 @@ export const menuStyles = css`
   }
   .items {
     padding: var(--ds-space-1);
-    max-height: var(--ds-menu-max-height, 320px);
+    max-height: var(--ds-menu-max-height, 328px);
     overflow-y: auto;
   }
 `;

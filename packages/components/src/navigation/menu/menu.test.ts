@@ -33,6 +33,10 @@ describe('<ds-menu>', () => {
     expect(menuStyles.cssText).not.toContain('letter-spacing: var(--ds-letter-spacing-wide)');
   });
 
+  it('fits eight 40px items and the list padding before the list starts to scroll', () => {
+    expect(menuStyles.cssText).toContain('max-height: var(--ds-menu-max-height, 328px)');
+  });
+
   it('exposes role=menu with aria-orientation and aria-label on the inner region', async () => {
     const el = await mount<DsMenu>(TEMPLATE);
     const region = getMenuRegion(el);
