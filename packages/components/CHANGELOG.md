@@ -1,5 +1,23 @@
 # @jsekulowicz/ds-components
 
+## 0.79.0
+
+### Minor Changes
+
+- 9a1017a: `ds-tooltip` takes a `--ds-tooltip-padding` custom property. The default stays
+  tuned for a one-line hint - tighter above and below than beside - and a tip
+  holding a panel of content can now square it up.
+
+  The `+n` tile on `ds-select` and `ds-searchable-select` sets it, since its tip
+  holds the selections it is hiding rather than a sentence.
+
+### Patch Changes
+
+- 5a762e9: `ds-menu` caps its item list at 328px instead of 320px. Eight items are 320px
+  tall on their own, so with the list's padding the old cap scrolled a full menu
+  by 8px, clipping the last item and hiding the bottom padding.
+  `--ds-menu-max-height` still overrides it.
+
 ## 0.78.0
 
 ### Minor Changes
