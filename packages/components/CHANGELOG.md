@@ -1,5 +1,57 @@
 # @jsekulowicz/ds-components
 
+## 0.80.0
+
+### Minor Changes
+
+- caae31b: No form field delegates focus into its shadow root any more. A click on a
+  field's message row stays there, so its text can be selected and a link in it
+  clicked, instead of being handed to the control above it - which, on a select,
+  opened the dropdown.
+
+  Every path focus used to travel is now taken deliberately, and some of them
+  reach further than they did:
+
+  - `focus()` on the element forwards to the control, as before.
+  - The control is the anchor a select reports invalid, so a native form submit
+    focuses it. The other fields already anchored theirs.
+  - A click inside the box a field draws - its padding, an adornment, the chevron
+    of a select - focuses the control, so what follows is typed into it.
+  - Pressing a dropdown option keeps focus on the select until its click selects
+    the value, so losing focus cannot dismiss the list before selection.
+  - A click on the label focuses the control, and opens what opens: a select's
+    dropdown, a color picker's panel - the way a native `<select>`'s label opens
+    its picker. `ds-select` and `ds-color-picker` name a trigger no `for` can
+    label, so their labels reached nothing before.
+
+- 7deff06: A field's message row can hold a link. Every form field now renders its
+  description, warning and error text through a slot of that name, so a consumer
+  can pass markup - `<span slot="warning">Awaiting <ds-link>review</ds-link></span>` -
+  and keep the icon, color and reserved row the attribute would have given them.
+  The attribute still decides which row shows, and its text remains the fallback.
+
+  The warning and error icon now sits on the first line of a message that wraps,
+  rather than centered on the whole block.
+
+- e7a7bd4: `ds-searchable-select` no longer opens its listbox the moment focus lands in it.
+  Tabbing through a form used to drop an open list over whatever followed the
+  field; now focus alone leaves it shut.
+
+  Every way of asking for the list still opens it: a click on the control or its
+  label, `ArrowDown`, and the first character typed - which clears the search
+  first, as it already did, so the keystroke lands in an empty input. A consumer
+  that relied on focus alone should call `focus()` and send `ArrowDown`, or click
+  the control.
+
+  Pasting or inserting text without a character keydown also opens the list and
+  preserves the inserted query.
+
+### Patch Changes
+
+- 7c45806: Keep an open select unchanged when its label is clicked again. Label presses
+  preserve control focus, preventing the dropdown from closing and reopening and
+  clearing the searchable select's query.
+
 ## 0.79.0
 
 ### Minor Changes
