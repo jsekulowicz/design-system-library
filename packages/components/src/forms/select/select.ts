@@ -281,6 +281,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       title=${ifDefined(option.disabledReason)}
       aria-label=${option.label}
       aria-description=${ifDefined(option.disabledReason)}
+      @pointerdown=${(event: PointerEvent) => event.preventDefault()}
       @click=${() => this.#selectOption(option)}
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;

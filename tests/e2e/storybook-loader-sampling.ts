@@ -19,7 +19,7 @@ async function collectDocumentationLoaderSamplesDuringRefresh(page: Page): Promi
         const style = getComputedStyle(loader);
         if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden') {
           void (
-            window as Window & {
+            window as unknown as {
               recordDocumentationLoaderSample: (sample: DocumentationLoaderSample) => Promise<void>;
             }
           ).recordDocumentationLoaderSample({

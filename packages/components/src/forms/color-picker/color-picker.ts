@@ -149,8 +149,12 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     this._triggerEl?.focus(options);
   }
 
-  #focusTheTrigger = (): void => {
+  #focusAndOpen = (): void => {
+    if (this.disabled) {
+      return;
+    }
     this.focus();
+    this.#popover.openPicker();
   };
 
   override syncValidity(message = this.#customInputs.validationError): void {
@@ -213,7 +217,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     const selected = this.#selectedOption(options);
 
     return html`
-      ${this.label && !this.compact ? renderFieldLabel(this.label, this.required, 'trigger', this.optional, this.#focusTheTrigger) : nothing}
+      ${this.label && !this.compact ? renderFieldLabel(this.label, this.required, 'trigger', this.optional, this.#focusAndOpen) : nothing}
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
         ${this.#renderTrigger(current, selected)} ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>

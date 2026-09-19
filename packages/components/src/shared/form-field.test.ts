@@ -223,11 +223,24 @@ describe('the message row a consumer can fill themselves', () => {
     expect(el.shadowRoot!.activeElement).toBeNull();
   });
 
-  it('focuses the color picker a click on its label names, which a ds-button cannot be', async () => {
-    const el = await mount<HTMLElement>('<ds-color-picker label="Accent"></ds-color-picker>', 'ds-color-picker');
+  it('opens the color picker a click on its label names, which a ds-button cannot be', async () => {
+    const el = await mount<DsColorPicker>('<ds-color-picker label="Accent"></ds-color-picker>', 'ds-color-picker');
     el.shadowRoot!.querySelector<HTMLElement>('label.label')!.click();
+    await el.updateComplete;
 
     expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector('#trigger'));
+    expect(el.shadowRoot!.querySelector('#panel')).not.toBeNull();
+  });
+
+  it('leaves a disabled color picker shut when its label is clicked', async () => {
+    const el = await mount<DsColorPicker>(
+      '<ds-color-picker label="Accent" disabled></ds-color-picker>',
+      'ds-color-picker',
+    );
+    el.shadowRoot!.querySelector<HTMLElement>('label.label')!.click();
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector('#panel')).toBeNull();
   });
 
   it('sits its icon on the first line of a message that wraps', () => {

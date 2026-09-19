@@ -237,6 +237,10 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   };
 
   #onSearchInput = (event: Event): void => {
+    if (this.disabled) {
+      return;
+    }
+    this.#dropdown.openDropdown();
     this._search = (event.target as HTMLInputElement).value;
     this.#dropdown.focusedIndex = 0;
     this.emit('ds-search', { detail: { query: this._search } });
@@ -356,6 +360,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       title=${ifDefined(option.disabledReason)}
       aria-label=${option.label}
       aria-description=${ifDefined(option.disabledReason)}
+      @pointerdown=${(event: PointerEvent) => event.preventDefault()}
       @click=${() => this.#selectOption(option)}
       @mouseenter=${() => {
         this.#dropdown.focusedIndex = index;

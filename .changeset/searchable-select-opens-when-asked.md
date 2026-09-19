@@ -11,3 +11,6 @@ label, `ArrowDown`, and the first character typed - which clears the search
 first, as it already did, so the keystroke lands in an empty input. A consumer
 that relied on focus alone should call `focus()` and send `ArrowDown`, or click
 the control.
+
+Pasting or inserting text without a character keydown also opens the list and
+preserves the inserted query.
