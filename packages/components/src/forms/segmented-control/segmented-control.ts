@@ -16,6 +16,9 @@ export interface SegmentedControlOption {
 /**
  * @tag ds-segmented-control
  * @summary Connected row of mutually exclusive options; an inline alternative to a dropdown.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @event ds-change - Fires when the selection changes. Detail: `{ value: string }`.
  * @csspart label - The field's own label element.
  * @csspart group - The container that holds the segments.

@@ -114,6 +114,35 @@ describe('field message space', () => {
   });
 });
 
+describe('the message row a consumer can fill themselves', () => {
+  it.each(['description', 'warning', 'error'])('takes slotted content in place of its %s text', async (kind) => {
+    const el = await mount<DsTextField>(
+      `<ds-text-field label="Word" ${kind}="Plain text"><span slot="${kind}">Rich text</span></ds-text-field>`,
+    );
+    el.invalid = true;
+    await el.updateComplete;
+    const slot = el.shadowRoot!.querySelector<HTMLSlotElement>(`slot[name="${kind}"]`);
+
+    expect(slot).not.toBeNull();
+    expect(slot!.assignedNodes()[0]?.textContent).toBe('Rich text');
+  });
+
+  it.each(['description', 'warning', 'error'])('falls back to the %s text nobody slotted over', async (kind) => {
+    const el = await mount<DsTextField>(`<ds-text-field label="Word" ${kind}="Plain text"></ds-text-field>`);
+    el.invalid = true;
+    await el.updateComplete;
+    const slot = el.shadowRoot!.querySelector<HTMLSlotElement>(`slot[name="${kind}"]`);
+
+    expect(slot!.assignedNodes().length).toBe(0);
+    expect(slot!.textContent).toBe('Plain text');
+  });
+
+  it('sits its icon on the first line of a message that wraps', () => {
+    expect(formFieldStyles.cssText).toMatch(/\.error,\s*\.warning\s*{[^}]*align-items: flex-start/);
+    expect(formFieldStyles.cssText).toMatch(/\.error-icon,\s*\.warning-icon\s*{[^}]*margin-block-start/s);
+  });
+});
+
 describe('the field label a consumer can style', () => {
   it.each([
     '<ds-text-field label="Email"></ds-text-field>',

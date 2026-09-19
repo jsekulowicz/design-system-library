@@ -10,6 +10,9 @@ type CheckboxEl = HTMLElement & { checked?: boolean; checkboxValue?: string };
  * @tag ds-checkbox-group
  * @summary Groups ds-checkbox elements with a shared label, name, and validation state.
  * @slot default - One or more ds-checkbox elements.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @event ds-change - Fires when any checkbox changes. Detail: `{ values: string[] }`.
  * @csspart fieldset - The native `<fieldset>` element.
  * @csspart legend - The legend that names the group.

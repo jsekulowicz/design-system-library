@@ -29,7 +29,7 @@ export const formFieldStyles: CSSResult = css`
   .warning {
     margin: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--ds-space-1);
     color: var(--ds-color-fg-muted);
   }
@@ -39,6 +39,7 @@ export const formFieldStyles: CSSResult = css`
     width: 1em;
     height: 1em;
     flex-shrink: 0;
+    margin-block-start: calc((1lh - 1em) / 2);
   }
   .error-icon {
     color: var(--ds-color-danger);
@@ -84,9 +85,15 @@ export const formFieldStyles: CSSResult = css`
   }
 `;
 
-export function renderFieldLabel(label: string, required: boolean, forId: string, optional = false): TemplateResult {
+export function renderFieldLabel(
+  label: string,
+  required: boolean,
+  forId: string,
+  optional = false,
+  activateControl?: (event: Event) => void,
+): TemplateResult {
   return html`
-    <label class="label" part="label" for=${forId}>
+    <label class="label" part="label" for=${forId} @click=${activateControl}>
       <span> ${label} ${required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing} </span>
       ${optional ? html`<span class="optional" aria-hidden="true">optional</span>` : nothing}
     </label>
@@ -128,7 +135,7 @@ function renderMessageRow(kind: keyof typeof MESSAGE_ROWS, text: string, reserve
       <svg class="${kind}-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd" clip-rule="evenodd" d=${path} />
       </svg>
-      ${text}
+      <slot name=${kind}>${text}</slot>
     </p>
   `;
 }
@@ -151,7 +158,9 @@ export function renderSubtext(field: FieldMessages): TemplateResult | typeof not
     return renderMessageRow('warning', warning, reserveRows);
   }
   if (description) {
-    return html`<p class="description" style=${reserveRows}>${description}</p>`;
+    return html`<p class="description" style=${reserveRows}>
+      <slot name="description">${description}</slot>
+    </p>`;
   }
   if (descriptionLines > 0) {
     return html`<p class="description" style=${reserveRows} aria-hidden="true"></p>`;

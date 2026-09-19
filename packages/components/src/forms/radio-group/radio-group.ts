@@ -16,6 +16,9 @@ type RadioEl = HTMLElement & {
  * @tag ds-radio-group
  * @summary Groups ds-radio buttons with a shared label, name, and validation state.
  * @slot default - One or more ds-radio elements.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @event ds-change - Fires when the selected radio changes. Detail: `{ value: string }`.
  * @csspart fieldset - The native `<fieldset>` element.
  * @csspart legend - The legend that names the group.

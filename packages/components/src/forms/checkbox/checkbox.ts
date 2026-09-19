@@ -10,6 +10,9 @@ import { checkboxStyles } from './checkbox.styles.js';
  * @tag ds-checkbox
  * @summary Binary (or indeterminate) input that participates in native forms.
  * @slot default - The visible label.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @event ds-change - Fires when the checked state changes.
  * @csspart label - The wrapper around the slotted label.
  * @csspart box - The check box itself.

@@ -17,6 +17,9 @@ export type TextFieldSize = 'sm' | 'md' | 'lg';
  * @summary Single-line text input with native form participation via ElementInternals.
  * @slot leading - Adornment rendered before the input.
  * @slot trailing - Adornment rendered after the input.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @event ds-input - Fired on every keystroke with the current value.
  * @event ds-change - Fired when the value is committed.
  * @csspart label - The field's own label element.

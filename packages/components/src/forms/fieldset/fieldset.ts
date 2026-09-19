@@ -12,6 +12,9 @@ export type FieldsetOrientation = 'horizontal' | 'vertical';
  * @summary Groups related controls under one legend, with the same label typography as every other field.
  * @slot default - The grouped controls.
  * @attr {boolean} borderless - Drops the box, leaving only the legend above the controls.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @csspart fieldset - The native `<fieldset>` element.
  * @csspart legend - The legend element.
  * @csspart label - The legend, under the name every other field's label carries.

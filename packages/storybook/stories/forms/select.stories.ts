@@ -2,6 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/select/define';
 import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/link/define';
 import '@jsekulowicz/ds-components/icon/squares-2x2';
 import '@jsekulowicz/ds-components/icon/paint-brush';
 import '@jsekulowicz/ds-components/icon/wrench';
@@ -32,8 +33,9 @@ const options = [
   { label: 'Operations', value: 'ops', disabled: true, icon: { name: 'cog-6-tooth', color: '#0891b2' } },
 ];`;
 
-function src(markup: string): string {
-  return `${OPTIONS_SRC}\n\nhtml\`\n${markup}\n\`;`;
+function src(markup: string, alsoImport?: string): string {
+  const imports = alsoImport ? `${alsoImport}\n${OPTIONS_SRC}` : OPTIONS_SRC;
+  return `${imports}\n\nhtml\`\n${markup}\n\`;`;
 }
 
 // A leading-slot icon that is shown until an option is selected; the selected
@@ -320,6 +322,43 @@ ${LEADING}
       .options=${options}
     >
       <ds-icon slot="leading" name="squares-2x2"></ds-icon>
+    </ds-select>
+  `,
+};
+
+export const MessageWithALink: Story = {
+  name: 'A link in the message row',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The `description`, `warning` and `error` text each render through a slot of that name, so a message can carry a link without losing the icon, the color or the row the attribute reserves. The attribute still decides which row shows and remains the fallback for anyone who slots nothing.',
+      },
+      source: {
+        code: src(
+          `  <ds-select
+    label="Discipline"
+    placeholder="Pick a discipline"
+    warning="Engineering is being reviewed."
+    .options=\${options}
+  >
+    <span slot="warning">
+      Engineering is <ds-link href="#review">being reviewed</ds-link>.
+    </span>
+  </ds-select>`,
+          `import '@jsekulowicz/ds-components/link/define';`,
+        ),
+      },
+    },
+  },
+  render: () => html`
+    <ds-select
+      label="Discipline"
+      placeholder="Pick a discipline"
+      warning="Engineering is being reviewed."
+      .options=${options}
+    >
+      <span slot="warning"> Engineering is <ds-link href="#review">being reviewed</ds-link>. </span>
     </ds-select>
   `,
 };

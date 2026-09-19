@@ -19,6 +19,9 @@ import type { ColorPickerOption } from './types.js';
 /**
  * @tag ds-color-picker
  * @summary Form-associated color picker with preset swatches and custom Hex RGB input.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @event ds-input - Fires on live custom color edits. Detail: `{ value }`.
  * @event ds-change - Fires when the committed color changes. Detail: `{ value }`.
  * @csspart label - The field's own label element.

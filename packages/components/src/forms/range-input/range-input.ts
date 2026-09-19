@@ -11,6 +11,9 @@ export type RangeInputSize = 'sm' | 'md' | 'lg';
 /**
  * @tag ds-range-input
  * @summary Slider for picking a numeric value within a range, with native form participation via ElementInternals.
+ * @slot description - Replaces the description text, for a message that carries a link.
+ * @slot warning - Replaces the warning text, for a message that carries a link.
+ * @slot error - Replaces the error text, for a message that carries a link.
  * @event ds-input - Fired continuously while dragging with the current numeric value.
  * @event ds-change - Fired when the value is committed.
  * @csspart label - The field's own label element.
