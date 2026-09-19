@@ -228,12 +228,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     return this.shadowRoot?.querySelector<HTMLInputElement>('#search-input') ?? null;
   }
 
-  #onFocus = (): void => {
-    if (!this.disabled && !this.loading && !this.#dropdown.open) {
-      this.#dropdown.openDropdown();
-    }
-  };
-
   #focusAndOpen = (): void => {
     if (this.disabled) {
       return;
@@ -415,7 +409,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             .value=${live(displayValue)}
             placeholder=${open || hasTiles ? this.searchPlaceholder : this.placeholder}
             ?readonly=${this.disabled}
-            @focus=${this.#onFocus}
             @input=${this.#onSearchInput}
             @keydown=${this.#onKeydown}
           />

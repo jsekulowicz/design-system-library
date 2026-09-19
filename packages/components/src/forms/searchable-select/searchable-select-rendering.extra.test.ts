@@ -141,8 +141,7 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
       fired += 1;
     });
 
-    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
-    input.dispatchEvent(new Event('focus'));
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
     const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
     Object.defineProperty(listbox, 'scrollHeight', { configurable: true, value: 432 });

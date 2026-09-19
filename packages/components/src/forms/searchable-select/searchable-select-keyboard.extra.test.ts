@@ -38,13 +38,12 @@ async function mountSearchable(props: Partial<DsSearchableSelect> = {}): Promise
 describe('<ds-searchable-select> extra coverage', () => {
   it('handles focus and search/clear pathways for a required, clearable single select', async () => {
     const el = await mountSearchable({ required: true, clearable: true, value: 'react' });
-    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
 
     (el.shadowRoot!.querySelector('.clear-btn') as HTMLElement).click();
     await el.updateComplete;
     expect(el.value).toBe('');
 
-    input.dispatchEvent(new Event('focus'));
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
     (el.shadowRoot!.querySelector('ds-select-option') as HTMLElement).click();
     await el.updateComplete;
@@ -58,7 +57,7 @@ describe('<ds-searchable-select> extra coverage', () => {
       'ds-searchable-select',
     );
     const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
-    input.dispatchEvent(new Event('focus'));
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
 
     const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
@@ -93,10 +92,9 @@ describe('<ds-searchable-select> extra coverage', () => {
     expect(listbox.scrollTop).toBe((el as unknown as { _scrollTop: number })._scrollTop);
   });
 
-  it('does not open on focus when disabled', async () => {
+  it('stays shut when a disabled one is clicked', async () => {
     const el = await mountSearchable({ disabled: true });
-    const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
-    input.dispatchEvent(new Event('focus'));
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
     expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
   });
@@ -113,7 +111,7 @@ describe('<ds-searchable-select> extra coverage', () => {
 
     el.disabled = false;
     await el.updateComplete;
-    input.dispatchEvent(new Event('focus'));
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
     expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
 
@@ -162,7 +160,7 @@ describe('<ds-searchable-select> extra coverage', () => {
   it('handles ArrowUp key navigation when the dropdown is open', async () => {
     const el = await mountSearchable();
     const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
-    input.dispatchEvent(new Event('focus'));
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
     const event = new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true });
     input.dispatchEvent(event);

@@ -63,9 +63,23 @@ describe('<ds-searchable-select>', () => {
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
     });
 
-    it('opens on input focus', async () => {
+    it('stays shut when focus lands in it, so tabbing through a form opens nothing', async () => {
       const el = await mountSearchableSelect();
       getInput(el).dispatchEvent(new Event('focus'));
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
+    });
+
+    it('opens on ArrowDown, which is how a keyboard asks for the list', async () => {
+      const el = await mountSearchableSelect();
+      getInput(el).dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+      await el.updateComplete;
+      expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
+    });
+
+    it('opens on the first character typed into it', async () => {
+      const el = await mountSearchableSelect();
+      getInput(el).dispatchEvent(new KeyboardEvent('keydown', { key: 'r', bubbles: true }));
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
     });
@@ -85,7 +99,6 @@ describe('<ds-searchable-select>', () => {
       getOption(el, 'React').click();
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
-      // Click trigger again - no focus event fires since input is still focused
       clickTrigger(el);
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
