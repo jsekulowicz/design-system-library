@@ -27,7 +27,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, textAreaStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
+    delegatesFocus: false,
   };
 
   @property({ reflect: true }) size: TextAreaSize = 'md';
@@ -93,6 +93,10 @@ export class DsTextArea extends FormControlMixin(DsElement) {
     if (next !== null) {
       this.invalid = next;
     }
+  }
+
+  override focus(options?: FocusOptions): void {
+    this._input?.focus(options);
   }
 
   override firstUpdated(): void {

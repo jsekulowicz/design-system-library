@@ -3,7 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { clickBelongsToTheControl, formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { rangeInputStyles } from './range-input.styles.js';
 
 export type RangeInputSize = 'sm' | 'md' | 'lg';
@@ -27,7 +27,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, rangeInputStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
+    delegatesFocus: false,
   };
 
   @property({ type: Number }) min = 0;
@@ -111,6 +111,16 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     }
   }
 
+  override focus(options?: FocusOptions): void {
+    this._input?.focus(options);
+  }
+
+  #focusTheInput = (event: Event): void => {
+    if (!this.disabled && clickBelongsToTheControl(event)) {
+      this.focus();
+    }
+  };
+
   override firstUpdated(): void {
     this.syncValidity();
   }
@@ -119,7 +129,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     const current = this.#numericValue();
     return html`
       ${this.label ? renderFieldLabel(this.label, this.required, 'input') : nothing}
-      <div class="wrap" part="wrap">
+      <div class="wrap" part="wrap" @click=${this.#focusTheInput}>
         <input
           id="input"
           part="thumb"

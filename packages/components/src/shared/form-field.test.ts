@@ -137,6 +137,99 @@ describe('the message row a consumer can fill themselves', () => {
     expect(slot!.textContent).toBe('Plain text');
   });
 
+  it.each([
+    ['<ds-select label="Word" description="A note"></ds-select>', 'ds-select', '#trigger'],
+    [
+      '<ds-searchable-select label="Word" description="A note"></ds-searchable-select>',
+      'ds-searchable-select',
+      '#search-input',
+    ],
+    ['<ds-text-field label="Word" description="A note"></ds-text-field>', 'ds-text-field', 'input'],
+    ['<ds-text-area label="Word" description="A note"></ds-text-area>', 'ds-text-area', 'textarea'],
+    ['<ds-range-input label="Word" description="A note"></ds-range-input>', 'ds-range-input', 'input'],
+    ['<ds-color-picker label="Word" description="A note"></ds-color-picker>', 'ds-color-picker', '#trigger'],
+  ])('hands %s its own focus on, now that the shadow root delegates none', async (markup, tag, control) => {
+    const el = await mount<HTMLElement>(markup, tag);
+    el.focus();
+
+    expect((el.constructor as typeof DsSelect).shadowRootOptions.delegatesFocus).toBe(false);
+    expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector(control));
+  });
+
+  it.each([
+    ['<ds-select label="Word" required></ds-select>', 'ds-select', '#trigger'],
+    ['<ds-searchable-select label="Word" required></ds-searchable-select>', 'ds-searchable-select', '#search-input'],
+  ])('anchors what %s reports invalid to its control, which a form focuses', async (markup, tag, control) => {
+    const anchors: (HTMLElement | undefined)[] = [];
+    const prototype = customElements.get(tag)!.prototype as { setValidity: unknown };
+    const original = prototype.setValidity;
+    prototype.setValidity = function (_flags: unknown, _message: unknown, anchor?: HTMLElement) {
+      anchors.push(anchor);
+    };
+    const el = await mount<HTMLElement>(markup, tag);
+    prototype.setValidity = original;
+
+    expect(anchors.at(-1)).toBe(el.shadowRoot!.querySelector(control));
+  });
+
+  it.each([
+    ['<ds-select label="Word"></ds-select>', 'ds-select'],
+    ['<ds-searchable-select label="Word"></ds-searchable-select>', 'ds-searchable-select'],
+  ])('opens %s from a click on its label, the way the control under it would', async (markup, tag) => {
+    const el = await mount<HTMLElement & { _open: boolean }>(markup, tag);
+    el.shadowRoot!.querySelector<HTMLElement>('label.label')!.click();
+
+    expect(el._open).toBe(true);
+  });
+
+  it.each([
+    ['<ds-select label="Word"></ds-select>', 'ds-select', '#trigger'],
+    ['<ds-searchable-select label="Word"></ds-searchable-select>', 'ds-searchable-select', '#search-input'],
+  ])('focuses what %s opens, for a click that missed the control itself', async (markup, tag, control) => {
+    const el = await mount<HTMLElement & { _open: boolean }>(markup, tag);
+    el.shadowRoot!.querySelector<HTMLElement>('.trigger')!.click();
+
+    expect(el._open).toBe(true);
+    expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector(control));
+  });
+
+  it('leaves a disabled select shut when its label is clicked', async () => {
+    const el = await mount<HTMLElement & { _open: boolean }>(
+      '<ds-select label="Word" disabled></ds-select>',
+      'ds-select',
+    );
+    el.shadowRoot!.querySelector<HTMLElement>('label.label')!.click();
+
+    expect(el._open).toBe(false);
+  });
+
+  it.each([
+    ['<ds-text-field label="Word" description="A note"></ds-text-field>', 'ds-text-field', 'input'],
+    ['<ds-range-input label="Word" description="A note"></ds-range-input>', 'ds-range-input', 'input'],
+  ])('focuses what %s holds when the click lands on the box around it', async (markup, tag, control) => {
+    const el = await mount<HTMLElement>(markup, tag);
+    el.shadowRoot!.querySelector<HTMLElement>('.wrap')!.click();
+
+    expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector(control));
+  });
+
+  it('leaves an adornment that takes its own clicks holding them', async () => {
+    const el = await mount<HTMLElement>(
+      '<ds-text-field label="Password"><button slot="trailing">Show</button></ds-text-field>',
+      'ds-text-field',
+    );
+    el.querySelector('button')!.click();
+
+    expect(el.shadowRoot!.activeElement).toBeNull();
+  });
+
+  it('focuses the color picker a click on its label names, which a ds-button cannot be', async () => {
+    const el = await mount<HTMLElement>('<ds-color-picker label="Accent"></ds-color-picker>', 'ds-color-picker');
+    el.shadowRoot!.querySelector<HTMLElement>('label.label')!.click();
+
+    expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector('#trigger'));
+  });
+
   it('sits its icon on the first line of a message that wraps', () => {
     expect(formFieldStyles.cssText).toMatch(/\.error,\s*\.warning\s*{[^}]*align-items: flex-start/);
     expect(formFieldStyles.cssText).toMatch(/\.error-icon,\s*\.warning-icon\s*{[^}]*margin-block-start/s);

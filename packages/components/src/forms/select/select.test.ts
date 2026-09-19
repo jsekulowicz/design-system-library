@@ -96,6 +96,7 @@ describe('<ds-select>', () => {
     it('closes when focus leaves the combobox', async () => {
       const el = await mountSelect();
       await openDropdown(el);
+      getTrigger(el).blur();
       el.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
       await new Promise<void>((resolve) => queueMicrotask(resolve));
       await el.updateComplete;

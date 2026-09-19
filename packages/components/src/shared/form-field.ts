@@ -85,6 +85,15 @@ export const formFieldStyles: CSSResult = css`
   }
 `;
 
+const INTERACTIVE_INSIDE_A_FIELD = 'a[href], button, input, select, textarea, [tabindex]';
+
+/** A click on a field's own box belongs to its control, unless it landed on
+ * something the consumer slotted in that takes clicks of its own. */
+export function clickBelongsToTheControl(event: Event): boolean {
+  const clicked = event.composedPath()[0];
+  return !(clicked instanceof Element) || clicked.closest(INTERACTIVE_INSIDE_A_FIELD) === null;
+}
+
 export function renderFieldLabel(
   label: string,
   required: boolean,

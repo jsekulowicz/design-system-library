@@ -4,7 +4,12 @@ import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
 import type { AutocompleteToken } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldFooter, renderFieldHeader } from '../../shared/form-field.js';
+import {
+  clickBelongsToTheControl,
+  formFieldStyles,
+  renderFieldFooter,
+  renderFieldHeader,
+} from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { textFieldStyles } from './text-field.styles.js';
@@ -31,7 +36,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, textFieldStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
+    delegatesFocus: false,
   };
 
   @property() type: TextFieldType = 'text';
@@ -101,6 +106,16 @@ export class DsTextField extends FormControlMixin(DsElement) {
     }
   }
 
+  override focus(options?: FocusOptions): void {
+    this._input?.focus(options);
+  }
+
+  #focusTheInput = (event: Event): void => {
+    if (clickBelongsToTheControl(event)) {
+      this.focus();
+    }
+  };
+
   override firstUpdated(): void {
     this.syncValidity();
   }
@@ -117,7 +132,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
         this.maxLength,
         this.charCount,
       )}
-      <div class="wrap field-control" part="wrap">
+      <div class="wrap field-control" part="wrap" @click=${this.#focusTheInput}>
         <span class="adornment" ?hidden=${!this.#slots.has('leading')}>
           <slot name="leading" @slotchange=${this.#slots.handleSlotChange}></slot>
         </span>

@@ -52,7 +52,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, selectCommonStyles, selectStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
+    delegatesFocus: false,
   };
 
   @property({ type: Array }) options: SelectOption[] = [];
@@ -133,6 +133,10 @@ export class DsSelect extends FormControlMixin(DsElement) {
     this.#dropdown.overflowCheckQueued = value;
   }
 
+  override firstUpdated(): void {
+    this.syncValidity();
+  }
+
   override updated(changed: PropertyValues): void {
     if (changed.has('label') || changed.has('inputLabel')) {
       this.setAriaLabel(this.label || this.inputLabel || null);
@@ -178,7 +182,11 @@ export class DsSelect extends FormControlMixin(DsElement) {
   override syncValidity(): void {
     const empty = this.multiple ? this.values.length === 0 : !this.value;
     const missing = this.required && empty;
-    this.setValidity(missing ? { valueMissing: true } : {}, missing ? 'Please select an option.' : '');
+    this.setValidity(
+      missing ? { valueMissing: true } : {},
+      missing ? 'Please select an option.' : '',
+      this.#trigger() ?? undefined,
+    );
     const next = this.resolveInvalid(this.invalid, missing);
     if (next !== null) {
       this.invalid = next;
@@ -291,7 +299,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     const activeDesc = open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
     const hasTiles = this.multiple && this.values.length > 0;
     const hasClearBtn = this.clearable && (this.multiple ? this.values.length > 0 : current !== '');
-    return html` ${this.label ? renderFieldLabel(this.label, this.required, 'trigger') : nothing}
+    return html` ${this.label ? renderFieldLabel(this.label, this.required, 'trigger', false, this.#focusAndOpen) : nothing}
       <div class="control-wrap">
         <div
           id="trigger"
@@ -365,10 +373,27 @@ export class DsSelect extends FormControlMixin(DsElement) {
       ${renderSubtext(this)}`;
   }
 
+  override focus(options?: FocusOptions): void {
+    this.#trigger()?.focus(options);
+  }
+
+  #trigger(): HTMLElement | null {
+    return this.shadowRoot?.querySelector<HTMLElement>('#trigger') ?? null;
+  }
+
+  #focusAndOpen = (): void => {
+    if (this.disabled) {
+      return;
+    }
+    this.focus();
+    this.#dropdown.openDropdown();
+  };
+
   #toggle = (): void => {
     if (this.disabled) {
       return;
     }
+    this.focus();
     this.#dropdown.toggle();
   };
 }

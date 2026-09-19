@@ -33,7 +33,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   static override styles = [...DsElement.styles, formFieldStyles, colorPickerStyles];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
+    delegatesFocus: false,
   };
 
   @property({ type: Array }) colors: ColorPickerOption[] = [];
@@ -145,6 +145,14 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     return options.find((option) => option.value === current);
   }
 
+  override focus(options?: FocusOptions): void {
+    this._triggerEl?.focus(options);
+  }
+
+  #focusTheTrigger = (): void => {
+    this.focus();
+  };
+
   override syncValidity(message = this.#customInputs.validationError): void {
     const missing = this.required && !this.#currentValue();
     const validationMessage = message || (missing ? 'Please select a color.' : '');
@@ -205,7 +213,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     const selected = this.#selectedOption(options);
 
     return html`
-      ${this.label && !this.compact ? renderFieldLabel(this.label, this.required, 'trigger', this.optional) : nothing}
+      ${this.label && !this.compact ? renderFieldLabel(this.label, this.required, 'trigger', this.optional, this.#focusTheTrigger) : nothing}
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
         ${this.#renderTrigger(current, selected)} ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>

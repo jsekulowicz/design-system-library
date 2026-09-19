@@ -25,10 +25,10 @@ import type { SelectOption, SelectSize } from '../select/select.js';
 /**
  * @tag ds-searchable-select
  * @summary Combobox with a text search input. Emits ds-search so the consumer can filter options.
- * @event ds-search - Fires on every keystroke. Detail: `{ query: string }`.
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
+ * @event ds-search - Fires on every keystroke. Detail: `{ query: string }`.
  * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
  * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
  * @event ds-overflow-click - Fires when the "+n" tile is activated. Detail: `{ count: number }`. Keyboard tile navigation cannot reach a tile `max-lines` clipped, so this is the only way to offer the full selection.
@@ -54,7 +54,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   ];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
+    delegatesFocus: false,
   };
 
   @property({ type: Array }) options: SelectOption[] = [];
@@ -159,6 +159,10 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
   }
 
+  override firstUpdated(): void {
+    this.syncValidity();
+  }
+
   override updated(changed: PropertyValues): void {
     if (changed.has('label')) {
       this.setAriaLabel(this.label || null);
@@ -200,7 +204,11 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   override syncValidity(): void {
     const empty = this.multiple ? this.values.length === 0 : !this.value;
     const missing = this.required && empty;
-    this.setValidity(missing ? { valueMissing: true } : {}, missing ? 'Please select an option.' : '');
+    this.setValidity(
+      missing ? { valueMissing: true } : {},
+      missing ? 'Please select an option.' : '',
+      this.#searchInput() ?? undefined,
+    );
     const next = this.resolveInvalid(this.invalid, missing);
     if (next !== null) {
       this.invalid = next;
@@ -212,10 +220,26 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     this.#dropdown.close();
   }
 
+  override focus(options?: FocusOptions): void {
+    this.#searchInput()?.focus(options);
+  }
+
+  #searchInput(): HTMLInputElement | null {
+    return this.shadowRoot?.querySelector<HTMLInputElement>('#search-input') ?? null;
+  }
+
   #onFocus = (): void => {
     if (!this.disabled && !this.loading && !this.#dropdown.open) {
       this.#dropdown.openDropdown();
     }
+  };
+
+  #focusAndOpen = (): void => {
+    if (this.disabled) {
+      return;
+    }
+    this.focus();
+    this.#dropdown.openDropdown();
   };
 
   #onSearchInput = (event: Event): void => {
@@ -356,16 +380,14 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     const displayValue = open ? this._search : !this.multiple ? (this._labelMap.get(current) ?? '') : '';
     const activeDesc = open && this.#dropdown.focusedIndex >= 0 ? `option-${this.#dropdown.focusedIndex}` : undefined;
     const selectedIcon = !open && !this.multiple && current ? this._iconMap.get(current) : undefined;
-    return html` ${this.label ? renderFieldLabel(this.label, this.required, 'search-input') : nothing}
+    return html` ${
+        this.label ? renderFieldLabel(this.label, this.required, 'search-input', false, this.#focusAndOpen) : nothing
+      }
       <div class="control-wrap">
         <div
           class="trigger field-control${this.multiple ? ' trigger-multiple' : ''} ${open ? 'open' : ''}"
           part="trigger"
-          @click=${() => {
-            if (!this.disabled) {
-              this.#dropdown.openDropdown();
-            }
-          }}
+          @click=${this.#focusAndOpen}
         >
           <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>
             ${selectedIcon ? renderOptionIcon(selectedIcon) : nothing}
