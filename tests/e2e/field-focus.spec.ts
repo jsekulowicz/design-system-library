@@ -28,6 +28,25 @@ async function mountField(page: Page, tag: string, story: string): Promise<void>
 }
 
 for (const [tag, story] of selects) {
+  test(`${tag} leaves an open list unchanged when its label is clicked again`, async ({ page }) => {
+    await mountField(page, tag, story);
+    const control = page.getByRole('combobox');
+    const label = page.locator(`${tag} .label`);
+    await label.click();
+    if (tag === 'ds-searchable-select') {
+      await control.fill('First');
+    }
+    const listbox = await page.getByRole('listbox').elementHandle();
+    await label.click();
+
+    expect(await listbox!.evaluate((element) => element.isConnected)).toBe(true);
+    await expect(control).toBeFocused();
+    await expect(control).toHaveAttribute('aria-expanded', 'true');
+    if (tag === 'ds-searchable-select') {
+      await expect(control).toHaveValue('First');
+    }
+  });
+
   test(`${tag} opens from its label and keeps message clicks outside the control`, async ({ page }) => {
     await mountField(page, tag, story);
     const control = page.getByRole('combobox');

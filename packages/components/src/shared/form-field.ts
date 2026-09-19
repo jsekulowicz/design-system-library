@@ -92,6 +92,10 @@ export function clickBelongsToTheControl(event: Event): boolean {
   return !(clicked instanceof Element) || clicked.closest(INTERACTIVE_INSIDE_A_FIELD) === null;
 }
 
+function keepControlFocusedDuringLabelPress(event: PointerEvent): void {
+  event.preventDefault();
+}
+
 export function renderFieldLabel(
   label: string,
   required: boolean,
@@ -100,7 +104,13 @@ export function renderFieldLabel(
   activateControl?: (event: Event) => void,
 ): TemplateResult {
   return html`
-    <label class="label" part="label" for=${forId} @click=${activateControl}>
+    <label
+      class="label"
+      part="label"
+      for=${forId}
+      @pointerdown=${activateControl ? keepControlFocusedDuringLabelPress : undefined}
+      @click=${activateControl}
+    >
       <span> ${label} ${required ? html`<span class="required" aria-hidden="true"> *</span>` : nothing} </span>
       ${optional ? html`<span class="optional" aria-hidden="true">optional</span>` : nothing}
     </label>
