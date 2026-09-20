@@ -1,8 +1,8 @@
-import { html, LitElement, type TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult, type PropertyValues } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
-import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import type { AutocompleteToken } from '@jsekulowicz/ds-core';
 import {
   clickBelongsToTheControl,
@@ -115,6 +115,12 @@ export class DsTextField extends FormControlMixin(DsElement) {
       this.focus();
     }
   };
+
+  override updated(changed: PropertyValues): void {
+    if (changedWhatValidityReads(changed)) {
+      this.syncValidity();
+    }
+  }
 
   override firstUpdated(): void {
     this.syncValidity();

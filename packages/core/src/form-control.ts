@@ -1,6 +1,12 @@
-import type { LitElement } from 'lit';
+import type { LitElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 import { hasInteractiveSlottedOrigin } from './utils/interactive-origin.js';
+
+const WHAT_VALIDITY_READS = ['value', 'values', 'checked', 'required'];
+
+export function changedWhatValidityReads(changed: PropertyValues): boolean {
+  return WHAT_VALIDITY_READS.some((name) => changed.has(name));
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T = object> = new (...args: any[]) => T;

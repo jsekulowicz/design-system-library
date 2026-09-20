@@ -249,6 +249,34 @@ describe('the message row a consumer can fill themselves', () => {
   });
 });
 
+describe('a value a field is given rather than typed', () => {
+  it.each([
+    ['<ds-select label="Word" required></ds-select>', 'ds-select', { value: 'a' }],
+    ['<ds-searchable-select label="Word" required></ds-searchable-select>', 'ds-searchable-select', { value: 'a' }],
+    ['<ds-text-field label="Word" required></ds-text-field>', 'ds-text-field', { value: 'filled' }],
+    ['<ds-text-area label="Word" required></ds-text-area>', 'ds-text-area', { value: 'filled' }],
+    ['<ds-color-picker label="Word" required></ds-color-picker>', 'ds-color-picker', { value: '#ff0000' }],
+  ])('is checked for validity on %s, so a form stops calling the field empty', async (markup, tag, filled) => {
+    const flags: ValidityStateFlags[] = [];
+    const el = await mount<HTMLElement & Record<string, unknown>>(markup, tag);
+    if (tag === 'ds-select' || tag === 'ds-searchable-select') {
+      (el as unknown as { options: unknown }).options = [{ value: 'a', label: 'A' }];
+      await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+    }
+    const prototype = customElements.get(tag)!.prototype as { setValidity: unknown };
+    const original = prototype.setValidity;
+    prototype.setValidity = function (next: ValidityStateFlags) {
+      flags.push(next);
+    };
+    Object.assign(el, filled);
+    await (el as unknown as { updateComplete: Promise<unknown> }).updateComplete;
+    prototype.setValidity = original;
+
+    expect(flags.length).toBeGreaterThan(0);
+    expect(flags.at(-1)!.valueMissing ?? false).toBe(false);
+  });
+});
+
 describe('the field label a consumer can style', () => {
   it.each([
     '<ds-text-field label="Email"></ds-text-field>',

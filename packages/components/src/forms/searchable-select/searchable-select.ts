@@ -2,7 +2,7 @@ import { html, nothing, LitElement, type PropertyValues, type TemplateResult } f
 import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { renderVirtualItems } from '../../shared/virtual-list.js';
@@ -164,6 +164,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   }
 
   override updated(changed: PropertyValues): void {
+    if (changedWhatValidityReads(changed)) {
+      this.syncValidity();
+    }
     if (changed.has('label')) {
       this.setAriaLabel(this.label || null);
     }

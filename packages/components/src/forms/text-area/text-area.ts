@@ -1,8 +1,8 @@
-import { html, LitElement, type TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult, type PropertyValues } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
-import { DsElement, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import type { AutocompleteToken } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldFooter, renderFieldHeader } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
@@ -97,6 +97,12 @@ export class DsTextArea extends FormControlMixin(DsElement) {
 
   override focus(options?: FocusOptions): void {
     this._input?.focus(options);
+  }
+
+  override updated(changed: PropertyValues): void {
+    if (changedWhatValidityReads(changed)) {
+      this.syncValidity();
+    }
   }
 
   override firstUpdated(): void {
