@@ -32,14 +32,25 @@ describe('<ds-alert>', () => {
     expect(el.shadowRoot!.querySelector('[part="title"]')).toBeNull();
   });
 
-  it('dismisses and emits ds-dismiss when close button is clicked', async () => {
+  it('hides where it stands when the close button is clicked, and says so', async () => {
     const el = await mount<DsAlert>('<ds-alert dismissible>Body</ds-alert>');
     const events: CustomEvent[] = [];
     el.addEventListener('ds-dismiss', (event) => events.push(event as CustomEvent));
     const button = el.shadowRoot!.querySelector<HTMLElement>('[part="close-button"]')!;
     button.click();
+    await el.updateComplete;
+
     expect(events).toHaveLength(1);
-    expect(document.body.contains(el)).toBe(false);
+    expect(el.dismissed).toBe(true);
+    expect(el.hasAttribute('dismissed')).toBe(true);
+  });
+
+  it('leaves itself in the tree that rendered it, whose anchors it would strand', async () => {
+    const el = await mount<DsAlert>('<ds-alert dismissible>Body</ds-alert>');
+    el.shadowRoot!.querySelector<HTMLElement>('[part="close-button"]')!.click();
+    await el.updateComplete;
+
+    expect(document.body.contains(el)).toBe(true);
   });
 
   it('does not render a close button when not dismissible', async () => {

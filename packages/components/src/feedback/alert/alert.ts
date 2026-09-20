@@ -15,6 +15,7 @@ export type AlertTone = 'info' | 'success' | 'warning' | 'danger';
  * @csspart alert - The alert surface.
  * @csspart title - The heading, when one is set.
  * @csspart close-button - The dismiss button, when `dismissible` is set.
+ * @attr {boolean} dismissed - Hides the alert where it stands; set when the close button is activated, cleared to show it again.
  * @event ds-dismiss - Fires when the close button is activated.
  */
 export class DsAlert extends DsElement {
@@ -23,6 +24,7 @@ export class DsAlert extends DsElement {
   @property({ reflect: true }) tone: AlertTone = 'info';
   @property() heading?: string;
   @property({ type: Boolean, reflect: true }) dismissible = false;
+  @property({ type: Boolean, reflect: true }) dismissed = false;
   @property({ attribute: 'dismiss-label' }) dismissLabel = 'Dismiss';
   @property({ type: Boolean, attribute: 'announce-on-connect' }) announceOnConnect = false;
 
@@ -35,7 +37,7 @@ export class DsAlert extends DsElement {
 
   #dismiss = (): void => {
     this.emit('ds-dismiss', { detail: null });
-    this.remove();
+    this.dismissed = true;
   };
 
   override render(): TemplateResult {

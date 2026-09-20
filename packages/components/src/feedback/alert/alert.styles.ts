@@ -4,6 +4,9 @@ export const alertStyles = css`
   :host {
     display: block;
   }
+  :host([dismissed]) {
+    display: none;
+  }
   .notice {
     background: var(--ds-color-bg-subtle);
   }
