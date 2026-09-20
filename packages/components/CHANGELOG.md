@@ -1,5 +1,35 @@
 # @jsekulowicz/ds-components
 
+## 0.81.0
+
+### Minor Changes
+
+- b1606a0: A value set from code is now checked for validity the way a typed one is.
+  `ds-select`, `ds-searchable-select`, `ds-text-field`, `ds-text-area`,
+  `ds-range-input` and `ds-color-picker` only re-checked themselves from their own
+  event handlers, so a required field filled programmatically - restoring a draft,
+  prefilling a form - still reported `valueMissing`. The form refused to submit
+  and pointed at a field with an answer sitting in it.
+
+  `ds-core` exports `changedWhatValidityReads(changed)`, which each field asks
+  in `updated`. `ds-checkbox` already did this in `willUpdate` and is unchanged.
+
+- dc89269: `ds-alert` no longer removes itself from the DOM when it is dismissed. It sets
+  a reflected `dismissed` attribute and hides where it stands, so the tree that
+  rendered it still owns every node it put there.
+
+  Pulling itself out was corrupting frameworks that track their own nodes: Vue
+  kept rendering against an element whose parent was gone, and what rendered
+  next - a route change, anything after the alert - landed in the wrong place or
+  nowhere at all. A consumer that renders the alert conditionally can still drop
+  it on `ds-dismiss`; one that reuses the element clears `dismissed` to show it
+  again.
+
+### Patch Changes
+
+- Updated dependencies [b1606a0]
+  - @jsekulowicz/ds-core@0.81.0
+
 ## 0.80.0
 
 ### Minor Changes
