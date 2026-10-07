@@ -3,23 +3,15 @@ import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { tooltipStyles } from './tooltip.styles.js';
+import { hideTooltipPopover, showTooltipPopover } from './tooltip-popover.js';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 const TIP_SLOT = 'tip';
 
-interface PopoverElement extends HTMLElement {
-  showPopover(): void;
-  hidePopover(): void;
-}
-
-function isPopoverElement(el: Element | null): el is PopoverElement {
-  return !!el && typeof (el as Partial<PopoverElement>).showPopover === 'function';
-}
-
 /**
  * @tag ds-tooltip
- * @summary Contextual label that appears on hover/focus of the trigger element.
+ * @summary Contextual label that appears on hover/focus of the trigger element. Escape hides a tip shown by hover or focus until the pointer or focus next enters; one held up by `open` stays.
  * @slot default - The trigger element that the tooltip is anchored to.
  * @slot tip - The tooltip content (can be any HTML).
  * @csspart anchor - The wrapper around the trigger element.
@@ -40,26 +32,49 @@ export class DsTooltip extends DsElement {
 
   @state() private _hovered = false;
   @state() private _focused = false;
+  @state() private _dismissedByEscape = false;
 
   private _hoverTimer?: number;
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.#clearHoverTimer();
-    this.#hide();
+    this.#listenForEscapeWhile(false);
+    hideTooltipPopover(this.#tooltipEl());
   }
 
   override updated(_changed: PropertyValues): void {
-    if (this.#shouldShow()) {
-      this.#show();
+    const showsTransiently = this.#showsTransiently();
+    if (this.#hasTip() && (this.open || showsTransiently)) {
+      showTooltipPopover(this.#tooltipEl());
     } else {
-      this.#hide();
+      hideTooltipPopover(this.#tooltipEl());
+    }
+    this.#listenForEscapeWhile(showsTransiently);
+  }
+
+  #hasTip(): boolean {
+    return this.#slots.has(TIP_SLOT);
+  }
+
+  #showsTransiently(): boolean {
+    return this.#hasTip() && !this._dismissedByEscape && (this._hovered || (!this.hoverOnly && this._focused));
+  }
+
+  #listenForEscapeWhile(listening: boolean): void {
+    if (listening) {
+      document.addEventListener('keydown', this.#dismissOnEscape);
+    } else {
+      document.removeEventListener('keydown', this.#dismissOnEscape);
     }
   }
 
-  #shouldShow(): boolean {
-    return this.#slots.has(TIP_SLOT) && (this.open || this._hovered || (!this.hoverOnly && this._focused));
-  }
+  #dismissOnEscape = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this._dismissedByEscape = true;
+    }
+  };
 
   #clearHoverTimer = (): void => {
     if (this._hoverTimer !== undefined) {
@@ -70,6 +85,7 @@ export class DsTooltip extends DsElement {
 
   #onMouseEnter = (): void => {
     this.#clearHoverTimer();
+    this._dismissedByEscape = false;
     if (this.delay > 0) {
       this._hoverTimer = window.setTimeout(() => {
         this._hovered = true;
@@ -88,6 +104,7 @@ export class DsTooltip extends DsElement {
     if (this.hoverOnly) {
       return;
     }
+    this._dismissedByEscape = false;
     this._focused = true;
   };
 
@@ -98,36 +115,9 @@ export class DsTooltip extends DsElement {
     this._focused = false;
   };
 
-  #tooltipEl(): PopoverElement | null {
-    const el = this.shadowRoot?.querySelector('.tooltip') ?? null;
-    return isPopoverElement(el) ? el : null;
+  #tooltipEl(): Element | null {
+    return this.shadowRoot?.querySelector('.tooltip') ?? null;
   }
-
-  #show = (): void => {
-    const tooltip = this.#tooltipEl();
-    if (!tooltip) {
-      return;
-    }
-    if (!tooltip.matches(':popover-open')) {
-      try {
-        tooltip.showPopover();
-      } catch {
-        // ignore - possibly unsupported
-      }
-    }
-  };
-
-  #hide = (): void => {
-    const tooltip = this.#tooltipEl();
-    if (!tooltip || !tooltip.matches(':popover-open')) {
-      return;
-    }
-    try {
-      tooltip.hidePopover();
-    } catch {
-      // ignore
-    }
-  };
 
   override render(): TemplateResult {
     return html`

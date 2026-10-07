@@ -79,6 +79,23 @@ function setupPopoverHarness(el: DsTooltip): PopoverHarness {
   };
 }
 
+function pressEscape(): KeyboardEvent {
+  const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+  document.dispatchEvent(event);
+  return event;
+}
+
+async function mountWithHarness(
+  markup: string,
+): Promise<{ el: DsTooltip; harness: PopoverHarness; anchor: HTMLElement }> {
+  const el = await mount<DsTooltip>(markup);
+  const harness = setupPopoverHarness(el);
+  const anchor = el.shadowRoot!.querySelector('.anchor') as HTMLElement;
+  return { el, harness, anchor };
+}
+
+const TOOLTIP_MARKUP = '<ds-tooltip><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>';
+
 describe('<ds-tooltip>', () => {
   it('uses a responsive viewport-safe width with a consumer override', () => {
     expect(tooltipStyles.cssText).toContain(
@@ -271,5 +288,92 @@ describe('<ds-tooltip>', () => {
     await el.updateComplete;
 
     expect(el.open).toBe(true);
+  });
+
+  it('hides a tip shown on focus when Escape is pressed, while the trigger keeps focus', async () => {
+    const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    anchor.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await el.updateComplete;
+    expect(harness.showCalls).toBe(1);
+
+    const event = pressEscape();
+    await el.updateComplete;
+
+    expect(harness.hideCalls).toBe(1);
+    expect(event.defaultPrevented).toBe(true);
+  });
+
+  it('hides a tip shown on hover when Escape is pressed anywhere in the document', async () => {
+    const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    await el.updateComplete;
+
+    pressEscape();
+    await el.updateComplete;
+
+    expect(harness.hideCalls).toBe(1);
+  });
+
+  it('shows a dismissed tip again once focus or hover re-enters the trigger', async () => {
+    const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    anchor.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await el.updateComplete;
+    pressEscape();
+    await el.updateComplete;
+
+    anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    await el.updateComplete;
+    expect(harness.showCalls).toBe(2);
+
+    anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+    await el.updateComplete;
+    pressEscape();
+    anchor.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+    await el.updateComplete;
+    anchor.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await el.updateComplete;
+    expect(harness.showCalls).toBe(3);
+  });
+
+  it('keeps a tip held up by open showing on Escape, leaving open to the host', async () => {
+    const { el, harness } = await mountWithHarness(
+      '<ds-tooltip open><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>',
+    );
+    await el.updateComplete;
+
+    const event = pressEscape();
+    await el.updateComplete;
+
+    expect(el.open).toBe(true);
+    expect(harness.hideCalls).toBe(0);
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  it('leaves Escape alone while no tip is showing, so other overlays still receive it', async () => {
+    const { el } = await mountWithHarness(TOOLTIP_MARKUP);
+    await el.updateComplete;
+
+    expect(pressEscape().defaultPrevented).toBe(false);
+  });
+
+  it('ignores keys other than Escape while a tip is showing', async () => {
+    const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    anchor.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await el.updateComplete;
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await el.updateComplete;
+
+    expect(harness.hideCalls).toBe(0);
+  });
+
+  it('stops listening for Escape once disconnected', async () => {
+    const { el, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    anchor.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await el.updateComplete;
+
+    el.remove();
+
+    expect(pressEscape().defaultPrevented).toBe(false);
   });
 });
