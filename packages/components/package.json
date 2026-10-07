@@ -201,6 +201,14 @@
       "types": "./dist/navigation/nav-item/define.d.ts",
       "import": "./dist/navigation/nav-item/define.js"
     },
+    "./step-list": {
+      "types": "./dist/navigation/step-list/index.d.ts",
+      "import": "./dist/navigation/step-list/index.js"
+    },
+    "./step-list/define": {
+      "types": "./dist/navigation/step-list/define.d.ts",
+      "import": "./dist/navigation/step-list/define.js"
+    },
     "./menu": {
       "types": "./dist/navigation/menu/index.d.ts",
       "import": "./dist/navigation/menu/index.js"

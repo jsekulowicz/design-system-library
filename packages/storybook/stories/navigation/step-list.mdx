@@ -1,0 +1,77 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as StepListStories from './step-list.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/step-list/define';
+
+<Meta of={StepListStories} />
+
+# Step list
+
+Progress trail for a form split across several steps. It names every step up front, so the reader knows how much is left before they start, and marks each one done, current or upcoming as they move through.
+
+Where a breadcrumb describes hierarchy - where this page sits among its ancestors - a step list describes progress through one task.
+
+## Anatomy
+
+An `<ol>` of steps, optionally under a row of trailing controls. The steps are data rather than markup: the component takes them from the `steps` array - each entry a `label` with an optional `description`, `disabled` and `reason` - and marks them against `currentIndex`, so everything before that index is done and everything after it is upcoming. Bind both as properties, the same way `ds-segmented-control` takes its `options`.
+
+Every step renders as a `<button>`, and every one that is neither current nor disabled emits `ds-step-select` with its index, ahead of the reader as well as behind. A form whose early steps are all optional has no reason to make its reader walk through them, so which steps may be reached is the host's judgement, not a matter of position.
+
+A step marked `disabled` stays in the list and keeps its number, but never becomes reachable and never earns a checkmark. That covers both a step the reader's earlier answers ruled out and one they have not yet earned: dropping it instead would change the number of steps underneath them. Give it a `reason` and it stays focusable and answers for itself in a tooltip - a step that is merely dimmed leaves the reader guessing what they did wrong.
+
+Below the `md` breakpoint the component condenses itself to the current step and a rail, measuring its own container rather than the viewport, so it also condenses inside a narrow column on a wide screen. The `compact` attribute forces that layout at any width. Each rail segment is a button over a touch-sized target, so the rail navigates the same steps the full row does.
+
+Labels wrap rather than truncate. A step list is wayfinding, and a name cut off mid-word tells the reader less than nothing, so a long label costs height instead of meaning - keep labels to a word or two and the row stays one line deep.
+
+<ds-tabs value="api">
+    <ds-tab slot="tab" value="api">API</ds-tab>
+    <ds-tab slot="tab" value="examples">Examples</ds-tab>
+    <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+    <ds-tab-panel value="api">
+      <Canvas of={StepListStories.Basic} />
+      <h3>Props</h3>
+      <Controls of={StepListStories.Basic} />
+      <ComponentApi tag="ds-step-list" />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="examples">
+      <Stories includePrimary={false} />
+    </ds-tab-panel>
+
+    <ds-tab-panel value="guidelines">
+      <h3>Do</h3>
+      <ul>
+        <li>Show every step from the start, including ones the reader may end up skipping - the list is the promise being made about how long this takes.</li>
+        <li>Keep labels to a word or two, and put the sentence in <code>description</code>.</li>
+        <li>Handle <code>ds-step-select</code> - a step that looks clickable and does nothing is worse than one that is inert.</li>
+        <li>Mark a step <code>disabled</code> while the reader cannot reach it yet, so the list never offers a step that would be refused.</li>
+        <li>Give every <code>disabled</code> step a <code>reason</code>; the tooltip is the only place the reader can learn why.</li>
+        <li>Reach for <code>compact</code> only to force the condensed layout early - a narrow container already condenses on its own.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Don't use it for navigation between pages - that is a breadcrumb or a tab set.</li>
+        <li>Don't let the step list scroll with the content; it belongs above the scrolling region, where it stays visible.</li>
+        <li>Don't add or remove steps midway - the promise stops holding. Mark a step <code>disabled</code> instead when the reader's answers rule it out.</li>
+        <li>Don't rely on color alone to say which step is done; the checkmark carries it too.</li>
+      </ul>
+      <h3>Accessibility</h3>
+      <ul>
+        <li>Renders a <code>&lt;nav&gt;</code> wrapping an <code>&lt;ol&gt;</code>, labeled by the <code>label</code> attribute ("Steps" by default).</li>
+        <li>A step is named by its label and description. Its number or checkmark is decorative - the list already tells a screen reader where the step sits.</li>
+        <li>
+          The current step carries <code>aria-current="step"</code> and sits out of the tab order. It stays the same
+          button when the reader picks it, so focus stays on it and the next Tab continues from there.
+        </li>
+        <li>
+          A disabled step carries <code>aria-disabled="true"</code>. It is focusable only when it has a
+          <code>reason</code> to give, and then <code>aria-describedby</code> points at that reason, so asking why works
+          by keyboard and by screen reader. Tabbing onto it shows the reason, and Escape hides it again.
+        </li>
+        <li>A disabled step with nothing to say is natively disabled, so tabbing never lands somewhere that refuses without explaining.</li>
+        <li>The condensed rail behaves the same way, each segment carrying its step's name and the same description.</li>
+      </ul>
+    </ds-tab-panel>
+
+  </ds-tabs>

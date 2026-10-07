@@ -98,6 +98,7 @@ export { DsMenu, DsMenuItem } from './navigation/menu/index.js';
 export { DsMenuButton, type MenuButtonPlacement } from './navigation/menu-button/index.js';
 export { DsNavItem, DsNavGroup } from './navigation/nav-item/index.js';
 export { DsSidenav } from './navigation/sidenav/index.js';
+export { DsStepList, type StepListStep } from './navigation/step-list/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './navigation/tabs/index.js';
 export { DsTopBar } from './navigation/top-bar/index.js';
 

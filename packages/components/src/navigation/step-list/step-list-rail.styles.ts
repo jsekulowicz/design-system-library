@@ -1,0 +1,81 @@
+import { css, unsafeCSS } from 'lit';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
+
+const belowTabletBreakpoint = unsafeCSS(`calc(${breakpoint.md} - 0.02px)`);
+
+export const stepListRailStyles = css`
+  .condensed {
+    display: none;
+    flex-direction: column;
+  }
+
+  .condensed-current {
+    display: flex;
+    align-items: center;
+    gap: var(--ds-space-2);
+    min-inline-size: 0;
+  }
+
+  .rail {
+    display: flex;
+    gap: var(--ds-space-1);
+  }
+
+  .rail .reason-tooltip {
+    flex: 1 1 0;
+  }
+
+  .segment {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    block-size: var(--ds-step-list-segment-target, 2.75rem);
+    border: none;
+    background: none;
+    padding: 0;
+    border-radius: var(--ds-radius-xs);
+    cursor: pointer;
+  }
+
+  .reason-tooltip .segment {
+    inline-size: 100%;
+  }
+
+  .segment:is(:disabled, [aria-current='step']) {
+    cursor: default;
+  }
+
+  .segment::after {
+    content: '';
+    inline-size: 100%;
+    block-size: var(--ds-space-1);
+    border-radius: var(--ds-radius-full);
+    background: var(--ds-color-fg-muted);
+  }
+
+  .segment:is([data-status='done'], [data-status='current'])::after {
+    background: var(--ds-color-accent);
+  }
+
+  .segment[aria-disabled='true']::after {
+    background: var(--ds-color-fg-muted);
+    opacity: 0.6;
+  }
+
+  @container (max-width: ${belowTabletBreakpoint}) {
+    ol {
+      display: none;
+    }
+    .condensed {
+      display: flex;
+    }
+  }
+
+  :host([compact]) ol {
+    display: none;
+  }
+
+  :host([compact]) .condensed {
+    display: flex;
+  }
+`;

@@ -43,6 +43,7 @@ export { ShareBar } from './ds-share-bar.js';
 export { Sidenav } from './ds-sidenav.js';
 export { Skeleton } from './ds-skeleton.js';
 export { StatTile } from './ds-stat-tile.js';
+export { StepList } from './ds-step-list.js';
 export { Tab } from './ds-tab.js';
 export { TabPanel } from './ds-tab-panel.js';
 export { Table } from './ds-table.js';

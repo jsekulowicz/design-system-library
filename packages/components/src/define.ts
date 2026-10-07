@@ -41,6 +41,7 @@ import './navigation/menu/define.js';
 import './navigation/menu-button/define.js';
 import './navigation/nav-item/define.js';
 import './navigation/sidenav/define.js';
+import './navigation/step-list/define.js';
 import './navigation/tabs/define.js';
 import './navigation/top-bar/define.js';
 
