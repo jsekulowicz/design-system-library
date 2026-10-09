@@ -95,9 +95,9 @@ export const WithAStepTheAnswersRuledOut: Story = {
   `,
 };
 
-export const LabelsWrapWhenTheRowRunsOutOfRoom: Story = {
+export const SwitchesToCompactWhenTheRowDoesNotFit: Story = {
   render: () => html`
-    <div style="inline-size: 50rem">
+    <div style="inline-size: 60rem; max-inline-size: 100%; resize: horizontal; overflow: auto">
       <ds-step-list
         .steps=${[
           { label: 'Name and size', description: 'Required' },

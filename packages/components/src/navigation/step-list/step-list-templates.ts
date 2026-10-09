@@ -98,3 +98,26 @@ export function renderSegmentButton(
     @click=${onActivate}
   ></button>`;
 }
+
+export interface ReasonTooltipOptions {
+  index: number;
+  layout: StepListLayout;
+  reason: string | undefined;
+  open: boolean;
+}
+
+export function renderInReasonTooltip(
+  trigger: TemplateResult,
+  { index, layout, reason, open }: ReasonTooltipOptions,
+): TemplateResult {
+  return html`
+    <ds-tooltip class="reason-tooltip" ?full-width=${layout === 'compact'} .open=${open}>
+      ${trigger}
+      <span slot="tip" id=${reasonId(index, layout)}>${reason}</span>
+    </ds-tooltip>
+  `;
+}
+
+export function renderCompactCurrentStep(step: StepListStep, index: number): TemplateResult {
+  return html`<div class="compact-current">${renderMarker('current', index)}${renderStepText(step)}</div>`;
+}

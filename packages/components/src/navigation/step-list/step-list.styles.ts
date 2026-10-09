@@ -3,8 +3,11 @@ import { css } from 'lit';
 export const stepListStyles = css`
   :host {
     display: block;
-    container-type: inline-size;
     font-family: var(--ds-font-body);
+  }
+
+  nav {
+    position: relative;
   }
 
   .trailing {
@@ -29,7 +32,6 @@ export const stepListStyles = css`
   .step {
     display: flex;
     align-items: center;
-    min-inline-size: 0;
   }
 
   .step:not(:first-child) {
@@ -39,7 +41,7 @@ export const stepListStyles = css`
   .step:not(:first-child)::before {
     content: '';
     flex: 1 1 0;
-    min-inline-size: var(--ds-space-4);
+    min-inline-size: var(--ds-step-list-connector-min, 2rem);
     block-size: 2px;
     margin-inline: var(--ds-space-3);
     background: var(--ds-color-border-subtle);
@@ -47,10 +49,6 @@ export const stepListStyles = css`
 
   .step:is([data-status='done'], [data-status='current']):not(.step-disabled)::before {
     background: var(--ds-color-accent);
-  }
-
-  .step .reason-tooltip {
-    min-inline-size: 0;
   }
 
   :is(.step-control, .segment) {
@@ -69,7 +67,6 @@ export const stepListStyles = css`
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
-    min-inline-size: 0;
     font: inherit;
     color: inherit;
     text-align: start;
@@ -106,7 +103,6 @@ export const stepListStyles = css`
   .text {
     display: flex;
     flex-direction: column;
-    min-inline-size: 0;
     gap: var(--ds-step-list-text-gap, var(--ds-space-1));
   }
 
@@ -114,6 +110,10 @@ export const stepListStyles = css`
   .step-description {
     line-height: var(--ds-line-height-tight);
     overflow-wrap: anywhere;
+  }
+
+  ol :is(.step-label, .step-description) {
+    white-space: nowrap;
   }
 
   .step-label {

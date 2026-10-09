@@ -1,7 +1,4 @@
-import { css, unsafeCSS } from 'lit';
-import { breakpoint } from '@jsekulowicz/ds-tokens';
-
-const belowTabletBreakpoint = unsafeCSS(`calc(${breakpoint.md} - 0.02px)`);
+import { css } from 'lit';
 
 export const stepListCompactStyles = css`
   .compact {
@@ -48,20 +45,19 @@ export const stepListCompactStyles = css`
     opacity: 0.6;
   }
 
-  @container (max-width: ${belowTabletBreakpoint}) {
-    ol {
-      display: none;
-    }
-    .compact {
-      display: flex;
-    }
+  .showing-compact ol {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  .showing-compact .compact {
+    display: flex;
   }
 
   :host([compact]) ol {
     display: none;
-  }
-
-  :host([compact]) .compact {
-    display: flex;
   }
 `;

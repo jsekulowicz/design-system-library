@@ -21,7 +21,7 @@ A step marked `disabled` stays in the list and keeps its number, but never becom
 
 `disabled` only says whether the reader may move to a step, so it never applies to the step they are on. A disabled step at `currentIndex` is shown as the current step, with no reason tooltip, and the component warns in the console: the host has let the reader onto a step it calls unreachable, and only the host knows where they should be instead.
 
-Below the `md` breakpoint the component switches to its compact layout: the current step above a rail of segments. It measures its own container rather than the viewport, so it is also compact inside a narrow column on a wide screen. The `compact` attribute forces that layout at any width. Each rail segment is a button over a touch-sized target, so the rail navigates the same steps the full row does.
+Labels and descriptions never wrap in the full row, and the line between two steps never gets shorter than `--ds-step-list-connector-min`. When the row cannot fit on one line under those rules, the component switches to its compact layout: the current step above a rail of segments. It measures its own content against its own width rather than the viewport, so the switch follows the labels: a longer translation switches earlier, and a narrow column on a wide screen switches too. The `compact` attribute forces that layout at any width, and the component then stops measuring. Each rail segment is a button over a touch-sized target, so the rail navigates the same steps the full row does.
 
 Labels wrap rather than truncate. A step list is wayfinding, and a name cut off mid-word tells the reader less than nothing, so a long label costs height instead of meaning - keep labels to a word or two and the row stays one line deep.
 
