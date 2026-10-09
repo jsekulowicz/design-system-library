@@ -1,5 +1,17 @@
 # @jsekulowicz/ds-react
 
+## 0.82.0
+
+### Minor Changes
+
+- 3e90421: Add `ds-step-list`, a numbered progress trail for stepped forms. Renders steps as done, current or upcoming, emits `ds-step-select` for any step the host has not disabled, and switches to a compact layout - the current step above a segmented rail - whenever its full row would not fit on one line, or at any width with `compact`. Labels never wrap in the full row.
+
+### Patch Changes
+
+- Updated dependencies [3e90421]
+- Updated dependencies [5202c24]
+  - @jsekulowicz/ds-components@0.82.0
+
 ## 0.81.0
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.82.0
+
+### Minor Changes
+
+- 3e90421: Add `ds-step-list`, a numbered progress trail for stepped forms. Renders steps as done, current or upcoming, emits `ds-step-select` for any step the host has not disabled, and switches to a compact layout - the current step above a segmented rail - whenever its full row would not fit on one line, or at any width with `compact`. Labels never wrap in the full row.
+
+### Patch Changes
+
+- 5202c24: `ds-tooltip` now hides on Escape when it is showing because of hover or focus, and stays hidden until the pointer or focus next enters the trigger (WCAG 1.4.13). A tooltip held up by the `open` property is unaffected.
+
 ## 0.81.0
 
 ### Minor Changes
