@@ -45,33 +45,34 @@ export const stepListStyles = css`
     background: var(--ds-color-border-subtle);
   }
 
-  .step:is([data-status='done'], [data-status='current'])::before {
+  .step:is([data-status='done'], [data-status='current']):not(.step-disabled)::before {
     background: var(--ds-color-accent);
   }
 
   .step .reason-tooltip {
     min-inline-size: 0;
-    flex: 0 1 auto;
+  }
+
+  :is(.step-control, .segment) {
+    border: none;
+    background: none;
+    padding: 0;
+    border-radius: var(--ds-radius-xs);
+    cursor: pointer;
+  }
+
+  :is(.step-control, .segment):is(:disabled, [aria-current='step']) {
+    cursor: default;
   }
 
   .step-control {
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
-    flex: 0 1 auto;
     min-inline-size: 0;
-    border: none;
-    background: none;
-    padding: 0;
-    border-radius: var(--ds-radius-xs);
     font: inherit;
     color: inherit;
     text-align: start;
-    cursor: pointer;
-  }
-
-  .step-control:is(:disabled, [aria-current='step']) {
-    cursor: default;
   }
 
   .marker {
@@ -133,10 +134,6 @@ export const stepListStyles = css`
 
   .step-disabled :is(.marker, .text) {
     opacity: 0.6;
-  }
-
-  .step.step-disabled::before {
-    background: var(--ds-color-border-subtle);
   }
 
   .step-description {

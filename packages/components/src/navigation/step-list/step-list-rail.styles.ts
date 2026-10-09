@@ -30,19 +30,6 @@ export const stepListRailStyles = css`
     display: flex;
     align-items: center;
     block-size: var(--ds-step-list-segment-target, 2.75rem);
-    border: none;
-    background: none;
-    padding: 0;
-    border-radius: var(--ds-radius-xs);
-    cursor: pointer;
-  }
-
-  .reason-tooltip .segment {
-    inline-size: 100%;
-  }
-
-  .segment:is(:disabled, [aria-current='step']) {
-    cursor: default;
   }
 
   .segment::after {
@@ -53,12 +40,11 @@ export const stepListRailStyles = css`
     background: var(--ds-color-fg-muted);
   }
 
-  .segment:is([data-status='done'], [data-status='current'])::after {
+  .segment:is([data-status='done'], [data-status='current']):not([aria-disabled='true'])::after {
     background: var(--ds-color-accent);
   }
 
   .segment[aria-disabled='true']::after {
-    background: var(--ds-color-fg-muted);
     opacity: 0.6;
   }
 
