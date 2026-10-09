@@ -19,6 +19,8 @@ Every step renders as a `<button>`, and every one that is neither current nor di
 
 A step marked `disabled` stays in the list and keeps its number, but never becomes reachable and never earns a checkmark. That covers both a step the reader's earlier answers ruled out and one they have not yet earned: dropping it instead would change the number of steps underneath them. Give it a `reason` and it stays focusable and answers for itself in a tooltip - a step that is merely dimmed leaves the reader guessing what they did wrong.
 
+`disabled` only says whether the reader may move to a step, so it never applies to the step they are on. A disabled step at `currentIndex` is shown as the current step, with no reason tooltip, and the component warns in the console: the host has let the reader onto a step it calls unreachable, and only the host knows where they should be instead.
+
 Below the `md` breakpoint the component condenses itself to the current step and a rail, measuring its own container rather than the viewport, so it also condenses inside a narrow column on a wide screen. The `compact` attribute forces that layout at any width. Each rail segment is a button over a touch-sized target, so the rail navigates the same steps the full row does.
 
 Labels wrap rather than truncate. A step list is wayfinding, and a name cut off mid-word tells the reader less than nothing, so a long label costs height instead of meaning - keep labels to a word or two and the row stays one line deep.
@@ -55,6 +57,7 @@ Labels wrap rather than truncate. A step list is wayfinding, and a name cut off 
         <li>Don't let the step list scroll with the content; it belongs above the scrolling region, where it stays visible.</li>
         <li>Don't add or remove steps midway - the promise stops holding. Mark a step <code>disabled</code> instead when the reader's answers rule it out.</li>
         <li>Don't rely on color alone to say which step is done; the checkmark carries it too.</li>
+        <li>Don't set <code>currentIndex</code> to a disabled step - move the reader to a reachable one first.</li>
       </ul>
       <h3>Accessibility</h3>
       <ul>

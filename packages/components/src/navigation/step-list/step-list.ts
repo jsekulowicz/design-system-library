@@ -5,16 +5,17 @@ import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { stepListStyles } from './step-list.styles.js';
 import { stepListRailStyles } from './step-list-rail.styles.js';
 import { ReasonTooltipController } from './reason-tooltip-controller.js';
+import { stepAsRendered, warnWhenTheCurrentStepTurnsDisabled } from './disabled-current-step.js';
 import {
   reasonId,
   renderMarker,
   renderSegmentButton,
   renderStepButton,
   renderStepText,
+  statusOf,
   type StepButtonOptions,
   type StepListLayout,
   type StepListStep,
-  type StepStatus,
 } from './step-list-templates.js';
 
 export type { StepListStep } from './step-list-templates.js';
@@ -48,15 +49,14 @@ export class DsStepList extends DsElement {
 
   readonly #slots = new SlotPresenceController(this, ['trailing']);
   readonly #reasonTooltip = new ReasonTooltipController(this, (index) => this.#hasReasonToGive(index));
+  #currentStepWasDisabled = false;
 
-  #statusOf(index: number): StepStatus {
-    if (index < this.currentIndex) {
-      return 'done';
-    }
-    if (index === this.currentIndex) {
-      return 'current';
-    }
-    return 'upcoming';
+  override willUpdate(): void {
+    this.#currentStepWasDisabled = warnWhenTheCurrentStepTurnsDisabled(
+      this.steps,
+      this.currentIndex,
+      this.#currentStepWasDisabled,
+    );
   }
 
   #isReachable(index: number): boolean {
@@ -65,7 +65,7 @@ export class DsStepList extends DsElement {
 
   #hasReasonToGive(index: number): boolean {
     const step = this.steps[index];
-    return Boolean(step?.disabled && step.reason);
+    return Boolean(step && stepAsRendered(step, index, this.currentIndex).disabled && step.reason);
   }
 
   #activate(index: number): void {
@@ -105,7 +105,7 @@ export class DsStepList extends DsElement {
   }
 
   #renderStep(step: StepListStep, index: number): TemplateResult {
-    const status = this.#statusOf(index);
+    const status = statusOf(index, this.currentIndex);
     return html`
       <li part="step" class="step${step.disabled ? ' step-disabled' : ''}" data-status=${status}>
         ${this.#renderWithReasonIfGiven(step, index, 'list', (options) => renderStepButton(step, index, status, options))}
@@ -114,7 +114,7 @@ export class DsStepList extends DsElement {
   }
 
   #renderSegment(step: StepListStep, index: number): TemplateResult {
-    const status = this.#statusOf(index);
+    const status = statusOf(index, this.currentIndex);
     return this.#renderWithReasonIfGiven(step, index, 'rail', (options) => renderSegmentButton(step, status, options));
   }
 
@@ -129,7 +129,9 @@ export class DsStepList extends DsElement {
               </div>`
             : nothing
         }
-        <div class="rail">${this.steps.map((step, index) => this.#renderSegment(step, index))}</div>
+        <div class="rail">
+          ${this.steps.map((step, index) => this.#renderSegment(stepAsRendered(step, index, this.currentIndex), index))}
+        </div>
       </div>
     `;
   }
@@ -141,7 +143,7 @@ export class DsStepList extends DsElement {
           <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
         </div>
         <ol part="list" role="list">
-          ${this.steps.map((step, index) => this.#renderStep(step, index))}
+          ${this.steps.map((step, index) => this.#renderStep(stepAsRendered(step, index, this.currentIndex), index))}
         </ol>
         ${this.#renderCondensed()}
       </nav>

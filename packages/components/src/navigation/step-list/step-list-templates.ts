@@ -13,6 +13,16 @@ export type StepStatus = 'done' | 'current' | 'upcoming';
 
 export type StepListLayout = 'list' | 'rail';
 
+export function statusOf(index: number, currentIndex: number): StepStatus {
+  if (index < currentIndex) {
+    return 'done';
+  }
+  if (index === currentIndex) {
+    return 'current';
+  }
+  return 'upcoming';
+}
+
 export function reasonId(index: number, layout: StepListLayout): string {
   return `reason-${layout}-${index}`;
 }
