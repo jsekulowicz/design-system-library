@@ -12,6 +12,22 @@ const CHECKOUT_STEPS = [
   { label: 'Review' },
 ];
 
+interface StepListElement extends HTMLElement {
+  currentIndex: number;
+}
+
+function moveToTheSelectedStep(event: Event): void {
+  const list = event.currentTarget as StepListElement;
+  list.currentIndex = (event as CustomEvent<{ index: number }>).detail.index;
+}
+
+function startOverFromTheFirstStep(event: Event): void {
+  const list = (event.currentTarget as HTMLElement).closest<StepListElement>('ds-step-list');
+  if (list) {
+    list.currentIndex = 0;
+  }
+}
+
 const meta: Meta = {
   title: 'Navigation/StepList',
   component: 'ds-step-list',
@@ -79,21 +95,23 @@ export const WithAStepTheAnswersRuledOut: Story = {
   `,
 };
 
-export const WithALabelTooLongForItsColumn: Story = {
+export const LabelsWrapWhenTheRowRunsOutOfRoom: Story = {
   render: () => html`
-    <ds-step-list
-      .steps=${[
-        { label: 'Name and size', description: 'Required' },
-        { label: 'Who can open this crossword', description: 'Optional' },
-        { label: 'Words this crossword is built from', description: 'Optional' },
-        { label: 'Check and finish', description: 'Almost there' },
-      ]}
-      .currentIndex=${1}
-    ></ds-step-list>
+    <div style="inline-size: 50rem">
+      <ds-step-list
+        .steps=${[
+          { label: 'Name and size', description: 'Required' },
+          { label: 'Who can open this crossword', description: 'Optional' },
+          { label: 'Words this crossword is built from', description: 'Optional' },
+          { label: 'Check and finish', description: 'Almost there' },
+        ]}
+        .currentIndex=${1}
+      ></ds-step-list>
+    </div>
   `,
 };
 
-export const CondensedWithAStepTheAnswersRuledOut: Story = {
+export const CompactWithAStepTheAnswersRuledOut: Story = {
   render: () => html`
     <ds-step-list
       .steps=${[
@@ -113,7 +131,7 @@ export const CondensedWithAStepTheAnswersRuledOut: Story = {
   `,
 };
 
-export const CondensesInANarrowContainer: Story = {
+export const CompactInANarrowContainer: Story = {
   render: () => html`
     <div style="max-width: 22rem">
       <ds-step-list .steps=${CHECKOUT_STEPS} .currentIndex=${2}></ds-step-list>
@@ -125,25 +143,19 @@ export const CompactForcedAtAnyWidth: Story = {
   render: () => html` <ds-step-list .steps=${CHECKOUT_STEPS} .currentIndex=${2} compact></ds-step-list> `,
 };
 
-export const WithTrailingControl: Story = {
+export const StartingOverFromTheTrailingSlot: Story = {
   render: () => html`
-    <ds-step-list .steps=${CHECKOUT_STEPS} .currentIndex=${2}>
-      <ds-button slot="trailing" variant="ghost" size="sm">
+    <ds-step-list .steps=${CHECKOUT_STEPS} .currentIndex=${2} @ds-step-select=${moveToTheSelectedStep}>
+      <ds-button slot="trailing" variant="ghost" size="sm" @click=${startOverFromTheFirstStep}>
         <ds-icon slot="leading" name="arrow-path" size="lg"></ds-icon>
-        Reset
+        Start over
       </ds-button>
     </ds-step-list>
   `,
 };
 
 export const MovingToAnyEnabledStep: Story = {
-  render: function render() {
-    function onSelect(event: Event) {
-      const list = event.currentTarget as HTMLElement & { currentIndex: number };
-      list.currentIndex = (event as CustomEvent<{ index: number }>).detail.index;
-    }
-    return html`
-      <ds-step-list .steps=${CHECKOUT_STEPS} .currentIndex=${3} @ds-step-select=${onSelect}></ds-step-list>
-    `;
-  },
+  render: () => html`
+    <ds-step-list .steps=${CHECKOUT_STEPS} .currentIndex=${3} @ds-step-select=${moveToTheSelectedStep}></ds-step-list>
+  `,
 };
