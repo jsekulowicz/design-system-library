@@ -93,7 +93,7 @@ export const stepListStyles = css`
   }
 
   .step[data-status='current'] .marker-number,
-  .condensed-current .marker-number {
+  .compact-current .marker-number {
     background: var(--ds-color-accent);
     color: var(--ds-color-accent-fg);
     box-shadow: 0 0 0 3px var(--ds-color-accent-subtle);
@@ -123,7 +123,7 @@ export const stepListStyles = css`
   }
 
   .step[data-status='current'] .step-label,
-  .condensed-current .step-label {
+  .compact-current .step-label {
     color: var(--ds-color-accent);
     font-weight: var(--ds-font-weight-semibold);
   }

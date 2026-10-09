@@ -27,25 +27,25 @@ function collectSelections(el: DsStepList): number[] {
   return selected;
 }
 
-describe('<ds-step-list> condensed layout', () => {
-  it('offers a condensed view of the current step alongside the full row, for CSS to choose between', async () => {
+describe('<ds-step-list> compact layout', () => {
+  it('offers a compact view of the current step alongside the full row, for CSS to choose between', async () => {
     const el = await mountStepList({ currentIndex: 1 });
     expect(el.shadowRoot!.querySelector('[part="list"]')).not.toBeNull();
-    expect(el.shadowRoot!.querySelector('.condensed-current .step-label')!.textContent).toBe('Visibility');
+    expect(el.shadowRoot!.querySelector('.compact-current .step-label')!.textContent).toBe('Visibility');
     expect(el.shadowRoot!.querySelectorAll('.segment')).toHaveLength(3);
   });
 
-  it('reflects compact as an attribute so the stylesheet can force the condensed view', async () => {
+  it('reflects compact as an attribute so the stylesheet can force the compact layout', async () => {
     const el = await mountStepList({ currentIndex: 1, compact: true });
     expect(el.hasAttribute('compact')).toBe(true);
   });
 
-  it('leaves the condensed current step out when there are no steps to show', async () => {
+  it('leaves the compact current step out when there are no steps to show', async () => {
     const el = await mountWithProps<DsStepList>('<ds-step-list></ds-step-list>', {});
-    expect(el.shadowRoot!.querySelector('.condensed-current')).toBeNull();
+    expect(el.shadowRoot!.querySelector('.compact-current')).toBeNull();
   });
 
-  it('moves between steps from the condensed rail', async () => {
+  it('moves between steps from the compact rail', async () => {
     const el = await mountStepList({ currentIndex: 0 });
     const selected = collectSelections(el);
 

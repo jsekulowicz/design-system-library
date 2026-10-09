@@ -113,7 +113,7 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
     expect(wrapped.hasAttribute('full-width')).toBe(true);
   });
 
-  it('keeps the full list and the condensed rail on reasons of their own, so neither resolves to the hidden one', async () => {
+  it('keeps the full list and the compact rail on reasons of their own, so neither resolves to the hidden one', async () => {
     const el = await mountStepList({ currentIndex: 0 });
     const step = stepEls(el)[1].querySelector('button')!.getAttribute('aria-describedby');
     const segment = el.shadowRoot!.querySelectorAll('.segment')[1].getAttribute('aria-describedby');

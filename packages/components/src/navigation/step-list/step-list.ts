@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { stepListStyles } from './step-list.styles.js';
-import { stepListRailStyles } from './step-list-rail.styles.js';
+import { stepListCompactStyles } from './step-list-compact.styles.js';
 import { ReasonTooltipController } from './reason-tooltip-controller.js';
 import { stepAsRendered, warnWhenTheCurrentStepTurnsDisabled } from './disabled-current-step.js';
 import {
@@ -25,8 +25,8 @@ export type { StepListStep } from './step-list-templates.js';
  * @summary Numbered progress trail for a stepped form. Marks steps before the current index done
  * and lets the reader move to any step the host has not disabled, ahead of the current one included.
  * @slot trailing - Controls above the steps, such as a reset action.
- * @attr {boolean} compact - Forces the condensed current-step-plus-rail layout, which a container
- * narrower than the `md` breakpoint already switches to on its own.
+ * @attr {boolean} compact - Forces the compact layout - the current step above a rail of segments - which a
+ * container narrower than the `md` breakpoint already switches to on its own.
  * @event ds-step-select - Fires when the reader picks a step that is neither the current one nor disabled.
  * Asking a disabled step for its `reason` never fires it. Detail: `{ index: number }`.
  * @csspart nav - The internal `<nav>` element.
@@ -34,13 +34,13 @@ export type { StepListStep } from './step-list-templates.js';
  * @csspart list - The ordered `<ol>` of steps.
  * @csspart step - Each step's container.
  * @csspart marker - A step's circular index/checkmark.
- * @csspart segment - One step's segment of the condensed rail.
+ * @csspart segment - One step's segment of the compact layout's rail.
  * @cssprop --ds-step-list-marker-size - Diameter of each step's marker. Defaults to `2rem`.
  * @cssprop --ds-step-list-text-gap - Space between a step's label and its description. Defaults to `--ds-space-1`.
- * @cssprop --ds-step-list-segment-target - Height of a condensed rail segment's touch target. Defaults to `2.75rem`.
+ * @cssprop --ds-step-list-segment-target - Height of a compact rail segment's touch target. Defaults to `2.75rem`.
  */
 export class DsStepList extends DsElement {
-  static override styles = [...DsElement.styles, stepListStyles, stepListRailStyles];
+  static override styles = [...DsElement.styles, stepListStyles, stepListCompactStyles];
 
   @property() label = 'Steps';
   @property({ type: Array }) steps: StepListStep[] = [];
@@ -82,7 +82,11 @@ export class DsStepList extends DsElement {
 
   #wrapInReasonTooltip(index: number, layout: StepListLayout, trigger: TemplateResult): TemplateResult {
     return html`
-      <ds-tooltip class="reason-tooltip" ?full-width=${layout === 'rail'} .open=${this.#reasonTooltip.isOpenFor(index)}>
+      <ds-tooltip
+        class="reason-tooltip"
+        ?full-width=${layout === 'compact'}
+        .open=${this.#reasonTooltip.isOpenFor(index)}
+      >
         ${trigger}
         <span slot="tip" id=${reasonId(index, layout)}>${this.steps[index]?.reason}</span>
       </ds-tooltip>
@@ -115,16 +119,18 @@ export class DsStepList extends DsElement {
 
   #renderSegment(step: StepListStep, index: number): TemplateResult {
     const status = statusOf(index, this.currentIndex);
-    return this.#renderWithReasonIfGiven(step, index, 'rail', (options) => renderSegmentButton(step, status, options));
+    return this.#renderWithReasonIfGiven(step, index, 'compact', (options) =>
+      renderSegmentButton(step, status, options),
+    );
   }
 
-  #renderCondensed(): TemplateResult {
+  #renderCompact(): TemplateResult {
     const currentStep = this.steps[this.currentIndex];
     return html`
-      <div class="condensed">
+      <div class="compact">
         ${
           currentStep
-            ? html`<div class="condensed-current">
+            ? html`<div class="compact-current">
                 ${renderMarker('current', this.currentIndex)}${renderStepText(currentStep)}
               </div>`
             : nothing
@@ -145,7 +151,7 @@ export class DsStepList extends DsElement {
         <ol part="list" role="list">
           ${this.steps.map((step, index) => this.#renderStep(stepAsRendered(step, index, this.currentIndex), index))}
         </ol>
-        ${this.#renderCondensed()}
+        ${this.#renderCompact()}
       </nav>
     `;
   }

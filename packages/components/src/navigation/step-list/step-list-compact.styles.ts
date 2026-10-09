@@ -3,13 +3,13 @@ import { breakpoint } from '@jsekulowicz/ds-tokens';
 
 const belowTabletBreakpoint = unsafeCSS(`calc(${breakpoint.md} - 0.02px)`);
 
-export const stepListRailStyles = css`
-  .condensed {
+export const stepListCompactStyles = css`
+  .compact {
     display: none;
     flex-direction: column;
   }
 
-  .condensed-current {
+  .compact-current {
     display: flex;
     align-items: center;
     gap: var(--ds-space-2);
@@ -52,7 +52,7 @@ export const stepListRailStyles = css`
     ol {
       display: none;
     }
-    .condensed {
+    .compact {
       display: flex;
     }
   }
@@ -61,7 +61,7 @@ export const stepListRailStyles = css`
     display: none;
   }
 
-  :host([compact]) .condensed {
+  :host([compact]) .compact {
     display: flex;
   }
 `;

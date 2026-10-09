@@ -21,7 +21,7 @@ A step marked `disabled` stays in the list and keeps its number, but never becom
 
 `disabled` only says whether the reader may move to a step, so it never applies to the step they are on. A disabled step at `currentIndex` is shown as the current step, with no reason tooltip, and the component warns in the console: the host has let the reader onto a step it calls unreachable, and only the host knows where they should be instead.
 
-Below the `md` breakpoint the component condenses itself to the current step and a rail, measuring its own container rather than the viewport, so it also condenses inside a narrow column on a wide screen. The `compact` attribute forces that layout at any width. Each rail segment is a button over a touch-sized target, so the rail navigates the same steps the full row does.
+Below the `md` breakpoint the component switches to its compact layout: the current step above a rail of segments. It measures its own container rather than the viewport, so it is also compact inside a narrow column on a wide screen. The `compact` attribute forces that layout at any width. Each rail segment is a button over a touch-sized target, so the rail navigates the same steps the full row does.
 
 Labels wrap rather than truncate. A step list is wayfinding, and a name cut off mid-word tells the reader less than nothing, so a long label costs height instead of meaning - keep labels to a word or two and the row stays one line deep.
 
@@ -49,7 +49,7 @@ Labels wrap rather than truncate. A step list is wayfinding, and a name cut off 
         <li>Handle <code>ds-step-select</code> - a step that looks clickable and does nothing is worse than one that is inert.</li>
         <li>Mark a step <code>disabled</code> while the reader cannot reach it yet, so the list never offers a step that would be refused.</li>
         <li>Give every <code>disabled</code> step a <code>reason</code>; the tooltip is the only place the reader can learn why.</li>
-        <li>Reach for <code>compact</code> only to force the condensed layout early - a narrow container already condenses on its own.</li>
+        <li>Reach for <code>compact</code> only to force the compact layout early - a narrow container already switches to it on its own.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
@@ -73,7 +73,7 @@ Labels wrap rather than truncate. A step list is wayfinding, and a name cut off 
           by keyboard and by screen reader. Tabbing onto it shows the reason, and Escape hides it again.
         </li>
         <li>A disabled step with nothing to say is natively disabled, so tabbing never lands somewhere that refuses without explaining.</li>
-        <li>The condensed rail behaves the same way, each segment carrying its step's name and the same description.</li>
+        <li>The compact rail behaves the same way, each segment carrying its step's name and the same description.</li>
       </ul>
     </ds-tab-panel>
 

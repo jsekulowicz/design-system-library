@@ -11,7 +11,7 @@ export interface StepListStep {
 
 export type StepStatus = 'done' | 'current' | 'upcoming';
 
-export type StepListLayout = 'list' | 'rail';
+export type StepListLayout = 'list' | 'compact';
 
 export function statusOf(index: number, currentIndex: number): StepStatus {
   if (index < currentIndex) {
