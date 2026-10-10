@@ -17,12 +17,12 @@ import {
   renderHeatmapAnchor,
   renderHeatmapTooltip,
 } from './heatmap-calendar-overlays.js';
-import type { HeatmapDay, HeatmapLayout, HeatmapRenderContext, HeatmapWeekStart } from './types.js';
+import type { HeatmapDay, HeatmapFocusDetail, HeatmapLayout, HeatmapRenderContext, HeatmapWeekStart } from './types.js';
 
 /**
  * @tag ds-heatmap-calendar
  * @summary Calendar heatmap with accessible data table, tooltips, and keyboard navigation.
- * @event ds-heatmap-focus - Emitted when the active day changes. Detail: `{ date, value, level }`.
+ * @event {CustomEvent<HeatmapFocusDetail>} ds-heatmap-focus - Emitted when the active day changes. Detail: `{ date, value, level }`.
  * @csspart chart - The focusable calendar frame, including the legend.
  * @csspart scroller - The horizontally scrollable calendar viewport.
  * @csspart tooltip - The floating tooltip container. Rendered in the Popover API top layer and positioned against the active data point with CSS anchor positioning, so ancestor overflow cannot clip it.
@@ -157,7 +157,7 @@ export class DsHeatmapCalendar extends DsElement {
     this._activeIndex = index;
     const cell = index == null ? undefined : this.#layout().cells[index];
     if (cell) {
-      this.emit('ds-heatmap-focus', {
+      this.emit<HeatmapFocusDetail>('ds-heatmap-focus', {
         detail: { date: cell.date, value: cell.value, level: cell.level },
       });
     }

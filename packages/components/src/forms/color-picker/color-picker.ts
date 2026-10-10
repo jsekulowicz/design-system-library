@@ -15,6 +15,7 @@ import {
   normalizeHexColor,
 } from './color-utils.js';
 import type { ColorPickerOption } from './types.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-color-picker
@@ -22,8 +23,8 @@ import type { ColorPickerOption } from './types.js';
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-input - Fires on live custom color edits. Detail: `{ value }`.
- * @event ds-change - Fires when the committed color changes. Detail: `{ value }`.
+ * @event {CustomEvent<ValueChangeDetail>} ds-input - Fires on live custom color edits. Detail: `{ value }`.
+ * @event {CustomEvent<ValueChangeDetail>} ds-change - Fires when the committed color changes. Detail: `{ value }`.
  * @csspart label - The field's own label element.
  * @csspart trigger - The field trigger button.
  * @csspart preview - The selected color preview swatch.
@@ -66,8 +67,8 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   #customInputs = new ColorPickerCustomInputs(this, {
     closePicker: () => this.#popover.close(true),
     commitAndClose: () => this.#commitAndClose(),
-    emitChange: (value: string) => this.emit('ds-change', { detail: { value } }),
-    emitInput: (value: string) => this.emit('ds-input', { detail: { value } }),
+    emitChange: (value: string) => this.emit<ValueChangeDetail>('ds-change', { detail: { value } }),
+    emitInput: (value: string) => this.emit<ValueChangeDetail>('ds-input', { detail: { value } }),
     setValidation: (message: string, commit: boolean) => {
       if (commit) {
         this.markInteracted();
@@ -187,7 +188,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   #clear = (): void => {
     this.markInteracted();
     this.value = '';
-    this.emit('ds-change', { detail: { value: '' } });
+    this.emit<ValueChangeDetail>('ds-change', { detail: { value: '' } });
     this.#popover.close(true);
   };
 
@@ -196,7 +197,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       this.#customInputs.focusHexInput(this.shadowRoot);
       return;
     }
-    this.emit('ds-change', { detail: { value: this.#currentValue() } });
+    this.emit<ValueChangeDetail>('ds-change', { detail: { value: this.#currentValue() } });
     this.#popover.close(true);
   };
 
@@ -206,7 +207,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
     }
     this.markInteracted();
     this.value = value;
-    this.emit('ds-change', { detail: { value } });
+    this.emit<ValueChangeDetail>('ds-change', { detail: { value } });
     this.#popover.close(true);
   }
 

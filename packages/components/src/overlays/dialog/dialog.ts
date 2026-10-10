@@ -21,7 +21,7 @@ export type DialogSize = 'sm' | 'md' | 'lg';
  * @cssprop --ds-dialog-max-width - Width cap, overriding the one the `size` sets.
  * @cssprop [--ds-dialog-max-height=min(90vh, 720px)] - Height cap for the dialog and its card. Set this rather than `::part(dialog) { max-height }`, so the card follows the same cap.
  * @event ds-open - Fires after the dialog opens.
- * @event ds-close - Fires after the dialog closes. Detail: `{ returnValue: string }`.
+ * @event {CustomEvent<DialogCloseDetail>} ds-close - Fires after the dialog closes. Detail: `{ returnValue: string }`.
  * @event ds-cancel - Fires when the dialog is dismissed via Escape or backdrop click.
  */
 export class DsDialog extends DsElement {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsColorPickerInputColor } from '@jsekulowicz/ds-components/color-picker';
+import type { ValueChangeDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/color-picker/define';
 
 export const ColorPickerInputColor = createComponent({
@@ -8,8 +9,8 @@ export const ColorPickerInputColor = createComponent({
   elementClass: DsColorPickerInputColor,
   react: React,
   events: {
-    'onDsInput': 'ds-input' as EventName<CustomEvent>,
-    'onDsChange': 'ds-change' as EventName<CustomEvent>,
+    'onDsInput': 'ds-input' as EventName<CustomEvent<ValueChangeDetail>>,
+    'onDsChange': 'ds-change' as EventName<CustomEvent<ValueChangeDetail>>,
   },
   displayName: 'ColorPickerInputColor',
 });

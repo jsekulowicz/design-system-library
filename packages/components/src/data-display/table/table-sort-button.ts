@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { formatLabel } from '../../shared/format-label.js';
 import { tableSortButtonStyles } from './table-sort-button.styles.js';
-import type { TableSortDirection } from './types.js';
+import type { TableSortDetail, TableSortDirection } from './types.js';
 
 const ICON_NEUTRAL = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6l3-3 3 3"/><path d="M5 10l3 3 3-3"/></svg>`;
 const ICON_ASC = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg>`;
@@ -25,7 +25,7 @@ function nextDirection(current: TableSortDirection): TableSortDirection {
  * @slot default - Optional label for the button (falls back to `column`).
  * @csspart button - The internal `<button>` element.
  * @csspart icon - The direction indicator wrapper.
- * @event ds-sort - Emitted on click with the next direction. Detail: `{ direction: 'asc' | 'desc' | null }`.
+ * @event {CustomEvent<TableSortDetail>} ds-sort - Emitted on click with the next direction. Detail: `{ direction: 'asc' | 'desc' | null }`.
  */
 export class DsTableSortButton extends DsElement {
   static override styles = [...DsElement.styles, tableSortButtonStyles];
@@ -39,7 +39,7 @@ export class DsTableSortButton extends DsElement {
 
   #onClick = (): void => {
     const direction = nextDirection(this.direction);
-    this.emit('ds-sort', { detail: { direction } });
+    this.emit<TableSortDetail>('ds-sort', { detail: { direction } });
   };
 
   #icon(): SVGTemplateResult {

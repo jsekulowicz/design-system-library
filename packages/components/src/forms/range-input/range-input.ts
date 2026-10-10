@@ -5,6 +5,7 @@ import { live } from 'lit/directives/live.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import { clickBelongsToTheControl, formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { rangeInputStyles } from './range-input.styles.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 export type RangeInputSize = 'sm' | 'md' | 'lg';
 
@@ -14,8 +15,8 @@ export type RangeInputSize = 'sm' | 'md' | 'lg';
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-input - Fired continuously while dragging with the current numeric value.
- * @event ds-change - Fired when the value is committed.
+ * @event {CustomEvent<ValueChangeDetail<number>>} ds-input - Fired continuously while dragging with the current numeric value.
+ * @event {CustomEvent<ValueChangeDetail<number>>} ds-change - Fired when the value is committed.
  * @csspart label - The field's own label element.
  * @csspart wrap - The row holding the slider and its value.
  * @csspart thumb - The native range input carrying the track and the draggable thumb.
@@ -73,7 +74,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     const target = event.target as HTMLInputElement;
     this.value = target.value;
     this.syncValidity();
-    this.emit('ds-input', { detail: { value: Number(target.value) } });
+    this.emit<ValueChangeDetail<number>>('ds-input', { detail: { value: Number(target.value) } });
   };
 
   #onChange = (event: Event): void => {
@@ -83,7 +84,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     const target = event.target as HTMLInputElement;
     this.value = target.value;
     this.syncValidity();
-    this.emit('ds-change', { detail: { value: Number(target.value) } });
+    this.emit<ValueChangeDetail<number>>('ds-change', { detail: { value: Number(target.value) } });
   };
 
   // Focusable when disabled so assistive tech can announce it, like ds-button.

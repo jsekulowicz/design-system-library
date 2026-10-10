@@ -4,6 +4,7 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { segmentedControlStyles } from './segmented-control.styles.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 export interface SegmentedControlOption {
   value: string;
@@ -19,7 +20,7 @@ export interface SegmentedControlOption {
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-change - Fires when the selection changes. Detail: `{ value: string }`.
+ * @event {CustomEvent<ValueChangeDetail>} ds-change - Fires when the selection changes. Detail: `{ value: string }`.
  * @csspart label - The field's own label element.
  * @csspart group - The container that holds the segments.
  * @csspart segment - Each option button.
@@ -60,7 +61,7 @@ export class DsSegmentedControl extends DsElement {
       return;
     }
     this.value = option.value;
-    this.emit('ds-change', { detail: { value: option.value } });
+    this.emit<ValueChangeDetail>('ds-change', { detail: { value: option.value } });
   }
 
   #focusSegment(index: number): void {

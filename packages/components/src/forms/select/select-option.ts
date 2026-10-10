@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { optionRowStyles } from '../../shared/option-row.styles.js';
 import { selectOptionStyles } from './select-option.styles.js';
+import type { ActivateDetail } from '../../events.js';
 
 /**
  * @tag ds-select-option
@@ -12,7 +13,7 @@ import { selectOptionStyles } from './select-option.styles.js';
  * @slot description - Optional secondary line below the primary text.
  * @slot trailing - Trailing content (badge, shortcut).
  * @csspart check - The checkmark icon shown when `selected`.
- * @event ds-activate - Fires when the option is activated. Detail: `{ value, originalEvent }`.
+ * @event {CustomEvent<ActivateDetail>} ds-activate - Fires when the option is activated. Detail: `{ value, originalEvent }`.
  */
 export class DsSelectOption extends DsElement {
   static override styles = [...DsElement.styles, optionRowStyles, selectOptionStyles];
@@ -45,7 +46,7 @@ export class DsSelectOption extends DsElement {
       event.stopImmediatePropagation();
       return;
     }
-    this.emit('ds-activate', { detail: { value: this.value, originalEvent: event } });
+    this.emit<ActivateDetail>('ds-activate', { detail: { value: this.value, originalEvent: event } });
   };
 
   override render(): TemplateResult {

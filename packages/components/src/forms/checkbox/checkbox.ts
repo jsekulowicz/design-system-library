@@ -5,6 +5,7 @@ import { DEFAULT_SLOT, SlotPresenceController } from '../../shared/slot-presence
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { checkboxStyles } from './checkbox.styles.js';
+import type { CheckedChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-checkbox
@@ -13,7 +14,7 @@ import { checkboxStyles } from './checkbox.styles.js';
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-change - Fires when the checked state changes.
+ * @event {CustomEvent<CheckedChangeDetail>} ds-change - Fires when the checked state changes.
  * @csspart label - The wrapper around the slotted label.
  * @csspart box - The check box itself.
  */
@@ -56,7 +57,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
     this.markInteracted();
     this.checked = target.checked;
     this.indeterminate = false;
-    this.emit('ds-change', { detail: { checked: this.checked } });
+    this.emit<CheckedChangeDetail>('ds-change', { detail: { checked: this.checked } });
   };
 
   #onKey = (event: KeyboardEvent): void => {
@@ -72,7 +73,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
     }
     this.markInteracted();
     this.checked = !this.checked;
-    this.emit('ds-change', { detail: { checked: this.checked } });
+    this.emit<CheckedChangeDetail>('ds-change', { detail: { checked: this.checked } });
   };
 
   #blockClickWhenDisabled = (event: MouseEvent): void => {

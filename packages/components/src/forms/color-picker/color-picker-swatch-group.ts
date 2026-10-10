@@ -5,11 +5,12 @@ import { getColorLabel, normalizeColorOptions } from './color-utils.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { colorPickerSwatchGroupStyles } from './color-picker-swatch-group.styles.js';
 import type { ColorPickerOption } from './types.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-color-picker-swatch-group
  * @summary Roving radiogroup for ds-color-picker preset swatches.
- * @event ds-color-picker-swatch-group-select - Fires when a swatch is selected.
+ * @event {CustomEvent<ValueChangeDetail>} ds-color-picker-swatch-group-select - Fires when a swatch is selected.
  */
 export class DsColorPickerSwatchGroup extends DsElement {
   static override styles = [...DsElement.styles, colorPickerSwatchGroupStyles];
@@ -44,7 +45,7 @@ export class DsColorPickerSwatchGroup extends DsElement {
     if (!option || option.disabled || this.disabled) {
       return;
     }
-    this.emit('ds-color-picker-swatch-group-select', { detail: { value: option.value } });
+    this.emit<ValueChangeDetail>('ds-color-picker-swatch-group-select', { detail: { value: option.value } });
   };
 
   #onKeydown(event: KeyboardEvent, index: number): void {

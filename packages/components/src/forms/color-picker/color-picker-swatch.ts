@@ -3,11 +3,12 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { colorPickerSwatchStyles } from './color-picker-swatch.styles.js';
 import { getContrastingThemeColor } from './color-utils.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-color-picker-swatch
  * @summary Preset color swatch used inside ds-color-picker.
- * @event ds-color-picker-swatch-select - Fires when the swatch is activated.
+ * @event {CustomEvent<ValueChangeDetail>} ds-color-picker-swatch-select - Fires when the swatch is activated.
  * @csspart swatch - The swatch host surface.
  */
 export class DsColorPickerSwatch extends DsElement {
@@ -71,7 +72,7 @@ export class DsColorPickerSwatch extends DsElement {
   };
 
   #select(): void {
-    this.emit('ds-color-picker-swatch-select', { detail: { value: this.value } });
+    this.emit<ValueChangeDetail>('ds-color-picker-swatch-select', { detail: { value: this.value } });
   }
 
   #syncCheckColor(): void {

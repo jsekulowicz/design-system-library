@@ -13,6 +13,7 @@ import {
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { textFieldStyles } from './text-field.styles.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 export type TextFieldType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
 export type TextFieldSize = 'sm' | 'md' | 'lg';
@@ -25,8 +26,8 @@ export type TextFieldSize = 'sm' | 'md' | 'lg';
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-input - Fired on every keystroke with the current value.
- * @event ds-change - Fired when the value is committed.
+ * @event {CustomEvent<ValueChangeDetail>} ds-input - Fired on every keystroke with the current value.
+ * @event {CustomEvent<ValueChangeDetail>} ds-change - Fired when the value is committed.
  * @csspart label - The field's own label element.
  * @csspart field-header - The row holding the label and the counter, when `char-count` is set.
  * @csspart wrap - The bordered box holding the input and its adornments.
@@ -69,7 +70,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
     const target = event.target as HTMLInputElement;
     this.value = target.value;
     this.syncValidity();
-    this.emit('ds-input', { detail: { value: target.value } });
+    this.emit<ValueChangeDetail>('ds-input', { detail: { value: target.value } });
   };
 
   #onFocus = (): void => {
@@ -92,7 +93,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
     this.value = target.value;
     this.markInteracted();
     this.syncValidity();
-    this.emit('ds-change', { detail: { value: target.value } });
+    this.emit<ValueChangeDetail>('ds-change', { detail: { value: target.value } });
   };
 
   override syncValidity(): void {

@@ -9,6 +9,7 @@ import { hasAssignedContent, hasNamedSlotContent } from '../../shared/slots.js';
 import {
   type PageShellAsideState,
   type PageShellAsideEndState,
+  type PageShellAsideStateChangeDetail,
   type PageShellMenuButtonPosition,
 } from './page-shell-state.js';
 import {
@@ -62,7 +63,7 @@ export type { PageShellAsideState, PageShellAsideEndState, PageShellMenuButtonPo
  * @csspart page-header - Optional non-scrolling page header.
  * @csspart main-scroller - Edge-aligned main scrolling region.
  * @csspart main-content - Padded content region inside the main scroller.
- * @event ds-aside-state-change - Emitted when an opt-in desktop aside toggle changes state.
+ * @event {CustomEvent<PageShellAsideStateChangeDetail>} ds-aside-state-change - Emitted when an opt-in desktop aside toggle changes state.
  *   Detail: `{ side, state, previousState }`.
  */
 export class DsPageShell extends DsElement {
@@ -241,7 +242,7 @@ export class DsPageShell extends DsElement {
       return;
     }
     this.asideState = state;
-    this.emit('ds-aside-state-change', {
+    this.emit<PageShellAsideStateChangeDetail>('ds-aside-state-change', {
       detail: { side: 'start' as const, state, previousState },
     });
   };
@@ -252,7 +253,7 @@ export class DsPageShell extends DsElement {
       return;
     }
     this.asideEndState = state;
-    this.emit('ds-aside-state-change', {
+    this.emit<PageShellAsideStateChangeDetail>('ds-aside-state-change', {
       detail: { side: 'end' as const, state, previousState },
     });
   };

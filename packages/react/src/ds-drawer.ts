@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsDrawer } from '@jsekulowicz/ds-components/drawer';
+import type { DialogCloseDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/drawer/define';
 
 export const Drawer = createComponent({
@@ -9,7 +10,7 @@ export const Drawer = createComponent({
   react: React,
   events: {
     'onDsOpen': 'ds-open' as EventName<CustomEvent>,
-    'onDsClose': 'ds-close' as EventName<CustomEvent>,
+    'onDsClose': 'ds-close' as EventName<CustomEvent<DialogCloseDetail>>,
     'onDsCancel': 'ds-cancel' as EventName<CustomEvent>,
   },
   displayName: 'Drawer',

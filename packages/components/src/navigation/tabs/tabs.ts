@@ -4,13 +4,14 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { tabsStyles } from './tabs.styles.js';
 import type { DsTab } from './tab.js';
 import type { DsTabPanel } from './tab-panel.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-tabs
  * @summary Tablist container that coordinates ds-tab triggers and ds-tab-panel regions.
  * @slot tab - ds-tab elements that make up the tablist.
  * @slot default - ds-tab-panel elements, one per tab.
- * @event ds-change - Fires when the active tab changes. Detail: `{ value: string }`.
+ * @event {CustomEvent<ValueChangeDetail>} ds-change - Fires when the active tab changes. Detail: `{ value: string }`.
  * @csspart tablist - The horizontal tab row.
  * @csspart panels - The panels container.
  */
@@ -70,7 +71,7 @@ export class DsTabs extends DsElement {
       return;
     }
     this.value = value;
-    this.emit('ds-change', { detail: { value } });
+    this.emit<ValueChangeDetail>('ds-change', { detail: { value } });
   };
 
   #focusTab = (index: number): void => {

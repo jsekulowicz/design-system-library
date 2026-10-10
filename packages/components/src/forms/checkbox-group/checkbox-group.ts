@@ -3,6 +3,7 @@ import { property, queryAssignedElements } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { fieldGroupStyles } from '../../shared/field-group.styles.js';
+import type { ValuesChangeDetail } from '../../events.js';
 
 type CheckboxEl = HTMLElement & { checked?: boolean; checkboxValue?: string };
 
@@ -13,7 +14,7 @@ type CheckboxEl = HTMLElement & { checked?: boolean; checkboxValue?: string };
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-change - Fires when any checkbox changes. Detail: `{ values: string[] }`.
+ * @event {CustomEvent<ValuesChangeDetail>} ds-change - Fires when any checkbox changes. Detail: `{ values: string[] }`.
  * @csspart fieldset - The native `<fieldset>` element.
  * @csspart legend - The legend that names the group.
  * @csspart label - The legend, under the name every other field's label carries.
@@ -93,7 +94,9 @@ export class DsCheckboxGroup extends DsElement {
       .filter(Boolean);
     this.value = values;
     this.invalid = false;
-    this.dispatchEvent(new CustomEvent('ds-change', { bubbles: true, composed: true, detail: { values } }));
+    this.dispatchEvent(
+      new CustomEvent<ValuesChangeDetail>('ds-change', { bubbles: true, composed: true, detail: { values } }),
+    );
   };
 
   override render(): TemplateResult {

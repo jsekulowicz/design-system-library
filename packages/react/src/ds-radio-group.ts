@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsRadioGroup } from '@jsekulowicz/ds-components/radio-group';
+import type { ValueChangeDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/radio-group/define';
 
 export const RadioGroup = createComponent({
@@ -8,7 +9,7 @@ export const RadioGroup = createComponent({
   elementClass: DsRadioGroup,
   react: React,
   events: {
-    'onDsChange': 'ds-change' as EventName<CustomEvent>,
+    'onDsChange': 'ds-change' as EventName<CustomEvent<ValueChangeDetail>>,
   },
   displayName: 'RadioGroup',
 });

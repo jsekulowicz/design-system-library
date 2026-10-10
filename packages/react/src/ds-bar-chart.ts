@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsBarChart } from '@jsekulowicz/ds-components/bar-chart';
+import type { BarChartFocusDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/bar-chart/define';
 
 export const BarChart = createComponent({
@@ -8,7 +9,7 @@ export const BarChart = createComponent({
   elementClass: DsBarChart,
   react: React,
   events: {
-    'onDsBarFocus': 'ds-bar-focus' as EventName<CustomEvent>,
+    'onDsBarFocus': 'ds-bar-focus' as EventName<CustomEvent<BarChartFocusDetail>>,
   },
   displayName: 'BarChart',
 });

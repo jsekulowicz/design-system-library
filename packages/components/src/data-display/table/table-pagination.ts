@@ -5,6 +5,7 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { formatLabel } from '../../shared/format-label.js';
 import { tablePaginationStyles } from './table-pagination.styles.js';
 import { buildPaginationRange, type PaginationRangeItem } from './pagination-range.js';
+import type { TablePageChangeDetail, TablePageSizeChangeDetail } from './types.js';
 
 // Matches breakpoint.sm so it lines up with ds-table's own stack breakpoint.
 const COMPACT_WIDTH_PX = 480;
@@ -19,8 +20,8 @@ const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
  * @slot prev-label - Content of the Previous button.
  * @slot next-label - Content of the Next button.
  * @slot summary - Replaces the default "Showing X-Y of Z" summary.
- * @event ds-page-change - Emitted when the user picks a page. Detail: `{ page, pageSize }`.
- * @event ds-page-size-change - Emitted when page size changes. Detail: `{ pageSize, page }`.
+ * @event {CustomEvent<TablePageChangeDetail>} ds-page-change - Emitted when the user picks a page. Detail: `{ page, pageSize }`.
+ * @event {CustomEvent<TablePageSizeChangeDetail>} ds-page-size-change - Emitted when page size changes. Detail: `{ pageSize, page }`.
  * @csspart nav - The `<nav>` wrapper.
  * @csspart list - The page button list.
  * @csspart item - Individual list items.
@@ -101,7 +102,7 @@ export class DsTablePagination extends DsElement {
     if (target === this.#currentPage) {
       return;
     }
-    this.emit('ds-page-change', { detail: { page: target, pageSize: this.pageSize } });
+    this.emit<TablePageChangeDetail>('ds-page-change', { detail: { page: target, pageSize: this.pageSize } });
   }
 
   #onSizeChange = (event: Event): void => {
@@ -111,7 +112,7 @@ export class DsTablePagination extends DsElement {
     }
     const firstVisible = (this.#currentPage - 1) * this.pageSize + 1;
     const nextPage = Math.max(1, Math.ceil(firstVisible / value));
-    this.emit('ds-page-size-change', { detail: { pageSize: value, page: nextPage } });
+    this.emit<TablePageSizeChangeDetail>('ds-page-size-change', { detail: { pageSize: value, page: nextPage } });
   };
 
   #range(): PaginationRangeItem[] {

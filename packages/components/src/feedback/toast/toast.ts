@@ -8,6 +8,10 @@ import { toastStyles } from './toast.styles.js';
 export type ToastTone = 'info' | 'success' | 'warning' | 'danger';
 export type ToastDismissReason = 'timeout' | 'user' | 'programmatic';
 
+export interface ToastDismissDetail {
+  reason: ToastDismissReason;
+}
+
 const DEFAULT_DURATION_BY_TONE: Record<ToastTone, number> = {
   info: 5000,
   success: 5000,
@@ -24,7 +28,7 @@ const DEFAULT_DURATION_BY_TONE: Record<ToastTone, number> = {
  * @csspart title - The heading, when one is set.
  * @csspart close-button - The dismiss button, when `dismissible` is set.
  * @cssprop --ds-toast-bg - Toast surface fill. Defaults to --ds-color-bg-subtle.
- * @event ds-dismiss - Fires when the toast is removed. Detail: `{ reason: 'timeout' | 'user' | 'programmatic' }`.
+ * @event {CustomEvent<ToastDismissDetail>} ds-dismiss - Fires when the toast is removed. Detail: `{ reason: 'timeout' | 'user' | 'programmatic' }`.
  */
 export class DsToast extends DsElement {
   static override styles = [...DsElement.styles, noticeStyles, toastStyles];
@@ -90,7 +94,7 @@ export class DsToast extends DsElement {
     this.#clearTimer();
     // Don't pull focus back if the user has already moved it out of the toast.
     const returnTo = this.restoreFocusTo && this.contains(document.activeElement) ? this.restoreFocusTo : null;
-    this.emit('ds-dismiss', { detail: { reason } });
+    this.emit<ToastDismissDetail>('ds-dismiss', { detail: { reason } });
     this.remove();
     returnTo?.focus();
   }

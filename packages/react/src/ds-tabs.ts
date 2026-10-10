@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsTabs } from '@jsekulowicz/ds-components/tabs';
+import type { ValueChangeDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/tabs/define';
 
 export const Tabs = createComponent({
@@ -8,7 +9,7 @@ export const Tabs = createComponent({
   elementClass: DsTabs,
   react: React,
   events: {
-    'onDsChange': 'ds-change' as EventName<CustomEvent>,
+    'onDsChange': 'ds-change' as EventName<CustomEvent<ValueChangeDetail>>,
   },
   displayName: 'Tabs',
 });

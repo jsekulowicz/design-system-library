@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsDialog } from '@jsekulowicz/ds-components/dialog';
+import type { DialogCloseDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/dialog/define';
 
 export const Dialog = createComponent({
@@ -9,7 +10,7 @@ export const Dialog = createComponent({
   react: React,
   events: {
     'onDsOpen': 'ds-open' as EventName<CustomEvent>,
-    'onDsClose': 'ds-close' as EventName<CustomEvent>,
+    'onDsClose': 'ds-close' as EventName<CustomEvent<DialogCloseDetail>>,
     'onDsCancel': 'ds-cancel' as EventName<CustomEvent>,
   },
   displayName: 'Dialog',

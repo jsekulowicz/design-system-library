@@ -12,12 +12,12 @@ import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
 import { renderChartSvg } from './bar-chart-svg.js';
 import { liveText, renderLegend, renderSrTable, renderTooltip, rootAriaLabel } from './bar-chart-overlays.js';
-import type { BarChartRow, BarChartSeries, ChartRenderContext } from './types.js';
+import type { BarChartFocusDetail, BarChartRow, BarChartSeries, ChartRenderContext } from './types.js';
 
 /**
  * @tag ds-bar-chart
  * @summary Responsive grouped or stacked bar chart with keyboard navigation and hover tooltips.
- * @event ds-bar-focus - Emitted when the active group changes by keyboard or pointer. Detail: `{ groupIndex, domainValue, values }`.
+ * @event {CustomEvent<BarChartFocusDetail>} ds-bar-focus - Emitted when the active group changes by keyboard or pointer. Detail: `{ groupIndex, domainValue, values }`.
  * @slot loading - Replaces the loading message shown during a data refresh.
  * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
  * @csspart chart - The internal `<svg>` element.
@@ -214,7 +214,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     if (!g) {
       return;
     }
-    this.emit('ds-bar-focus', {
+    this.emit<BarChartFocusDetail>('ds-bar-focus', {
       detail: {
         groupIndex: index,
         domainValue: g.domain,

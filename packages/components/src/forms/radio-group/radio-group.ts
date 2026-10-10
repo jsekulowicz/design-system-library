@@ -4,6 +4,7 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { fieldGroupStyles } from '../../shared/field-group.styles.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 type RadioEl = HTMLElement & {
   checked?: boolean;
@@ -19,7 +20,7 @@ type RadioEl = HTMLElement & {
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-change - Fires when the selected radio changes. Detail: `{ value: string }`.
+ * @event {CustomEvent<ValueChangeDetail>} ds-change - Fires when the selected radio changes. Detail: `{ value: string }`.
  * @csspart fieldset - The native `<fieldset>` element.
  * @csspart legend - The legend that names the group.
  * @csspart label - The legend, under the name every other field's label carries.
@@ -126,7 +127,9 @@ export class DsRadioGroup extends DsElement {
     if (value !== this.value) {
       this.value = value;
       this.invalid = false;
-      this.dispatchEvent(new CustomEvent('ds-change', { bubbles: true, composed: true, detail: { value } }));
+      this.dispatchEvent(
+        new CustomEvent<ValueChangeDetail>('ds-change', { bubbles: true, composed: true, detail: { value } }),
+      );
     }
     void this.updateComplete.then(() => radio.focus());
   };
@@ -139,7 +142,9 @@ export class DsRadioGroup extends DsElement {
     const { value } = (event as CustomEvent<{ value: string }>).detail;
     this.value = value;
     this.invalid = false;
-    this.dispatchEvent(new CustomEvent('ds-change', { bubbles: true, composed: true, detail: { value } }));
+    this.dispatchEvent(
+      new CustomEvent<ValueChangeDetail>('ds-change', { bubbles: true, composed: true, detail: { value } }),
+    );
   };
 
   override render(): TemplateResult {

@@ -21,6 +21,7 @@ import { selectCommonStyles } from '../select/select.common-styles.js';
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import { highlightMatch } from './highlight-match.js';
 import type { SelectOption, SelectSize } from '../select/select.js';
+import type { OverflowClickDetail, SearchDetail, SelectionChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-searchable-select
@@ -28,10 +29,10 @@ import type { SelectOption, SelectSize } from '../select/select.js';
  * @slot description - Replaces the description text, for a message that carries a link.
  * @slot warning - Replaces the warning text, for a message that carries a link.
  * @slot error - Replaces the error text, for a message that carries a link.
- * @event ds-search - Fires on every keystroke. Detail: `{ query: string }`.
- * @event ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
+ * @event {CustomEvent<SearchDetail>} ds-search - Fires on every keystroke. Detail: `{ query: string }`.
+ * @event {CustomEvent<SelectionChangeDetail>} ds-change - Fires when selection changes. Detail: `{ value }` or `{ values }` when multiple.
  * @event ds-scroll-end - Fires once each time the option list is scrolled near its bottom (re-arms after scrolling away). No detail; hook for loading more options.
- * @event ds-overflow-click - Fires when the "+n" tile is activated. Detail: `{ count: number }`. Keyboard tile navigation cannot reach a tile `max-lines` clipped, so this is the only way to offer the full selection.
+ * @event {CustomEvent<OverflowClickDetail>} ds-overflow-click - Fires when the "+n" tile is activated. Detail: `{ count: number }`. Keyboard tile navigation cannot reach a tile `max-lines` clipped, so this is the only way to offer the full selection.
  * @csspart label - The field's own label element.
  * @csspart trigger - The trigger container element.
  * @csspart listbox - The dropdown listbox container.
@@ -101,7 +102,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       this.value = next.join(',');
       this.markInteracted();
       this.syncValidity();
-      this.emit('ds-change', { detail: { values: next } });
+      this.emit<SelectionChangeDetail>('ds-change', { detail: { values: next } });
     },
     canOpen: () => !this.loading,
     onOpen: () => {
@@ -109,7 +110,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     },
     onClose: () => {
       this._search = '';
-      this.emit('ds-search', { detail: { query: '' } });
+      this.emit<SearchDetail>('ds-search', { detail: { query: '' } });
     },
   });
 
@@ -246,7 +247,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     this.#dropdown.openDropdown();
     this._search = (event.target as HTMLInputElement).value;
     this.#dropdown.focusedIndex = 0;
-    this.emit('ds-search', { detail: { query: this._search } });
+    this.emit<SearchDetail>('ds-search', { detail: { query: this._search } });
   };
 
   #selectOption = (option: SelectOption): void => {
@@ -262,13 +263,13 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       this._search = '';
       this.markInteracted();
       this.syncValidity();
-      this.emit('ds-search', { detail: { query: '' } });
-      this.emit('ds-change', { detail: { values: next } });
+      this.emit<SearchDetail>('ds-search', { detail: { query: '' } });
+      this.emit<SelectionChangeDetail>('ds-change', { detail: { values: next } });
     } else {
       this.value = option.value;
       this.markInteracted();
       this.syncValidity();
-      this.emit('ds-change', { detail: { value: option.value } });
+      this.emit<SelectionChangeDetail>('ds-change', { detail: { value: option.value } });
       this.#dropdown.close();
     }
   };
@@ -279,14 +280,14 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       this.value = '';
       this.markInteracted();
       this.syncValidity();
-      this.emit('ds-change', { detail: { values: [] } });
+      this.emit<SelectionChangeDetail>('ds-change', { detail: { values: [] } });
     } else {
       this.value = '';
       this._search = '';
       this.markInteracted();
       this.syncValidity();
-      this.emit('ds-search', { detail: { query: '' } });
-      this.emit('ds-change', { detail: { value: '' } });
+      this.emit<SearchDetail>('ds-search', { detail: { query: '' } });
+      this.emit<SelectionChangeDetail>('ds-change', { detail: { value: '' } });
     }
   };
 
@@ -399,7 +400,9 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
           ${
             hasTiles
               ? renderOverflowTile(this.#dropdown.overflowCount, this.overflowLabel, () =>
-                  this.emit('ds-overflow-click', { detail: { count: this.#dropdown.overflowCount } }),
+                  this.emit<OverflowClickDetail>('ds-overflow-click', {
+                    detail: { count: this.#dropdown.overflowCount },
+                  }),
                 )
               : nothing
           }

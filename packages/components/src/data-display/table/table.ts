@@ -14,7 +14,14 @@ import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay } from '../../shared/loading-overlay.js';
 import { renderTableSkeleton } from './table-skeleton.js';
 import { renderTableBody, renderTableHeader } from './table-rendering.js';
-import type { ResolvedColumn, TableColumn, TableResponsiveMode, TableRow, TableSortState } from './types.js';
+import type {
+  ResolvedColumn,
+  TableColumn,
+  TableResponsiveMode,
+  TableRow,
+  TableRowClickDetail,
+  TableSortState,
+} from './types.js';
 
 const FALSE_BOOLEAN_ATTRIBUTES = new Set(['false', '0']);
 const ROW_DRAG_THRESHOLD = 4;
@@ -47,7 +54,7 @@ const booleanAttributeConverter = {
  * @attr scroll-body - When set, the body scrolls under a pinned header (the footer slot stays pinned too). The scrollbar is hidden and overflow is signalled by top/bottom scroll-fades, matching ds-dialog/ds-drawer. Natural column widths are preserved; the host must be given a bounded height by its container.
  * @cssprop --ds-table-header-height - Header row height; in scroll-body mode it pins the header and offsets the top scroll-fade below it. Defaults to a single line of header text.
  * @cssprop --ds-table-pin-max-ratio - Largest share of the scroll container the pinned region may occupy before pinning is disabled (falls back to a plain scrolling table). Defaults to 0.75.
- * @event ds-row-click - Emitted when `clickable-rows` is set and a row is activated. Detail: `{ row, index }`.
+ * @event {CustomEvent<TableRowClickDetail>} ds-row-click - Emitted when `clickable-rows` is set and a row is activated. Detail: `{ row, index }`.
  * @csspart table - The internal `<table>` element.
  * @csspart thead - The `<thead>` element.
  * @csspart tbody - The `<tbody>` element.
@@ -162,7 +169,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
       return;
     }
     this.#resetRowPointer();
-    this.emit('ds-row-click', { detail: { row, index } });
+    this.emit<TableRowClickDetail>('ds-row-click', { detail: { row, index } });
   };
 
   #onRowPointerDown = (event: PointerEvent): void => {
@@ -183,7 +190,7 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
     if (this.loading) {
       return;
     }
-    this.emit('ds-row-click', { detail: { row, index } });
+    this.emit<TableRowClickDetail>('ds-row-click', { detail: { row, index } });
   };
 
   #pathHasInteractiveBeforeRow(event: Event): boolean {

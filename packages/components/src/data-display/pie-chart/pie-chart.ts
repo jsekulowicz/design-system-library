@@ -22,13 +22,13 @@ import {
   renderPieSrTable,
   renderPieTooltip,
 } from './pie-chart-overlays.js';
-import type { PieChartDatum, PieRenderContext, PieSlice } from './types.js';
+import type { PieChartDatum, PieChartSliceDetail, PieRenderContext, PieSlice } from './types.js';
 
 /**
  * @tag ds-pie-chart
  * @summary Pie or donut chart with focusable slices, tooltips, and a screen-reader data table.
- * @event ds-slice-focus - Emitted when the active slice changes. Detail: `{ index, label, value, percent, isOther }`.
- * @event ds-slice-select - Emitted on click or Enter/Space. Detail: `{ index, label, value, percent, isOther }`.
+ * @event {CustomEvent<PieChartSliceDetail>} ds-slice-focus - Emitted when the active slice changes. Detail: `{ index, label, value, percent, isOther }`.
+ * @event {CustomEvent<PieChartSliceDetail>} ds-slice-select - Emitted on click or Enter/Space. Detail: `{ index, label, value, percent, isOther }`.
  * @slot center - Replaces the default total shown inside a donut.
  * @slot loading - Replaces the loading message shown during a data refresh.
  * @attr {string} loading-label - Default loading message. The `loading` slot overrides it.
@@ -189,7 +189,7 @@ export class DsPieChart extends DsElement {
     if (!slice) {
       return;
     }
-    this.emit(name, {
+    this.emit<PieChartSliceDetail>(name, {
       detail: {
         index,
         label: slice.label,

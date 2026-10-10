@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsTableSortButton } from '@jsekulowicz/ds-components/table';
+import type { TableSortDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/table/define';
 
 export const TableSortButton = createComponent({
@@ -8,7 +9,7 @@ export const TableSortButton = createComponent({
   elementClass: DsTableSortButton,
   react: React,
   events: {
-    'onDsSort': 'ds-sort' as EventName<CustomEvent>,
+    'onDsSort': 'ds-sort' as EventName<CustomEvent<TableSortDetail>>,
   },
   displayName: 'TableSortButton',
 });

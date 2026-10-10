@@ -4,12 +4,13 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { DEFAULT_COLOR, normalizeHexColor } from './color-utils.js';
 import { inputColorStyles } from './input-color.styles.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-color-picker-input-color
  * @summary Native color input wrapper used inside ds-color-picker.
- * @event ds-input - Fires on live color edits. Detail: `{ value }`.
- * @event ds-change - Fires when the color is committed. Detail: `{ value }`.
+ * @event {CustomEvent<ValueChangeDetail>} ds-input - Fires on live color edits. Detail: `{ value }`.
+ * @event {CustomEvent<ValueChangeDetail>} ds-change - Fires when the color is committed. Detail: `{ value }`.
  * @csspart input - The native color input.
  */
 export class DsColorPickerInputColor extends DsElement {
@@ -36,7 +37,7 @@ export class DsColorPickerInputColor extends DsElement {
       return;
     }
     this.value = value;
-    this.emit(name, { detail: { value } });
+    this.emit<ValueChangeDetail>(name, { detail: { value } });
   }
 
   override render(): TemplateResult {

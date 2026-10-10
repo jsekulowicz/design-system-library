@@ -85,6 +85,13 @@ every `lit/*` rule silently matches nothing.
 
 - Events are named `ds-*` and emitted through `this.emit()` from `DsElement`.
 
+- Every event that carries a detail emits it with an explicit, exported detail type -
+  `this.emit<CheckedChangeDetail>('ds-change', ...)` - and names that type in its `@event` tag
+  (`@event {CustomEvent<CheckedChangeDetail>} ds-change - ...`). Shapes several components share
+  live in `src/events.ts`; a shape only one component emits lives beside it, like
+  `TableSortDetail`. The explicit type keeps the payload and its published type from drifting,
+  and the tag carries it into `custom-elements.json` and the React wrappers.
+
 - Every component class carries a JSDoc block with `@tag` and `@summary`, plus `@slot`,
   `@csspart`, `@cssprop` and `@event` as applicable. These are not decoration - they generate
   `custom-elements.json`, the Storybook API tables and the React wrappers. One terse line each.

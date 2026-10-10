@@ -1,1 +1,1 @@
-export { DsForm } from './form.js';
+export { DsForm, type FormSubmitDetail } from './form.js';

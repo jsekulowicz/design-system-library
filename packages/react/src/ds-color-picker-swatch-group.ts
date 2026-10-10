@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsColorPickerSwatchGroup } from '@jsekulowicz/ds-components/color-picker';
+import type { ValueChangeDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/color-picker/define';
 
 export const ColorPickerSwatchGroup = createComponent({
@@ -8,7 +9,7 @@ export const ColorPickerSwatchGroup = createComponent({
   elementClass: DsColorPickerSwatchGroup,
   react: React,
   events: {
-    'onDsColorPickerSwatchGroupSelect': 'ds-color-picker-swatch-group-select' as EventName<CustomEvent>,
+    'onDsColorPickerSwatchGroupSelect': 'ds-color-picker-swatch-group-select' as EventName<CustomEvent<ValueChangeDetail>>,
   },
   displayName: 'ColorPickerSwatchGroup',
 });

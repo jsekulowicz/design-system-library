@@ -4,12 +4,13 @@ import { DsElement, FormControlMixin, hasInteractiveSlottedOrigin } from '@jseku
 import { DEFAULT_SLOT, SlotPresenceController } from '../../shared/slot-presence.js';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { radioStyles } from './radio.styles.js';
+import type { ValueChangeDetail } from '../../events.js';
 
 /**
  * @tag ds-radio
  * @summary Single option in a radio group; coordinates via `name` within the same form/root.
  * @slot default - The visible label.
- * @event ds-change - Fires when this radio becomes checked.
+ * @event {CustomEvent<ValueChangeDetail>} ds-change - Fires when this radio becomes checked.
  * @csspart label - The wrapper around the slotted label.
  * @csspart dot - The circular control; the filled dot is drawn inside it.
  */
@@ -66,7 +67,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
     }
     this.checked = true;
     this.#uncheckSiblings();
-    this.emit('ds-change', { detail: { value: this.radioValue } });
+    this.emit<ValueChangeDetail>('ds-change', { detail: { value: this.radioValue } });
   };
 
   #onLabelClick = (event: MouseEvent): void => {

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsPageShell } from '@jsekulowicz/ds-components/page-shell';
+import type { PageShellAsideStateChangeDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/page-shell/define';
 
 export const PageShell = createComponent({
@@ -8,7 +9,7 @@ export const PageShell = createComponent({
   elementClass: DsPageShell,
   react: React,
   events: {
-    'onDsAsideStateChange': 'ds-aside-state-change' as EventName<CustomEvent>,
+    'onDsAsideStateChange': 'ds-aside-state-change' as EventName<CustomEvent<PageShellAsideStateChangeDetail>>,
   },
   displayName: 'PageShell',
 });

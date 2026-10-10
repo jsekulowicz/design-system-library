@@ -24,7 +24,7 @@ const OPEN_KEYS = new Set(['ArrowDown', 'ArrowUp', 'Enter', ' ']);
  * @csspart trigger - The default trigger button (only rendered when `trigger` slot is empty).
  * @csspart panel - The popover panel.
  * @csspart menu - The inner `<ds-menu>` element.
- * @event ds-select - Bubbles from the inner `<ds-menu>` when an item is activated. Detail: `{ value, originalEvent }`. The menu is closed automatically.
+ * @event {CustomEvent<ActivateDetail>} ds-select - Bubbles from the inner `<ds-menu>` when an item is activated. Detail: `{ value, originalEvent }`. The menu is closed automatically.
  * @event ds-open - Fires when the menu opens.
  * @event ds-close - Fires when the menu closes.
  */

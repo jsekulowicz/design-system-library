@@ -1,2 +1,2 @@
 export { DsNavItem } from './nav-item.js';
-export { DsNavGroup } from './nav-group.js';
+export { DsNavGroup, type NavGroupToggleDetail } from './nav-group.js';

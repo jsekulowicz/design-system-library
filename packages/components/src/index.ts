@@ -64,6 +64,7 @@ export {
   toast,
   type ToastTone,
   type ToastDismissReason,
+  type ToastDismissDetail,
   type ToastPlacement,
   type ToastOptions,
   type ToastController,
@@ -79,7 +80,7 @@ export {
   type ColorPickerOption,
 } from './forms/color-picker/index.js';
 export { DsFieldset, type FieldsetOrientation } from './forms/fieldset/index.js';
-export { DsForm } from './forms/form/index.js';
+export { DsForm, type FormSubmitDetail } from './forms/form/index.js';
 export { DsRadio } from './forms/radio/index.js';
 export { DsRadioGroup } from './forms/radio-group/index.js';
 export { DsRangeInput, type RangeInputSize } from './forms/range-input/index.js';
@@ -90,15 +91,15 @@ export { DsTextArea, type TextAreaSize, type TextAreaResize } from './forms/text
 export { DsTextField, type TextFieldType, type TextFieldSize } from './forms/text-field/index.js';
 
 export { DsFooter } from './layout/footer/index.js';
-export { DsPageShell } from './layout/page-shell/index.js';
+export { DsPageShell, type PageShellAsideStateChangeDetail } from './layout/page-shell/index.js';
 export { DsScrollablePage } from './layout/scrollable-page/index.js';
 
 export { DsBreadcrumb, DsBreadcrumbItem } from './navigation/breadcrumb/index.js';
 export { DsMenu, DsMenuItem } from './navigation/menu/index.js';
 export { DsMenuButton, type MenuButtonPlacement } from './navigation/menu-button/index.js';
-export { DsNavItem, DsNavGroup } from './navigation/nav-item/index.js';
+export { DsNavItem, DsNavGroup, type NavGroupToggleDetail } from './navigation/nav-item/index.js';
 export { DsSidenav } from './navigation/sidenav/index.js';
-export { DsStepList, type StepListStep } from './navigation/step-list/index.js';
+export { DsStepList, type StepListSelectDetail, type StepListStep } from './navigation/step-list/index.js';
 export { DsTabs, DsTab, DsTabPanel } from './navigation/tabs/index.js';
 export { DsTopBar } from './navigation/top-bar/index.js';
 
@@ -108,3 +109,15 @@ export { DsPopoverButton, type PopoverPlacement } from './overlays/popover-butto
 export { DsTooltip, type TooltipPlacement } from './overlays/tooltip/index.js';
 
 export { DsSettingsPage, type SettingsSection } from './patterns/settings-page/index.js';
+
+export type {
+  ActivateDetail,
+  CheckedChangeDetail,
+  ClickDetail,
+  DialogCloseDetail,
+  OverflowClickDetail,
+  SearchDetail,
+  SelectionChangeDetail,
+  ValueChangeDetail,
+  ValuesChangeDetail,
+} from './events.js';

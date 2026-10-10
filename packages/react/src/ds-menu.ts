@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsMenu } from '@jsekulowicz/ds-components/menu';
+import type { ActivateDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/menu/define';
 
 export const Menu = createComponent({
@@ -8,7 +9,7 @@ export const Menu = createComponent({
   elementClass: DsMenu,
   react: React,
   events: {
-    'onDsSelect': 'ds-select' as EventName<CustomEvent>,
+    'onDsSelect': 'ds-select' as EventName<CustomEvent<ActivateDetail>>,
   },
   displayName: 'Menu',
 });

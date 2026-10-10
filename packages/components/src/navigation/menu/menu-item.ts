@@ -3,6 +3,7 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { optionRowStyles } from '../../shared/option-row.styles.js';
 import { menuItemStyles } from './menu-item.styles.js';
+import type { ActivateDetail } from '../../events.js';
 
 /**
  * @tag ds-menu-item
@@ -13,7 +14,7 @@ import { menuItemStyles } from './menu-item.styles.js';
  * @slot trailing - Trailing content (chevron, badge, keyboard shortcut).
  * @csspart item - The internal item container.
  * @csspart check - The checkmark icon shown when `selected`.
- * @event ds-activate - Fires when the item is activated. Detail: `{ value, originalEvent }`.
+ * @event {CustomEvent<ActivateDetail>} ds-activate - Fires when the item is activated. Detail: `{ value, originalEvent }`.
  */
 export class DsMenuItem extends DsElement {
   static override styles = [...DsElement.styles, optionRowStyles, menuItemStyles];
@@ -62,7 +63,7 @@ export class DsMenuItem extends DsElement {
       event.stopImmediatePropagation();
       return;
     }
-    this.emit('ds-activate', { detail: { value: this.value, originalEvent: event } });
+    this.emit<ActivateDetail>('ds-activate', { detail: { value: this.value, originalEvent: event } });
   };
 
   #onKeydown = (event: KeyboardEvent): void => {

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 interface CemEvent {
   name: string;
+  type?: { text: string };
 }
 
 interface CemClass {
@@ -26,7 +27,7 @@ interface Cem {
 interface WrapperSpec {
   tagName: string;
   className: string;
-  events: string[];
+  events: CemEvent[];
   modulePath: string;
 }
 
@@ -71,7 +72,7 @@ function collectWrapperSpecs(cem: Cem): WrapperSpec[] {
       specs.push({
         tagName: decl.tagName,
         className: decl.name,
-        events: (decl.events ?? []).map((e) => e.name),
+        events: decl.events ?? [],
         modulePath: mod.path,
       });
     }
@@ -79,12 +80,25 @@ function collectWrapperSpecs(cem: Cem): WrapperSpec[] {
   return specs.sort((a, b) => a.tagName.localeCompare(b.tagName));
 }
 
-function renderEventMap(events: string[]): string {
+const DETAIL_TYPE_NAME = /\b[A-Z]\w*Detail\b/g;
+
+function renderEventMap(events: CemEvent[]): string {
   if (events.length === 0) {
     return '{}';
   }
-  const entries = events.map((name) => `    '${toEventPropName(name)}': '${name}' as EventName<CustomEvent>`);
+  const entries = events.map(
+    (event) =>
+      `    '${toEventPropName(event.name)}': '${event.name}' as EventName<${event.type?.text ?? 'CustomEvent'}>`,
+  );
   return `{\n${entries.join(',\n')},\n  }`;
+}
+
+function renderDetailTypesImport(events: CemEvent[]): string {
+  const names = new Set(events.flatMap((event) => event.type?.text.match(DETAIL_TYPE_NAME) ?? []));
+  if (names.size === 0) {
+    return '';
+  }
+  return `import type { ${[...names].sort().join(', ')} } from '@jsekulowicz/ds-components';\n`;
 }
 
 function renderWrapperFile(spec: WrapperSpec): string {
@@ -98,7 +112,7 @@ function renderWrapperFile(spec: WrapperSpec): string {
   return `import * as React from 'react';
 ${litReactImport}
 import { ${spec.className} } from '@jsekulowicz/ds-components/${subpath}';
-import '@jsekulowicz/ds-components/${subpath}/define';
+${renderDetailTypesImport(spec.events)}import '@jsekulowicz/ds-components/${subpath}/define';
 
 export const ${componentName} = createComponent({
   tagName: '${spec.tagName}',

@@ -3,6 +3,10 @@ import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { formStyles } from './form.styles.js';
 
+export interface FormSubmitDetail {
+  data: FormData;
+}
+
 /**
  * @tag ds-form
  * @summary Layout + behavior shell for native <form> submission with slotted ds-field content.
@@ -12,7 +16,7 @@ import { formStyles } from './form.styles.js';
  * @csspart title - The heading, when one is set.
  * @csspart section - The wrapper around the slotted fields.
  * @csspart actions - The button row below the fields.
- * @event ds-submit - Fires on successful form submit with FormData detail.
+ * @event {CustomEvent<FormSubmitDetail>} ds-submit - Fires on successful form submit with FormData detail.
  * @event ds-invalid - Fires when submit is prevented by invalid fields.
  */
 export class DsForm extends DsElement {
@@ -38,7 +42,7 @@ export class DsForm extends DsElement {
       this.emit('ds-invalid', { detail: null });
       return;
     }
-    this.emit('ds-submit', { detail: { data: this.#buildFormData(controls) } });
+    this.emit<FormSubmitDetail>('ds-submit', { detail: { data: this.#buildFormData(controls) } });
   };
 
   #collectControls(): ReadonlyArray<{

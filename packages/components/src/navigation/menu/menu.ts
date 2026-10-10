@@ -6,6 +6,7 @@ import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { menuStyles } from './menu.styles.js';
 import type { DsMenuItem } from './menu-item.js';
+import type { ActivateDetail } from '../../events.js';
 
 const TYPEAHEAD_TIMEOUT_MS = 500;
 
@@ -16,7 +17,7 @@ const TYPEAHEAD_TIMEOUT_MS = 500;
  * @slot default - `ds-menu-item` children.
  * @slot footer - Optional region rendered below the items. Not part of the menu's role tree.
  * @csspart menu - The internal `role="menu"` container that holds the items.
- * @event ds-select - Fires when an item is activated. Detail: `{ value, originalEvent }`.
+ * @event {CustomEvent<ActivateDetail>} ds-select - Fires when an item is activated. Detail: `{ value, originalEvent }`.
  */
 export class DsMenu extends DsElement {
   static override styles = [...DsElement.styles, menuStyles];
@@ -76,8 +77,8 @@ export class DsMenu extends DsElement {
   };
 
   #onActivate = (event: Event): void => {
-    const detail = (event as CustomEvent<{ value: string; originalEvent: Event }>).detail;
-    this.emit('ds-select', { detail });
+    const detail = (event as CustomEvent<ActivateDetail>).detail;
+    this.emit<ActivateDetail>('ds-select', { detail });
   };
 
   #moveFocus(key: string): boolean {

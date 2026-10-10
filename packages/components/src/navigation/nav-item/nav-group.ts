@@ -4,12 +4,16 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { navGroupStyles } from './nav-group.styles.js';
 import '../../data-display/icon/icons/chevron-down.js';
 
+export interface NavGroupToggleDetail {
+  expanded: boolean;
+}
+
 /**
  * @tag ds-nav-group
  * @summary Collapsible heading + nested ds-nav-item children. Uses the disclosure pattern.
  * @slot default - ds-nav-item children.
  * @slot icon - Optional leading icon for the heading. Required when `compact` is set.
- * @event ds-group-toggle - Fires when the user toggles the heading. Detail: `{ expanded: boolean }`.
+ * @event {CustomEvent<NavGroupToggleDetail>} ds-group-toggle - Fires when the user toggles the heading. Detail: `{ expanded: boolean }`.
  * @csspart heading - The internal `<button>` heading.
  * @csspart icon - The icon slot wrapper, once an icon is slotted.
  * @csspart label - The heading's own label text.
@@ -63,7 +67,7 @@ export class DsNavGroup extends DsElement {
       return;
     }
     this.expanded = !this.expanded;
-    this.emit('ds-group-toggle', { detail: { expanded: this.expanded } });
+    this.emit<NavGroupToggleDetail>('ds-group-toggle', { detail: { expanded: this.expanded } });
   };
 
   #renderIcon(): TemplateResult {

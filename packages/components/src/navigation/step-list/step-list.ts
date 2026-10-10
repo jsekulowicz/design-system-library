@@ -21,6 +21,10 @@ import {
 
 export type { StepListStep } from './step-list-templates.js';
 
+export interface StepListSelectDetail {
+  index: number;
+}
+
 /**
  * @tag ds-step-list
  * @summary Numbered progress trail for a stepped form. Marks steps before the current index done
@@ -28,7 +32,7 @@ export type { StepListStep } from './step-list-templates.js';
  * @slot trailing - Controls above the steps, such as a reset action.
  * @attr {boolean} compact - Forces the compact layout - the current step above a rail of segments. Without it the
  * component switches to that layout on its own whenever the full row of steps would not fit on one line.
- * @event ds-step-select - Fires when the reader picks a step that is neither the current one nor disabled.
+ * @event {CustomEvent<StepListSelectDetail>} ds-step-select - Fires when the reader picks a step that is neither the current one nor disabled.
  * Asking a disabled step for its `reason` never fires it. Detail: `{ index: number }`.
  * @csspart nav - The internal `<nav>` element.
  * @csspart trailing - The wrapper around the trailing slot.
@@ -89,7 +93,7 @@ export class DsStepList extends DsElement {
       return;
     }
     this.#reasonTooltip.close();
-    this.emit('ds-step-select', { detail: { index } });
+    this.emit<StepListSelectDetail>('ds-step-select', { detail: { index } });
   }
 
   #renderWithReasonIfGiven(

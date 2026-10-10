@@ -6,6 +6,7 @@ import type { AriaBoolean, AriaChecked, AriaHasPopup, AriaInvalid, AriaRole, Lin
 import { spinnerStyles } from '../../shared/spinner.js';
 import { buttonContent } from './button-content.js';
 import { buttonStyles } from './button.styles.js';
+import type { ClickDetail } from '../../events.js';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type ButtonColor = 'accent' | 'success' | 'danger';
@@ -34,7 +35,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @cssprop --ds-button-on-solid - Legacy primary foreground override.
  * @cssprop --ds-button-line - Secondary variant border color.
  * @cssprop --ds-button-text - Secondary/ghost variant text color.
- * @event ds-click - Emitted when the button is activated.
+ * @event {CustomEvent<ClickDetail>} ds-click - Emitted when the button is activated.
  */
 export class DsButton extends DsElement {
   static override styles = [...DsElement.styles, spinnerStyles, buttonStyles];
@@ -76,7 +77,7 @@ export class DsButton extends DsElement {
     if (this.href === undefined && (this.type === 'submit' || this.type === 'reset')) {
       this.#submitHostForm();
     }
-    this.emit('ds-click', { detail: { originalEvent: event } });
+    this.emit<ClickDetail>('ds-click', { detail: { originalEvent: event } });
   };
 
   #submitHostForm(): void {

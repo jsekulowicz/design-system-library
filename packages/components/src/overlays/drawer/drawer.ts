@@ -21,7 +21,7 @@ export type DrawerSide = 'start' | 'end';
  * @csspart close-button - The header close button.
  * @cssprop [--ds-drawer-height=100dvh] - Height of the drawer and its card. Set this rather than `::part(dialog) { height }`, so the card follows the same height.
  * @event ds-open - Fires after the drawer opens.
- * @event ds-close - Fires after the drawer closes. Detail: `{ returnValue: string }`.
+ * @event {CustomEvent<DialogCloseDetail>} ds-close - Fires after the drawer closes. Detail: `{ returnValue: string }`.
  * @event ds-cancel - Fires when the drawer is dismissed via Escape or backdrop click.
  */
 export class DsDrawer extends DsElement {

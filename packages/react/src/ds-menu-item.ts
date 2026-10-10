@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createComponent, type EventName } from '@lit/react';
 import { DsMenuItem } from '@jsekulowicz/ds-components/menu';
+import type { ActivateDetail } from '@jsekulowicz/ds-components';
 import '@jsekulowicz/ds-components/menu/define';
 
 export const MenuItem = createComponent({
@@ -8,7 +9,7 @@ export const MenuItem = createComponent({
   elementClass: DsMenuItem,
   react: React,
   events: {
-    'onDsActivate': 'ds-activate' as EventName<CustomEvent>,
+    'onDsActivate': 'ds-activate' as EventName<CustomEvent<ActivateDetail>>,
   },
   displayName: 'MenuItem',
 });

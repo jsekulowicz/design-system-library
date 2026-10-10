@@ -5,6 +5,7 @@ import { emit } from '@jsekulowicz/ds-core';
 import type { CardElevation } from '../data-display/card/card.js';
 import { ScrollFadeController } from './scroll-fade-controller.js';
 import { closeNestedDialogs } from './nested-dialogs.js';
+import type { DialogCloseDetail } from '../events.js';
 
 export interface ModalSurfaceHost extends ReactiveControllerHost, HTMLElement {
   open: boolean;
@@ -85,7 +86,7 @@ export class ModalSurfaceController implements ReactiveController {
 
   #onNativeClose = (): void => {
     this.#host.open = false;
-    emit(this.#host, 'ds-close', { detail: { returnValue: this.dialogEl?.returnValue ?? '' } });
+    emit<DialogCloseDetail>(this.#host, 'ds-close', { detail: { returnValue: this.dialogEl?.returnValue ?? '' } });
   };
 
   #onCloseButtonClick = (): void => {
