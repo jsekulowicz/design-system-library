@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.83.0
+
+### Minor Changes
+
+- 9fb75c3: Add `trigger="manual"` to Tooltip so `open` alone controls visibility: hover, focus and Escape no longer show or hide the tip, and the host owns those interactions. Automatic tooltip behavior remains the default.
+
+### Patch Changes
+
+- 9fb75c3: Dismiss the previous StepList reason when another disabled step's reason appears on hover or focus, including when the previous reason was pinned by a click. Keep only the new explanation visible in both the full row and compact rail. A reason pinned by a click now stays pinned while its text is selected, instead of closing on the press.
+
 ## 0.82.0
 
 ### Minor Changes
