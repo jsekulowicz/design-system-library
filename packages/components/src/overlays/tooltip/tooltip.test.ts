@@ -335,6 +335,42 @@ describe('<ds-tooltip>', () => {
     expect(harness.showCalls).toBe(3);
   });
 
+  it('uses only open to control manual visibility despite hover, focus, or Escape', async () => {
+    const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    el.trigger = 'manual';
+    await el.updateComplete;
+    anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    anchor.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    await el.updateComplete;
+    expect(harness.showCalls).toBe(0);
+
+    el.open = true;
+    await el.updateComplete;
+    expect(harness.showCalls).toBe(1);
+    expect(pressEscape().defaultPrevented).toBe(false);
+    el.open = false;
+    await el.updateComplete;
+    expect(harness.hideCalls).toBe(1);
+  });
+
+  it('cancels pending automatic hover when switching to manual control', async () => {
+    vi.useFakeTimers();
+    const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    el.delay = 200;
+    anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    el.trigger = 'manual';
+    await el.updateComplete;
+    vi.advanceTimersByTime(200);
+    el.trigger = 'auto';
+    await el.updateComplete;
+    expect(harness.showCalls).toBe(0);
+
+    anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    vi.advanceTimersByTime(200);
+    await el.updateComplete;
+    expect(harness.showCalls).toBe(1);
+  });
+
   it('keeps a tip held up by open showing on Escape, leaving open to the host', async () => {
     const { el, harness } = await mountWithHarness(
       '<ds-tooltip open><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>',

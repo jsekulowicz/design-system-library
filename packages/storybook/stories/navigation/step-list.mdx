@@ -23,7 +23,7 @@ A step marked `disabled` stays in the list and keeps its number, but never becom
 
 Labels and descriptions never wrap in the full row, and the line between two steps never gets shorter than `--ds-step-list-connector-min`. When the row cannot fit on one line under those rules, the component switches to its compact layout: the current step above a rail of segments. It measures its own content against its own width rather than the viewport, so the switch follows the labels: a longer translation switches earlier, and a narrow column on a wide screen switches too. The `compact` attribute forces that layout at any width, and the component then stops measuring. Each rail segment is a button over a touch-sized target, so the rail navigates the same steps the full row does.
 
-Labels wrap rather than truncate. A step list is wayfinding, and a name cut off mid-word tells the reader less than nothing, so a long label costs height instead of meaning - keep labels to a word or two and the row stays one line deep.
+Labels never truncate, and in the full row they never wrap either. A step list is wayfinding, and a name cut off mid-word tells the reader less than nothing, so a row that cannot hold every label on one line switches to the compact layout instead - keep labels to a word or two and the full row holds out longer.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
@@ -70,7 +70,9 @@ Labels wrap rather than truncate. A step list is wayfinding, and a name cut off 
         <li>
           A disabled step carries <code>aria-disabled="true"</code>. It is focusable only when it has a
           <code>reason</code> to give, and then <code>aria-describedby</code> points at that reason, so asking why works
-          by keyboard and by screen reader. Tabbing onto it shows the reason, and Escape hides it again.
+          by keyboard and by screen reader. Tabbing onto it or hovering it shows the reason, and only one reason shows at a
+          time. Clicking or tapping it pins the reason, so its text can be selected, until focus moves on, the reader clicks
+          outside, or Escape hides it.
         </li>
         <li>A disabled step with nothing to say is natively disabled, so tabbing never lands somewhere that refuses without explaining.</li>
         <li>The compact rail behaves the same way, each segment carrying its step's name and the same description.</li>

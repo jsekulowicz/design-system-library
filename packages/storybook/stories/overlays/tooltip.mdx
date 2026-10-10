@@ -11,7 +11,7 @@ Short, non-interactive hint that appears on hover or focus. Tooltips supplement 
 
 ## Anatomy
 
-A floating bubble positioned relative to the triggering child via the `placement` property. `open` can be controlled imperatively; otherwise pointer and keyboard events drive it.
+A floating bubble positioned relative to the triggering child via the `placement` property. `trigger="auto"` is the default: hover and focus reveal the tip, and Escape dismisses it. Set `trigger="manual"` to make `open` the sole visibility control. In manual mode, the host handles hover, focus, clicking, and Escape; this lets a group such as StepList choose exactly one reason to show.
 
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>

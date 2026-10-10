@@ -104,14 +104,27 @@ export interface ReasonTooltipOptions {
   layout: StepListLayout;
   reason: string | undefined;
   open: boolean;
+  onEnter: (event: Event) => void;
+  onLeave: (event: Event) => void;
+  onPress: () => void;
 }
 
 export function renderInReasonTooltip(
   trigger: TemplateResult,
-  { index, layout, reason, open }: ReasonTooltipOptions,
+  { index, layout, reason, open, onEnter, onLeave, onPress }: ReasonTooltipOptions,
 ): TemplateResult {
   return html`
-    <ds-tooltip class="reason-tooltip" ?full-width=${layout === 'compact'} .open=${open}>
+    <ds-tooltip
+      class="reason-tooltip"
+      trigger="manual"
+      ?full-width=${layout === 'compact'}
+      .open=${open}
+      @mouseenter=${onEnter}
+      @mouseleave=${onLeave}
+      @focusin=${onEnter}
+      @focusout=${onLeave}
+      @pointerdown=${onPress}
+    >
       ${trigger}
       <span slot="tip" id=${reasonId(index, layout)}>${reason}</span>
     </ds-tooltip>

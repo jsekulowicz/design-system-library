@@ -68,10 +68,10 @@ export const WithoutDescriptions: Story = {
   },
 };
 
-export const WithAStepTheAnswersRuledOut: Story = {
-  parameters: stepListSourceParameters({ steps: DISABLED_STEPS, currentIndex: 3 }),
+export const WithStepsTheAnswersRuledOut: Story = {
+  parameters: stepListSourceParameters({ steps: DISABLED_STEPS, currentIndex: 4 }),
   render: function render() {
-    return html` <ds-step-list .steps=${DISABLED_STEPS} .currentIndex=${3}></ds-step-list> `;
+    return html` <ds-step-list .steps=${DISABLED_STEPS} .currentIndex=${4}></ds-step-list> `;
   },
 };
 
@@ -90,10 +90,10 @@ export const SwitchesToCompactWhenTheRowDoesNotFit: Story = {
   },
 };
 
-export const CompactWithAStepTheAnswersRuledOut: Story = {
-  parameters: stepListSourceParameters({ steps: DISABLED_STEPS, currentIndex: 1, compact: true }),
+export const CompactWithStepsTheAnswersRuledOut: Story = {
+  parameters: stepListSourceParameters({ steps: DISABLED_STEPS, currentIndex: 0, compact: true }),
   render: function render() {
-    return html` <ds-step-list .steps=${DISABLED_STEPS} .currentIndex=${1} compact></ds-step-list> `;
+    return html` <ds-step-list .steps=${DISABLED_STEPS} .currentIndex=${0} compact></ds-step-list> `;
   },
 };
 

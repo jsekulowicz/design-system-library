@@ -16,8 +16,9 @@ const meta: Meta = {
       options: ['top', 'right', 'bottom', 'left'],
     },
     open: { control: 'boolean' },
+    trigger: { control: { type: 'inline-radio' }, options: ['auto', 'manual'] },
   },
-  args: { placement: 'top', open: false },
+  args: { placement: 'top', open: false, trigger: 'auto' },
 };
 
 export default meta;
@@ -32,7 +33,7 @@ const WRAPPING_FRAME_STYLE = `${CENTERED_FRAME_STYLE};text-align:right;white-spa
 export const Playground: Story = {
   render: (args) => html`
     <div style=${CENTERED_FRAME_STYLE}>
-      <ds-tooltip placement=${args['placement']} ?open=${args['open']}>
+      <ds-tooltip placement=${args['placement']} trigger=${args['trigger']} ?open=${args['open']}>
         <ds-button variant="secondary">Hover me</ds-button>
         <span slot="tip">Helpful context</span>
       </ds-tooltip>

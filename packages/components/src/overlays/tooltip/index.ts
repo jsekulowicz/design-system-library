@@ -1,1 +1,1 @@
-export { DsTooltip, type TooltipPlacement } from './tooltip.js';
+export { DsTooltip, type TooltipTrigger, type TooltipPlacement } from './tooltip.js';

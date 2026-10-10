@@ -51,7 +51,11 @@ export class DsStepList extends DsElement {
   @property({ type: Boolean, reflect: true }) compact = false;
 
   readonly #slots = new SlotPresenceController(this, ['trailing']);
-  readonly #reasonTooltip = new ReasonTooltipController(this, (index) => this.#hasReasonToGive(index));
+  readonly #reasonTooltip = new ReasonTooltipController(
+    this,
+    (index) => this.#hasReasonToGive(index),
+    () => this.#currentLayout(),
+  );
   readonly #rowFit = new RowFitController(this, () => this.renderRoot.querySelector<HTMLElement>('[part="list"]'));
   #currentStepWasDisabled = false;
 
@@ -72,9 +76,13 @@ export class DsStepList extends DsElement {
     return Boolean(step && stepAsRendered(step, index, this.currentIndex).disabled && step.reason);
   }
 
-  #activate(index: number): void {
+  #currentLayout(): StepListLayout {
+    return this.compact || !this.#rowFit.rowFits ? 'compact' : 'list';
+  }
+
+  #activate(index: number, layout: StepListLayout): void {
     if (this.#hasReasonToGive(index)) {
-      this.#reasonTooltip.toggle(index);
+      this.#reasonTooltip.toggle(index, layout);
       return;
     }
     if (!this.#isReachable(index)) {
@@ -94,7 +102,7 @@ export class DsStepList extends DsElement {
     const button = renderButton({
       describedBy: hasReason ? reasonId(index, layout) : undefined,
       nativelyDisabled: Boolean(step.disabled) && !hasReason,
-      onActivate: () => this.#activate(index),
+      onActivate: () => this.#activate(index, layout),
     });
     if (!hasReason) {
       return button;
@@ -103,7 +111,10 @@ export class DsStepList extends DsElement {
       index,
       layout,
       reason: step.reason,
-      open: this.#reasonTooltip.isOpenFor(index),
+      open: this.#reasonTooltip.isOpenFor(index, layout),
+      onEnter: (event) => this.#reasonTooltip.enter(index, layout, event),
+      onLeave: (event) => this.#reasonTooltip.leave(index, layout, event),
+      onPress: () => this.#reasonTooltip.holdThroughAPressInside(index, layout),
     });
   }
 
@@ -137,12 +148,7 @@ export class DsStepList extends DsElement {
 
   override render(): TemplateResult {
     return html`
-      <nav
-        part="nav"
-        class=${this.compact || !this.#rowFit.rowFits ? 'showing-compact' : ''}
-        aria-label=${this.label}
-        @focusout=${this.#reasonTooltip.close}
-      >
+      <nav part="nav" class=${this.#currentLayout() === 'compact' ? 'showing-compact' : ''} aria-label=${this.label}>
         <div part="trailing" class="trailing" ?hidden=${!this.#slots.has('trailing')}>
           <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
         </div>

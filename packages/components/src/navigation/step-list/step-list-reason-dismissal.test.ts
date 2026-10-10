@@ -47,9 +47,9 @@ describe('<ds-step-list> dismissing a reason', () => {
     stepEls(el)[1].querySelector('button')!.click();
     await el.updateComplete;
 
-    el.shadowRoot!.querySelector('nav')!.dispatchEvent(
-      new FocusEvent('focusout', { relatedTarget: document.body, bubbles: true }),
-    );
+    stepEls(el)[1]
+      .querySelector('button')!
+      .dispatchEvent(new FocusEvent('focusout', { relatedTarget: document.body, bubbles: true, composed: true }));
     await el.updateComplete;
 
     expect(el.shadowRoot!.querySelector('ds-tooltip')!.hasAttribute('open')).toBe(false);

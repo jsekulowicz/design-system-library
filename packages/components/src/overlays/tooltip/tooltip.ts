@@ -6,12 +6,14 @@ import { tooltipStyles } from './tooltip.styles.js';
 import { hideTooltipPopover, showTooltipPopover } from './tooltip-popover.js';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
+export type TooltipTrigger = 'auto' | 'manual';
 
 const TIP_SLOT = 'tip';
 
 /**
  * @tag ds-tooltip
  * @summary Contextual label that appears on hover/focus of the trigger element. Escape hides a tip shown by hover or focus until the pointer or focus next enters; one held up by `open` stays.
+ * @attr {'auto' | 'manual'} trigger - Automatic hover/focus behavior by default; manual makes `open` the sole visibility control and leaves Escape to the host.
  * @slot default - The trigger element that the tooltip is anchored to.
  * @slot tip - The tooltip content (can be any HTML).
  * @csspart anchor - The wrapper around the trigger element.
@@ -24,6 +26,7 @@ export class DsTooltip extends DsElement {
 
   readonly #slots = new SlotPresenceController(this, [TIP_SLOT]);
 
+  @property({ reflect: true }) trigger: TooltipTrigger = 'auto';
   @property({ reflect: true }) placement: TooltipPlacement = 'top';
   @property({ type: Boolean, reflect: true }) open = false;
   @property({ type: Boolean, attribute: 'hover-only' }) hoverOnly = false;
@@ -43,7 +46,16 @@ export class DsTooltip extends DsElement {
     hideTooltipPopover(this.#tooltipEl());
   }
 
-  override updated(_changed: PropertyValues): void {
+  override willUpdate(changed: PropertyValues): void {
+    if (changed.has('trigger')) {
+      this.#clearHoverTimer();
+      this._hovered = false;
+      this._focused = false;
+      this._dismissedByEscape = false;
+    }
+  }
+
+  override updated(): void {
     const showsTransiently = this.#showsTransiently();
     if (this.#hasTip() && (this.open || showsTransiently)) {
       showTooltipPopover(this.#tooltipEl());
@@ -58,7 +70,12 @@ export class DsTooltip extends DsElement {
   }
 
   #showsTransiently(): boolean {
-    return this.#hasTip() && !this._dismissedByEscape && (this._hovered || (!this.hoverOnly && this._focused));
+    return (
+      this.trigger !== 'manual' &&
+      this.#hasTip() &&
+      !this._dismissedByEscape &&
+      (this._hovered || (!this.hoverOnly && this._focused))
+    );
   }
 
   #listenForEscapeWhile(listening: boolean): void {
@@ -84,6 +101,9 @@ export class DsTooltip extends DsElement {
   };
 
   #onMouseEnter = (): void => {
+    if (this.trigger === 'manual') {
+      return;
+    }
     this.#clearHoverTimer();
     this._dismissedByEscape = false;
     if (this.delay > 0) {
@@ -96,12 +116,15 @@ export class DsTooltip extends DsElement {
   };
 
   #onMouseLeave = (): void => {
+    if (this.trigger === 'manual') {
+      return;
+    }
     this.#clearHoverTimer();
     this._hovered = false;
   };
 
   #onFocusIn = (): void => {
-    if (this.hoverOnly) {
+    if (this.trigger === 'manual' || this.hoverOnly) {
       return;
     }
     this._dismissedByEscape = false;
@@ -109,7 +132,7 @@ export class DsTooltip extends DsElement {
   };
 
   #onFocusOut = (): void => {
-    if (this.hoverOnly) {
+    if (this.trigger === 'manual' || this.hoverOnly) {
       return;
     }
     this._focused = false;

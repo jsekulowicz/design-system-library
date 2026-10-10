@@ -26,7 +26,13 @@ export function startOverFromTheFirstStep(event: Event): void {
 export const LABEL_ONLY_STEPS: StepListStep[] = [{ label: 'Details' }, { label: 'Vocabulary' }, { label: 'Summary' }];
 
 export const DISABLED_STEPS: StepListStep[] = [
-  { label: 'Name', description: 'Required' },
+  { label: 'Visibility', description: 'Only me' },
+  {
+    label: 'Share with',
+    description: 'Unavailable',
+    disabled: true,
+    reason: 'Let other people open the crossword first - one only you can open has nobody to share it with.',
+  },
   { label: 'Vocabulary', description: 'Using every word' },
   {
     label: 'Extra words',
