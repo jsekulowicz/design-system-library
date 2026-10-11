@@ -1,5 +1,17 @@
 # @jsekulowicz/ds-components
 
+## 0.84.0
+
+### Minor Changes
+
+- 1828915: The spacing scale is contiguous up to 40px: `--ds-space-7` (28px) and `--ds-space-9` (36px) fill the two gaps below `--ds-space-10`, and the sizing utilities gain `ds-w-7`, `ds-w-9`, `ds-h-7`, `ds-h-9`, `ds-size-7` and `ds-size-9` to match.
+- 546175a: Every event with a payload now publishes its detail type. Shared shapes (`ValueChangeDetail`, `ValuesChangeDetail`, `SelectionChangeDetail`, `CheckedChangeDetail`, `SearchDetail`, `OverflowClickDetail`, `ClickDetail`, `ActivateDetail`, `DialogCloseDetail`) come from the package root and the new `@jsekulowicz/ds-components/events` subpath; `StepListSelectDetail`, `ToastDismissDetail`, `FormSubmitDetail`, `NavGroupToggleDetail` and `PageShellAsideStateChangeDetail` come with their components. The React wrappers type their event props with them.
+
+### Patch Changes
+
+- Updated dependencies [1828915]
+  - @jsekulowicz/ds-tokens@0.84.0
+
 ## 0.83.0
 
 ### Minor Changes

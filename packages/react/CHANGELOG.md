@@ -1,5 +1,17 @@
 # @jsekulowicz/ds-react
 
+## 0.84.0
+
+### Minor Changes
+
+- 546175a: Every event with a payload now publishes its detail type. Shared shapes (`ValueChangeDetail`, `ValuesChangeDetail`, `SelectionChangeDetail`, `CheckedChangeDetail`, `SearchDetail`, `OverflowClickDetail`, `ClickDetail`, `ActivateDetail`, `DialogCloseDetail`) come from the package root and the new `@jsekulowicz/ds-components/events` subpath; `StepListSelectDetail`, `ToastDismissDetail`, `FormSubmitDetail`, `NavGroupToggleDetail` and `PageShellAsideStateChangeDetail` come with their components. The React wrappers type their event props with them.
+
+### Patch Changes
+
+- Updated dependencies [1828915]
+- Updated dependencies [546175a]
+  - @jsekulowicz/ds-components@0.84.0
+
 ## 0.83.0
 
 ### Patch Changes
