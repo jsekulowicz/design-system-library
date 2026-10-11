@@ -13,6 +13,8 @@ This matches the Tokens foundation convention: token names encode intent and ste
 
 Every step is a multiple of 4px. The number in the token name is the step count on that 4px grid, so `--ds-space-3` is **3 × 4px = 12px**.
 
+The scale is contiguous from `space-0` to `space-10`, so every 4px step up to 40px has a token - the range where control heights, row heights and icon boxes live. Above that it widens to `space-12`, `space-16`, `space-20`, `space-24` and `space-32`, the layout-scale gaps.
+
 <Story of={SpacingStories.Scale} />
 
 ## Why rems, not pixels
@@ -26,7 +28,7 @@ The rule of thumb the system follows:
 - **Borders, hairlines, shadow offsets** - px (they're meant to be crisp and aren't typographic).
 - **Breakpoint widths** - px (viewport is measured in device pixels, not font size).
 
-If you need an exact-px gap for a specific UI moment, use a raw `4px`/`8px`/`12px` literal rather than reaching for a new token - the scale only grows when there's a consistent reuse case.
+If you need an exact-px value above `space-10` that the scale skips, use a raw literal rather than reaching for a new token - the wide end only grows when there's a consistent reuse case.
 
 ## Semantic choices by density
 
@@ -47,5 +49,6 @@ Enforced by unit tests in
 1. Every token's pixel value is a multiple of 4.
 2. Every non-zero token is declared in `rem`.
 3. The step number matches the value: `space[N]` equals `N × 4px`.
+4. Every step from `space-0` to `space-10` exists.
 
 Add a new step only when the invariants still hold - i.e. a new number whose `rem` value resolves to `N × 4px`.

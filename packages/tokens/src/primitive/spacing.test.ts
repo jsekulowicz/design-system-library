@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { space } from './spacing.js';
 
 const REM_IN_PX = 16;
+const LAST_CONTIGUOUS_STEP = 10;
 
 function remToPx(value: string): number {
   if (value === '0') {
@@ -38,6 +39,12 @@ describe('space tokens', () => {
         continue;
       }
       expect(remToPx(value), `space[${name}] should equal ${n * 4}px`).toBe(n * 4);
+    }
+  });
+
+  it('has a step for every 4px up to space-10, where control and row heights live', () => {
+    for (let n = 0; n <= LAST_CONTIGUOUS_STEP; n++) {
+      expect(space, `space[${n}] is missing from the contiguous range`).toHaveProperty(String(n));
     }
   });
 });
