@@ -386,6 +386,21 @@ describe('<ds-tooltip>', () => {
     expect(harness.hideCalls).toBe(1);
   });
 
+  it('closes a manual tooltip after text selection when open is cleared', async () => {
+    const { el, harness } = await mountWithHarness(TOOLTIP_MARKUP);
+    el.trigger = 'manual';
+    el.open = true;
+    await el.updateComplete;
+
+    harness.tooltip.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, button: 0 }));
+    document.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, button: 0 }));
+    el.open = false;
+    await el.updateComplete;
+
+    expect(harness.hideCalls).toBe(1);
+    expect(pressEscape().defaultPrevented).toBe(false);
+  });
+
   it('cancels pending automatic hover when switching to manual control', async () => {
     vi.useFakeTimers();
     const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);

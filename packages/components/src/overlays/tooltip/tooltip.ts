@@ -51,6 +51,7 @@ export class DsTooltip extends DsElement {
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('trigger')) {
       this.#clearHoverTimer();
+      this.#releaseSelection();
       this._hovered = false;
       this._focused = false;
       this._dismissedByEscape = false;
@@ -108,7 +109,7 @@ export class DsTooltip extends DsElement {
   };
 
   #holdSelection = (event: PointerEvent): void => {
-    if (event.button !== 0) {
+    if (this.trigger === 'manual' || event.button !== 0) {
       return;
     }
     this._selectionHeld = true;
