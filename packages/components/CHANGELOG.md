@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.84.1
+
+### Patch Changes
+
+- ce8385b: Keep tooltip text selectable during drag selection, close selected tips on outside press or Escape, and prevent tip clicks from activating the trigger.
+
 ## 0.84.0
 
 ### Minor Changes
