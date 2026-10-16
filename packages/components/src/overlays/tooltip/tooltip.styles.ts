@@ -12,7 +12,6 @@ export const tooltipStyles = css`
   .anchor {
     position: relative;
     display: inline-flex;
-    /* Anchor name is shadow-root scoped, so instances don't clash. */
     anchor-name: --ds-tooltip-anchor;
   }
   :host([full-width]) .anchor {
@@ -20,7 +19,6 @@ export const tooltipStyles = css`
     width: 100%;
   }
   .tooltip {
-    /* Top layer + anchor positioning: the browser tracks the trigger, no JS. */
     position: fixed;
     position-anchor: --ds-tooltip-anchor;
     position-area: top;
@@ -35,9 +33,6 @@ export const tooltipStyles = css`
     text-align: start;
     white-space: normal;
     z-index: var(--ds-z-index-tooltip);
-    /* A surface in the page's own theme rather than an inverted chip: a tip
-       here carries a title and a paragraph, not a two-word hint, and reads as
-       part of the page it explains. */
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
     box-shadow: var(--ds-shadow-md);
@@ -47,9 +42,6 @@ export const tooltipStyles = css`
     padding: var(--ds-tooltip-padding, var(--ds-space-1) var(--ds-space-3));
     border-radius: var(--ds-radius-xs);
     max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100% - var(--ds-space-2)));
-    pointer-events: none;
-  }
-  :host([open]) .tooltip {
     pointer-events: auto;
     user-select: text;
   }
@@ -68,7 +60,6 @@ export const tooltipStyles = css`
     position-try-fallbacks: flip-inline;
   }
 
-  /* Slide toward the available side rather than overflow. */
   @position-try --ds-tooltip-top-start {
     position-area: top span-right;
   }

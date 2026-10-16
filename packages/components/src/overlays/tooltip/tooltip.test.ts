@@ -137,8 +137,6 @@ describe('<ds-tooltip>', () => {
     const el = await mount<DsTooltip>('<ds-tooltip><button>Trigger</button><span slot="tip">Tip</span></ds-tooltip>');
     const harness = setupPopoverHarness(el);
 
-    // Placement is reflected to the host attribute, which drives the CSS
-    // anchor positioning (position-area) - there's no JS positioning anymore.
     for (const placement of ['top', 'right', 'bottom', 'left'] as const) {
       harness.setOpenState(false);
       el.placement = placement;
@@ -273,11 +271,46 @@ describe('<ds-tooltip>', () => {
     expect(harness.showCalls).toBe(0);
   });
 
-  it('lets the pointer reach a tip that is held open, and not one that follows it', () => {
+  it('lets the pointer select text in a transient tooltip', () => {
     const css = tooltipStyles.cssText.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ');
 
-    expect(css).toMatch(/\.tooltip \{[^}]* pointer-events: none; \}/);
-    expect(css).toContain(':host([open]) .tooltip { pointer-events: auto; user-select: text; }');
+    expect(css).toMatch(/\.tooltip \{[^}]* pointer-events: auto; user-select: text; \}/);
+  });
+
+  it('keeps a tooltip visible during text selection and closes it on an outside press', async () => {
+    const { el, harness, anchor } = await mountWithHarness(TOOLTIP_MARKUP);
+    anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+    await el.updateComplete;
+
+    harness.tooltip.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, button: 0 }));
+    anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+    await el.updateComplete;
+    expect(harness.hideCalls).toBe(0);
+
+    document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }));
+    await el.updateComplete;
+    expect(harness.hideCalls).toBe(1);
+  });
+
+  it('keeps tooltip clicks from activating its trigger', async () => {
+    const { el, harness } = await mountWithHarness(TOOLTIP_MARKUP);
+    const onTriggerClick = vi.fn();
+    el.addEventListener('click', onTriggerClick);
+
+    harness.tooltip.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+
+    expect(onTriggerClick).not.toHaveBeenCalled();
+  });
+
+  it('closes a tooltip held for selection on Escape', async () => {
+    const { el, harness } = await mountWithHarness(TOOLTIP_MARKUP);
+    harness.tooltip.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, button: 0 }));
+    await el.updateComplete;
+
+    pressEscape();
+    await el.updateComplete;
+
+    expect(harness.hideCalls).toBe(1);
   });
 
   it('stays safe when tooltip node is missing', async () => {

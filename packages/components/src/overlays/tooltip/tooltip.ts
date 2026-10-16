@@ -36,12 +36,14 @@ export class DsTooltip extends DsElement {
   @state() private _hovered = false;
   @state() private _focused = false;
   @state() private _dismissedByEscape = false;
+  @state() private _selectionHeld = false;
 
   private _hoverTimer?: number;
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.#clearHoverTimer();
+    this.#releaseSelection();
     this.#listenForEscapeWhile(false);
     hideTooltipPopover(this.#tooltipEl());
   }
@@ -57,12 +59,12 @@ export class DsTooltip extends DsElement {
 
   override updated(): void {
     const showsTransiently = this.#showsTransiently();
-    if (this.#hasTip() && (this.open || showsTransiently)) {
+    if (this.#hasTip() && (this.open || this._selectionHeld || showsTransiently)) {
       showTooltipPopover(this.#tooltipEl());
     } else {
       hideTooltipPopover(this.#tooltipEl());
     }
-    this.#listenForEscapeWhile(showsTransiently);
+    this.#listenForEscapeWhile(showsTransiently || this._selectionHeld);
   }
 
   #hasTip(): boolean {
@@ -90,7 +92,31 @@ export class DsTooltip extends DsElement {
     if (event.key === 'Escape') {
       event.preventDefault();
       this._dismissedByEscape = true;
+      this.#releaseSelection();
     }
+  };
+
+  #releaseOnOutsidePointer = (event: PointerEvent): void => {
+    if (!event.composedPath().includes(this)) {
+      this.#releaseSelection();
+    }
+  };
+
+  #releaseSelection = (): void => {
+    this._selectionHeld = false;
+    document.removeEventListener('pointerdown', this.#releaseOnOutsidePointer);
+  };
+
+  #holdSelection = (event: PointerEvent): void => {
+    if (event.button !== 0) {
+      return;
+    }
+    this._selectionHeld = true;
+    document.addEventListener('pointerdown', this.#releaseOnOutsidePointer);
+  };
+
+  #stopTipClick = (event: MouseEvent): void => {
+    event.stopPropagation();
   };
 
   #clearHoverTimer = (): void => {
@@ -153,7 +179,14 @@ export class DsTooltip extends DsElement {
         @focusout=${this.#onFocusOut}
       >
         <slot></slot>
-        <div role="tooltip" part="tooltip" class="tooltip" popover="manual">
+        <div
+          role="tooltip"
+          part="tooltip"
+          class="tooltip"
+          popover="manual"
+          @pointerdown=${this.#holdSelection}
+          @click=${this.#stopTipClick}
+        >
           <slot name="tip" @slotchange=${this.#slots.handleSlotChange}></slot>
         </div>
       </div>
