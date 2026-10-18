@@ -1,0 +1,57 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as CarouselStories from './carousel.stories';
+import { ComponentApi } from '../../.storybook/api-blocks';
+import '@jsekulowicz/ds-components/tabs/define';
+
+<Meta of={CarouselStories} />
+
+# Carousel
+
+A single row of items that scrolls sideways and snaps item by item.
+
+## Anatomy
+
+Every slotted element is one item and one snap point. Items share one width, set with `--ds-carousel-item-width`. The previous and next buttons scroll by one view and appear only when there is somewhere to go, so a row that fits shows none. Touch, trackpad and keyboard scrolling stay native: tabbing to an item brings it into view.
+
+```html
+<ds-carousel label="Featured guides">
+  <ds-card>...</ds-card>
+  <ds-card>...</ds-card>
+</ds-carousel>
+```
+
+<ds-tabs value="api">
+  <ds-tab slot="tab" value="api">API</ds-tab>
+  <ds-tab slot="tab" value="examples">Examples</ds-tab>
+  <ds-tab slot="tab" value="guidelines">Guidelines</ds-tab>
+
+<ds-tab-panel value="api">
+  <Canvas of={CarouselStories.Playground} />
+  <h3>Props</h3>
+  <Controls of={CarouselStories.Playground} />
+  <ComponentApi tag="ds-carousel" />
+</ds-tab-panel>
+
+<ds-tab-panel value="examples">
+  <Stories includePrimary={false} />
+</ds-tab-panel>
+
+  <ds-tab-panel value="guidelines">
+    <h3>Do</h3>
+    <ul>
+      <li>Use it for a short, curated row - a handful of items the reader can take in at a glance.</li>
+      <li>Give it a <code>label</code> that names the row, and translate <code>role-description</code>, <code>prev-label</code> and <code>next-label</code> in the consuming app.</li>
+      <li>Set <code>--ds-carousel-item-width</code> to a percentage below 100% on narrow screens so the next item peeks out.</li>
+    </ul>
+    <h3>Don't</h3>
+    <ul>
+      <li>Don't use it to browse a long or paginated list - a grid with pagination keeps the reader's place.</li>
+      <li>Don't hide anything important past the first view; many readers never scroll sideways.</li>
+    </ul>
+    <h3>Accessibility</h3>
+    <ul>
+      <li>Renders a named <code>&lt;section&gt;</code> region that announces itself as a carousel.</li>
+      <li>When a button disappears at either end, focus moves to the one that remains rather than being lost.</li>
+    </ul>
+  </ds-tab-panel>
+</ds-tabs>

@@ -413,6 +413,14 @@
       "types": "./dist/layout/page-shell/define.d.ts",
       "import": "./dist/layout/page-shell/define.js"
     },
+    "./carousel": {
+      "types": "./dist/layout/carousel/index.d.ts",
+      "import": "./dist/layout/carousel/index.js"
+    },
+    "./carousel/define": {
+      "types": "./dist/layout/carousel/define.d.ts",
+      "import": "./dist/layout/carousel/define.js"
+    },
     "./scrollable-page": {
       "types": "./dist/layout/scrollable-page/index.d.ts",
       "import": "./dist/layout/scrollable-page/index.js"

@@ -32,6 +32,7 @@ import './forms/select/define.js';
 import './forms/text-area/define.js';
 import './forms/text-field/define.js';
 
+import './layout/carousel/define.js';
 import './layout/footer/define.js';
 import './layout/page-shell/define.js';
 import './layout/scrollable-page/define.js';

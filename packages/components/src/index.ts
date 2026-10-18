@@ -90,6 +90,7 @@ export { DsSelect, type SelectOption, type SelectSize } from './forms/select/ind
 export { DsTextArea, type TextAreaSize, type TextAreaResize } from './forms/text-area/index.js';
 export { DsTextField, type TextFieldType, type TextFieldSize } from './forms/text-field/index.js';
 
+export { DsCarousel } from './layout/carousel/index.js';
 export { DsFooter } from './layout/footer/index.js';
 export { DsPageShell, type PageShellAsideStateChangeDetail } from './layout/page-shell/index.js';
 export { DsScrollablePage } from './layout/scrollable-page/index.js';

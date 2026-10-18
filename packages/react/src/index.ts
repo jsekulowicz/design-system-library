@@ -5,6 +5,7 @@ export { Breadcrumb } from './ds-breadcrumb.js';
 export { BreadcrumbItem } from './ds-breadcrumb-item.js';
 export { Button } from './ds-button.js';
 export { Card } from './ds-card.js';
+export { Carousel } from './ds-carousel.js';
 export { Checkbox } from './ds-checkbox.js';
 export { CheckboxGroup } from './ds-checkbox-group.js';
 export { ColorPicker } from './ds-color-picker.js';
