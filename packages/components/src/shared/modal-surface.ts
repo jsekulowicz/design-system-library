@@ -4,6 +4,7 @@ import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { emit } from '@jsekulowicz/ds-core';
 import type { CardElevation } from '../data-display/card/card.js';
 import { ScrollFadeController } from './scroll-fade-controller.js';
+import { SlotPresenceController } from './slot-presence.js';
 import { closeNestedDialogs } from './nested-dialogs.js';
 import type { DialogCloseDetail } from '../events.js';
 
@@ -17,9 +18,11 @@ export interface ModalSurfaceHost extends ReactiveControllerHost, HTMLElement {
 
 export class ModalSurfaceController implements ReactiveController {
   readonly #host: ModalSurfaceHost;
+  readonly #slots: SlotPresenceController;
 
   constructor(host: ModalSurfaceHost) {
     this.#host = host;
+    this.#slots = new SlotPresenceController(host, ['footer']);
     new ScrollFadeController(host, () => this.#cardBody());
     host.addController(this);
   }
@@ -119,7 +122,9 @@ export class ModalSurfaceController implements ReactiveController {
           </ds-button>
         </div>
         <slot></slot>
-        <div slot="footer" class="footer"><slot name="footer"></slot></div>
+        <div slot="footer" class="footer" ?hidden=${!this.#slots.has('footer')}>
+          <slot name="footer" @slotchange=${this.#slots.handleSlotChange}></slot>
+        </div>
       </ds-card>
     </dialog>`;
   }

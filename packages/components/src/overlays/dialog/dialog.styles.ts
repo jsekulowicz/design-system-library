@@ -75,5 +75,9 @@ export const dialogStyles = css`
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--ds-space-2);
+    margin-block-start: var(--ds-space-3);
+  }
+  .footer[hidden] {
+    display: none;
   }
 `;

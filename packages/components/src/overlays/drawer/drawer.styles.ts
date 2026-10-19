@@ -114,4 +114,7 @@ export const drawerStyles = css`
     justify-content: flex-end;
     gap: var(--ds-space-2);
   }
+  .footer[hidden] {
+    display: none;
+  }
 `;

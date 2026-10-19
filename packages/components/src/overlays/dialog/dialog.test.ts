@@ -56,6 +56,24 @@ describe('<ds-dialog>', () => {
     expect(footerSlot.assignedElements()).toHaveLength(2);
   });
 
+  it('hides the footer row of a dialog that has no footer actions', async () => {
+    const el = await mount<DsDialog>('<ds-dialog><p>Saved.</p></ds-dialog>');
+
+    expect(el.shadowRoot!.querySelector<HTMLElement>('.footer')!.hidden).toBe(true);
+  });
+
+  it('shows the footer row once footer actions arrive', async () => {
+    const el = await mount<DsDialog>('<ds-dialog><p>Saved.</p></ds-dialog>');
+    const action = document.createElement('ds-button');
+    action.slot = 'footer';
+
+    el.append(action);
+    await new Promise((resolve) => setTimeout(resolve));
+    await el.updateComplete;
+
+    expect(el.shadowRoot!.querySelector<HTMLElement>('.footer')!.hidden).toBe(false);
+  });
+
   it('opens via show() and closes via close()', async () => {
     const el = await mount<DsDialog>(TEMPLATE);
     const events: string[] = [];
