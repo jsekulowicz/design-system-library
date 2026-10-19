@@ -1,5 +1,15 @@
 # @jsekulowicz/ds-components
 
+## 0.85.0
+
+### Minor Changes
+
+- 747cb76: Add `ds-carousel`: a single row of items that scrolls sideways on native scroll snap, with previous and next buttons that appear only when there is somewhere to go.
+
+### Patch Changes
+
+- de2beb2: `ds-dialog` leaves more room above its footer actions, so the last field no longer crowds the buttons.
+
 ## 0.84.1
 
 ### Patch Changes
