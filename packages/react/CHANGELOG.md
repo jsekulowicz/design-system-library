@@ -1,5 +1,17 @@
 # @jsekulowicz/ds-react
 
+## 0.85.0
+
+### Minor Changes
+
+- 747cb76: Add `ds-carousel`: a single row of items that scrolls sideways on native scroll snap, with previous and next buttons that appear only when there is somewhere to go.
+
+### Patch Changes
+
+- Updated dependencies [747cb76]
+- Updated dependencies [de2beb2]
+  - @jsekulowicz/ds-components@0.85.0
+
 ## 0.84.1
 
 ### Patch Changes
