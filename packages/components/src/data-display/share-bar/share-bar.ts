@@ -19,6 +19,7 @@ function smallest(data: readonly ShareBarDatum[], count: number): Set<ShareBarDa
  * @summary Single stacked bar showing how a total splits across categories, with a legend.
  * @slot empty - Replaces the message shown when every value is zero.
  * @attr {string} empty-label - Default empty message. The `empty` slot overrides it.
+ * @attr {string} segment-spacing - CSS length left between segments, so neighbors read apart without telling their colors apart.
  * @csspart share - The outer container.
  * @csspart title - The bar title.
  * @csspart bar - The stacked bar track.
@@ -40,6 +41,7 @@ export class DsShareBar extends DsElement {
   @property({ type: Number, attribute: 'max-segments' }) maxSegments = 8;
   @property({ attribute: 'other-label' }) otherLabel = 'Other';
   @property({ attribute: 'empty-label' }) emptyLabel = 'No data';
+  @property({ attribute: 'segment-spacing' }) segmentSpacing = '';
   @property({ attribute: false }) formatPercent?: (percent: number) => string;
 
   #segments(): ShareBarSegment[] {
@@ -89,7 +91,13 @@ export class DsShareBar extends DsElement {
     return html`
       <div class="share" part="share">
         <p class="title" part="title">${this.title}</p>
-        <div class="bar" part="bar" role="img" aria-label=${this.#summary(segments)}>
+        <div
+          class="bar"
+          part="bar"
+          role="img"
+          aria-label=${this.#summary(segments)}
+          style=${styleMap({ gap: this.segmentSpacing || null })}
+        >
           ${segments.map(
             (segment, index) => html`
               <span

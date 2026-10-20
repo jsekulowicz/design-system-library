@@ -49,6 +49,7 @@ const meta: Meta = {
     maxSegments: { control: { type: 'number', min: 0, step: 1 } },
     otherLabel: { control: 'text' },
     emptyLabel: { control: 'text' },
+    segmentSpacing: { control: 'text' },
     formatPercent: { control: false },
   },
   args: {
@@ -58,6 +59,7 @@ const meta: Meta = {
     maxSegments: 8,
     otherLabel: 'Other',
     emptyLabel: 'No data',
+    segmentSpacing: '',
   },
 };
 
@@ -74,6 +76,7 @@ export const Playground: Story = {
         .maxSegments=${args['maxSegments']}
         .otherLabel=${args['otherLabel']}
         .emptyLabel=${args['emptyLabel']}
+        .segmentSpacing=${args['segmentSpacing']}
         .formatPercent=${args['formatPercent']}
       ></ds-share-bar>
     `;
@@ -126,6 +129,18 @@ export const SmallSharesStayVisible: Story = {
 
 export const WithoutLegend: Story = {
   render: () => html`<ds-share-bar title="Sessions" .data=${DIFFICULTY} .showLegend=${false}></ds-share-bar>`,
+};
+
+export const ThinWithSegmentSpacing: Story = {
+  render: () => html`
+    <ds-share-bar
+      title="Words by level"
+      .data=${DIFFICULTY}
+      .showLegend=${false}
+      segment-spacing="2px"
+      style="--ds-share-bar-height: var(--ds-space-2)"
+    ></ds-share-bar>
+  `,
 };
 
 export const Empty: Story = {

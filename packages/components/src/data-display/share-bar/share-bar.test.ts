@@ -43,6 +43,22 @@ describe('<ds-share-bar>', () => {
     expect(segmentGrow(el)).toEqual(['30', '10']);
   });
 
+  it('leaves the segment spacing it is given between neighboring segments', async () => {
+    const el = await mountWith(
+      [
+        { label: 'A', value: 1 },
+        { label: 'B', value: 1 },
+      ],
+      'segment-spacing="2px"',
+    );
+    expect(el.shadowRoot!.querySelector<HTMLElement>('[part="bar"]')!.style.gap).toBe('2px');
+  });
+
+  it('sets no gap until a segment spacing is given', async () => {
+    const el = await mountWith([{ label: 'A', value: 1 }]);
+    expect(el.shadowRoot!.querySelector<HTMLElement>('[part="bar"]')!.style.gap).toBe('');
+  });
+
   it('keeps the order the caller supplied rather than sorting by value', async () => {
     const el = await mountWith([
       { label: 'Easy', value: 1 },
