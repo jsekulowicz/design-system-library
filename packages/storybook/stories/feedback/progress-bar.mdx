@@ -7,11 +7,15 @@ import '@jsekulowicz/ds-components/tabs/define';
 
 # Progress Bar
 
-Determinate horizontal progress indicator. `value` and `max` drive the fill, and an optional label rides on a small chip centered over the bar so it stays legible against any fill color.
+Determinate horizontal progress indicator. `value` and `max` drive the fill. The label and an optional leading icon sit on the track itself, in one color that stays legible over both the filled and the empty part.
 
 ## Anatomy
 
-A `track` containing a colored `indicator` (the fill) and a centered `label` chip. The track carries `role="progressbar"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow`, so the value is announced without any extra markup.
+One `track` holds the colored `indicator` (the fill), an optional `leading` icon and the `label`. The track carries `role="progressbar"` with `aria-valuemin` / `aria-valuemax` / `aria-valuenow`, so the value is announced without any extra markup.
+
+## How the colors stay legible
+
+The track is dark and the label is light in both themes. The fill takes the hue of `--ds-progress-color` and moves it to a fixed OKLCH lightness between the two, so any color you pass keeps at least 4.5:1 against the label and 3:1 against the empty track. A unit test sweeps every hue against the theme tokens to hold that line. In the dark theme the track is close to the page color, so `--ds-color-progress-outline` draws a light outline around the whole bar.
 
 <ds-tabs value="api">
   <ds-tab slot="tab" value="api">API</ds-tab>
@@ -25,23 +29,12 @@ A `track` containing a colored `indicator` (the fill) and a centered `label` chi
   <ComponentApi tag="ds-progress-bar" />
   <h3>Styling</h3>
   <div className="ds-doc-paragraph">
-    The bar is <code>1.5rem</code> tall and filled with <code>--ds-color-success</code> by default. Override via CSS
-    parts:
+    Pass one color and let the bar derive the rest. The exact-color properties are an escape hatch: they skip the
+    lightness adjustment, so checking the contrast becomes your job.
   </div>
-  <ul>
-    <li>
-      <code>::part(track)</code> - height, track background and radius.
-    </li>
-    <li>
-      <code>::part(indicator)</code> - the fill color.
-    </li>
-    <li>
-      <code>::part(label)</code> - the centered label chip.
-    </li>
-  </ul>
   <pre>
-    <code>{`ds-progress-bar::part(track) { height: 2.25rem; }
-ds-progress-bar::part(indicator) { background: var(--ds-color-accent); }`}</code>
+    <code>{`ds-progress-bar.reward { --ds-progress-color: #b8860b; }
+ds-progress-bar.compact { width: fit-content; --ds-progress-padding-inline: 0.75rem; }`}</code>
   </pre>
 </ds-tab-panel>
 
@@ -53,20 +46,23 @@ ds-progress-bar::part(indicator) { background: var(--ds-color-accent); }`}</code
     <h3>Do</h3>
     <ul>
       <li>Use it for determinate progress where the share complete is known (levels, quotas, uploads).</li>
-      <li>Put the readout in the label slot (e.g. <code>3 / 7</code> or <code>60%</code>) instead of repeating it nearby.</li>
-      <li>Recolor the fill with <code>::part(indicator)</code> to carry meaning - e.g. a warning tone near a limit.</li>
+      <li>Put the readout in the label (e.g. <code>3 / 7</code> or <code>60%</code>) instead of repeating it nearby.</li>
+      <li>Draw leading icons with <code>currentColor</code> so they share the label's contrast.</li>
+      <li>
+        Wrap a changing number in a span with <code>min-width</code> set in <code>ch</code> to the digits of the
+        maximum. Digits are tabular, so the label keeps its width and does not shift as the value changes.
+      </li>
     </ul>
     <h3>Don't</h3>
     <ul>
       <li>Don't use it for indeterminate work with no measurable progress.</li>
       <li>Don't rely on the fill color alone to convey state - keep the label informative.</li>
-      <li>Don't put long text in the label; the chip is sized for a short readout.</li>
+      <li>Don't override the exact colors without checking all five pairs: label against fill and empty, fill against empty, and both against the page.</li>
     </ul>
     <h3>Accessibility</h3>
     <ul>
       <li>The track already exposes <code>role="progressbar"</code> and the ARIA value range.</li>
       <li>Set the <code>label</code> attribute to give the bar an accessible name when the surrounding context doesn't.</li>
-      <li>The label chip has its own background and foreground, so it meets contrast regardless of the fill behind it.</li>
     </ul>
   </ds-tab-panel>
 </ds-tabs>

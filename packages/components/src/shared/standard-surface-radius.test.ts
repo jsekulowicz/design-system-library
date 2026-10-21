@@ -29,6 +29,6 @@ describe('standard surface radius', () => {
   });
 
   it('keeps the progress track geometry rounded', () => {
-    expect(progressBarStyles.cssText).toContain('border-radius: var(--ds-radius-sm)');
+    expect(progressBarStyles.cssText).toContain('border-radius: var(--ds-progress-radius, var(--ds-radius-sm))');
   });
 });

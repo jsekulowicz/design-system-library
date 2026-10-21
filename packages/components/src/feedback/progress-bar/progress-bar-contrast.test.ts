@@ -1,0 +1,69 @@
+import { describe, expect, it } from 'vitest';
+import { semanticDark, semanticLight } from '@jsekulowicz/ds-tokens';
+import { PROGRESS_FILL_LIGHTNESS, PROGRESS_FILL_MAX_CHROMA } from './progress-bar-fill.js';
+import {
+  convertOklchToClippedLinearRgb,
+  getContrastRatio,
+  parseHexToLinearRgb,
+  type LinearRgb,
+} from '../../test-utils/contrast.js';
+
+const TEXT_MINIMUM = 4.5;
+const SHAPE_MINIMUM = 3;
+
+function buildEveryNormalizedFill(): LinearRgb[] {
+  const fills: LinearRgb[] = [];
+  for (let hue = 0; hue < 360; hue += 5) {
+    for (const chroma of [0, PROGRESS_FILL_MAX_CHROMA / 2, PROGRESS_FILL_MAX_CHROMA]) {
+      fills.push(convertOklchToClippedLinearRgb(PROGRESS_FILL_LIGHTNESS, chroma, hue));
+    }
+  }
+  return fills;
+}
+
+function findLowestContrast(fills: LinearRgb[], against: LinearRgb): number {
+  return Math.min(...fills.map((fill) => getContrastRatio(fill, against)));
+}
+
+const fills = buildEveryNormalizedFill();
+
+describe.each([
+  ['light', semanticLight.color],
+  ['dark', semanticDark.color],
+])('the %s theme progress bar', (_theme, color) => {
+  const track = parseHexToLinearRgb(color['progress-track']);
+  const label = parseHexToLinearRgb(color['progress-label']);
+
+  it('keeps the label legible over a fill of any hue', () => {
+    expect(findLowestContrast(fills, label)).toBeGreaterThanOrEqual(TEXT_MINIMUM);
+  });
+
+  it('keeps the label legible over the empty track', () => {
+    expect(getContrastRatio(label, track)).toBeGreaterThanOrEqual(TEXT_MINIMUM);
+  });
+
+  it('tells a fill of any hue apart from the empty track', () => {
+    expect(findLowestContrast(fills, track)).toBeGreaterThanOrEqual(SHAPE_MINIMUM);
+  });
+});
+
+describe('the light theme progress bar on a page or card', () => {
+  const surfaces = [semanticLight.color.bg, semanticLight.color['bg-subtle']].map(parseHexToLinearRgb);
+
+  it('stands out without an outline, filled or empty', () => {
+    const track = parseHexToLinearRgb(semanticLight.color['progress-track']);
+    for (const surface of surfaces) {
+      expect(findLowestContrast(fills, surface)).toBeGreaterThanOrEqual(SHAPE_MINIMUM);
+      expect(getContrastRatio(track, surface)).toBeGreaterThanOrEqual(SHAPE_MINIMUM);
+    }
+  });
+});
+
+describe('the dark theme progress bar on a page or card', () => {
+  it('draws an outline that stands out, because the track is close to the page color', () => {
+    const outline = parseHexToLinearRgb(semanticDark.color['progress-outline']);
+    for (const surface of [semanticDark.color.bg, semanticDark.color['bg-subtle']]) {
+      expect(getContrastRatio(outline, parseHexToLinearRgb(surface))).toBeGreaterThanOrEqual(SHAPE_MINIMUM);
+    }
+  });
+});

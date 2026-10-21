@@ -18,15 +18,14 @@ function indicatorWidth(el: DsProgressBar): string {
   return indicator.style.width;
 }
 
-function indicatorIsFull(el: DsProgressBar): boolean {
-  const indicator = el.shadowRoot!.querySelector<HTMLElement>('[part="indicator"]')!;
-  return indicator.classList.contains('indicator--full');
+function isPartHidden(el: DsProgressBar, part: string): boolean {
+  return el.shadowRoot!.querySelector(`[part="${part}"]`)!.hasAttribute('hidden');
 }
 
 describe('<ds-progress-bar>', () => {
   it('exposes progressbar semantics', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="30" max="120"></ds-progress-bar>');
-    const wrapper = el.shadowRoot!.querySelector('.progress-bar')!;
+    const wrapper = el.shadowRoot!.querySelector('[part="track"]')!;
     expect(wrapper.getAttribute('role')).toBe('progressbar');
     expect(wrapper.getAttribute('aria-valuemin')).toBe('0');
     expect(wrapper.getAttribute('aria-valuemax')).toBe('120');
@@ -51,31 +50,43 @@ describe('<ds-progress-bar>', () => {
     expect(indicatorWidth(el)).toBe('0%');
   });
 
-  it('rounds the trailing end only when value reaches max', async () => {
-    const el = await mount<DsProgressBar>('<ds-progress-bar value="40" max="100"></ds-progress-bar>');
-    expect(indicatorIsFull(el)).toBe(false);
-    el.value = 100;
-    await el.updateComplete;
-    expect(indicatorIsFull(el)).toBe(true);
-  });
-
   it('shows the label only when slotted content exists', async () => {
     const empty = await mount<DsProgressBar>('<ds-progress-bar value="10"></ds-progress-bar>');
-    expect(empty.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(true);
+    expect(isPartHidden(empty, 'label')).toBe(true);
 
     const labeled = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
-    expect(labeled.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
+    expect(isPartHidden(labeled, 'label')).toBe(false);
   });
 
   it('keeps a text-only label after the host is moved in the light DOM', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
-    expect(el.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
+    expect(isPartHidden(el, 'label')).toBe(false);
 
     const destination = document.createElement('div');
     el.parentElement!.append(destination);
     destination.append(el);
     await el.updateComplete;
 
-    expect(el.shadowRoot!.querySelector('.label')!.hasAttribute('hidden')).toBe(false);
+    expect(isPartHidden(el, 'label')).toBe(false);
+  });
+
+  it('shows the leading slot only when an icon is slotted into it', async () => {
+    const plain = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
+    expect(isPartHidden(plain, 'leading')).toBe(true);
+
+    const withIcon = await mount<DsProgressBar>(
+      '<ds-progress-bar value="10"><span slot="leading">XP</span>Level 3</ds-progress-bar>',
+    );
+    expect(isPartHidden(withIcon, 'leading')).toBe(false);
+    expect(isPartHidden(withIcon, 'label')).toBe(false);
+  });
+
+  it('centers the label unless told otherwise, and reflects the alignment for styling', async () => {
+    const el = await mount<DsProgressBar>('<ds-progress-bar value="10">10 / 100</ds-progress-bar>');
+    expect(el.getAttribute('label-align')).toBe('center');
+
+    el.labelAlign = 'start';
+    await el.updateComplete;
+    expect(el.getAttribute('label-align')).toBe('start');
   });
 });
