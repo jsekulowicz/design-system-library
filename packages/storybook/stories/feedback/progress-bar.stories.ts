@@ -85,14 +85,21 @@ export const SizedToItsLabel: Story = {
   `,
 };
 
+const RESERVED_COUNT = joinStyles('display: inline-grid', 'justify-items: end');
+const STACKED = 'grid-area: 1 / 1';
+const INVISIBLE_RESERVE = joinStyles(STACKED, 'visibility: hidden');
+
 export const NumbersThatDoNotShift: Story = {
   render: () =>
     renderStack(
       [7, 42, 340].map(
         (value) =>
           html`<ds-progress-bar value=${value} max="700"
-            ><span style="display: inline-block; min-width: 3ch; text-align: end;">${value}</span> / 700
-            XP</ds-progress-bar
+            ><span style=${RESERVED_COUNT}
+              ><span style=${INVISIBLE_RESERVE} aria-hidden="true">700</span
+              ><span style=${STACKED}>${value}</span></span
+            >
+            / 700 XP</ds-progress-bar
           >`,
       ),
     ),

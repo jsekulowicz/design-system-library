@@ -9,7 +9,7 @@ export const progressBarStyles = css`
     display: block;
   }
 
-  [hidden] {
+  .track [hidden] {
     display: none;
   }
 
@@ -74,6 +74,9 @@ export const progressBarStyles = css`
   .label {
     grid-column: 2;
     justify-self: center;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   :host([label-align='start']) .track,

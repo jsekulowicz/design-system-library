@@ -49,8 +49,10 @@ ds-progress-bar.compact { width: fit-content; --ds-progress-padding-inline: 0.75
       <li>Put the readout in the label (e.g. <code>3 / 7</code> or <code>60%</code>) instead of repeating it nearby.</li>
       <li>Draw leading icons with <code>currentColor</code> so they share the label's contrast.</li>
       <li>
-        Wrap a changing number in a span with <code>min-width</code> set in <code>ch</code> to the digits of the
-        maximum. Digits are tabular, so the label keeps its width and does not shift as the value changes.
+        Stack a changing number over an invisible copy of the maximum (an <code>inline-grid</code> with both in one
+        cell, the copy <code>visibility: hidden</code> and <code>aria-hidden</code>). Digits are tabular, so the label
+        keeps its width and does not shift as the value changes. Avoid <code>min-width</code> in <code>ch</code>: a
+        fallback font can draw its zero wider than its tabular digits.
       </li>
     </ul>
     <h3>Don't</h3>
