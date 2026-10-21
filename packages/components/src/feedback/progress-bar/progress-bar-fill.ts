@@ -1,0 +1,2 @@
+export const PROGRESS_FILL_LIGHTNESS = 0.52;
+export const PROGRESS_FILL_MAX_CHROMA = 0.13;

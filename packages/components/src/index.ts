@@ -56,7 +56,7 @@ export {
 } from './data-display/table/index.js';
 
 export { DsAlert, type AlertTone } from './feedback/alert/index.js';
-export { DsProgressBar } from './feedback/progress-bar/index.js';
+export { DsProgressBar, type ProgressBarLabelAlign } from './feedback/progress-bar/index.js';
 export { DsSkeleton, type SkeletonVariant } from './feedback/skeleton/index.js';
 export {
   DsToast,
