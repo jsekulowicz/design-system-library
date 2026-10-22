@@ -36,7 +36,7 @@ export const carouselStyles = css`
     inset-block-start: 50%;
     translate: 0 -50%;
     z-index: var(--ds-z-index-raised);
-    border-radius: var(--ds-radius-full);
+    border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-sm);
   }
   .scroll-button::part(button) {

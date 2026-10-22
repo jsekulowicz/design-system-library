@@ -26,7 +26,7 @@ const LEADING_SLOT = 'leading';
  * @cssprop --ds-progress-height - The minimum track height. Defaults to `--ds-size-xs`.
  * @cssprop --ds-progress-padding-inline - Space between the track edges and its content. Defaults to `--ds-space-2`.
  * @cssprop --ds-progress-gap - Space between the leading icon and the label. Defaults to `--ds-space-2`.
- * @cssprop --ds-progress-radius - Defaults to `--ds-radius-sm`.
+ * @cssprop --ds-progress-radius - Defaults to `--ds-radius-xs`.
  * @cssprop --ds-progress-font-size - Defaults to `--ds-font-size-body-lg`.
  * @csspart track - The whole bar: the empty color, the outline and the content row.
  * @csspart indicator - The filled portion.

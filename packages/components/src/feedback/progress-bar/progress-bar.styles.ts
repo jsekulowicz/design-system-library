@@ -21,7 +21,7 @@ export const progressBarStyles = css`
     align-items: center;
     min-height: var(--ds-progress-height, var(--ds-size-xs));
     padding-inline: var(--ds-progress-padding-inline, var(--ds-space-2));
-    border-radius: var(--ds-progress-radius, var(--ds-radius-sm));
+    border-radius: var(--ds-progress-radius, var(--ds-radius-xs));
     overflow: hidden;
     background: var(--ds-progress-empty-color, var(--ds-color-progress-track));
     color: var(--ds-progress-label-color, var(--ds-color-progress-label));

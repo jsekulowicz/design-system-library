@@ -3,7 +3,7 @@ import { css } from 'lit';
 export const shareBarStyles = css`
   :host {
     --ds-share-bar-height: var(--ds-space-4);
-    --ds-share-bar-radius: var(--ds-radius-sm);
+    --ds-share-bar-radius: var(--ds-radius-xs);
     --ds-share-bar-gap: var(--ds-space-2);
     --ds-share-bar-segment-min-width: 2px;
 

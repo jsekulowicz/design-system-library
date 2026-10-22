@@ -28,7 +28,7 @@ function smallest(data: readonly ShareBarDatum[], count: number): Set<ShareBarDa
  * @csspart swatch - A legend color swatch.
  * @csspart empty - The empty message.
  * @cssprop --ds-share-bar-height - Bar thickness. Defaults to `--ds-space-4`.
- * @cssprop --ds-share-bar-radius - Bar corner radius. Defaults to `--ds-radius-sm`.
+ * @cssprop --ds-share-bar-radius - Bar corner radius. Defaults to `--ds-radius-xs`.
  * @cssprop --ds-share-bar-gap - Space between title, bar and legend. Defaults to `--ds-space-2`.
  * @cssprop --ds-share-bar-segment-min-width - Floor that keeps a tiny share visible. Defaults to `2px`.
  */
