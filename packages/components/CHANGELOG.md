@@ -1,5 +1,13 @@
 # @jsekulowicz/ds-components
 
+## 0.86.1
+
+### Patch Changes
+
+- 55171ed: The progress bar, the share bar and the carousel's scroll buttons round their corners by `--ds-radius-xs`, like every other surface. The carousel buttons were circles, and the progress and share bars used `--ds-radius-sm`.
+- Updated dependencies [92974e1]
+  - @jsekulowicz/ds-tokens@0.86.1
+
 ## 0.86.0
 
 ### Minor Changes
