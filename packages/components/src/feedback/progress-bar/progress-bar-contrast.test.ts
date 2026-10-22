@@ -33,7 +33,9 @@ describe.each([
   ['dark', semanticDark.color],
 ])('the %s theme progress bar', (_theme, color) => {
   it('keeps the label legible over a fill of any hue', () => {
-    expect(findLowestContrast(fills, parseHexToLinearRgb(color['progress-label']))).toBeGreaterThanOrEqual(TEXT_MINIMUM);
+    expect(findLowestContrast(fills, parseHexToLinearRgb(color['progress-label']))).toBeGreaterThanOrEqual(
+      TEXT_MINIMUM,
+    );
   });
 });
 
