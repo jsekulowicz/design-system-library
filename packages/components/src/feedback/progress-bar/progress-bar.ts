@@ -16,7 +16,7 @@ const LEADING_SLOT = 'leading';
  * @slot default - The label, drawn on the track in one color that stays legible over both the filled and the empty part.
  * @slot leading - An icon or badge at the start of the track. Draw it with `currentColor` to match the label.
  * @attr label-align - Where the label sits on the track: `start`, `center` (default) or `end`.
- * @cssprop --ds-progress-color - Any color; the fill keeps its hue and gets a lightness that contrasts with the label and the empty track. Defaults to `--ds-color-accent`.
+ * @cssprop --ds-progress-color - Any color; the fill keeps its hue and gets a lightness that contrasts with the label. Defaults to `--ds-color-accent`.
  * @cssprop --ds-progress-fill-color - An exact fill color, used as is. Bypasses the contrast guarantee of `--ds-progress-color`.
  * @cssprop --ds-progress-fill-lightness - The OKLCH lightness `--ds-progress-color` is moved to. Defaults to `0.52`.
  * @cssprop --ds-progress-empty-color - The empty part of the track. Defaults to `--ds-color-progress-track`.
