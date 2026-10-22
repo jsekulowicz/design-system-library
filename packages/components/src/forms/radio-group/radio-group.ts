@@ -42,17 +42,26 @@ export class DsRadioGroup extends DsElement {
 
   @queryAssignedElements({ selector: 'ds-radio' }) private _radios!: RadioEl[];
 
+  #radiosObserver: MutationObserver | undefined;
+
   override connectedCallback(): void {
     super.connectedCallback();
     if (!this.label) {
       console.warn('<ds-radio-group>: the `label` property is required for accessibility.');
     }
     this.addEventListener('ds-change', this.#onRadioChange);
+    this.#radiosObserver = new MutationObserver((mutations) => {
+      if (mutations.some(({ target }) => target instanceof HTMLElement && target.localName === 'ds-radio')) {
+        this.#wireRadios(false);
+      }
+    });
+    this.#radiosObserver.observe(this, { attributes: true, attributeFilter: ['disabled'], subtree: true });
   }
 
   override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeEventListener('ds-change', this.#onRadioChange);
+    this.#radiosObserver?.disconnect();
   }
 
   override updated(changed: Map<string, unknown>): void {
@@ -72,12 +81,24 @@ export class DsRadioGroup extends DsElement {
     return radio ? radio.hasAttribute('disabled') : true;
   };
 
+  #disabledByGroup = new WeakSet<RadioEl>();
+
+  #syncDisabled(radio: RadioEl): void {
+    if (this.disabled && !radio.hasAttribute('disabled')) {
+      this.#disabledByGroup.add(radio);
+      radio.setAttribute('disabled', '');
+    } else if (!this.disabled && this.#disabledByGroup.delete(radio)) {
+      radio.removeAttribute('disabled');
+    }
+  }
+
   #wireRadios = (syncChecked: boolean): void => {
     const radios = this._radios;
+    radios.forEach((radio) => this.#syncDisabled(radio));
     const selectedIndex = radios.findIndex((radio) => this.#radioValueOf(radio) === this.value);
     const firstEnabled = radios.findIndex((radio) => !radio.hasAttribute('disabled'));
-    // Roving tabindex: exactly one radio stays in the tab order.
-    const tabStopIndex = selectedIndex >= 0 ? selectedIndex : firstEnabled;
+    const selectedIsEnabled = selectedIndex >= 0 && !this.#isRadioDisabledAt(selectedIndex);
+    const tabStopIndex = selectedIsEnabled ? selectedIndex : firstEnabled;
     radios.forEach((radio, index) => {
       if (this.name) {
         radio.setAttribute('name', this.name);
@@ -86,11 +107,6 @@ export class DsRadioGroup extends DsElement {
         radio.setAttribute('required', '');
       } else {
         radio.removeAttribute('required');
-      }
-      if (this.disabled) {
-        radio.setAttribute('disabled', '');
-      } else {
-        radio.removeAttribute('disabled');
       }
       radio.tabStop = index === tabStopIndex;
       if (syncChecked) {
@@ -122,7 +138,6 @@ export class DsRadioGroup extends DsElement {
       return;
     }
     event.preventDefault();
-    // Selection follows focus, as the radiogroup pattern prescribes.
     const value = this.#radioValueOf(radio);
     if (value !== this.value) {
       this.value = value;
