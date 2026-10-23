@@ -1,6 +1,6 @@
 {
   "name": "@jsekulowicz/ds-components",
-  "version": "0.86.1",
+  "version": "0.86.2",
   "description": "Lit web components for the Design System Library, grouped by purpose.",
   "license": "UNLICENSED",
   "repository": {

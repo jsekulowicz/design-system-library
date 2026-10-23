@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.86.2
+
+### Patch Changes
+
+- c4a9ed7: Preserve individually disabled radio options when a radio group updates or is re-enabled, and keep keyboard navigation in sync when an option's disabled state changes.
+
 ## 0.86.1
 
 ### Patch Changes
