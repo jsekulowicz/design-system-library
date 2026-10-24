@@ -186,13 +186,17 @@ describe('<ds-table-pagination>', () => {
 
       beforeEach(() => {
         globalThis.ResizeObserver = class {
-          constructor(private readonly callback: ResizeObserverCallback) {}
+          #callback: ResizeObserverCallback;
+
+          constructor(callback: ResizeObserverCallback) {
+            this.#callback = callback;
+          }
 
           observe(_target: Element, options?: ResizeObserverOptions): void {
             observedBox = options?.box;
             reportResize = (inlineSize) => {
               const entry = { borderBoxSize: [{ inlineSize, blockSize: 32 }] } as unknown as ResizeObserverEntry;
-              this.callback([entry], this as unknown as ResizeObserver);
+              this.#callback([entry], this as unknown as ResizeObserver);
             };
           }
 
