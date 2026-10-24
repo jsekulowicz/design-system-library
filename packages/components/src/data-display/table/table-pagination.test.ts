@@ -179,6 +179,58 @@ describe('<ds-table-pagination>', () => {
 
       expect(el.compact).toBe(true);
     });
+
+    describe('when its size changes later', () => {
+      let reportResize: (inlineSize: number) => void = () => {};
+      let observedBox: string | undefined;
+
+      beforeEach(() => {
+        globalThis.ResizeObserver = class {
+          constructor(private readonly callback: ResizeObserverCallback) {}
+
+          observe(_target: Element, options?: ResizeObserverOptions): void {
+            observedBox = options?.box;
+            reportResize = (inlineSize) => {
+              const entry = { borderBoxSize: [{ inlineSize, blockSize: 32 }] } as unknown as ResizeObserverEntry;
+              this.callback([entry], this as unknown as ResizeObserver);
+            };
+          }
+
+          disconnect(): void {}
+
+          unobserve(): void {}
+        } as unknown as typeof ResizeObserver;
+      });
+
+      afterEach(() => {
+        delete (globalThis as { ResizeObserver?: unknown }).ResizeObserver;
+      });
+
+      it('measures the same border box the first render measured', async () => {
+        await mountPagination();
+
+        expect(observedBox).toBe('border-box');
+      });
+
+      it('turns compact when it narrows below 480px and wide again when it grows', async () => {
+        layOutAtWidth(600);
+        const el = await mountPagination();
+
+        reportResize(400);
+        expect(el.compact).toBe(true);
+        reportResize(800);
+        expect(el.compact).toBe(false);
+      });
+
+      it('keeps its mode while it is hidden and has no size', async () => {
+        layOutAtWidth(380);
+        const el = await mountPagination();
+
+        reportResize(0);
+
+        expect(el.compact).toBe(true);
+      });
+    });
   });
 
   it('uses the shared focus shadow for buttons and the page size select', () => {

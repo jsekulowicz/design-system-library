@@ -11,6 +11,10 @@ import type { TablePageChangeDetail, TablePageSizeChangeDetail } from './types.j
 const COMPACT_WIDTH_PX = 480;
 const COMPACT_MAX_VISIBLE = 3;
 
+function readBorderBoxWidth(entry: ResizeObserverEntry | undefined): number | undefined {
+  return entry?.borderBoxSize?.[0]?.inlineSize;
+}
+
 const ICON_PREV = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4l-4 4 4 4"/></svg>`;
 const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>`;
 
@@ -76,9 +80,9 @@ export class DsTablePagination extends DsElement {
       return;
     }
     this.#resizeObserver = new ResizeObserver((entries) => {
-      this.#matchCompactToLaidOutWidth(entries[0]?.contentRect.width ?? this.clientWidth);
+      this.#matchCompactToLaidOutWidth(readBorderBoxWidth(entries[0]) ?? this.getBoundingClientRect().width);
     });
-    this.#resizeObserver.observe(this);
+    this.#resizeObserver.observe(this, { box: 'border-box' });
   }
 
   override willUpdate(changed: PropertyValues<this>): void {
