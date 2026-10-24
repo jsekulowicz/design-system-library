@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeAll, beforeEach } from 'vitest';
 import { DsTablePagination } from './table-pagination.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
@@ -141,6 +141,44 @@ describe('<ds-table-pagination>', () => {
     const pageButtons = Array.from(el.shadowRoot!.querySelectorAll('button[aria-label^="Page "]'));
     const pages = pageButtons.map((b) => Number(b.getAttribute('aria-label')!.replace('Page ', '')));
     expect(pages).toEqual([1, 50, 100]);
+  });
+
+  describe('compact mode', () => {
+    function layOutAtWidth(width: number): void {
+      HTMLElement.prototype.getBoundingClientRect = function getRectAtWidth() {
+        return { width, height: 32, x: 0, y: 0, top: 0, left: 0, right: width, bottom: 32 } as DOMRect;
+      };
+    }
+
+    const realGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+
+    afterEach(() => {
+      HTMLElement.prototype.getBoundingClientRect = realGetBoundingClientRect;
+    });
+
+    it('renders compact from its first frame when laid out narrower than 480px', async () => {
+      layOutAtWidth(380);
+      const el = await mountPagination({ page: 50, pageSize: 10, total: 1000 });
+
+      expect(el.compact).toBe(true);
+      expect(el.hasAttribute('compact')).toBe(true);
+      const pageButtons = el.shadowRoot!.querySelectorAll('button[aria-label^="Page "]');
+      expect(pageButtons.length).toBe(3);
+    });
+
+    it('stays wide from its first frame when laid out at 480px or more', async () => {
+      layOutAtWidth(480);
+      const el = await mountPagination();
+
+      expect(el.compact).toBe(false);
+    });
+
+    it('keeps a consumer-chosen mode while it has no width to measure', async () => {
+      layOutAtWidth(0);
+      const el = await mountPagination({ compact: true });
+
+      expect(el.compact).toBe(true);
+    });
   });
 
   it('uses the shared focus shadow for buttons and the page size select', () => {

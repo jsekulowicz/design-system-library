@@ -1,4 +1,4 @@
-import { html, svg, nothing, type TemplateResult, type SVGTemplateResult } from 'lit';
+import { html, svg, nothing, type PropertyValues, type TemplateResult, type SVGTemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
@@ -33,7 +33,7 @@ const ICON_NEXT = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor"
  * @csspart prev-next-label - The text label inside the Previous / Next buttons. Hidden by default below 480px (compact mode); style this part to override.
  * @csspart size-selector - The size `<select>` wrapper.
  * @csspart summary - The summary region.
- * @attr compact - Reflected boolean attribute toggled automatically when the component is narrower than 480px. In compact mode the prev/next labels collapse to icons, the visible page count drops to "first ... current ... last", and `sibling-count` is forced to 0.
+ * @attr compact - Reflected boolean attribute toggled automatically when the component is narrower than 480px, decided from its laid-out width before the first render so the wide layout never paints first. In compact mode the prev/next labels collapse to icons, the visible page count drops to "first ... current ... last", and `sibling-count` is forced to 0.
  * @attr label - Accessible name of the `<nav>` landmark. Defaults to "Pagination".
  * @attr prev-page-label - Accessible name of the Previous button. Defaults to "Previous page".
  * @attr next-page-label - Accessible name of the Next button. Defaults to "Next page".
@@ -76,10 +76,22 @@ export class DsTablePagination extends DsElement {
       return;
     }
     this.#resizeObserver = new ResizeObserver((entries) => {
-      const width = entries[0]?.contentRect.width ?? this.clientWidth;
-      this.compact = width > 0 && width < COMPACT_WIDTH_PX;
+      this.#matchCompactToLaidOutWidth(entries[0]?.contentRect.width ?? this.clientWidth);
     });
     this.#resizeObserver.observe(this);
+  }
+
+  override willUpdate(changed: PropertyValues<this>): void {
+    super.willUpdate(changed);
+    if (!this.hasUpdated) {
+      this.#matchCompactToLaidOutWidth(this.getBoundingClientRect().width);
+    }
+  }
+
+  #matchCompactToLaidOutWidth(width: number): void {
+    if (width > 0) {
+      this.compact = width < COMPACT_WIDTH_PX;
+    }
   }
 
   override disconnectedCallback(): void {
