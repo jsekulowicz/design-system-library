@@ -117,6 +117,32 @@ describe('<ds-tooltip>', () => {
     expect(css).toContain('max-width: min(var(--ds-tooltip-max-width, 24rem), calc(100% - var(--ds-space-2)))');
   });
 
+  it('adds no text around the trigger, so an inline tooltip sits flush with the words after it', async () => {
+    const el = await mount<DsTooltip>('<ds-tooltip inline>A <em>word</em><span slot="tip">Tip</span></ds-tooltip>');
+    const rendered = [...el.shadowRoot!.childNodes, ...el.shadowRoot!.querySelector('.anchor')!.childNodes];
+
+    expect(rendered.filter((node) => node.nodeType === Node.TEXT_NODE)).toEqual([]);
+  });
+
+  it('reflects inline to the attribute its styles answer to, so a property binding lets the trigger flow too', async () => {
+    const el = await mount<DsTooltip>(TOOLTIP_MARKUP);
+
+    el.inline = true;
+    await el.updateComplete;
+
+    expect(el.hasAttribute('inline')).toBe(true);
+    expect(tooltipStyles.cssText).toContain(':host([inline]) .anchor');
+  });
+
+  it('takes the font and color of the sentence it sits in when inline', () => {
+    const css = tooltipStyles.cssText;
+    const ruleStart = css.indexOf(':host([inline]) {');
+    const inlineHostRule = css.slice(ruleStart, css.indexOf('}', ruleStart));
+
+    expect(inlineHostRule).toContain('font-family: inherit');
+    expect(inlineHostRule).toContain('color: inherit');
+  });
+
   it('constrains horizontal placements between the trigger and viewport edge', () => {
     const css = tooltipStyles.cssText;
 

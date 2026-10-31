@@ -13,6 +13,7 @@ const TIP_SLOT = 'tip';
 /**
  * @tag ds-tooltip
  * @summary Contextual label that appears on hover/focus of the trigger element. Escape hides a tip shown by hover or focus until the pointer or focus next enters; one held up by `open` stays.
+ * @attr {boolean} inline - Lets a text trigger wrap with the sentence around it, in that sentence's font and color. Whitespace left after the trigger in the default slot renders too, so put the tip slot first.
  * @attr {'auto' | 'manual'} trigger - Automatic hover/focus behavior by default; manual makes `open` the sole visibility control and leaves Escape to the host.
  * @slot default - The trigger element that the tooltip is anchored to.
  * @slot tip - The tooltip content (can be any HTML).
@@ -32,6 +33,7 @@ export class DsTooltip extends DsElement {
   @property({ type: Boolean, attribute: 'hover-only' }) hoverOnly = false;
   @property({ type: Number }) delay = 0;
   @property({ type: Boolean, reflect: true, attribute: 'full-width' }) fullWidth = false;
+  @property({ type: Boolean, reflect: true }) inline = false;
 
   @state() private _hovered = false;
   @state() private _focused = false;
@@ -170,27 +172,22 @@ export class DsTooltip extends DsElement {
   }
 
   override render(): TemplateResult {
-    return html`
-      <div
-        class="anchor"
-        part="anchor"
-        @mouseenter=${this.#onMouseEnter}
-        @mouseleave=${this.#onMouseLeave}
-        @focusin=${this.#onFocusIn}
-        @focusout=${this.#onFocusOut}
-      >
-        <slot></slot>
-        <div
-          role="tooltip"
-          part="tooltip"
-          class="tooltip"
-          popover="manual"
-          @pointerdown=${this.#holdSelection}
-          @click=${this.#stopTipClick}
-        >
-          <slot name="tip" @slotchange=${this.#slots.handleSlotChange}></slot>
-        </div>
-      </div>
-    `;
+    return html`<span
+      class="anchor"
+      part="anchor"
+      @mouseenter=${this.#onMouseEnter}
+      @mouseleave=${this.#onMouseLeave}
+      @focusin=${this.#onFocusIn}
+      @focusout=${this.#onFocusOut}
+      ><slot></slot
+      ><span
+        role="tooltip"
+        part="tooltip"
+        class="tooltip"
+        popover="manual"
+        @pointerdown=${this.#holdSelection}
+        @click=${this.#stopTipClick}
+        ><slot name="tip" @slotchange=${this.#slots.handleSlotChange}></slot></span
+    ></span>`;
   }
 }

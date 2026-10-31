@@ -18,6 +18,14 @@ export const tooltipStyles = css`
     display: flex;
     width: 100%;
   }
+  :host([inline]) {
+    font-family: inherit;
+    color: inherit;
+  }
+  :host([inline]),
+  :host([inline]) .anchor {
+    display: inline;
+  }
   .tooltip {
     position: fixed;
     position-anchor: --ds-tooltip-anchor;

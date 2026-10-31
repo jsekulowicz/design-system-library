@@ -29,6 +29,8 @@ const CENTERED_FRAME_STYLE =
 const PLACEMENTS_FRAME_STYLE = `${CENTERED_FRAME_STYLE};padding:var(--ds-space-4);gap:var(--ds-space-4);flex-wrap:wrap`;
 const EDGE_FRAME_STYLE = `${CENTERED_FRAME_STYLE};padding:var(--ds-space-4);justify-content:flex-start`;
 const WRAPPING_FRAME_STYLE = `${CENTERED_FRAME_STYLE};text-align:right;white-space:nowrap`;
+const SENTENCE_FRAME_STYLE = 'max-width:16rem;padding:var(--ds-space-4);color:var(--ds-color-fg-muted)';
+const TEXT_TRIGGER_STYLE = 'text-decoration:underline';
 
 export const Playground: Story = {
   render: (args) => html`
@@ -60,6 +62,20 @@ export const WrappingContent: Story = {
         <span slot="tip"> Approved contributions and accepted suggestions from your team </span>
       </ds-tooltip>
     </div>
+  `,
+};
+
+export const InlineInText: Story = {
+  render: () => html`
+    <p style=${SENTENCE_FRAME_STYLE}>
+      Your plan includes
+      <ds-tooltip inline placement="bottom">
+        <span slot="tip">Add or remove seats at any time.</span>
+        <span tabindex="0" style=${TEXT_TRIGGER_STYLE}
+          >five seats and priority support for every project</span
+        ></ds-tooltip
+      >, billed yearly.
+    </p>
   `,
 };
 

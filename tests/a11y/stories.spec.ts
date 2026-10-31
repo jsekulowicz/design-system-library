@@ -10,6 +10,7 @@ const stories = [
   'data-display-divider--inline-with-text',
   'forms-segmentedcontrol--with-icons',
   'overlays-tooltip--viewport-constraint',
+  'overlays-tooltip--inline-in-text',
   'forms-textfield--playground',
   'forms-rangeinput--playground',
   'forms-rangeinput--with-value',
