@@ -2,6 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DsSelect } from './select.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
+import { stubListboxGeometry } from '../../test-utils/listbox-geometry.js';
 
 const OPTIONS = [
   { value: '', label: 'None' },
@@ -93,20 +94,6 @@ describe('<ds-select> extra coverage', () => {
     await el.updateComplete;
     expect((el as unknown as { _hasLeading: boolean })._hasLeading).toBe(true);
 
-    const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
-    trigger.click();
-    await el.updateComplete;
-    const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
-    listbox.scrollTop = 40;
-    listbox.dispatchEvent(new Event('scroll'));
-    await el.updateComplete;
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBe(40);
-
-    Object.defineProperty(el, '_listboxEl', { configurable: true, value: undefined });
-    listbox.dispatchEvent(new Event('scroll'));
-    await el.updateComplete;
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBe(0);
-
     const tiles = Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('.tile[data-value]'));
     tiles.forEach((tile, index) => {
       Object.defineProperty(tile, 'offsetTop', { configurable: true, value: index * 30 });
@@ -159,25 +146,25 @@ describe('<ds-select> extra coverage', () => {
     const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
     trigger.click();
     await el.updateComplete;
+    const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
+    stubListboxGeometry(listbox, 36, 240);
 
     for (let i = 0; i < 9; i += 1) {
       trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
     }
     await el.updateComplete;
-
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBeGreaterThan(0);
+    expect(listbox.scrollTop).toBe(10 * 36 - 240);
 
     const firstOption = el.shadowRoot!.querySelector('ds-select-option') as HTMLElement;
     firstOption.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
     await el.updateComplete;
     expect((el as unknown as { _focusedIndex: number })._focusedIndex).toBe(0);
 
-    (el as unknown as { _scrollTop: number })._scrollTop = 120;
     (el as unknown as { _focusedIndex: number })._focusedIndex = 4;
-    await el.updateComplete;
+    listbox.scrollTop = 160;
     trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
     await el.updateComplete;
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBeLessThan(120);
+    expect(listbox.scrollTop).toBe(3 * 36);
   });
 
   it('marks invalid when selecting empty required option and prevents enter selection on disabled option', async () => {

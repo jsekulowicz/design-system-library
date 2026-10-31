@@ -2,6 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DsSelect } from './select.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
+import { stubListboxGeometry } from '../../test-utils/listbox-geometry.js';
 
 const OPTIONS = [
   { value: '', label: 'None' },
@@ -23,20 +24,6 @@ beforeAll(() => {
 beforeEach(() => {
   resetTestDom();
 });
-
-// Patches the shared prototype, so the restore matters: a leak changes later tests.
-function stubRowHeight(el: DsSelect, height: (this: HTMLElement) => number): () => void {
-  const proto = Object.getPrototypeOf(el.shadowRoot!.querySelector('ds-select-option') as HTMLElement) as {
-    getBoundingClientRect: () => DOMRect;
-  };
-  const original = proto.getBoundingClientRect;
-  proto.getBoundingClientRect = function (this: HTMLElement) {
-    return { height: height.call(this) } as DOMRect;
-  };
-  return () => {
-    proto.getBoundingClientRect = original;
-  };
-}
 
 async function mountSelect(props: Partial<DsSelect> = {}): Promise<DsSelect> {
   return mountWithProps<DsSelect>(
@@ -150,100 +137,28 @@ describe('<ds-select> label, size and icons', () => {
     expect(fired).toBe(2);
   });
 
-  // Measuring picks startIdx, which picks the next row measured: two heights can point at each other.
-  it('settles when neighboring rows measure differently', async () => {
-    const MANY = Array.from({ length: 200 }, (_, index) => ({
-      value: `v${index}`,
-      label: `Option ${index}`,
-    }));
-    const el = await mountSelect({ options: MANY });
-    const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
-    trigger.click();
+  it('renders every option however long the list is, so each keeps its own height', async () => {
+    const many = Array.from({ length: 200 }, (_, index) => ({ value: `v${index}`, label: `Option ${index}` }));
+    const el = await mountSelect({ options: many });
+
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
 
-    let measurements = 0;
-    const restore = stubRowHeight(el, function (this: HTMLElement) {
-      measurements += 1;
-      // Capped so a regression reports a runaway instead of hanging the suite.
-      if (measurements > 50) {
-        return 37.5;
-      }
-      const index = Number.parseInt(this.id.replace('option-', ''), 10);
-      return index % 2 === 0 ? 38.4 : 37.5;
-    });
-
-    try {
-      // At this offset the two heights select rows of the other height.
-      el._scrollTop = 1640;
-      for (let i = 0; i < 20; i += 1) {
-        await el.updateComplete;
-        await Promise.resolve();
-      }
-    } finally {
-      restore();
-    }
-
-    expect(measurements).toBeLessThan(10);
+    expect(el.shadowRoot!.querySelectorAll('ds-select-option')).toHaveLength(200);
   });
 
-  it('sizes the virtual spacers from a measured row, not the default', async () => {
-    const MANY = Array.from({ length: 100 }, (_, index) => ({
-      value: `v${index}`,
-      label: `Option ${index}`,
-    }));
-    const el = await mountSelect({ options: MANY });
-    const trigger = el.shadowRoot!.querySelector('.trigger') as HTMLElement;
-    trigger.click();
+  it('opens scrolled to the chosen option, with the two options before it still in view', async () => {
+    const many = Array.from({ length: 30 }, (_, index) => ({ value: `v${index}`, label: `Option ${index}` }));
+    const el = await mountSelect({ options: many, value: 'v20' });
+    (el.shadowRoot!.querySelector('.trigger') as HTMLElement).click();
     await el.updateComplete;
+    const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
 
-    // jsdom has no layout: stand in for a real row, which exceeds the default.
-    const restore = stubRowHeight(el, () => 37.5);
+    stubListboxGeometry(listbox, 36, 240);
+    el.requestUpdate();
+    await el.updateComplete;
+    await Promise.resolve();
 
-    try {
-      el.requestUpdate();
-      await el.updateComplete;
-      await el.updateComplete;
-
-      el._scrollTop = 37.5 * 20;
-      await el.updateComplete;
-    } finally {
-      restore();
-    }
-
-    const topSpacer = el.shadowRoot!.querySelector('.listbox [aria-hidden="true"]') as HTMLElement;
-    expect(Number.parseFloat(topSpacer.style.height)).toBe(17 * 37.5);
-  });
-
-  describe('required validation', () => {
-    it('flags a required single select as invalid until something is picked', async () => {
-      const el = await mountSelect({ required: true });
-      el.showValidity();
-      expect(el.invalid).toBe(true);
-
-      el.value = 'vue';
-      el.showValidity();
-      expect(el.invalid).toBe(false);
-    });
-
-    it('flags a required multiple select as invalid while nothing is chosen', async () => {
-      const el = await mountSelect({ required: true, multiple: true, values: [] });
-      el.showValidity();
-      expect(el.invalid).toBe(true);
-
-      el.values = ['vue'];
-      el.showValidity();
-      expect(el.invalid).toBe(false);
-    });
-
-    it('leaves an optional select alone when empty', async () => {
-      const el = await mountSelect();
-      el.showValidity();
-      expect(el.invalid).toBe(false);
-    });
-
-    it('holds the error styling back until the user has interacted', async () => {
-      const el = await mountSelect({ required: true });
-      expect(el.invalid).toBe(false);
-    });
+    expect(listbox.scrollTop).toBe(18 * 36);
   });
 });

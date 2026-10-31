@@ -10,6 +10,7 @@ import '@jsekulowicz/ds-components/icon/paint-brush';
 import '@jsekulowicz/ds-components/icon/wrench';
 import '@jsekulowicz/ds-components/icon/cube';
 import '@jsekulowicz/ds-components/icon/cog-6-tooth';
+import { HELP_TOPICS, filterHelpTopics } from './searchable-select.examples';
 
 const COUNTRIES: SelectOption[] = [
   { value: 'af', label: '🇦🇫 Afghanistan' },
@@ -434,9 +435,35 @@ export const WithHint: Story = {
 };
 
 export const Countries: Story = {
-  name: 'Countries (virtualized, 160+ items)',
+  name: 'Countries (160+ items)',
   parameters: { docs: { source: { code: COUNTRY_SOURCE } } },
   render: () => html`<sb-country-search></sb-country-search>`,
+};
+
+const NARROW_FRAME_STYLE = 'max-width:20rem';
+
+export const OptionsOfDifferentLengths: Story = {
+  name: 'Options of different lengths',
+  parameters: {
+    docs: {
+      story: { height: '320px' },
+      description: {
+        story:
+          'Every option renders at its own height, so a long one wraps onto as many lines as it needs, and the arrow keys bring it fully into view.',
+      },
+    },
+  },
+  render: () => html`
+    <div style=${NARROW_FRAME_STYLE}>
+      <ds-searchable-select
+        label="Help topic"
+        placeholder="Pick a topic"
+        search-placeholder="Search topics..."
+        .options=${HELP_TOPICS}
+        @ds-search=${filterHelpTopics}
+      ></ds-searchable-select>
+    </div>
+  `,
 };
 
 export const Loading: Story = {

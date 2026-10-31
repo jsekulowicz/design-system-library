@@ -2,6 +2,7 @@ import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { DsSearchableSelect } from './searchable-select.js';
 import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
+import { stubListboxGeometry } from '../../test-utils/listbox-geometry.js';
 
 const OPTIONS = [
   { value: '', label: 'None' },
@@ -50,7 +51,7 @@ describe('<ds-searchable-select> extra coverage', () => {
     expect(el.invalid).toBe(true);
   });
 
-  it('updates focus on mouseenter and syncs list scroll while moving keyboard focus', async () => {
+  it('updates focus on mouseenter and keeps the option the keyboard reaches in view', async () => {
     const el = await mountWithProps<DsSearchableSelect>(
       '<ds-searchable-select label="Framework"></ds-searchable-select>',
       { options: MANY_OPTIONS },
@@ -61,16 +62,7 @@ describe('<ds-searchable-select> extra coverage', () => {
     await el.updateComplete;
 
     const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
-    listbox.scrollTop = 44;
-    listbox.dispatchEvent(new Event('scroll'));
-    await el.updateComplete;
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBe(44);
-
-    Object.defineProperty(el, '_listboxEl', { configurable: true, value: undefined });
-    listbox.dispatchEvent(new Event('scroll'));
-    await el.updateComplete;
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBe(0);
-    Object.defineProperty(el, '_listboxEl', { configurable: true, value: listbox });
+    stubListboxGeometry(listbox, 36, 240);
 
     const firstOption = el.shadowRoot!.querySelector('ds-select-option') as HTMLElement;
     firstOption.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
@@ -81,15 +73,13 @@ describe('<ds-searchable-select> extra coverage', () => {
       input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true, cancelable: true }));
     }
     await el.updateComplete;
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBeGreaterThan(0);
+    expect(listbox.scrollTop).toBe(11 * 36 - 240);
 
-    (el as unknown as { _scrollTop: number })._scrollTop = 120;
     (el as unknown as { _focusedIndex: number })._focusedIndex = 4;
-    await el.updateComplete;
+    listbox.scrollTop = 160;
     input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true, cancelable: true }));
     await el.updateComplete;
-    expect((el as unknown as { _scrollTop: number })._scrollTop).toBeLessThan(120);
-    expect(listbox.scrollTop).toBe((el as unknown as { _scrollTop: number })._scrollTop);
+    expect(listbox.scrollTop).toBe(3 * 36);
   });
 
   it('stays shut when a disabled one is clicked', async () => {

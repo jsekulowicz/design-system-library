@@ -5,7 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
-import { renderVirtualItems } from '../../shared/virtual-list.js';
 import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import {
   renderChevronDownIcon,
@@ -40,7 +39,7 @@ import type { OverflowClickDetail, SearchDetail, SelectionChangeDetail } from '.
  * @csspart option - Each individual option item.
  * @csspart spinner - The loading spinner SVG shown in place of the chevron.
  * @slot leading - A leading adornment for the trigger.
- * @slot option:{value} - Replaces an option's label in the listbox, in place of the search highlight. The listbox virtualises on one measured row, so keep every option the same height.
+ * @slot option:{value} - Replaces an option's label in the listbox, in place of the search highlight.
  * @slot tile:{value} - Replaces a selected tile's label when `multiple`. There is no `selected:` slot: the single-value trigger is a text input.
  * @slot overflow-tip - Content for the tooltip the "+n" tile shows on hover and holds open once tapped. Left empty, the tile shows no tooltip.
  */
@@ -130,12 +129,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   set _focusedTileIndex(value: number) {
     this.#dropdown.focusedTileIndex = value;
   }
-  get _scrollTop(): number {
-    return this.#dropdown.scrollTop;
-  }
-  set _scrollTop(value: number) {
-    this.#dropdown.scrollTop = value;
-  }
   get _hasLeading(): boolean {
     return this.#dropdown.hasLeading;
   }
@@ -179,8 +172,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
 
     this.#syncListboxPopover();
-    this.#dropdown.queueItemMeasure();
-    this.#dropdown.syncScrollTop();
+    this.#dropdown.queueFocusReveal();
   }
 
   // Top layer escapes overflow ancestors; positioned in select.common-styles.
@@ -453,12 +445,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
                 ${
                   this.options.length === 0
                     ? html`<p class="empty">No results found.</p>`
-                    : renderVirtualItems(
-                        this.options,
-                        this.#dropdown.scrollTop,
-                        (option, index) => this.#renderOption(option, index, current),
-                        this.#dropdown.itemHeight,
-                      )
+                    : this.options.map((option, index) => this.#renderOption(option, index, current))
                 }
               </div>`
             : nothing

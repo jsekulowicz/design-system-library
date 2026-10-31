@@ -1,6 +1,5 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { clampTileFocusIndex, countOverflowTiles, getVisibleTileCount, queueTaskOnce } from './select.shared.js';
-import { DEFAULT_ITEM_HEIGHT, LISTBOX_HEIGHT } from '../../shared/virtual-list.js';
 import type { SelectOption } from './select.js';
 
 export interface DropdownConfig {
@@ -21,11 +20,8 @@ export interface DropdownConfig {
 
 type DropdownHost = ReactiveControllerHost & HTMLElement;
 
-// Rows of slack before the hard bottom, so consumers can fetch the next page.
-const SCROLL_END_ROWS = 2;
-
-// Sub-pixel jitter shouldn't churn a re-render.
-const HEIGHT_EPSILON = 0.5;
+const SLACK_BEFORE_SCROLL_END_PX = 72;
+const OPENING_ROWS_ABOVE_FOCUS = 2;
 
 export class DropdownController implements ReactiveController {
   #host: DropdownHost;
@@ -33,8 +29,6 @@ export class DropdownController implements ReactiveController {
 
   #open = false;
   #focusedIndex = -1;
-  #scrollTop = 0;
-  #itemHeight = DEFAULT_ITEM_HEIGHT;
   #focusedTileIndex = -1;
   #overflowCount = 0;
   #hasLeading = false;
@@ -43,8 +37,8 @@ export class DropdownController implements ReactiveController {
   #docClickHandler?: (event: MouseEvent) => void;
   #focusOutHandler?: () => void;
   #overflowCheckQueued = false;
-  #itemMeasureQueued = false;
-  #itemMeasured = false;
+  #focusRevealPending = false;
+  #focusRevealQueued = false;
 
   constructor(host: DropdownHost, config: DropdownConfig) {
     this.#host = host;
@@ -65,16 +59,6 @@ export class DropdownController implements ReactiveController {
     this.#focusedIndex = value;
     this.#host.requestUpdate();
   }
-  get scrollTop(): number {
-    return this.#scrollTop;
-  }
-  set scrollTop(value: number) {
-    if (this.#scrollTop === value) {
-      return;
-    }
-    this.#scrollTop = value;
-    this.#host.requestUpdate();
-  }
   get focusedTileIndex(): number {
     return this.#focusedTileIndex;
   }
@@ -84,9 +68,6 @@ export class DropdownController implements ReactiveController {
     }
     this.#focusedTileIndex = value;
     this.#host.requestUpdate();
-  }
-  get itemHeight(): number {
-    return this.#itemHeight;
   }
   get overflowCount(): number {
     return this.#overflowCount;
@@ -114,7 +95,7 @@ export class DropdownController implements ReactiveController {
     }
     this.#open = true;
     this.#scrollEndArmed = true;
-    this.#itemMeasured = false;
+    this.#focusRevealPending = true;
     this.#config.onOpen?.();
     this.#focusedTileIndex = -1;
     const options = this.#config.getOptions();
@@ -122,7 +103,6 @@ export class DropdownController implements ReactiveController {
       ? options.findIndex((option) => this.#config.getValues().includes(option.value))
       : options.findIndex((option) => option.value === this.#config.getCurrentValue());
     this.#focusedIndex = idx >= 0 ? idx : 0;
-    this.#scrollTop = Math.max(0, (this.#focusedIndex - 2) * this.#itemHeight);
     this.#docClickHandler = (event: MouseEvent) => {
       if (!event.composedPath().includes(this.#host)) {
         this.close();
@@ -148,7 +128,6 @@ export class DropdownController implements ReactiveController {
   close = (): void => {
     this.#open = false;
     this.#focusedIndex = -1;
-    this.#scrollTop = 0;
     this.#config.onClose?.();
     if (this.#docClickHandler) {
       document.removeEventListener('click', this.#docClickHandler);
@@ -176,23 +155,22 @@ export class DropdownController implements ReactiveController {
       return;
     }
     this.#focusedIndex = next;
+    this.#focusRevealPending = false;
     this.#scrollFocusedIntoView();
     this.#host.requestUpdate();
   };
 
   onScroll = (): void => {
+    this.#focusRevealPending = false;
     const el = this.#config.getListboxEl();
-    this.#scrollTop = el?.scrollTop ?? 0;
     if (el) {
       this.#notifyScrollEnd(el);
     }
-    this.#host.requestUpdate();
   };
 
   // Fires once per approach; scrolling away or reopening re-arms it.
   #notifyScrollEnd = (el: HTMLElement): void => {
-    const threshold = this.#itemHeight * SCROLL_END_ROWS;
-    const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - threshold;
+    const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - SLACK_BEFORE_SCROLL_END_PX;
     if (!nearEnd) {
       this.#scrollEndArmed = true;
       return;
@@ -231,51 +209,53 @@ export class DropdownController implements ReactiveController {
     });
   };
 
-  syncScrollTop = (): void => {
-    const el = this.#config.getListboxEl();
-    if (el && el.scrollTop !== this.#scrollTop) {
-      el.scrollTop = this.#scrollTop;
-    }
-  };
-
-  // Spacers reserve itemHeight per unrendered row; a stale estimate drifts them.
-  queueItemMeasure = (): void => {
-    if (this.#itemMeasured) {
+  queueFocusReveal = (): void => {
+    if (!this.#focusRevealPending) {
       return;
     }
     queueTaskOnce({
-      isQueued: this.#itemMeasureQueued,
+      isQueued: this.#focusRevealQueued,
       setQueued: (value) => {
-        this.#itemMeasureQueued = value;
+        this.#focusRevealQueued = value;
       },
-      task: this.#measureItemHeight,
+      task: this.#revealFocusedWithRowsAbove,
     });
   };
 
-  // Once per open: the height picks startIdx, which picks the row measured next.
-  #measureItemHeight = (): void => {
-    const row = this.#config.getListboxEl()?.querySelector('ds-select-option');
-    const height = row?.getBoundingClientRect().height ?? 0;
-    if (height <= 0) {
+  #findRenderedOption(index: number): HTMLElement | null {
+    return this.#config.getListboxEl()?.querySelector<HTMLElement>(`#option-${index}`) ?? null;
+  }
+
+  #measureHintHeight(listbox: HTMLElement): number {
+    return listbox.querySelector<HTMLElement>('[part="hint"]')?.offsetHeight ?? 0;
+  }
+
+  #revealFocusedWithRowsAbove = (): void => {
+    const listbox = this.#config.getListboxEl();
+    const focused = this.#findRenderedOption(this.#focusedIndex);
+    if (!this.#open || !listbox || !focused || focused.offsetHeight === 0) {
       return;
     }
-    this.#itemMeasured = true;
-    if (Math.abs(height - this.#itemHeight) < HEIGHT_EPSILON) {
-      return;
-    }
-    this.#itemHeight = height;
-    this.#host.requestUpdate();
+    this.#focusRevealPending = false;
+    const firstShown = this.#findRenderedOption(this.#focusedIndex - OPENING_ROWS_ABOVE_FOCUS);
+    listbox.scrollTop = firstShown ? firstShown.offsetTop - this.#measureHintHeight(listbox) : 0;
+    this.#scrollFocusedIntoView();
   };
 
-  #scrollFocusedIntoView = (): void => {
-    const top = this.#focusedIndex * this.#itemHeight;
-    const bottom = top + this.#itemHeight;
-    if (top < this.#scrollTop) {
-      this.#scrollTop = top;
-    } else if (bottom > this.#scrollTop + LISTBOX_HEIGHT) {
-      this.#scrollTop = bottom - LISTBOX_HEIGHT;
+  #scrollFocusedIntoView(): void {
+    const listbox = this.#config.getListboxEl();
+    const focused = this.#findRenderedOption(this.#focusedIndex);
+    if (!listbox || !focused) {
+      return;
     }
-  };
+    const hintHeight = this.#measureHintHeight(listbox);
+    const focusedBottom = focused.offsetTop + focused.offsetHeight;
+    if (focused.offsetTop < listbox.scrollTop + hintHeight) {
+      listbox.scrollTop = focused.offsetTop - hintHeight;
+    } else if (focusedBottom > listbox.scrollTop + listbox.clientHeight) {
+      listbox.scrollTop = focusedBottom - listbox.clientHeight;
+    }
+  }
 
   #checkOverflow = (): void => {
     const count = countOverflowTiles(this.#config.getTilesEl(), this.#config.getMaxLines());

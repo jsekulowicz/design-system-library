@@ -4,7 +4,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
-import { renderVirtualItems } from '../../shared/virtual-list.js';
 import {
   renderChevronDownIcon,
   renderClearButton,
@@ -44,7 +43,7 @@ export interface SelectOption {
  * @csspart hint - The optional note shown above the options inside the listbox.
  * @csspart option - Each individual option item.
  * @slot leading - A leading adornment for the trigger.
- * @slot option:{value} - Replaces an option's label in the listbox. The listbox virtualises on one measured row, so keep every option the same height.
+ * @slot option:{value} - Replaces an option's label in the listbox.
  * @slot selected:{value} - Replaces the selected option's label in the trigger.
  * @slot tile:{value} - Replaces a selected tile's label when `multiple`.
  * @slot overflow-tip - Content for the tooltip the "+n" tile shows on hover and holds open once tapped. Left empty, the tile shows no tooltip.
@@ -115,12 +114,6 @@ export class DsSelect extends FormControlMixin(DsElement) {
   set _focusedTileIndex(value: number) {
     this.#dropdown.focusedTileIndex = value;
   }
-  get _scrollTop(): number {
-    return this.#dropdown.scrollTop;
-  }
-  set _scrollTop(value: number) {
-    this.#dropdown.scrollTop = value;
-  }
   get _hasLeading(): boolean {
     return this.#dropdown.hasLeading;
   }
@@ -152,8 +145,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
       this.#dropdown.queueOverflowCheck();
     }
     this.#syncListboxPopover();
-    this.#dropdown.queueItemMeasure();
-    this.#dropdown.syncScrollTop();
+    this.#dropdown.queueFocusReveal();
   }
 
   override disconnectedCallback(): void {
@@ -367,12 +359,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
                 @ds-activate=${(event: Event) => event.stopPropagation()}
               >
                 ${this.hint ? html`<div class="listbox-hint" part="hint" role="note">${this.hint}</div>` : nothing}
-                ${renderVirtualItems(
-                  this.options,
-                  this.#dropdown.scrollTop,
-                  (option, index) => this.#renderOption(option, index, current),
-                  this.#dropdown.itemHeight,
-                )}
+                ${this.options.map((option, index) => this.#renderOption(option, index, current))}
               </div>`
             : nothing
         }

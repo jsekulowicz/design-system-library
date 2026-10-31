@@ -524,7 +524,7 @@ export const ProjectedOptionContent: Story = {
       story: { height: '240px' },
       description: {
         story:
-          'An option renders framework-owned content through the `option:{value}` slot, falling back to its `label` when nothing is projected. `selected:{value}` covers the trigger and `tile:{value}` the tiles of a `multiple` select - a node can only be projected once, so each surface takes its own. Keep projected content inside the 36px row the listbox virtualises on. `ds-searchable-select` has the same `option:` and `tile:` slots, but no `selected:`: its single-value trigger is a text input.',
+          'An option renders framework-owned content through the `option:{value}` slot, falling back to its `label` when nothing is projected. `selected:{value}` covers the trigger and `tile:{value}` the tiles of a `multiple` select - a node can only be projected once, so each surface takes its own. Projected content may wrap onto as many lines as it needs. `ds-searchable-select` has the same `option:` and `tile:` slots, but no `selected:`: its single-value trigger is a text input.',
       },
       source: { code: PROJECTED_SRC },
     },

@@ -87,7 +87,6 @@ describe('<ds-select-option>', () => {
     expect(css).toContain('white-space: normal');
     expect(css).toContain('overflow-wrap: anywhere');
     expect(css).not.toContain('text-overflow: ellipsis');
-    // The single-line floor stays at the virtual list's DEFAULT_ITEM_HEIGHT.
     expect(css).toContain('min-height: 36px');
   });
 
