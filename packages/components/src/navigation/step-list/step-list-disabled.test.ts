@@ -20,9 +20,9 @@ function stepEls(el: DsStepList): NodeListOf<HTMLLIElement> {
 describe('<ds-step-list> disabled steps and their reasons', () => {
   it('leaves a disabled step unreachable even once it is behind the reader', async () => {
     const withSkipped: StepListStep[] = [
-      { label: 'Name and size' },
-      { label: 'Vocabulary' },
-      { label: 'Extra words', disabled: true },
+      { label: 'Details' },
+      { label: 'Payment' },
+      { label: 'Gift wrap', disabled: true },
       { label: 'Summary' },
     ];
     const el = await mountStepList({ steps: withSkipped, currentIndex: 3 });

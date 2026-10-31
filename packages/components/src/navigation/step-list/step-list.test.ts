@@ -4,9 +4,9 @@ import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 const STEPS: StepListStep[] = [
-  { label: 'Name and size', description: 'Required' },
-  { label: 'Visibility' },
-  { label: 'Vocabulary' },
+  { label: 'Details', description: 'Required' },
+  { label: 'Shipping' },
+  { label: 'Payment' },
 ];
 
 beforeEach(() => {

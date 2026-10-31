@@ -4,9 +4,9 @@ import './define.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 const STEPS: StepListStep[] = [
-  { label: 'Name and size', description: 'Required' },
-  { label: 'Visibility' },
-  { label: 'Vocabulary' },
+  { label: 'Details', description: 'Required' },
+  { label: 'Shipping' },
+  { label: 'Payment' },
 ];
 
 beforeEach(() => {
@@ -31,7 +31,7 @@ describe('<ds-step-list> compact layout', () => {
   it('offers a compact view of the current step alongside the full row, for CSS to choose between', async () => {
     const el = await mountStepList({ currentIndex: 1 });
     expect(el.shadowRoot!.querySelector('[part="list"]')).not.toBeNull();
-    expect(el.shadowRoot!.querySelector('.compact-current .step-label')!.textContent).toBe('Visibility');
+    expect(el.shadowRoot!.querySelector('.compact-current .step-label')!.textContent).toBe('Shipping');
     expect(el.shadowRoot!.querySelectorAll('.segment')).toHaveLength(3);
   });
 
@@ -59,9 +59,9 @@ describe('<ds-step-list> compact layout', () => {
     const segments = el.shadowRoot!.querySelectorAll('[part="segment"]');
 
     expect([...segments].map((segment) => segment.getAttribute('aria-label'))).toEqual([
-      'Name and size',
-      'Visibility',
-      'Vocabulary',
+      'Details',
+      'Shipping',
+      'Payment',
     ]);
     expect(segments[1]!.getAttribute('aria-current')).toBe('step');
   });

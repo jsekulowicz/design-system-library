@@ -4,7 +4,7 @@ import './define.js';
 import { stepListStyles } from './step-list.styles.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-const STEPS: StepListStep[] = [{ label: 'Name and size' }, { label: 'Visibility' }, { label: 'Vocabulary' }];
+const STEPS: StepListStep[] = [{ label: 'Details' }, { label: 'Shipping' }, { label: 'Payment' }];
 
 class FakeResizeObserver {
   static instances: FakeResizeObserver[] = [];

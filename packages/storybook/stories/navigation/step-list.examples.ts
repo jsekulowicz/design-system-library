@@ -23,29 +23,29 @@ export function startOverFromTheFirstStep(event: Event): void {
   }
 }
 
-export const LABEL_ONLY_STEPS: StepListStep[] = [{ label: 'Details' }, { label: 'Vocabulary' }, { label: 'Summary' }];
+export const LABEL_ONLY_STEPS: StepListStep[] = [{ label: 'Details' }, { label: 'Shipping' }, { label: 'Summary' }];
 
 export const DISABLED_STEPS: StepListStep[] = [
-  { label: 'Visibility', description: 'Only me' },
+  { label: 'Account', description: 'Personal' },
   {
-    label: 'Share with',
+    label: 'Team members',
     description: 'Unavailable',
     disabled: true,
-    reason: 'Let other people open the crossword first - one only you can open has nobody to share it with.',
+    reason: 'Switch to a team account first - a personal account has nobody to invite.',
   },
-  { label: 'Vocabulary', description: 'Using every word' },
+  { label: 'Plan', description: 'Free' },
   {
-    label: 'Extra words',
+    label: 'Add-ons',
     description: 'Unavailable',
     disabled: true,
-    reason: 'Narrow the vocabulary first - there is nothing for extra words to add to.',
+    reason: 'Pick a paid plan first - the free plan takes no add-ons.',
   },
   { label: 'Summary' },
 ];
 
 export const LONG_LABEL_STEPS: StepListStep[] = [
-  { label: 'Name and size', description: 'Required' },
-  { label: 'Who can open this crossword', description: 'Optional' },
-  { label: 'Words this crossword is built from', description: 'Optional' },
+  { label: 'Name and address', description: 'Required' },
+  { label: 'Who can see this project', description: 'Optional' },
+  { label: 'Files this project starts from', description: 'Optional' },
   { label: 'Check and finish', description: 'Almost there' },
 ];
