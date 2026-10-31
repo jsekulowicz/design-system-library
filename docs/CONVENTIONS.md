@@ -137,6 +137,24 @@ the changeset.
 
 No comments in CSS, ever.
 
+## Examples and fixtures
+
+Stories, docs pages, test fixtures and changesets are read by every product that uses this
+library, so their content stays domain-neutral: no product's names, features or vocabulary,
+however familiar it is to whoever writes the example. Reach for scenarios any reader recognizes
+at a glance - an account, a checkout, a team, a project, a file, a plan.
+
+```ts
+// no
+{ label: 'Extra words', reason: 'Narrow the vocabulary first.' }
+
+// yes
+{ label: 'Add-ons', reason: 'Pick a paid plan first.' }
+```
+
+The same goes for a fix prompted by one product: describe the component behavior, not the screen
+in that product where it showed up.
+
 ## Shared code
 
 Reach for `packages/components/src/shared/` before writing a second copy:
