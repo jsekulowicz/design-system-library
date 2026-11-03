@@ -22,6 +22,7 @@ export type ButtonType = 'button' | 'submit' | 'reset';
  * @attr {boolean} square - Forces an icon-sized square button and ignores the text-button min width.
  * @attr {string} loading-label - Label shown while loading. Pins the button to the wider of the two states.
  * @attr {string} href - Renders an `<a>` instead of a `<button>`, so a button-shaped link is one tab stop.
+ * @attr {string} aria-pressed - Makes the button a toggle: `true` or `false` lands on the internal `<button>`. Ignored with `href`.
  * @csspart button - The internal `<button>`, or the `<a>` when `href` is set.
  * @csspart spinner - The loading spinner SVG.
  * @cssprop --ds-button-bg - Primary variant background.
@@ -61,6 +62,7 @@ export class DsButton extends DsElement {
   // Bound onto the inner <button>, never the host: a host tabindex would add a stray tab stop.
   @property({ attribute: 'role' }) roleAttr?: AriaRole;
   @property({ attribute: 'aria-checked' }) ariaCheckedAttr?: AriaChecked;
+  @property({ attribute: 'aria-pressed' }) ariaPressedAttr?: AriaChecked;
   /* eslint-enable lit/attribute-names */
   @property({ attribute: false }) tabIndexAttr?: number;
 
@@ -116,6 +118,7 @@ export class DsButton extends DsElement {
         aria-expanded=${ifDefined(this.ariaExpandedAttr)}
         aria-haspopup=${ifDefined(this.ariaHasPopupAttr)}
         aria-invalid=${ifDefined(this.ariaInvalidAttr)}
+        aria-pressed=${ifDefined(this.ariaPressedAttr)}
         aria-label=${ifDefined(this.label)}
         @click=${this.#handleClick}
       >

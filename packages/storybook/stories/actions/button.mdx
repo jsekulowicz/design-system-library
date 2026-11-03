@@ -54,6 +54,7 @@ A native `<button>` lives in shadow DOM, styled via `::part(button)`. Slots for 
       <h3>Accessibility</h3>
       <ul>
         <li><code>aria-busy</code> reflects <code>loading</code>.</li>
+        <li>A toggle sets <code>aria-pressed</code> to <code>true</code> or <code>false</code>; it lands on the internal <code>&lt;button&gt;</code>. Pair it with a visible change such as <code>secondary</code> off and <code>primary</code> on, so the state never rests on color alone.</li>
         <li>The idle/loading label twins are mutually <code>aria-hidden</code>, so only one is ever announced.</li>
         <li>The spinner keeps animating under <code>prefers-reduced-motion</code>, at roughly half speed - it is status feedback, not decoration.</li>
         <li>Disabled + loading prevent <code>ds-click</code> from firing.</li>

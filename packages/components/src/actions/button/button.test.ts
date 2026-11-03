@@ -97,6 +97,22 @@ describe('<ds-button>', () => {
     expect(events).toHaveLength(1);
   });
 
+  it('announces a toggle as pressed on the internal button, not the host', async () => {
+    const el = await mount<DsButton>('<ds-button aria-pressed="true">Weekly</ds-button>');
+    const button = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
+
+    expect(button.getAttribute('aria-pressed')).toBe('true');
+    el.ariaPressedAttr = 'false';
+    await el.updateComplete;
+    expect(button.getAttribute('aria-pressed')).toBe('false');
+  });
+
+  it('leaves aria-pressed off a button that is not a toggle', async () => {
+    const el = await mount<DsButton>('<ds-button>Save</ds-button>');
+
+    expect(el.shadowRoot!.querySelector('button')!.hasAttribute('aria-pressed')).toBe(false);
+  });
+
   it('renders loading affordance and busy aria attributes', async () => {
     const el = await mount<DsButton>('<ds-button loading>Wait</ds-button>');
     const button = el.shadowRoot!.querySelector('button') as HTMLButtonElement;
