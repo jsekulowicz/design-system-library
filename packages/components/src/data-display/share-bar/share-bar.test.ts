@@ -27,7 +27,7 @@ function segmentColors(el: DsShareBar): string[] {
   return [...el.shadowRoot!.querySelectorAll<HTMLElement>('[part="segment"]')].map((node) => node.style.background);
 }
 
-async function mountWith(data: { label: string; value: number }[], attrs = ''): Promise<DsShareBar> {
+async function mountWith(data: { label: string; value: number; icon?: string }[], attrs = ''): Promise<DsShareBar> {
   const el = await mount<DsShareBar>(`<ds-share-bar ${attrs}></ds-share-bar>`);
   el.data = data;
   await el.updateComplete;
@@ -145,5 +145,38 @@ describe('<ds-share-bar>', () => {
       { label: 'C', value: Number.NaN },
     ]);
     expect(legendText(el)).toEqual(['A 100%']);
+  });
+
+  it('centers an icon tile in its share color only over the shares whose datum names one', async () => {
+    const el = await mountWith([
+      { label: 'A', value: 3, icon: 'star' },
+      { label: 'B', value: 1 },
+    ]);
+    const slots = [...el.shadowRoot!.querySelectorAll<HTMLElement>('.icon-slot')];
+    const tile = slots[0]!.querySelector<HTMLElement>('[part="segment-icon"]')!;
+
+    expect(slots.map((slot) => slot.style.flexGrow)).toEqual(segmentGrow(el));
+    expect(tile.querySelector('ds-icon')!.getAttribute('name')).toBe('star');
+    expect(tile.style.background).toBe(segmentColors(el)[0]);
+    expect(slots[1]!.querySelector('[part="segment-icon"]')).toBeNull();
+  });
+
+  it('draws no icon layer when no share names an icon', async () => {
+    const el = await mountWith([{ label: 'A', value: 1 }]);
+
+    expect(el.shadowRoot!.querySelector('.icons')).toBeNull();
+  });
+
+  it('keeps an icon out of the rolled-up Other share', async () => {
+    const el = await mountWith(
+      [
+        { label: 'A', value: 5 },
+        { label: 'B', value: 1, icon: 'star' },
+        { label: 'C', value: 1, icon: 'star' },
+      ],
+      'max-segments="2"',
+    );
+
+    expect(el.shadowRoot!.querySelectorAll('ds-icon')).toHaveLength(0);
   });
 });

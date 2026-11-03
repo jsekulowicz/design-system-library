@@ -2,6 +2,7 @@ import { html } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { ShareBarDatum } from '@jsekulowicz/ds-components/share-bar';
 import '@jsekulowicz/ds-components/share-bar/define';
+import '@jsekulowicz/ds-components/icon/star-solid';
 
 const DIFFICULTY: readonly ShareBarDatum[] = [
   { label: 'Beginner', value: 412 },
@@ -136,6 +137,22 @@ export const ThinWithSegmentSpacing: Story = {
     <ds-share-bar
       title="Words by level"
       .data=${DIFFICULTY}
+      .showLegend=${false}
+      segment-spacing="2px"
+      style="--ds-share-bar-height: var(--ds-space-2)"
+    ></ds-share-bar>
+  `,
+};
+
+export const IconOnALeadingShare: Story = {
+  render: () => html`
+    <ds-share-bar
+      title="Reviews by rating"
+      .data=${[
+        { label: 'Five stars', value: 62, icon: 'star-solid' },
+        { label: 'Four stars', value: 21 },
+        { label: 'Three stars or fewer', value: 17 },
+      ]}
       .showLegend=${false}
       segment-spacing="2px"
       style="--ds-share-bar-height: var(--ds-space-2)"

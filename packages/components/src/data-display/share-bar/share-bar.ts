@@ -24,6 +24,7 @@ function smallest(data: readonly ShareBarDatum[], count: number): Set<ShareBarDa
  * @csspart title - The bar title.
  * @csspart bar - The stacked bar track.
  * @csspart segment - Each colored share of the bar.
+ * @csspart segment-icon - The square tile, in its share's color, that carries the icon of a share whose datum names one. It is centered on the share and may stand taller than the bar.
  * @csspart legend - The legend list.
  * @csspart swatch - A legend color swatch.
  * @csspart empty - The empty message.
@@ -31,6 +32,10 @@ function smallest(data: readonly ShareBarDatum[], count: number): Set<ShareBarDa
  * @cssprop --ds-share-bar-radius - Bar corner radius. Defaults to `--ds-radius-xs`.
  * @cssprop --ds-share-bar-gap - Space between title, bar and legend. Defaults to `--ds-space-2`.
  * @cssprop --ds-share-bar-segment-min-width - Floor that keeps a tiny share visible. Defaults to `2px`.
+ * @cssprop --ds-share-bar-icon-size - Size of a segment icon. Defaults to `--ds-space-4`.
+ * @cssprop --ds-share-bar-icon-tile-size - Side of the square tile behind a segment icon. Defaults to the icon size plus `--ds-space-1` on each side.
+ * @cssprop --ds-share-bar-icon-radius - Corner radius of the icon tile. Defaults to `--ds-radius-xs`.
+ * @cssprop --ds-share-bar-icon-color - Color of a segment icon. Defaults to `--ds-color-bg`, so it reads as cut out of the tile.
  */
 export class DsShareBar extends DsElement {
   static override styles = [...DsElement.styles, shareBarStyles];
@@ -61,6 +66,7 @@ export class DsShareBar extends DsElement {
         value: datum.value,
         percent: (datum.value / total) * 100,
         ...(datum.color === undefined ? {} : { color: datum.color }),
+        ...(datum.icon === undefined ? {} : { icon: datum.icon }),
         isOther: false,
       }));
     if (overflow.size === 0) {
@@ -88,27 +94,55 @@ export class DsShareBar extends DsElement {
 
   override render(): TemplateResult {
     const segments = this.#segments();
+    const withIcons = segments.some((segment) => segment.icon !== undefined);
     return html`
       <div class="share" part="share">
         <p class="title" part="title">${this.title}</p>
-        <div
-          class="bar"
-          part="bar"
-          role="img"
-          aria-label=${this.#summary(segments)}
-          style=${styleMap({ gap: this.segmentSpacing || null })}
-        >
-          ${segments.map(
-            (segment, index) => html`
-              <span
-                class="segment"
-                part="segment"
-                style=${styleMap({ flexGrow: String(segment.value), background: this.#color(segment, index) })}
-              ></span>
-            `,
-          )}
+        <div class=${withIcons ? 'track track--with-icons' : 'track'}>
+          <div
+            class="bar"
+            part="bar"
+            role="img"
+            aria-label=${this.#summary(segments)}
+            style=${styleMap({ gap: this.segmentSpacing || null })}
+          >
+            ${segments.map(
+              (segment, index) => html`
+                <span
+                  class="segment"
+                  part="segment"
+                  style=${styleMap({ flexGrow: String(segment.value), background: this.#color(segment, index) })}
+                ></span>
+              `,
+            )}
+          </div>
+          ${withIcons ? this.#renderIcons(segments) : nothing}
         </div>
         ${segments.length === 0 ? this.#renderEmpty() : this.#renderLegend(segments)}
+      </div>
+    `;
+  }
+
+  #renderIcons(segments: readonly ShareBarSegment[]): TemplateResult {
+    return html`
+      <div class="icons" aria-hidden="true" style=${styleMap({ gap: this.segmentSpacing || null })}>
+        ${segments.map(
+          (segment, index) => html`
+            <span class="icon-slot" style=${styleMap({ flexGrow: String(segment.value) })}>
+              ${
+                segment.icon
+                  ? html`<span
+                      class="segment-icon"
+                      part="segment-icon"
+                      style=${styleMap({ background: this.#color(segment, index) })}
+                    >
+                      <ds-icon name=${segment.icon}></ds-icon>
+                    </span>`
+                  : nothing
+              }
+            </span>
+          `,
+        )}
       </div>
     `;
   }

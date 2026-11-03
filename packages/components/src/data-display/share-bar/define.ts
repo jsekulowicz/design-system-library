@@ -1,4 +1,5 @@
 import { defineCustomElement } from '../../registration.js';
+import '../icon/define.js';
 import { DsShareBar } from './share-bar.js';
 
 defineCustomElement('ds-share-bar', DsShareBar);
