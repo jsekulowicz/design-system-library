@@ -28,13 +28,14 @@ describe('the max-lines attribute', () => {
   });
 });
 
-function tileList(offsets: number[]): HTMLElement {
+function tileList(offsets: number[], height = 0): HTMLElement {
   const host = document.createElement('div');
   for (const top of offsets) {
     const tile = document.createElement('span');
     tile.className = 'tile';
     tile.dataset['value'] = String(top);
     Object.defineProperty(tile, 'offsetTop', { value: top, configurable: true });
+    Object.defineProperty(tile, 'offsetHeight', { value: height, configurable: true });
     host.appendChild(tile);
   }
   return host;
@@ -49,6 +50,10 @@ describe('countOverflowTiles', () => {
   it('measures from the first tile, so a search input above them is not read as overflow', () => {
     const pushedDown = [41, 41, 73, 73, 105, 105, 137, 137, 169, 169];
     expect(countOverflowTiles(tileList(pushedDown), 3)).toBe(4);
+  });
+
+  it('follows taller tiles, so a consumer tile height still counts whole rows', () => {
+    expect(countOverflowTiles(tileList([0, 0, 40, 40, 80, 80], 36), 2)).toBe(2);
   });
 
   it('counts nothing without max-lines', () => {

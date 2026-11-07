@@ -1,14 +1,12 @@
 import { css } from 'lit';
 
-const TILE_HEIGHT = 28;
-const TILE_GAP = 4;
-
-/** Pitch of a row of selected tiles; the overflow math counts in these. */
-export const TILE_ROW_HEIGHT = TILE_HEIGHT + TILE_GAP;
+export const TILE_HEIGHT = 28;
+export const TILE_GAP = 4;
 
 export const selectCommonStyles = css`
   :host {
     --ds-select-size: var(--ds-size-md);
+    --ds-select-tile-height: ${TILE_HEIGHT}px;
     display: inline-flex;
     flex-direction: column;
     gap: var(--ds-space-1);
@@ -39,7 +37,10 @@ export const selectCommonStyles = css`
     pointer-events: none;
   }
   .trigger-multiple {
-    --ds-select-trigger-block-padding: max(1px, calc((var(--ds-select-size) - ${TILE_HEIGHT + 2}px) / 2));
+    --ds-select-trigger-block-padding: max(
+      1px,
+      calc((var(--ds-select-size) - (var(--ds-select-tile-height) + 2px)) / 2)
+    );
     --ds-select-caret-size: 1.25rem;
     --ds-select-search-width: 10rem;
     --ds-select-leading-size: 1.25rem;
@@ -55,7 +56,7 @@ export const selectCommonStyles = css`
   }
   .trigger-multiple .leading {
     align-self: flex-start;
-    height: ${TILE_HEIGHT}px;
+    height: var(--ds-select-tile-height);
     align-items: center;
   }
   .trigger-multiple:has(.search-input) {
@@ -66,14 +67,18 @@ export const selectCommonStyles = css`
   }
   .trigger-multiple:has(.search-input) .leading {
     position: absolute;
-    top: calc(var(--ds-select-trigger-block-padding) + (${TILE_HEIGHT}px - var(--ds-select-leading-size)) / 2);
+    top: calc(
+      var(--ds-select-trigger-block-padding) + (var(--ds-select-tile-height) - var(--ds-select-leading-size)) / 2
+    );
     inset-inline-start: var(--ds-space-3);
     height: var(--ds-select-leading-size);
     align-self: center;
   }
   .trigger-multiple .caret {
     position: absolute;
-    top: calc(var(--ds-select-trigger-block-padding) + (${TILE_HEIGHT}px - var(--ds-select-caret-size)) / 2);
+    top: calc(
+      var(--ds-select-trigger-block-padding) + (var(--ds-select-tile-height) - var(--ds-select-caret-size)) / 2
+    );
     inset-inline-end: var(--ds-space-3);
   }
   .tiles {
@@ -85,7 +90,7 @@ export const selectCommonStyles = css`
   }
   .trigger-multiple:has(.tiles) .search-input {
     flex: 1 1 var(--ds-select-search-width);
-    min-height: ${TILE_HEIGHT}px;
+    min-height: var(--ds-select-tile-height);
   }
   .tile {
     display: inline-flex;
@@ -95,7 +100,7 @@ export const selectCommonStyles = css`
        ellipsizes - rather than hard-capping every tile to a narrow width
        and wasting the rest of the row. */
     max-width: 100%;
-    height: ${TILE_HEIGHT}px;
+    height: var(--ds-select-tile-height);
     padding: 0 var(--ds-space-1) 0 var(--ds-space-2);
     background: var(--ds-color-bg-subtle);
     border: 1px solid var(--ds-color-border);

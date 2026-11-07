@@ -42,6 +42,7 @@ export interface SelectOption {
  * @csspart listbox - The dropdown listbox container.
  * @csspart hint - The optional note shown above the options inside the listbox.
  * @csspart option - Each individual option item.
+ * @cssprop [--ds-select-tile-height=28px] - Height of each selected tile when `multiple`, for tiles whose slotted content is taller than text. The trigger, the `max-lines` cap and the overflow count all follow it.
  * @slot leading - A leading adornment for the trigger.
  * @slot option:{value} - Replaces an option's label in the listbox.
  * @slot selected:{value} - Replaces the selected option's label in the trigger.

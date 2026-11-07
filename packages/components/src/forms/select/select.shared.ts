@@ -1,7 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import type { IconSize } from '../../data-display/icon/icon.js';
-import { TILE_ROW_HEIGHT } from './select.common-styles.js';
+import { TILE_GAP, TILE_HEIGHT } from './select.common-styles.js';
 import '../../data-display/icon/icons/x-mark.js';
 import '../../data-display/icon/icons/chevron-down.js';
 import '../../overlays/tooltip/define.js';
@@ -84,11 +84,8 @@ export function countOverflowTiles(tilesElement?: HTMLElement, maxLines?: number
   }
   const tiles = Array.from(tilesElement.querySelectorAll<HTMLElement>('.tile[data-value]'));
   const firstRowTop = tiles[0]?.offsetTop ?? 0;
-  return tiles.filter((tile) => rowsBelowTheFirstTile(tile, firstRowTop) >= maxLines).length;
-}
-
-function rowsBelowTheFirstTile(tile: HTMLElement, firstRowTop: number): number {
-  return (tile.offsetTop - firstRowTop) / TILE_ROW_HEIGHT;
+  const rowPitch = (tiles[0]?.offsetHeight || TILE_HEIGHT) + TILE_GAP;
+  return tiles.filter((tile) => (tile.offsetTop - firstRowTop) / rowPitch >= maxLines).length;
 }
 
 export function queueTaskOnce(options: QueueTaskOptions): void {
@@ -162,7 +159,9 @@ export function renderOverflowTile(
 }
 
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {
-  const style = options.maxLines ? `max-height:${options.maxLines * TILE_ROW_HEIGHT - 4}px;overflow:hidden` : '';
+  const style = options.maxLines
+    ? `max-height:calc(${options.maxLines} * (var(--ds-select-tile-height) + ${TILE_GAP}px) - ${TILE_GAP}px);overflow:hidden`
+    : '';
   return html` <div class="tiles" style=${style}>
     ${options.values.map((value, index) =>
       renderTile({

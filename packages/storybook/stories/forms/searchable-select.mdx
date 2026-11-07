@@ -32,6 +32,7 @@ Extends `ds-select` with a search input above the listbox. The parent owns filte
     <ds-tab-panel value="guidelines">
       <h3>Do</h3>
       <ul>
+        <li>Raise <code>--ds-select-tile-height</code> when slotted tile content, such as an icon with an outlined label, is taller than text, rather than squeezing the content into the tile.</li>
         <li>Use for long option lists (20+) where typing is faster than scrolling.</li>
         <li>Debounce async queries on the parent - the component emits every keystroke.</li>
         <li>Use <code>loading</code> while options are being fetched to signal progress and block accidental opens.</li>
