@@ -93,6 +93,21 @@ describe('<ds-select>', () => {
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
 
+    it('claims Escape while open, so a surrounding dialog stays open', async () => {
+      const el = await mountSelect();
+      await openDropdown(el);
+      const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true });
+      getTrigger(el).dispatchEvent(escape);
+      expect(escape.defaultPrevented).toBe(true);
+    });
+
+    it('leaves Escape to a surrounding dialog while closed', async () => {
+      const el = await mountSelect();
+      const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, composed: true, cancelable: true });
+      getTrigger(el).dispatchEvent(escape);
+      expect(escape.defaultPrevented).toBe(false);
+    });
+
     it('closes when focus leaves the combobox', async () => {
       const el = await mountSelect();
       await openDropdown(el);

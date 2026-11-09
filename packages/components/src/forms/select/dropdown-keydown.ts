@@ -37,6 +37,9 @@ export function dropdownKeydown(event: KeyboardEvent, ctx: KeydownContext): 'han
   }
 
   if (event.key === 'Escape') {
+    if (controller.open) {
+      event.preventDefault();
+    }
     controller.close();
     return 'handled';
   }
