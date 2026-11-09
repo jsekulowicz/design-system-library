@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { SelectOption } from '@jsekulowicz/ds-components/select';
 import '@jsekulowicz/ds-components/searchable-select/define';
@@ -487,6 +487,9 @@ export const Loading: Story = {
 };
 
 class SbCountryMultiSearch extends LitElement {
+  @property({ type: Number, attribute: 'max-lines' }) maxLines = 2;
+  @property({ type: Number, attribute: 'min-lines' }) minLines?: number;
+  @property({ type: Boolean }) clearable = false;
   @state() private _options = COUNTRIES;
   @state() private _values: string[] = [];
 
@@ -506,7 +509,9 @@ class SbCountryMultiSearch extends LitElement {
         placeholder="Select countries"
         search-placeholder="Search countries..."
         ?multiple=${true}
-        .maxLines=${2}
+        .maxLines=${this.maxLines}
+        .minLines=${this.minLines}
+        ?clearable=${this.clearable}
         .options=${this._options}
         .values=${this._values}
         @ds-search=${this.#onSearch}
@@ -605,4 +610,28 @@ html\`
     },
   },
   render: () => html`<sb-country-multi-search></sb-country-multi-search>`,
+};
+
+export const MultipleHoldingTwoRows: Story = {
+  name: 'Multiple - holds two rows (minLines=2, maxLines=1)',
+  parameters: {
+    docs: {
+      story: { height: '330px' },
+      source: {
+        code: `html\`
+  <ds-searchable-select
+    label="Countries"
+    placeholder="Select countries"
+    multiple
+    clearable
+    .minLines=\${2}
+    .maxLines=\${1}
+    .options=\${options}
+    .values=\${values}
+  ></ds-searchable-select>
+\`;`,
+      },
+    },
+  },
+  render: () => html`<sb-country-multi-search min-lines="2" max-lines="1" clearable></sb-country-multi-search>`,
 };

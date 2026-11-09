@@ -7,6 +7,7 @@ export const selectCommonStyles = css`
   :host {
     --ds-select-size: var(--ds-size-md);
     --ds-select-tile-height: ${TILE_HEIGHT}px;
+    --ds-select-clear-size: 1.5rem;
     display: inline-flex;
     flex-direction: column;
     gap: var(--ds-space-1);
@@ -44,12 +45,21 @@ export const selectCommonStyles = css`
     --ds-select-caret-size: 1.25rem;
     --ds-select-search-width: 10rem;
     --ds-select-leading-size: 1.25rem;
+    --ds-select-min-lines: 1;
+    --ds-select-min-lines-gaps: calc((var(--ds-select-min-lines) - 1) * ${TILE_GAP}px);
     position: relative;
     height: auto;
-    min-height: var(--ds-select-size);
+    min-height: max(
+      var(--ds-select-size),
+      calc(
+        var(--ds-select-min-lines) * var(--ds-select-tile-height) + var(--ds-select-min-lines-gaps) + 2 *
+          var(--ds-select-trigger-block-padding) + 2px
+      )
+    );
     padding: var(--ds-select-trigger-block-padding) var(--ds-space-3);
     padding-inline-end: calc(var(--ds-space-3) + var(--ds-select-caret-size) + var(--ds-space-2));
     flex-wrap: wrap;
+    align-content: flex-start;
     align-items: center;
     gap: var(--ds-space-2);
     overflow: visible;
@@ -60,7 +70,12 @@ export const selectCommonStyles = css`
     align-items: center;
   }
   .trigger-multiple:has(.search-input) {
+    --ds-select-min-lines-gaps: calc(
+      (var(--ds-select-min-lines) - 1) * ${TILE_GAP}px + min(1, var(--ds-select-min-lines) - 1) *
+        (var(--ds-space-2) - ${TILE_GAP}px)
+    );
     flex-wrap: wrap-reverse;
+    align-content: flex-end;
   }
   .trigger-multiple:has(.search-input):has(.leading:not([hidden])) {
     padding-inline-start: calc(var(--ds-space-3) + var(--ds-select-leading-size) + var(--ds-space-2));
@@ -81,6 +96,19 @@ export const selectCommonStyles = css`
     );
     inset-inline-end: var(--ds-space-3);
   }
+  .trigger-multiple:has(.clear-btn) {
+    padding-inline-end: calc(
+      var(--ds-space-3) + var(--ds-select-caret-size) + var(--ds-space-2) + var(--ds-select-clear-size) +
+        var(--ds-space-2)
+    );
+  }
+  .trigger-multiple .clear-btn {
+    position: absolute;
+    top: calc(
+      var(--ds-select-trigger-block-padding) + (var(--ds-select-tile-height) - var(--ds-select-clear-size)) / 2
+    );
+    inset-inline-end: calc(var(--ds-space-3) + var(--ds-select-caret-size) + var(--ds-space-2));
+  }
   .tiles {
     display: flex;
     flex: 0 1 auto;
@@ -88,9 +116,14 @@ export const selectCommonStyles = css`
     gap: ${TILE_GAP}px;
     min-width: 0;
   }
+  .trigger-multiple .search-input {
+    min-height: var(--ds-select-tile-height);
+  }
+  .trigger-multiple .trigger-label {
+    line-height: var(--ds-select-tile-height);
+  }
   .trigger-multiple:has(.tiles) .search-input {
     flex: 1 1 var(--ds-select-search-width);
-    min-height: var(--ds-select-tile-height);
   }
   .tile {
     display: inline-flex;
@@ -167,8 +200,8 @@ export const selectCommonStyles = css`
     display: none;
   }
   .clear-btn {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--ds-select-clear-size);
+    height: var(--ds-select-clear-size);
   }
   .clear-btn:hover {
     color: var(--ds-color-fg);

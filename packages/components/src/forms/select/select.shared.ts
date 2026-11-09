@@ -158,6 +158,10 @@ export function renderOverflowTile(
   </ds-tooltip>`;
 }
 
+export function getMinLinesStyle(minLines: number | undefined): string | undefined {
+  return minLines ? `--ds-select-min-lines:${minLines}` : undefined;
+}
+
 export function renderSelectedTiles(options: TileListTemplateOptions): TemplateResult {
   const style = options.maxLines
     ? `max-height:calc(${options.maxLines} * (var(--ds-select-tile-height) + ${TILE_GAP}px) - ${TILE_GAP}px);overflow:hidden`

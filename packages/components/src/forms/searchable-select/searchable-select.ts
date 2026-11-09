@@ -8,6 +8,7 @@ import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import {
   renderChevronDownIcon,
+  getMinLinesStyle,
   renderClearButton,
   renderOptionIcon,
   renderOverflowTile,
@@ -78,6 +79,8 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) loading = false;
   @property({ type: Array }) values: string[] = [];
   @property({ type: Number, attribute: 'max-lines' }) maxLines?: number;
+  /** Rows the `multiple` field holds from the start, counting the search row, so it does not grow as values are picked. */
+  @property({ type: Number, attribute: 'min-lines' }) minLines?: number;
 
   @state() private _search = '';
 
@@ -383,6 +386,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
         <div
           class="trigger field-control${this.multiple ? ' trigger-multiple' : ''} ${open ? 'open' : ''}"
           part="trigger"
+          style=${ifDefined(getMinLinesStyle(this.minLines))}
           @click=${this.#focusAndOpen}
         >
           <span class="leading" ?hidden=${!selectedIcon && !this.#dropdown.hasLeading}>

@@ -6,6 +6,7 @@ import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/f
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import {
   renderChevronDownIcon,
+  getMinLinesStyle,
   renderClearButton,
   renderOptionIcon,
   renderOverflowTile,
@@ -76,6 +77,8 @@ export class DsSelect extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) clearable = false;
   @property({ type: Array }) values: string[] = [];
   @property({ type: Number, attribute: 'max-lines' }) maxLines?: number;
+  /** Rows the `multiple` field holds from the start, counting the search row, so it does not grow as values are picked. */
+  @property({ type: Number, attribute: 'min-lines' }) minLines?: number;
 
   @query('.listbox') private _listboxEl?: HTMLElement;
   @query('.tiles') private _tilesEl?: HTMLElement;
@@ -303,6 +306,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
           id="trigger"
           class="trigger field-control${this.multiple ? ' trigger-multiple' : ''}"
           part="trigger"
+          style=${ifDefined(getMinLinesStyle(this.minLines))}
           tabindex="0"
           role="combobox"
           aria-haspopup="listbox"

@@ -28,6 +28,27 @@ describe('the max-lines attribute', () => {
   });
 });
 
+describe('the min-lines attribute', () => {
+  it('reserves the rows on the ds-select trigger', async () => {
+    const el = await mount<DsSelect>('<ds-select label="People" multiple min-lines="2"></ds-select>');
+    const trigger = el.shadowRoot!.querySelector<HTMLElement>('.trigger')!;
+    expect(trigger.style.getPropertyValue('--ds-select-min-lines')).toBe('2');
+  });
+
+  it('reserves the rows on the ds-searchable-select trigger too', async () => {
+    const el = await mount<DsSearchableSelect>(
+      '<ds-searchable-select label="People" multiple min-lines="3"></ds-searchable-select>',
+    );
+    const trigger = el.shadowRoot!.querySelector<HTMLElement>('.trigger')!;
+    expect(trigger.style.getPropertyValue('--ds-select-min-lines')).toBe('3');
+  });
+
+  it('leaves the trigger at its natural height when unset', async () => {
+    const el = await mount<DsSelect>('<ds-select label="People" multiple></ds-select>');
+    expect(el.shadowRoot!.querySelector('.trigger')!.hasAttribute('style')).toBe(false);
+  });
+});
+
 function tileList(offsets: number[], height = 0): HTMLElement {
   const host = document.createElement('div');
   for (const top of offsets) {
