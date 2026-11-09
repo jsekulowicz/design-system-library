@@ -4,14 +4,12 @@ import { css } from 'lit';
 export const optionRowStyles = css`
   .leading,
   .trailing {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
+    display: contents;
     color: var(--ds-color-fg-subtle, var(--ds-color-fg));
   }
-  .leading:empty,
-  .trailing:empty {
-    display: none;
+  ::slotted([slot='leading']),
+  ::slotted([slot='trailing']) {
+    flex-shrink: 0;
   }
   .content {
     display: flex;
