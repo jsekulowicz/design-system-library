@@ -17,9 +17,7 @@ export const cardStyles = css`
     border-radius: var(--ds-radius-xs);
     background: var(--ds-color-bg);
     color: var(--ds-color-fg);
-    transition:
-      border-color var(--ds-duration-normal) var(--ds-easing-standard),
-      transform var(--ds-duration-normal) var(--ds-easing-standard);
+    transition: border-color var(--ds-duration-normal) var(--ds-easing-standard);
   }
   :host([elevation='sm']) .card {
     box-shadow: var(--ds-shadow-sm);
@@ -32,9 +30,7 @@ export const cardStyles = css`
   }
   :host([interactive]) .card:hover {
     border-color: var(--ds-color-fg-subtle);
-    transform: translateY(-1px);
   }
-  /* Body absorbs slack so footers align across cards stretched to a common height. */
   .body {
     flex: 1;
   }
