@@ -1,5 +1,20 @@
 # @jsekulowicz/ds-components
 
+## 0.89.0
+
+### Minor Changes
+
+- d516265: `ds-button` takes `aria-pressed`, so a button can be a toggle. It lands on the internal `<button>`.
+- 342f7d5: `ds-select` and `ds-searchable-select` take `min-lines`: the rows a `multiple` field holds from the start, so it does not grow as values are picked. Rows now stay at the top of a field taller than its content.
+- 4b1672b: `ds-select` and `ds-searchable-select` take `--ds-select-tile-height`, so selected tiles can grow for slotted content taller than text. The trigger padding, the `max-lines` cap and the "+n" overflow count follow the new height.
+- c069953: `ds-share-bar` data take an optional `icon`, drawn on a square tile in its share's color and centered on the share, so it stays legible on a thin bar. The tile is the `segment-icon` part, sized by `--ds-share-bar-icon-size` and `--ds-share-bar-icon-tile-size`, rounded by `--ds-share-bar-icon-radius` and colored by `--ds-share-bar-icon-color`.
+
+### Patch Changes
+
+- cceb428: An open `ds-select` or `ds-searchable-select` claims Escape, so pressing it inside a `ds-dialog` closes only the list. A closed select still lets Escape close the dialog.
+- 853c3a5: `ds-select-option` and `ds-menu-item` no longer leave a gap for an empty `leading` or `trailing` slot, so rows without an icon line up with the field's own text.
+- 342f7d5: The clear button of a `multiple` select sits on the first row next to the caret, instead of wrapping onto a row of its own. The search input of `ds-searchable-select` keeps the same height with or without selected tiles.
+
 ## 0.88.0
 
 ### Minor Changes
