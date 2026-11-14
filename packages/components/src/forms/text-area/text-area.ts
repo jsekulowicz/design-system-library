@@ -31,6 +31,7 @@ export class DsTextArea extends FormControlMixin(DsElement) {
     delegatesFocus: false,
   };
 
+  readonly type = 'textarea';
   @property({ reflect: true }) size: TextAreaSize = 'md';
   @property({ reflect: true }) resize: TextAreaResize = 'none';
   @property() placeholder = '';

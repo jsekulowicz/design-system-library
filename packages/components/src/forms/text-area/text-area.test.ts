@@ -18,6 +18,26 @@ function textarea(el: DsTextArea): HTMLTextAreaElement {
 }
 
 describe('<ds-text-area>', () => {
+  it('reports the same type as a native textarea, which the form reads to let Enter add a line', async () => {
+    const el = await mount<DsTextArea>('<ds-text-area></ds-text-area>');
+
+    expect(el.type).toBe(document.createElement('textarea').type);
+  });
+
+  it('leaves Enter to add a line instead of submitting the surrounding form', async () => {
+    const form = await mount<HTMLFormElement>('<form><ds-text-area name="bio"></ds-text-area></form>');
+    let submitted = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitted = true;
+    });
+    const enter = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true, bubbles: true, composed: true });
+    textarea(form.querySelector('ds-text-area') as DsTextArea).dispatchEvent(enter);
+
+    expect(submitted).toBe(false);
+    expect(enter.defaultPrevented).toBe(false);
+  });
+
   it('reflects input and change value updates and emits events', async () => {
     const el = await mount<DsTextArea>('<ds-text-area name="bio"></ds-text-area>');
     const inputEvents: CustomEvent[] = [];
