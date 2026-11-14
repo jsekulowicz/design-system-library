@@ -180,16 +180,6 @@ export function renderSelectedTiles(options: TileListTemplateOptions): TemplateR
   </div>`;
 }
 
-export function renderClearButton(
-  onClear: (event: Event) => void,
-  onKeydown: (event: KeyboardEvent) => void,
-  clearLabel: string,
-): TemplateResult {
-  return html` <button class="clear-btn" type="button" aria-label=${clearLabel} @click=${onClear} @keydown=${onKeydown}>
-    <ds-icon name="x-mark" size="xl"></ds-icon>
-  </button>`;
-}
-
 export function renderChevronDownIcon(): TemplateResult {
   return html`<ds-icon class="caret" name="chevron-down" size="xl"></ds-icon>`;
 }

@@ -3,11 +3,11 @@ import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { clearButtonStyles, renderClearButton } from '../../shared/clear-button.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import {
   renderChevronDownIcon,
   getMinLinesStyle,
-  renderClearButton,
   renderOptionIcon,
   renderOverflowTile,
   renderSelectedTiles,
@@ -51,7 +51,14 @@ export interface SelectOption {
  * @slot overflow-tip - Content for the tooltip the "+n" tile shows on hover and holds open once tapped. Left empty, the tile shows no tooltip.
  */
 export class DsSelect extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, selectCommonStyles, selectStyles];
+  static override styles = [
+    ...DsElement.styles,
+    formFieldStyles,
+    fieldControlStyles,
+    clearButtonStyles,
+    selectCommonStyles,
+    selectStyles,
+  ];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: false,
@@ -340,12 +347,12 @@ export class DsSelect extends FormControlMixin(DsElement) {
           ${
             hasClearBtn
               ? renderClearButton(
+                  this.clearLabel,
                   (event: Event) => {
                     event.stopPropagation();
                     this.#clear();
                   },
                   this.#onClearKeydown,
-                  this.clearLabel,
                 )
               : nothing
           }

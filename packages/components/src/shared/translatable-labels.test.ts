@@ -11,7 +11,8 @@ import type { DsPieChart } from '../data-display/pie-chart/pie-chart.js';
 import type { DsSettingsPage } from '../patterns/settings-page/settings-page.js';
 import type { DsTableSortButton } from '../data-display/table/table-sort-button.js';
 import type { DsToast } from '../feedback/toast/toast.js';
-import { renderClearButton, renderOverflowTile, renderSelectedTiles } from '../forms/select/select.shared.js';
+import { renderOverflowTile, renderSelectedTiles } from '../forms/select/select.shared.js';
+import { renderClearButton } from './clear-button.js';
 import '../overlays/dialog/define.js';
 import '../overlays/drawer/define.js';
 import '../feedback/alert/define.js';
@@ -155,12 +156,7 @@ describe('every component names its own controls in the consumer language', () =
     const host = document.createElement('div');
     document.body.append(host);
     render(
-      html`${renderClearButton(
-        () => {},
-        () => {},
-        'Borrar selección',
-      )}
-      ${renderOverflowTile(2, '{count} más seleccionados')}
+      html`${renderClearButton('Borrar selección', () => {})} ${renderOverflowTile(2, '{count} más seleccionados')}
       ${renderSelectedTiles({
         values: ['a'],
         focusedTileIndex: -1,
@@ -171,7 +167,7 @@ describe('every component names its own controls in the consumer language', () =
       })}`,
       host,
     );
-    expect(host.querySelector('.clear-btn')?.getAttribute('aria-label')).toBe('Borrar selección');
+    expect(host.querySelector('.clear-btn')?.getAttribute('label')).toBe('Borrar selección');
     expect(host.querySelector('.tile-overflow')?.getAttribute('aria-label')).toBe('2 más seleccionados');
     expect(host.querySelector('.tile-remove')?.getAttribute('aria-label')).toBe('Quitar A');
   });

@@ -7,7 +7,7 @@ export const selectCommonStyles = css`
   :host {
     --ds-select-size: var(--ds-size-md);
     --ds-select-tile-height: ${TILE_HEIGHT}px;
-    --ds-select-clear-size: 1.5rem;
+    --ds-select-clear-size: var(--ds-space-5);
     display: inline-flex;
     flex-direction: column;
     gap: var(--ds-space-1);
@@ -169,8 +169,7 @@ export const selectCommonStyles = css`
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .tile-remove,
-  .clear-btn {
+  .tile-remove {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -181,8 +180,6 @@ export const selectCommonStyles = css`
     cursor: pointer;
     border-radius: var(--ds-radius-xs);
     flex-shrink: 0;
-  }
-  .tile-remove {
     width: 20px;
     height: 20px;
   }
@@ -198,16 +195,6 @@ export const selectCommonStyles = css`
   }
   .leading[hidden] {
     display: none;
-  }
-  .clear-btn {
-    width: var(--ds-select-clear-size);
-    height: var(--ds-select-clear-size);
-  }
-  .clear-btn:hover {
-    color: var(--ds-color-fg);
-  }
-  .clear-btn:focus-visible {
-    box-shadow: var(--ds-shadow-focus);
   }
   .caret {
     color: var(--ds-color-fg-muted);

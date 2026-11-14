@@ -22,6 +22,7 @@ const stories = [
   'forms-select--multiple',
   'forms-searchableselect--multiple-countries',
   'forms-textfield--with-description',
+  'forms-textfield--clearable',
   'data-display-card--playground',
   'forms-colorpicker--playground',
   'feedback-alert--tones',

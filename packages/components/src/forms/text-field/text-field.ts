@@ -1,4 +1,4 @@
-import { html, LitElement, type TemplateResult, type PropertyValues } from 'lit';
+import { html, LitElement, nothing, type TemplateResult, type PropertyValues } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
@@ -10,6 +10,7 @@ import {
   renderFieldFooter,
   renderFieldHeader,
 } from '../../shared/form-field.js';
+import { clearButtonStyles, renderClearButton } from '../../shared/clear-button.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { SlotPresenceController } from '../../shared/slot-presence.js';
 import { textFieldStyles } from './text-field.styles.js';
@@ -34,7 +35,13 @@ export type TextFieldSize = 'sm' | 'md' | 'lg';
  * @csspart input - The inner input element.
  */
 export class DsTextField extends FormControlMixin(DsElement) {
-  static override styles = [...DsElement.styles, formFieldStyles, fieldControlStyles, textFieldStyles];
+  static override styles = [
+    ...DsElement.styles,
+    formFieldStyles,
+    fieldControlStyles,
+    clearButtonStyles,
+    textFieldStyles,
+  ];
   static override shadowRootOptions: ShadowRootInit = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: false,
@@ -58,6 +65,8 @@ export class DsTextField extends FormControlMixin(DsElement) {
   @property({ type: Boolean, reflect: true }) invalid = false;
   @property({ type: Boolean, reflect: true }) optional = false;
   @property({ type: Boolean, attribute: 'message-space', reflect: true }) messageSpace = false;
+  @property({ type: Boolean, reflect: true }) clearable = false;
+  @property({ attribute: 'clear-label' }) clearLabel = 'Clear';
 
   readonly #slots = new SlotPresenceController(this, ['leading', 'trailing']);
 
@@ -95,6 +104,20 @@ export class DsTextField extends FormControlMixin(DsElement) {
     this.syncValidity();
     this.emit<ValueChangeDetail>('ds-change', { detail: { value: target.value } });
   };
+
+  #clear = (): void => {
+    this._input.value = '';
+    this._input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    this._input.dispatchEvent(new Event('change', { bubbles: true }));
+    this.focus();
+  };
+
+  #renderClearButton(current: string): TemplateResult | typeof nothing {
+    if (!this.clearable || current === '' || this.disabled || this.readonly) {
+      return nothing;
+    }
+    return renderClearButton(this.clearLabel, this.#clear);
+  }
 
   override syncValidity(): void {
     if (!this._input) {
@@ -164,6 +187,7 @@ export class DsTextField extends FormControlMixin(DsElement) {
           @focus=${this.#onFocus}
           @blur=${this.#onBlur}
         />
+        ${this.#renderClearButton(current)}
         <span class="adornment" ?hidden=${!this.#slots.has('trailing')}>
           <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
         </span>

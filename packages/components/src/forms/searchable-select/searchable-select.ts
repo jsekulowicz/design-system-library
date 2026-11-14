@@ -4,12 +4,12 @@ import { live } from 'lit/directives/live.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { clearButtonStyles, renderClearButton } from '../../shared/clear-button.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
 import {
   renderChevronDownIcon,
   getMinLinesStyle,
-  renderClearButton,
   renderOptionIcon,
   renderOverflowTile,
   renderSelectedTiles,
@@ -50,6 +50,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     ...DsElement.styles,
     formFieldStyles,
     fieldControlStyles,
+    clearButtonStyles,
     selectCommonStyles,
     spinnerStyles,
     searchableSelectStyles,
@@ -423,12 +424,12 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
           ${
             hasClearBtn
               ? renderClearButton(
+                  this.clearLabel,
                   (event: Event) => {
                     event.stopPropagation();
                     this.#clear();
                   },
                   this.#onClearKeydown,
-                  this.clearLabel,
                 )
               : nothing
           }

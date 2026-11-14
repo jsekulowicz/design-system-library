@@ -167,6 +167,7 @@ Reach for `packages/components/src/shared/` before writing a second copy:
 | `roving-focus.ts`           | arrow/Home/End index resolution for roving-tabindex widgets           |
 | `scroll-fade-controller.ts` | scroll-driven edge fades                                              |
 | `form-field.ts`             | label/description/error rendering for form controls                   |
+| `clear-button.ts`           | the button that empties a clearable field or select                   |
 | `chart-a11y.ts`             | chart keyboard and screen-reader affordances                          |
 
 Deliberate exceptions, so nobody "fixes" them into the shared helper:

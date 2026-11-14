@@ -22,6 +22,7 @@ const meta: Meta = {
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
     messageSpace: { control: 'boolean' },
+    clearable: { control: 'boolean' },
   },
   args: {
     type: 'text',
@@ -36,6 +37,7 @@ const meta: Meta = {
     required: false,
     invalid: false,
     messageSpace: false,
+    clearable: false,
   },
 };
 
@@ -57,6 +59,7 @@ export const Playground: Story = {
       ?required=${args['required']}
       ?invalid=${args['invalid']}
       ?message-space=${args['messageSpace']}
+      ?clearable=${args['clearable']}
     ></ds-text-field>
   `,
 };
@@ -83,6 +86,19 @@ export const WithIcons: Story = {
       <ds-icon slot="leading" name="home"></ds-icon>
       <ds-icon slot="trailing" name="clock"></ds-icon>
     </ds-text-field>
+  `,
+};
+
+export const Clearable: Story = {
+  render: () => html`
+    <ds-text-field
+      type="search"
+      size="sm"
+      input-label="Search"
+      placeholder="Search..."
+      .value=${'Northern lights'}
+      clearable
+    ></ds-text-field>
   `,
 };
 

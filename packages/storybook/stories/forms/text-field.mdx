@@ -34,6 +34,7 @@ A native `<input>` in shadow DOM. Label, description, and error are part of the 
       <ul>
         <li>Pick the most specific <code>type</code> - it enables native keyboards on mobile and built-in validation.</li>
         <li>Use <code>description</code> for context that's useful before typing; <code>error</code> for messages that appear after.</li>
+        <li>Set <code>clearable</code> on search and filter fields, so the value can be emptied in one click. Give <code>clear-label</code> in the reader's language.</li>
         <li>Prefer a default <code>required</code> indication on the label over inline asterisks in copy.</li>
       </ul>
       <h3>Don't</h3>
@@ -47,6 +48,7 @@ A native `<input>` in shadow DOM. Label, description, and error are part of the 
         <li>Label, description, and error are wired via <code>aria-labelledby</code> / <code>aria-describedby</code>.</li>
         <li><code>required</code> and <code>invalid</code> reflect to ARIA on the underlying input.</li>
         <li>Focus ring uses <code>:focus-visible</code>; never suppressed.</li>
+        <li>The clear button is named by <code>clear-label</code> and returns focus to the input once the field is empty.</li>
       </ul>
     </ds-tab-panel>
 

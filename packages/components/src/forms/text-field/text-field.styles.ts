@@ -52,4 +52,7 @@ export const textFieldStyles = css`
   .adornment[hidden] {
     display: none;
   }
+  :host([clearable]) input::-webkit-search-cancel-button {
+    appearance: none;
+  }
 `;

@@ -249,4 +249,57 @@ describe('<ds-text-field>', () => {
     );
     expect(submitted).toBe(false);
   });
+
+  describe('when clearable', () => {
+    it('shows no clear button while the field is empty', async () => {
+      const el = await mount<DsTextField>('<ds-text-field clearable></ds-text-field>');
+
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
+
+    it('empties the field, reports it as input and change, and focuses the input', async () => {
+      const el = await mount<DsTextField>('<ds-text-field clearable clear-label="Borrar"></ds-text-field>');
+      el.value = 'query';
+      await el.updateComplete;
+      const hostInputs: Event[] = [];
+      const dsEvents: string[] = [];
+      el.addEventListener('input', (event) => hostInputs.push(event));
+      el.addEventListener('ds-input', (event) => dsEvents.push(`input:${(event as CustomEvent).detail.value}`));
+      el.addEventListener('ds-change', (event) => dsEvents.push(`change:${(event as CustomEvent).detail.value}`));
+
+      const button = el.shadowRoot!.querySelector('.clear-btn') as HTMLElement;
+      expect(button.getAttribute('label')).toBe('Borrar');
+      button.click();
+      await el.updateComplete;
+
+      expect(el.value).toBe('');
+      expect(hostInputs).toHaveLength(1);
+      expect(dsEvents).toEqual(['input:', 'change:']);
+      expect(el.shadowRoot!.activeElement).toBe(el.shadowRoot!.querySelector('input'));
+      expect(el.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
+
+    it('draws its x-mark icon without relying on another component to register it', async () => {
+      const el = await mount<DsTextField>('<ds-text-field clearable></ds-text-field>');
+      el.value = 'query';
+      await el.updateComplete;
+      const icon = el.shadowRoot!.querySelector('.clear-btn ds-icon') as HTMLElement & {
+        updateComplete: Promise<boolean>;
+      };
+      await icon.updateComplete;
+
+      expect(icon.shadowRoot!.querySelector('svg')).not.toBeNull();
+    });
+
+    it('offers no clear button on a read-only or disabled field', async () => {
+      const readonly = await mount<DsTextField>('<ds-text-field clearable readonly></ds-text-field>');
+      const disabled = await mount<DsTextField>('<ds-text-field clearable disabled></ds-text-field>');
+      readonly.value = 'kept';
+      disabled.value = 'kept';
+      await Promise.all([readonly.updateComplete, disabled.updateComplete]);
+
+      expect(readonly.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+      expect(disabled.shadowRoot!.querySelector('.clear-btn')).toBeNull();
+    });
+  });
 });

@@ -470,7 +470,7 @@
         "dist/forms/text-field/index.js",
         "dist/forms/text-field/define.js"
       ],
-      "limit": "22 kB"
+      "limit": "27 kB"
     }
   ],
   "dependencies": {
