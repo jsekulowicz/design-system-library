@@ -1,5 +1,19 @@
 # @jsekulowicz/ds-components
 
+## 0.90.0
+
+### Minor Changes
+
+- 5cad979: `ds-button` takes `size="xs"`, a 20px button for compact controls such as the clear button inside a field.
+- a437f23: An interactive `ds-card` no longer moves up on hover. Its border still turns stronger, so the content under the pointer stays where it is.
+- df27374: `ds-heatmap-calendar` days take optional `details`, label and value pairs that break a day's value down. They list under the value in the tooltip, follow it in the cell's accessible name and get a column each in the hidden data table. The tooltip now shows the date first, above the value.
+- a48574f: `ds-text-field` takes `clearable`: while the field holds a value, a button empties it, fires `input`, `ds-input` and `ds-change`, and returns focus to the input. `clear-label` names the button. The clear buttons of `ds-text-field`, `ds-select` and `ds-searchable-select` are now one ghost `ds-button` of the new `xs` size, so they share its hover and focus styles.
+
+### Patch Changes
+
+- 4e4d370: `ds-card` documents its `actions` slot, and the `footer` slot no longer claims to hold actions.
+- 8696417: `ds-text-area` inside a form adds a new line on Enter instead of submitting the form.
+
 ## 0.89.0
 
 ### Minor Changes
