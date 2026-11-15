@@ -16,7 +16,7 @@ const meta: Meta = {
       control: { type: 'inline-radio' },
       options: ['accent', 'success', 'danger'],
     },
-    size: { control: { type: 'inline-radio' }, options: ['sm', 'md', 'lg'] },
+    size: { control: { type: 'inline-radio' }, options: ['xs', 'sm', 'md', 'lg'] },
     type: {
       control: { type: 'inline-radio' },
       options: ['button', 'submit', 'reset'],
@@ -115,6 +115,7 @@ export const Toggle: Story = {
 export const Sizes: Story = {
   render: () => html`
     <div style="display:flex;gap:var(--ds-space-3);align-items:center">
+      <ds-button size="xs">Extra small</ds-button>
       <ds-button size="sm">Small</ds-button>
       <ds-button size="md">Medium</ds-button>
       <ds-button size="lg">Large</ds-button>

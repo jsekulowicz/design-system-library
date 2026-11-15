@@ -142,6 +142,11 @@ export const buttonStyles = css`
     min-width: var(--ds-button-size);
     padding: 0;
   }
+  :host([size='xs']) .btn {
+    --ds-button-size: var(--ds-space-5);
+    --ds-button-min-width: 3.5rem;
+    font-size: var(--ds-font-size-body-md);
+  }
   :host([size='sm']) .btn {
     --ds-button-size: var(--ds-size-sm);
     --ds-button-min-width: 4rem;

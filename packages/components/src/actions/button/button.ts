@@ -10,7 +10,7 @@ import type { ClickDetail } from '../../events.js';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type ButtonColor = 'accent' | 'success' | 'danger';
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 /**
