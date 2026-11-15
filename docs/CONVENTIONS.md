@@ -155,6 +155,37 @@ at a glance - an account, a checkout, a team, a project, a file, a plan.
 The same goes for a fix prompted by one product: describe the component behavior, not the screen
 in that product where it showed up.
 
+## Code in the docs
+
+Code on a docs page is code a consumer writes in a real app:
+
+- Bind values the way an app's template does: `.data=${days}` in a Lit `html` template, never an
+  assignment such as `calendar.data = [...]` to an element nobody declared. The one exception is
+  the plain HTML and JavaScript section of the framework usage page, which declares the element
+  with `document.querySelector` first, because that is how a page without a framework sets
+  properties.
+- The "Show code" panel of a story is complete: the imports, the types, the data and the formatter
+  functions it uses are all declared, so it compiles when pasted. Show a few literal entries rather
+  than the generator the story renders from, so the reader sees the exact shape of the data.
+- Every story that binds a property, an object or a function sets `parameters.docs.source.code`.
+  Storybook builds its own "Show code" from the rendered markup, which drops every `.prop=${...}`
+  binding, so two stories that differ only in their data or formatters look identical there.
+- Keep that code in step with its story: a formatter the story passes appears in the code, and the
+  code shows nothing the story does not do.
+- A snippet in the prose may be a fragment of an app's template that shows one feature. It still
+  binds the way that template would.
+- No comments in samples. The prose around them explains them.
+
+```ts
+// no
+calendar.data = [{ date: '2026-07-13', value: 4 }];
+
+// yes
+const days: HeatmapDay[] = [{ date: '2026-07-13', value: 4 }];
+
+html`<ds-heatmap-calendar .data=${days} end-date="2026-07-13"></ds-heatmap-calendar>`;
+```
+
 ## Shared code
 
 Reach for `packages/components/src/shared/` before writing a second copy:

@@ -217,8 +217,22 @@ export const Basic: Story = {
       source: {
         language: 'ts',
         code: `\
+import { html } from 'lit';
 import type { TableColumn } from '@jsekulowicz/ds-components/table';
 import '@jsekulowicz/ds-components/table/define';
+
+type Person = {
+  name: string;
+  role: string;
+  status: 'active' | 'pending' | 'disabled';
+  joined: string;
+  salary: number;
+};
+
+const people: Person[] = [
+  { name: 'Ada Lovelace', role: 'Engineer', status: 'active', joined: '2021-03-12', salary: 120000 },
+  { name: 'Grace Hopper', role: 'Architect', status: 'pending', joined: '2023-11-15', salary: 140000 },
+];
 
 const columns: TableColumn<Person>[] = [
   { name: 'name',   field: 'name',   label: 'Name' },
@@ -227,10 +241,7 @@ const columns: TableColumn<Person>[] = [
   { name: 'joined', field: 'joined', label: 'Joined' },
 ];
 
-// rows and columns must be set as JS properties, not HTML attributes
-const table = document.querySelector('ds-table');
-table.columns = columns;
-table.rows = rows;`,
+html\`<ds-table .rows=\${people} .columns=\${columns}></ds-table>\`;`,
       },
     },
   },
@@ -263,6 +274,19 @@ import type { TableColumn } from '@jsekulowicz/ds-components/table';
 import '@jsekulowicz/ds-components/table/define';
 import '@jsekulowicz/ds-components/badge/define';
 
+type Person = {
+  name: string;
+  role: string;
+  status: 'active' | 'pending' | 'disabled';
+  joined: string;
+  salary: number;
+};
+
+const people: Person[] = [
+  { name: 'Ada Lovelace', role: 'Engineer', status: 'active', joined: '2021-03-12', salary: 120000 },
+  { name: 'Grace Hopper', role: 'Architect', status: 'pending', joined: '2023-11-15', salary: 140000 },
+];
+
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const statusTone = { active: 'success', pending: 'warning', disabled: 'neutral' } as const;
 
@@ -280,10 +304,7 @@ const columns: TableColumn<Person>[] = [
   },
 ];
 
-// rows and columns must be set as JS properties, not HTML attributes
-const table = document.querySelector('ds-table');
-table.columns = columns;
-table.rows = rows;`,
+html\`<ds-table .rows=\${people} .columns=\${columns}></ds-table>\`;`,
       },
     },
   },
