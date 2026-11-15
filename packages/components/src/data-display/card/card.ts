@@ -13,7 +13,8 @@ export type CardOrientation = 'vertical' | 'horizontal';
  * @slot eyebrow - Short classifier above the title.
  * @slot title - Heading content.
  * @slot default - Body content.
- * @slot footer - Footer content (actions, meta).
+ * @slot actions - Buttons or links for the card, aligned to the end below the tablet breakpoint.
+ * @slot footer - Closing content below the actions, such as meta information.
  * @csspart card - The outer container element.
  * @csspart body - The body wrapper that holds the default slot.
  */

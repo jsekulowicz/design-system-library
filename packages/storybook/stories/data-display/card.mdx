@@ -44,9 +44,7 @@ Slots for `eyebrow`, `title`, default body, `actions` and `footer`. `elevation` 
       </ul>
       <h3>Accessibility</h3>
       <ul>
-        <li>Interactive cards render as a focusable element with <code>role="button"</code> (or <code>link</code> when <code>href</code> is set).</li>
-        <li><code>Enter</code> and <code>Space</code> activate the card; focus ring uses <code>:focus-visible</code>.</li>
-        <li>When nested controls exist, clicks on them stop propagation so only one action fires.</li>
+        <li><code>interactive</code> changes only the look: the card itself takes no focus, role or key handling. Place the link or button that performs the card's action first in the card and name it after the title, so keyboard and screen reader users reach the card before any control inside it.</li>
       </ul>
     </ds-tab-panel>
 
