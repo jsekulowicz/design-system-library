@@ -27,7 +27,6 @@ export const navControlStyles = css`
     cursor: pointer;
     transition:
       background var(--ds-duration-fast) var(--ds-easing-standard),
-      color var(--ds-duration-fast) var(--ds-easing-standard),
       padding var(--ds-duration-slow) var(--ds-easing-standard);
   }
   .nav-control:hover:not(:disabled):not([aria-disabled='true']) {

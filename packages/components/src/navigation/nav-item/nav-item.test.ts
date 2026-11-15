@@ -40,6 +40,17 @@ describe('<ds-nav-item>', () => {
     expect(link.getAttribute('aria-current')).toBeNull();
   });
 
+  it('switches its text color at once, in the same frame as a slotted icon swapped for the current page', () => {
+    const css = DsNavItem.styles
+      .flat()
+      .map((style) => ('cssText' in style ? style.cssText : ''))
+      .join('\n');
+    const transition = /\.nav-control\s*{[^}]*transition:([^;]*);/s.exec(css)?.[1] ?? '';
+
+    expect(transition).toContain('background');
+    expect(transition).not.toMatch(/\bcolor\b/);
+  });
+
   it('reflects current attribute on the host', async () => {
     const el = await mount<DsNavItem>('<ds-nav-item href="/" current>Home</ds-nav-item>');
     expect(el.hasAttribute('current')).toBe(true);
