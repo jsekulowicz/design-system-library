@@ -33,7 +33,7 @@ export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapL
   const cell = activeCell(ctx, layout);
   return renderPointTooltipBubble({
     area: cell && cell.row < 2 ? 'bottom' : 'top',
-    open: Boolean(cell),
+    open: Boolean(cell) && ctx.tooltipShown,
     content: html`
       ${
         cell

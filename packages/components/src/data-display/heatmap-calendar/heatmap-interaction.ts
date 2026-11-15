@@ -1,11 +1,8 @@
-export type HeatmapKeyAction = { index: number } | { clear: true } | null;
+export type HeatmapKeyAction = { index: number } | null;
 
-export function actionForKey(key: string, activeIndex: number | null, count: number): HeatmapKeyAction {
+export function actionForKey(key: string, focusedIndex: number | null, count: number): HeatmapKeyAction {
   if (count === 0) {
     return null;
-  }
-  if (key === 'Escape') {
-    return { clear: true };
   }
   if (key === 'Home' || key === 'End') {
     return { index: key === 'Home' ? 0 : count - 1 };
@@ -20,6 +17,6 @@ export function actionForKey(key: string, activeIndex: number | null, count: num
   if (delta == null) {
     return null;
   }
-  const current = activeIndex ?? 0;
+  const current = focusedIndex ?? 0;
   return { index: Math.min(count - 1, Math.max(0, current + delta)) };
 }

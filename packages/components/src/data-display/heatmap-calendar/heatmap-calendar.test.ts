@@ -116,22 +116,19 @@ describe('<ds-heatmap-calendar>', () => {
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await element.updateComplete;
 
-    expect((element as unknown as { _activeIndex: number })._activeIndex).toBe(8);
+    expect(element.shadowRoot!.querySelector('.cell.active')?.getAttribute('data-index')).toBe('8');
     expect(events.at(-1)?.detail).toEqual(
       expect.objectContaining({ value: expect.any(Number), level: expect.any(Number) }),
     );
   });
 
-  it('jumps to the end, shows a tooltip, and clears it with Escape', async () => {
+  it('jumps to the end and shows that day in the tooltip', async () => {
     const element = await mountCalendar();
     const frame = element.shadowRoot!.querySelector('.frame')!;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
     await element.updateComplete;
+
     expect(element.shadowRoot!.querySelector('.point-tooltip')?.hasAttribute('data-open')).toBe(true);
     expect(element.shadowRoot!.querySelector('.point-tooltip')?.textContent).toContain('4');
-
-    frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
-    await element.updateComplete;
-    expect(element.shadowRoot!.querySelector('.point-tooltip')?.hasAttribute('data-open')).toBe(false);
   });
 });

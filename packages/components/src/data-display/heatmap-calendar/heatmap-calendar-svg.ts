@@ -56,7 +56,7 @@ export function renderHeatmapSvg(ctx: HeatmapRenderContext, layout: HeatmapLayou
             class="cell level-${cell.level} ${ctx.activeIndex === index ? 'active' : ''}"
             data-index=${index}
             role="graphics-symbol"
-            tabindex=${rovingTabIndex(index, ctx.activeIndex)}
+            tabindex=${rovingTabIndex(index, ctx.tabbableIndex)}
             aria-label=${cellAriaLabel(ctx, cell)}
             x=${HEATMAP_LEFT + cell.column * step}
             y=${HEATMAP_TOP + cell.row * step}

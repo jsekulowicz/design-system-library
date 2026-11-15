@@ -40,7 +40,8 @@ export interface HeatmapRenderContext {
   cellGap: number;
   measuredWidth: number;
   activeIndex: number | null;
-  focusMode: 'keyboard' | 'pointer' | null;
+  tabbableIndex: number | null;
+  tooltipShown: boolean;
   formatValue(value: number): string;
   formatDate(date: string): string;
   formatMonth(date: string): string;

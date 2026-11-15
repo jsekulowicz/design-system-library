@@ -2,6 +2,8 @@ import { css } from 'lit';
 
 export const heatmapCalendarStyles = css`
   :host {
+    --ds-point-tooltip-max-width: 18rem;
+    --heatmap-active-stroke-width: 2px;
     display: block;
     position: relative;
     width: 100%;
@@ -19,12 +21,7 @@ export const heatmapCalendarStyles = css`
     flex-direction: column;
     gap: var(--ds-space-2);
     padding: var(--ds-space-2);
-    outline: none;
     border-radius: var(--ds-radius-xs);
-  }
-
-  .frame:focus-visible {
-    box-shadow: var(--ds-shadow-focus);
   }
 
   .loading-frame {
@@ -34,6 +31,8 @@ export const heatmapCalendarStyles = css`
   .scroller {
     width: 100%;
     overflow-x: auto;
+    padding-inline-end: calc(var(--heatmap-active-stroke-width) / 2);
+    padding-block-end: calc(var(--heatmap-active-stroke-width) / 2);
   }
 
   .canvas {
@@ -53,51 +52,51 @@ export const heatmapCalendarStyles = css`
   }
 
   .cell {
-    rx: var(--ds-radius-xs);
+    rx: var(--ds-heatmap-cell-radius, var(--ds-radius-xs));
     stroke: transparent;
     stroke-width: 1;
+    outline: none;
   }
 
   .cell.level-0 {
     stroke: var(--ds-color-border-subtle);
   }
 
-  .cell.active {
+  .cell:is(.active, :focus) {
     stroke: var(--ds-color-accent);
-    stroke-width: 2;
+    stroke-width: var(--heatmap-active-stroke-width);
   }
 
   .point-tooltip {
-    text-align: center;
+    text-align: start;
   }
 
   .tooltip-date {
-    font-size: var(--ds-font-size-body-sm);
+    font-size: var(--ds-font-size-body-md);
   }
 
   .tooltip-title {
     margin-top: 2px;
+    font-size: var(--ds-font-size-body-lg);
     font-weight: var(--ds-font-weight-medium);
   }
 
   .tooltip-details {
     display: grid;
     grid-template-columns: auto auto;
-    justify-content: center;
+    justify-content: start;
     gap: 2px var(--ds-space-3);
     margin: var(--ds-space-2) 0 0;
-    font-size: var(--ds-font-size-body-sm);
+    font-size: var(--ds-font-size-body-md);
   }
 
   .tooltip-details dt {
     color: var(--ds-color-fg-muted);
-    text-align: start;
   }
 
   .tooltip-details dd {
     margin: 0;
     font-variant-numeric: tabular-nums;
-    text-align: end;
   }
 
   .legend {
@@ -113,7 +112,7 @@ export const heatmapCalendarStyles = css`
     width: 0.75rem;
     height: 0.75rem;
     border: 1px solid transparent;
-    border-radius: var(--ds-radius-xs);
+    border-radius: var(--ds-heatmap-cell-radius, var(--ds-radius-xs));
     background: var(--ds-color-bg-muted);
   }
 

@@ -9,10 +9,10 @@ describe('actionForKey', () => {
     expect(actionForKey('ArrowLeft', 4, 20)).toEqual({ index: 0 });
   });
 
-  it('supports boundary jumps and clearing', () => {
+  it('jumps to either end and leaves Escape and Tab to the page', () => {
     expect(actionForKey('Home', 5, 20)).toEqual({ index: 0 });
     expect(actionForKey('End', 5, 20)).toEqual({ index: 19 });
-    expect(actionForKey('Escape', 5, 20)).toEqual({ clear: true });
+    expect(actionForKey('Escape', 5, 20)).toBeNull();
     expect(actionForKey('Tab', 5, 20)).toBeNull();
   });
 });
