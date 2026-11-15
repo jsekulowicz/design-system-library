@@ -23,6 +23,8 @@ The calendar combines month and weekday labels, one focusable cell per date, and
 ></ds-heatmap-calendar>
 ```
 
+The tooltip shows the date, then the formatted value. A day can also carry `details`, label and value pairs that break its value down; they list under the value in the tooltip, follow it in the cell's accessible name and get a column each in the hidden data table. The Day details example shows the data that produces them.
+
 <ds-tabs value="api">
   <ds-tab slot="tab" value="api">API</ds-tab>
   <ds-tab slot="tab" value="examples">Examples</ds-tab>
@@ -47,6 +49,7 @@ The calendar combines month and weekday labels, one focusable cell per date, and
       <li><kbd>Home</kbd> / <kbd>End</kbd> jump to the first / last visible date; <kbd>Esc</kbd> clears the active date.</li>
       <li>A hidden table sits outside the graphic and exposes every visible date and value independently of color, with real table semantics.</li>
       <li>Use <code>formatValue</code> to include the unit in tooltips and screen-reader output.</li>
+      <li>Day <code>details</code> are read after the value and fill one table column per label, so give every day the same labels.</li>
     </ul>
   </ds-tab-panel>
 </ds-tabs>

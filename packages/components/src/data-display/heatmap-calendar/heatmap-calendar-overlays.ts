@@ -1,4 +1,4 @@
-import { html, type TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { HEATMAP_LEFT, HEATMAP_TOP } from './heatmap-calendar-svg.js';
 import { cellAriaLabel } from './heatmap-formatters.js';
 import type { HeatmapCell, HeatmapLayout, HeatmapRenderContext } from './types.js';
@@ -38,13 +38,37 @@ export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapL
       ${
         cell
           ? html`
-              <div class="tooltip-title">${ctx.formatValue(cell.value)}</div>
               <div class="tooltip-date">${ctx.formatDate(cell.date)}</div>
+              <div class="tooltip-title">${ctx.formatValue(cell.value)}</div>
+              ${renderTooltipDetails(cell)}
             `
           : ''
       }
     `,
   });
+}
+
+function renderTooltipDetails(cell: HeatmapCell): TemplateResult | typeof nothing {
+  if (!cell.details?.length) {
+    return nothing;
+  }
+  return html`
+    <dl class="tooltip-details">
+      ${cell.details.map(
+        (detail) =>
+          html`<dt>${detail.label}</dt>
+            <dd>${detail.value}</dd>`,
+      )}
+    </dl>
+  `;
+}
+
+function listDetailLabels(layout: HeatmapLayout): string[] {
+  return [...new Set(layout.cells.flatMap((cell) => (cell.details ?? []).map((detail) => detail.label)))];
+}
+
+function findDetailValue(cell: HeatmapCell, label: string): string {
+  return cell.details?.find((detail) => detail.label === label)?.value ?? '';
 }
 
 export function renderHeatmapLegend(ctx: HeatmapRenderContext): TemplateResult {
@@ -60,6 +84,7 @@ export function renderHeatmapLegend(ctx: HeatmapRenderContext): TemplateResult {
 }
 
 export function renderHeatmapSrTable(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
+  const detailLabels = listDetailLabels(layout);
   return html`
     <div class="visually-hidden" id="${ctx.uid}-desc">
       <table>
@@ -70,6 +95,7 @@ export function renderHeatmapSrTable(ctx: HeatmapRenderContext, layout: HeatmapL
           <tr>
             <th scope="col">${ctx.dateHeader}</th>
             <th scope="col">${ctx.valueHeader}</th>
+            ${detailLabels.map((label) => html`<th scope="col">${label}</th>`)}
           </tr>
         </thead>
         <tbody>
@@ -78,6 +104,7 @@ export function renderHeatmapSrTable(ctx: HeatmapRenderContext, layout: HeatmapL
               <tr>
                 <th scope="row">${ctx.formatDate(cell.date)}</th>
                 <td>${ctx.formatValue(cell.value)}</td>
+                ${detailLabels.map((label) => html`<td>${findDetailValue(cell, label)}</td>`)}
               </tr>
             `,
           )}

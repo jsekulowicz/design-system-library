@@ -1,6 +1,12 @@
+export interface HeatmapDayDetail {
+  label: string;
+  value: string;
+}
+
 export interface HeatmapDay {
   date: string;
   value: number;
+  details?: readonly HeatmapDayDetail[];
 }
 
 export type HeatmapFocusDetail = HeatmapDay & {

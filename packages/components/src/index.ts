@@ -20,6 +20,7 @@ export { DsDivider, type DividerOrientation } from './data-display/divider/index
 export {
   DsHeatmapCalendar,
   type HeatmapDay,
+  type HeatmapDayDetail,
   type HeatmapFocusDetail,
   type HeatmapWeekStart,
   type HeatmapCell,

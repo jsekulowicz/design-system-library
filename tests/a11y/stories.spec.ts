@@ -30,6 +30,7 @@ const stories = [
   'data-display-piechart--donut',
   'data-display-barchart--grouped',
   'data-display-heatmapcalendar--activity',
+  'data-display-heatmapcalendar--day-details',
   'forms-form--account-details',
   'navigation-sidenav--collapse-toggle',
   'foundations-spacing--scale',

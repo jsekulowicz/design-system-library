@@ -1,6 +1,7 @@
 export { DsHeatmapCalendar } from './heatmap-calendar.js';
 export type {
   HeatmapDay,
+  HeatmapDayDetail,
   HeatmapFocusDetail,
   HeatmapWeekStart,
   HeatmapCell,

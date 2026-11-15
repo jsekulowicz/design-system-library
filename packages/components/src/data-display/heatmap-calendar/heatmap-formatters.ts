@@ -32,5 +32,6 @@ export function weekdayLabels(locale: string | undefined, weekStart: HeatmapWeek
 }
 
 export function cellAriaLabel(ctx: HeatmapRenderContext, cell: HeatmapCell): string {
-  return `${ctx.formatDate(cell.date)}: ${ctx.formatValue(cell.value)}`;
+  const details = (cell.details ?? []).map((detail) => `, ${detail.label}: ${detail.value}`).join('');
+  return `${ctx.formatDate(cell.date)}: ${ctx.formatValue(cell.value)}${details}`;
 }

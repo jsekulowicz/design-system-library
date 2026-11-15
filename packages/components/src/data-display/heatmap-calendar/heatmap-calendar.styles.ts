@@ -71,14 +71,33 @@ export const heatmapCalendarStyles = css`
     text-align: center;
   }
 
+  .tooltip-date {
+    font-size: var(--ds-font-size-body-sm);
+  }
+
   .tooltip-title {
+    margin-top: 2px;
     font-weight: var(--ds-font-weight-medium);
   }
 
-  .tooltip-date {
-    margin-top: 2px;
-    color: inherit;
+  .tooltip-details {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 2px var(--ds-space-3);
+    margin: var(--ds-space-2) 0 0;
     font-size: var(--ds-font-size-body-sm);
+  }
+
+  .tooltip-details dt {
+    color: var(--ds-color-fg-muted);
+    text-align: start;
+  }
+
+  .tooltip-details dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+    text-align: end;
   }
 
   .legend {

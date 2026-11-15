@@ -101,7 +101,7 @@ export function computeHeatmapLayout(
   if (!end) {
     return { cells: [], monthLabels: [], maxValue: 0, weekCount: 0 };
   }
-  const values = new Map(data.map((day) => [day.date, Math.max(0, day.value)]));
+  const days = new Map(data.map((day) => [day.date, day]));
   const endOrdinal = daysFromCivil(end);
   const windowStart = startOrdinal(end, months);
   const gridStart = windowStart - weekRow(windowStart, weekStart);
@@ -109,13 +109,15 @@ export function computeHeatmapLayout(
   const cells: HeatmapCell[] = [];
   for (let ordinal = gridStart; ordinal <= endOrdinal; ordinal += 1) {
     const date = formatCivil(civilFromDays(ordinal));
-    const value = values.get(date) ?? 0;
+    const day = days.get(date);
+    const value = Math.max(0, day?.value ?? 0);
     cells.push({
       date,
       value,
       level: levelForValue(value, maxValue),
       column: Math.floor((ordinal - gridStart) / 7),
       row: weekRow(ordinal, weekStart),
+      ...(day?.details?.length ? { details: day.details } : {}),
     });
   }
   return {
