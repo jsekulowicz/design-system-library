@@ -6,7 +6,7 @@ import { renderPointAnchor, renderPointTooltipBubble } from '../../shared/point-
 import { formatLabel } from '../../shared/format-label.js';
 
 function activeCell(ctx: HeatmapRenderContext, layout: HeatmapLayout): HeatmapCell | undefined {
-  return ctx.activeIndex == null ? undefined : layout.cells[ctx.activeIndex];
+  return ctx.activeIndex === null ? undefined : layout.cells[ctx.activeIndex];
 }
 
 export function heatmapAriaLabel(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {

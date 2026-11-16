@@ -41,7 +41,7 @@ export default [
     rules: {
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       curly: ['error', 'all'],
-      eqeqeq: ['error', 'always', { null: 'ignore' }],
+      eqeqeq: ['error', 'always'],
       'prefer-const': 'error',
       'no-else-return': ['error', { allowElseIf: false }],
       '@typescript-eslint/no-unused-vars': 'off',

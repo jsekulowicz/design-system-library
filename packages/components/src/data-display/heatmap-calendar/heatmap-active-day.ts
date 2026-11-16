@@ -26,7 +26,7 @@ export class HeatmapActiveDay implements ReactiveController {
   }
 
   get tooltipShown(): boolean {
-    return this.#activeIndex != null && !this.#tooltipDismissed;
+    return this.#activeIndex !== null && !this.#tooltipDismissed;
   }
 
   hostUpdated(): void {
@@ -45,7 +45,7 @@ export class HeatmapActiveDay implements ReactiveController {
     this.#activeIndex = index;
     this.#tooltipDismissed = false;
     this.#host.requestUpdate();
-    if (index != null) {
+    if (index !== null) {
       this.#onActivate(index);
     }
   }

@@ -25,7 +25,7 @@ function hasSweep(slice: PieSlice): boolean {
 }
 
 function renderSlice(ctx: PieRenderContext, slice: PieSlice, index: number, inner: number): SVGTemplateResult {
-  const inactive = ctx.activeIndex != null && ctx.activeIndex !== index ? 'inactive' : '';
+  const inactive = ctx.activeIndex !== null && ctx.activeIndex !== index ? 'inactive' : '';
   return svg`
     <g
       class="slice ${inactive}"
@@ -81,7 +81,7 @@ function renderFocusRing(
   slices: readonly PieSlice[],
   inner: number,
 ): SVGTemplateResult | typeof nothing {
-  if (ctx.activeIndex == null || ctx.focusMode !== 'keyboard') {
+  if (ctx.activeIndex === null || ctx.focusMode !== 'keyboard') {
     return nothing;
   }
   const slice = slices[ctx.activeIndex];

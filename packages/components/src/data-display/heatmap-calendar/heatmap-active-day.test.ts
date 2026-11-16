@@ -75,6 +75,22 @@ describe('the active day of <ds-heatmap-calendar>', () => {
     expect(isTooltipOpen(element)).toBe(false);
   });
 
+  it('shows no day while the pointer is between days', async () => {
+    const element = await mountCalendar();
+
+    element
+      .shadowRoot!.querySelector('.scroller')!
+      .dispatchEvent(new PointerEvent('pointermove', { bubbles: true, composed: true }));
+    await element.updateComplete;
+
+    const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
+    document.dispatchEvent(escape);
+
+    expect(getActiveIndex(element)).toBeUndefined();
+    expect(isTooltipOpen(element)).toBe(false);
+    expect(escape.defaultPrevented).toBe(false);
+  });
+
   it('hides the tooltip on Escape and keeps the focused day marked', async () => {
     const element = await mountCalendar();
     getCell(element, 3).focus();

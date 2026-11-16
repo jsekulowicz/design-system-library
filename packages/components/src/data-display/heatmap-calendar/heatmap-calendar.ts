@@ -179,7 +179,7 @@ export class DsHeatmapCalendar extends DsElement {
 
   #onFocusIn = (event: FocusEvent): void => {
     const index = cellIndexFrom(event.target);
-    if (index != null) {
+    if (index !== null) {
       this.#activeDay.focus(index);
     }
   };
@@ -192,14 +192,14 @@ export class DsHeatmapCalendar extends DsElement {
 
   #onPointerMove = (event: PointerEvent): void => {
     const index = cellIndexFrom(event.composedPath()[0] ?? null);
-    if (index != null) {
+    if (index !== null) {
       this.#activeDay.activate(index);
     }
   };
 
   #onClick = (event: MouseEvent): void => {
     const index = cellIndexFrom(event.composedPath()[0] ?? null);
-    if (index != null) {
+    if (index !== null) {
       this.#activeDay.focus(index);
     }
   };
@@ -232,6 +232,6 @@ function toFocusDetail({ date, value, level, details }: HeatmapCell): HeatmapFoc
 
 function cellIndexFrom(target: EventTarget | null): number | null {
   const cell = target instanceof Element ? target.closest('.cell') : null;
-  const index = cell?.getAttribute('data-index');
-  return index == null ? null : Number(index);
+  const index = cell?.getAttribute('data-index') ?? null;
+  return index === null ? null : Number(index);
 }

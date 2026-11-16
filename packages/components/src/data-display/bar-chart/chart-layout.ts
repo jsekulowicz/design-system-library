@@ -63,7 +63,7 @@ export function activeGroupHeight(
   activeIndex: number | null,
   stacked: boolean,
 ): number {
-  if (activeIndex == null || layout.yMax <= 0) {
+  if (activeIndex === null || layout.yMax <= 0) {
     return 0;
   }
   const g = layout.groups[activeIndex];

@@ -75,7 +75,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       this.#remeasureNextFrame();
     }
     if (!this.loading) {
-      syncPointTooltip(this.shadowRoot, this._activeIndex != null);
+      syncPointTooltip(this.shadowRoot, this._activeIndex !== null);
       if (this.data.length > 0 && this.series.length > 0) {
         this.#hasInitialized = true;
       }
@@ -207,7 +207,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       return;
     }
     this._activeIndex = index;
-    if (index == null) {
+    if (index === null) {
       return;
     }
     const g = this.#computeLayout().groups[index];
@@ -262,7 +262,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
   #onFocusIn = (event: FocusEvent): void => {
     const index = groupIndexFrom(event.target);
-    if (index == null) {
+    if (index === null) {
       return;
     }
     this._focusMode = 'keyboard';
@@ -306,6 +306,6 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
 
 function groupIndexFrom(target: EventTarget | null): number | null {
   const group = target instanceof Element ? target.closest('.bar-group') : null;
-  const index = group?.getAttribute('data-index');
-  return index == null ? null : Number(index);
+  const index = group?.getAttribute('data-index') ?? null;
+  return index === null ? null : Number(index);
 }

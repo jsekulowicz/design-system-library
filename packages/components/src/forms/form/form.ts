@@ -60,8 +60,8 @@ export class DsForm extends DsElement {
       if (!control.name) {
         continue;
       }
-      const value = control.value;
-      if (value == null || value === '') {
+      const value = control.value ?? null;
+      if (value === null || value === '') {
         continue;
       }
       data.append(control.name, value instanceof File ? value : String(value));

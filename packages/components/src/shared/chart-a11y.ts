@@ -15,7 +15,7 @@ export function datumId(uid: string, kind: string, index: number): string {
 }
 
 export function rovingTabIndex(index: number, activeIndex: number | null): number {
-  if (activeIndex == null) {
+  if (activeIndex === null) {
     return index === 0 ? 0 : -1;
   }
   return index === activeIndex ? 0 : -1;

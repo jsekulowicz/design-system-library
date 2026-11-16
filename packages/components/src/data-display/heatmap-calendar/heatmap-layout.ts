@@ -120,10 +120,11 @@ export function computeHeatmapLayout(
       ...(day?.details?.length ? { details: day.details } : {}),
     });
   }
+  const lastCell = cells.at(-1);
   return {
     cells,
     monthLabels: monthLabels(cells),
     maxValue,
-    weekCount: cells.at(-1)?.column != null ? cells.at(-1)!.column + 1 : 0,
+    weekCount: lastCell ? lastCell.column + 1 : 0,
   };
 }

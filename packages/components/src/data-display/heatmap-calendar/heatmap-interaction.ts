@@ -14,7 +14,7 @@ export function actionForKey(key: string, focusedIndex: number | null, count: nu
     ArrowRight: 7,
   };
   const delta = moves[key];
-  if (delta == null) {
+  if (delta === undefined) {
     return null;
   }
   const current = focusedIndex ?? 0;

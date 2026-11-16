@@ -36,8 +36,8 @@ function renderCell<T extends TableRow>(column: TableColumn<T>, row: T, index: n
   if (column.render) {
     return column.render(row, index);
   }
-  const value = row[column.field];
-  return value == null ? '' : String(value);
+  const value = row[column.field] ?? null;
+  return value === null ? '' : String(value);
 }
 
 function renderCellLabel<T extends TableRow>(column: TableColumn<T>): TemplateResult | typeof nothing {

@@ -18,7 +18,7 @@ export function pieSummaryText(ctx: PieRenderContext, slices: readonly PieSlice[
 }
 
 export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]): string {
-  if (ctx.activeIndex == null) {
+  if (ctx.activeIndex === null) {
     return '';
   }
   const slice = slices[ctx.activeIndex];
@@ -42,10 +42,10 @@ function tooltipPosition(slice: PieSlice): { left: string; top: string; area: Po
 }
 
 export function renderPieTooltip(ctx: PieRenderContext, slices: readonly PieSlice[]): TemplateResult {
-  const slice = ctx.activeIndex == null ? undefined : slices[ctx.activeIndex];
+  const slice = ctx.activeIndex === null ? undefined : slices[ctx.activeIndex];
   const position = slice ? tooltipPosition(slice) : { left: '50%', top: '50%', area: 'top' as PointTooltipArea };
   return renderPointTooltip({
-    open: ctx.activeIndex != null,
+    open: ctx.activeIndex !== null,
     ...position,
     content: html`
       <div class="tooltip-title">${slice ? slice.label : ''}</div>

@@ -20,7 +20,7 @@ export function groupAriaLabel<T extends BarChartRow>(ctx: ChartRenderContext, g
 }
 
 export function liveText<T extends BarChartRow>(ctx: ChartRenderContext, groups: BarChartGroup<T>[]): string {
-  if (ctx.activeIndex == null) {
+  if (ctx.activeIndex === null) {
     return '';
   }
   const g = groups[ctx.activeIndex];
@@ -32,13 +32,13 @@ export function liveText<T extends BarChartRow>(ctx: ChartRenderContext, groups:
 
 export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, layout: ChartLayout<T>): TemplateResult {
   const { bands, groups, margin, innerHeight } = layout;
-  const group = ctx.activeIndex != null ? groups[ctx.activeIndex] : undefined;
-  const band = ctx.activeIndex != null ? bands[ctx.activeIndex] : undefined;
+  const group = ctx.activeIndex !== null ? groups[ctx.activeIndex] : undefined;
+  const band = ctx.activeIndex !== null ? bands[ctx.activeIndex] : undefined;
   const x = band ? margin.left + band.innerX + band.innerWidth / 2 : 0;
   const maxHeight = activeGroupHeight(layout, ctx.activeIndex, ctx.stacked);
   const barTopY = margin.top + (innerHeight - maxHeight);
   return renderPointTooltip({
-    open: ctx.activeIndex != null,
+    open: ctx.activeIndex !== null,
     left: `${x}px`,
     top: `${barTopY}px`,
     area: 'top',

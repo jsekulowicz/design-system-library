@@ -153,7 +153,7 @@ function renderBars<T extends BarChartRow>(
 ): SVGTemplateResult {
   return svg`${groups.map((g, gi) => {
     const band = bands[gi]!;
-    const inactive = ctx.activeIndex != null && ctx.activeIndex !== gi ? 'inactive' : '';
+    const inactive = ctx.activeIndex !== null && ctx.activeIndex !== gi ? 'inactive' : '';
     const content = ctx.stacked
       ? renderStackedBars(ctx, g, band, innerHeight, yMax)
       : renderGroupedBars(ctx, g, band, innerHeight, yMax);
@@ -217,7 +217,7 @@ function renderFocusRing<T extends BarChartRow>(
   ctx: ChartRenderContext,
   layout: ChartLayout<T>,
 ): SVGTemplateResult | typeof nothing {
-  if (ctx.activeIndex == null || ctx.focusMode !== 'keyboard') {
+  if (ctx.activeIndex === null || ctx.focusMode !== 'keyboard') {
     return nothing;
   }
   const band = layout.bands[ctx.activeIndex];

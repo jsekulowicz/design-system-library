@@ -79,7 +79,7 @@ export class DsPieChart extends DsElement {
     if (!this.loading && this.#slices().length > 0) {
       this.#hasInitialized = true;
     }
-    syncPointTooltip(this.shadowRoot, this._activeIndex != null);
+    syncPointTooltip(this.shadowRoot, this._activeIndex !== null);
   }
 
   #slices(): PieSlice[] {
@@ -178,7 +178,7 @@ export class DsPieChart extends DsElement {
       return;
     }
     this._activeIndex = index;
-    if (index == null) {
+    if (index === null) {
       return;
     }
     this.#emitSlice('ds-slice-focus', index);
@@ -211,14 +211,14 @@ export class DsPieChart extends DsElement {
       return;
     }
     if (event.key === 'Enter' || event.key === ' ') {
-      if (this._activeIndex != null) {
+      if (this._activeIndex !== null) {
         event.preventDefault();
         this.#emitSlice('ds-slice-select', this._activeIndex);
       }
       return;
     }
     const next = resolveRovingTarget({ key: event.key, currentIndex: this._activeIndex ?? -1, count });
-    if (next == null) {
+    if (next === null) {
       return;
     }
     event.preventDefault();
@@ -229,7 +229,7 @@ export class DsPieChart extends DsElement {
 
   #onFocusIn = (event: FocusEvent): void => {
     const index = sliceIndexFrom(event.target);
-    if (index == null) {
+    if (index === null) {
       return;
     }
     this._focusMode = isKeyboardFocus(event.target) ? 'keyboard' : 'pointer';
@@ -246,14 +246,14 @@ export class DsPieChart extends DsElement {
 
   #onClick = (event: MouseEvent): void => {
     const index = sliceIndexFrom(event.target);
-    if (index != null) {
+    if (index !== null) {
       this.#emitSlice('ds-slice-select', index);
     }
   };
 
   #onPointerOver = (event: PointerEvent): void => {
     const index = sliceIndexFrom(event.target);
-    if (index == null || this._focusMode === 'keyboard') {
+    if (index === null || this._focusMode === 'keyboard') {
       return;
     }
     this._focusMode = 'pointer';
