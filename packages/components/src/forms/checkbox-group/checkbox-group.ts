@@ -73,8 +73,8 @@ export class DsCheckboxGroup extends DsElement {
         el.removeAttribute('disabled');
       }
       if (syncChecked) {
-        const cv = el.checkboxValue ?? el.getAttribute('checkbox-value') ?? '';
-        if (this.value.includes(cv)) {
+        const checkboxValue = el.checkboxValue ?? el.getAttribute('checkbox-value') ?? '';
+        if (this.value.includes(checkboxValue)) {
           el.setAttribute('checked', '');
         } else {
           el.removeAttribute('checked');

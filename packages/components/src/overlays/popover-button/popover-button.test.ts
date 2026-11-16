@@ -11,7 +11,7 @@ function clickTrigger(host: DsPopoverButton): void {
   trigger(host).shadowRoot!.querySelector<HTMLButtonElement>('button')!.click();
 }
 
-function panel(host: DsPopoverButton): HTMLElement | null {
+function getPanel(host: DsPopoverButton): HTMLElement | null {
   return host.shadowRoot!.querySelector('#panel');
 }
 
@@ -27,7 +27,7 @@ describe('<ds-popover-button>', () => {
 
     expect(trigger(element).getAttribute('aria-expanded')).toBe('false');
     expect(trigger(element).hasAttribute('aria-haspopup')).toBe(false);
-    expect(panel(element)).toBeNull();
+    expect(getPanel(element)).toBeNull();
   });
 
   it('opens and closes from the trigger', async () => {
@@ -39,13 +39,13 @@ describe('<ds-popover-button>', () => {
     await element.updateComplete;
     expect(element.open).toBe(true);
     expect(trigger(element).getAttribute('aria-controls')).toBe('panel');
-    expect(panel(element)).not.toBeNull();
+    expect(getPanel(element)).not.toBeNull();
     expect(element.textContent).toContain('Settings');
 
     clickTrigger(element);
     await element.updateComplete;
     expect(element.open).toBe(false);
-    expect(panel(element)).toBeNull();
+    expect(getPanel(element)).toBeNull();
   });
 
   it('wires neutral disclosure attributes onto a slotted trigger', async () => {
@@ -74,7 +74,7 @@ describe('<ds-popover-button>', () => {
     clickTrigger(element);
     await element.updateComplete;
 
-    panel(element)!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    getPanel(element)!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     await element.updateComplete;
     await element.updateComplete;
 

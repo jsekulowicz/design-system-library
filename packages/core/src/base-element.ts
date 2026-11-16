@@ -1,12 +1,12 @@
 import { LitElement } from 'lit';
 import { resetStyles, focusVisibleStyles, reducedMotionStyles, visuallyHiddenStyles } from './reset-styles.js';
 import { emit, type DsEventOptions } from './utils/event.js';
-import { nextId } from './utils/id.js';
+import { createId } from './utils/id.js';
 
 export class DsElement extends LitElement {
   static override styles = [resetStyles, focusVisibleStyles, reducedMotionStyles, visuallyHiddenStyles];
 
-  readonly uid: string = nextId(this.localName || 'ds');
+  readonly uid: string = createId(this.localName || 'ds');
 
   override connectedCallback(): void {
     super.connectedCallback();

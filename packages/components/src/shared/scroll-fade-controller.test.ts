@@ -28,15 +28,15 @@ function createScroller(scrollHeight: number, clientHeight: number, scrollTop = 
   return el;
 }
 
-async function nextFrame(): Promise<void> {
+async function waitForNextFrame(): Promise<void> {
   await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
 }
 
-async function fadeOf(scroller: HTMLElement): Promise<{ top: string; bottom: string }> {
+async function getFade(scroller: HTMLElement): Promise<{ top: string; bottom: string }> {
   const host = createHost();
   new ScrollFadeController(host, () => scroller);
   host.connect();
-  await nextFrame();
+  await waitForNextFrame();
   return {
     top: scroller.style.getPropertyValue('--ds-scroll-fade-top'),
     bottom: scroller.style.getPropertyValue('--ds-scroll-fade-bottom'),
@@ -49,22 +49,22 @@ beforeEach(() => {
 
 describe('ScrollFadeController', () => {
   it('fades the bottom edge while there is content below', async () => {
-    expect(await fadeOf(createScroller(400, 200))).toEqual({ top: OPAQUE, bottom: CLEAR });
+    expect(await getFade(createScroller(400, 200))).toEqual({ top: OPAQUE, bottom: CLEAR });
   });
 
   it('fades the top edge once content has scrolled above', async () => {
-    expect(await fadeOf(createScroller(400, 200, 200))).toEqual({ top: CLEAR, bottom: OPAQUE });
+    expect(await getFade(createScroller(400, 200, 200))).toEqual({ top: CLEAR, bottom: OPAQUE });
   });
 
   it('paints no fade when the content fits, which animation-timeline: scroll(self) gets wrong in some engines', async () => {
-    expect(await fadeOf(createScroller(200, 200))).toEqual({ top: OPAQUE, bottom: OPAQUE });
+    expect(await getFade(createScroller(200, 200))).toEqual({ top: OPAQUE, bottom: OPAQUE });
   });
 
   it('ignores a couple of px of overflow that sub-pixel rounding leaves on content that visually fits', async () => {
-    expect(await fadeOf(createScroller(202, 200))).toEqual({ top: OPAQUE, bottom: OPAQUE });
+    expect(await getFade(createScroller(202, 200))).toEqual({ top: OPAQUE, bottom: OPAQUE });
   });
 
   it('still fades once the overflow is real', async () => {
-    expect(await fadeOf(createScroller(203, 200))).toEqual({ top: OPAQUE, bottom: CLEAR });
+    expect(await getFade(createScroller(203, 200))).toEqual({ top: OPAQUE, bottom: CLEAR });
   });
 });

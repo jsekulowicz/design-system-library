@@ -13,7 +13,7 @@ beforeEach(() => {
   resetTestDom();
 });
 
-function textarea(el: DsTextArea): HTMLTextAreaElement {
+function getTextarea(el: DsTextArea): HTMLTextAreaElement {
   return el.shadowRoot!.querySelector('textarea') as HTMLTextAreaElement;
 }
 
@@ -32,7 +32,7 @@ describe('<ds-text-area>', () => {
       submitted = true;
     });
     const enter = new KeyboardEvent('keydown', { key: 'Enter', cancelable: true, bubbles: true, composed: true });
-    textarea(form.querySelector('ds-text-area') as DsTextArea).dispatchEvent(enter);
+    getTextarea(form.querySelector('ds-text-area') as DsTextArea).dispatchEvent(enter);
 
     expect(submitted).toBe(false);
     expect(enter.defaultPrevented).toBe(false);
@@ -45,7 +45,7 @@ describe('<ds-text-area>', () => {
     el.addEventListener('ds-input', (event) => inputEvents.push(event as CustomEvent));
     el.addEventListener('ds-change', (event) => changeEvents.push(event as CustomEvent));
 
-    const input = textarea(el);
+    const input = getTextarea(el);
     input.value = 'first line';
     input.dispatchEvent(new Event('input', { bubbles: true }));
     input.value = 'first line\nsecond line';
@@ -62,7 +62,7 @@ describe('<ds-text-area>', () => {
     el.addEventListener('ds-input', (event) => events.push(event as CustomEvent));
     el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
 
-    const input = textarea(el);
+    const input = getTextarea(el);
     input.value = 'blocked';
     input.dispatchEvent(new Event('input', { bubbles: true }));
     input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -73,10 +73,10 @@ describe('<ds-text-area>', () => {
 
   it('sizes the textarea to exactly `rows` rows, defaulting to 3', async () => {
     const def = await mount<DsTextArea>('<ds-text-area></ds-text-area>');
-    expect(textarea(def).rows).toBe(3);
+    expect(getTextarea(def).rows).toBe(3);
 
     const el = await mount<DsTextArea>('<ds-text-area rows="6"></ds-text-area>');
-    expect(textarea(el).rows).toBe(6);
+    expect(getTextarea(el).rows).toBe(6);
   });
 
   it('is not resizable by default and reflects resize="vertical" when opted in', async () => {
@@ -91,7 +91,7 @@ describe('<ds-text-area>', () => {
 
   it('reflects placeholder and readonly into the inner textarea; disabled maps to readonly', async () => {
     const el = await mount<DsTextArea>('<ds-text-area placeholder="Write a reply" readonly disabled></ds-text-area>');
-    const input = textarea(el);
+    const input = getTextarea(el);
     expect(input.placeholder).toBe('Write a reply');
     expect(input.readOnly).toBe(true);
     expect(input.disabled).toBe(false);
@@ -103,7 +103,7 @@ describe('<ds-text-area>', () => {
   it('supports an accessible input label without rendering a visible label', async () => {
     const el = await mount<DsTextArea>('<ds-text-area input-label="Reply"></ds-text-area>');
     expect(el.shadowRoot!.querySelector('label')).toBeNull();
-    expect(textarea(el).getAttribute('aria-label')).toBe('Reply');
+    expect(getTextarea(el).getAttribute('aria-label')).toBe('Reply');
   });
 
   it('renders a visible label and surfaces the error when validation fails', async () => {
@@ -113,17 +113,17 @@ describe('<ds-text-area>', () => {
     expect(el.shadowRoot!.querySelector('label')?.textContent).toContain('Bio');
     expect(el.invalid).toBe(false);
 
-    textarea(el).dispatchEvent(new Event('blur'));
+    getTextarea(el).dispatchEvent(new Event('blur'));
     await el.updateComplete;
 
     expect(el.invalid).toBe(true);
     expect(el.shadowRoot!.querySelector('.error')?.textContent).toContain('This field is required');
-    expect(textarea(el).getAttribute('aria-invalid')).toBe('true');
+    expect(getTextarea(el).getAttribute('aria-invalid')).toBe('true');
   });
 
   it('stays unstyled until the user has touched it', async () => {
     const el = await mount<DsTextArea>('<ds-text-area label="Bio" required></ds-text-area>');
-    expect(textarea(el).validity.valueMissing).toBe(true);
+    expect(getTextarea(el).validity.valueMissing).toBe(true);
     expect(el.invalid).toBe(false);
   });
 });

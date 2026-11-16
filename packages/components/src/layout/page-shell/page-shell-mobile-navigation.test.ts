@@ -5,13 +5,13 @@ import {
   forceDesktopLayout,
   forceMobileLayout,
   mount,
-  pageShellTemplate,
-  shellResizeObserver,
+  renderPageShell,
+  findShellResizeObserver,
 } from './page-shell.test-helpers.js';
 
 describe('<ds-page-shell>', () => {
   it('closes mobile navigation when composed path includes ds-nav-item', async () => {
-    const el = await mount<DsPageShell>(pageShellTemplate());
+    const el = await mount<DsPageShell>(renderPageShell());
     await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
@@ -30,7 +30,7 @@ describe('<ds-page-shell>', () => {
   });
 
   it('closes mobile navigation when composed path contains an element with href attribute', async () => {
-    const el = await mount<DsPageShell>(pageShellTemplate());
+    const el = await mount<DsPageShell>(renderPageShell());
     await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
@@ -50,7 +50,7 @@ describe('<ds-page-shell>', () => {
   });
 
   it('does not close navigation on aside click when not in mobile layout', async () => {
-    const el = await mount<DsPageShell>(pageShellTemplate());
+    const el = await mount<DsPageShell>(renderPageShell());
     await forceDesktopLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
@@ -65,7 +65,7 @@ describe('<ds-page-shell>', () => {
   });
 
   it('keeps mobile navigation open when aside click path is not a nav target', async () => {
-    const el = await mount<DsPageShell>(pageShellTemplate());
+    const el = await mount<DsPageShell>(renderPageShell());
     await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
@@ -85,13 +85,13 @@ describe('<ds-page-shell>', () => {
   });
 
   it('closes open mobile navigation when layout resizes to desktop', async () => {
-    const el = await mount<DsPageShell>(pageShellTemplate());
+    const el = await mount<DsPageShell>(renderPageShell());
     await forceMobileLayout(el);
     const menuToggle = el.shadowRoot!.querySelector('ds-button.menu-toggle') as HTMLElement;
     menuToggle.click();
     await el.updateComplete;
 
-    const observer = shellResizeObserver(el);
+    const observer = findShellResizeObserver(el);
     observer.callback([{ contentRect: { width: 1024 } } as ResizeObserverEntry], observer as never);
     await el.updateComplete;
 
@@ -100,7 +100,7 @@ describe('<ds-page-shell>', () => {
   });
 
   it('ignores resize callbacks with no entries', async () => {
-    await mount<DsPageShell>(pageShellTemplate());
+    await mount<DsPageShell>(renderPageShell());
     const observer = ResizeObserverMock.instances[0];
     expect(() => {
       observer.callback([], observer as never);

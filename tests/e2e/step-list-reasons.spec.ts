@@ -52,8 +52,8 @@ async function dragAcrossTheOpenReason(page: Page): Promise<void> {
 }
 
 for (const { name, story, selector } of layouts) {
-  test.describe(`StepList reasons in the ${name}`, () => {
-    test('selecting text in a pinned reason keeps it pinned once the pointer leaves', async ({ page }) => {
+  test.describe(`a StepList reason in the ${name}`, () => {
+    test('stays pinned while its text is selected, once the pointer leaves', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().click({ force: true });
 
@@ -66,9 +66,7 @@ for (const { name, story, selector } of layouts) {
       await expect(page.getByRole('tooltip')).toHaveCount(0);
     });
 
-    test('a selection dragged out of a pinned reason across another ruled-out step keeps the pinned reason', async ({
-      page,
-    }) => {
+    test('stays pinned when a selection is dragged out of it across another ruled-out step', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().click({ force: true });
       const tip = (await page.locator('ds-step-list [part="tooltip"]:popover-open').boundingBox())!;
@@ -83,7 +81,7 @@ for (const { name, story, selector } of layouts) {
       await expectOnlyReasonFor(steps, 0);
     });
 
-    test('a finished press inside a pinned reason no longer holds it once focus moves on', async ({ page }) => {
+    test('is no longer held by a finished press inside it once focus moves on', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().click({ force: true });
       await dragAcrossTheOpenReason(page);
@@ -95,7 +93,7 @@ for (const { name, story, selector } of layouts) {
       await expect(page.getByRole('tooltip')).toHaveCount(0);
     });
 
-    test('a focused reason stays visible when its own hover ends', async ({ page }) => {
+    test('stays visible while focused when its own hover ends', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().focus();
       await steps.first().hover();
@@ -106,7 +104,7 @@ for (const { name, story, selector } of layouts) {
       await expect(page.getByRole('tooltip')).toHaveCount(0);
     });
 
-    test('clicking a pinned reason again closes it while focus and hover remain on its trigger', async ({ page }) => {
+    test('closes when clicked again while pinned, though focus and hover remain on its trigger', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().click({ force: true });
       await expectOnlyReasonFor(steps, 0);
@@ -117,7 +115,7 @@ for (const { name, story, selector } of layouts) {
       await expect(page.getByRole('tooltip')).toHaveCount(0);
     });
 
-    test('keyboard focus replaces a hovered reason', async ({ page }) => {
+    test('gives way to keyboard focus while only hovered', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().hover();
       await expectOnlyReasonFor(steps, 0);
@@ -127,7 +125,7 @@ for (const { name, story, selector } of layouts) {
       await expectOnlyReasonFor(steps, 1);
     });
 
-    test('hovering another disabled step dismisses a clicked reason even while its trigger keeps focus', async ({
+    test('closes after a click once another disabled step is hovered, even while its trigger keeps focus', async ({
       page,
     }) => {
       const steps = await openDisabledSteps(page, story, selector);
@@ -143,7 +141,7 @@ for (const { name, story, selector } of layouts) {
       await expect(page.getByRole('tooltip')).toHaveCount(0);
     });
 
-    test('hovering another disabled step dismisses a reason shown by keyboard focus', async ({ page }) => {
+    test('closes when shown by keyboard focus once another disabled step is hovered', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().focus();
       await expectOnlyReasonFor(steps, 0);
@@ -155,7 +153,7 @@ for (const { name, story, selector } of layouts) {
       await expectOnlyReasonFor(steps, 0);
     });
 
-    test('hovering the same clicked step leaves its reason pinned until Escape', async ({ page }) => {
+    test('stays pinned after a click while the same step is hovered, until Escape', async ({ page }) => {
       const steps = await openDisabledSteps(page, story, selector);
       await steps.first().click({ force: true });
       await page.mouse.move(0, 0);

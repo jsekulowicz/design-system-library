@@ -7,14 +7,14 @@ const responsive: ViewportName[] = ['mobile', 'tablet', 'desktop'];
 const storyRoot = '#storybook-root';
 
 export const visualScenarios: VisualScenario[] = [
-  staticStory('button-variants', 'actions-button--variants'),
-  staticStory('button-colors', 'actions-button--colors'),
-  staticStory('button-sizes', 'actions-button--sizes'),
-  staticStory('card-playground', 'data-display-card--playground'),
-  responsiveStory('table-basic', 'data-display-table--basic'),
-  responsiveStory('scrollable-page', 'layout-scrollablepage--with-non-scrolling-header'),
-  staticStory('textfield-states', 'forms-textfield--required'),
-  staticStory('select-invalid', 'forms-select--invalid'),
+  buildStaticStory('button-variants', 'actions-button--variants'),
+  buildStaticStory('button-colors', 'actions-button--colors'),
+  buildStaticStory('button-sizes', 'actions-button--sizes'),
+  buildStaticStory('card-playground', 'data-display-card--playground'),
+  buildResponsiveStory('table-basic', 'data-display-table--basic'),
+  buildResponsiveStory('scrollable-page', 'layout-scrollablepage--with-non-scrolling-header'),
+  buildStaticStory('textfield-states', 'forms-textfield--required'),
+  buildStaticStory('select-invalid', 'forms-select--invalid'),
   {
     name: 'select-leading-icon-open',
     storyId: 'forms-select--with-description',
@@ -31,7 +31,7 @@ export const visualScenarios: VisualScenario[] = [
     viewportSize: { width: 1280, height: 315 },
     beforeCapture: openSelect,
   },
-  staticStory('select-multiple-icons', 'forms-select--multiple-with-icons'),
+  buildStaticStory('select-multiple-icons', 'forms-select--multiple-with-icons'),
   {
     name: 'select-multiple-selected',
     storyId: 'forms-select--multiple',
@@ -39,15 +39,15 @@ export const visualScenarios: VisualScenario[] = [
     viewports: desktop,
     beforeCapture: selectFirstMultipleOption,
   },
-  staticStory('pie-chart', 'data-display-piechart--playground'),
-  staticStory('pie-chart-donut', 'data-display-piechart--donut'),
-  staticStory('pie-chart-formatters', 'data-display-piechart--with-formatters'),
-  staticStory('bar-chart-formatters', 'data-display-barchart--with-formatters'),
-  staticStory('divider-inline', 'data-display-divider--inline-with-text'),
-  staticStory('menu-header-footer', 'navigation-menu--with-header-footer'),
-  staticStory('toast-tones', 'feedback-toast--tones'),
-  staticStory('segmented-control-icons', 'forms-segmentedcontrol--with-icons'),
-  responsiveStory('tooltip-viewport-constraint', 'overlays-tooltip--viewport-constraint'),
+  buildStaticStory('pie-chart', 'data-display-piechart--playground'),
+  buildStaticStory('pie-chart-donut', 'data-display-piechart--donut'),
+  buildStaticStory('pie-chart-formatters', 'data-display-piechart--with-formatters'),
+  buildStaticStory('bar-chart-formatters', 'data-display-barchart--with-formatters'),
+  buildStaticStory('divider-inline', 'data-display-divider--inline-with-text'),
+  buildStaticStory('menu-header-footer', 'navigation-menu--with-header-footer'),
+  buildStaticStory('toast-tones', 'feedback-toast--tones'),
+  buildStaticStory('segmented-control-icons', 'forms-segmentedcontrol--with-icons'),
+  buildResponsiveStory('tooltip-viewport-constraint', 'overlays-tooltip--viewport-constraint'),
   {
     name: 'searchable-select-multiple-selected',
     storyId: 'forms-searchableselect--multiple-countries',
@@ -97,16 +97,16 @@ export const visualScenarios: VisualScenario[] = [
     viewports: responsive,
     beforeCapture: submitInvalidForm,
   },
-  responsiveStory('top-bar-responsive', 'navigation-topbar--with-profile-menu'),
-  responsiveStory('settings-page-with-sidenav', 'patterns-settingspage--page-with-sidenav'),
-  responsiveStory('settings-page-without-sidenav', 'patterns-settingspage--page-without-sidenav'),
+  buildResponsiveStory('top-bar-responsive', 'navigation-topbar--with-profile-menu'),
+  buildResponsiveStory('settings-page-with-sidenav', 'patterns-settingspage--page-with-sidenav'),
+  buildResponsiveStory('settings-page-without-sidenav', 'patterns-settingspage--page-without-sidenav'),
 ];
 
-function staticStory(name: string, storyId: string): VisualScenario {
+function buildStaticStory(name: string, storyId: string): VisualScenario {
   return { name, storyId, selector: storyRoot, themes, viewports: desktop };
 }
 
-function responsiveStory(name: string, storyId: string): VisualScenario {
+function buildResponsiveStory(name: string, storyId: string): VisualScenario {
   return { name, storyId, themes, viewports: responsive };
 }
 

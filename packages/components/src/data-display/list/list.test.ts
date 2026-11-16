@@ -25,8 +25,8 @@ describe('<ds-list>', () => {
         <ds-list-item>Two</ds-list-item>
       </ds-list>
     `);
-    const ul = el.shadowRoot!.querySelector('ul')!;
-    expect(ul.getAttribute('role')).toBe('list');
+    const list = el.shadowRoot!.querySelector('ul')!;
+    expect(list.getAttribute('role')).toBe('list');
     expect(el.getAttribute('variant')).toBe('bordered');
   });
 
@@ -53,7 +53,7 @@ describe('<ds-list-item>', () => {
       </ds-list-item>
     `);
     const slots = el.shadowRoot!.querySelectorAll('slot');
-    const names = Array.from(slots).map((s) => s.getAttribute('name') ?? 'default');
+    const names = Array.from(slots).map((slot) => slot.getAttribute('name') ?? 'default');
     expect(names).toContain('leading');
     expect(names).toContain('trailing');
     expect(names).toContain('default');

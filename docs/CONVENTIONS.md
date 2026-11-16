@@ -34,7 +34,18 @@ Every component needs a matching `exports` entry in `packages/components/package
 
 ## TypeScript
 
-- `function` for module-level functions, not `const x = () => {}`.
+- `function` declarations, not `const x = () => {}` (`func-style`). Inline callbacks stay arrows.
+- Single quotes, template literals where they interpolate (`quotes`).
+- `===` and `!==` only, `null` included (`eqeqeq`).
+- Names run 3 to 35 characters (`id-length`). Shorter only for real vocabulary listed in
+  `eslint.config.js`: `i`, `id`, `x`, `y`, `el`, `ok`, locale codes and the token scale keys
+  `xs`...`xl`, `bg`, `fg`. PascalCase types, components and stories are exempt.
+- Every function name starts with a verb that cannot read as anything else. Derived values take
+  `get`, `find`, `compute`, `format`, `build`, `parse` or `to...`; predicates take `is`, `has`,
+  `can` or `should`; templates take `render`. State never leads with a verb: `tooltipShown`, not
+  `showTooltip`.
+- Every `it('...')` reads as a sentence continuing its `describe` and says what the code does,
+  not what the test does.
 - `interface` over `type` for object shapes (`consistent-type-definitions`).
 - `import type` for type-only imports (`consistent-type-imports`).
 - Braces on every `if`, always on their own line (`curly`). No single-line `if (x) return;`.
@@ -119,13 +130,13 @@ recording is worth naming:
 function plainContent(loading: boolean) { ... }
 
 // yes
-function contentWithSpinnerOverlaidOnTop(loading: boolean) { ... }
+function renderSpinnerOverContent(loading: boolean) { ... }
 ```
 
-The name is longer than a typical one, and that is the point: it states the constraint at every
-call site rather than only where the function is declared. It is still a label, not a sentence:
-`id-length` caps every name at 35 characters, class members included. A reason that does not fit
-goes in a test title, which has no limit. Reach for the same move with a named
+The name states the constraint at every call site rather than only where the function is
+declared. It is still a label, not a sentence: `id-length` keeps every name between 3 and 35
+characters, class members and object keys included. A reason that does not fit goes in a test
+title, which has no limit. Reach for the same move with a named
 constant, a named watcher callback, or a test whose title _is_ the scenario:
 
 ```ts

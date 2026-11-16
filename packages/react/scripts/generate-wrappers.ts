@@ -77,7 +77,7 @@ function collectWrapperSpecs(cem: Cem): WrapperSpec[] {
       });
     }
   }
-  return specs.sort((a, b) => a.tagName.localeCompare(b.tagName));
+  return specs.sort((left, right) => left.tagName.localeCompare(right.tagName));
 }
 
 const DETAIL_TYPE_NAME = /\b[A-Z]\w*Detail\b/g;
@@ -125,9 +125,9 @@ export const ${componentName} = createComponent({
 }
 
 function renderIndex(specs: WrapperSpec[]): string {
-  const lines = specs.map((s) => {
-    const componentName = s.className.replace(/^Ds/, '');
-    return `export { ${componentName} } from './${s.tagName}.js';`;
+  const lines = specs.map((spec) => {
+    const componentName = spec.className.replace(/^Ds/, '');
+    return `export { ${componentName} } from './${spec.tagName}.js';`;
   });
   return `${lines.join('\n')}\n`;
 }

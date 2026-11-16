@@ -52,24 +52,25 @@ for (const story of ['forms-select--multiple', 'forms-searchableselect--multiple
     await openStory(page, story);
     const host = page.locator(story.includes('searchable') ? 'ds-searchable-select' : 'ds-select');
     const combobox = page.getByRole('combobox');
-    const triggerHeight = () =>
-      host.evaluate((element) => element.shadowRoot!.querySelector('.trigger')!.getBoundingClientRect().height);
+    function measureTriggerHeight(): Promise<number> {
+      return host.evaluate((element) => element.shadowRoot!.querySelector('.trigger')!.getBoundingClientRect().height);
+    }
     for (const [size, expectedHeight] of [
       ['sm', 32],
       ['md', 40],
       ['lg', 48],
     ] as const) {
       await host.evaluate((element, nextSize) => element.setAttribute('size', nextSize), size);
-      await expect.poll(triggerHeight).toBe(expectedHeight);
+      await expect.poll(measureTriggerHeight).toBe(expectedHeight);
     }
     await host.evaluate((element) => element.setAttribute('size', 'md'));
-    const initialHeight = await triggerHeight();
+    const initialHeight = await measureTriggerHeight();
     await combobox.click();
     const firstOption = page.getByRole('option').first();
     await firstOption.click();
-    await expect.poll(triggerHeight).toBe(initialHeight);
+    await expect.poll(measureTriggerHeight).toBe(initialHeight);
     await firstOption.click();
-    await expect.poll(triggerHeight).toBe(initialHeight);
+    await expect.poll(measureTriggerHeight).toBe(initialHeight);
   });
 }
 

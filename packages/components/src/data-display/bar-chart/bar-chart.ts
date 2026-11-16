@@ -5,13 +5,13 @@ import { DsElement } from '@jsekulowicz/ds-core';
 import { barChartStyles } from './bar-chart.styles.js';
 import { pointTooltipStyles } from '../../shared/point-tooltip.styles.js';
 import { syncPointTooltip } from '../../shared/point-tooltip.js';
-import { colorForIndex } from '../../shared/chart-colors.js';
+import { getColorForIndex } from '../../shared/chart-colors.js';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-overlay.js';
 import { computeChartLayout, type ChartLayout } from './chart-layout.js';
 import { renderChartSvg } from './bar-chart-svg.js';
-import { liveText, renderLegend, renderSrTable, renderTooltip, rootAriaLabel } from './bar-chart-overlays.js';
+import { getLiveText, renderLegend, renderSrTable, renderTooltip, getRootAriaLabel } from './bar-chart-overlays.js';
 import type { BarChartFocusDetail, BarChartRow, BarChartSeries, ChartRenderContext } from './types.js';
 
 /**
@@ -124,15 +124,15 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
       focusMode: this._focusMode,
       xAxisLabel: this.xAxisLabel,
       yAxisLabel: this.yAxisLabel,
-      seriesLabel: (s) => s.label ?? s.key,
-      seriesColor: (s, i) => s.color ?? colorForIndex(i),
-      formatValue: (v) => (this.formatValue ? this.formatValue(v) : String(v)),
-      formatDomain: (v) => (this.formatDomain ? this.formatDomain(v) : String(v ?? '')),
-      formatTooltipTitle: (v) => {
+      seriesLabel: (series) => series.label ?? series.key,
+      seriesColor: (series, i) => series.color ?? getColorForIndex(i),
+      formatValue: (value) => (this.formatValue ? this.formatValue(value) : String(value)),
+      formatDomain: (value) => (this.formatDomain ? this.formatDomain(value) : String(value ?? '')),
+      formatTooltipTitle: (value) => {
         if (this.formatTooltipTitle) {
-          return this.formatTooltipTitle(v);
+          return this.formatTooltipTitle(value);
         }
-        return this.formatDomain ? this.formatDomain(v) : String(v ?? '');
+        return this.formatDomain ? this.formatDomain(value) : String(value ?? '');
       },
       ...(this.barColor === undefined ? {} : { barColor: this.barColor }),
       chartLabel: this.chartLabel,
@@ -149,7 +149,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     return computeChartLayout({
       data: this.data,
       domain: this.domain,
-      seriesKeys: this.series.map((s) => s.key),
+      seriesKeys: this.series.map((series) => series.key),
       stacked: this.stacked,
       measuredWidth: this._width,
       height: this.height,
@@ -196,8 +196,8 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
         ${this.loading ? renderLoadingOverlay(loadingContent) : nothing}
       </div>
       ${this.showLegend ? renderLegend(ctx) : nothing}
-      ${renderChartTitle(this.uid, rootAriaLabel(ctx, layout.groups.length))} ${renderSrTable(ctx, layout.groups)}
-      ${renderChartLiveRegion(liveText(ctx, layout.groups))}
+      ${renderChartTitle(this.uid, getRootAriaLabel(ctx, layout.groups.length))} ${renderSrTable(ctx, layout.groups)}
+      ${renderChartLiveRegion(getLiveText(ctx, layout.groups))}
     `;
   }
 
@@ -209,18 +209,18 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
     if (index === null) {
       return;
     }
-    const g = this.#computeLayout().groups[index];
-    if (!g) {
+    const group = this.#computeLayout().groups[index];
+    if (!group) {
       return;
     }
     this.emit<BarChartFocusDetail>('ds-bar-focus', {
       detail: {
         groupIndex: index,
-        domainValue: g.domain,
-        values: this.series.map((s) => ({
-          key: s.key,
-          label: s.label ?? s.key,
-          value: g.values[s.key] ?? 0,
+        domainValue: group.domain,
+        values: this.series.map((series) => ({
+          key: series.key,
+          label: series.label ?? series.key,
+          value: group.values[series.key] ?? 0,
         })),
       },
     });
@@ -260,7 +260,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   };
 
   #onFocusIn = (event: FocusEvent): void => {
-    const index = groupIndexFrom(event.target);
+    const index = getGroupIndexFrom(event.target);
     if (index === null) {
       return;
     }
@@ -303,7 +303,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   };
 }
 
-function groupIndexFrom(target: EventTarget | null): number | null {
+function getGroupIndexFrom(target: EventTarget | null): number | null {
   const group = target instanceof Element ? target.closest('.bar-group') : null;
   const index = group?.getAttribute('data-index') ?? null;
   return index === null ? null : Number(index);

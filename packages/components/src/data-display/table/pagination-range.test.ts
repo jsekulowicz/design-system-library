@@ -51,9 +51,9 @@ describe('buildPaginationRange', () => {
 
   it('never returns duplicate or non-positive page numbers', () => {
     const range = buildPaginationRange({ totalPages: 50, currentPage: 1, maxVisiblePages: 7, siblingCount: 1 });
-    const numbers = range.filter((r): r is number => typeof r === 'number');
+    const numbers = range.filter((item): item is number => typeof item === 'number');
     expect(new Set(numbers).size).toBe(numbers.length);
-    expect(numbers.every((n) => n >= 1)).toBe(true);
+    expect(numbers.every((page) => page >= 1)).toBe(true);
   });
 
   it('clamps currentPage to valid range', () => {

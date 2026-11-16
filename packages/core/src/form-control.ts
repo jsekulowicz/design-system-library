@@ -4,7 +4,7 @@ import { hasInteractiveSlottedOrigin } from './utils/interactive-origin.js';
 
 const WHAT_VALIDITY_READS = ['value', 'values', 'checked', 'required'];
 
-export function changedWhatValidityReads(changed: PropertyValues): boolean {
+export function hasValidityInputChanged(changed: PropertyValues): boolean {
   return WHAT_VALIDITY_READS.some((name) => changed.has(name));
 }
 

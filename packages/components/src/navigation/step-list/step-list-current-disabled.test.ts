@@ -27,11 +27,11 @@ function mountOnTheRuledOutStep(): Promise<DsStepList> {
   });
 }
 
-function listStep(el: DsStepList, index: number): HTMLLIElement {
+function getListStep(el: DsStepList, index: number): HTMLLIElement {
   return el.shadowRoot!.querySelectorAll<HTMLLIElement>('[part="step"]')[index];
 }
 
-function segment(el: DsStepList, index: number): HTMLButtonElement {
+function getSegment(el: DsStepList, index: number): HTMLButtonElement {
   return el.shadowRoot!.querySelectorAll<HTMLButtonElement>('[part="segment"]')[index];
 }
 
@@ -43,7 +43,7 @@ async function setSteps(el: DsStepList, steps: StepListStep[]): Promise<void> {
 describe('<ds-step-list> when the host disables the current step', () => {
   it('marks the step the reader is on as current even when the host has disabled it', async () => {
     const el = await mountOnTheRuledOutStep();
-    const step = listStep(el, 1);
+    const step = getListStep(el, 1);
     const button = step.querySelector('button')!;
 
     expect(step.dataset.status).toBe('current');
@@ -51,8 +51,8 @@ describe('<ds-step-list> when the host disables the current step', () => {
     expect(button.getAttribute('aria-current')).toBe('step');
     expect(button.disabled).toBe(false);
     expect(button.hasAttribute('aria-disabled')).toBe(false);
-    expect(segment(el, 1).getAttribute('aria-current')).toBe('step');
-    expect(segment(el, 1).hasAttribute('aria-disabled')).toBe(false);
+    expect(getSegment(el, 1).getAttribute('aria-current')).toBe('step');
+    expect(getSegment(el, 1).hasAttribute('aria-disabled')).toBe(false);
   });
 
   it('offers no reason tooltip for the current step, which the reader cannot be asked to reach', async () => {
@@ -62,11 +62,11 @@ describe('<ds-step-list> when the host disables the current step', () => {
       selected.push((event as CustomEvent<{ index: number }>).detail.index),
     );
 
-    listStep(el, 1).querySelector('button')!.click();
+    getListStep(el, 1).querySelector('button')!.click();
     await el.updateComplete;
 
     expect(el.shadowRoot!.querySelector('.reason-tooltip')).toBeNull();
-    expect(listStep(el, 1).querySelector('button')!.hasAttribute('aria-describedby')).toBe(false);
+    expect(getListStep(el, 1).querySelector('button')!.hasAttribute('aria-describedby')).toBe(false);
     expect(selected).toEqual([]);
   });
 

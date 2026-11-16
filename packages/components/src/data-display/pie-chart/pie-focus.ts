@@ -1,4 +1,4 @@
-export function sliceIndexFrom(target: EventTarget | null): number | null {
+export function getSliceIndexFrom(target: EventTarget | null): number | null {
   const group = target instanceof Element ? target.closest('.slice') : null;
   const index = group?.getAttribute('data-index') ?? null;
   return index === null ? null : Number(index);

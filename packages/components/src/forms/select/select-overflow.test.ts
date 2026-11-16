@@ -75,7 +75,7 @@ describe('the overflow tile', () => {
     expect(tooltip?.querySelector('slot[name="overflow-tip"]')?.getAttribute('slot')).toBe('tip');
   });
 
-  it('takes focus when tapped, so the tip stays up until the reader leaves', () => {
+  it('takes focus when clicked, so its tooltip stays open until focus moves away', () => {
     const tile = renderTile(2).querySelector<HTMLButtonElement>('.tile-overflow')!;
 
     tile.click();
@@ -180,8 +180,9 @@ describe('activating the overflow tile by keyboard', () => {
   it('does not let the trigger drive tile navigation while it holds focus', async () => {
     const el = await mountOverflowing();
     const tile = el.shadowRoot!.querySelector<HTMLButtonElement>('.tile-overflow')!;
-    const press = (key: string) =>
+    function press(key: string): void {
       tile.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, composed: true, cancelable: true }));
+    }
 
     press('ArrowLeft');
     press('Backspace');

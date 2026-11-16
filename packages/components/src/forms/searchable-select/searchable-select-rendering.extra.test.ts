@@ -82,7 +82,7 @@ describe('<ds-searchable-select> label, size and icons', () => {
 });
 
 describe('<ds-searchable-select> re-enters search mode while focused-but-closed', () => {
-  function keydown(el: HTMLElement, key: string): void {
+  function dispatchKeydown(el: HTMLElement, key: string): void {
     el.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
   }
 
@@ -93,11 +93,11 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(true);
 
-    keydown(input, 'Escape');
+    dispatchKeydown(input, 'Escape');
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(false);
 
-    keydown(input, 'a');
+    dispatchKeydown(input, 'a');
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(true);
     typeCharacter(input, 'a');
@@ -111,7 +111,7 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
     expect((el as unknown as { _open: boolean })._open).toBe(false);
     expect(input.value).toBe('React');
 
-    keydown(input, 'Backspace');
+    dispatchKeydown(input, 'Backspace');
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(true);
     expect(input.value).toBe('');
@@ -121,7 +121,7 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
     const el = await mountSearchable({ value: 'react' });
     const input = el.shadowRoot!.querySelector('.search-input') as HTMLInputElement;
 
-    keydown(input, 'v');
+    dispatchKeydown(input, 'v');
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(true);
     input.value = 'v';
@@ -137,7 +137,7 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(false);
   });
-  it('emits ds-scroll-end once per approach of the listbox bottom', async () => {
+  it('emits ds-scroll-end when the listbox reaches its bottom, and again only after scrolling away', async () => {
     const el = await mountSearchable({ options: MANY_OPTIONS });
     let fired = 0;
     el.addEventListener('ds-scroll-end', () => {

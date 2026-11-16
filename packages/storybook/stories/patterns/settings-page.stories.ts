@@ -48,7 +48,7 @@ const timezones = [
   { label: 'America / New York', value: 'nyc' },
 ];
 
-function frameStyle(): string {
+function getFrameStyle(): string {
   if (typeof window !== 'undefined' && window.localStorage.getItem('ds-storybook-visual-test') === 'true') {
     return 'height:100vh;overflow:hidden';
   }
@@ -74,7 +74,7 @@ function renderPage(withSidenav: boolean) {
         overflow: hidden;
       }
     </style>
-    <div style=${frameStyle()}>
+    <div style=${getFrameStyle()}>
       <ds-page-shell brand="Brand" style=${PAGE_SHELL_STYLE} ?aside-toggle=${withSidenav}>
         ${withSidenav ? renderSidenav() : null} ${renderBreadcrumb()} ${renderSettingsPage()} ${renderFooter()}
       </ds-page-shell>

@@ -17,7 +17,7 @@ function mountStepList(props: Partial<DsStepList> = {}): Promise<DsStepList> {
   return mountWithProps<DsStepList>('<ds-step-list></ds-step-list>', { steps: STEPS, ...props });
 }
 
-function stepEls(el: DsStepList): NodeListOf<HTMLLIElement> {
+function getStepElements(el: DsStepList): NodeListOf<HTMLLIElement> {
   return el.shadowRoot!.querySelectorAll<HTMLLIElement>('[part="step"]');
 }
 
@@ -40,7 +40,7 @@ function followSelections(el: DsStepList): void {
 describe('<ds-step-list>', () => {
   it('marks every step before the current index done', async () => {
     const el = await mountStepList({ currentIndex: 2 });
-    const steps = stepEls(el);
+    const steps = getStepElements(el);
     expect(steps[0].getAttribute('data-status')).toBe('done');
     expect(steps[1].getAttribute('data-status')).toBe('done');
     expect(steps[2].getAttribute('data-status')).toBe('current');
@@ -48,14 +48,14 @@ describe('<ds-step-list>', () => {
 
   it('leaves steps after the current index upcoming', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    const steps = stepEls(el);
+    const steps = getStepElements(el);
     expect(steps[1].getAttribute('data-status')).toBe('upcoming');
     expect(steps[2].getAttribute('data-status')).toBe('upcoming');
   });
 
   it('marks aria-current="step" only on the current step', async () => {
     const el = await mountStepList({ currentIndex: 1 });
-    const steps = stepEls(el);
+    const steps = getStepElements(el);
     expect(steps[0].querySelector('[aria-current]')).toBeNull();
     expect(steps[1].querySelector('[aria-current="step"]')).not.toBeNull();
     expect(steps[2].querySelector('[aria-current]')).toBeNull();
@@ -71,7 +71,7 @@ describe('<ds-step-list>', () => {
   it('fires ds-step-select with the index of a done step the reader clicks', async () => {
     const el = await mountStepList({ currentIndex: 2 });
     const selected = collectSelections(el);
-    const doneButton = stepEls(el)[0].querySelector('button')!;
+    const doneButton = getStepElements(el)[0].querySelector('button')!;
     doneButton.click();
     expect(selected).toEqual([0]);
   });
@@ -80,7 +80,7 @@ describe('<ds-step-list>', () => {
     const el = await mountStepList({ currentIndex: 0 });
     const selected = collectSelections(el);
 
-    stepEls(el)[2].querySelector('button')!.click();
+    getStepElements(el)[2].querySelector('button')!.click();
 
     expect(selected).toEqual([2]);
   });
@@ -88,7 +88,7 @@ describe('<ds-step-list>', () => {
   it('keeps focus on the step the reader moves onto, so the keyboard does not fall back to the top of the page', async () => {
     const el = await mountStepList({ currentIndex: 1 });
     followSelections(el);
-    const doneStep = stepEls(el)[0].querySelector('button')!;
+    const doneStep = getStepElements(el)[0].querySelector('button')!;
 
     doneStep.focus();
     doneStep.click();
@@ -101,7 +101,7 @@ describe('<ds-step-list>', () => {
   it('leaves the step the reader is already on out of the tab order in both layouts, and selects nothing', async () => {
     const el = await mountStepList({ currentIndex: 1 });
     const selected = collectSelections(el);
-    const step = stepEls(el)[1].querySelector('button')!;
+    const step = getStepElements(el)[1].querySelector('button')!;
     const segment = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('[part="segment"]')[1]!;
 
     step.click();

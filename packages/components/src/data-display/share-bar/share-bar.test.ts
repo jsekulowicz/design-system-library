@@ -13,17 +13,17 @@ beforeEach(() => {
   resetTestDom();
 });
 
-function segmentGrow(el: DsShareBar): string[] {
+function getSegmentGrow(el: DsShareBar): string[] {
   return [...el.shadowRoot!.querySelectorAll<HTMLElement>('[part="segment"]')].map((node) => node.style.flexGrow);
 }
 
-function legendText(el: DsShareBar): string[] {
+function getLegendText(el: DsShareBar): string[] {
   return [...el.shadowRoot!.querySelectorAll('.legend li')].map((node) =>
     node.textContent!.replace(/\s+/g, ' ').trim(),
   );
 }
 
-function segmentColors(el: DsShareBar): string[] {
+function getSegmentColors(el: DsShareBar): string[] {
   return [...el.shadowRoot!.querySelectorAll<HTMLElement>('[part="segment"]')].map((node) => node.style.background);
 }
 
@@ -40,7 +40,7 @@ describe('<ds-share-bar>', () => {
       { label: 'A', value: 30 },
       { label: 'B', value: 10 },
     ]);
-    expect(segmentGrow(el)).toEqual(['30', '10']);
+    expect(getSegmentGrow(el)).toEqual(['30', '10']);
   });
 
   it('leaves the segment spacing it is given between neighboring segments', async () => {
@@ -65,7 +65,7 @@ describe('<ds-share-bar>', () => {
       { label: 'Medium', value: 8 },
       { label: 'Hard', value: 3 },
     ]);
-    expect(legendText(el)).toEqual(['Easy 8%', 'Medium 67%', 'Hard 25%']);
+    expect(getLegendText(el)).toEqual(['Easy 8%', 'Medium 67%', 'Hard 25%']);
   });
 
   it('rolls the smallest values past max-segments into one Other segment', async () => {
@@ -79,7 +79,7 @@ describe('<ds-share-bar>', () => {
       ],
       'max-segments="3" other-label="Other"',
     );
-    expect(legendText(el)).toEqual(['A 50%', 'B 30%', 'Other 20%']);
+    expect(getLegendText(el)).toEqual(['A 50%', 'B 30%', 'Other 20%']);
   });
 
   it('does not roll a single overflow item into Other', async () => {
@@ -91,7 +91,7 @@ describe('<ds-share-bar>', () => {
       ],
       'max-segments="3"',
     );
-    expect(legendText(el)).toEqual(['A 50%', 'B 30%', 'C 20%']);
+    expect(getLegendText(el)).toEqual(['A 50%', 'B 30%', 'C 20%']);
   });
 
   it('gives adjacent segments colors from different token families', async () => {
@@ -99,7 +99,7 @@ describe('<ds-share-bar>', () => {
       { label: 'A', value: 1 },
       { label: 'B', value: 1 },
     ]);
-    expect(segmentColors(el)).toEqual(['var(--ds-color-chart-1)', 'var(--ds-color-chart-3)']);
+    expect(getSegmentColors(el)).toEqual(['var(--ds-color-chart-1)', 'var(--ds-color-chart-3)']);
   });
 
   it('paints the Other segment in the muted foreground, not a category color', async () => {
@@ -111,7 +111,7 @@ describe('<ds-share-bar>', () => {
       ],
       'max-segments="2"',
     );
-    expect(segmentColors(el)).toEqual(['var(--ds-color-chart-1)', 'var(--ds-color-fg-muted)']);
+    expect(getSegmentColors(el)).toEqual(['var(--ds-color-chart-1)', 'var(--ds-color-fg-muted)']);
   });
 
   it('shows the empty label instead of a legend when every value is zero', async () => {
@@ -135,7 +135,7 @@ describe('<ds-share-bar>', () => {
     const el = await mountWith([{ label: 'A', value: 1 }]);
     el.formatPercent = (percent) => `${percent.toFixed(1)} pct`;
     await el.updateComplete;
-    expect(legendText(el)).toEqual(['A 100.0 pct']);
+    expect(getLegendText(el)).toEqual(['A 100.0 pct']);
   });
 
   it('ignores negative and non-finite values', async () => {
@@ -144,7 +144,7 @@ describe('<ds-share-bar>', () => {
       { label: 'B', value: -5 },
       { label: 'C', value: Number.NaN },
     ]);
-    expect(legendText(el)).toEqual(['A 100%']);
+    expect(getLegendText(el)).toEqual(['A 100%']);
   });
 
   it('centers an icon tile in its share color only over the shares whose datum names one', async () => {
@@ -155,9 +155,9 @@ describe('<ds-share-bar>', () => {
     const slots = [...el.shadowRoot!.querySelectorAll<HTMLElement>('.icon-slot')];
     const tile = slots[0]!.querySelector<HTMLElement>('[part="segment-icon"]')!;
 
-    expect(slots.map((slot) => slot.style.flexGrow)).toEqual(segmentGrow(el));
+    expect(slots.map((slot) => slot.style.flexGrow)).toEqual(getSegmentGrow(el));
     expect(tile.querySelector('ds-icon')!.getAttribute('name')).toBe('star');
-    expect(tile.style.background).toBe(segmentColors(el)[0]);
+    expect(tile.style.background).toBe(getSegmentColors(el)[0]);
     expect(slots[1]!.querySelector('[part="segment-icon"]')).toBeNull();
   });
 

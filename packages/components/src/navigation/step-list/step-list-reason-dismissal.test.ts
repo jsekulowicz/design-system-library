@@ -13,14 +13,14 @@ function mountStepList(props: Partial<DsStepList> = {}): Promise<DsStepList> {
   return mountWithProps<DsStepList>('<ds-step-list></ds-step-list>', { steps: STEPS, ...props });
 }
 
-function stepEls(el: DsStepList): NodeListOf<HTMLLIElement> {
+function getStepElements(el: DsStepList): NodeListOf<HTMLLIElement> {
   return el.shadowRoot!.querySelectorAll<HTMLLIElement>('[part="step"]');
 }
 
 describe('<ds-step-list> dismissing a reason', () => {
   it('forgets an explanation once the step opens up, so it cannot return unasked when the step closes again', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
 
     el.steps = [{ label: 'One' }, { label: 'Two' }];
@@ -33,7 +33,7 @@ describe('<ds-step-list> dismissing a reason', () => {
 
   it('stops explaining on Escape even when the click that opened it left focus on the page, as Safari does', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
 
     document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
@@ -44,10 +44,10 @@ describe('<ds-step-list> dismissing a reason', () => {
 
   it('stops explaining once the reader looks somewhere else', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
 
-    stepEls(el)[1]
+    getStepElements(el)[1]
       .querySelector('button')!
       .dispatchEvent(new FocusEvent('focusout', { relatedTarget: document.body, bubbles: true, composed: true }));
     await el.updateComplete;
@@ -60,7 +60,7 @@ describe('<ds-step-list> dismissing a reason', () => {
       steps: [{ label: 'One' }, { label: 'Two', disabled: true, reason: 'Not yet' }, { label: 'Three' }],
       currentIndex: 0,
     });
-    const [, explained, next] = [...stepEls(el)].map((step) => step.querySelector('button')!);
+    const [, explained, next] = [...getStepElements(el)].map((step) => step.querySelector('button')!);
     explained.click();
     await el.updateComplete;
 
@@ -81,7 +81,7 @@ describe('<ds-step-list> dismissing a reason', () => {
 
   it('keeps an Escape that dismissed a reason from also closing a surrounding dialog', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
     const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
 
@@ -92,7 +92,7 @@ describe('<ds-step-list> dismissing a reason', () => {
 
   it('stops explaining when the reader clicks outside, where a tap never moves focus', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
 
     document.body.click();
@@ -103,7 +103,7 @@ describe('<ds-step-list> dismissing a reason', () => {
 
   it('keeps explaining through a click inside the step list', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
 
     el.shadowRoot!.querySelector('nav')!.click();
@@ -114,7 +114,7 @@ describe('<ds-step-list> dismissing a reason', () => {
 
   it('forgets an explanation when the step list leaves the page, so it does not reappear on return', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
 
     const parent = el.parentElement!;

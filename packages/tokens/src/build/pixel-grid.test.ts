@@ -8,8 +8,8 @@ function toPx(value: string): number {
   return value.endsWith('rem') ? Number.parseFloat(value) * ROOT_FONT_SIZE : Number.parseFloat(value);
 }
 
-function snapUp(px: number): number {
-  return Math.ceil(px / PIXEL_GRID) * PIXEL_GRID;
+function snapUp(pixels: number): number {
+  return Math.ceil(pixels / PIXEL_GRID) * PIXEL_GRID;
 }
 
 describe('line-height pixel grid', () => {
@@ -32,14 +32,16 @@ describe('line-height pixel grid', () => {
     }
   });
 
-  const emitted = (): Record<string, string> => ({
-    'base.css': buildBaseCss(),
-    'theme-default-light.css': buildThemeCss('light'),
-    'theme-default-dark.css': buildThemeCss('dark'),
-  });
+  function buildEmittedFiles(): Record<string, string> {
+    return {
+      'base.css': buildBaseCss(),
+      'theme-default-light.css': buildThemeCss('light'),
+      'theme-default-dark.css': buildThemeCss('dark'),
+    };
+  }
 
   it('emits every line-height token snapped to the pixel grid', () => {
-    for (const [file, css] of Object.entries(emitted())) {
+    for (const [file, css] of Object.entries(buildEmittedFiles())) {
       for (const [name, multiplier] of Object.entries(lineHeight)) {
         expect(css, file).toContain(`--ds-line-height-${name}: ${roundedLineHeight(multiplier)};`);
       }
@@ -47,7 +49,7 @@ describe('line-height pixel grid', () => {
   });
 
   it('leaves no bare multiplier that a later layer could restore', () => {
-    for (const [file, css] of Object.entries(emitted())) {
+    for (const [file, css] of Object.entries(buildEmittedFiles())) {
       for (const [name, multiplier] of Object.entries(lineHeight)) {
         expect(css, file).not.toContain(`--ds-line-height-${name}: ${multiplier};`);
       }

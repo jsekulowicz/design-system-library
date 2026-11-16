@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  civilFromDays,
+  toCivilFromDays,
   computeHeatmapLayout,
-  daysFromCivil,
+  toDaysFromCivil,
   formatCivil,
-  levelForValue,
+  getLevelForValue,
   parseDate,
 } from './heatmap-layout.js';
 
@@ -19,20 +19,20 @@ describe('heatmap date math', () => {
     const dates = ['1970-01-01', '2000-02-29', '2026-07-13'];
     for (const value of dates) {
       const parsed = parseDate(value)!;
-      expect(formatCivil(civilFromDays(daysFromCivil(parsed)))).toBe(value);
+      expect(formatCivil(toCivilFromDays(toDaysFromCivil(parsed)))).toBe(value);
     }
   });
 });
 
-describe('levelForValue', () => {
+describe('getLevelForValue', () => {
   it('quantizes positive values to levels 1 through 4', () => {
-    expect([0, 1, 2, 4, 6, 8].map((value) => levelForValue(value, 8))).toEqual([0, 1, 1, 2, 3, 4]);
+    expect([0, 1, 2, 4, 6, 8].map((value) => getLevelForValue(value, 8))).toEqual([0, 1, 1, 2, 3, 4]);
   });
 
   it('keeps invalid scales at level zero and clamps over-max values', () => {
-    expect(levelForValue(3, 0)).toBe(0);
-    expect(levelForValue(-1, 10)).toBe(0);
-    expect(levelForValue(20, 10)).toBe(4);
+    expect(getLevelForValue(3, 0)).toBe(0);
+    expect(getLevelForValue(-1, 10)).toBe(0);
+    expect(getLevelForValue(20, 10)).toBe(4);
   });
 });
 

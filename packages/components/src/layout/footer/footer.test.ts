@@ -33,14 +33,16 @@ describe('<ds-footer>', () => {
     );
     const startSlot = el.shadowRoot!.querySelector('[part="start"] slot') as HTMLSlotElement;
     const endSlot = el.shadowRoot!.querySelector('[part="end"] slot') as HTMLSlotElement;
-    const startNodes = startSlot.assignedNodes({ flatten: true }).filter((n) => n.nodeType === 1);
-    const endNodes = endSlot.assignedNodes({ flatten: true }).filter((n) => n.nodeType === 1);
+    const startNodes = startSlot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === 1);
+    const endNodes = endSlot.assignedNodes({ flatten: true }).filter((node) => node.nodeType === 1);
     expect((startNodes[0] as HTMLElement).getAttribute('data-test')).toBe('s');
     expect((endNodes[0] as HTMLElement).getAttribute('data-test')).toBe('e');
   });
 
   it('uses a fixed 36px chrome height on footer and 16px inline padding on the inner content wrapper', () => {
-    const css = (DsFooter as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
+    const css = (DsFooter as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
     expect(css).toMatch(/footer\s*{[^}]*height:\s*36px/);
     expect(css).toMatch(/\.inner\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
     expect(css).toMatch(/\.inner\s*{[^}]*max-width:\s*var\(--ds-footer-content-max-width/);

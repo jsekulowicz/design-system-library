@@ -67,7 +67,7 @@ describe('SlotPresenceController', () => {
     expect(host.slots.has(DEFAULT_SLOT)).toBe(false);
   });
 
-  it('hasAny reports whether any of the named slots is filled', async () => {
+  it('reports through hasAny whether any of the named slots is filled', async () => {
     const host = await mount<PresenceHost>('<presence-host><span slot="tip">Tip</span></presence-host>');
     await settle();
 

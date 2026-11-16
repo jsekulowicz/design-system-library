@@ -42,7 +42,7 @@ interface PageShellStoryOptions {
   asideEndState?: 'visible' | 'hidden';
 }
 
-function pageShellStory(inner: ReturnType<typeof html>, options: PageShellStoryOptions = {}) {
+function renderPageShellStory(inner: ReturnType<typeof html>, options: PageShellStoryOptions = {}) {
   const {
     style = FLUID_PAGE_SHELL_STYLE,
     asideToggle = false,
@@ -65,10 +65,9 @@ function pageShellStory(inner: ReturnType<typeof html>, options: PageShellStoryO
 }
 
 export const WithSidenav: Story = {
-  name: 'With Sidenav',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(html`
+    renderPageShellStory(html`
       <div slot="header-actions">
         <ds-button variant="primary" size="sm">New project</ds-button>
       </div>
@@ -101,7 +100,6 @@ export const WithSidenav: Story = {
 };
 
 export const NoAside: Story = {
-  name: 'No Aside',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
     html`<div style="height:${FRAME_HEIGHT}px;overflow:hidden;border-bottom:1px solid var(--ds-color-border)">
@@ -126,7 +124,7 @@ export const NoAside: Story = {
 export const ConstrainedWidth: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(
+    renderPageShellStory(
       html`
         <div slot="header-actions">
           <ds-button variant="secondary" size="sm">Export</ds-button>
@@ -157,10 +155,9 @@ export const ConstrainedWidth: Story = {
 };
 
 export const CollapsedSidenav: Story = {
-  name: 'Collapsed Sidenav',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(
+    renderPageShellStory(
       html`
         <div slot="header-actions">
           <ds-button variant="secondary" size="sm">Invite</ds-button>
@@ -197,10 +194,9 @@ export const CollapsedSidenav: Story = {
 };
 
 export const CollapsibleAsides: Story = {
-  name: 'Collapsible Asides',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(
+    renderPageShellStory(
       html`
         <ds-sidenav slot="aside">
           <ds-nav-item href="#" current>
@@ -237,10 +233,9 @@ export const CollapsibleAsides: Story = {
 };
 
 export const OverflowingMain: Story = {
-  name: 'Overflowing Main',
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(html`
+    renderPageShellStory(html`
       <div slot="header-actions">
         <ds-button variant="primary" size="sm">Action</ds-button>
       </div>
@@ -278,7 +273,7 @@ export const OverflowingMain: Story = {
 export const NonScrollingPageHeader: Story = {
   parameters: { docs: { story: { height: STORY_HEIGHT } } },
   render: () =>
-    pageShellStory(html`
+    renderPageShellStory(html`
       <ds-sidenav slot="aside">
         <ds-nav-item href="#" current>
           <ds-icon slot="icon" name="home" size="lg"></ds-icon>

@@ -23,7 +23,7 @@ beforeEach(() => {
   vi.useRealTimers();
 });
 
-function domRect(top: number, left: number, width: number, height: number): DOMRect {
+function createDomRect(top: number, left: number, width: number, height: number): DOMRect {
   return {
     top,
     left,
@@ -40,7 +40,7 @@ function domRect(top: number, left: number, width: number, height: number): DOMR
 function setupPopoverHarness(el: DsTooltip): PopoverHarness {
   const tooltip = el.shadowRoot!.querySelector('.tooltip') as HTMLElement;
   const anchor = el.shadowRoot!.querySelector('.anchor') as HTMLElement;
-  anchor.getBoundingClientRect = () => domRect(100, 200, 80, 40);
+  anchor.getBoundingClientRect = () => createDomRect(100, 200, 80, 40);
 
   let openState = false;
   let showCalls = 0;

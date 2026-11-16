@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import type { DsPageShell } from './page-shell.test-helpers.js';
-import { forceDesktopLayout, forceMobileLayout, mount, pageShellTemplate } from './page-shell.test-helpers.js';
+import { forceDesktopLayout, forceMobileLayout, mount, renderPageShell } from './page-shell.test-helpers.js';
 
 describe('<ds-page-shell>', () => {
   describe('mobile drawer (ds-drawer integration)', () => {
     it('renders a ds-drawer with part="aside" in mobile layout, plain <aside> in desktop', async () => {
-      const el = await mount<DsPageShell>(pageShellTemplate());
+      const el = await mount<DsPageShell>(renderPageShell());
       await forceDesktopLayout(el);
       expect(el.shadowRoot!.querySelector('aside[part="aside"]')).not.toBeNull();
       expect(el.shadowRoot!.querySelector('ds-drawer[part="aside"]')).toBeNull();
@@ -16,7 +16,7 @@ describe('<ds-page-shell>', () => {
     });
 
     it('anchors the mobile drawer at the inline start as a small drawer', async () => {
-      const el = await mount<DsPageShell>(pageShellTemplate());
+      const el = await mount<DsPageShell>(renderPageShell());
       await forceMobileLayout(el);
       const drawer = el.shadowRoot!.querySelector('ds-drawer')!;
       expect(drawer.getAttribute('side')).toBe('start');
@@ -40,7 +40,7 @@ describe('<ds-page-shell>', () => {
     });
 
     it('opens and closes the ds-drawer in sync with mobile nav state', async () => {
-      const el = await mount<DsPageShell>(pageShellTemplate());
+      const el = await mount<DsPageShell>(renderPageShell());
       await forceMobileLayout(el);
       const drawer = el.shadowRoot!.querySelector('ds-drawer')! as HTMLElement & { open: boolean };
       expect(drawer.open).toBe(false);
@@ -58,7 +58,7 @@ describe('<ds-page-shell>', () => {
 
   describe('aside-end slot', () => {
     it('does not render the inline-end column when the slot is empty', async () => {
-      const el = await mount<DsPageShell>(pageShellTemplate());
+      const el = await mount<DsPageShell>(renderPageShell());
       await el.updateComplete;
       const asideEnd = el.shadowRoot!.querySelector('aside[part="aside-end"]');
       expect(asideEnd?.hasAttribute('hidden')).toBe(true);

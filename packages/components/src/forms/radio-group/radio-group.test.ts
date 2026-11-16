@@ -131,7 +131,7 @@ describe('<ds-radio-group>', () => {
     await Promise.all(Array.from(el.querySelectorAll<DsRadio>('ds-radio')).map((radio) => radio.updateComplete));
   }
 
-  function tabIndexes(el: DsRadioGroup): (string | null)[] {
+  function getTabIndexes(el: DsRadioGroup): (string | null)[] {
     return Array.from(el.querySelectorAll<DsRadio>('ds-radio')).map((radio) =>
       radio.shadowRoot!.querySelector('input')!.getAttribute('tabindex'),
     );
@@ -145,12 +145,12 @@ describe('<ds-radio-group>', () => {
 
   it('keeps a single tab stop on the selected radio (roving tabindex)', async () => {
     const el = await mountGroup('pro');
-    expect(tabIndexes(el)).toEqual(['-1', '0', '-1']);
+    expect(getTabIndexes(el)).toEqual(['-1', '0', '-1']);
   });
 
   it('falls back the tab stop to the first radio when nothing is selected', async () => {
     const el = await mountGroup('');
-    expect(tabIndexes(el)).toEqual(['0', '-1', '-1']);
+    expect(getTabIndexes(el)).toEqual(['0', '-1', '-1']);
   });
 
   it('moves selection and the tab stop with ArrowDown (selection follows focus)', async () => {
@@ -163,7 +163,7 @@ describe('<ds-radio-group>', () => {
 
     expect(el.value).toBe('pro');
     expect(events.at(-1)?.detail).toEqual({ value: 'pro' });
-    expect(tabIndexes(el)).toEqual(['-1', '0', '-1']);
+    expect(getTabIndexes(el)).toEqual(['-1', '0', '-1']);
   });
 
   it('wraps to the last radio with ArrowUp from the first', async () => {

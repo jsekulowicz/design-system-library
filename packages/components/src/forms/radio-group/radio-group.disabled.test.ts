@@ -7,7 +7,7 @@ import { mount, resetTestDom } from '../../test-utils/mount.js';
 
 beforeEach(resetTestDom);
 
-async function group(): Promise<DsRadioGroup> {
+async function mountGroup(): Promise<DsRadioGroup> {
   const element = await mount<DsRadioGroup>(`
     <ds-radio-group label="Hint" name="hint">
       <ds-radio radio-value="letter" disabled>Letter</ds-radio>
@@ -21,7 +21,7 @@ async function group(): Promise<DsRadioGroup> {
 
 describe('individually disabled radio options', () => {
   it('keeps the disabled option and leaves the other option unselected', async () => {
-    const element = await group();
+    const element = await mountGroup();
     const [letter, word] = element.querySelectorAll<DsRadio>('ds-radio');
 
     expect(letter!.disabled).toBe(true);
@@ -32,7 +32,7 @@ describe('individually disabled radio options', () => {
   });
 
   it('restores individual disabled states after enabling the group', async () => {
-    const element = await group();
+    const element = await mountGroup();
     element.disabled = true;
     await element.updateComplete;
     element.disabled = false;
@@ -45,7 +45,7 @@ describe('individually disabled radio options', () => {
   });
 
   it('moves the tab stop when the selected option becomes disabled', async () => {
-    const element = await group();
+    const element = await mountGroup();
     element.value = 'word';
     await element.updateComplete;
     const [letter, word] = element.querySelectorAll<DsRadio>('ds-radio');
@@ -59,7 +59,7 @@ describe('individually disabled radio options', () => {
   });
 
   it('makes an asynchronously enabled option reachable without selecting it', async () => {
-    const element = await group();
+    const element = await mountGroup();
     const [letter, word] = element.querySelectorAll<DsRadio>('ds-radio');
     word!.disabled = true;
     await word!.updateComplete;

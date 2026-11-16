@@ -2,21 +2,21 @@ import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import { colorForIndex } from '../../shared/chart-colors.js';
+import { getColorForIndex } from '../../shared/chart-colors.js';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import { loadingOverlayStyles } from '../../shared/loading-overlay.styles.js';
 import { renderLoadingOverlay, renderLoadingStatus } from '../../shared/loading-overlay.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
-import { isKeyboardFocus, sliceIndexFrom } from './pie-focus.js';
-import { centerContentSizeFor } from './pie-geometry.js';
+import { isKeyboardFocus, getSliceIndexFrom } from './pie-focus.js';
+import { computeCenterContentSize } from './pie-geometry.js';
 import { pieChartStyles } from './pie-chart.styles.js';
 import { pointTooltipStyles } from '../../shared/point-tooltip.styles.js';
 import { syncPointTooltip } from '../../shared/point-tooltip.js';
-import { preparePieSlices, sliceTotal } from './pie-layout.js';
+import { preparePieSlices, sumSliceValues } from './pie-layout.js';
 import { renderPieSvg } from './pie-chart-svg.js';
 import {
-  pieLiveText,
-  pieSummaryText,
+  getPieLiveText,
+  getPieSummaryText,
   renderDonutCenter,
   renderPieLegend,
   renderPieSrTable,
@@ -99,10 +99,10 @@ export class DsPieChart extends DsElement {
       donut: this.donut,
       innerRadius: this.innerRadius,
       showPercentages: this.showPercentages,
-      total: sliceTotal(slices),
+      total: sumSliceValues(slices),
       activeIndex: this._activeIndex,
       focusMode: this._focusMode,
-      sliceColor: (slice, index) => slice.color ?? colorForIndex(index),
+      sliceColor: (slice, index) => slice.color ?? getColorForIndex(index),
       formatValue: (value) => (this.formatValue ? this.formatValue(value) : String(value)),
       formatPercent: (percent) => (this.formatPercent ? this.formatPercent(percent) : `${Math.round(percent)}%`),
       chartLabel: this.chartLabel,
@@ -143,7 +143,7 @@ export class DsPieChart extends DsElement {
       >
         <div
           class="canvas"
-          style="--pie-size:${this.size}px;--pie-center-size:${centerContentSizeFor(this.donut, this.innerRadius)}%"
+          style="--pie-size:${this.size}px;--pie-center-size:${computeCenterContentSize(this.donut, this.innerRadius)}%"
           @pointerover=${this.#onPointerOver}
           @pointerleave=${this.#onPointerLeave}
         >
@@ -152,8 +152,8 @@ export class DsPieChart extends DsElement {
         ${this.showLegend ? renderPieLegend(ctx, slices) : nothing}
         ${this.loading ? renderLoadingOverlay(loadingContent) : nothing}
       </div>
-      ${renderChartTitle(this.uid, pieSummaryText(ctx, slices))} ${renderPieSrTable(ctx, slices)}
-      ${renderChartLiveRegion(pieLiveText(ctx, slices))}
+      ${renderChartTitle(this.uid, getPieSummaryText(ctx, slices))} ${renderPieSrTable(ctx, slices)}
+      ${renderChartLiveRegion(getPieLiveText(ctx, slices))}
     `;
   }
 
@@ -228,7 +228,7 @@ export class DsPieChart extends DsElement {
   };
 
   #onFocusIn = (event: FocusEvent): void => {
-    const index = sliceIndexFrom(event.target);
+    const index = getSliceIndexFrom(event.target);
     if (index === null) {
       return;
     }
@@ -245,14 +245,14 @@ export class DsPieChart extends DsElement {
   };
 
   #onClick = (event: MouseEvent): void => {
-    const index = sliceIndexFrom(event.target);
+    const index = getSliceIndexFrom(event.target);
     if (index !== null) {
       this.#emitSlice('ds-slice-select', index);
     }
   };
 
   #onPointerOver = (event: PointerEvent): void => {
-    const index = sliceIndexFrom(event.target);
+    const index = getSliceIndexFrom(event.target);
     if (index === null || this._focusMode === 'keyboard') {
       return;
     }

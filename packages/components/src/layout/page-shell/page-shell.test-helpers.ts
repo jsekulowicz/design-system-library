@@ -29,13 +29,13 @@ class ResizeObserverMock {
   unobserve(): void {}
 }
 
-function shellResizeObserver(el: Element): ResizeObserverMock {
+function findShellResizeObserver(el: Element): ResizeObserverMock {
   return ResizeObserverMock.instances.find((observer) => observer.target === el) ?? ResizeObserverMock.instances[0]!;
 }
 
 const OriginalResizeObserver = globalThis.ResizeObserver;
 
-function pageShellTemplate(): string {
+function renderPageShell(): string {
   return `
     <ds-page-shell brand="Brand">
       <div slot="aside" collapsed>
@@ -46,7 +46,7 @@ function pageShellTemplate(): string {
   `;
 }
 
-function pageShellWithFooterTemplate(): string {
+function renderPageShellWithFooter(): string {
   return `
     <ds-page-shell brand="Brand">
       <div slot="aside" collapsed>
@@ -77,13 +77,13 @@ beforeEach(() => {
 });
 
 async function forceMobileLayout(el: DsPageShell): Promise<void> {
-  const observer = shellResizeObserver(el);
+  const observer = findShellResizeObserver(el);
   observer.callback([{ contentRect: { width: 360 } } as ResizeObserverEntry], observer as never);
   await el.updateComplete;
 }
 
 async function forceDesktopLayout(el: DsPageShell): Promise<void> {
-  const observer = shellResizeObserver(el);
+  const observer = findShellResizeObserver(el);
   observer.callback([{ contentRect: { width: 1024 } } as ResizeObserverEntry], observer as never);
   await el.updateComplete;
 }
@@ -95,7 +95,7 @@ export {
   forceDesktopLayout,
   forceMobileLayout,
   mount,
-  pageShellTemplate,
-  pageShellWithFooterTemplate,
-  shellResizeObserver,
+  renderPageShell,
+  renderPageShellWithFooter,
+  findShellResizeObserver,
 };

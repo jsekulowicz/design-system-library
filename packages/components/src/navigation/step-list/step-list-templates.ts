@@ -13,7 +13,7 @@ export type StepStatus = 'done' | 'current' | 'upcoming';
 
 export type StepListLayout = 'list' | 'compact';
 
-export function statusOf(index: number, currentIndex: number): StepStatus {
+export function getStepStatus(index: number, currentIndex: number): StepStatus {
   if (index < currentIndex) {
     return 'done';
   }
@@ -23,15 +23,15 @@ export function statusOf(index: number, currentIndex: number): StepStatus {
   return 'upcoming';
 }
 
-export function reasonId(index: number, layout: StepListLayout): string {
+export function getReasonId(index: number, layout: StepListLayout): string {
   return `reason-${layout}-${index}`;
 }
 
-function ariaCurrent(step: StepListStep, status: StepStatus): 'step' | undefined {
+function getAriaCurrent(step: StepListStep, status: StepStatus): 'step' | undefined {
   return status === 'current' && !step.disabled ? 'step' : undefined;
 }
 
-function ariaDisabled(step: StepListStep): 'true' | undefined {
+function getAriaDisabled(step: StepListStep): 'true' | undefined {
   return step.disabled ? 'true' : undefined;
 }
 
@@ -63,13 +63,13 @@ export function renderStepButton(
   status: StepStatus,
   { describedBy, nativelyDisabled, onActivate }: StepButtonOptions,
 ): TemplateResult {
-  const current = ariaCurrent(step, status);
+  const current = getAriaCurrent(step, status);
   return html`<button
     type="button"
     class="step-control ds-focus-ring"
     tabindex=${ifDefined(current ? '-1' : undefined)}
     ?disabled=${nativelyDisabled}
-    aria-disabled=${ifDefined(ariaDisabled(step))}
+    aria-disabled=${ifDefined(getAriaDisabled(step))}
     aria-current=${ifDefined(current)}
     aria-describedby=${ifDefined(describedBy)}
     @click=${onActivate}
@@ -83,7 +83,7 @@ export function renderSegmentButton(
   status: StepStatus,
   { describedBy, nativelyDisabled, onActivate }: StepButtonOptions,
 ): TemplateResult {
-  const current = ariaCurrent(step, status);
+  const current = getAriaCurrent(step, status);
   return html`<button
     type="button"
     part="segment"
@@ -91,7 +91,7 @@ export function renderSegmentButton(
     data-status=${status}
     tabindex=${ifDefined(current ? '-1' : undefined)}
     ?disabled=${nativelyDisabled}
-    aria-disabled=${ifDefined(ariaDisabled(step))}
+    aria-disabled=${ifDefined(getAriaDisabled(step))}
     aria-current=${ifDefined(current)}
     aria-label=${step.label}
     aria-describedby=${ifDefined(describedBy)}
@@ -126,7 +126,7 @@ export function renderInReasonTooltip(
       @pointerdown=${onPress}
     >
       ${trigger}
-      <span slot="tip" id=${reasonId(index, layout)}>${reason}</span>
+      <span slot="tip" id=${getReasonId(index, layout)}>${reason}</span>
     </ds-tooltip>
   `;
 }

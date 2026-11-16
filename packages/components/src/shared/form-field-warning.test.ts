@@ -41,7 +41,9 @@ describe('field warning message', () => {
   it('sits in the same row a description would, so nothing shifts', async () => {
     const withDescription = await mount({ description: 'A description' });
     const withWarning = await mount({ warning: 'A warning' });
-    const row = (el: DsTextField) => el.shadowRoot!.querySelector('.field-footer')!.children.length;
-    expect(row(withWarning)).toBe(row(withDescription));
+    function countFooterRows(el: DsTextField): number {
+      return el.shadowRoot!.querySelector('.field-footer')!.children.length;
+    }
+    expect(countFooterRows(withWarning)).toBe(countFooterRows(withDescription));
   });
 });

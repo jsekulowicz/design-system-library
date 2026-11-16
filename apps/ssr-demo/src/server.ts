@@ -8,7 +8,7 @@ const baseCss = readFileSync(new URL('../../../packages/tokens/dist/theme-defaul
 const server = createServer(async (request, response) => {
   if (request.url === '/client.js') {
     response.writeHead(200, { 'content-type': 'text/javascript' });
-    response.end(clientBootstrap());
+    response.end(renderClientBootstrap());
     return;
   }
   const html = await renderPage(baseCss);
@@ -16,7 +16,7 @@ const server = createServer(async (request, response) => {
   response.end(html);
 });
 
-function clientBootstrap(): string {
+function renderClientBootstrap(): string {
   return `
     import '@lit-labs/ssr-client/lit-element-hydrate-support.js';
     import '@jsekulowicz/ds-components/button/define';

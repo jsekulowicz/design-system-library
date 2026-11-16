@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  niceMax,
+  computeNiceMax,
   generateTicks,
   groupData,
   computeGroupBands,
@@ -8,27 +8,27 @@ import {
   computeStackSegments,
 } from './layout.js';
 
-describe('niceMax', () => {
+describe('computeNiceMax', () => {
   it('returns 1 for non-positive or non-finite values', () => {
-    expect(niceMax(0)).toBe(1);
-    expect(niceMax(-5)).toBe(1);
-    expect(niceMax(Number.NaN)).toBe(1);
+    expect(computeNiceMax(0)).toBe(1);
+    expect(computeNiceMax(-5)).toBe(1);
+    expect(computeNiceMax(Number.NaN)).toBe(1);
   });
 
   it('rounds typical values up to the next nice boundary', () => {
-    expect(niceMax(7)).toBe(10);
-    expect(niceMax(23)).toBe(25);
-    expect(niceMax(41)).toBe(50);
-    expect(niceMax(101)).toBe(200);
+    expect(computeNiceMax(7)).toBe(10);
+    expect(computeNiceMax(23)).toBe(25);
+    expect(computeNiceMax(41)).toBe(50);
+    expect(computeNiceMax(101)).toBe(200);
   });
 
   it('handles fractional maxima', () => {
-    expect(niceMax(0.8)).toBe(1);
-    expect(niceMax(0.04)).toBe(0.05);
+    expect(computeNiceMax(0.8)).toBe(1);
+    expect(computeNiceMax(0.04)).toBe(0.05);
   });
 
   it('keeps exact powers at the same scale', () => {
-    expect(niceMax(1)).toBe(1);
+    expect(computeNiceMax(1)).toBe(1);
   });
 });
 
@@ -94,20 +94,20 @@ describe('computeGroupedBars', () => {
   it('returns one bar per series with equal widths', () => {
     const bars = computeGroupedBars(10, 60, 3, 2);
     expect(bars).toHaveLength(3);
-    bars.forEach((b) => expect(b.width).toBeCloseTo((60 - 2 * 2) / 3));
+    bars.forEach((bar) => expect(bar.width).toBeCloseTo((60 - 2 * 2) / 3));
     expect(bars[0].x).toBe(10);
     expect(bars[1].x).toBeCloseTo(10 + bars[0].width + 2);
   });
 
   it('clamps to minimum width 1 when space is tight', () => {
     const bars = computeGroupedBars(0, 5, 10, 2);
-    bars.forEach((b) => expect(b.width).toBeGreaterThanOrEqual(1));
+    bars.forEach((bar) => expect(bar.width).toBeGreaterThanOrEqual(1));
   });
 });
 
 describe('computeStackSegments', () => {
   it('stacks heights from the bottom up with monotonically decreasing y', () => {
-    const segs = computeStackSegments({ a: 2, b: 3 }, ['a', 'b'], 100, 10);
+    const segs = computeStackSegments({ first: 2, second: 3 }, ['first', 'second'], 100, 10);
     expect(segs[0].height).toBeCloseTo(20);
     expect(segs[1].height).toBeCloseTo(30);
     expect(segs[0].y).toBeCloseTo(80);
@@ -116,18 +116,18 @@ describe('computeStackSegments', () => {
   });
 
   it('sums heights proportional to total over yMax', () => {
-    const segs = computeStackSegments({ a: 2, b: 3 }, ['a', 'b'], 100, 10);
-    const totalHeight = segs.reduce((s, v) => s + v.height, 0);
+    const segs = computeStackSegments({ first: 2, second: 3 }, ['first', 'second'], 100, 10);
+    const totalHeight = segs.reduce((sum, segment) => sum + segment.height, 0);
     expect(totalHeight).toBeCloseTo(50);
   });
 
   it('returns zero-height segments when yMax or innerHeight is 0', () => {
-    const segs = computeStackSegments({ a: 2 }, ['a'], 0, 10);
+    const segs = computeStackSegments({ first: 2 }, ['first'], 0, 10);
     expect(segs[0].height).toBe(0);
   });
 
   it('falls back missing keys to 0 in both normal and zero-height paths', () => {
-    const regular = computeStackSegments({ a: 2 }, ['a', 'b'], 100, 10);
+    const regular = computeStackSegments({ first: 2 }, ['first', 'second'], 100, 10);
     expect(regular[1].value).toBe(0);
     const empty = computeStackSegments({}, ['missing'], 0, 0);
     expect(empty[0].value).toBe(0);

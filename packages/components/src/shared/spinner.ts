@@ -1,6 +1,6 @@
 import { css, html, type TemplateResult } from 'lit';
 
-export function spinnerTemplate(extraClasses = ''): TemplateResult {
+export function renderSpinner(extraClasses = ''): TemplateResult {
   return html`<svg
     class="spinner ds-allow-motion ${extraClasses}"
     part="spinner"

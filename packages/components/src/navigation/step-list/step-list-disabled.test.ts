@@ -13,7 +13,7 @@ function mountStepList(props: Partial<DsStepList> = {}): Promise<DsStepList> {
   return mountWithProps<DsStepList>('<ds-step-list></ds-step-list>', { steps: STEPS, ...props });
 }
 
-function stepEls(el: DsStepList): NodeListOf<HTMLLIElement> {
+function getStepElements(el: DsStepList): NodeListOf<HTMLLIElement> {
   return el.shadowRoot!.querySelectorAll<HTMLLIElement>('[part="step"]');
 }
 
@@ -26,7 +26,7 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
       { label: 'Summary' },
     ];
     const el = await mountStepList({ steps: withSkipped, currentIndex: 3 });
-    const steps = stepEls(el);
+    const steps = getStepElements(el);
 
     expect(steps[2].classList.contains('step-disabled')).toBe(true);
     expect(steps[2].querySelector('button')!.disabled).toBe(true);
@@ -39,8 +39,8 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
       currentIndex: 2,
     });
 
-    expect(stepEls(el)[1].querySelector('ds-icon')).toBeNull();
-    expect(stepEls(el)[0].querySelector('ds-icon')).not.toBeNull();
+    expect(getStepElements(el)[1].querySelector('ds-icon')).toBeNull();
+    expect(getStepElements(el)[0].querySelector('ds-icon')).not.toBeNull();
   });
 
   it('never selects an unavailable step, however often it is asked', async () => {
@@ -48,9 +48,9 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
     const selected: number[] = [];
     el.addEventListener('ds-step-select', () => selected.push(1));
 
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
     await el.updateComplete;
-    stepEls(el)[1].querySelector('button')!.click();
+    getStepElements(el)[1].querySelector('button')!.click();
 
     expect(selected).toEqual([]);
   });
@@ -60,7 +60,7 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
       steps: [{ label: 'One' }, { label: 'Two', disabled: true }],
       currentIndex: 0,
     });
-    const step = stepEls(el)[1].querySelector('button')!;
+    const step = getStepElements(el)[1].querySelector('button')!;
     const segment = el.shadowRoot!.querySelectorAll<HTMLButtonElement>('[part="segment"]')[1]!;
 
     expect([step.disabled, segment.disabled]).toEqual([true, true]);
@@ -78,7 +78,7 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
       steps: [{ label: 'One' }, { label: 'Two', disabled: true, reason: 'Fill in step one first' }, { label: 'Three' }],
       currentIndex: 0,
     });
-    const step = stepEls(el)[1];
+    const step = getStepElements(el)[1];
     const trigger = step.querySelector('button')!;
 
     expect(trigger.getAttribute('aria-disabled')).toBe('true');
@@ -96,7 +96,7 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
       steps: [{ label: 'One' }, { label: 'Two', disabled: true, reason: 'Fill in step one first' }],
       currentIndex: 0,
     });
-    const step = stepEls(el)[1].querySelector('button')!;
+    const step = getStepElements(el)[1].querySelector('button')!;
     const segment = el.shadowRoot!.querySelectorAll<HTMLElement>('.segment')[1];
     const describedBy = [step, segment].map((el) => el.getAttribute('aria-describedby')!);
 
@@ -115,7 +115,7 @@ describe('<ds-step-list> disabled steps and their reasons', () => {
 
   it('keeps the full list and the compact rail on reasons of their own, so neither resolves to the hidden one', async () => {
     const el = await mountStepList({ currentIndex: 0 });
-    const step = stepEls(el)[1].querySelector('button')!.getAttribute('aria-describedby');
+    const step = getStepElements(el)[1].querySelector('button')!.getAttribute('aria-describedby');
     const segment = el.shadowRoot!.querySelectorAll('.segment')[1].getAttribute('aria-describedby');
     const ids = [...el.shadowRoot!.querySelectorAll('[slot="tip"]')].map((tip) => tip.id);
 

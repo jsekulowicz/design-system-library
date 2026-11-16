@@ -33,7 +33,7 @@ beforeEach(() => {
   resetTestDom();
 });
 
-function footer(el: DsTextField): HTMLElement | null {
+function getFooter(el: DsTextField): HTMLElement | null {
   return el.shadowRoot!.querySelector('.field-footer');
 }
 
@@ -41,13 +41,13 @@ describe('field message space', () => {
   it('renders no message row by default', async () => {
     const el = await mount<DsTextField>('<ds-text-field label="Email"></ds-text-field>');
 
-    expect(footer(el)).toBeNull();
+    expect(getFooter(el)).toBeNull();
   });
 
   it('holds the row open when requested', async () => {
     const el = await mount<DsTextField>('<ds-text-field label="Email" message-space></ds-text-field>');
 
-    expect(footer(el)?.querySelector('.subtext-spacer')).not.toBeNull();
+    expect(getFooter(el)?.querySelector('.subtext-spacer')).not.toBeNull();
   });
 
   it('renders an error without reserved space', async () => {
@@ -55,21 +55,21 @@ describe('field message space', () => {
     el.invalid = true;
     await el.updateComplete;
 
-    expect(footer(el)?.querySelector('.subtext-spacer')).toBeNull();
-    expect(footer(el)?.querySelector('.error')?.textContent).toContain('Required');
+    expect(getFooter(el)?.querySelector('.subtext-spacer')).toBeNull();
+    expect(getFooter(el)?.querySelector('.error')?.textContent).toContain('Required');
   });
 
   it('swaps the description for the error in place', async () => {
     const el = await mount<DsTextField>(
       '<ds-text-field label="Email" description="Work address" error="Required"></ds-text-field>',
     );
-    expect(footer(el)!.querySelector('.description')).not.toBeNull();
+    expect(getFooter(el)!.querySelector('.description')).not.toBeNull();
 
     el.invalid = true;
     await el.updateComplete;
 
-    expect(footer(el)!.querySelector('.description')).toBeNull();
-    expect(footer(el)!.querySelector('.error')).not.toBeNull();
+    expect(getFooter(el)!.querySelector('.description')).toBeNull();
+    expect(getFooter(el)!.querySelector('.error')).not.toBeNull();
   });
 
   it('reserves one line on the message row, the textless spacer included, through the shared typography that sizes its line box', () => {

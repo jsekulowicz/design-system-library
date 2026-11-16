@@ -1,13 +1,13 @@
-import ts from 'typescript';
-import { declarationFor, descendants } from './source-graph.mjs';
-import { staticValues, UNKNOWN } from './static-values.mjs';
+import typescript from 'typescript';
+import { findDeclarationFor, findDescendants } from './source-graph.mjs';
+import { getStaticValues, UNKNOWN } from './static-values.mjs';
 
 const ELEMENT = /<[a-z][\w:-]*(?:[^"'<>]|"[^"]*"|'[^']*')*>/gi;
 const ATTRIBUTE = /([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g;
 const EXPRESSION = /__DS_EXPRESSION_(\d+)__/g;
 
-function templateMarkup(template) {
-  if (ts.isNoSubstitutionTemplateLiteral(template)) {
+function getTemplateMarkup(template) {
+  if (typescript.isNoSubstitutionTemplateLiteral(template)) {
     return { markup: template.text, expressions: [] };
   }
   const markup = template.templateSpans.reduce((text, span, index) => {
@@ -16,10 +16,10 @@ function templateMarkup(template) {
   return { markup, expressions: template.templateSpans.map((span) => span.expression) };
 }
 
-function attributeValues(value, expressions, checker) {
+function getAttributeValues(value, expressions, checker) {
   return [...value.matchAll(EXPRESSION)].reduce(
     (values, [marker, index]) => {
-      const replacements = staticValues(expressions[Number(index)], checker);
+      const replacements = getStaticValues(expressions[Number(index)], checker);
       return values.flatMap((text) => replacements.map((replacement) => text.replace(marker, replacement)));
     },
     [value],
@@ -36,47 +36,47 @@ function namesInAttribute(name, value) {
   return value.split(/\s+/).filter(Boolean);
 }
 
-function templateParts(template, checker) {
-  const { markup, expressions } = templateMarkup(template);
+function getTemplateParts(template, checker) {
+  const { markup, expressions } = getTemplateMarkup(template);
   const elements = [...markup.replace(/<!--[\s\S]*?-->/g, '').matchAll(ELEMENT)];
   return elements
     .flatMap(([element]) => [...element.matchAll(ATTRIBUTE)])
     .filter(([, name]) => name === 'part' || name === 'exportparts')
     .flatMap(([, name, doubleQuoted, singleQuoted, unquoted]) => {
-      return attributeValues(doubleQuoted ?? singleQuoted ?? unquoted ?? '', expressions, checker).flatMap((value) =>
+      return getAttributeValues(doubleQuoted ?? singleQuoted ?? unquoted ?? '', expressions, checker).flatMap((value) =>
         namesInAttribute(name, value),
       );
     });
 }
 
-function imperativeParts(node, checker) {
-  if (!ts.isCallExpression(node) || !ts.isPropertyAccessExpression(node.expression)) {
+function getImperativeParts(node, checker) {
+  if (!typescript.isCallExpression(node) || !typescript.isPropertyAccessExpression(node.expression)) {
     return [];
   }
   const [attribute, value] = node.arguments;
-  if (node.expression.name.text !== 'setAttribute' || !attribute || !ts.isStringLiteralLike(attribute)) {
+  if (node.expression.name.text !== 'setAttribute' || !attribute || !typescript.isStringLiteralLike(attribute)) {
     return [];
   }
   return attribute.text === 'part'
-    ? staticValues(value, checker).flatMap((text) => namesInAttribute('part', text))
+    ? getStaticValues(value, checker).flatMap((text) => namesInAttribute('part', text))
     : [];
 }
 
-function partsForNode(node, checker) {
-  if (ts.isTaggedTemplateExpression(node) && isRenderTemplateTag(node.tag, checker)) {
-    return templateParts(node.template, checker);
+function getPartsForNode(node, checker) {
+  if (typescript.isTaggedTemplateExpression(node) && isRenderTemplateTag(node.tag, checker)) {
+    return getTemplateParts(node.template, checker);
   }
-  return imperativeParts(node, checker);
+  return getImperativeParts(node, checker);
 }
 
 function isRenderTemplateTag(tag, checker) {
-  const declaration = declarationFor(tag, checker);
+  const declaration = findDeclarationFor(tag, checker);
   return ['html', 'svg'].includes(declaration?.name?.getText() ?? tag.getText());
 }
 
 export function renderedParts(declarations, checker) {
-  const nodes = new Set(declarations.flatMap((node) => [...descendants(node)]));
-  const names = [...nodes].flatMap((node) => partsForNode(node, checker));
+  const nodes = new Set(declarations.flatMap((node) => [...findDescendants(node)]));
+  const names = [...nodes].flatMap((node) => getPartsForNode(node, checker));
   return {
     known: new Set(names.filter((name) => !name.includes(UNKNOWN))),
     dynamic: new Set(names.filter((name) => name.includes(UNKNOWN))),

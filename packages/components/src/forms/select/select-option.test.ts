@@ -33,7 +33,7 @@ describe('<ds-select-option>', () => {
     expect(
       primary
         .assignedNodes({ flatten: true })
-        .map((n) => n.textContent ?? '')
+        .map((node) => node.textContent ?? '')
         .join('')
         .trim(),
     ).toBe('Apple');
@@ -53,8 +53,10 @@ describe('<ds-select-option>', () => {
   it('renders the check icon only when selected', async () => {
     const off = await mount<DsSelectOption>('<ds-select-option>X</ds-select-option>');
     expect(off.shadowRoot!.querySelector('[part="check"]')).toBeNull();
-    const on = await mountWithProps<DsSelectOption>('<ds-select-option>X</ds-select-option>', { selected: true });
-    expect(on.shadowRoot!.querySelector('[part="check"]')).not.toBeNull();
+    const selectedOption = await mountWithProps<DsSelectOption>('<ds-select-option>X</ds-select-option>', {
+      selected: true,
+    });
+    expect(selectedOption.shadowRoot!.querySelector('[part="check"]')).not.toBeNull();
   });
 
   it('emits ds-activate with the value on click', async () => {

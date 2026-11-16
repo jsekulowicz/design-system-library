@@ -65,14 +65,14 @@ test('ScrollablePage and PageShell examples use the documented typography', asyn
   ]) {
     await openStory(page, id);
     const root = page.locator('#storybook-root');
-    const h1 = root.locator('h1').first();
-    const h2 = root.locator('h2').first();
+    const pageHeading = root.locator('h1').first();
+    const sectionHeading = root.locator('h2').first();
     const paragraph = root.locator('p').first();
 
-    await expect(h1).toHaveCSS('font-size', '24px');
-    await expect(h1).toHaveCSS('font-family', /Source Serif 4/);
-    await expect(h2).toHaveCSS('font-size', '20px');
-    await expect(h2).toHaveCSS('font-family', /Source Serif 4/);
+    await expect(pageHeading).toHaveCSS('font-size', '24px');
+    await expect(pageHeading).toHaveCSS('font-family', /Source Serif 4/);
+    await expect(sectionHeading).toHaveCSS('font-size', '20px');
+    await expect(sectionHeading).toHaveCSS('font-family', /Source Serif 4/);
     await expect(paragraph).toHaveCSS('font-size', '16px');
     await expect(paragraph).toHaveCSS('font-family', /General Sans/);
   }

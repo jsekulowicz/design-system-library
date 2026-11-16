@@ -37,18 +37,18 @@ describe('toast() imperative API', () => {
     toast({ heading: 'A', placement: 'top-left' });
     toast({ heading: 'B', placement: 'bottom-right' });
     const stacks = Array.from(getStacks());
-    const placements = stacks.map((s) => s.getAttribute('placement')).sort();
+    const placements = stacks.map((stack) => stack.getAttribute('placement')).sort();
     expect(placements).toEqual(['bottom-right', 'top-left']);
   });
 
-  it('controller.dismiss() removes the toast from the DOM', () => {
+  it('removes the toast from the DOM through controller.dismiss()', () => {
     const controller = toast({ heading: 'Saved' });
     expect(document.querySelectorAll('ds-toast')).toHaveLength(1);
     controller.dismiss();
     expect(document.querySelectorAll('ds-toast')).toHaveLength(0);
   });
 
-  it('controller.update() applies new properties to the live toast', async () => {
+  it('applies new properties to the live toast through controller.update()', async () => {
     const controller = toast({ heading: 'Loading...', tone: 'info' });
     const el = document.querySelector('ds-toast') as DsToast;
     expect(el.heading).toBe('Loading...');
@@ -59,7 +59,7 @@ describe('toast() imperative API', () => {
     expect(el.tone).toBe('success');
   });
 
-  it('convenience helpers wire the right tone', () => {
+  it('wires the right tone through its convenience helpers', () => {
     toast.info('I');
     toast.success('S');
     toast.warning('W');
@@ -84,7 +84,7 @@ describe('toast() imperative API', () => {
     let dismissedFrom: string | null = null;
     const controller = toast({
       heading: 'No more unapproved',
-      actions: [{ label: 'Ignore status', onClick: (c) => (dismissedFrom = c.id) }],
+      actions: [{ label: 'Ignore status', onClick: (dismissed) => (dismissedFrom = dismissed.id) }],
     });
     const el = document.querySelector('ds-toast') as DsToast;
     const button = el.querySelector('[slot="actions"] ds-button');
@@ -130,7 +130,7 @@ describe('toast() imperative API', () => {
     vi.useRealTimers();
   });
 
-  it('after the singleton stack is removed, the next call recreates it', () => {
+  it('recreates the singleton stack on the next call after it was removed', () => {
     toast({ heading: 'A' });
     expect(getStacks()).toHaveLength(1);
     document.body.innerHTML = '';
@@ -140,10 +140,10 @@ describe('toast() imperative API', () => {
   });
 
   it('returns a controller with a unique id per call', () => {
-    const a = toast({ heading: 'A' });
-    const b = toast({ heading: 'B' });
-    expect(a.id).not.toBe(b.id);
-    expect(a.id).toMatch(/^ds-toast-/);
+    const first = toast({ heading: 'A' });
+    const second = toast({ heading: 'B' });
+    expect(first.id).not.toBe(second.id);
+    expect(first.id).toMatch(/^ds-toast-/);
   });
 
   it('names the dismiss button on the toast it creates', () => {

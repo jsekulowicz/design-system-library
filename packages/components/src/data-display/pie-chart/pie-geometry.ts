@@ -16,52 +16,52 @@ export interface Point {
 export type LabelPlacement =
   { kind: 'none' } | { kind: 'outside'; point: Point; anchor: Point; anchorEnd: 'start' | 'end' };
 
-export function polarPoint(radius: number, angle: number): Point {
+export function toCartesianPoint(radius: number, angle: number): Point {
   return {
     x: CENTER + radius * Math.cos(angle),
     y: CENTER + radius * Math.sin(angle),
   };
 }
 
-export function innerRadiusFor(donut: boolean, ratio: number): number {
+export function computeInnerRadius(donut: boolean, ratio: number): number {
   if (!donut) {
     return 0;
   }
   return RADIUS * Math.min(0.9, Math.max(0, ratio));
 }
 
-export function centerContentSizeFor(donut: boolean, ratio: number): number {
-  const holeDiameter = Math.max(0, innerRadiusFor(donut, ratio) * 2 - CENTER_STROKE_CLEARANCE);
+export function computeCenterContentSize(donut: boolean, ratio: number): number {
+  const holeDiameter = Math.max(0, computeInnerRadius(donut, ratio) * 2 - CENTER_STROKE_CLEARANCE);
   return Number((holeDiameter * Math.SQRT1_2).toFixed(3));
 }
 
-function ringPath(outer: number, inner: number): string {
+function buildRingPath(outer: number, inner: number): string {
   const top = -Math.PI / 2;
   const bottom = Math.PI / 2;
-  const outerTop = polarPoint(outer, top);
-  const outerBottom = polarPoint(outer, bottom);
+  const outerTop = toCartesianPoint(outer, top);
+  const outerBottom = toCartesianPoint(outer, bottom);
   const circle = `M ${outerTop.x} ${outerTop.y} A ${outer} ${outer} 0 1 1 ${outerBottom.x} ${outerBottom.y} A ${outer} ${outer} 0 1 1 ${outerTop.x} ${outerTop.y} Z`;
   if (inner <= 0) {
     return circle;
   }
-  const innerTop = polarPoint(inner, top);
-  const innerBottom = polarPoint(inner, bottom);
+  const innerTop = toCartesianPoint(inner, top);
+  const innerBottom = toCartesianPoint(inner, bottom);
   return `${circle} M ${innerTop.x} ${innerTop.y} A ${inner} ${inner} 0 1 0 ${innerBottom.x} ${innerBottom.y} A ${inner} ${inner} 0 1 0 ${innerTop.x} ${innerTop.y} Z`;
 }
 
-export function arcPath(slice: PieSlice, outer: number, inner: number): string {
+export function buildArcPath(slice: PieSlice, outer: number, inner: number): string {
   const sweep = slice.endAngle - slice.startAngle;
   if (sweep >= FULL_CIRCLE - 1e-6) {
-    return ringPath(outer, inner);
+    return buildRingPath(outer, inner);
   }
   const largeArc = sweep > Math.PI ? 1 : 0;
-  const outerStart = polarPoint(outer, slice.startAngle);
-  const outerEnd = polarPoint(outer, slice.endAngle);
+  const outerStart = toCartesianPoint(outer, slice.startAngle);
+  const outerEnd = toCartesianPoint(outer, slice.endAngle);
   if (inner <= 0) {
     return `M ${CENTER} ${CENTER} L ${outerStart.x} ${outerStart.y} A ${outer} ${outer} 0 ${largeArc} 1 ${outerEnd.x} ${outerEnd.y} Z`;
   }
-  const innerEnd = polarPoint(inner, slice.endAngle);
-  const innerStart = polarPoint(inner, slice.startAngle);
+  const innerEnd = toCartesianPoint(inner, slice.endAngle);
+  const innerStart = toCartesianPoint(inner, slice.startAngle);
   return [
     `M ${outerStart.x} ${outerStart.y}`,
     `A ${outer} ${outer} 0 ${largeArc} 1 ${outerEnd.x} ${outerEnd.y}`,
@@ -71,20 +71,20 @@ export function arcPath(slice: PieSlice, outer: number, inner: number): string {
   ].join(' ');
 }
 
-export function midAngle(slice: PieSlice): number {
+export function computeMidAngle(slice: PieSlice): number {
   return (slice.startAngle + slice.endAngle) / 2;
 }
 
-export function labelPlacement(slice: PieSlice, outer: number): LabelPlacement {
-  const angle = midAngle(slice);
+export function computeLabelPlacement(slice: PieSlice, outer: number): LabelPlacement {
+  const angle = computeMidAngle(slice);
   if (slice.percent < LABEL_MIN_PERCENT) {
     return { kind: 'none' };
   }
-  const point = polarPoint(LABEL_RADIUS, angle);
+  const point = toCartesianPoint(LABEL_RADIUS, angle);
   return {
     kind: 'outside',
     point,
-    anchor: polarPoint(outer, angle),
+    anchor: toCartesianPoint(outer, angle),
     anchorEnd: point.x < CENTER ? 'end' : 'start',
   };
 }

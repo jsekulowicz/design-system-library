@@ -1,19 +1,19 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { spinnerTemplate } from '../../shared/spinner.js';
+import { renderSpinner } from '../../shared/spinner.js';
 
-function contentWithSpinnerOverlaidOnTop(loading: boolean): TemplateResult {
+function renderSpinnerOverContent(loading: boolean): TemplateResult {
   return html`
     <span class="content ${loading ? 'is-hidden' : ''}">
       <slot name="leading"></slot>
       <slot></slot>
       <slot name="trailing"></slot>
     </span>
-    ${loading ? html`<span class="loading-overlay">${spinnerTemplate()}</span>` : nothing}
+    ${loading ? html`<span class="loading-overlay">${renderSpinner()}</span>` : nothing}
   `;
 }
 
-function contentWithInFlowLoadingLabel(loading: boolean, loadingLabel: string): TemplateResult {
+function renderInFlowLoadingLabel(loading: boolean, loadingLabel: string): TemplateResult {
   return html`
     <span class="stack labels">
       <span class="stack-item ${loading ? 'is-hidden' : ''}" aria-hidden=${ifDefined(loading ? 'true' : undefined)}>
@@ -21,16 +21,16 @@ function contentWithInFlowLoadingLabel(loading: boolean, loadingLabel: string): 
         <slot></slot>
       </span>
       <span class="stack-item ${loading ? '' : 'is-hidden'}" aria-hidden=${ifDefined(loading ? undefined : 'true')}>
-        ${spinnerTemplate(loading ? '' : 'is-hidden')} ${loadingLabel}
+        ${renderSpinner(loading ? '' : 'is-hidden')} ${loadingLabel}
       </span>
     </span>
     <slot name="trailing"></slot>
   `;
 }
 
-export function buttonContent(loading: boolean, loadingLabel?: string): TemplateResult {
+export function renderButtonContent(loading: boolean, loadingLabel?: string): TemplateResult {
   if (loadingLabel) {
-    return contentWithInFlowLoadingLabel(loading, loadingLabel);
+    return renderInFlowLoadingLabel(loading, loadingLabel);
   }
-  return contentWithSpinnerOverlaidOnTop(loading);
+  return renderSpinnerOverContent(loading);
 }

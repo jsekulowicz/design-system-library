@@ -59,7 +59,7 @@ const FOUR_CHANNELS_SOURCE = `const series = [
   { key: 'Retail' },
 ];`;
 
-function chartSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
+function buildChartSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
   return `${lead.join('\n\n')}\n\nhtml\`\n${tag}\n\`;`;
 }
 
@@ -124,7 +124,7 @@ export const Grouped: Story = {
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [ACTIVITY_SOURCE, THREE_CHANNELS_SOURCE],
           tag: `  <ds-bar-chart
     title="Weekly activity"
@@ -152,7 +152,7 @@ export const Loading: Story = {
       .series=${THREE_CHANNELS}
       x-axis-label="Week"
       y-axis-label="Events"
-      .formatDomain=${(v: unknown) => `Week ${v}`}
+      .formatDomain=${(value: unknown) => `Week ${value}`}
     ></ds-bar-chart>
   `,
 };
@@ -173,13 +173,13 @@ export const Stacked: Story = {
       .series=${THREE_CHANNELS}
       x-axis-label="Week"
       y-axis-label="Total events"
-      .formatDomain=${(v: unknown) => `Week ${v}`}
+      .formatDomain=${(value: unknown) => `Week ${value}`}
     ></ds-bar-chart>
   `,
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [ACTIVITY_SOURCE, THREE_CHANNELS_SOURCE],
           tag: `  <ds-bar-chart
     stacked
@@ -207,13 +207,13 @@ export const FourSeriesStacked: Story = {
       .series=${FOUR_CHANNELS}
       x-axis-label="Week"
       y-axis-label="Total events"
-      .formatDomain=${(v: unknown) => `Week ${v}`}
+      .formatDomain=${(value: unknown) => `Week ${value}`}
     ></ds-bar-chart>
   `,
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [ACTIVITY_SOURCE, FOUR_CHANNELS_SOURCE],
           tag: `  <ds-bar-chart
     stacked
@@ -244,7 +244,7 @@ export const FewGroups: Story = {
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [
             `const activity = [
   { week: 1, Website: 3, Mobile: 2, Partners: 4, Retail: 2 },
@@ -288,7 +288,7 @@ export const ManyGroups: Story = {
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [
             `// 30 generated activity to exercise tick decimation and label rotation.
 const activity = Array.from({ length: 30 }, (_, i) => ({
@@ -333,15 +333,15 @@ export const WithFormatters: Story = {
         .series=${series}
         x-axis-label="Month"
         y-axis-label="Revenue"
-        .formatValue=${(v: number) => money.format(v)}
-        .formatDomain=${(v: unknown) => monthFmt.format(new Date(String(v)))}
+        .formatValue=${(value: number) => money.format(value)}
+        .formatDomain=${(value: unknown) => monthFmt.format(new Date(String(value)))}
       ></ds-bar-chart>
     `;
   },
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [
             `// \`domain\` is an ISO month string; \`.series\` plots three revenue sources.
 const revenue = [
@@ -396,7 +396,7 @@ export const CustomColors: Story = {
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [
             ACTIVITY_SOURCE,
             `// Each series may provide its own \`color\` to override the default palette.
@@ -433,7 +433,7 @@ export const CompactHeight: Story = {
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [formatActivitySource(WEEKLY_ACTIVITY.slice(0, 7)), THREE_CHANNELS_SOURCE],
           tag: `  <div style="max-width: 420px;">
     <ds-bar-chart

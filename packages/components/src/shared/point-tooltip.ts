@@ -5,7 +5,7 @@ interface PopoverElement extends HTMLElement {
   hidePopover(): void;
 }
 
-function asPopoverElement(el: Element | null | undefined): PopoverElement | null {
+function toPopoverElement(el: Element | null | undefined): PopoverElement | null {
   const candidate = el as Partial<PopoverElement> | null | undefined;
   return candidate && typeof candidate.showPopover === 'function' ? (candidate as PopoverElement) : null;
 }
@@ -45,7 +45,7 @@ export function renderPointTooltip(options: PointTooltipOptions): TemplateResult
 }
 
 export function syncPointTooltip(root: ShadowRoot | null | undefined, show: boolean): void {
-  const tooltip = asPopoverElement(root?.querySelector('.point-tooltip'));
+  const tooltip = toPopoverElement(root?.querySelector('.point-tooltip'));
   if (!tooltip) {
     return;
   }

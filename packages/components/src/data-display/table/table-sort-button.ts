@@ -9,7 +9,7 @@ const ICON_NEUTRAL = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentCol
 const ICON_ASC = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg>`;
 const ICON_DESC = svg`<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>`;
 
-function nextDirection(current: TableSortDirection): TableSortDirection {
+function getNextDirection(current: TableSortDirection): TableSortDirection {
   if (current === null) {
     return 'asc';
   }
@@ -38,7 +38,7 @@ export class DsTableSortButton extends DsElement {
   @property() column?: string;
 
   #onClick = (): void => {
-    const direction = nextDirection(this.direction);
+    const direction = getNextDirection(this.direction);
     this.emit<TableSortDetail>('ds-sort', { detail: { direction } });
   };
 

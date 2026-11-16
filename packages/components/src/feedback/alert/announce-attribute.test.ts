@@ -6,7 +6,7 @@ import './define.js';
 
 beforeEach(resetTestDom);
 
-function liveRegionText(): string {
+function getLiveRegionText(): string {
   return Array.from(document.querySelectorAll('[aria-live]'))
     .map((region) => region.textContent ?? '')
     .join('');
@@ -30,13 +30,13 @@ describe('ds-alert announce-on-connect', () => {
   it('announces the heading on mount, which is what the attribute is for', async () => {
     await mount<DsAlert>('<ds-alert announce-on-connect heading="You are offline">Body</ds-alert>');
     await flushAnnouncement();
-    expect(liveRegionText()).toContain('You are offline');
+    expect(getLiveRegionText()).toContain('You are offline');
   });
 
   it('stays silent without the attribute', async () => {
     await mount<DsAlert>('<ds-alert heading="You are offline">Body</ds-alert>');
     await flushAnnouncement();
-    expect(liveRegionText()).not.toContain('You are offline');
+    expect(getLiveRegionText()).not.toContain('You are offline');
   });
 
   it('announces a danger alert assertively', async () => {

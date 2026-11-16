@@ -1,4 +1,4 @@
-import js from '@eslint/js';
+import eslintJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import litPlugin from 'eslint-plugin-lit';
 import wcPlugin from 'eslint-plugin-wc';
@@ -9,6 +9,9 @@ const litFiles = ['packages/components/src/**/*.ts', 'packages/core/src/**/*.ts'
 const litRecommended = litPlugin.configs['flat/recommended'];
 const wcRecommended = wcPlugin.configs['flat/recommended'];
 
+const shortNamesThatAreVocabulary = ['t', 'te', 'i', 'id', 'to', 'el', 'x', 'y', 'ds', 'ok', 'en', 'es', 'xp'];
+const commandLineFiles = ['scripts/**', 'packages/*/scripts/**', 'apps/ssr-demo/src/server.ts'];
+const designTokenVocabulary = ['xs', 'sm', 'md', 'lg', 'xl', 'bg', 'fg'];
 const privatesDecoratorsCanReach = [
   { selector: 'classProperty', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
   { selector: 'classMethod', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
@@ -18,9 +21,15 @@ const explicitKebabAttributes = { convention: 'kebab' };
 
 export default [
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/storybook-static/**', '**/coverage/**'],
+    ignores: [
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/storybook-static/**',
+      '**/coverage/**',
+      'packages/components/src/data-display/icon/icons/**',
+    ],
   },
-  js.configs.recommended,
+  eslintJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
     languageOptions: {
@@ -40,6 +49,7 @@ export default [
         globalThis: 'readonly',
         console: 'readonly',
         process: 'readonly',
+        URL: 'readonly',
       },
     },
     plugins: {
@@ -49,7 +59,18 @@ export default [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       curly: ['error', 'all'],
       eqeqeq: ['error', 'always'],
-      'id-length': ['error', { min: 1, max: 35, properties: 'always', exceptionPatterns: ['^[A-Z][A-Za-z0-9]*$'] }],
+      'id-length': [
+        'error',
+        {
+          min: 3,
+          max: 35,
+          properties: 'always',
+          exceptions: [...shortNamesThatAreVocabulary, ...designTokenVocabulary],
+          exceptionPatterns: ['^[A-Z][A-Za-z0-9]*$', '^_'],
+        },
+      ],
+      'func-style': ['error', 'declaration'],
+      quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
       'prefer-const': 'error',
       'no-else-return': ['error', { allowElseIf: false }],
       '@typescript-eslint/no-unused-vars': 'off',
@@ -76,6 +97,12 @@ export default [
       ...litRecommended.rules,
       ...wcRecommended.rules,
       'lit/attribute-names': ['error', explicitKebabAttributes],
+    },
+  },
+  {
+    files: commandLineFiles,
+    rules: {
+      'no-console': 'off',
     },
   },
   ...storybook.configs['flat/recommended'],

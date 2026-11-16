@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { checkFixture, componentSource } from './test-fixture.mjs';
+import { checkFixture, buildComponentSource } from './test-fixture.mjs';
 
 const validTemplates = [
   [
@@ -39,13 +39,13 @@ const validTemplates = [
 
 for (const [scenario, parts, markup] of validTemplates) {
   test(`extracts ${scenario}`, (context) => {
-    const source = componentSource('ds-example', parts, `render() { return html\`${markup}\`; }`);
+    const source = buildComponentSource('ds-example', parts, `render() { return html\`${markup}\`; }`);
     assert.deepEqual(checkFixture(context, { 'example.ts': source }), { violations: [], stale: [] });
   });
 }
 
 test('reports undocumented and unrendered parts together', (context) => {
-  const source = componentSource('ds-example', ['missing'], 'render() { return html`<div part="extra"></div>`; }');
+  const source = buildComponentSource('ds-example', ['missing'], 'render() { return html`<div part="extra"></div>`; }');
   assert.deepEqual(checkFixture(context, { 'example.ts': source }).violations, [
     { tag: 'ds-example', undocumented: ['extra'], unrendered: ['missing'] },
   ]);
@@ -60,14 +60,14 @@ test('does not credit selectors, CSS or source comments as rendered parts', (con
       return html\`<div></div>\`;
     }
   `;
-  const result = checkFixture(context, { 'example.ts': componentSource('ds-example', ['ghost'], body) });
+  const result = checkFixture(context, { 'example.ts': buildComponentSource('ds-example', ['ghost'], body) });
   assert.deepEqual(result.violations, [{ tag: 'ds-example', undocumented: [], unrendered: ['ghost'] }]);
 });
 
 test('reads imperative writes with either quote style and static constants', (context) => {
   const source =
     `const PART = 'marker';\n` +
-    componentSource(
+    buildComponentSource(
       'ds-example',
       ['marker', 'active'],
       `
@@ -78,7 +78,7 @@ test('reads imperative writes with either quote style and static constants', (co
 });
 
 test('reads SVG templates and nested HTML templates', (context) => {
-  const source = componentSource(
+  const source = buildComponentSource(
     'ds-example',
     ['point', 'label'],
     `

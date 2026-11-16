@@ -4,7 +4,7 @@ interface RowFitHost extends ReactiveControllerHost {
   readonly compact: boolean;
 }
 
-function sameElements(left: readonly Element[], right: readonly Element[]): boolean {
+function hasSameElements(left: readonly Element[], right: readonly Element[]): boolean {
   return left.length === right.length && left.every((element, index) => element === right[index]);
 }
 
@@ -43,7 +43,7 @@ export class RowFitController implements ReactiveController {
       return;
     }
     const targets = [row, ...row.querySelectorAll('.step-control')];
-    if (sameElements(targets, this.#watched)) {
+    if (hasSameElements(targets, this.#watched)) {
       return;
     }
     this.#observer ??= new ResizeObserver(() => this.#measure());

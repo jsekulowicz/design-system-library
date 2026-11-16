@@ -1,14 +1,14 @@
 import { html, type TemplateResult } from 'lit';
 
-export function chartTitleId(uid: string): string {
+export function getChartTitleId(uid: string): string {
   return `${uid}-title`;
 }
 
-export function datumId(uid: string, kind: string, index: number): string {
+export function getDatumId(uid: string, kind: string, index: number): string {
   return `${uid}-${kind}-${index}`;
 }
 
-export function rovingTabIndex(index: number, activeIndex: number | null): number {
+export function getRovingTabIndex(index: number, activeIndex: number | null): number {
   if (activeIndex === null) {
     return index === 0 ? 0 : -1;
   }
@@ -16,14 +16,14 @@ export function rovingTabIndex(index: number, activeIndex: number | null): numbe
 }
 
 export function focusDatum(root: ShadowRoot | null, uid: string, kind: string, index: number): void {
-  const target = root?.getElementById(datumId(uid, kind, index));
+  const target = root?.getElementById(getDatumId(uid, kind, index));
   if (target instanceof SVGElement || target instanceof HTMLElement) {
     target.focus();
   }
 }
 
 export function renderChartTitle(uid: string, text: string): TemplateResult {
-  return html`<div class="visually-hidden" id=${chartTitleId(uid)}>${text}</div>`;
+  return html`<div class="visually-hidden" id=${getChartTitleId(uid)}>${text}</div>`;
 }
 
 export function renderChartLiveRegion(text: string): TemplateResult {

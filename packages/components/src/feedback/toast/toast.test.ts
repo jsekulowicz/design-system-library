@@ -110,7 +110,7 @@ describe('<ds-toast>', () => {
     expect(document.activeElement).toBe(elsewhere);
   });
 
-  it('dismiss() emits reason="programmatic" by default', async () => {
+  it('emits reason="programmatic" from dismiss() by default', async () => {
     const el = await mount<DsToast>('<ds-toast>Body</ds-toast>');
     const events: ToastDismissReason[] = [];
     el.addEventListener('ds-dismiss', (event) =>
@@ -120,7 +120,7 @@ describe('<ds-toast>', () => {
     expect(events).toEqual(['programmatic']);
   });
 
-  it('dismiss() is idempotent (second call is a no-op)', async () => {
+  it('ignores a second dismiss() call', async () => {
     const el = await mount<DsToast>('<ds-toast>Body</ds-toast>');
     const events: Event[] = [];
     el.addEventListener('ds-dismiss', (event) => events.push(event));
@@ -130,7 +130,7 @@ describe('<ds-toast>', () => {
   });
 
   describe('auto-dismiss', () => {
-    it('uses the tone default when duration is unset (info → 5000 ms)', async () => {
+    it('waits for the tone default when duration is unset, 5000 ms for info', async () => {
       vi.useFakeTimers();
       const el = await mountWithProps<DsToast>('<ds-toast>Body</ds-toast>', { tone: 'info' });
       const events: ToastDismissReason[] = [];
@@ -143,7 +143,7 @@ describe('<ds-toast>', () => {
       expect(events).toEqual(['timeout']);
     });
 
-    it('warning defaults to 8000 ms', async () => {
+    it('waits 8000 ms for a warning by default', async () => {
       vi.useFakeTimers();
       const el = await mountWithProps<DsToast>('<ds-toast>Body</ds-toast>', { tone: 'warning' });
       const events: ToastDismissReason[] = [];
@@ -156,7 +156,7 @@ describe('<ds-toast>', () => {
       expect(events).toEqual(['timeout']);
     });
 
-    it('danger sticks (no timer fires)', async () => {
+    it('never fires for a danger toast', async () => {
       vi.useFakeTimers();
       const el = await mountWithProps<DsToast>('<ds-toast>Body</ds-toast>', { tone: 'danger' });
       const events: Event[] = [];
@@ -166,7 +166,7 @@ describe('<ds-toast>', () => {
       expect(document.body.contains(el)).toBe(true);
     });
 
-    it('explicit duration=0 sticks regardless of tone', async () => {
+    it('never fires for an explicit duration=0, whatever the tone', async () => {
       vi.useFakeTimers();
       const el = await mountWithProps<DsToast>('<ds-toast>Body</ds-toast>', {
         tone: 'info',

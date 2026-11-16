@@ -46,14 +46,14 @@ export function getColorLabel(color: ColorPickerOption): string {
   return color.label?.trim() || color.value;
 }
 
-export function getContrastingThemeColor(value: string, bg: string, fg: string): string {
+export function getContrastingThemeColor(value: string, background: string, foreground: string): string {
   const selected = parseColor(value);
   if (!selected) {
     return 'var(--ds-color-fg)';
   }
-  const bgColor = parseColor(bg) ?? { red: 250, green: 248, blue: 245 };
-  const fgColor = parseColor(fg) ?? { red: 11, green: 11, blue: 12 };
-  return contrastRatio(selected, bgColor) >= contrastRatio(selected, fgColor)
+  const bgColor = parseColor(background) ?? { red: 250, green: 248, blue: 245 };
+  const fgColor = parseColor(foreground) ?? { red: 11, green: 11, blue: 12 };
+  return computeContrastRatio(selected, bgColor) >= computeContrastRatio(selected, fgColor)
     ? 'var(--ds-color-bg)'
     : 'var(--ds-color-fg)';
 }
@@ -89,19 +89,21 @@ function clampChannel(value: number): number {
   return Math.min(255, Math.max(0, value));
 }
 
-function contrastRatio(first: RgbColor, second: RgbColor): number {
-  const firstLuminance = relativeLuminance(first);
-  const secondLuminance = relativeLuminance(second);
+function computeContrastRatio(first: RgbColor, second: RgbColor): number {
+  const firstLuminance = computeRelativeLuminance(first);
+  const secondLuminance = computeRelativeLuminance(second);
   const lighter = Math.max(firstLuminance, secondLuminance);
   const darker = Math.min(firstLuminance, secondLuminance);
   return (lighter + 0.05) / (darker + 0.05);
 }
 
-function relativeLuminance(color: RgbColor): number {
-  return 0.2126 * linearChannel(color.red) + 0.7152 * linearChannel(color.green) + 0.0722 * linearChannel(color.blue);
+function computeRelativeLuminance(color: RgbColor): number {
+  return (
+    0.2126 * toLinearChannel(color.red) + 0.7152 * toLinearChannel(color.green) + 0.0722 * toLinearChannel(color.blue)
+  );
 }
 
-function linearChannel(channel: number): number {
+function toLinearChannel(channel: number): number {
   const value = channel / 255;
   return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
 }

@@ -11,7 +11,7 @@ interface DialogMetrics {
 }
 
 test.describe('ds-dialog sizing', () => {
-  test('a body that fits gets no scroll fade, trailing checkbox included', async ({ page }) => {
+  test('gives a body that fits no scroll fade, trailing checkbox included', async ({ page }) => {
     await page.goto(trailingCheckboxStory);
     await openDialog(page, 'Open dialog');
 
@@ -20,7 +20,7 @@ test.describe('ds-dialog sizing', () => {
     expect(metrics.bottomFade).toBe('rgb(0 0 0)');
   });
 
-  test('--ds-dialog-max-height caps the card, not just the dialog', async ({ page }) => {
+  test('caps the card at --ds-dialog-max-height, not just the dialog', async ({ page }) => {
     await page.goto(cappedStory);
     await openDialog(page, 'Open capped dialog');
 
@@ -30,7 +30,7 @@ test.describe('ds-dialog sizing', () => {
     expect(metrics.overflow).toBeGreaterThan(0);
   });
 
-  test('exported card and body parts are stylable from the outside, an app rule in an outer tree beating the cap the DS sets inside', async ({
+  test('lets an app style the exported card and body parts from the outside, an app rule in an outer tree beating the cap the DS sets inside', async ({
     page,
   }) => {
     await page.goto(cappedStory);
@@ -40,14 +40,14 @@ test.describe('ds-dialog sizing', () => {
     });
 
     const styled = await page.evaluate(() => {
-      const body = cardShadow().querySelector('[part~="body"]') as HTMLElement;
-      const surface = cardShadow().querySelector('[part~="card"]') as HTMLElement;
+      const body = getCardShadow().querySelector('[part~="body"]') as HTMLElement;
+      const surface = getCardShadow().querySelector('[part~="card"]') as HTMLElement;
       return {
         cardHeight: surface.getBoundingClientRect().height,
         bodyOpacity: getComputedStyle(body).opacity,
       };
 
-      function cardShadow(): ShadowRoot {
+      function getCardShadow(): ShadowRoot {
         const host = document.querySelector('ds-dialog')!;
         return host.shadowRoot!.querySelector('ds-card')!.shadowRoot!;
       }

@@ -49,7 +49,7 @@ function mountStepList(props: Partial<DsStepList> = {}): Promise<DsStepList> {
   return mountWithProps<DsStepList>('<ds-step-list></ds-step-list>', { steps: STEPS, currentIndex: 1, ...props });
 }
 
-function row(el: DsStepList): HTMLOListElement {
+function getRow(el: DsStepList): HTMLOListElement {
   return el.shadowRoot!.querySelector<HTMLOListElement>('[part="list"]')!;
 }
 
@@ -58,8 +58,8 @@ function watchedElements(): Element[] {
 }
 
 async function layOutTheRow(el: DsStepList, { natural, available }: { natural: number; available: number }) {
-  Object.defineProperty(row(el), 'scrollWidth', { configurable: true, value: Math.max(natural, available) });
-  Object.defineProperty(row(el), 'clientWidth', { configurable: true, value: available });
+  Object.defineProperty(getRow(el), 'scrollWidth', { configurable: true, value: Math.max(natural, available) });
+  Object.defineProperty(getRow(el), 'clientWidth', { configurable: true, value: available });
   for (const observer of FakeResizeObserver.instances) {
     observer.notify();
   }
@@ -95,9 +95,9 @@ describe('<ds-step-list> fitting the full row', () => {
 
   it('watches each step as well as the row, so a longer label in the same width is noticed', async () => {
     const el = await mountStepList();
-    const steps = [...row(el).querySelectorAll('.step-control')];
+    const steps = [...getRow(el).querySelectorAll('.step-control')];
 
-    expect(watchedElements()).toEqual(expect.arrayContaining([row(el), ...steps]));
+    expect(watchedElements()).toEqual(expect.arrayContaining([getRow(el), ...steps]));
     expect(steps).toHaveLength(3);
   });
 
@@ -119,7 +119,7 @@ describe('<ds-step-list> fitting when the host forces compact', () => {
     el.compact = false;
     await el.updateComplete;
 
-    expect(watchedElements()).toContain(row(el));
+    expect(watchedElements()).toContain(getRow(el));
   });
 
   it('stops watching once the host forces compact again', async () => {

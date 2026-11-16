@@ -1,28 +1,28 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { HEATMAP_LEFT, HEATMAP_TOP } from './heatmap-calendar-svg.js';
-import { cellAriaLabel } from './heatmap-formatters.js';
+import { getCellAriaLabel } from './heatmap-formatters.js';
 import type { HeatmapCell, HeatmapLayout, HeatmapRenderContext } from './types.js';
 import { renderPointAnchor, renderPointTooltipBubble } from '../../shared/point-tooltip.js';
 import { formatLabel } from '../../shared/format-label.js';
 
-function activeCell(ctx: HeatmapRenderContext, layout: HeatmapLayout): HeatmapCell | undefined {
+function findActiveCell(ctx: HeatmapRenderContext, layout: HeatmapLayout): HeatmapCell | undefined {
   return ctx.activeIndex === null ? undefined : layout.cells[ctx.activeIndex];
 }
 
-export function heatmapAriaLabel(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
+export function getHeatmapAriaLabel(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
   return formatLabel(ctx.summaryLabel, {
     title: ctx.title || ctx.calendarLabel,
     days: layout.cells.length,
   });
 }
 
-export function heatmapLiveText(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
-  const cell = activeCell(ctx, layout);
-  return cell ? `${cellAriaLabel(ctx, cell)}.` : '';
+export function getHeatmapLiveText(ctx: HeatmapRenderContext, layout: HeatmapLayout): string {
+  const cell = findActiveCell(ctx, layout);
+  return cell ? `${getCellAriaLabel(ctx, cell)}.` : '';
 }
 
 export function renderHeatmapAnchor(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
-  const cell = activeCell(ctx, layout);
+  const cell = findActiveCell(ctx, layout);
   const step = ctx.cellSize + ctx.cellGap;
   const left = cell ? HEATMAP_LEFT + cell.column * step + ctx.cellSize / 2 : 0;
   const top = cell ? HEATMAP_TOP + cell.row * step + ctx.cellSize / 2 : 0;
@@ -30,7 +30,7 @@ export function renderHeatmapAnchor(ctx: HeatmapRenderContext, layout: HeatmapLa
 }
 
 export function renderHeatmapTooltip(ctx: HeatmapRenderContext, layout: HeatmapLayout): TemplateResult {
-  const cell = activeCell(ctx, layout);
+  const cell = findActiveCell(ctx, layout);
   return renderPointTooltipBubble({
     area: cell && cell.row < 2 ? 'bottom' : 'top',
     open: Boolean(cell) && ctx.tooltipShown,

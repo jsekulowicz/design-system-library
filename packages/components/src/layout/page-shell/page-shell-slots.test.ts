@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { DsPageShell } from './page-shell.test-helpers.js';
-import {
-  forceDesktopLayout,
-  mount,
-  pageShellTemplate,
-  pageShellWithFooterTemplate,
-} from './page-shell.test-helpers.js';
+import { forceDesktopLayout, mount, renderPageShell, renderPageShellWithFooter } from './page-shell.test-helpers.js';
 
 describe('<ds-page-shell>', () => {
   describe('empty aside slot', () => {
@@ -17,7 +12,7 @@ describe('<ds-page-shell>', () => {
     });
 
     it('keeps aside markup when content is slotted', async () => {
-      const el = await mount<DsPageShell>(pageShellTemplate());
+      const el = await mount<DsPageShell>(renderPageShell());
       await forceDesktopLayout(el);
       expect(el.hasAttribute('aside-empty')).toBe(false);
       expect(el.shadowRoot!.querySelector('aside[part="aside"]')).not.toBeNull();
@@ -47,7 +42,7 @@ describe('<ds-page-shell>', () => {
     });
 
     it('renders the footer slot as a bare child of <footer> so consumer chrome owns the width', async () => {
-      const el = await mount<DsPageShell>(pageShellWithFooterTemplate());
+      const el = await mount<DsPageShell>(renderPageShellWithFooter());
       await el.updateComplete;
       const footer = el.shadowRoot!.querySelector('footer')!;
       expect(footer).not.toBeNull();

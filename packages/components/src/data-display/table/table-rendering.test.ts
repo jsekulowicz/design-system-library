@@ -127,9 +127,9 @@ describe('<ds-table>', () => {
     it('fires ds-row-click on click when clickable-rows is set', async () => {
       const el = await mountTable({ clickableRows: true });
       const events: CustomEvent<{ row: Person; index: number }>[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
-      const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      tr.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
+      const row = el.shadowRoot!.querySelector('tbody tr')!;
+      row.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events[0]?.detail.row).toEqual(ROWS[0]);
       expect(events[0]?.detail.index).toBe(0);
     });
@@ -137,9 +137,9 @@ describe('<ds-table>', () => {
     it('does not fire when clickable-rows is unset', async () => {
       const el = await mountTable({ clickableRows: false });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
-      const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      tr.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
+      const row = el.shadowRoot!.querySelector('tbody tr')!;
+      row.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
     });
 
@@ -162,7 +162,7 @@ describe('<ds-table>', () => {
     it('fires from the native row action button', async () => {
       const el = await mountTable({ clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
       const button = el.shadowRoot!.querySelector('tbody tr .row-action') as HTMLButtonElement;
       button.click();
       expect(events[0]?.detail).toEqual({ row: ROWS[0], index: 0 });
@@ -171,9 +171,9 @@ describe('<ds-table>', () => {
     it('does not fire on row keydown', async () => {
       const el = await mountTable({ clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
-      const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      tr.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
+      const row = el.shadowRoot!.querySelector('tbody tr')!;
+      row.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
     });
 
@@ -189,7 +189,7 @@ describe('<ds-table>', () => {
       ];
       const el = await mountTable({ columns, clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
       const button = el.shadowRoot!.querySelector('button[data-id]') as HTMLButtonElement;
       button.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
@@ -198,9 +198,9 @@ describe('<ds-table>', () => {
     it('does not fire when pointer movement indicates a drag', async () => {
       const el = await mountTable({ clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
-      const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      tr.dispatchEvent(
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
+      const row = el.shadowRoot!.querySelector('tbody tr')!;
+      row.dispatchEvent(
         new MouseEvent('pointerdown', {
           bubbles: true,
           composed: true,
@@ -208,7 +208,7 @@ describe('<ds-table>', () => {
           clientY: 10,
         }),
       );
-      tr.dispatchEvent(
+      row.dispatchEvent(
         new MouseEvent('pointermove', {
           bubbles: true,
           composed: true,
@@ -216,18 +216,18 @@ describe('<ds-table>', () => {
           clientY: 10,
         }),
       );
-      tr.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      row.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
     });
 
     it('does not fire when text is selected', async () => {
       const el = await mountTable({ clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
-      const tr = el.shadowRoot!.querySelector('tbody tr')!;
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
+      const row = el.shadowRoot!.querySelector('tbody tr')!;
       vi.spyOn(window, 'getSelection').mockReturnValue({ isCollapsed: false } as Selection);
 
-      tr.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
+      row.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
 
       expect(events).toHaveLength(0);
     });
@@ -244,7 +244,7 @@ describe('<ds-table>', () => {
       ];
       const el = await mountTable({ columns, clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
       const roleButton = el.shadowRoot!.querySelector('span[role="button"]') as HTMLSpanElement;
       roleButton.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events).toHaveLength(0);
@@ -262,7 +262,7 @@ describe('<ds-table>', () => {
       ];
       const el = await mountTable({ columns, clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
       const text = el.shadowRoot!.querySelector('.text')!.firstChild as Text;
       text.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true }));
       expect(events).toHaveLength(1);
@@ -271,22 +271,22 @@ describe('<ds-table>', () => {
     it('still fires when composedPath has no tr element', async () => {
       const el = await mountTable({ clickableRows: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-row-click', (e) => events.push(e as CustomEvent));
-      const tr = el.shadowRoot!.querySelector('tbody tr') as HTMLTableRowElement;
+      el.addEventListener('ds-row-click', (event) => events.push(event as CustomEvent));
+      const row = el.shadowRoot!.querySelector('tbody tr') as HTMLTableRowElement;
       const event = new MouseEvent('click', { bubbles: true, composed: true });
       Object.defineProperty(event, 'composedPath', {
         configurable: true,
         value: () => [document.createTextNode('x'), document.createElement('span')],
       });
-      tr.dispatchEvent(event);
+      row.dispatchEvent(event);
       expect(events).toHaveLength(1);
     });
 
     it('keeps clickable rows as native table rows', async () => {
       const el = await mountTable({ clickableRows: true });
-      const tr = el.shadowRoot!.querySelector('tbody tr')!;
-      expect(tr.hasAttribute('role')).toBe(false);
-      expect(tr.hasAttribute('tabindex')).toBe(false);
+      const row = el.shadowRoot!.querySelector('tbody tr')!;
+      expect(row.hasAttribute('role')).toBe(false);
+      expect(row.hasAttribute('tabindex')).toBe(false);
     });
   });
 });

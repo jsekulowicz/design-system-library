@@ -1,8 +1,8 @@
 import { html, svg, nothing, type TemplateResult, type SVGTemplateResult } from 'lit';
-import { chartTitleId, datumId, rovingTabIndex } from '../../shared/chart-a11y.js';
-import { groupAriaLabel } from './bar-chart-overlays.js';
+import { getChartTitleId, getDatumId, getRovingTabIndex } from '../../shared/chart-a11y.js';
+import { getGroupAriaLabel } from './bar-chart-overlays.js';
 import { computeGroupedBars, computeStackSegments, type GroupBand } from './layout.js';
-import { activeGroupHeight, type ChartLayout } from './chart-layout.js';
+import { computeActiveGroupHeight, type ChartLayout } from './chart-layout.js';
 import type { BarChartGroup, BarChartRow, ChartRenderContext } from './types.js';
 
 const BAR_INNER_GAP = 2;
@@ -18,7 +18,7 @@ export function renderChartSvg<T extends BarChartRow>(
     <svg
       role="graphics-document"
       aria-roledescription=${ctx.roleDescription}
-      aria-labelledby=${chartTitleId(ctx.uid)}
+      aria-labelledby=${getChartTitleId(ctx.uid)}
       viewBox="0 0 ${width} ${height}"
       width=${width}
       height=${height}
@@ -82,7 +82,7 @@ function renderWrappingTickLabel(text: string, bandWidth: number): SVGTemplateRe
   `;
 }
 
-function xTickEvery(bandWidth: number): number {
+function computeXTickInterval(bandWidth: number): number {
   if (bandWidth >= 24) {
     return 1;
   }
@@ -95,7 +95,7 @@ function xTickEvery(bandWidth: number): number {
   return Math.max(1, Math.ceil(32 / Math.max(1, bandWidth)));
 }
 
-function xLabelRotation(bandWidth: number): number {
+function computeXLabelRotation(bandWidth: number): number {
   return bandWidth < 48 ? -35 : 0;
 }
 
@@ -109,20 +109,20 @@ function renderXAxis<T extends BarChartRow>(
   const firstBand = bands[0]!;
   const lastBand = bands[bands.length - 1]!;
   const bandWidth = firstBand.bandWidth;
-  const every = xTickEvery(bandWidth);
-  const rotation = xLabelRotation(bandWidth);
+  const every = computeXTickInterval(bandWidth);
+  const rotation = computeXLabelRotation(bandWidth);
   return svg`
     <g class="axis axis-x" aria-hidden="true" transform="translate(0, ${innerHeight})">
       <line x1="0" x2=${lastBand.x + lastBand.bandWidth} y1="0" y2="0"></line>
-      ${groups.map((g, i) => {
+      ${groups.map((group, i) => {
         if (i % every !== 0) {
           return nothing;
         }
         const band = bands[i]!;
-        const cx = band.x + band.bandWidth / 2;
-        const text = ctx.formatDomain(g.domain);
+        const centerX = band.x + band.bandWidth / 2;
+        const text = ctx.formatDomain(group.domain);
         return svg`
-          <g transform="translate(${cx}, 0)">
+          <g transform="translate(${centerX}, 0)">
             <line x1="0" x2="0" y1="0" y2="4"></line>
             ${
               rotation
@@ -148,20 +148,20 @@ function renderBars<T extends BarChartRow>(
   innerHeight: number,
   yMax: number,
 ): SVGTemplateResult {
-  return svg`${groups.map((g, gi) => {
-    const band = bands[gi]!;
-    const inactive = ctx.activeIndex !== null && ctx.activeIndex !== gi ? 'inactive' : '';
+  return svg`${groups.map((group, groupIndex) => {
+    const band = bands[groupIndex]!;
+    const inactive = ctx.activeIndex !== null && ctx.activeIndex !== groupIndex ? 'inactive' : '';
     const content = ctx.stacked
-      ? renderStackedBars(ctx, g, band, innerHeight, yMax)
-      : renderGroupedBars(ctx, g, band, innerHeight, yMax);
+      ? renderStackedBars(ctx, group, band, innerHeight, yMax)
+      : renderGroupedBars(ctx, group, band, innerHeight, yMax);
     return svg`
       <g
         class="bar-group ${inactive}"
-        id=${datumId(ctx.uid, 'group', gi)}
-        data-index=${gi}
+        id=${getDatumId(ctx.uid, 'group', groupIndex)}
+        data-index=${groupIndex}
         role="graphics-symbol"
-        tabindex=${rovingTabIndex(gi, ctx.activeIndex)}
-        aria-label=${groupAriaLabel(ctx, g)}
+        tabindex=${getRovingTabIndex(groupIndex, ctx.activeIndex)}
+        aria-label=${getGroupAriaLabel(ctx, group)}
       >${content}</g>
     `;
   })}`;
@@ -169,43 +169,45 @@ function renderBars<T extends BarChartRow>(
 
 function renderStackedBars<T extends BarChartRow>(
   ctx: ChartRenderContext,
-  g: BarChartGroup<T>,
+  group: BarChartGroup<T>,
   band: GroupBand,
   innerHeight: number,
   yMax: number,
 ): SVGTemplateResult {
   const segments = computeStackSegments(
-    g.values,
-    ctx.series.map((s) => s.key),
+    group.values,
+    ctx.series.map((series) => series.key),
     innerHeight,
     yMax,
   );
-  return svg`${segments.map((seg, si) => {
-    const s = ctx.series[si]!;
+  return svg`${segments.map((seg, seriesIndex) => {
+    const series = ctx.series[seriesIndex]!;
     const height = seg.value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, seg.height) : 0;
     const y =
       innerHeight -
-      segments.slice(0, si + 1).reduce((a, v) => a + Math.max(v.value > 0 ? MIN_SEGMENT_HEIGHT : 0, v.height), 0);
-    const fill = ctx.barColor?.(g.domain, s.key) ?? ctx.seriesColor(s, si);
+      segments
+        .slice(0, seriesIndex + 1)
+        .reduce((offset, segment) => offset + Math.max(segment.value > 0 ? MIN_SEGMENT_HEIGHT : 0, segment.height), 0);
+    const fill = ctx.barColor?.(group.domain, series.key) ?? ctx.seriesColor(series, seriesIndex);
     return svg`<rect class="bar" x=${band.innerX} y=${y} width=${band.innerWidth} height=${height} fill=${fill}></rect>`;
   })}`;
 }
 
 function renderGroupedBars<T extends BarChartRow>(
   ctx: ChartRenderContext,
-  g: BarChartGroup<T>,
+  group: BarChartGroup<T>,
   band: GroupBand,
   innerHeight: number,
   yMax: number,
 ): SVGTemplateResult {
   const bars = computeGroupedBars(band.innerX, band.innerWidth, ctx.series.length, BAR_INNER_GAP);
-  return svg`${ctx.series.map((s, si) => {
-    const bar = bars[si]!;
-    const value = g.values[s.key] ?? 0;
-    const h = yMax > 0 ? (value / yMax) * innerHeight : 0;
-    const drawH = value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, h) : 0;
+  return svg`${ctx.series.map((series, seriesIndex) => {
+    const bar = bars[seriesIndex]!;
+    const value = group.values[series.key] ?? 0;
+    const barHeight = yMax > 0 ? (value / yMax) * innerHeight : 0;
+    const drawH = value > 0 ? Math.max(MIN_SEGMENT_HEIGHT, barHeight) : 0;
     const y = innerHeight - drawH;
-    const fill = ctx.barColor?.(g.domain, s.key) ?? ctx.seriesColor(s, si);
+    const fill = ctx.barColor?.(group.domain, series.key) ?? ctx.seriesColor(series, seriesIndex);
     return svg`<rect class="bar" x=${bar.x} y=${y} width=${bar.width} height=${drawH} fill=${fill}></rect>`;
   })}`;
 }
@@ -221,7 +223,7 @@ function renderFocusRing<T extends BarChartRow>(
   if (!band) {
     return nothing;
   }
-  const maxHeight = activeGroupHeight(layout, ctx.activeIndex, ctx.stacked);
+  const maxHeight = computeActiveGroupHeight(layout, ctx.activeIndex, ctx.stacked);
   const drawHeight = Math.max(4, maxHeight);
   const y = layout.innerHeight - drawHeight - 2;
   return svg`<rect class="focus-ring" x=${band.innerX - 2} y=${y} width=${band.innerWidth + 4} height=${drawHeight + 4}></rect>`;

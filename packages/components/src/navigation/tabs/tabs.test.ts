@@ -21,7 +21,7 @@ beforeEach(() => {
   resetTestDom();
 });
 
-function template(): string {
+function buildTemplate(): string {
   return `
     <ds-tabs>
       <ds-tab slot="tab" value="overview">Overview</ds-tab>
@@ -44,7 +44,7 @@ async function syncSlots(el: DsTabs): Promise<void> {
 
 describe('<ds-tabs>', () => {
   it('selects first tab by default and syncs tab/panel attributes', async () => {
-    const el = await mount<DsTabs>(template());
+    const el = await mount<DsTabs>(buildTemplate());
     await syncSlots(el);
 
     const tabs = Array.from(el.querySelectorAll<DsTab>('ds-tab'));
@@ -62,7 +62,7 @@ describe('<ds-tabs>', () => {
   });
 
   it('changes value on ds-tab-activate and does not leak that event outside', async () => {
-    document.body.innerHTML = `<div id="host">${template()}</div>`;
+    document.body.innerHTML = `<div id="host">${buildTemplate()}</div>`;
     const host = document.getElementById('host')!;
     const el = host.querySelector('ds-tabs') as DsTabs;
     await el.updateComplete;
@@ -88,7 +88,7 @@ describe('<ds-tabs>', () => {
   });
 
   it('does not emit ds-change when activating the already selected tab', async () => {
-    const el = await mount<DsTabs>(template());
+    const el = await mount<DsTabs>(buildTemplate());
     await syncSlots(el);
     const changes: CustomEvent[] = [];
     el.addEventListener('ds-change', (event) => {
@@ -104,7 +104,7 @@ describe('<ds-tabs>', () => {
   });
 
   it('supports keyboard navigation and skips disabled targets', async () => {
-    const el = await mount<DsTabs>(template());
+    const el = await mount<DsTabs>(buildTemplate());
     await syncSlots(el);
     const tablist = el.shadowRoot!.querySelector('.tablist') as HTMLElement;
 
@@ -158,7 +158,7 @@ describe('<ds-tabs>', () => {
   });
 
   it('skips syncSelection when update does not include value changes', async () => {
-    const el = await mount<DsTabs>(template());
+    const el = await mount<DsTabs>(buildTemplate());
     await syncSlots(el);
 
     el.requestUpdate();

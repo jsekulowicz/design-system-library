@@ -51,11 +51,6 @@ test('typing in search after relabeling recent docs does not crash the manager',
   );
 });
 
-async function openDocs(page: Page, id: string): Promise<void> {
-  await page.goto(`/?path=/docs/${id}`);
-  await expect(page.locator('#storybook-preview-iframe')).toBeAttached();
-}
-
 async function seedRecentDocs(page: Page): Promise<void> {
   await page.goto('/');
   for (const doc of recentDocs) {

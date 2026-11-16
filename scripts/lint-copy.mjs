@@ -67,12 +67,12 @@ function trackedSourceFiles() {
     .filter(isInWorkingTree);
 }
 
-function violationsFor(file) {
+function findViolations(file) {
   const source = readFileSync(file, 'utf8');
   return FORBIDDEN_COPY.filter(({ pattern }) => pattern.test(source)).map(({ message }) => `${file}: ${message}`);
 }
 
-const violations = trackedSourceFiles().flatMap(violationsFor);
+const violations = trackedSourceFiles().flatMap(findViolations);
 
 if (violations.length > 0) {
   console.error(violations.join('\n'));

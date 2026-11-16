@@ -2,7 +2,7 @@ import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import { colorForIndex } from '../../shared/chart-colors.js';
+import { getColorForIndex } from '../../shared/chart-colors.js';
 import { shareBarStyles } from './share-bar.styles.js';
 import type { ShareBarDatum, ShareBarSegment } from './types.js';
 
@@ -10,8 +10,8 @@ function isPositive(datum: ShareBarDatum): boolean {
   return Number.isFinite(datum.value) && datum.value > 0;
 }
 
-function smallest(data: readonly ShareBarDatum[], count: number): Set<ShareBarDatum> {
-  return new Set([...data].sort((a, b) => b.value - a.value).slice(count));
+function findSmallest(data: readonly ShareBarDatum[], count: number): Set<ShareBarDatum> {
+  return new Set([...data].sort((left, right) => right.value - left.value).slice(count));
 }
 
 /**
@@ -57,7 +57,7 @@ export class DsShareBar extends DsElement {
     }
     const overflow =
       this.maxSegments > 0 && shown.length > this.maxSegments
-        ? smallest(shown, this.maxSegments - 1)
+        ? findSmallest(shown, this.maxSegments - 1)
         : new Set<ShareBarDatum>();
     const segments = shown
       .filter((datum) => !overflow.has(datum))
@@ -80,7 +80,7 @@ export class DsShareBar extends DsElement {
     if (segment.color !== undefined) {
       return segment.color;
     }
-    return segment.isOther ? 'var(--ds-color-fg-muted)' : colorForIndex(index);
+    return segment.isOther ? 'var(--ds-color-fg-muted)' : getColorForIndex(index);
   }
 
   #percentText(percent: number): string {

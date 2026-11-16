@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { collectLoaderSamplesOnRefresh } from './storybook-loader-sampling';
 
 test('story loading is themed before the story module resolves', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('ds-storybook-theme', 'dark'));

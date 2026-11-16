@@ -150,17 +150,17 @@ const GROUPS: Group[] = [
   },
 ];
 
-function swatchCard(s: Swatch): TemplateResult {
+function renderSwatchCard(swatch: Swatch): TemplateResult {
   return html` <figure
     style="margin:0;border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-xs);overflow:hidden"
   >
-    <div style="height:56px;background:var(${s.token})" aria-hidden="true"></div>
+    <div style="height:56px;background:var(${swatch.token})" aria-hidden="true"></div>
     <figcaption style="padding:var(--ds-space-3);display:grid;gap:2px;background:var(--ds-color-bg-subtle)">
-      <strong style="font-size:var(--ds-font-size-body-md)">${s.label}</strong>
+      <strong style="font-size:var(--ds-font-size-body-md)">${swatch.label}</strong>
       <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md);color:var(--ds-color-fg-muted)"
-        >${s.token}</code
+        >${swatch.token}</code
       >
-      <p style=${SWATCH_META}>${s.desc}</p>
+      <p style=${SWATCH_META}>${swatch.desc}</p>
     </figcaption>
   </figure>`;
 }
@@ -169,11 +169,11 @@ export const SemanticPalette: Story = {
   render: () =>
     html` <section style=${PALETTE_LAYOUT}>
       ${GROUPS.map(
-        (g) =>
+        (group) =>
           html` <div style="display:grid;gap:var(--ds-space-3)">
-            <h3 style=${GROUP_LABEL}>${g.name}</h3>
+            <h3 style=${GROUP_LABEL}>${group.name}</h3>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:var(--ds-space-3)">
-              ${g.swatches.map(swatchCard)}
+              ${group.swatches.map(renderSwatchCard)}
             </div>
           </div>`,
       )}
@@ -217,19 +217,19 @@ export const UsagePairings: Story = {
   render: () =>
     html` <section style=${PAIRINGS_LAYOUT}>
       ${PAIRINGS.map(
-        (p) =>
+        (pairing) =>
           html` <div style="border:1px solid var(--ds-color-border);border-radius:var(--ds-radius-xs);overflow:hidden">
-            <div style="padding:var(--ds-space-5);background:var(${p.bg});color:var(${p.fg})">
-              <p style="margin:0;font-size:var(--ds-font-size-body-lg)">${p.sample}</p>
+            <div style="padding:var(--ds-space-5);background:var(${pairing.bg});color:var(${pairing.fg})">
+              <p style="margin:0;font-size:var(--ds-font-size-body-lg)">${pairing.sample}</p>
             </div>
             <div style=${LEGEND_BAR}>
               <span style="font-size:var(--ds-font-size-body-md);color:var(--ds-color-fg-muted);min-width:14rem"
-                >${p.label}</span
+                >${pairing.label}</span
               >
               <div style="display:flex;align-items:center;gap:var(--ds-space-2)">
-                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">${p.bg}</code>
+                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">${pairing.bg}</code>
                 <span style="color:var(--ds-color-fg-subtle);font-size:var(--ds-font-size-body-md)">+</span>
-                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">${p.fg}</code>
+                <code style="font-family:var(--ds-font-mono);font-size:var(--ds-font-size-body-md)">${pairing.fg}</code>
               </div>
             </div>
           </div>`,

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/toast/define';
 import '@jsekulowicz/ds-components/button/define';
 import { toast, type ToastPlacement } from '@jsekulowicz/ds-components/toast';
-import { persistentStory } from '../shared/persistent-story';
+import { createPersistentStory } from '../shared/persistent-story';
 
 const meta: Meta = {
   title: 'Feedback/Toast',
@@ -22,7 +22,7 @@ type Story = StoryObj;
 
 export const Playground: Story = {
   render: (args) =>
-    persistentStory(
+    createPersistentStory(
       () => html`
         <ds-toast
           tone=${args['tone']}
@@ -38,7 +38,7 @@ export const Playground: Story = {
 
 export const Tones: Story = {
   render: () =>
-    persistentStory(
+    createPersistentStory(
       () => html`
         <div style="display:flex;flex-direction:column;gap:var(--ds-space-3);max-width:420px">
           <ds-toast tone="info" heading="Heads up" duration=${0}> We've added a new collaborator role. </ds-toast>
@@ -52,7 +52,7 @@ export const Tones: Story = {
 
 export const WithAction: Story = {
   render: () =>
-    persistentStory(
+    createPersistentStory(
       () => html`
         <ds-toast tone="success" heading="Item moved to trash" duration=${0}>
           It will be deleted permanently in 30 days.
@@ -64,7 +64,7 @@ export const WithAction: Story = {
 
 export const StickyDanger: Story = {
   render: () =>
-    persistentStory(
+    createPersistentStory(
       () => html`
         <ds-toast tone="danger" heading="Couldn't connect" duration=${0}>
           Check your connection and try again. Sticky until dismissed.

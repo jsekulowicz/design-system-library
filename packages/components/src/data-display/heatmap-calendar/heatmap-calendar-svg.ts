@@ -1,12 +1,15 @@
 import { svg, type SVGTemplateResult } from 'lit';
-import { chartTitleId, datumId, rovingTabIndex } from '../../shared/chart-a11y.js';
-import { cellAriaLabel } from './heatmap-formatters.js';
+import { getChartTitleId, getDatumId, getRovingTabIndex } from '../../shared/chart-a11y.js';
+import { getCellAriaLabel } from './heatmap-formatters.js';
 import type { HeatmapLayout, HeatmapRenderContext } from './types.js';
 
 export const HEATMAP_LEFT = 34;
 export const HEATMAP_TOP = 24;
 
-export function heatmapDimensions(ctx: HeatmapRenderContext, layout: HeatmapLayout): { width: number; height: number } {
+export function computeHeatmapDimensions(
+  ctx: HeatmapRenderContext,
+  layout: HeatmapLayout,
+): { width: number; height: number } {
   const step = ctx.cellSize + ctx.cellGap;
   return {
     width: HEATMAP_LEFT + Math.max(0, layout.weekCount * step - ctx.cellGap),
@@ -14,7 +17,7 @@ export function heatmapDimensions(ctx: HeatmapRenderContext, layout: HeatmapLayo
   };
 }
 
-function levelColor(ctx: HeatmapRenderContext, level: number): string {
+function getLevelColor(ctx: HeatmapRenderContext, level: number): string {
   if (level === 0) {
     return 'var(--ds-color-bg-muted)';
   }
@@ -23,13 +26,13 @@ function levelColor(ctx: HeatmapRenderContext, level: number): string {
 }
 
 export function renderHeatmapSvg(ctx: HeatmapRenderContext, layout: HeatmapLayout): SVGTemplateResult {
-  const { width, height } = heatmapDimensions(ctx, layout);
+  const { width, height } = computeHeatmapDimensions(ctx, layout);
   const step = ctx.cellSize + ctx.cellGap;
   return svg`
     <svg
       role="graphics-document"
       aria-roledescription=${ctx.roleDescription}
-      aria-labelledby=${chartTitleId(ctx.uid)}
+      aria-labelledby=${getChartTitleId(ctx.uid)}
       width=${width}
       height=${height}
       viewBox="0 0 ${width} ${height}"
@@ -52,17 +55,17 @@ export function renderHeatmapSvg(ctx: HeatmapRenderContext, layout: HeatmapLayou
         ${layout.cells.map(
           (cell, index) => svg`
           <rect
-            id=${datumId(ctx.uid, 'day', index)}
+            id=${getDatumId(ctx.uid, 'day', index)}
             class="cell level-${cell.level} ${ctx.activeIndex === index ? 'active' : ''}"
             data-index=${index}
             role="graphics-symbol"
-            tabindex=${rovingTabIndex(index, ctx.tabbableIndex)}
-            aria-label=${cellAriaLabel(ctx, cell)}
+            tabindex=${getRovingTabIndex(index, ctx.tabbableIndex)}
+            aria-label=${getCellAriaLabel(ctx, cell)}
             x=${HEATMAP_LEFT + cell.column * step}
             y=${HEATMAP_TOP + cell.row * step}
             width=${ctx.cellSize}
             height=${ctx.cellSize}
-            fill=${levelColor(ctx, cell.level)}
+            fill=${getLevelColor(ctx, cell.level)}
           ></rect>
         `,
         )}

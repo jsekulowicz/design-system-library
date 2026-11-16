@@ -129,7 +129,9 @@ describe('<ds-page-shell>', () => {
     });
 
     it('positions controls over aside borders without reserving a full rail', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((style) => style.cssText)
+        .join('\n');
       expect(css).toMatch(/\.aside-toggle-rail\s*{[^}]*position:\s*absolute/);
       expect(css).toMatch(
         /\.aside-toggle-start-rail\s*{[^}]*inset-inline-end:\s*calc\(var\(--ds-size-sm\)\s*\/\s*-2\)/,
@@ -141,7 +143,9 @@ describe('<ds-page-shell>', () => {
     });
 
     it('collapses asides with an animatable grid track and keeps toggle clearance', () => {
-      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
+      const css = (DsPageShell as unknown as { styles: { cssText: string }[] }).styles
+        .map((style) => style.cssText)
+        .join('\n');
       expect(css).toMatch(
         /\.aside-start-cluster,\s*\.aside-end-cluster\s*{[^}]*grid-template-columns:\s*1fr[^}]*transition:\s*grid-template-columns/s,
       );

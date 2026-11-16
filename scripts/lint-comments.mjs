@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import ts from 'typescript';
+import typescript from 'typescript';
 
 const SCRIPT_EXTENSION = /\.(?:cjs|js|mjs|ts|tsx)$/;
 const EXEMPT_PATHS = [
@@ -11,12 +11,12 @@ const DIRECTIVE = /^\/[/*]\s*(?:eslint|@ts-|prettier-ignore|istanbul|c8 |v8 igno
 const API_TAG = /@(?:tag|attr|attribute|prop|property|cssprop|cssproperty|csspart|part|slot|event|fires|summary)\b/;
 const COMMENT_IN_TEMPLATE = /\/\*[\s\S]*?\*\/|<!--|^\s*\/\/ /m;
 const TEMPLATE_KINDS = new Set([
-  ts.SyntaxKind.NoSubstitutionTemplateLiteral,
-  ts.SyntaxKind.TemplateHead,
-  ts.SyntaxKind.TemplateMiddle,
-  ts.SyntaxKind.TemplateTail,
+  typescript.SyntaxKind.NoSubstitutionTemplateLiteral,
+  typescript.SyntaxKind.TemplateHead,
+  typescript.SyntaxKind.TemplateMiddle,
+  typescript.SyntaxKind.TemplateTail,
 ]);
-const CONTAINER_KINDS = new Set([ts.SyntaxKind.SourceFile, ts.SyntaxKind.SyntaxList]);
+const CONTAINER_KINDS = new Set([typescript.SyntaxKind.SourceFile, typescript.SyntaxKind.SyntaxList]);
 
 function isInWorkingTree(file) {
   return existsSync(file);
@@ -31,17 +31,20 @@ function listTrackedScripts() {
 }
 
 function hasModifier(node, kind) {
-  return ts.canHaveModifiers(node) && (ts.getModifiers(node) ?? []).some((modifier) => modifier.kind === kind);
+  return (
+    typescript.canHaveModifiers(node) &&
+    (typescript.getModifiers(node) ?? []).some((modifier) => modifier.kind === kind)
+  );
 }
 
 function isOnThePublicSurface(node) {
-  if (!node || hasModifier(node, ts.SyntaxKind.PrivateKeyword)) {
+  if (!node || hasModifier(node, typescript.SyntaxKind.PrivateKeyword)) {
     return false;
   }
-  if (ts.isClassElement(node)) {
-    return !(node.name && ts.isPrivateIdentifier(node.name));
+  if (typescript.isClassElement(node)) {
+    return !(node.name && typescript.isPrivateIdentifier(node.name));
   }
-  return ts.isTypeElement(node) || hasModifier(node, ts.SyntaxKind.ExportKeyword);
+  return typescript.isTypeElement(node) || hasModifier(node, typescript.SyntaxKind.ExportKeyword);
 }
 
 function isAllowedComment(body, documentedNode) {
@@ -62,8 +65,8 @@ function walkEveryNodeAndToken(source, visit) {
 function collectCommentRanges(source, node, ranges) {
   const text = source.text;
   for (const range of [
-    ...(ts.getLeadingCommentRanges(text, node.getFullStart()) ?? []),
-    ...(ts.getTrailingCommentRanges(text, node.getEnd()) ?? []),
+    ...(typescript.getLeadingCommentRanges(text, node.getFullStart()) ?? []),
+    ...(typescript.getTrailingCommentRanges(text, node.getEnd()) ?? []),
   ]) {
     ranges.set(range.pos, range);
   }
@@ -87,8 +90,8 @@ function toViolation(file, source, position, body) {
 }
 
 function parseSource(file) {
-  const kind = /\.tsx?$/.test(file) ? ts.ScriptKind.TS : ts.ScriptKind.JS;
-  return ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true, kind);
+  const kind = /\.tsx?$/.test(file) ? typescript.ScriptKind.TS : typescript.ScriptKind.JS;
+  return typescript.createSourceFile(file, readFileSync(file, 'utf8'), typescript.ScriptTarget.Latest, true, kind);
 }
 
 function findCommentInTemplate(source, node) {

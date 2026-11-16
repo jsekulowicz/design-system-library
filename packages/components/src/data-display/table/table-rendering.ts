@@ -17,7 +17,7 @@ interface TableBodyOptions<T extends TableRow> {
   onRowAction: (row: T, index: number) => void;
 }
 
-function cellClass<T extends TableRow>(resolved: ResolvedColumn<T>): string {
+function getCellClass<T extends TableRow>(resolved: ResolvedColumn<T>): string {
   const classes = [`align-${resolved.column.align ?? 'left'}`];
   if (resolved.indexInPinnedRegion !== null) {
     classes.push('pinned');
@@ -28,7 +28,7 @@ function cellClass<T extends TableRow>(resolved: ResolvedColumn<T>): string {
   return classes.join(' ');
 }
 
-function pinStyle<T extends TableRow>(resolved: ResolvedColumn<T>): string | undefined {
+function getPinStyle<T extends TableRow>(resolved: ResolvedColumn<T>): string | undefined {
   return resolved.indexInPinnedRegion !== null
     ? `left: var(--ds-table-pin-left-${resolved.indexInPinnedRegion})`
     : undefined;
@@ -101,8 +101,8 @@ function renderCells<T extends TableRow>(
     (resolved, columnIndex) => html`
       <td
         part="cell"
-        class=${cellClass(resolved)}
-        style=${ifDefined(pinStyle(resolved))}
+        class=${getCellClass(resolved)}
+        style=${ifDefined(getPinStyle(resolved))}
         data-label=${resolved.column.label}
       >
         ${renderCellLabel(resolved.column)} ${renderCellContent(options, resolved.column, row, index, columnIndex)}
@@ -118,7 +118,7 @@ function renderClickableRow<T extends TableRow>(options: TableBodyOptions<T>, ro
       class="clickable"
       @pointerdown=${options.onRowPointerDown}
       @pointermove=${options.onRowPointerMove}
-      @click=${(e: MouseEvent) => options.onRowClick(e, row, index)}
+      @click=${(event: MouseEvent) => options.onRowClick(event, row, index)}
     >
       ${renderCells(options, options.columns, row, index)}
     </tr>
@@ -158,8 +158,8 @@ export function renderTableHeader<T extends TableRow>(
       <th
         part="header-cell"
         scope="col"
-        class=${cellClass(resolved)}
-        style=${ifDefined(pinStyle(resolved))}
+        class=${getCellClass(resolved)}
+        style=${ifDefined(getPinStyle(resolved))}
         aria-sort=${ifDefined(ariaSort(resolved.column))}
       >
         <slot name=${`header-${resolved.column.name}`}>${resolved.column.label}</slot>

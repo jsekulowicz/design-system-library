@@ -1,7 +1,7 @@
 import { html, nothing, LitElement, type PropertyValues, type TemplateResult } from 'lit';
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, hasValidityInputChanged, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { clearButtonStyles, renderClearButton } from '../../shared/clear-button.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
@@ -142,7 +142,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
   }
 
   override updated(changed: PropertyValues): void {
-    if (changedWhatValidityReads(changed)) {
+    if (hasValidityInputChanged(changed)) {
       this.syncValidity();
     }
     if (changed.has('label') || changed.has('inputLabel')) {
@@ -204,7 +204,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     }
     if (this.multiple) {
       const next = this.values.includes(option.value)
-        ? this.values.filter((v) => v !== option.value)
+        ? this.values.filter((value) => value !== option.value)
         : [...this.values, option.value];
       this.values = next;
       this.value = next.join(',');

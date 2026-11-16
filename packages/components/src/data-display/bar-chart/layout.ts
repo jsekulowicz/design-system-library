@@ -1,21 +1,21 @@
 import type { BarChartGroup, BarChartRow } from './types.js';
 
-export function niceMax(value: number): number {
+export function computeNiceMax(value: number): number {
   if (!Number.isFinite(value) || value <= 0) {
     return 1;
   }
   const pow = Math.pow(10, Math.floor(Math.log10(value)));
-  const d = value / pow;
-  if (d <= 1) {
+  const normalized = value / pow;
+  if (normalized <= 1) {
     return 1 * pow;
   }
-  if (d <= 2) {
+  if (normalized <= 2) {
     return 2 * pow;
   }
-  if (d <= 2.5) {
+  if (normalized <= 2.5) {
     return 2.5 * pow;
   }
-  if (d <= 5) {
+  if (normalized <= 5) {
     return 5 * pow;
   }
   return 10 * pow;
@@ -27,19 +27,19 @@ export function generateTicks(maxValue: number, approxCount = 5): number[] {
   }
   const ideal = maxValue / approxCount;
   const pow = Math.pow(10, Math.floor(Math.log10(ideal)));
-  const d = ideal / pow;
+  const normalized = ideal / pow;
   let stepMultiplier = 10;
-  if (d <= 1) {
+  if (normalized <= 1) {
     stepMultiplier = 1;
-  } else if (d <= 2) {
+  } else if (normalized <= 2) {
     stepMultiplier = 2;
-  } else if (d <= 5) {
+  } else if (normalized <= 5) {
     stepMultiplier = 5;
   }
   const step = stepMultiplier * pow;
   const ticks: number[] = [];
-  for (let v = 0; v <= maxValue + 1e-9; v += step) {
-    ticks.push(Number(v.toFixed(10)));
+  for (let tick = 0; tick <= maxValue + 1e-9; tick += step) {
+    ticks.push(Number(tick.toFixed(10)));
   }
   return ticks;
 }
@@ -54,9 +54,9 @@ export function groupData<T extends BarChartRow>(
     let total = 0;
     for (const key of seriesKeys) {
       const raw = row[key];
-      const v = typeof raw === 'number' ? raw : Number(raw) || 0;
-      values[key] = v;
-      total += v;
+      const value = typeof raw === 'number' ? raw : Number(raw) || 0;
+      values[key] = value;
+      total += value;
     }
     return { domain: row[domainKey], row, values, total };
   });
@@ -95,10 +95,10 @@ export function computeGroupedBars(
   seriesCount: number,
   innerGap: number,
 ): GroupedBar[] {
-  const n = Math.max(1, seriesCount);
-  const totalGap = Math.max(0, n - 1) * innerGap;
-  const barWidth = Math.max(1, (innerWidth - totalGap) / n);
-  return Array.from({ length: n }, (_, i) => ({
+  const barCount = Math.max(1, seriesCount);
+  const totalGap = Math.max(0, barCount - 1) * innerGap;
+  const barWidth = Math.max(1, (innerWidth - totalGap) / barCount);
+  return Array.from({ length: barCount }, (_, i) => ({
     x: innerX + i * (barWidth + innerGap),
     width: barWidth,
   }));

@@ -11,7 +11,7 @@ async function mountSwatch(props: Partial<DsColorPickerSwatch> = {}): Promise<Ds
   );
 }
 
-function keydown(target: HTMLElement, key: string): void {
+function dispatchKeydown(target: HTMLElement, key: string): void {
   target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
 }
 
@@ -42,8 +42,8 @@ describe('<ds-color-picker-swatch>', () => {
     });
 
     el.click();
-    keydown(el, 'Enter');
-    keydown(el, ' ');
+    dispatchKeydown(el, 'Enter');
+    dispatchKeydown(el, ' ');
 
     expect(events.map((event) => event.detail)).toEqual([
       { value: '#7C3AED' },
@@ -60,7 +60,7 @@ describe('<ds-color-picker-swatch>', () => {
     });
 
     el.click();
-    keydown(el, 'Enter');
+    dispatchKeydown(el, 'Enter');
 
     expect(el.getAttribute('aria-disabled')).toBe('true');
     expect(events).toHaveLength(0);

@@ -7,7 +7,9 @@ describe('the roving target', () => {
   });
 
   it('wraps past either end and skips indices that cannot take the selection', () => {
-    const isDisabled = (index: number): boolean => index === 0;
+    function isDisabled(index: number): boolean {
+      return index === 0;
+    }
     expect(resolveRovingTarget({ key: 'ArrowDown', currentIndex: 2, count: 3, isDisabled })).toBe(1);
   });
 

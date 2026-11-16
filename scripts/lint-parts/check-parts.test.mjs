@@ -1,18 +1,18 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { checkFixture, componentSource } from './test-fixture.mjs';
+import { checkFixture, buildComponentSource } from './test-fixture.mjs';
 
 const exceptions = new Map([
   ['ds-owner', { names: ['button-prev'], reason: 'button name interpolates the direction' }],
 ]);
-const owner = componentSource(
+const owner = buildComponentSource(
   'ds-owner',
   ['button-prev'],
   'render() { return html`<button part="button-${this.direction}"></button>`; }',
 );
 
 test('reports dynamic attributes without a scoped exception', (context) => {
-  const source = componentSource(
+  const source = buildComponentSource(
     'ds-example',
     [],
     'render() { return html`<button part="button-${this.direction}"></button>`; }',
@@ -33,7 +33,7 @@ test('limits a runtime exception to its owning component', (context) => {
     context,
     {
       'owner.ts': owner,
-      'other.ts': componentSource('ds-other', ['button-prev'], 'render() { return html`<div></div>`; }'),
+      'other.ts': buildComponentSource('ds-other', ['button-prev'], 'render() { return html`<div></div>`; }'),
     },
     exceptions,
   );
@@ -45,7 +45,7 @@ test('reports runtime exceptions whose documented component is gone', (context) 
   const result = checkFixture(
     context,
     {
-      'other.ts': componentSource(
+      'other.ts': buildComponentSource(
         'ds-other',
         ['button-prev'],
         'render() { return html`<button part="button-prev"></button>`; }',
@@ -74,7 +74,7 @@ for (const [scenario, parts, body] of [
   ],
 ]) {
   test(`reports a stale runtime exception after ${scenario}`, (context) => {
-    const result = checkFixture(context, { 'owner.ts': componentSource('ds-owner', parts, body) }, exceptions);
+    const result = checkFixture(context, { 'owner.ts': buildComponentSource('ds-owner', parts, body) }, exceptions);
     assert.equal(result.stale.length, 1);
     assert.equal(result.stale[0].part, 'button-prev');
   });

@@ -33,7 +33,7 @@ function press(el: DsPieChart, key: string): void {
   frame.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
 }
 
-function activeIndexOf(el: DsPieChart): number | null {
+function getActiveIndex(el: DsPieChart): number | null {
   return (el as unknown as { _activeIndex: number | null })._activeIndex;
 }
 
@@ -46,16 +46,16 @@ describe('<ds-pie-chart>', () => {
     const el = await mountPieChart();
     const groups = slices(el);
     expect(groups).toHaveLength(3);
-    expect(groups.every((g) => g.getAttribute('role') === 'graphics-symbol')).toBe(true);
+    expect(groups.every((slice) => slice.getAttribute('role') === 'graphics-symbol')).toBe(true);
     expect(groups[0]!.getAttribute('aria-label')).toBe('Organic: 50, 50%');
   });
 
   it('keeps exactly one slice in the tab order', async () => {
     const el = await mountPieChart();
-    expect(slices(el).filter((g) => g.getAttribute('tabindex') === '0')).toHaveLength(1);
+    expect(slices(el).filter((slice) => slice.getAttribute('tabindex') === '0')).toHaveLength(1);
     press(el, 'ArrowRight');
     await el.updateComplete;
-    const tabbable = slices(el).filter((g) => g.getAttribute('tabindex') === '0');
+    const tabbable = slices(el).filter((slice) => slice.getAttribute('tabindex') === '0');
     expect(tabbable).toHaveLength(1);
     expect(tabbable[0]!.getAttribute('data-index')).toBe('0');
   });
@@ -82,16 +82,16 @@ describe('<ds-pie-chart>', () => {
     const el = await mountPieChart();
     press(el, 'ArrowRight');
     await el.updateComplete;
-    expect(activeIndexOf(el)).toBe(0);
+    expect(getActiveIndex(el)).toBe(0);
     press(el, 'ArrowLeft');
     await el.updateComplete;
-    expect(activeIndexOf(el)).toBe(2);
+    expect(getActiveIndex(el)).toBe(2);
     press(el, 'End');
     await el.updateComplete;
-    expect(activeIndexOf(el)).toBe(2);
+    expect(getActiveIndex(el)).toBe(2);
     press(el, 'Home');
     await el.updateComplete;
-    expect(activeIndexOf(el)).toBe(0);
+    expect(getActiveIndex(el)).toBe(0);
   });
 
   it('clears the active slice on Escape', async () => {
@@ -100,7 +100,7 @@ describe('<ds-pie-chart>', () => {
     await el.updateComplete;
     press(el, 'Escape');
     await el.updateComplete;
-    expect(activeIndexOf(el)).toBeNull();
+    expect(getActiveIndex(el)).toBeNull();
     expect(el.shadowRoot!.querySelector('[role="status"]')!.textContent?.trim()).toBe('');
   });
 
@@ -218,7 +218,7 @@ describe('<ds-pie-chart>', () => {
     const el = await mountPieChart({ data: [] });
     press(el, 'ArrowRight');
     await el.updateComplete;
-    expect(activeIndexOf(el)).toBeNull();
+    expect(getActiveIndex(el)).toBeNull();
   });
 
   it('keeps zero-value categories in the legend without drawing an arc', async () => {

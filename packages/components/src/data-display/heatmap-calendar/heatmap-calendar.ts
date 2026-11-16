@@ -5,13 +5,13 @@ import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../share
 import { heatmapCalendarStyles } from './heatmap-calendar.styles.js';
 import { pointTooltipStyles } from '../../shared/point-tooltip.styles.js';
 import { computeHeatmapLayout, parseDate } from './heatmap-layout.js';
-import { actionForKey } from './heatmap-interaction.js';
+import { getActionForKey } from './heatmap-interaction.js';
 import { HeatmapActiveDay } from './heatmap-active-day.js';
-import { defaultDateFormatter, monthFormatter, todayDate, weekdayLabels } from './heatmap-formatters.js';
-import { heatmapDimensions, renderHeatmapSvg } from './heatmap-calendar-svg.js';
+import { createDefaultDateFormatter, createMonthFormatter, todayDate, getWeekdayLabels } from './heatmap-formatters.js';
+import { computeHeatmapDimensions, renderHeatmapSvg } from './heatmap-calendar-svg.js';
 import {
-  heatmapAriaLabel,
-  heatmapLiveText,
+  getHeatmapAriaLabel,
+  getHeatmapLiveText,
   renderHeatmapLegend,
   renderHeatmapSrTable,
   renderHeatmapAnchor,
@@ -86,7 +86,7 @@ export class DsHeatmapCalendar extends DsElement {
     const layout = this.#layout();
     const ctx = this.#context();
     if (this.loading) {
-      const dimensions = heatmapDimensions(ctx, layout);
+      const dimensions = computeHeatmapDimensions(ctx, layout);
       return html`
         <div class="frame loading-frame" part="chart" aria-busy="true" aria-label=${this.title || this.calendarLabel}>
           <div class="scroller" part="scroller">
@@ -121,8 +121,8 @@ export class DsHeatmapCalendar extends DsElement {
         </div>
         ${renderHeatmapTooltip(ctx, layout)} ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
       </div>
-      ${renderChartTitle(this.uid, heatmapAriaLabel(ctx, layout))} ${renderHeatmapSrTable(ctx, layout)}
-      ${renderChartLiveRegion(heatmapLiveText(ctx, layout))}
+      ${renderChartTitle(this.uid, getHeatmapAriaLabel(ctx, layout))} ${renderHeatmapSrTable(ctx, layout)}
+      ${renderChartLiveRegion(getHeatmapLiveText(ctx, layout))}
     `;
   }
 
@@ -133,7 +133,7 @@ export class DsHeatmapCalendar extends DsElement {
   }
 
   #context(): HeatmapRenderContext {
-    const formatDate = this.formatDate ?? defaultDateFormatter(this.locale);
+    const formatDate = this.formatDate ?? createDefaultDateFormatter(this.locale);
     return {
       uid: this.uid,
       title: this.title,
@@ -146,8 +146,8 @@ export class DsHeatmapCalendar extends DsElement {
       tooltipShown: this.#activeDay.tooltipShown,
       formatValue: (value) => this.formatValue?.(value) ?? String(value),
       formatDate,
-      formatMonth: monthFormatter(this.locale),
-      weekdayLabels: weekdayLabels(this.locale, this.weekStart),
+      formatMonth: createMonthFormatter(this.locale),
+      weekdayLabels: getWeekdayLabels(this.locale, this.weekStart),
       calendarLabel: this.calendarLabel,
       dataTableLabel: this.dataTableLabel,
       summaryLabel: this.summaryLabel,
@@ -168,7 +168,7 @@ export class DsHeatmapCalendar extends DsElement {
   }
 
   #onKeydown = (event: KeyboardEvent): void => {
-    const action = actionForKey(event.key, this.#activeDay.tabbableIndex, this.#layout().cells.length);
+    const action = getActionForKey(event.key, this.#activeDay.tabbableIndex, this.#layout().cells.length);
     if (!action) {
       return;
     }
@@ -178,7 +178,7 @@ export class DsHeatmapCalendar extends DsElement {
   };
 
   #onFocusIn = (event: FocusEvent): void => {
-    const index = cellIndexFrom(event.target);
+    const index = getCellIndexFrom(event.target);
     if (index !== null) {
       this.#activeDay.focus(index);
     }
@@ -191,14 +191,14 @@ export class DsHeatmapCalendar extends DsElement {
   };
 
   #onPointerMove = (event: PointerEvent): void => {
-    const index = cellIndexFrom(event.composedPath()[0] ?? null);
+    const index = getCellIndexFrom(event.composedPath()[0] ?? null);
     if (index !== null) {
       this.#activeDay.activate(index);
     }
   };
 
   #onClick = (event: MouseEvent): void => {
-    const index = cellIndexFrom(event.composedPath()[0] ?? null);
+    const index = getCellIndexFrom(event.composedPath()[0] ?? null);
     if (index !== null) {
       this.#activeDay.focus(index);
     }
@@ -230,7 +230,7 @@ function toFocusDetail({ date, value, level, details }: HeatmapCell): HeatmapFoc
   return details ? { date, value, level, details } : { date, value, level };
 }
 
-function cellIndexFrom(target: EventTarget | null): number | null {
+function getCellIndexFrom(target: EventTarget | null): number | null {
   const cell = target instanceof Element ? target.closest('.cell') : null;
   const index = cell?.getAttribute('data-index') ?? null;
   return index === null ? null : Number(index);

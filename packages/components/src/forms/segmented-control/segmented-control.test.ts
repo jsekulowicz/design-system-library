@@ -27,12 +27,12 @@ async function mountControl(value = 'light'): Promise<DsSegmentedControl> {
   return el;
 }
 
-function segments(el: DsSegmentedControl): HTMLElement[] {
+function getSegments(el: DsSegmentedControl): HTMLElement[] {
   return Array.from(el.shadowRoot!.querySelectorAll<HTMLElement>('.segment'));
 }
 
-function segmentSizes(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map((s) => s.getAttribute('size'));
+function getSegmentSizes(el: DsSegmentedControl): (string | null)[] {
+  return getSegments(el).map((segment) => segment.getAttribute('size'));
 }
 
 function getInnerRadioButton(segment: HTMLElement): HTMLButtonElement {
@@ -40,11 +40,11 @@ function getInnerRadioButton(segment: HTMLElement): HTMLButtonElement {
 }
 
 function checkedStates(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map((s) => getInnerRadioButton(s).getAttribute('aria-checked'));
+  return getSegments(el).map((segment) => getInnerRadioButton(segment).getAttribute('aria-checked'));
 }
 
-function tabIndexes(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map((s) => getInnerRadioButton(s).getAttribute('tabindex'));
+function getTabIndexes(el: DsSegmentedControl): (string | null)[] {
+  return getSegments(el).map((segment) => getInnerRadioButton(segment).getAttribute('tabindex'));
 }
 
 function pressKey(el: DsSegmentedControl, key: string): void {
@@ -68,28 +68,28 @@ describe('<ds-segmented-control>', () => {
 
   it('renders one segment per option and marks the selected one', async () => {
     const el = await mountControl('light');
-    expect(segments(el)).toHaveLength(3);
+    expect(getSegments(el)).toHaveLength(3);
     expect(checkedStates(el)).toEqual(['false', 'true', 'false']);
   });
 
   it('uses regular sized buttons by default', async () => {
     const el = await mountControl('light');
-    expect(segmentSizes(el)).toEqual(['md', 'md', 'md']);
+    expect(getSegmentSizes(el)).toEqual(['md', 'md', 'md']);
   });
 
   it('uses small buttons when small is true', async () => {
     const el = await mountControl('light');
     el.small = true;
     await el.updateComplete;
-    expect(segmentSizes(el)).toEqual(['sm', 'sm', 'sm']);
+    expect(getSegmentSizes(el)).toEqual(['sm', 'sm', 'sm']);
   });
 
   it('emits ds-change and updates value on click', async () => {
     const el = await mountControl('light');
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
 
-    getInnerRadioButton(segments(el)[2]).click();
+    getInnerRadioButton(getSegments(el)[2]).click();
     await el.updateComplete;
 
     expect(el.value).toBe('natural');
@@ -100,9 +100,9 @@ describe('<ds-segmented-control>', () => {
   it('does not emit when the selected option is clicked again', async () => {
     const el = await mountControl('light');
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
 
-    getInnerRadioButton(segments(el)[1]).click();
+    getInnerRadioButton(getSegments(el)[1]).click();
     await el.updateComplete;
 
     expect(events).toHaveLength(0);
@@ -113,9 +113,9 @@ describe('<ds-segmented-control>', () => {
     el.disabled = true;
     await el.updateComplete;
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
 
-    getInnerRadioButton(segments(el)[2]).click();
+    getInnerRadioButton(getSegments(el)[2]).click();
     await el.updateComplete;
 
     expect(events).toHaveLength(0);
@@ -144,25 +144,25 @@ describe('<ds-segmented-control>', () => {
 
   it('keeps a single tab stop on the selected segment (roving tabindex)', async () => {
     const el = await mountControl('light');
-    expect(tabIndexes(el)).toEqual(['-1', '0', '-1']);
+    expect(getTabIndexes(el)).toEqual(['-1', '0', '-1']);
   });
 
   it('falls back the tab stop to the first option when nothing is selected', async () => {
     const el = await mountControl('');
-    expect(tabIndexes(el)).toEqual(['0', '-1', '-1']);
+    expect(getTabIndexes(el)).toEqual(['0', '-1', '-1']);
   });
 
   it('moves selection and the tab stop with ArrowRight, selection following focus as the radiogroup pattern prescribes', async () => {
     const el = await mountControl('light');
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
 
     pressKey(el, 'ArrowRight');
     await el.updateComplete;
 
     expect(el.value).toBe('natural');
     expect(events.at(-1)?.detail).toEqual({ value: 'natural' });
-    expect(tabIndexes(el)).toEqual(['-1', '-1', '0']);
+    expect(getTabIndexes(el)).toEqual(['-1', '-1', '0']);
     expect(checkedStates(el)).toEqual(['false', 'false', 'true']);
   });
 

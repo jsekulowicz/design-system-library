@@ -15,9 +15,9 @@ describe('flatten', () => {
   });
 
   it('coerces numeric values to strings', () => {
-    const result = flatten({ z: { base: 0, raised: 10 } });
-    expect(result['--ds-z-base']).toBe('0');
-    expect(result['--ds-z-raised']).toBe('10');
+    const result = flatten({ layer: { base: 0, raised: 10 } });
+    expect(result['--ds-layer-base']).toBe('0');
+    expect(result['--ds-layer-raised']).toBe('10');
   });
 
   it('preserves hyphenated keys without duplication', () => {

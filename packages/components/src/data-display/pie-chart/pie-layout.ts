@@ -42,15 +42,15 @@ function normalizeValue(value: number): number {
 }
 
 function splitTail(entries: Weighted[], total: number, options: PieSliceOptions): [Weighted[], Weighted[]] {
-  const sorted = [...entries].sort((a, b) => b.value - a.value);
-  const belowThreshold = (entry: Weighted): boolean => {
+  const sorted = [...entries].sort((left, right) => right.value - left.value);
+  function isBelowThreshold(entry: Weighted): boolean {
     return options.otherThreshold > 0 && (entry.value / total) * 100 < options.otherThreshold;
-  };
+  }
   const kept: Weighted[] = [];
   const tail: Weighted[] = [];
   for (const entry of sorted) {
     const overflows = options.maxSlices > 0 && kept.length >= options.maxSlices - 1;
-    if (overflows || belowThreshold(entry)) {
+    if (overflows || isBelowThreshold(entry)) {
       tail.push(entry);
       continue;
     }
@@ -84,13 +84,13 @@ function toOtherSlice(tail: Weighted[], total: number, label: string): Omit<PieS
   };
 }
 
-function widenSliversInDrawnShares(
+function enforceMinSlicePercent(
   slices: readonly Omit<PieSlice, 'startAngle' | 'endAngle'>[],
   minPercent: number,
 ): number[] {
   const shares = slices.map((slice) => slice.percent);
   const boosted = shares.filter((percent) => percent > 0 && percent < minPercent);
-  const restSum = shares.filter((percent) => percent >= minPercent).reduce((sum, p) => sum + p, 0);
+  const restSum = shares.filter((percent) => percent >= minPercent).reduce((sum, percent) => sum + percent, 0);
   if (minPercent <= 0 || boosted.length === 0 || restSum <= 0) {
     return shares;
   }
@@ -111,7 +111,7 @@ export function computeSliceAngles(
   slices: readonly Omit<PieSlice, 'startAngle' | 'endAngle'>[],
   minSlicePercent = 0,
 ): PieSlice[] {
-  const shares = widenSliversInDrawnShares(slices, minSlicePercent);
+  const shares = enforceMinSlicePercent(slices, minSlicePercent);
   let cursor = -Math.PI / 2;
   return slices.map((slice, index) => {
     const startAngle = cursor;
@@ -138,6 +138,6 @@ export function preparePieSlices(data: readonly PieChartDatum[], options: PieSli
   return computeSliceAngles(slices, options.minSlicePercent ?? 0);
 }
 
-export function sliceTotal(slices: readonly PieSlice[]): number {
+export function sumSliceValues(slices: readonly PieSlice[]): number {
   return slices.reduce((sum, slice) => sum + slice.value, 0);
 }

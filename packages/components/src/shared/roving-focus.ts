@@ -8,7 +8,9 @@ export interface RovingTargetOptions {
   isDisabled?: (index: number) => boolean;
 }
 
-const wrap = (value: number, count: number): number => ((value % count) + count) % count;
+function wrapIndex(value: number, count: number): number {
+  return ((value % count) + count) % count;
+}
 
 export function resolveRovingTarget({
   key,
@@ -43,7 +45,7 @@ export function resolveRovingTarget({
 
   let index = from;
   for (let i = 0; i < count; i += 1) {
-    index = wrap(index + step, count);
+    index = wrapIndex(index + step, count);
     if (!isDisabled(index)) {
       return index;
     }

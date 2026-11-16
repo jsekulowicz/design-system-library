@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/select/define';
 import '@jsekulowicz/ds-components/icon/define';
@@ -31,7 +31,7 @@ const options = [
   { label: 'Operations', value: 'ops', disabled: true, icon: { name: 'cog-6-tooth', color: '#0891b2' } },
 ];`;
 
-function src(markup: string, alsoImport?: string): string {
+function buildSource(markup: string, alsoImport?: string): string {
   const imports = alsoImport ? `${alsoImport}\n${OPTIONS_CODE_PANEL_SOURCE}` : OPTIONS_CODE_PANEL_SOURCE;
   return `${imports}\n\nhtml\`\n${markup}\n\`;`;
 }
@@ -83,7 +83,7 @@ export const Playground: Story = {
   parameters: {
     docs: {
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select label="Discipline" placeholder="Pick a discipline" .options=\${options}>
 ${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
@@ -115,7 +115,7 @@ export const Preselected: Story = {
   parameters: {
     docs: {
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select label="Discipline" .options=\${options} .value=\${'engineering'}>
 ${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
@@ -134,7 +134,7 @@ export const WithDescription: Story = {
   parameters: {
     docs: {
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Discipline"
     placeholder="Pick a discipline"
@@ -168,7 +168,7 @@ export const WithHint: Story = {
           'A `hint` renders a sticky note at the top of the open dropdown - use it to explain, for the whole menu, why a choice is unavailable (here, why "Operations" is disabled). It is visible the moment the dropdown opens, for mouse and keyboard users alike, rather than only on hovering the disabled option. Pair it with a per-option `disabledReason` for the screen-reader description on that option. Open the select to see it.',
       },
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Discipline"
     placeholder="Pick a discipline"
@@ -198,7 +198,7 @@ export const Sizes: Story = {
     docs: {
       story: { height: '120px' },
       source: {
-        code: src(
+        code: buildSource(
           `  \${['sm', 'md', 'lg'].map(
     (size) => html\`
       <ds-select size=\${size} label="" placeholder=\${size} .options=\${options}>
@@ -229,7 +229,7 @@ export const Invalid: Story = {
   parameters: {
     docs: {
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Discipline"
     placeholder="Pick a discipline"
@@ -264,7 +264,7 @@ export const Disabled: Story = {
   parameters: {
     docs: {
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Discipline"
     placeholder="Pick a discipline"
@@ -295,7 +295,7 @@ export const Required: Story = {
   parameters: {
     docs: {
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Discipline"
     placeholder="Pick a discipline"
@@ -331,7 +331,7 @@ export const MessageWithALink: Story = {
           'The `description`, `warning` and `error` text each render through a slot of that name, so a message can carry a link without losing the icon, the color or the row the attribute reserves. The attribute still decides which row shows and remains the fallback for anyone who slots nothing.',
       },
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Discipline"
     placeholder="Pick a discipline"
@@ -365,7 +365,7 @@ export const Multiple: Story = {
     docs: {
       story: { height: '320px' },
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select label="Disciplines" placeholder="Pick disciplines" multiple .options=\${options}>
 ${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
@@ -386,7 +386,7 @@ export const MultipleWithIcons: Story = {
     docs: {
       story: { height: '200px' },
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Disciplines"
     placeholder="Pick disciplines"
@@ -419,7 +419,7 @@ export const MultiplePreselected: Story = {
     docs: {
       story: { height: '320px' },
       source: {
-        code: src(
+        code: buildSource(
           `  <ds-select
     label="Disciplines"
     placeholder="Pick disciplines"
@@ -493,18 +493,20 @@ const scaleOptions = [
   { label: 'High', value: 'high' },
 ];
 
-const squares = (filled: number) => html`
-  <span style="display:inline-flex;gap:3px;align-items:center">
-    ${[1, 2, 3].map(
-      (i) =>
-        html`<span
-          style="width:11px;height:11px;border:2px solid currentColor;border-radius:2px;background:${
-            i <= filled ? 'currentColor' : 'transparent'
-          }"
-        ></span>`,
-    )}
-  </span>
-`;
+function renderSquares(filled: number): TemplateResult {
+  return html`
+    <span style="display:inline-flex;gap:3px;align-items:center">
+      ${[1, 2, 3].map(
+        (i) =>
+          html`<span
+            style="width:11px;height:11px;border:2px solid currentColor;border-radius:2px;background:${
+              i <= filled ? 'currentColor' : 'transparent'
+            }"
+          ></span>`,
+      )}
+    </span>
+  `;
+}
 
 const PROJECTED_SRC = `<ds-select label="Priority" .options=\${options}>
   <span slot="option:low"><my-scale value="1"></my-scale> Low</span>
@@ -528,10 +530,10 @@ export const ProjectedOptionContent: Story = {
       ${scaleOptions.map(
         (option, index) => html`
           <span slot="option:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
-            ${squares(index + 1)} ${option.label}
+            ${renderSquares(index + 1)} ${option.label}
           </span>
           <span slot="selected:${option.value}" style="display:inline-flex;gap:8px;align-items:center">
-            ${squares(index + 1)} ${option.label}
+            ${renderSquares(index + 1)} ${option.label}
           </span>
         `,
       )}

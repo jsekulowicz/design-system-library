@@ -24,7 +24,7 @@ const NESTED_HEADING = joinStyles(
 
 const MAIN_HEADING = NESTED_HEADING.replace('heading-sm', 'heading-md');
 
-function activitySections() {
+function renderActivitySections() {
   return Array.from(
     { length: 18 },
     (_, index) => html`
@@ -48,7 +48,7 @@ export const WithNonScrollingHeader: Story = {
             The header remains still while the content can overscroll.
           </p>
         </header>
-        ${activitySections()}
+        ${renderActivitySections()}
       </ds-scrollable-page>
     </div>
   `,
@@ -57,7 +57,7 @@ export const WithNonScrollingHeader: Story = {
 export const WithoutHeader: Story = {
   render: () => html`
     <div style="height:400px">
-      <ds-scrollable-page style="height:100%">${activitySections()}</ds-scrollable-page>
+      <ds-scrollable-page style="height:100%">${renderActivitySections()}</ds-scrollable-page>
     </div>
   `,
 };

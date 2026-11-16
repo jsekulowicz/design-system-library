@@ -22,7 +22,7 @@ function getSwatches(el: DsColorPickerSwatchGroup): DsColorPickerSwatch[] {
   return Array.from(el.shadowRoot!.querySelectorAll<DsColorPickerSwatch>('ds-color-picker-swatch'));
 }
 
-function keydown(target: HTMLElement, key: string): void {
+function dispatchKeydown(target: HTMLElement, key: string): void {
   target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
 }
 
@@ -56,7 +56,7 @@ describe('<ds-color-picker-swatch-group>', () => {
     const el = await mountGroup();
 
     getSwatches(el)[0].focus();
-    keydown(getSwatches(el)[0], 'ArrowRight');
+    dispatchKeydown(getSwatches(el)[0], 'ArrowRight');
     await el.updateComplete;
 
     expect(el.shadowRoot!.activeElement).toBe(getSwatches(el)[2]);

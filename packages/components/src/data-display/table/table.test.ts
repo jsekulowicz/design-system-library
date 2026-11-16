@@ -136,7 +136,7 @@ describe('<ds-table>', () => {
       { rows: ROWS, columns: COLUMNS },
     );
     const slot = el.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="cell:name:1"]')!;
-    const assigned = slot.assignedNodes({ flatten: true }).map((n) => n.textContent ?? '');
+    const assigned = slot.assignedNodes({ flatten: true }).map((node) => node.textContent ?? '');
     expect(assigned.join('')).toContain('PROJECTED');
   });
 

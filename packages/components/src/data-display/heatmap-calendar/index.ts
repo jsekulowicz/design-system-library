@@ -9,10 +9,10 @@ export type {
   HeatmapMonthLabel,
 } from './types.js';
 export {
-  civilFromDays,
+  toCivilFromDays,
   computeHeatmapLayout,
-  daysFromCivil,
+  toDaysFromCivil,
   formatCivil,
-  levelForValue,
+  getLevelForValue,
   parseDate,
 } from './heatmap-layout.js';

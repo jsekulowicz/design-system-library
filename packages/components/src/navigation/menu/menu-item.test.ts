@@ -31,7 +31,7 @@ describe('<ds-menu-item>', () => {
     expect(
       primary
         .assignedNodes({ flatten: true })
-        .map((n) => n.textContent ?? '')
+        .map((node) => node.textContent ?? '')
         .join('')
         .trim(),
     ).toBe('Save');

@@ -32,14 +32,14 @@ function getTrigger(el: DsSelect): HTMLElement {
 
 function getOption(el: DsSelect, label: string): HTMLElement {
   const options = el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option');
-  const found = Array.from(options).find((o) => (o.textContent ?? '').trim() === label);
+  const found = Array.from(options).find((option) => (option.textContent ?? '').trim() === label);
   if (!found) {
     throw new Error(`Option "${label}" not found in listbox`);
   }
   return found;
 }
 
-function keydown(target: HTMLElement, key: string): void {
+function dispatchKeydown(target: HTMLElement, key: string): void {
   target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
 }
 
@@ -57,7 +57,7 @@ describe('<ds-select>', () => {
     it('adds and removes values by clicking options', async () => {
       const el = await mountSelect({ multiple: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       await openDropdown(el);
       getOption(el, 'React').click();
       await el.updateComplete;
@@ -89,7 +89,7 @@ describe('<ds-select>', () => {
     it('removes a tile when its remove button is clicked', async () => {
       const el = await mountSelect({ multiple: true, values: ['react', 'vue'] });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       el.shadowRoot!.querySelector<HTMLElement>('.tile[data-value="react"] .tile-remove')!.click();
       await el.updateComplete;
       expect(el.values).toEqual(['vue']);
@@ -116,7 +116,7 @@ describe('<ds-select>', () => {
     it('clears single value and emits ds-change on click', async () => {
       const el = await mountSelect({ clearable: true, value: 'react' });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
       await el.updateComplete;
       expect(el.value).toBe('');
@@ -139,7 +139,7 @@ describe('<ds-select>', () => {
     it('clears all values in multiple mode and emits ds-change on click', async () => {
       const el = await mountSelect({ clearable: true, multiple: true, values: ['react', 'vue'] });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
       await el.updateComplete;
       expect(el.values).toEqual([]);
@@ -154,7 +154,7 @@ describe('<ds-select>', () => {
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
 
-    it('Enter on focused clear button clears value without opening the dropdown', async () => {
+    it('clears the value without opening the dropdown when Enter is pressed on the focused clear button', async () => {
       const el = await mountSelect({ clearable: true });
       await openDropdown(el);
       getOption(el, 'React').click();
@@ -205,7 +205,7 @@ describe('<ds-select>', () => {
 
     it('does not open on keyboard', async () => {
       const el = await mountSelect({ disabled: true });
-      keydown(getTrigger(el), 'ArrowDown');
+      dispatchKeydown(getTrigger(el), 'ArrowDown');
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
@@ -224,7 +224,7 @@ describe('<ds-select>', () => {
       );
     }
 
-    function assignedTo(el: DsSelect, name: string): Element[] {
+    function getAssignedElements(el: DsSelect, name: string): Element[] {
       const slot = el.shadowRoot!.querySelector<HTMLSlotElement>(`slot[name="${name}"]`);
       return slot ? slot.assignedElements() : [];
     }
@@ -232,13 +232,13 @@ describe('<ds-select>', () => {
     it('projects a light-DOM node into its option', async () => {
       const el = await mountWithSlots();
       await openDropdown(el);
-      expect(assignedTo(el, 'option:react')[0]?.textContent).toBe('React!');
+      expect(getAssignedElements(el, 'option:react')[0]?.textContent).toBe('React!');
     });
 
     it('falls back to the label for options with nothing slotted', async () => {
       const el = await mountWithSlots();
       await openDropdown(el);
-      expect(assignedTo(el, 'option:vue')).toHaveLength(0);
+      expect(getAssignedElements(el, 'option:vue')).toHaveLength(0);
       expect(getOption(el, 'Vue')).not.toBeNull();
     });
 
@@ -251,12 +251,12 @@ describe('<ds-select>', () => {
 
     it('projects into the trigger once selected', async () => {
       const el = await mountWithSlots({ value: 'react' });
-      expect(assignedTo(el, 'selected:react')[0]?.textContent).toBe('Reacting');
+      expect(getAssignedElements(el, 'selected:react')[0]?.textContent).toBe('Reacting');
     });
 
     it('projects into the selected tile when multiple', async () => {
       const el = await mountWithSlots({ multiple: true, values: ['react'] });
-      expect(assignedTo(el, 'tile:react')[0]?.textContent).toBe('Tiled');
+      expect(getAssignedElements(el, 'tile:react')[0]?.textContent).toBe('Tiled');
     });
   });
 });

@@ -22,9 +22,11 @@ async function mountPagination(props: Partial<DsTablePagination> = {}): Promise<
   });
 }
 
+function ignoreResize(): void {}
+
 function getButton(el: DsTablePagination, label: string): HTMLButtonElement | null {
   const buttons = el.shadowRoot!.querySelectorAll('button');
-  return Array.from(buttons).find((b) => b.getAttribute('aria-label') === label) ?? null;
+  return Array.from(buttons).find((button) => button.getAttribute('aria-label') === label) ?? null;
 }
 
 function getPageButton(el: DsTablePagination, page: number): HTMLButtonElement | null {
@@ -45,7 +47,7 @@ describe('<ds-table-pagination>', () => {
   it('emits ds-page-change with clicked page', async () => {
     const el = await mountPagination({ page: 1 });
     const events: CustomEvent<{ page: number; pageSize: number }>[] = [];
-    el.addEventListener('ds-page-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-page-change', (event) => events.push(event as CustomEvent));
     getPageButton(el, 3)!.click();
     expect(events[0]?.detail).toEqual({ page: 3, pageSize: 10 });
   });
@@ -53,7 +55,7 @@ describe('<ds-table-pagination>', () => {
   it('emits ds-page-change for Next button', async () => {
     const el = await mountPagination({ page: 2 });
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-page-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-page-change', (event) => events.push(event as CustomEvent));
     getButton(el, 'Next page')!.click();
     expect(events[0]?.detail).toEqual({ page: 3, pageSize: 10 });
   });
@@ -61,7 +63,7 @@ describe('<ds-table-pagination>', () => {
   it('does not emit when clicking current page', async () => {
     const el = await mountPagination({ page: 3 });
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-page-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-page-change', (event) => events.push(event as CustomEvent));
     getPageButton(el, 3)!.click();
     expect(events).toHaveLength(0);
   });
@@ -88,7 +90,7 @@ describe('<ds-table-pagination>', () => {
   it('emits ds-page-size-change with adjusted page keeping first visible row stable', async () => {
     const el = await mountPagination({ page: 3, pageSize: 10, pageSizeOptions: [10, 25, 50] });
     const events: CustomEvent<{ pageSize: number; page: number }>[] = [];
-    el.addEventListener('ds-page-size-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-page-size-change', (event) => events.push(event as CustomEvent));
     const select = el.shadowRoot!.querySelector('select')!;
     select.value = '25';
     select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -99,7 +101,7 @@ describe('<ds-table-pagination>', () => {
   it('ignores invalid page-size changes', async () => {
     const el = await mountPagination({ page: 3, pageSize: 10, pageSizeOptions: [10, 25, 50] });
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-page-size-change', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-page-size-change', (event) => events.push(event as CustomEvent));
     const select = el.shadowRoot!.querySelector('select')!;
     select.value = '0';
     select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -133,7 +135,7 @@ describe('<ds-table-pagination>', () => {
     el.compact = true;
     await el.updateComplete;
     const pageButtons = Array.from(el.shadowRoot!.querySelectorAll('button[aria-label^="Page "]'));
-    const pages = pageButtons.map((b) => Number(b.getAttribute('aria-label')!.replace('Page ', '')));
+    const pages = pageButtons.map((button) => Number(button.getAttribute('aria-label')!.replace('Page ', '')));
     expect(pages).toEqual([1, 50, 100]);
   });
 
@@ -175,7 +177,7 @@ describe('<ds-table-pagination>', () => {
     });
 
     describe('when its size changes later', () => {
-      let reportResize: (inlineSize: number) => void = () => {};
+      let reportResize: (inlineSize: number) => void = ignoreResize;
       let observedBox: string | undefined;
 
       beforeEach(() => {

@@ -96,12 +96,12 @@ export const CustomPalette: Story = {
 
 export const Toggle: Story = {
   render: () => {
-    const toggle = (event: Event): void => {
+    function toggle(event: Event): void {
       const button = event.currentTarget as HTMLElement;
       const pressed = button.getAttribute('aria-pressed') === 'true';
       button.setAttribute('aria-pressed', String(!pressed));
       button.setAttribute('variant', pressed ? 'secondary' : 'primary');
-    };
+    }
     return html`
       <div style="display:flex;gap:var(--ds-space-2);flex-wrap:wrap">
         <ds-button size="sm" variant="primary" aria-pressed="true" @ds-click=${toggle}>Daily</ds-button>

@@ -13,7 +13,7 @@ beforeEach(() => {
   resetTestDom();
 });
 
-function input(el: DsTextField): HTMLInputElement {
+function getInput(el: DsTextField): HTMLInputElement {
   return el.shadowRoot!.querySelector('input') as HTMLInputElement;
 }
 
@@ -27,8 +27,8 @@ describe('<ds-text-field> character counter', () => {
 
     expect(counter(el)?.textContent).toBe('0/15');
 
-    input(el).value = 'hello';
-    input(el).dispatchEvent(new Event('input', { bubbles: true }));
+    getInput(el).value = 'hello';
+    getInput(el).dispatchEvent(new Event('input', { bubbles: true }));
     await el.updateComplete;
 
     expect(counter(el)?.textContent).toBe('5/15');

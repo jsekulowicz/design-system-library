@@ -27,6 +27,13 @@ function collapseNamedControls(root: HTMLElement, pendingNames: Set<string>): vo
   }
 }
 
+function collapseUntilDone(root: HTMLElement, pendingNames: Set<string>, observer: MutationObserver): void {
+  collapseNamedControls(root, pendingNames);
+  if (pendingNames.size === 0) {
+    observer.disconnect();
+  }
+}
+
 export function CollapsedControls(props: CollapsedControlsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const resolved = useOf('meta', ['meta']) as ResolvedStoryMetadata;
@@ -39,15 +46,9 @@ export function CollapsedControls(props: CollapsedControlsProps) {
       return;
     }
     const pendingNames = new Set(names);
-    const collapse = () => {
-      collapseNamedControls(root, pendingNames);
-      if (pendingNames.size === 0) {
-        observer.disconnect();
-      }
-    };
-    const observer = new MutationObserver(collapse);
+    const observer = new MutationObserver(() => collapseUntilDone(root, pendingNames, observer));
     let observerTimeout: number | undefined;
-    collapse();
+    collapseUntilDone(root, pendingNames, observer);
     if (pendingNames.size > 0) {
       observer.observe(root, { childList: true, subtree: true });
       observerTimeout = window.setTimeout(() => observer.disconnect(), 2000);

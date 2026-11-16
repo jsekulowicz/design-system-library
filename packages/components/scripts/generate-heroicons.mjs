@@ -92,7 +92,7 @@ async function main() {
     solidNames.push(name);
   }
 
-  const names = [...outlineNames, ...solidNames].sort((a, b) => a.localeCompare(b));
+  const names = [...outlineNames, ...solidNames].sort((left, right) => left.localeCompare(right));
   await writeFile(join(iconDir, 'all.ts'), renderAllModule(names));
   await writeFile(join(iconDir, 'names.ts'), renderNamesModule(names));
 }

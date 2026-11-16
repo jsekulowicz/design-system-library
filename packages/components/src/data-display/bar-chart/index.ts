@@ -1,7 +1,7 @@
 export { DsBarChart } from './bar-chart.js';
 export type { BarChartSeries, BarChartRow, BarChartGroup, BarChartFocusDetail } from './types.js';
 export {
-  niceMax,
+  computeNiceMax,
   generateTicks,
   groupData,
   computeGroupBands,

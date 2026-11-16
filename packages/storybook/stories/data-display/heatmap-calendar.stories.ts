@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { HeatmapDay } from '@jsekulowicz/ds-components/heatmap-calendar';
 import '@jsekulowicz/ds-components/heatmap-calendar/define';
 
-function sampleActivity(): HeatmapDay[] {
+function buildSampleActivity(): HeatmapDay[] {
   const start = Date.UTC(2026, 0, 1);
   return Array.from({ length: 194 }, (_, index) => {
     const date = new Date(start + index * 86400000).toISOString().slice(0, 10);
@@ -12,7 +12,7 @@ function sampleActivity(): HeatmapDay[] {
   }).filter((day) => day.value > 0);
 }
 
-const DATA = sampleActivity();
+const DATA = buildSampleActivity();
 
 function splitByTimeOfDay(days: HeatmapDay[]): HeatmapDay[] {
   return days.map((day) => {

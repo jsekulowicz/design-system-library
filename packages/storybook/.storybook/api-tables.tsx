@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { ComponentDocumentationEntry, ComponentPropertyDocumentation } from './custom-elements-manifest.js';
 
-function displayDocumentationValue(value: unknown): string {
+function formatDocumentationValue(value: unknown): string {
   if (value === undefined) {
     return '-';
   }
@@ -79,7 +79,7 @@ export function ComponentPropertyDocumentationTable({ items }: { items: Componen
                   <code>{item.type?.text ?? 'unknown'}</code>
                 </td>
                 <td>
-                  <code>{displayDocumentationValue(item.default)}</code>
+                  <code>{formatDocumentationValue(item.default)}</code>
                 </td>
                 <td>{renderInlineCode(item.description)}</td>
               </tr>

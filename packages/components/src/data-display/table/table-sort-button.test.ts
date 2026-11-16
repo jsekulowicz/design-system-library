@@ -26,7 +26,7 @@ describe('<ds-table-sort-button>', () => {
   it('emits ds-sort with next direction on click (null -> asc -> desc -> null)', async () => {
     const el = await mount<DsTableSortButton>('<ds-table-sort-button></ds-table-sort-button>');
     const events: CustomEvent<{ direction: string | null }>[] = [];
-    el.addEventListener('ds-sort', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-sort', (event) => events.push(event as CustomEvent));
 
     click(el);
     expect(events[0]?.detail).toEqual({ direction: 'asc' });

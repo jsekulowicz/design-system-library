@@ -4,7 +4,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, omitWhenBlank } from '@jsekulowicz/ds-core';
 import type { AriaBoolean, AriaChecked, AriaHasPopup, AriaInvalid, AriaRole, LinkTarget } from '@jsekulowicz/ds-core';
 import { spinnerStyles } from '../../shared/spinner.js';
-import { buttonContent } from './button-content.js';
+import { renderButtonContent } from './button-content.js';
 import { buttonStyles } from './button.styles.js';
 import type { ClickDetail } from '../../events.js';
 
@@ -121,7 +121,7 @@ export class DsButton extends DsElement {
         aria-label=${ifDefined(this.label)}
         @click=${this.#handleClick}
       >
-        ${buttonContent(this.loading, this.loadingLabel)}
+        ${renderButtonContent(this.loading, this.loadingLabel)}
       </button>
     `;
   }
@@ -144,7 +144,7 @@ export class DsButton extends DsElement {
         aria-label=${ifDefined(this.label)}
         @click=${this.#handleClick}
       >
-        ${buttonContent(this.loading, this.loadingLabel)}
+        ${renderButtonContent(this.loading, this.loadingLabel)}
       </a>
     `;
   }

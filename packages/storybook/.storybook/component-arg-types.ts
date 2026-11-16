@@ -5,14 +5,14 @@ import {
   type ComponentPropertyDocumentation,
 } from './custom-elements-manifest.js';
 
-function displayValue(value: unknown): string | undefined {
+function formatDisplayValue(value: unknown): string | undefined {
   if (value === undefined) {
     return undefined;
   }
   return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
-function displayOptions(options: readonly unknown[] | undefined): string | undefined {
+function formatDisplayOptions(options: readonly unknown[] | undefined): string | undefined {
   if (!options?.length) {
     return undefined;
   }
@@ -22,8 +22,8 @@ function displayOptions(options: readonly unknown[] | undefined): string | undef
 }
 
 function enrichArgumentType(argumentType: StrictInputType, property: ComponentPropertyDocumentation): StrictInputType {
-  const typeSummary = displayOptions(argumentType.options) ?? property.type?.text;
-  const defaultSummary = displayValue(property.default);
+  const typeSummary = formatDisplayOptions(argumentType.options) ?? property.type?.text;
+  const defaultSummary = formatDisplayValue(property.default);
   return {
     ...argumentType,
     description: argumentType.description ?? property.description,
@@ -35,7 +35,7 @@ function enrichArgumentType(argumentType: StrictInputType, property: ComponentPr
   };
 }
 
-export const enrichArgTypesFromManifest: ArgTypesEnhancer = function (context) {
+export function enrichArgTypesFromManifest(context: Parameters<ArgTypesEnhancer>[0]): ReturnType<ArgTypesEnhancer> {
   if (typeof context.component !== 'string') {
     return context.argTypes;
   }
@@ -52,4 +52,4 @@ export const enrichArgTypesFromManifest: ArgTypesEnhancer = function (context) {
       return [name, property ? enrichArgumentType(argumentType, property) : argumentType];
     }),
   );
-};
+}

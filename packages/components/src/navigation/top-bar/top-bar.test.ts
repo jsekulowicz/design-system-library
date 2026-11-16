@@ -43,7 +43,9 @@ describe('<ds-top-bar>', () => {
   });
 
   it('uses a fixed 48px chrome band above the rule on nav and 16px inline padding on the inner content wrapper', () => {
-    const css = (DsTopBar as unknown as { styles: { cssText: string }[] }).styles.map((s) => s.cssText).join('\n');
+    const css = (DsTopBar as unknown as { styles: { cssText: string }[] }).styles
+      .map((style) => style.cssText)
+      .join('\n');
     expect(css).toMatch(/nav\s*{[^}]*height:\s*calc\(48px \+ 1px\)/);
     expect(css).toMatch(/\.inner\s*{[^}]*padding-inline:\s*var\(--ds-space-4\)/);
     expect(css).toMatch(/\.inner\s*{[^}]*align-items:\s*center/);

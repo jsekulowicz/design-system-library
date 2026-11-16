@@ -12,12 +12,12 @@ export function parseDate(value: string): CivilDate | null {
     return null;
   }
   const date = { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]) };
-  return date.month >= 1 && date.month <= 12 && date.day >= 1 && date.day <= daysInMonth(date.year, date.month)
+  return date.month >= 1 && date.month <= 12 && date.day >= 1 && date.day <= countDaysInMonth(date.year, date.month)
     ? date
     : null;
 }
 
-function daysInMonth(year: number, month: number): number {
+function countDaysInMonth(year: number, month: number): number {
   if (month === 2) {
     return isLeapYear(year) ? 29 : 28;
   }
@@ -28,7 +28,7 @@ function isLeapYear(year: number): boolean {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
-export function daysFromCivil(date: CivilDate): number {
+export function toDaysFromCivil(date: CivilDate): number {
   let year = date.year;
   year -= date.month <= 2 ? 1 : 0;
   const era = Math.floor(year / 400);
@@ -39,7 +39,7 @@ export function daysFromCivil(date: CivilDate): number {
   return era * 146097 + dayOfEra - 719468;
 }
 
-export function civilFromDays(days: number): CivilDate {
+export function toCivilFromDays(days: number): CivilDate {
   const shifted = days + 719468;
   const era = Math.floor(shifted / 146097);
   const dayOfEra = shifted - era * 146097;
@@ -59,27 +59,27 @@ export function formatCivil(date: CivilDate): string {
   return `${String(date.year).padStart(4, '0')}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
 }
 
-export function levelForValue(value: number, max: number): number {
+export function getLevelForValue(value: number, max: number): number {
   if (value <= 0 || max <= 0) {
     return 0;
   }
   return Math.min(4, Math.max(1, Math.ceil((value / max) * 4)));
 }
 
-function startOrdinal(end: CivilDate, months: number): number {
+function computeStartOrdinal(end: CivilDate, months: number): number {
   const totalMonths = end.year * 12 + end.month - 1 - Math.max(1, months);
   const year = Math.floor(totalMonths / 12);
   const month = totalMonths - year * 12 + 1;
-  const day = Math.min(end.day, daysInMonth(year, month));
-  return daysFromCivil({ year, month, day }) + 1;
+  const day = Math.min(end.day, countDaysInMonth(year, month));
+  return toDaysFromCivil({ year, month, day }) + 1;
 }
 
-function weekRow(ordinal: number, weekStart: HeatmapWeekStart): number {
+function getWeekRow(ordinal: number, weekStart: HeatmapWeekStart): number {
   const sundayBased = (((ordinal + 4) % 7) + 7) % 7;
   return weekStart === 'monday' ? (sundayBased + 6) % 7 : sundayBased;
 }
 
-function monthLabels(cells: HeatmapCell[]): HeatmapMonthLabel[] {
+function buildMonthLabels(cells: HeatmapCell[]): HeatmapMonthLabel[] {
   const labels: HeatmapMonthLabel[] = [];
   for (const cell of cells) {
     const previous = labels.at(-1);
@@ -102,28 +102,28 @@ export function computeHeatmapLayout(
     return { cells: [], monthLabels: [], maxValue: 0, weekCount: 0 };
   }
   const days = new Map(data.map((day) => [day.date, day]));
-  const endOrdinal = daysFromCivil(end);
-  const windowStart = startOrdinal(end, months);
-  const gridStart = windowStart - weekRow(windowStart, weekStart);
+  const endOrdinal = toDaysFromCivil(end);
+  const windowStart = computeStartOrdinal(end, months);
+  const gridStart = windowStart - getWeekRow(windowStart, weekStart);
   const maxValue = Math.max(0, ...data.map((day) => day.value));
   const cells: HeatmapCell[] = [];
   for (let ordinal = gridStart; ordinal <= endOrdinal; ordinal += 1) {
-    const date = formatCivil(civilFromDays(ordinal));
+    const date = formatCivil(toCivilFromDays(ordinal));
     const day = days.get(date);
     const value = Math.max(0, day?.value ?? 0);
     cells.push({
       date,
       value,
-      level: levelForValue(value, maxValue),
+      level: getLevelForValue(value, maxValue),
       column: Math.floor((ordinal - gridStart) / 7),
-      row: weekRow(ordinal, weekStart),
+      row: getWeekRow(ordinal, weekStart),
       ...(day?.details?.length ? { details: day.details } : {}),
     });
   }
   const lastCell = cells.at(-1);
   return {
     cells,
-    monthLabels: monthLabels(cells),
+    monthLabels: buildMonthLabels(cells),
     maxValue,
     weekCount: lastCell ? lastCell.column + 1 : 0,
   };

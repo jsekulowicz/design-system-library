@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { checkParts } from './check-parts.mjs';
 
-export function componentSource(tag, parts, body) {
+export function buildComponentSource(tag, parts, body) {
   const documentation = [`@tag ${tag}`, ...parts.map((part) => `@csspart ${part} - ${part}`)];
   return `/**\n${documentation.map((line) => ` * ${line}`).join('\n')}\n */\nexport class Component { ${body} }`;
 }

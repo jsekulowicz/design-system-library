@@ -49,7 +49,7 @@ function ensureStack(placement: ToastPlacement): DsToastStack | null {
   return stack;
 }
 
-function noopController(id: string): ToastController {
+function createNoopController(id: string): ToastController {
   return {
     id,
     dismiss() {},
@@ -87,7 +87,7 @@ function applyProps(el: DsToast, options: ToastOptions): void {
 function toastFn(options: ToastOptions = {}): ToastController {
   const id = `ds-toast-${++counter}`;
   if (typeof document === 'undefined') {
-    return noopController(id);
+    return createNoopController(id);
   }
 
   const key = options.key;
@@ -103,7 +103,7 @@ function toastFn(options: ToastOptions = {}): ToastController {
   const placement: ToastPlacement = options.placement ?? 'bottom-right';
   const stack = ensureStack(placement);
   if (!stack) {
-    return noopController(id);
+    return createNoopController(id);
   }
 
   const el = document.createElement('ds-toast') as DsToast;
@@ -121,18 +121,18 @@ function toastFn(options: ToastOptions = {}): ToastController {
     },
   };
 
-  const renderActions = (): TemplateResult | '' => {
+  function renderActions(): TemplateResult | '' {
     const { actions } = state;
     if (!actions) {
       return '';
     }
     const content = Array.isArray(actions) ? renderActionButtons(actions, controller) : actions(controller);
     return html`<div slot="actions">${content}</div>`;
-  };
+  }
 
-  const renderContent = (): void => {
+  function renderContent(): void {
     render(html`${state.body ?? ''}${renderActions()}`, el);
-  };
+  }
 
   applyProps(el, state);
   renderContent();
@@ -172,14 +172,13 @@ interface ToastFn {
   danger: ToneShortcut;
 }
 
-const shortcut =
-  (tone: ToastTone): ToneShortcut =>
-  (heading, opts) =>
-    toastFn({ ...opts, tone, heading });
+function buildShortcut(tone: ToastTone): ToneShortcut {
+  return (heading, opts) => toastFn({ ...opts, tone, heading });
+}
 
 export const toast: ToastFn = Object.assign(toastFn, {
-  info: shortcut('info'),
-  success: shortcut('success'),
-  warning: shortcut('warning'),
-  danger: shortcut('danger'),
+  info: buildShortcut('info'),
+  success: buildShortcut('success'),
+  warning: buildShortcut('warning'),
+  danger: buildShortcut('danger'),
 });

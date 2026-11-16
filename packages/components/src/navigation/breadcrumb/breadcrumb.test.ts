@@ -25,7 +25,7 @@ async function mountBreadcrumb(inner: string): Promise<DsBreadcrumb> {
   return el;
 }
 
-function items(el: DsBreadcrumb): DsBreadcrumbItem[] {
+function getItems(el: DsBreadcrumb): DsBreadcrumbItem[] {
   return Array.from(el.querySelectorAll('ds-breadcrumb-item')) as DsBreadcrumbItem[];
 }
 
@@ -49,13 +49,13 @@ describe('<ds-breadcrumb>', () => {
       <ds-breadcrumb-item href="/p">Products</ds-breadcrumb-item>
       <ds-breadcrumb-item>Widget</ds-breadcrumb-item>
     `);
-    const [a, b, c] = items(el);
-    expect(a.hasAttribute('last')).toBe(false);
-    expect(a.hasAttribute('current')).toBe(false);
-    expect(b.hasAttribute('last')).toBe(false);
-    expect(b.hasAttribute('current')).toBe(false);
-    expect(c.hasAttribute('last')).toBe(true);
-    expect(c.hasAttribute('current')).toBe(true);
+    const [first, second, third] = getItems(el);
+    expect(first.hasAttribute('last')).toBe(false);
+    expect(first.hasAttribute('current')).toBe(false);
+    expect(second.hasAttribute('last')).toBe(false);
+    expect(second.hasAttribute('current')).toBe(false);
+    expect(third.hasAttribute('last')).toBe(true);
+    expect(third.hasAttribute('current')).toBe(true);
   });
 
   it('re-syncs when items are added', async () => {
@@ -63,7 +63,7 @@ describe('<ds-breadcrumb>', () => {
       <ds-breadcrumb-item href="/">Home</ds-breadcrumb-item>
       <ds-breadcrumb-item>Page</ds-breadcrumb-item>
     `);
-    const [first, second] = items(el);
+    const [first, second] = getItems(el);
     expect(second.hasAttribute('last')).toBe(true);
 
     const newItem = document.createElement('ds-breadcrumb-item') as DsBreadcrumbItem;
@@ -80,8 +80,8 @@ describe('<ds-breadcrumb>', () => {
 
   it('renders an <ol> with role="list"', async () => {
     const el = await mountBreadcrumb('<ds-breadcrumb-item>Home</ds-breadcrumb-item>');
-    const ol = el.shadowRoot!.querySelector('ol')!;
-    expect(ol.getAttribute('role')).toBe('list');
+    const list = el.shadowRoot!.querySelector('ol')!;
+    expect(list.getAttribute('role')).toBe('list');
   });
 
   it("seats trailing content in the trail's own row", async () => {
@@ -111,7 +111,7 @@ describe('<ds-breadcrumb>', () => {
       <ds-breadcrumb-item>Page</ds-breadcrumb-item>
       <button slot="trailing">About</button>
     `);
-    const [first, second] = items(el);
+    const [first, second] = getItems(el);
 
     expect(first.hasAttribute('last')).toBe(false);
     expect(second.hasAttribute('last')).toBe(true);

@@ -29,7 +29,7 @@ async function mountSearchableSelect(props: Partial<DsSearchableSelect> = {}): P
 
 function getOption(el: DsSearchableSelect, label: string): HTMLElement {
   const options = el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option');
-  const found = Array.from(options).find((o) => (o.textContent ?? '').trim() === label);
+  const found = Array.from(options).find((option) => (option.textContent ?? '').trim() === label);
   if (!found) {
     throw new Error(`Option "${label}" not found in listbox`);
   }
@@ -54,7 +54,7 @@ describe('<ds-searchable-select>', () => {
     it('adds and removes values by clicking options', async () => {
       const el = await mountSearchableSelect({ multiple: true });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       await openDropdown(el);
       getOption(el, 'React').click();
       await el.updateComplete;
@@ -86,7 +86,7 @@ describe('<ds-searchable-select>', () => {
     it('removes a tile when its remove button is clicked', async () => {
       const el = await mountSearchableSelect({ multiple: true, values: ['react', 'vue'] });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       const removeBtn = el.shadowRoot!.querySelector<HTMLElement>('.tile[data-value="react"] .tile-remove')!;
       removeBtn.click();
       await el.updateComplete;
@@ -111,7 +111,7 @@ describe('<ds-searchable-select>', () => {
     it('emits ds-search with empty query after selecting in multiple mode', async () => {
       const el = await mountSearchableSelect({ multiple: true });
       const queries: string[] = [];
-      el.addEventListener('ds-search', (e) => queries.push((e as CustomEvent).detail.query));
+      el.addEventListener('ds-search', (event) => queries.push((event as CustomEvent).detail.query));
       await openDropdown(el);
       getOption(el, 'React').click();
       await el.updateComplete;
@@ -139,8 +139,8 @@ describe('<ds-searchable-select>', () => {
       const el = await mountSearchableSelect({ clearable: true, value: 'react' });
       const changeEvents: CustomEvent[] = [];
       const searchEvents: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => changeEvents.push(e as CustomEvent));
-      el.addEventListener('ds-search', (e) => searchEvents.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => changeEvents.push(event as CustomEvent));
+      el.addEventListener('ds-search', (event) => searchEvents.push(event as CustomEvent));
       el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
       await el.updateComplete;
       expect(el.value).toBe('');
@@ -156,7 +156,7 @@ describe('<ds-searchable-select>', () => {
     it('clears all values in multiple mode and emits ds-change on click', async () => {
       const el = await mountSearchableSelect({ clearable: true, multiple: true, values: ['react', 'vue'] });
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!.click();
       await el.updateComplete;
       expect(el.values).toEqual([]);
@@ -171,7 +171,7 @@ describe('<ds-searchable-select>', () => {
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
 
-    it('Enter on focused clear button clears value without opening the dropdown', async () => {
+    it('clears the value without opening the dropdown when Enter is pressed on the focused clear button', async () => {
       const el = await mountSearchableSelect({ clearable: true, value: 'react' });
       const clearBtn = el.shadowRoot!.querySelector<HTMLElement>('.clear-btn')!;
       clearBtn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
@@ -226,7 +226,7 @@ describe('<ds-searchable-select>', () => {
       );
     }
 
-    function assignedTo(el: DsSearchableSelect, name: string): Element[] {
+    function getAssignedElements(el: DsSearchableSelect, name: string): Element[] {
       const slot = el.shadowRoot!.querySelector<HTMLSlotElement>(`slot[name="${name}"]`);
       return slot ? slot.assignedElements() : [];
     }
@@ -234,19 +234,19 @@ describe('<ds-searchable-select>', () => {
     it('projects a light-DOM node into its option, in place of the highlight', async () => {
       const el = await mountWithSlots();
       await openDropdown(el);
-      expect(assignedTo(el, 'option:react')[0]?.textContent).toBe('React!');
+      expect(getAssignedElements(el, 'option:react')[0]?.textContent).toBe('React!');
     });
 
     it('falls back to the highlighted label for options with nothing slotted', async () => {
       const el = await mountWithSlots();
       await openDropdown(el);
-      expect(assignedTo(el, 'option:vue')).toHaveLength(0);
+      expect(getAssignedElements(el, 'option:vue')).toHaveLength(0);
       expect(getOption(el, 'Vue')).not.toBeNull();
     });
 
     it('projects into the selected tile when multiple', async () => {
       const el = await mountWithSlots({ multiple: true, values: ['react'] });
-      expect(assignedTo(el, 'tile:react')[0]?.textContent).toBe('Tiled');
+      expect(getAssignedElements(el, 'tile:react')[0]?.textContent).toBe('Tiled');
     });
   });
 });

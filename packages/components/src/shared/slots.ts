@@ -20,7 +20,7 @@ export function findRenderedSlot(host: HTMLElement, name: string): HTMLSlotEleme
   return root.querySelector<HTMLSlotElement>(selector);
 }
 
-function isLightChildForSlot(node: Node, name: string): boolean {
+function isLightDOMChildForSlot(node: Node, name: string): boolean {
   if (node.nodeType === Node.TEXT_NODE) {
     return name === '' && (node.textContent ?? '').trim().length > 0;
   }
@@ -30,8 +30,8 @@ function isLightChildForSlot(node: Node, name: string): boolean {
   return false;
 }
 
-function hasLightChildForUnrenderedSlot(host: HTMLElement, name: string): boolean {
-  return Array.from(host.childNodes).some((node) => isLightChildForSlot(node, name));
+function hasLightDOMChildForUnrenderedSlot(host: HTMLElement, name: string): boolean {
+  return Array.from(host.childNodes).some((node) => isLightDOMChildForSlot(node, name));
 }
 
 export function hasNamedSlotContent(host: HTMLElement, name: string, slot?: HTMLSlotElement | null): boolean {
@@ -39,5 +39,5 @@ export function hasNamedSlotContent(host: HTMLElement, name: string, slot?: HTML
   if (target) {
     return hasAssignedContent(target);
   }
-  return hasLightChildForUnrenderedSlot(host, name);
+  return hasLightDOMChildForUnrenderedSlot(host, name);
 }

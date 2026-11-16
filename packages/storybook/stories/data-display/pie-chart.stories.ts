@@ -28,7 +28,7 @@ const TRAFFIC_SOURCE = `const traffic = [
   { label: 'Email',          value: 430  },
 ];`;
 
-function chartSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
+function buildChartSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
   return `${lead.join('\n\n')}\n\nhtml\`\n${tag}\n\`;`;
 }
 
@@ -95,7 +95,7 @@ export const Playground: Story = {
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [TRAFFIC_SOURCE],
           tag: `  <ds-pie-chart
     title="Sessions by channel"
@@ -113,13 +113,13 @@ export const Donut: Story = {
       donut
       title="Sessions by channel"
       .data=${TRAFFIC}
-      .formatValue=${(v: number) => v.toLocaleString('en-US')}
+      .formatValue=${(value: number) => value.toLocaleString('en-US')}
     ></ds-pie-chart>
   `,
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [TRAFFIC_SOURCE],
           tag: `  <ds-pie-chart
     donut
@@ -145,7 +145,7 @@ export const DonutWithSlottedCenter: Story = {
           { label: 'Backups', value: 46 },
         ] as PieChartDatum[]
       }
-      .formatValue=${(v: number) => `${v} GB`}
+      .formatValue=${(value: number) => `${value} GB`}
     >
       <div slot="center">
         <strong style="font-size: 1.5rem">236 GB</strong>
@@ -173,8 +173,8 @@ export const WithFormatters: Story = {
             { label: 'Services', value: 96300 },
           ] as PieChartDatum[]
         }
-        .formatValue=${(v: number) => money.format(v)}
-        .formatPercent=${(p: number) => `${p.toFixed(1)}%`}
+        .formatValue=${(value: number) => money.format(value)}
+        .formatPercent=${(percent: number) => `${percent.toFixed(1)}%`}
       ></ds-pie-chart>
     `;
   },
@@ -186,13 +186,13 @@ export const OtherGrouping: Story = {
       title="Sessions by channel"
       .data=${LONG_TAIL}
       .maxSlices=${6}
-      .formatValue=${(v: number) => v.toLocaleString('en-US')}
+      .formatValue=${(value: number) => value.toLocaleString('en-US')}
     ></ds-pie-chart>
   `,
   parameters: {
     docs: {
       source: {
-        code: chartSnippet({
+        code: buildChartSnippet({
           lead: [`// Ten channels; \`max-slices\` keeps the five largest and rolls the rest into "Other".`],
           tag: `  <ds-pie-chart
     title="Sessions by channel"
@@ -225,7 +225,7 @@ export const SingleSlice: Story = {
     <ds-pie-chart
       title="Uptime"
       .data=${[{ label: 'Available', value: 100 }] as PieChartDatum[]}
-      .formatValue=${(v: number) => `${v}%`}
+      .formatValue=${(value: number) => `${value}%`}
     ></ds-pie-chart>
   `,
 };

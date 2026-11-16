@@ -9,7 +9,7 @@ const DEFAULT_CHART_COLORS: readonly string[] = [
   'var(--ds-color-chart-8)',
 ];
 
-export function colorForIndex(index: number): string {
+export function getColorForIndex(index: number): string {
   const i = ((index % DEFAULT_CHART_COLORS.length) + DEFAULT_CHART_COLORS.length) % DEFAULT_CHART_COLORS.length;
   return DEFAULT_CHART_COLORS[i]!;
 }

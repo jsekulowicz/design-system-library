@@ -32,14 +32,14 @@ function getTrigger(el: DsSelect): HTMLElement {
 
 function getOption(el: DsSelect, label: string): HTMLElement {
   const options = el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option');
-  const found = Array.from(options).find((o) => (o.textContent ?? '').trim() === label);
+  const found = Array.from(options).find((option) => (option.textContent ?? '').trim() === label);
   if (!found) {
     throw new Error(`Option "${label}" not found in listbox`);
   }
   return found;
 }
 
-function keydown(target: HTMLElement, key: string): void {
+function dispatchKeydown(target: HTMLElement, key: string): void {
   target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
 }
 
@@ -70,14 +70,14 @@ describe('<ds-select>', () => {
 
     it('opens on ArrowDown key', async () => {
       const el = await mountSelect();
-      keydown(getTrigger(el), 'ArrowDown');
+      dispatchKeydown(getTrigger(el), 'ArrowDown');
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
     });
 
     it('opens on Enter key', async () => {
       const el = await mountSelect();
-      keydown(getTrigger(el), 'Enter');
+      dispatchKeydown(getTrigger(el), 'Enter');
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).not.toBeNull();
     });
@@ -85,7 +85,7 @@ describe('<ds-select>', () => {
     it('closes on Escape', async () => {
       const el = await mountSelect();
       await openDropdown(el);
-      keydown(getTrigger(el), 'Escape');
+      dispatchKeydown(getTrigger(el), 'Escape');
       await el.updateComplete;
       expect(el.shadowRoot!.querySelector('.listbox')).toBeNull();
     });
@@ -158,7 +158,7 @@ describe('<ds-select>', () => {
     it('selects option on click, closes dropdown, emits ds-change', async () => {
       const el = await mountSelect();
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       await openDropdown(el);
       getOption(el, 'Vue').click();
       await el.updateComplete;
@@ -182,8 +182,8 @@ describe('<ds-select>', () => {
     it('selects focused option on Enter', async () => {
       const el = await mountSelect();
       await openDropdown(el);
-      keydown(getTrigger(el), 'ArrowDown');
-      keydown(getTrigger(el), 'Enter');
+      dispatchKeydown(getTrigger(el), 'ArrowDown');
+      dispatchKeydown(getTrigger(el), 'Enter');
       await el.updateComplete;
       expect(el.value).toBe('vue');
     });
@@ -199,14 +199,14 @@ describe('<ds-select>', () => {
     it('navigates options with ArrowDown and ArrowUp', async () => {
       const el = await mountSelect({ value: 'react' });
       await openDropdown(el);
-      keydown(getTrigger(el), 'ArrowDown');
-      keydown(getTrigger(el), 'Enter');
+      dispatchKeydown(getTrigger(el), 'ArrowDown');
+      dispatchKeydown(getTrigger(el), 'Enter');
       await el.updateComplete;
       expect(el.value).toBe('vue');
 
       await openDropdown(el);
-      keydown(getTrigger(el), 'ArrowUp');
-      keydown(getTrigger(el), 'Enter');
+      dispatchKeydown(getTrigger(el), 'ArrowUp');
+      dispatchKeydown(getTrigger(el), 'Enter');
       await el.updateComplete;
       expect(el.value).toBe('react');
     });

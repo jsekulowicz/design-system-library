@@ -43,11 +43,11 @@ function detachModalsBeforeTeardown(): void {
   resetTestDom();
 }
 
-function labelOf(el: HTMLElement, selector: string): string | null {
+function getLabelOf(el: HTMLElement, selector: string): string | null {
   return el.shadowRoot!.querySelector(selector)?.getAttribute('label') ?? null;
 }
 
-function ariaOf(el: HTMLElement, selector: string): string | null {
+function getAriaOf(el: HTMLElement, selector: string): string | null {
   return el.shadowRoot!.querySelector(selector)?.getAttribute('aria-label') ?? null;
 }
 
@@ -57,7 +57,7 @@ describe('every component names its own controls in the consumer language', () =
       closeLabel: 'Cerrar',
     });
     await el.updateComplete;
-    expect(labelOf(el, '[part~="close-button"]')).toBe('Cerrar');
+    expect(getLabelOf(el, '[part~="close-button"]')).toBe('Cerrar');
   });
 
   it('names the drawer close button', async () => {
@@ -65,21 +65,21 @@ describe('every component names its own controls in the consumer language', () =
       closeLabel: 'Cerrar',
     });
     await el.updateComplete;
-    expect(labelOf(el, '[part~="close-button"]')).toBe('Cerrar');
+    expect(getLabelOf(el, '[part~="close-button"]')).toBe('Cerrar');
   });
 
   it('names the alert dismiss button', async () => {
     const el = await mountWithProps<DsAlert>('<ds-alert dismissible>x</ds-alert>', {
       dismissLabel: 'Descartar',
     });
-    expect(labelOf(el, '[part~="close-button"]')).toBe('Descartar');
+    expect(getLabelOf(el, '[part~="close-button"]')).toBe('Descartar');
   });
 
   it('names the toast dismiss button', async () => {
     const el = await mountWithProps<DsToast>('<ds-toast>x</ds-toast>', {
       dismissLabel: 'Descartar',
     });
-    expect(labelOf(el, '[part~="close-button"]')).toBe('Descartar');
+    expect(getLabelOf(el, '[part~="close-button"]')).toBe('Descartar');
   });
 
   it('names the settings page section nav', async () => {
@@ -87,7 +87,7 @@ describe('every component names its own controls in the consumer language', () =
       sections: [{ id: 'a', label: 'A' }],
       sectionsLabel: 'Secciones',
     });
-    expect(ariaOf(el, 'nav')).toBe('Secciones');
+    expect(getAriaOf(el, 'nav')).toBe('Secciones');
   });
 
   it('names the table sort button and its direction suffix', async () => {
@@ -97,7 +97,7 @@ describe('every component names its own controls in the consumer language', () =
       sortByLabel: 'Ordenar por {column}',
       ascendingLabel: '{name} (ascendente)',
     });
-    expect(ariaOf(el, 'button')).toBe('Ordenar por Palabra (ascendente)');
+    expect(getAriaOf(el, 'button')).toBe('Ordenar por Palabra (ascendente)');
   });
 
   it('names the pie chart root', async () => {
@@ -138,7 +138,7 @@ describe('every component names its own controls in the consumer language', () =
     const trigger = el.shadowRoot!.querySelector('#trigger');
     trigger?.shadowRoot?.querySelector('button')?.click();
     await el.updateComplete;
-    expect(ariaOf(el, '[part~="panel"]')).toBe('Selector de color');
+    expect(getAriaOf(el, '[part~="panel"]')).toBe('Selector de color');
   });
 
   it('names the select clear, remove and overflow controls, rendered straight from the shared helpers since only some are ever on screen at once', () => {
@@ -228,6 +228,6 @@ describe('every component names its own controls in the consumer language', () =
   it('keeps English when a consumer sets nothing', async () => {
     const el = await mount<DsDialog>('<ds-dialog open>x</ds-dialog>');
     await el.updateComplete;
-    expect(labelOf(el, '[part~="close-button"]')).toBe('Close');
+    expect(getLabelOf(el, '[part~="close-button"]')).toBe('Close');
   });
 });

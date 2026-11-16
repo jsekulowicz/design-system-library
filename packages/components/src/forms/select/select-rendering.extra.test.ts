@@ -107,7 +107,7 @@ describe('<ds-select> label, size and icons', () => {
     expect(removeIcon!.getAttribute('name')).toBe('x-mark');
     expect(removeIcon!.getAttribute('size')).toBe('xl');
   });
-  it('emits ds-scroll-end once per approach of the listbox bottom', async () => {
+  it('emits ds-scroll-end when the listbox reaches its bottom, and again only after scrolling away', async () => {
     const el = await mountSelect({ options: MANY_OPTIONS });
     let fired = 0;
     el.addEventListener('ds-scroll-end', () => {

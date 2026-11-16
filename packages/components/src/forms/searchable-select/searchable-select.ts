@@ -2,11 +2,11 @@ import { html, nothing, LitElement, type PropertyValues, type TemplateResult } f
 import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, hasValidityInputChanged, FormControlMixin } from '@jsekulowicz/ds-core';
 import { formFieldStyles, renderFieldLabel, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { clearButtonStyles, renderClearButton } from '../../shared/clear-button.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
-import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
+import { spinnerStyles, renderSpinner } from '../../shared/spinner.js';
 import {
   renderChevronDownIcon,
   getMinLinesStyle,
@@ -148,10 +148,10 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
 
   override willUpdate(changed: PropertyValues): void {
     if (changed.has('options')) {
-      for (const o of this.options) {
-        this._labelMap.set(o.value, o.label);
-        if (o.icon) {
-          this._iconMap.set(o.value, o.icon);
+      for (const option of this.options) {
+        this._labelMap.set(option.value, option.label);
+        if (option.icon) {
+          this._iconMap.set(option.value, option.icon);
         }
       }
     }
@@ -162,7 +162,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   }
 
   override updated(changed: PropertyValues): void {
-    if (changedWhatValidityReads(changed)) {
+    if (hasValidityInputChanged(changed)) {
       this.syncValidity();
     }
     if (changed.has('label')) {
@@ -251,7 +251,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
     if (this.multiple) {
       const next = this.values.includes(option.value)
-        ? this.values.filter((v) => v !== option.value)
+        ? this.values.filter((value) => value !== option.value)
         : [...this.values, option.value];
       this.values = next;
       this.value = next.join(',');
@@ -433,7 +433,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
                 )
               : nothing
           }
-          ${this.loading ? spinnerTemplate() : renderChevronDownIcon()}
+          ${this.loading ? renderSpinner() : renderChevronDownIcon()}
         </div>
         ${
           open

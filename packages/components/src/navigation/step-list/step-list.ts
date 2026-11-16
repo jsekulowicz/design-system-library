@@ -6,14 +6,14 @@ import { stepListStyles } from './step-list.styles.js';
 import { stepListCompactStyles } from './step-list-compact.styles.js';
 import { ReasonTooltipController } from './reason-tooltip-controller.js';
 import { RowFitController } from './row-fit-controller.js';
-import { stepAsRendered, warnWhenTheCurrentStepTurnsDisabled } from './disabled-current-step.js';
+import { getStepAsRendered, warnWhenTheCurrentStepTurnsDisabled } from './disabled-current-step.js';
 import {
-  reasonId,
+  getReasonId,
   renderCompactCurrentStep,
   renderInReasonTooltip,
   renderSegmentButton,
   renderStepButton,
-  statusOf,
+  getStepStatus,
   type StepButtonOptions,
   type StepListLayout,
   type StepListStep,
@@ -77,7 +77,7 @@ export class DsStepList extends DsElement {
 
   #hasReasonToGive(index: number): boolean {
     const step = this.steps[index];
-    return Boolean(step && stepAsRendered(step, index, this.currentIndex).disabled && step.reason);
+    return Boolean(step && getStepAsRendered(step, index, this.currentIndex).disabled && step.reason);
   }
 
   #currentLayout(): StepListLayout {
@@ -104,7 +104,7 @@ export class DsStepList extends DsElement {
   ): TemplateResult {
     const hasReason = this.#hasReasonToGive(index);
     const button = renderButton({
-      describedBy: hasReason ? reasonId(index, layout) : undefined,
+      describedBy: hasReason ? getReasonId(index, layout) : undefined,
       nativelyDisabled: Boolean(step.disabled) && !hasReason,
       onActivate: () => this.#activate(index, layout),
     });
@@ -123,7 +123,7 @@ export class DsStepList extends DsElement {
   }
 
   #renderStep(step: StepListStep, index: number): TemplateResult {
-    const status = statusOf(index, this.currentIndex);
+    const status = getStepStatus(index, this.currentIndex);
     return html`
       <li part="step" class="step${step.disabled ? ' step-disabled' : ''}" data-status=${status}>
         ${this.#renderWithReasonIfGiven(step, index, 'list', (options) => renderStepButton(step, index, status, options))}
@@ -132,7 +132,7 @@ export class DsStepList extends DsElement {
   }
 
   #renderSegment(step: StepListStep, index: number): TemplateResult {
-    const status = statusOf(index, this.currentIndex);
+    const status = getStepStatus(index, this.currentIndex);
     return this.#renderWithReasonIfGiven(step, index, 'compact', (options) =>
       renderSegmentButton(step, status, options),
     );
@@ -144,7 +144,7 @@ export class DsStepList extends DsElement {
       <div class="compact">
         ${currentStep ? renderCompactCurrentStep(currentStep, this.currentIndex) : nothing}
         <div class="rail">
-          ${this.steps.map((step, index) => this.#renderSegment(stepAsRendered(step, index, this.currentIndex), index))}
+          ${this.steps.map((step, index) => this.#renderSegment(getStepAsRendered(step, index, this.currentIndex), index))}
         </div>
       </div>
     `;
@@ -157,7 +157,7 @@ export class DsStepList extends DsElement {
           <slot name="trailing" @slotchange=${this.#slots.handleSlotChange}></slot>
         </div>
         <ol part="list" role="list">
-          ${this.steps.map((step, index) => this.#renderStep(stepAsRendered(step, index, this.currentIndex), index))}
+          ${this.steps.map((step, index) => this.#renderStep(getStepAsRendered(step, index, this.currentIndex), index))}
         </ol>
         ${this.#renderCompact()}
       </nav>

@@ -124,15 +124,16 @@ describe('<ds-button>', () => {
 
   it('keeps every slot in the same in-flow wrapper whether or not it is loading', async () => {
     const el = await mount<DsButton>('<ds-button><span slot="leading">icon</span>Wait</ds-button>');
-    const slotNames = () =>
-      Array.from(el.shadowRoot!.querySelectorAll('.content slot')).map((s) => s.getAttribute('name'));
+    function getSlotNames(): (string | null)[] {
+      return Array.from(el.shadowRoot!.querySelectorAll('.content slot')).map((slot) => slot.getAttribute('name'));
+    }
 
-    expect(slotNames()).toEqual(['leading', null, 'trailing']);
+    expect(getSlotNames()).toEqual(['leading', null, 'trailing']);
 
     el.loading = true;
     await el.updateComplete;
 
-    expect(slotNames()).toEqual(['leading', null, 'trailing']);
+    expect(getSlotNames()).toEqual(['leading', null, 'trailing']);
     expect(el.shadowRoot!.querySelector('.content')!.className).toContain('is-hidden');
   });
 
@@ -168,18 +169,20 @@ describe('<ds-button>', () => {
 
   it('swaps to the loading label and hides the idle twin from assistive tech', async () => {
     const el = await mount<DsButton>('<ds-button loading-label="Saving...">Save</ds-button>');
-    const twins = () => Array.from(el.shadowRoot!.querySelectorAll('.labels .stack-item'));
+    function getStackedLabels(): Element[] {
+      return Array.from(el.shadowRoot!.querySelectorAll('.labels .stack-item'));
+    }
 
-    expect(twins()).toHaveLength(2);
-    expect(twins()[1]!.getAttribute('aria-hidden')).toBe('true');
-    expect(twins()[0]!.getAttribute('aria-hidden')).toBeNull();
+    expect(getStackedLabels()).toHaveLength(2);
+    expect(getStackedLabels()[1]!.getAttribute('aria-hidden')).toBe('true');
+    expect(getStackedLabels()[0]!.getAttribute('aria-hidden')).toBeNull();
 
     el.loading = true;
     await el.updateComplete;
 
-    expect(twins()[0]!.getAttribute('aria-hidden')).toBe('true');
-    expect(twins()[1]!.getAttribute('aria-hidden')).toBeNull();
-    expect(twins()[1]!.textContent).toContain('Saving...');
+    expect(getStackedLabels()[0]!.getAttribute('aria-hidden')).toBe('true');
+    expect(getStackedLabels()[1]!.getAttribute('aria-hidden')).toBeNull();
+    expect(getStackedLabels()[1]!.textContent).toContain('Saving...');
   });
 
   it('renders bare slots when no loading affordance is in play', async () => {

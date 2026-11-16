@@ -7,7 +7,7 @@ interface Bounds {
   top: number;
 }
 
-async function panelBounds(component: Locator): Promise<Bounds> {
+async function getPanelBounds(component: Locator): Promise<Bounds> {
   return component.evaluate((element) => {
     const panel = element.shadowRoot?.querySelector('#panel');
     const bounds = panel?.getBoundingClientRect();
@@ -50,7 +50,7 @@ test('menu button flips above a trigger at the bottom edge', async ({ page }) =>
   });
   const component = await openFixture(page, 'ds-menu-button');
   const trigger = await component.locator('[slot="trigger"]').boundingBox();
-  const bounds = await panelBounds(component);
+  const bounds = await getPanelBounds(component);
 
   expectWithinViewport(bounds, 320, 480);
   expect(bounds.bottom).toBeLessThanOrEqual(trigger!.y);
@@ -66,7 +66,7 @@ test('popover button constrains wide content to a small viewport', async ({ page
     </ds-popover-button>`;
   });
   const component = await openFixture(page, 'ds-popover-button');
-  const bounds = await panelBounds(component);
+  const bounds = await getPanelBounds(component);
 
   expectWithinViewport(bounds, 320, 480);
   expect(bounds.right - bounds.left).toBeLessThanOrEqual(304);

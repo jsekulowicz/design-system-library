@@ -16,12 +16,12 @@ function main() {
 
   ensureBranch(branch);
 
-  if (!commandSucceeds('gh', ['--version'])) {
+  if (!isCommandSuccessful('gh', ['--version'])) {
     printManualDispatch(branch, workflowRef, 'GitHub CLI is not installed or not on PATH.');
     process.exit(1);
   }
 
-  if (!commandSucceeds('gh', ['auth', 'status'])) {
+  if (!isCommandSuccessful('gh', ['auth', 'status'])) {
     printManualDispatch(branch, workflowRef, 'GitHub CLI is not authenticated.');
     process.exit(1);
   }
@@ -78,7 +78,7 @@ function readValue(args, index, name) {
   return value;
 }
 
-function commandSucceeds(command, args) {
+function isCommandSuccessful(command, args) {
   const result = spawnSync(command, args, { encoding: 'utf8', stdio: 'pipe' });
   return result.status === 0;
 }
@@ -140,12 +140,12 @@ function printManualDispatch(branch, workflowRef, reason) {
   console.error('');
   console.error('Either install GitHub CLI and run `gh auth login`, or dispatch the workflow manually:');
   console.error(`1. Push ${branch}.`);
-  console.error(`2. Open ${workflowUrl()}.`);
+  console.error(`2. Open ${getWorkflowUrl()}.`);
   console.error(`3. Choose workflow ref: ${workflowRef}.`);
   console.error(`4. Enter branch input: ${branch}.`);
 }
 
-function workflowUrl() {
+function getWorkflowUrl() {
   const remote = spawnSync('git', ['remote', 'get-url', 'origin'], {
     encoding: 'utf8',
     stdio: 'pipe',

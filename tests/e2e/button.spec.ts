@@ -16,11 +16,13 @@ test('loading never shrinks the button, and loading-label pins its width', async
   const demos = page.locator('ds-button[data-demo]');
   await expect(demos).toHaveCount(3);
 
-  const widths = async () => demos.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
-  const idle = await widths();
+  function measureWidths(): Promise<number[]> {
+    return demos.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
+  }
+  const idle = await measureWidths();
   await page.locator('#toggle').click();
   await expect(demos.first()).toHaveAttribute('loading', '');
-  const loading = await widths();
+  const loading = await measureWidths();
 
   expect(loading[0]).toBeCloseTo(idle[0]!, 1);
   expect(loading[1]).toBeGreaterThanOrEqual(idle[1]!);
@@ -53,6 +55,6 @@ test('disabled ds-button does not emit ds-click', async ({ page }) => {
   }, counter);
 
   await page.locator('ds-button').click({ force: true });
-  const count = await page.evaluate((k) => (window as unknown as Record<string, number>)[k], counter);
+  const count = await page.evaluate((globalName) => (window as unknown as Record<string, number>)[globalName], counter);
   expect(count).toBe(0);
 });

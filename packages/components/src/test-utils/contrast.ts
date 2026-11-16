@@ -13,25 +13,27 @@ function clipToUnit(channel: number): number {
 
 export function parseHexToLinearRgb(hex: string): LinearRgb {
   const digits = hex.replace('#', '');
-  const [r, g, b] = [0, 2, 4].map((offset) => toLinearChannel(parseInt(digits.slice(offset, offset + 2), 16) / 255));
-  return [r!, g!, b!];
+  const [red, green, blue] = [0, 2, 4].map((offset) =>
+    toLinearChannel(parseInt(digits.slice(offset, offset + 2), 16) / 255),
+  );
+  return [red!, green!, blue!];
 }
 
 export function convertOklchToClippedLinearRgb(lightness: number, chroma: number, hueDegrees: number): LinearRgb {
-  const a = chroma * Math.cos((hueDegrees * Math.PI) / 180);
-  const b = chroma * Math.sin((hueDegrees * Math.PI) / 180);
-  const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3;
-  const m = (lightness - 0.1055613458 * a - 0.0638541728 * b) ** 3;
-  const s = (lightness - 0.0894841775 * a - 1.291485548 * b) ** 3;
+  const greenRed = chroma * Math.cos((hueDegrees * Math.PI) / 180);
+  const blueYellow = chroma * Math.sin((hueDegrees * Math.PI) / 180);
+  const longCone = (lightness + 0.3963377774 * greenRed + 0.2158037573 * blueYellow) ** 3;
+  const mediumCone = (lightness - 0.1055613458 * greenRed - 0.0638541728 * blueYellow) ** 3;
+  const shortCone = (lightness - 0.0894841775 * greenRed - 1.291485548 * blueYellow) ** 3;
   return [
-    clipToUnit(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s),
-    clipToUnit(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
-    clipToUnit(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s),
+    clipToUnit(4.0767416621 * longCone - 3.3077115913 * mediumCone + 0.2309699292 * shortCone),
+    clipToUnit(-1.2684380046 * longCone + 2.6097574011 * mediumCone - 0.3413193965 * shortCone),
+    clipToUnit(-0.0041960863 * longCone - 0.7034186147 * mediumCone + 1.707614701 * shortCone),
   ];
 }
 
-function getRelativeLuminance([r, g, b]: LinearRgb): number {
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+function getRelativeLuminance([red, green, blue]: LinearRgb): number {
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
 }
 
 export function getContrastRatio(first: LinearRgb, second: LinearRgb): number {

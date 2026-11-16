@@ -47,7 +47,7 @@ function checkComponent(component, graph, exceptions) {
   };
 }
 
-function staleExceptions(results, exceptions) {
+function findStaleExceptions(results, exceptions) {
   return [...exceptions].flatMap(([tag, { names, reason }]) => {
     const component = results.find((result) => result.tag === tag);
     return names.filter((name) => !component?.runtime.includes(name)).map((part) => ({ tag, part, reason }));
@@ -61,6 +61,6 @@ export function checkParts(root, exceptions = RUNTIME_PARTS) {
     violations: results.filter(
       (result) => result.undocumented.length || result.unrendered.length || result.unresolved.length,
     ),
-    stale: staleExceptions(results, exceptions),
+    stale: findStaleExceptions(results, exceptions),
   };
 }

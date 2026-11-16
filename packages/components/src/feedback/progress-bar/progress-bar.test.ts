@@ -13,7 +13,7 @@ beforeEach(() => {
   resetTestDom();
 });
 
-function indicatorWidth(el: DsProgressBar): string {
+function getIndicatorWidth(el: DsProgressBar): string {
   const indicator = el.shadowRoot!.querySelector<HTMLElement>('[part="indicator"]')!;
   return indicator.style.width;
 }
@@ -34,20 +34,20 @@ describe('<ds-progress-bar>', () => {
 
   it('fills proportionally to value/max', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="25" max="100"></ds-progress-bar>');
-    expect(indicatorWidth(el)).toBe('25%');
+    expect(getIndicatorWidth(el)).toBe('25%');
   });
 
   it('clamps the fill between 0 and 100 percent', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="500" max="100"></ds-progress-bar>');
-    expect(indicatorWidth(el)).toBe('100%');
+    expect(getIndicatorWidth(el)).toBe('100%');
     el.value = -10;
     await el.updateComplete;
-    expect(indicatorWidth(el)).toBe('0%');
+    expect(getIndicatorWidth(el)).toBe('0%');
   });
 
   it('renders zero fill when max is not positive', async () => {
     const el = await mount<DsProgressBar>('<ds-progress-bar value="10" max="0"></ds-progress-bar>');
-    expect(indicatorWidth(el)).toBe('0%');
+    expect(getIndicatorWidth(el)).toBe('0%');
   });
 
   it('shows the label only when slotted content exists', async () => {

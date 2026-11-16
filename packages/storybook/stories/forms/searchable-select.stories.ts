@@ -172,13 +172,13 @@ class SbCountrySearch extends LitElement {
   @state() private _options = COUNTRIES;
   @state() private _value = '';
 
-  #onSearch = (e: CustomEvent<{ query: string }>): void => {
-    const q = e.detail.query.toLowerCase();
-    this._options = q ? COUNTRIES.filter((c) => c.label.toLowerCase().includes(q)) : COUNTRIES;
+  #onSearch = (event: CustomEvent<{ query: string }>): void => {
+    const query = event.detail.query.toLowerCase();
+    this._options = query ? COUNTRIES.filter((country) => country.label.toLowerCase().includes(query)) : COUNTRIES;
   };
 
-  #onChange = (e: CustomEvent<{ value: string }>): void => {
-    this._value = e.detail.value;
+  #onChange = (event: CustomEvent<{ value: string }>): void => {
+    this._value = event.detail.value;
   };
 
   override render() {
@@ -213,13 +213,15 @@ class SbDisciplineSearch extends LitElement {
   @state() private _options = DISCIPLINES;
   @state() private _value = '';
 
-  #onSearch = (e: CustomEvent<{ query: string }>): void => {
-    const q = e.detail.query.toLowerCase();
-    this._options = q ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q)) : DISCIPLINES;
+  #onSearch = (event: CustomEvent<{ query: string }>): void => {
+    const query = event.detail.query.toLowerCase();
+    this._options = query
+      ? DISCIPLINES.filter((discipline) => discipline.label.toLowerCase().includes(query))
+      : DISCIPLINES;
   };
 
-  #onChange = (e: CustomEvent<{ value: string }>): void => {
-    this._value = e.detail.value;
+  #onChange = (event: CustomEvent<{ value: string }>): void => {
+    this._value = event.detail.value;
   };
 
   override render() {
@@ -384,10 +386,10 @@ export const Playground: Story = {
       ?loading=${args['loading']}
       ?message-space=${args['messageSpace']}
       .options=${DISCIPLINES}
-      @ds-search=${(e: CustomEvent<{ query: string }>) => {
-        const q = e.detail.query.toLowerCase();
-        (e.currentTarget as HTMLElement & { options: SelectOption[] }).options = q
-          ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q))
+      @ds-search=${(event: CustomEvent<{ query: string }>) => {
+        const query = event.detail.query.toLowerCase();
+        (event.currentTarget as HTMLElement & { options: SelectOption[] }).options = query
+          ? DISCIPLINES.filter((discipline) => discipline.label.toLowerCase().includes(query))
           : DISCIPLINES;
       }}
     >
@@ -420,10 +422,10 @@ export const WithHint: Story = {
       search-placeholder="Search disciplines..."
       hint="Operations is set by an administrator."
       .options=${DISCIPLINES}
-      @ds-search=${(e: CustomEvent<{ query: string }>) => {
-        const q = e.detail.query.toLowerCase();
-        (e.currentTarget as HTMLElement & { options: SelectOption[] }).options = q
-          ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q))
+      @ds-search=${(event: CustomEvent<{ query: string }>) => {
+        const query = event.detail.query.toLowerCase();
+        (event.currentTarget as HTMLElement & { options: SelectOption[] }).options = query
+          ? DISCIPLINES.filter((discipline) => discipline.label.toLowerCase().includes(query))
           : DISCIPLINES;
       }}
     >
@@ -491,13 +493,13 @@ class SbCountryMultiSearch extends LitElement {
   @state() private _options = COUNTRIES;
   @state() private _values: string[] = [];
 
-  #onSearch = (e: CustomEvent<{ query: string }>): void => {
-    const q = e.detail.query.toLowerCase();
-    this._options = q ? COUNTRIES.filter((c) => c.label.toLowerCase().includes(q)) : COUNTRIES;
+  #onSearch = (event: CustomEvent<{ query: string }>): void => {
+    const query = event.detail.query.toLowerCase();
+    this._options = query ? COUNTRIES.filter((country) => country.label.toLowerCase().includes(query)) : COUNTRIES;
   };
 
-  #onChange = (e: CustomEvent<{ values: string[] }>): void => {
-    this._values = e.detail.values;
+  #onChange = (event: CustomEvent<{ values: string[] }>): void => {
+    this._values = event.detail.values;
   };
 
   override render() {
@@ -529,13 +531,15 @@ class SbRequiredDisciplineSearch extends LitElement {
   @state() private _options = DISCIPLINES;
   @state() private _value = 'engineering';
 
-  #onSearch = (e: CustomEvent<{ query: string }>): void => {
-    const q = e.detail.query.toLowerCase();
-    this._options = q ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q)) : DISCIPLINES;
+  #onSearch = (event: CustomEvent<{ query: string }>): void => {
+    const query = event.detail.query.toLowerCase();
+    this._options = query
+      ? DISCIPLINES.filter((discipline) => discipline.label.toLowerCase().includes(query))
+      : DISCIPLINES;
   };
 
-  #onChange = (e: CustomEvent<{ value: string }>): void => {
-    this._value = e.detail.value;
+  #onChange = (event: CustomEvent<{ value: string }>): void => {
+    this._value = event.detail.value;
   };
 
   override render() {

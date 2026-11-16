@@ -20,7 +20,7 @@ interface TokenRow {
   use?: string;
 }
 
-function code(value: string): TemplateResult {
+function renderCode(value: string): TemplateResult {
   return html`<code>${value}</code>`;
 }
 
@@ -36,7 +36,7 @@ const SHADOW_PREVIEW = joinStyles(
   'border-radius:var(--ds-radius-xs)',
 );
 
-function radiusSwatch(value: string): string {
+function renderRadiusSwatch(value: string): string {
   return joinStyles(
     'width:56px;height:56px',
     'background:var(--ds-color-accent-subtle)',
@@ -45,7 +45,7 @@ function radiusSwatch(value: string): string {
   );
 }
 
-function shadowSwatch(name: string): string {
+function renderShadowSwatch(name: string): string {
   return joinStyles(
     'height:56px',
     `background:${color.ink[1000]}`,
@@ -54,9 +54,9 @@ function shadowSwatch(name: string): string {
   );
 }
 
-function shadowPreview(name: string): TemplateResult {
+function renderShadowPreview(name: string): TemplateResult {
   return html`<div aria-hidden="true" style=${SHADOW_PREVIEW}>
-    <div style=${shadowSwatch(name)}></div>
+    <div style=${renderShadowSwatch(name)}></div>
   </div>`;
 }
 
@@ -66,7 +66,7 @@ const borderRows: readonly TokenRow[] = Object.entries(border).map(([name, value
 }));
 
 const borderColumns: readonly TableColumn<TokenRow>[] = [
-  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => renderCode(row.token) },
   { name: 'value', field: 'value', label: 'Value', width: '6rem' },
   {
     name: 'preview',
@@ -89,7 +89,7 @@ export const Shape: Story = {
           ${Object.entries(radius).map(
             ([name, value]) => html`
               <div style="display:grid;gap:var(--ds-space-2);align-items:start">
-                <div style=${radiusSwatch(value)}></div>
+                <div style=${renderRadiusSwatch(value)}></div>
                 <div>
                   <code style="display:block">radius-${name}</code>
                   <span style="color:var(--ds-color-fg-muted)">${value}</span>
@@ -106,7 +106,7 @@ export const Shape: Story = {
           ${Object.keys(shadow).map(
             (name) => html`
               <div style="display:grid;gap:var(--ds-space-3)">
-                ${shadowPreview(name)}
+                ${renderShadowPreview(name)}
                 <code>shadow-${name}</code>
               </div>
             `,
@@ -141,8 +141,8 @@ function tokenRows(prefix: string, values: Record<string, string>, uses: Record<
 }
 
 const usageColumns: readonly TableColumn<TokenRow>[] = [
-  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
-  { name: 'value', field: 'value', label: 'Value', width: '14rem', render: (row) => code(row.value) },
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => renderCode(row.token) },
+  { name: 'value', field: 'value', label: 'Value', width: '14rem', render: (row) => renderCode(row.value) },
   { name: 'use', field: 'use', label: 'Use' },
 ];
 
@@ -161,7 +161,7 @@ export const Motion: Story = {
   `,
 };
 
-function barSwatch(value: string, color = 'var(--ds-color-accent-subtle)'): TemplateResult {
+function renderBarSwatch(value: string, color = 'var(--ds-color-accent-subtle)'): TemplateResult {
   const style = joinStyles(
     'display:block;height:6px',
     `background:${color}`,
@@ -172,26 +172,26 @@ function barSwatch(value: string, color = 'var(--ds-color-accent-subtle)'): Temp
 }
 
 const valueColumns: readonly TableColumn<TokenRow>[] = [
-  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => renderCode(row.token) },
   { name: 'value', field: 'value', label: 'Value', width: '7rem' },
 ];
 
 const previewColumns: readonly TableColumn<TokenRow>[] = [
   ...valueColumns,
-  { name: 'preview', field: 'value', label: 'Preview', render: (row) => barSwatch(row.value) },
+  { name: 'preview', field: 'value', label: 'Preview', render: (row) => renderBarSwatch(row.value) },
 ];
 
 const BREAKPOINT_SEGMENT_WIDTH = 512;
 const BREAKPOINT_PREVIEW = joinStyles('display:flex', 'flex-wrap:wrap', 'row-gap:var(--ds-space-1)', 'width:100%');
 
-function breakpointSegments(value: string): number[] {
+function buildBreakpointSegments(value: string): number[] {
   const pixels = Number.parseFloat(value);
   const fullSegments = Math.floor(pixels / BREAKPOINT_SEGMENT_WIDTH);
   const remainder = pixels % BREAKPOINT_SEGMENT_WIDTH;
   return [...Array<number>(fullSegments).fill(BREAKPOINT_SEGMENT_WIDTH), ...(remainder > 0 ? [remainder] : [])];
 }
 
-function breakpointSegmentStyle(width: number): string {
+function getBreakpointSegmentStyle(width: number): string {
   return joinStyles(
     'display:block',
     `flex:0 0 ${width}px`,
@@ -202,17 +202,17 @@ function breakpointSegmentStyle(width: number): string {
   );
 }
 
-function breakpointSwatch(value: string): TemplateResult {
+function renderBreakpointSwatch(value: string): TemplateResult {
   return html`<span aria-hidden="true" class="ds-breakpoint-preview" style=${BREAKPOINT_PREVIEW}>
-    ${breakpointSegments(value).map(
-      (width) => html`<span class="ds-breakpoint-preview-segment" style=${breakpointSegmentStyle(width)}></span>`,
+    ${buildBreakpointSegments(value).map(
+      (width) => html`<span class="ds-breakpoint-preview-segment" style=${getBreakpointSegmentStyle(width)}></span>`,
     )}
   </span>`;
 }
 
 const breakpointPreviewColumns: readonly TableColumn<TokenRow>[] = [
   ...valueColumns,
-  { name: 'preview', field: 'value', label: 'Preview', render: (row) => breakpointSwatch(row.value) },
+  { name: 'preview', field: 'value', label: 'Preview', render: (row) => renderBreakpointSwatch(row.value) },
 ];
 
 const zIndexUse: Record<string, string> = {
@@ -226,7 +226,7 @@ const zIndexUse: Record<string, string> = {
   tooltip: 'Tooltip fallback when the Popover API top layer is unavailable',
 };
 
-function valueRows(prefix: string, values: Record<string, string>): readonly TokenRow[] {
+function buildValueRows(prefix: string, values: Record<string, string>): readonly TokenRow[] {
   return Object.entries(values).map(([name, value]) => ({ token: `${prefix}-${name}`, value }));
 }
 
@@ -237,18 +237,18 @@ export const BreakpointsAndZIndex: Story = {
         <h3 style=${GROUP_LABEL}>Breakpoints</h3>
         <ds-table
           class="ds-breakpoints-table-full"
-          .rows=${valueRows('breakpoint', breakpoint)}
+          .rows=${buildValueRows('breakpoint', breakpoint)}
           .columns=${breakpointPreviewColumns}
         ></ds-table>
         <ds-table
           class="ds-breakpoints-table-compact"
-          .rows=${valueRows('breakpoint', breakpoint)}
+          .rows=${buildValueRows('breakpoint', breakpoint)}
           .columns=${valueColumns}
         ></ds-table>
       </div>
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Container max-widths</h3>
-        <ds-table .rows=${valueRows('container', container)} .columns=${previewColumns}></ds-table>
+        <ds-table .rows=${buildValueRows('container', container)} .columns=${previewColumns}></ds-table>
       </div>
       <div style="display:grid;gap:var(--ds-space-3)">
         <h3 style=${GROUP_LABEL}>Z-index</h3>

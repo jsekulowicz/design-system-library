@@ -49,7 +49,7 @@ describe('the min-lines attribute', () => {
   });
 });
 
-function tileList(offsets: number[], height = 0): HTMLElement {
+function buildTileList(offsets: number[], height = 0): HTMLElement {
   const host = document.createElement('div');
   for (const top of offsets) {
     const tile = document.createElement('span');
@@ -64,19 +64,19 @@ function tileList(offsets: number[], height = 0): HTMLElement {
 
 describe('countOverflowTiles', () => {
   it('counts the tiles on rows past max-lines, two tiles sharing each 32px row', () => {
-    expect(countOverflowTiles(tileList([0, 0, 32, 32, 64, 64, 96, 96, 128, 128]), 3)).toBe(4);
+    expect(countOverflowTiles(buildTileList([0, 0, 32, 32, 64, 64, 96, 96, 128, 128]), 3)).toBe(4);
   });
 
   it('measures from the first tile, so a search input above them is not read as overflow', () => {
     const pushedDown = [41, 41, 73, 73, 105, 105, 137, 137, 169, 169];
-    expect(countOverflowTiles(tileList(pushedDown), 3)).toBe(4);
+    expect(countOverflowTiles(buildTileList(pushedDown), 3)).toBe(4);
   });
 
   it('follows taller tiles, so a consumer tile height still counts whole rows', () => {
-    expect(countOverflowTiles(tileList([0, 0, 40, 40, 80, 80], 36), 2)).toBe(2);
+    expect(countOverflowTiles(buildTileList([0, 0, 40, 40, 80, 80], 36), 2)).toBe(2);
   });
 
   it('counts nothing without max-lines', () => {
-    expect(countOverflowTiles(tileList([0, 32, 64, 96]), undefined)).toBe(0);
+    expect(countOverflowTiles(buildTileList([0, 32, 64, 96]), undefined)).toBe(0);
   });
 });

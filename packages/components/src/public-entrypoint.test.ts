@@ -6,14 +6,14 @@ const componentModules = import.meta.glob<Record<string, unknown>>(
   { eager: true },
 );
 
-function componentNames(exports: Record<string, unknown>): string[] {
+function getComponentNames(exports: Record<string, unknown>): string[] {
   return Object.keys(exports).filter((name) => name.startsWith('Ds'));
 }
 
 describe('public component entrypoint', () => {
   it('re-exports every component class', () => {
-    const expected = Object.values(componentModules).flatMap(componentNames).sort();
-    const actual = componentNames(publicEntrypoint).sort();
+    const expected = Object.values(componentModules).flatMap(getComponentNames).sort();
+    const actual = getComponentNames(publicEntrypoint).sort();
 
     expect(actual).toEqual(expected);
   });

@@ -53,7 +53,7 @@ function tokenCode(tokens: BrandExample['tokens']): string {
   return `.brand-example {\n${declarations}\n}`;
 }
 
-function componentShowcase(tokens: BrandExample['tokens']): TemplateResult {
+function renderComponentShowcase(tokens: BrandExample['tokens']): TemplateResult {
   const style = joinStyles(
     tokenStyles(tokens),
     'display:grid;gap:var(--ds-space-4);width:100%;max-width:480px;min-width:0',
@@ -74,14 +74,14 @@ function componentShowcase(tokens: BrandExample['tokens']): TemplateResult {
   </div>`;
 }
 
-function brandExample(example: BrandExample): TemplateResult {
+function renderBrandExample(example: BrandExample): TemplateResult {
   return html`<section style="display:grid;gap:var(--ds-space-3);align-content:start;min-width:0">
     <h3 style=${GROUP_LABEL}>${example.name}</h3>
-    ${componentShowcase(example.tokens)}
+    ${renderComponentShowcase(example.tokens)}
     <pre class="ds-brand-example-code"><code>${tokenCode(example.tokens)}</code></pre>
   </section>`;
 }
 
 export function renderBrandExamples(): TemplateResult {
-  return html`<div style=${EXAMPLES_LAYOUT}>${BRAND_EXAMPLES.map(brandExample)}</div>`;
+  return html`<div style=${EXAMPLES_LAYOUT}>${BRAND_EXAMPLES.map(renderBrandExample)}</div>`;
 }

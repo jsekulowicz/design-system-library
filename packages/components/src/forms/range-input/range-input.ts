@@ -2,7 +2,7 @@ import { html, nothing, LitElement, type TemplateResult, type PropertyValues } f
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
-import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, hasValidityInputChanged, FormControlMixin } from '@jsekulowicz/ds-core';
 import {
   clickBelongsToTheControl,
   formFieldStyles,
@@ -126,7 +126,7 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
   };
 
   override updated(changed: PropertyValues): void {
-    if (changedWhatValidityReads(changed)) {
+    if (hasValidityInputChanged(changed)) {
       this.syncValidity();
     }
   }

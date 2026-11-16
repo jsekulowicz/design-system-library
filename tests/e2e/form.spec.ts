@@ -3,7 +3,7 @@ import { test, expect, type Page } from '@playwright/test';
 const storyUrl = '/iframe.html?id=forms-form--account-details&viewMode=story';
 
 test.describe('ds-form native submission', () => {
-  test('invalid fields block submit and emit ds-invalid', async ({ page }) => {
+  test('blocks submit and emits ds-invalid while a field is invalid', async ({ page }) => {
     const invalidCount = await attachEventCounter(page, 'ds-invalid');
     const submitCount = await attachEventCounter(page, 'ds-submit');
 
@@ -16,7 +16,7 @@ test.describe('ds-form native submission', () => {
     await expect.poll(submitCount).toBe(0);
   });
 
-  test('valid fields emit ds-submit with FormData payload', async ({ page }) => {
+  test('emits ds-submit with a FormData payload once every field is valid', async ({ page }) => {
     const payload = await attachSubmitRecorder(page);
     await page.goto(storyUrl);
     await page.locator('ds-form').waitFor();
@@ -48,7 +48,7 @@ async function attachEventCounter(page: Page, event: string) {
     },
     { event, key },
   );
-  return () => page.evaluate((k) => (window as unknown as Record<string, number>)[k], key);
+  return () => page.evaluate((globalName) => (window as unknown as Record<string, number>)[globalName], key);
 }
 
 async function attachSubmitRecorder(page: Page) {
@@ -72,5 +72,5 @@ async function attachSubmitRecorder(page: Page) {
     },
     { key },
   );
-  return () => page.evaluate((k) => (window as unknown as Record<string, unknown>)[k], key);
+  return () => page.evaluate((globalName) => (window as unknown as Record<string, unknown>)[globalName], key);
 }

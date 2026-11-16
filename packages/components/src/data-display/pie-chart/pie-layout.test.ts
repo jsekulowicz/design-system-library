@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { preparePieSlices, computeSliceAngles, sliceTotal } from './pie-layout.js';
+import { preparePieSlices, computeSliceAngles, sumSliceValues } from './pie-layout.js';
 import {
-  arcPath,
-  centerContentSizeFor,
-  innerRadiusFor,
-  labelPlacement,
-  polarPoint,
+  buildArcPath,
+  computeCenterContentSize,
+  computeInnerRadius,
+  computeLabelPlacement,
+  toCartesianPoint,
   RADIUS,
   CENTER,
 } from './pie-geometry.js';
@@ -28,8 +28,8 @@ describe('preparePieSlices', () => {
       ],
       OPTIONS,
     );
-    expect(slices.map((s) => s.label)).toEqual(['big', 'small']);
-    expect(slices.map((s) => s.percent)).toEqual([90, 10]);
+    expect(slices.map((slice) => slice.label)).toEqual(['big', 'small']);
+    expect(slices.map((slice) => slice.percent)).toEqual([90, 10]);
   });
 
   it('spans a full circle starting at twelve o clock', () => {
@@ -48,7 +48,7 @@ describe('preparePieSlices', () => {
       ],
       OPTIONS,
     );
-    expect(slices.map((s) => s.label)).toEqual(['keep']);
+    expect(slices.map((slice) => slice.label)).toEqual(['keep']);
     expect(slices[0]!.percent).toBe(100);
   });
 
@@ -64,7 +64,7 @@ describe('preparePieSlices', () => {
     expect(slices[3]!.label).toBe('Other');
     expect(slices[3]!.isOther).toBe(true);
     expect(slices[3]!.sourceIndices).toHaveLength(5);
-    expect(sliceTotal(slices)).toBe(data.reduce((sum, d) => sum + d.value, 0));
+    expect(sumSliceValues(slices)).toBe(data.reduce((sum, datum) => sum + datum.value, 0));
   });
 
   it('groups slices below otherThreshold', () => {
@@ -76,7 +76,7 @@ describe('preparePieSlices', () => {
       ],
       { ...OPTIONS, otherThreshold: 6 },
     );
-    expect(slices.map((s) => s.label)).toEqual(['big', 'Other']);
+    expect(slices.map((slice) => slice.label)).toEqual(['big', 'Other']);
     expect(slices[1]!.percent).toBe(10);
   });
 
@@ -88,8 +88,8 @@ describe('preparePieSlices', () => {
       ],
       { ...OPTIONS, otherThreshold: 6 },
     );
-    expect(slices.map((s) => s.label)).toEqual(['big', 'tiny']);
-    expect(slices.every((s) => !s.isOther)).toBe(true);
+    expect(slices.map((slice) => slice.label)).toEqual(['big', 'tiny']);
+    expect(slices.every((slice) => !slice.isOther)).toBe(true);
   });
 
   it('carries per-datum colors through', () => {
@@ -109,34 +109,34 @@ describe('computeSliceAngles', () => {
 });
 
 describe('minimum slice share', () => {
-  function sweepPercent(slice: { startAngle: number; endAngle: number }): number {
+  function computeSweepPercent(slice: { startAngle: number; endAngle: number }): number {
     return ((slice.endAngle - slice.startAngle) / (Math.PI * 2)) * 100;
   }
 
-  it('widens sub-minimum slivers for display while keeping the true percent', () => {
+  it('draws a slice smaller than minSlicePercent at that minimum while keeping its true percent', () => {
     const slices = preparePieSlices(
       [
         { label: 'big', value: 9990 },
-        { label: 'sliver', value: 10 },
+        { label: 'tiny', value: 10 },
       ],
       { ...OPTIONS, minSlicePercent: 1 },
     );
     expect(slices[1]!.percent).toBeCloseTo(0.1);
-    expect(sweepPercent(slices[1]!)).toBeCloseTo(1);
-    expect(sweepPercent(slices[0]!)).toBeCloseTo(99);
+    expect(computeSweepPercent(slices[1]!)).toBeCloseTo(1);
+    expect(computeSweepPercent(slices[0]!)).toBeCloseTo(99);
     expect(slices[1]!.endAngle).toBeCloseTo(-Math.PI / 2 + Math.PI * 2);
   });
 
   it('leaves slices at or above the minimum untouched', () => {
     const slices = preparePieSlices(DATA, { ...OPTIONS, minSlicePercent: 1 });
-    expect(slices.map(sweepPercent).map(Math.round)).toEqual([50, 30, 20]);
+    expect(slices.map(computeSweepPercent).map(Math.round)).toEqual([50, 30, 20]);
   });
 
   it('falls back to true shares when every slice sits below the minimum', () => {
     const data = Array.from({ length: 4 }, (_, i) => ({ label: `S${i}`, value: 1 }));
     const slices = preparePieSlices(data, { ...OPTIONS, minSlicePercent: 30 });
     for (const slice of slices) {
-      expect(sweepPercent(slice)).toBeCloseTo(25);
+      expect(computeSweepPercent(slice)).toBeCloseTo(25);
     }
   });
 });
@@ -150,7 +150,7 @@ describe('zero-value slices', () => {
       ],
       { ...OPTIONS, includeZeroSlices: true },
     );
-    expect(slices.map((s) => s.label)).toEqual(['some', 'none']);
+    expect(slices.map((slice) => slice.label)).toEqual(['some', 'none']);
     expect(slices[1]!.percent).toBe(0);
     expect(slices[1]!.endAngle).toBe(slices[1]!.startAngle);
     expect(slices[1]!.color).toBe('gray');
@@ -166,7 +166,7 @@ describe('zero-value slices', () => {
       ],
       { ...OPTIONS, otherThreshold: 6, includeZeroSlices: true },
     );
-    expect(slices.map((s) => s.label)).toEqual(['big', 'Other', 'none']);
+    expect(slices.map((slice) => slice.label)).toEqual(['big', 'Other', 'none']);
   });
 
   it('still reports no data when every value is zero', () => {
@@ -178,37 +178,37 @@ describe('zero-value slices', () => {
 describe('pie geometry', () => {
   it('draws a wedge from the center for a pie', () => {
     const [slice] = preparePieSlices(DATA, OPTIONS);
-    const path = arcPath(slice!, RADIUS, 0);
+    const path = buildArcPath(slice!, RADIUS, 0);
     expect(path.startsWith(`M ${CENTER} ${CENTER}`)).toBe(true);
     expect(path.endsWith('Z')).toBe(true);
   });
 
   it('draws two arcs for a single full-circle slice', () => {
     const [slice] = preparePieSlices([{ label: 'only', value: 1 }], OPTIONS);
-    const path = arcPath(slice!, RADIUS, 0);
+    const path = buildArcPath(slice!, RADIUS, 0);
     expect(path.match(/A /g)).toHaveLength(2);
   });
 
   it('cuts a hole out of a full-circle donut', () => {
     const [slice] = preparePieSlices([{ label: 'only', value: 1 }], OPTIONS);
-    const path = arcPath(slice!, RADIUS, 20);
+    const path = buildArcPath(slice!, RADIUS, 20);
     expect(path.match(/A /g)).toHaveLength(4);
     expect(path.match(/M /g)).toHaveLength(2);
   });
 
   it('clamps the donut inner radius and ignores it for pies', () => {
-    expect(innerRadiusFor(false, 0.6)).toBe(0);
-    expect(innerRadiusFor(true, 5)).toBeCloseTo(RADIUS * 0.9);
-    expect(innerRadiusFor(true, -1)).toBe(0);
+    expect(computeInnerRadius(false, 0.6)).toBe(0);
+    expect(computeInnerRadius(true, 5)).toBeCloseTo(RADIUS * 0.9);
+    expect(computeInnerRadius(true, -1)).toBe(0);
   });
 
   it('fits center content inside the circular hole with stroke clearance', () => {
-    expect(centerContentSizeFor(true, 0.6)).toBe(27.294);
-    expect(centerContentSizeFor(false, 0.6)).toBe(0);
+    expect(computeCenterContentSize(true, 0.6)).toBe(27.294);
+    expect(computeCenterContentSize(false, 0.6)).toBe(0);
   });
 
   it('places the twelve o clock point directly above the center', () => {
-    const point = polarPoint(RADIUS, -Math.PI / 2);
+    const point = toCartesianPoint(RADIUS, -Math.PI / 2);
     expect(point.x).toBeCloseTo(CENTER);
     expect(point.y).toBeCloseTo(CENTER - RADIUS);
   });
@@ -217,12 +217,12 @@ describe('pie geometry', () => {
     const slices = preparePieSlices(
       [
         { label: 'big', value: 99 },
-        { label: 'sliver', value: 1 },
+        { label: 'tiny', value: 1 },
       ],
       OPTIONS,
     );
-    expect(labelPlacement(slices[1]!, RADIUS).kind).toBe('none');
-    expect(labelPlacement(slices[0]!, RADIUS).kind).toBe('outside');
+    expect(computeLabelPlacement(slices[1]!, RADIUS).kind).toBe('none');
+    expect(computeLabelPlacement(slices[0]!, RADIUS).kind).toBe('outside');
   });
 
   it('anchors left-hand labels at their end', () => {
@@ -233,8 +233,8 @@ describe('pie geometry', () => {
       ],
       OPTIONS,
     );
-    const left = labelPlacement(slices[1]!, RADIUS);
-    const right = labelPlacement(slices[0]!, RADIUS);
+    const left = computeLabelPlacement(slices[1]!, RADIUS);
+    const right = computeLabelPlacement(slices[0]!, RADIUS);
     expect(left.kind === 'outside' && left.anchorEnd).toBe('end');
     expect(right.kind === 'outside' && right.anchorEnd).toBe('start');
   });

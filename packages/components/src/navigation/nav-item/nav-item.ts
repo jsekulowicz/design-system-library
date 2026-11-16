@@ -2,7 +2,7 @@ import { html, type PropertyValues, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, state } from 'lit/decorators.js';
 import { DsElement, omitWhenBlank } from '@jsekulowicz/ds-core';
-import { spinnerTemplate } from '../../shared/spinner.js';
+import { renderSpinner } from '../../shared/spinner.js';
 import { navItemStyles } from './nav-item.styles.js';
 
 /**
@@ -71,11 +71,11 @@ export class DsNavItem extends DsElement {
     this.#warnIfMissingIcon();
   };
 
-  #onLabelSlotChange = (e: Event): void => {
-    const slot = e.target as HTMLSlotElement;
+  #onLabelSlotChange = (event: Event): void => {
+    const slot = event.target as HTMLSlotElement;
     const nodes = slot.assignedNodes({ flatten: true });
     this._labelText = nodes
-      .map((n) => n.textContent ?? '')
+      .map((node) => node.textContent ?? '')
       .join('')
       .trim();
   };
@@ -89,7 +89,7 @@ export class DsNavItem extends DsElement {
 
   #renderIcon(): TemplateResult {
     if (this.loading) {
-      return spinnerTemplate();
+      return renderSpinner();
     }
     return html`<slot name="icon" @slotchange=${this.#onIconSlotChange}></slot>`;
   }

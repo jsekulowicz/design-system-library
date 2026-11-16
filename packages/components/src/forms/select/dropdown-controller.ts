@@ -163,11 +163,11 @@ export class DropdownController implements ReactiveController {
     this.#focusRevealPending = false;
     const el = this.#config.getListboxEl();
     if (el) {
-      this.#notifyScrollEndOncePerApproach(el);
+      this.#emitScrollEndAtBottom(el);
     }
   };
 
-  #notifyScrollEndOncePerApproach = (el: HTMLElement): void => {
+  #emitScrollEndAtBottom = (el: HTMLElement): void => {
     const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - SLACK_BEFORE_SCROLL_END_PX;
     if (!nearEnd) {
       this.#scrollEndArmed = true;

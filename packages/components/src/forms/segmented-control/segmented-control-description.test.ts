@@ -18,19 +18,19 @@ async function mount(props: Partial<DsSegmentedControl> = {}): Promise<DsSegment
   });
 }
 
-function description(el: DsSegmentedControl): HTMLElement | null {
+function getDescription(el: DsSegmentedControl): HTMLElement | null {
   return el.shadowRoot?.querySelector<HTMLElement>('.description') ?? null;
 }
 
 describe('description-lines', () => {
   it('holds the space so a value-dependent description cannot reflow the page', async () => {
     const el = await mount({ description: 'Short', descriptionLines: 3 });
-    expect(description(el)?.style.minHeight).toBe('calc(3lh)');
+    expect(getDescription(el)?.style.minHeight).toBe('calc(3lh)');
   });
 
   it('holds it even with no description at all, so the gap does not appear later', async () => {
     const el = await mount({ descriptionLines: 2 });
-    const paragraph = description(el);
+    const paragraph = getDescription(el);
     expect(paragraph).not.toBeNull();
     expect(paragraph?.getAttribute('aria-hidden')).toBe('true');
   });
@@ -42,6 +42,6 @@ describe('description-lines', () => {
 
   it('reserves nothing unless asked, which is how it shipped', async () => {
     const el = await mount({ description: 'Short' });
-    expect(description(el)?.style.minHeight).toBe('');
+    expect(getDescription(el)?.style.minHeight).toBe('');
   });
 });

@@ -197,7 +197,7 @@ export class DsTablePagination extends DsElement {
         <label
           >${this.rowsPerPageLabel}
           <select aria-label=${this.rowsPerPageLabel} .value=${String(this.pageSize)} @change=${this.#onSizeChange}>
-            ${this.pageSizeOptions.map((n) => html`<option value=${n} ?selected=${n === this.pageSize}>${n}</option>`)}
+            ${this.pageSizeOptions.map((size) => html`<option value=${size} ?selected=${size === this.pageSize}>${size}</option>`)}
           </select>
         </label>
       </div>

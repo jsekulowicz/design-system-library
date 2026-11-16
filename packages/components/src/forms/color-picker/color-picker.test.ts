@@ -47,7 +47,7 @@ function getSwatches(el: DsColorPicker): DsColorPickerSwatch[] {
   return Array.from(getSwatchGroup(el).shadowRoot!.querySelectorAll<DsColorPickerSwatch>('ds-color-picker-swatch'));
 }
 
-function keydown(target: HTMLElement, key: string): void {
+function dispatchKeydown(target: HTMLElement, key: string): void {
   target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
 }
 
@@ -182,15 +182,15 @@ describe('<ds-color-picker>', () => {
     await openPicker(el);
 
     getSwatches(el)[0].focus();
-    keydown(getSwatches(el)[0], 'ArrowRight');
+    dispatchKeydown(getSwatches(el)[0], 'ArrowRight');
     await getSwatchGroup(el).updateComplete;
 
     expect(getSwatchGroup(el).shadowRoot!.activeElement).toBe(getSwatches(el)[1]);
 
-    keydown(getSwatches(el)[1], 'End');
+    dispatchKeydown(getSwatches(el)[1], 'End');
     await getSwatchGroup(el).updateComplete;
     const focused = getSwatchGroup(el).shadowRoot!.activeElement as HTMLElement;
-    keydown(focused, 'Enter');
+    dispatchKeydown(focused, 'Enter');
     await el.updateComplete;
 
     expect(el.value).toBe('#7C3AED');
@@ -201,7 +201,7 @@ describe('<ds-color-picker>', () => {
     getTrigger(el).focus();
     await openPicker(el);
 
-    keydown(getTrigger(el), 'Escape');
+    dispatchKeydown(getTrigger(el), 'Escape');
     await el.updateComplete;
 
     expect(getPanel(el)).toBeNull();

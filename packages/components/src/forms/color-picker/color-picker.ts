@@ -1,7 +1,7 @@
 import { html, nothing, LitElement, type PropertyValues, type TemplateResult } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
-import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
+import { DsElement, hasValidityInputChanged, FormControlMixin } from '@jsekulowicz/ds-core';
 import '../../data-display/icon/icons/swatch.js';
 import { formFieldStyles, renderFieldLabel, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { ColorPickerCustomInputs } from './color-picker-custom-inputs.js';
@@ -125,7 +125,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
   }
 
   override updated(changed: PropertyValues): void {
-    if (changedWhatValidityReads(changed)) {
+    if (hasValidityInputChanged(changed)) {
       this.syncValidity();
     }
     if (changed.has('label') || changed.has('compact') || changed.has('placeholder')) {

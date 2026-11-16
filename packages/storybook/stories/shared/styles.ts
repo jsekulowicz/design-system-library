@@ -20,7 +20,7 @@ export const GROUP_LABEL = joinStyles(
   'color:var(--ds-color-fg)',
 );
 
-export function card(padding: string): string {
+export function buildCardStyle(padding: string): string {
   return joinStyles(
     `padding:${padding}`,
     'border:1px solid var(--ds-color-border)',
@@ -29,6 +29,6 @@ export function card(padding: string): string {
   );
 }
 
-export function autoGrid(min: string): string {
+export function buildAutoGridStyle(min: string): string {
   return `display:grid;grid-template-columns:repeat(auto-fit,minmax(${min},1fr));gap:var(--ds-space-4)`;
 }

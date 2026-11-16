@@ -5,7 +5,7 @@ async function openDocs(page: Page, id: string): Promise<void> {
   await page.locator('.sbdocs-content').waitFor();
 }
 
-function storyCode(page: Page, text: string): Locator {
+function getStoryCode(page: Page, text: string): Locator {
   return page
     .locator('.sb-story code')
     .filter({ hasText: new RegExp(`^${text}$`) })
@@ -27,7 +27,7 @@ test('dark-mode shadow examples remain visibly distinct', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('ds-storybook-theme', 'dark'));
   await openDocs(page, 'foundations-tokens--docs');
   const labels = ['shadow-none', 'shadow-sm', 'shadow-md', 'shadow-lg'];
-  const samples = labels.map((label) => storyCode(page, label).locator('xpath=preceding-sibling::div[1]'));
+  const samples = labels.map((label) => getStoryCode(page, label).locator('xpath=preceding-sibling::div[1]'));
   const appearances = await Promise.all(
     samples.map((sample) =>
       sample.evaluate((element) => ({
@@ -45,9 +45,9 @@ test('dark-mode shadow examples remain visibly distinct', async ({ page }) => {
 
 test('foundation descriptions and token labels use the 14px body size', async ({ page }) => {
   await openDocs(page, 'foundations-typography--docs');
-  const familyToken = storyCode(page, '--ds-font-display');
+  const familyToken = getStoryCode(page, '--ds-font-display');
   const familyDescription = page.getByText('Serif font for headings and page titles.');
-  const lineHeightValue = storyCode(page, 'line-height-none').locator('xpath=following-sibling::span[1]');
+  const lineHeightValue = getStoryCode(page, 'line-height-none').locator('xpath=following-sibling::span[1]');
 
   await expect(familyToken).toHaveCSS('font-size', '14px');
   await expect(familyDescription).toHaveCSS('font-size', '14px');

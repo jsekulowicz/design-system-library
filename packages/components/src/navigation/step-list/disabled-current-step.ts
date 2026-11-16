@@ -1,6 +1,6 @@
 import type { StepListStep } from './step-list-templates.js';
 
-export function stepAsRendered(step: StepListStep, index: number, currentIndex: number): StepListStep {
+export function getStepAsRendered(step: StepListStep, index: number, currentIndex: number): StepListStep {
   if (index !== currentIndex || !step.disabled) {
     return step;
   }

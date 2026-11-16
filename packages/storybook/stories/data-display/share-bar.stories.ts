@@ -36,7 +36,7 @@ const DIFFICULTY_SOURCE = `const difficulty = [
   { label: 'Expert',   value: 44  },
 ];`;
 
-function shareSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
+function buildShareSnippet({ lead, tag }: { lead: string[]; tag: string }): string {
   return `${lead.join('\n\n')}\n\nhtml\`\n${tag}\n\`;`;
 }
 
@@ -85,7 +85,7 @@ export const Playground: Story = {
   parameters: {
     docs: {
       source: {
-        code: shareSnippet({
+        code: buildShareSnippet({
           lead: [DIFFICULTY_SOURCE],
           tag: `  <ds-share-bar
     title="Puzzles started by difficulty"

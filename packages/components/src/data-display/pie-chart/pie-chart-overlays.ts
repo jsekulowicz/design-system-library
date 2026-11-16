@@ -1,14 +1,14 @@
 import { html, nothing, type TemplateResult } from 'lit';
-import { CENTER, RADIUS, VIEWBOX_SIZE, midAngle, polarPoint } from './pie-geometry.js';
+import { CENTER, RADIUS, VIEWBOX_SIZE, computeMidAngle, toCartesianPoint } from './pie-geometry.js';
 import { renderPointTooltip, type PointTooltipArea } from '../../shared/point-tooltip.js';
 import type { PieRenderContext, PieSlice } from './types.js';
 import { formatLabel } from '../../shared/format-label.js';
 
-export function sliceAriaLabel(ctx: PieRenderContext, slice: PieSlice): string {
+export function getSliceAriaLabel(ctx: PieRenderContext, slice: PieSlice): string {
   return `${slice.label}: ${ctx.formatValue(slice.value)}, ${ctx.formatPercent(slice.percent)}`;
 }
 
-export function pieSummaryText(ctx: PieRenderContext, slices: readonly PieSlice[]): string {
+export function getPieSummaryText(ctx: PieRenderContext, slices: readonly PieSlice[]): string {
   const shape = ctx.donut ? ctx.donutLabel : ctx.chartLabel;
   return formatLabel(ctx.summaryLabel, {
     title: ctx.title || shape,
@@ -17,7 +17,7 @@ export function pieSummaryText(ctx: PieRenderContext, slices: readonly PieSlice[
   });
 }
 
-export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]): string {
+export function getPieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]): string {
   if (ctx.activeIndex === null) {
     return '';
   }
@@ -25,7 +25,7 @@ export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]):
   if (!slice) {
     return '';
   }
-  return `${sliceAriaLabel(ctx, slice)}.`;
+  return `${getSliceAriaLabel(ctx, slice)}.`;
 }
 
 function findTooltipPositionOutsideSlice(slice: PieSlice): {
@@ -33,7 +33,7 @@ function findTooltipPositionOutsideSlice(slice: PieSlice): {
   top: string;
   area: PointTooltipArea;
 } {
-  const point = polarPoint(RADIUS + 2, midAngle(slice));
+  const point = toCartesianPoint(RADIUS + 2, computeMidAngle(slice));
   const block = point.y < CENTER ? 'top' : 'bottom';
   const inline = point.x < CENTER ? 'left' : 'right';
   return {

@@ -160,13 +160,13 @@ function sortBy<T extends Record<string, unknown>>(
   if (!direction) {
     return [...rows];
   }
-  const sorted = [...rows].sort((a, b) => {
-    const av = a[field];
-    const bv = b[field];
-    if (typeof av === 'number' && typeof bv === 'number') {
-      return av - bv;
+  const sorted = [...rows].sort((left, right) => {
+    const leftValue = left[field];
+    const rightValue = right[field];
+    if (typeof leftValue === 'number' && typeof rightValue === 'number') {
+      return leftValue - rightValue;
     }
-    return String(av ?? '').localeCompare(String(bv ?? ''));
+    return String(leftValue ?? '').localeCompare(String(rightValue ?? ''));
   });
   return direction === 'asc' ? sorted : sorted.reverse();
 }
@@ -344,11 +344,11 @@ export const ScrollBodyWithPagination: Story = {
   render: () => {
     let page = 1;
     let pageSize = 5;
-    const sync = () => {
+    function syncRows(): void {
       const table = document.getElementById('scrollBodyTable') as HTMLElement & { rows: readonly Person[] };
       const start = (page - 1) * pageSize;
       table.rows = PEOPLE.slice(start, start + pageSize);
-    };
+    }
     return html`
       <div style="height: 13rem; display: flex; flex-direction: column;">
         <ds-table
@@ -364,14 +364,14 @@ export const ScrollBodyWithPagination: Story = {
             page-size=${pageSize}
             total=${PEOPLE.length}
             .pageSizeOptions=${[5, 8]}
-            @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-              page = e.detail.page;
-              sync();
+            @ds-page-change=${(event: CustomEvent<{ page: number }>) => {
+              page = event.detail.page;
+              syncRows();
             }}
-            @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-              pageSize = e.detail.pageSize;
-              page = e.detail.page;
-              sync();
+            @ds-page-size-change=${(event: CustomEvent<{ pageSize: number; page: number }>) => {
+              pageSize = event.detail.pageSize;
+              page = event.detail.page;
+              syncRows();
             }}
           ></ds-table-pagination>
         </ds-table>
@@ -476,23 +476,25 @@ export const ResponsiveLongContent: Story = {
 export const Sortable: Story = {
   render: () => {
     let state: TableSortState = { name: 'name', direction: null };
-    const handleSort = (field: string) => (event: CustomEvent<{ direction: TableSortDirection }>) => {
-      const button = event.target as HTMLElement & { direction: TableSortDirection };
-      const table = button.closest('ds-table') as unknown as SortableStoryTable;
-      state = { name: field, direction: event.detail.direction };
-      button.direction = event.detail.direction;
-      table.rows = sortBy(PEOPLE, field, event.detail.direction);
-      table.sortState = state;
-    };
+    function buildSortHandler(field: string): (event: CustomEvent<{ direction: TableSortDirection }>) => void {
+      return (event) => {
+        const button = event.target as HTMLElement & { direction: TableSortDirection };
+        const table = button.closest('ds-table') as unknown as SortableStoryTable;
+        state = { name: field, direction: event.detail.direction };
+        button.direction = event.detail.direction;
+        table.rows = sortBy(PEOPLE, field, event.detail.direction);
+        table.sortState = state;
+      };
+    }
     return html`
       <ds-table .rows=${PEOPLE} .columns=${RICH_COLUMNS} .sortState=${state}>
-        <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${handleSort('name')}
+        <ds-table-sort-button slot="header-name" column="Name" @ds-sort=${buildSortHandler('name')}
           >Name</ds-table-sort-button
         >
-        <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${handleSort('joined')}
+        <ds-table-sort-button slot="header-joined" column="Joined" @ds-sort=${buildSortHandler('joined')}
           >Joined</ds-table-sort-button
         >
-        <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${handleSort('salary')}
+        <ds-table-sort-button slot="header-salary" column="Salary" @ds-sort=${buildSortHandler('salary')}
           >Salary</ds-table-sort-button
         >
       </ds-table>
@@ -523,10 +525,10 @@ export const ClickableRows: Story = {
               html`<ds-button size="sm" variant="ghost">Edit ${row.name.split(' ')[0]}</ds-button>`,
           },
         ]}
-        @ds-row-click=${(e: CustomEvent<{ row: Person }>) => {
+        @ds-row-click=${(event: CustomEvent<{ row: Person }>) => {
           const log = document.getElementById('clickLog');
           if (log) {
-            log.textContent = `Clicked row: ${e.detail.row.name}`;
+            log.textContent = `Clicked row: ${event.detail.row.name}`;
           }
         }}
       ></ds-table>
@@ -586,15 +588,15 @@ export const Paginated: Story = {
   render: () => {
     let page = 1;
     let pageSize = 3;
-    const render = (
+    function renderPage(
       table: HTMLElement & { rows: readonly Person[] },
       pagination: HTMLElement & { page: number; pageSize: number },
-    ) => {
+    ): void {
       const start = (page - 1) * pageSize;
       table.rows = PEOPLE.slice(start, start + pageSize);
       pagination.page = page;
       pagination.pageSize = pageSize;
-    };
+    }
     return html`
       <ds-table id="paginatedTable" .rows=${PEOPLE.slice(0, 3)} .columns=${RICH_COLUMNS}>
         <ds-table-pagination
@@ -603,18 +605,18 @@ export const Paginated: Story = {
           page-size=${pageSize}
           total=${PEOPLE.length}
           .pageSizeOptions=${[3, 5, 8]}
-          @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-            page = e.detail.page;
+          @ds-page-change=${(event: CustomEvent<{ page: number }>) => {
+            page = event.detail.page;
             const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-            const pagination = e.target as HTMLElement as HTMLElement & { page: number; pageSize: number };
-            render(table, pagination);
+            const pagination = event.target as HTMLElement as HTMLElement & { page: number; pageSize: number };
+            renderPage(table, pagination);
           }}
-          @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-            pageSize = e.detail.pageSize;
-            page = e.detail.page;
+          @ds-page-size-change=${(event: CustomEvent<{ pageSize: number; page: number }>) => {
+            pageSize = event.detail.pageSize;
+            page = event.detail.page;
             const table = document.getElementById('paginatedTable') as HTMLElement & { rows: readonly Person[] };
-            const pagination = e.target as HTMLElement as HTMLElement & { page: number; pageSize: number };
-            render(table, pagination);
+            const pagination = event.target as HTMLElement as HTMLElement & { page: number; pageSize: number };
+            renderPage(table, pagination);
           }}
         ></ds-table-pagination>
       </ds-table>
@@ -629,8 +631,8 @@ export const PaginatedCompact: Story = {
       page="2"
       page-size="10"
       total="42"
-      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-        (e.target as HTMLElement & { page: number }).page = e.detail.page;
+      @ds-page-change=${(event: CustomEvent<{ page: number }>) => {
+        (event.target as HTMLElement & { page: number }).page = event.detail.page;
       }}
     ></ds-table-pagination>
   `,
@@ -643,13 +645,13 @@ export const StandalonePagination: Story = {
       page-size="10"
       total="126"
       .pageSizeOptions=${[10, 25, 50]}
-      @ds-page-change=${(e: CustomEvent<{ page: number }>) => {
-        (e.target as HTMLElement & { page: number }).page = e.detail.page;
+      @ds-page-change=${(event: CustomEvent<{ page: number }>) => {
+        (event.target as HTMLElement & { page: number }).page = event.detail.page;
       }}
-      @ds-page-size-change=${(e: CustomEvent<{ pageSize: number; page: number }>) => {
-        const el = e.target as HTMLElement & { pageSize: number; page: number };
-        el.pageSize = e.detail.pageSize;
-        el.page = e.detail.page;
+      @ds-page-size-change=${(event: CustomEvent<{ pageSize: number; page: number }>) => {
+        const el = event.target as HTMLElement & { pageSize: number; page: number };
+        el.pageSize = event.detail.pageSize;
+        el.page = event.detail.page;
       }}
     ></ds-table-pagination>
   `,

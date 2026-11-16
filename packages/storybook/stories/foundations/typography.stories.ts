@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import type { TableColumn } from '@jsekulowicz/ds-components/table';
 import { fontSize, fontWeight, lineHeight, letterSpacing } from '@jsekulowicz/ds-tokens';
 import '@jsekulowicz/ds-components/table/define';
-import { autoGrid, card, joinStyles, MONO_MUTED_CELL, MUTED_CELL, SECTION } from '../shared/styles';
+import { buildAutoGridStyle, buildCardStyle, joinStyles, MONO_MUTED_CELL, MUTED_CELL, SECTION } from '../shared/styles';
 
 const meta: Meta = {
   title: 'Foundations/Typography',
@@ -15,12 +15,12 @@ type Story = StoryObj;
 
 const REM_IN_PX = 16;
 
-function remToPx(rem: string): number {
+function convertRemToPx(rem: string): number {
   const match = /^(-?\d*\.?\d+)rem$/.exec(rem);
   return match ? Math.round(Number(match[1]) * REM_IN_PX) : 0;
 }
 
-function code(value: string): TemplateResult {
+function renderCode(value: string): TemplateResult {
   return html`<code>${value}</code>`;
 }
 
@@ -29,7 +29,7 @@ interface SizeRow {
   name: string;
   token: string;
   rem: string;
-  px: string;
+  pixels: string;
   preview: string;
 }
 
@@ -37,11 +37,11 @@ const sizeRows: readonly SizeRow[] = Object.entries(fontSize).map(([name, rem]) 
   name,
   token: `font-size-${name}`,
   rem,
-  px: `${remToPx(rem)}px`,
+  pixels: `${convertRemToPx(rem)}px`,
   preview: 'The quick brown fox',
 }));
 
-function previewCell(row: SizeRow): TemplateResult {
+function renderPreviewCell(row: SizeRow): TemplateResult {
   const style = joinStyles(
     `font-size:var(--ds-font-size-${row.name})`,
     'line-height:var(--ds-line-height-none)',
@@ -51,10 +51,10 @@ function previewCell(row: SizeRow): TemplateResult {
 }
 
 const sizeColumns: readonly TableColumn<SizeRow>[] = [
-  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => renderCode(row.token) },
   { name: 'rem', field: 'rem', label: 'rem', width: '6rem' },
-  { name: 'px', field: 'px', label: 'px', width: '5rem' },
-  { name: 'preview', field: 'preview', label: 'Preview', render: previewCell },
+  { name: 'px', field: 'pixels', label: 'px', width: '5rem' },
+  { name: 'preview', field: 'preview', label: 'Preview', render: renderPreviewCell },
 ];
 
 export const TypeScale: Story = {
@@ -76,7 +76,7 @@ const guidanceRows: readonly GuidanceRow[] = [
 ];
 
 const guidanceColumns: readonly TableColumn<GuidanceRow>[] = [
-  { name: 'range', field: 'range', label: 'Token range', width: '15rem', render: (row) => code(row.range) },
+  { name: 'range', field: 'range', label: 'Token range', width: '15rem', render: (row) => renderCode(row.range) },
   { name: 'role', field: 'role', label: 'Role' },
 ];
 
@@ -124,7 +124,7 @@ const FONT_FAMILY_LAYOUT = joinStyles(
   'justify-content:flex-start',
 );
 const FONT_FAMILY_CARD = joinStyles(
-  card('var(--ds-space-5)'),
+  buildCardStyle('var(--ds-space-5)'),
   'flex:0 1 18rem',
   'width:18rem',
   'max-width:18rem',
@@ -133,7 +133,7 @@ const FONT_FAMILY_CARD = joinStyles(
   'margin:0',
 );
 
-function familySample(token: string): string {
+function renderFamilySample(token: string): string {
   return joinStyles(
     'margin:0',
     `font-family:var(${token})`,
@@ -154,7 +154,7 @@ export const FontFamilies: Story = {
                 <code style=${FONT_FAMILY_TOKEN}>${family.token}</code>
                 <p style=${joinStyles('margin:0', MUTED_CELL)}>${family.note}</p>
               </figcaption>
-              <p style=${familySample(family.token)}>${family.sample}</p>
+              <p style=${renderFamilySample(family.token)}>${family.sample}</p>
             </figure>
           `,
         )}
@@ -177,7 +177,7 @@ const weightRows: readonly WeightRow[] = Object.entries(fontWeight).map(([name, 
 }));
 
 const weightColumns: readonly TableColumn<WeightRow>[] = [
-  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => code(row.token) },
+  { name: 'token', field: 'token', label: 'Token', width: '12rem', render: (row) => renderCode(row.token) },
   { name: 'value', field: 'value', label: 'Value', width: '6rem' },
   {
     name: 'sample',
@@ -199,10 +199,10 @@ const STEP_VALUE = joinStyles('display:block', MUTED_CELL, 'margin-top:2px');
 export const LineHeights: Story = {
   render: () => html`
     <section style=${SECTION}>
-      <div style=${autoGrid('200px')}>
+      <div style=${buildAutoGridStyle('200px')}>
         ${Object.entries(lineHeight).map(
           ([name, value]) => html`
-            <div style=${card('var(--ds-space-4)')}>
+            <div style=${buildCardStyle('var(--ds-space-4)')}>
               <div>
                 <code style=${STEP_TOKEN}>line-height-${name}</code>
                 <span style=${STEP_VALUE}>${value}</span>
@@ -242,7 +242,7 @@ function trackingSample(row: TrackingRow): TemplateResult {
 }
 
 const trackingColumns: readonly TableColumn<TrackingRow>[] = [
-  { name: 'token', field: 'token', label: 'Token', width: '14rem', render: (row) => code(row.token) },
+  { name: 'token', field: 'token', label: 'Token', width: '14rem', render: (row) => renderCode(row.token) },
   { name: 'value', field: 'value', label: 'Value', width: '7rem' },
   { name: 'sample', field: 'sample', label: 'Preview', render: trackingSample },
 ];

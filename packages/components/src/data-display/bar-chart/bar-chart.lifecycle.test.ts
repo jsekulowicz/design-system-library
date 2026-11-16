@@ -73,8 +73,8 @@ describe('<ds-bar-chart> lifecycle coverage', () => {
   it('updates width from requestAnimationFrame remeasure path', async () => {
     const originalRaf = globalThis.requestAnimationFrame;
     const originalRo = globalThis.ResizeObserver;
-    globalThis.requestAnimationFrame = ((cb: FrameRequestCallback) => {
-      queueMicrotask(() => cb(0));
+    globalThis.requestAnimationFrame = ((callback: FrameRequestCallback) => {
+      queueMicrotask(() => callback(0));
       return 0;
     }) as typeof requestAnimationFrame;
     globalThis.ResizeObserver = undefined as never;

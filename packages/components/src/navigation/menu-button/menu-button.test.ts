@@ -75,7 +75,7 @@ describe('<ds-menu-button>', () => {
     },
   );
 
-  it('Escape on the panel closes the menu and returns focus to the trigger', async () => {
+  it('closes the menu and returns focus to the trigger on Escape in the panel', async () => {
     const el = await mount<DsMenuButton>(TEMPLATE);
     clickDefaultTrigger(el);
     await el.updateComplete;
@@ -87,7 +87,7 @@ describe('<ds-menu-button>', () => {
     expect(el.shadowRoot!.activeElement).toBe(getDefaultTrigger(el));
   });
 
-  it('selecting a menu item closes the menu and re-emits ds-select', async () => {
+  it('closes the menu and re-emits ds-select when a menu item is selected', async () => {
     const el = await mount<DsMenuButton>(TEMPLATE);
     const events: CustomEvent<{ value: string }>[] = [];
     el.addEventListener('ds-select', (event) => events.push(event as CustomEvent<{ value: string }>));
@@ -100,7 +100,7 @@ describe('<ds-menu-button>', () => {
     expect(el.open).toBe(false);
   });
 
-  it('a click outside the host closes the menu', async () => {
+  it('closes the menu on a click outside the host', async () => {
     const el = await mount<DsMenuButton>(TEMPLATE);
     clickDefaultTrigger(el);
     await el.updateComplete;

@@ -55,7 +55,7 @@ describe('<ds-menu>', () => {
     expect(items[3]?.getAttribute('tabindex')).toBe('-1');
   });
 
-  it('ArrowDown / ArrowUp move focus, skipping disabled and wrapping', async () => {
+  it('moves focus with ArrowDown and ArrowUp, skipping disabled items and wrapping', async () => {
     const el = await mount<DsMenu>(TEMPLATE);
     await el.updateComplete;
     const items = getItems(el);
@@ -75,7 +75,7 @@ describe('<ds-menu>', () => {
     expect(document.activeElement).toBe(items[3]);
   });
 
-  it('Home / End jump to first / last enabled', async () => {
+  it('jumps to the first and last enabled items with Home and End', async () => {
     const el = await mount<DsMenu>(TEMPLATE);
     await el.updateComplete;
     const items = getItems(el);
@@ -107,8 +107,8 @@ describe('<ds-menu>', () => {
     items[0]?.focus();
     const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true });
     let bubbled = false;
-    el.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+    el.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
         bubbled = true;
       }
     });

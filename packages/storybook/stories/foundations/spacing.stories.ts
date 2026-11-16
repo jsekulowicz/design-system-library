@@ -17,7 +17,7 @@ const EXAMPLES_LAYOUT = joinStyles(
   'color:var(--ds-color-fg)',
 );
 
-function bar(cssVar: string): string {
+function buildBarStyle(cssVar: string): string {
   return joinStyles(
     'display:inline-block',
     'background:var(--ds-color-accent)',
@@ -28,12 +28,12 @@ function bar(cssVar: string): string {
   );
 }
 
-function paddingBox(n: number | string): string {
+function paddingBox(step: number | string): string {
   return joinStyles(
     'border:1px solid var(--ds-color-border)',
     'border-radius:var(--ds-radius-xs)',
     'background:var(--ds-color-bg-subtle)',
-    `padding:var(--ds-space-${n})`,
+    `padding:var(--ds-space-${step})`,
   );
 }
 
@@ -55,7 +55,7 @@ interface Step {
   name: string;
   cssVar: string;
   rem: string;
-  px: number;
+  pixels: number;
 }
 
 const REM_IN_PX = 16;
@@ -64,22 +64,22 @@ const STEPS: readonly Step[] = Object.entries(space).map(([name, rem]) => ({
   name,
   cssVar: `--ds-space-${name}`,
   rem,
-  px: rem === '0' ? 0 : Number(/^(-?\d*\.?\d+)rem$/.exec(rem)![1]) * REM_IN_PX,
+  pixels: rem === '0' ? 0 : Number(/^(-?\d*\.?\d+)rem$/.exec(rem)![1]) * REM_IN_PX,
 }));
 
-function code(value: string): TemplateResult {
+function renderCode(value: string): TemplateResult {
   return html`<code>${value}</code>`;
 }
 
 const columns: readonly TableColumn<Step>[] = [
-  { name: 'name', field: 'name', label: 'Token', width: '9rem', render: (row) => code(`space-${row.name}`) },
+  { name: 'name', field: 'name', label: 'Token', width: '9rem', render: (row) => renderCode(`space-${row.name}`) },
   { name: 'rem', field: 'rem', label: 'rem', width: '6rem' },
-  { name: 'px', field: 'px', label: 'px', width: '5rem', render: (row) => `${row.px}px` },
+  { name: 'px', field: 'pixels', label: 'px', width: '5rem', render: (row) => `${row.pixels}px` },
   {
     name: 'preview',
     field: 'cssVar',
     label: 'Preview',
-    render: (row) => html`<span aria-hidden="true" style=${bar(row.cssVar)}></span>`,
+    render: (row) => html`<span aria-hidden="true" style=${buildBarStyle(row.cssVar)}></span>`,
   },
 ];
 
@@ -91,10 +91,10 @@ export const PaddingExamples: Story = {
   render: () => html`
     <section style=${EXAMPLES_LAYOUT}>
       ${[2, 3, 4, 6, 8].map(
-        (n) => html`
+        (step) => html`
           <div style="display:grid;justify-items:start;gap:var(--ds-space-2)">
-            <span>Padding with <code>space-${n}</code></span>
-            <div style=${paddingBox(n)}>
+            <span>Padding with <code>space-${step}</code></span>
+            <div style=${paddingBox(step)}>
               <div style=${paddingChip()}>Content</div>
             </div>
           </div>

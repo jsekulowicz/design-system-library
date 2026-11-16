@@ -17,7 +17,7 @@ export function renderBlock(tokens: FlatTokens, options: BlockOptions): string {
   const { selector, layer, mediaQuery, extraProps } = options;
   const extras = extraProps
     ? Object.entries(extraProps)
-        .map(([k, v]) => `    ${k}: ${v};`)
+        .map(([name, value]) => `    ${name}: ${value};`)
         .join('\n') + '\n'
     : '';
   const inner = extras + renderVars(tokens, '    ');

@@ -81,18 +81,19 @@ describe('<ds-table>', () => {
     ];
     const WIDE_ROWS = [{ id: 1, name: 'Ada', salary: 100, role: 'Eng' }] as unknown as readonly Person[];
 
-    const headerNames = (el: DsTable<Person>): string[] =>
-      [...el.shadowRoot!.querySelectorAll('thead th')].map((th) => th.textContent!.trim());
+    function getHeaderNames(el: DsTable<Person>): string[] {
+      return [...el.shadowRoot!.querySelectorAll('thead th')].map((header) => header.textContent!.trim());
+    }
 
     it('does not add pinned classes when pinnedColumns is empty', async () => {
       const el = await mountTable({ columns: WIDE, rows: WIDE_ROWS });
       expect(el.shadowRoot!.querySelector('.pinned')).toBeNull();
-      expect(headerNames(el)).toEqual(['Name', 'Role', 'Salary']);
+      expect(getHeaderNames(el)).toEqual(['Name', 'Role', 'Salary']);
     });
 
     it('reorders pinned columns to the left without pinning the columns before them', async () => {
       const el = await mountTable({ columns: WIDE, rows: WIDE_ROWS, pinnedColumns: ['salary'] });
-      expect(headerNames(el)).toEqual(['Salary', 'Name', 'Role']);
+      expect(getHeaderNames(el)).toEqual(['Salary', 'Name', 'Role']);
       const cells = el.shadowRoot!.querySelectorAll('tbody tr:first-child td');
       expect(cells[0].classList.contains('pinned')).toBe(true);
       expect(cells[1].classList.contains('pinned')).toBe(false);
@@ -100,7 +101,7 @@ describe('<ds-table>', () => {
 
     it('preserves the original relative order of pinned columns', async () => {
       const el = await mountTable({ columns: WIDE, rows: WIDE_ROWS, pinnedColumns: ['salary', 'name'] });
-      expect(headerNames(el)).toEqual(['Name', 'Salary', 'Role']);
+      expect(getHeaderNames(el)).toEqual(['Name', 'Salary', 'Role']);
     });
 
     it('marks only the last pinned column with pin-edge and sets the left offset var', async () => {
@@ -129,7 +130,7 @@ describe('<ds-table>', () => {
       ];
       const el = await mountTable({ columns, rows: WIDE_ROWS, pinnedColumns: ['name', 'ghost'] });
       expect(el.shadowRoot!.querySelector('.pinned')).toBeNull();
-      expect(headerNames(el)).toEqual(['Name', 'Salary']);
+      expect(getHeaderNames(el)).toEqual(['Name', 'Salary']);
     });
 
     it('includes sticky pinned-column styles capped by a max ratio', () => {

@@ -24,6 +24,6 @@ if (!customElements.get('ds-story-persistent')) {
   customElements.define('ds-story-persistent', PersistentStory);
 }
 
-export function persistentStory(renderContent: () => TemplateResult): TemplateResult {
+export function createPersistentStory(renderContent: () => TemplateResult): TemplateResult {
   return html`<ds-story-persistent .renderContent=${renderContent}></ds-story-persistent>`;
 }

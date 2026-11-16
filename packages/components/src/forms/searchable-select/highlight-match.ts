@@ -5,16 +5,16 @@ export function highlightMatch(label: string, query: string): TemplateResult {
     return html`${label}`;
   }
   const lower = label.toLowerCase();
-  const q = query.toLowerCase();
+  const lowerQuery = query.toLowerCase();
   const parts: Array<TemplateResult | string> = [];
   let pos = 0;
   let idx: number;
-  while ((idx = lower.indexOf(q, pos)) !== -1) {
+  while ((idx = lower.indexOf(lowerQuery, pos)) !== -1) {
     if (idx > pos) {
       parts.push(label.slice(pos, idx));
     }
-    parts.push(html`<mark class="match">${label.slice(idx, idx + q.length)}</mark>`);
-    pos = idx + q.length;
+    parts.push(html`<mark class="match">${label.slice(idx, idx + lowerQuery.length)}</mark>`);
+    pos = idx + lowerQuery.length;
   }
   if (pos < label.length) {
     parts.push(label.slice(pos));

@@ -4,7 +4,7 @@ import { space } from './spacing.js';
 const REM_IN_PX = 16;
 const LAST_CONTIGUOUS_STEP = 10;
 
-function remToPx(value: string): number {
+function convertRemToPx(value: string): number {
   if (value === '0') {
     return 0;
   }
@@ -16,14 +16,14 @@ function remToPx(value: string): number {
 }
 
 describe('space tokens', () => {
-  it('every step is a multiple of 4px so layouts snap to a single grid', () => {
+  it('put every step on a multiple of 4px so layouts snap to a single grid', () => {
     for (const [name, value] of Object.entries(space)) {
-      const px = remToPx(value);
-      expect(px % 4, `space[${name}] = ${value} (${px}px) is not a multiple of 4`).toBe(0);
+      const pixels = convertRemToPx(value);
+      expect(pixels % 4, `space[${name}] = ${value} (${pixels}px) is not a multiple of 4`).toBe(0);
     }
   });
 
-  it('every non-zero step is expressed in rem so it scales with the user root font size', () => {
+  it('express every non-zero step in rem so it scales with the user root font size', () => {
     for (const [name, value] of Object.entries(space)) {
       if (value === '0') {
         continue;
@@ -32,19 +32,19 @@ describe('space tokens', () => {
     }
   });
 
-  it('the step number matches the scale ratio (space[N] = N × 4px)', () => {
+  it('match each step number to the scale ratio, space[N] = N × 4px', () => {
     for (const [name, value] of Object.entries(space)) {
-      const n = Number(name);
-      if (!Number.isFinite(n)) {
+      const step = Number(name);
+      if (!Number.isFinite(step)) {
         continue;
       }
-      expect(remToPx(value), `space[${name}] should equal ${n * 4}px`).toBe(n * 4);
+      expect(convertRemToPx(value), `space[${name}] should equal ${step * 4}px`).toBe(step * 4);
     }
   });
 
   it('has a step for every 4px up to space-10, where control and row heights live', () => {
-    for (let n = 0; n <= LAST_CONTIGUOUS_STEP; n++) {
-      expect(space, `space[${n}] is missing from the contiguous range`).toHaveProperty(String(n));
+    for (let step = 0; step <= LAST_CONTIGUOUS_STEP; step++) {
+      expect(space, `space[${step}] is missing from the contiguous range`).toHaveProperty(String(step));
     }
   });
 });

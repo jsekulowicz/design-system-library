@@ -46,21 +46,21 @@ describe('<ds-toast-stack>', () => {
     expect(el.querySelectorAll('ds-toast')).toHaveLength(2);
   });
 
-  it('push() appends a toast and enforces `max`', async () => {
+  it('appends a toast through push() and enforces `max`', async () => {
     const el = await mountWithProps<DsToastStack>('<ds-toast-stack></ds-toast-stack>', {
       max: 2,
     });
-    const a = makeToast();
-    const b = makeToast();
-    const c = makeToast();
-    el.push(a);
-    el.push(b);
-    expect(Array.from(el.children).filter((n) => n.tagName.toLowerCase() === 'ds-toast')).toHaveLength(2);
+    const first = makeToast();
+    const second = makeToast();
+    const third = makeToast();
+    el.push(first);
+    el.push(second);
+    expect(Array.from(el.children).filter((child) => child.tagName.toLowerCase() === 'ds-toast')).toHaveLength(2);
 
     const dismissals: string[] = [];
-    a.addEventListener('ds-dismiss', () => dismissals.push('a'));
-    el.push(c);
+    first.addEventListener('ds-dismiss', () => dismissals.push('a'));
+    el.push(third);
     expect(dismissals).toEqual(['a']);
-    expect(Array.from(el.children).filter((n) => n.tagName.toLowerCase() === 'ds-toast')).toHaveLength(2);
+    expect(Array.from(el.children).filter((child) => child.tagName.toLowerCase() === 'ds-toast')).toHaveLength(2);
   });
 });

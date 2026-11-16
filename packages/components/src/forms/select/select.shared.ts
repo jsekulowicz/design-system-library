@@ -135,7 +135,7 @@ export function renderOverflowTile(
   if (count <= 0) {
     return nothing;
   }
-  function holdTheTipOpenThenNotify(event: Event): void {
+  function focusTileThenActivate(event: Event): void {
     (event.currentTarget as HTMLElement).focus();
     onActivate?.();
   }
@@ -145,10 +145,10 @@ export function renderOverflowTile(
       type="button"
       aria-label=${formatLabel(overflowLabel, { count })}
       @pointerdown=${(event: Event) => event.preventDefault()}
-      @keydown=${(event: KeyboardEvent) => activateBeforeTriggerTakesKey(event, () => holdTheTipOpenThenNotify(event))}
+      @keydown=${(event: KeyboardEvent) => activateBeforeTriggerTakesKey(event, () => focusTileThenActivate(event))}
       @click=${(event: Event) => {
         event.stopPropagation();
-        holdTheTipOpenThenNotify(event);
+        focusTileThenActivate(event);
       }}
     >
       +${count}

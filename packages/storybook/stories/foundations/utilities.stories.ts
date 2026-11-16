@@ -18,13 +18,13 @@ const meta: Meta = {
 
 export default meta;
 
-function code(value: string): TemplateResult {
+function renderCode(value: string): TemplateResult {
   return html`<code>${value}</code>`;
 }
 
-function codeList(values: readonly string[]): TemplateResult {
+function renderCodeList(values: readonly string[]): TemplateResult {
   return html`
-    <span style="display:flex;flex-wrap:wrap;gap:var(--ds-space-1)"> ${values.map((value) => code(value))} </span>
+    <span style="display:flex;flex-wrap:wrap;gap:var(--ds-space-1)"> ${values.map((value) => renderCode(value))} </span>
   `;
 }
 
@@ -137,8 +137,8 @@ const typographyRows: readonly UtilityRow[] = [
 
 const columns: readonly TableColumn<UtilityRow>[] = [
   { name: 'group', field: 'group', label: 'Group', width: '13rem' },
-  { name: 'classes', field: 'classes', label: 'Classes', render: (row) => codeList(row.classes) },
-  { name: 'mapsTo', field: 'mapsTo', label: 'Maps to', width: '14rem', render: (row) => code(row.mapsTo) },
+  { name: 'classes', field: 'classes', label: 'Classes', render: (row) => renderCodeList(row.classes) },
+  { name: 'mapsTo', field: 'mapsTo', label: 'Maps to', width: '14rem', render: (row) => renderCode(row.mapsTo) },
 ];
 
 function renderTable(rows: readonly UtilityRow[]): TemplateResult {

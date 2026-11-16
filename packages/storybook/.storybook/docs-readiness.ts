@@ -87,15 +87,15 @@ function waitForQuietDocsLayout(): Promise<void> {
   }
   return new Promise((resolve) => {
     let timer = 0;
-    const finish = () => {
+    function finish(): void {
       mutationObserver.disconnect();
       resizeObserver.disconnect();
       resolve();
-    };
-    const restart = () => {
+    }
+    function restart(): void {
       window.clearTimeout(timer);
       timer = window.setTimeout(finish, DOCS_LAYOUT_QUIET_MS);
-    };
+    }
     const mutationObserver = new MutationObserver(restart);
     const resizeObserver = new ResizeObserver(restart);
     mutationObserver.observe(content, { attributes: true, childList: true, subtree: true });

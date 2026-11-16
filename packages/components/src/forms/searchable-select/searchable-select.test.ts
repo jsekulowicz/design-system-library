@@ -32,7 +32,7 @@ function getInput(el: DsSearchableSelect): HTMLInputElement {
 
 function getOption(el: DsSearchableSelect, label: string): HTMLElement {
   const options = el.shadowRoot!.querySelectorAll<HTMLElement>('ds-select-option');
-  const found = Array.from(options).find((o) => (o.textContent ?? '').trim() === label);
+  const found = Array.from(options).find((option) => (option.textContent ?? '').trim() === label);
   if (!found) {
     throw new Error(`Option "${label}" not found in listbox`);
   }
@@ -148,7 +148,7 @@ describe('<ds-searchable-select>', () => {
     it('selects option on click, closes dropdown, emits ds-change', async () => {
       const el = await mountSearchableSelect();
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-change', (event) => events.push(event as CustomEvent));
       await openDropdown(el);
       getOption(el, 'Vue').click();
       await el.updateComplete;
@@ -198,7 +198,7 @@ describe('<ds-searchable-select>', () => {
     it('emits ds-search on every keystroke', async () => {
       const el = await mountSearchableSelect();
       const events: CustomEvent[] = [];
-      el.addEventListener('ds-search', (e) => events.push(e as CustomEvent));
+      el.addEventListener('ds-search', (event) => events.push(event as CustomEvent));
       await openDropdown(el);
       const input = getInput(el);
       input.value = 'vu';
@@ -210,7 +210,7 @@ describe('<ds-searchable-select>', () => {
     it('emits ds-search with empty query when dropdown closes', async () => {
       const el = await mountSearchableSelect();
       const queries: string[] = [];
-      el.addEventListener('ds-search', (e) => queries.push((e as CustomEvent).detail.query));
+      el.addEventListener('ds-search', (event) => queries.push((event as CustomEvent).detail.query));
       await openDropdown(el);
       getInput(el).dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       await el.updateComplete;
@@ -220,7 +220,7 @@ describe('<ds-searchable-select>', () => {
     it('emits ds-search with empty query after single selection', async () => {
       const el = await mountSearchableSelect();
       const queries: string[] = [];
-      el.addEventListener('ds-search', (e) => queries.push((e as CustomEvent).detail.query));
+      el.addEventListener('ds-search', (event) => queries.push((event as CustomEvent).detail.query));
       await openDropdown(el);
       getOption(el, 'React').click();
       await el.updateComplete;

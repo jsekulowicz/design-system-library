@@ -1,33 +1,35 @@
 import { html, nothing, type TemplateResult } from 'lit';
-import { activeGroupHeight, type ChartLayout } from './chart-layout.js';
+import { computeActiveGroupHeight, type ChartLayout } from './chart-layout.js';
 import type { BarChartGroup, BarChartRow, ChartRenderContext } from './types.js';
 import { formatLabel } from '../../shared/format-label.js';
 import { renderPointTooltip } from '../../shared/point-tooltip.js';
 
-export function rootAriaLabel(ctx: ChartRenderContext, groupCount: number): string {
+export function getRootAriaLabel(ctx: ChartRenderContext, groupCount: number): string {
   const template = ctx.stacked ? ctx.stackedSummaryLabel : ctx.summaryLabel;
   return formatLabel(template, {
     title: ctx.title || ctx.chartLabel,
     groups: groupCount,
-    series: ctx.series.map((s) => ctx.seriesLabel(s)).join(', '),
+    series: ctx.series.map((series) => ctx.seriesLabel(series)).join(', '),
   });
 }
 
-export function groupAriaLabel<T extends BarChartRow>(ctx: ChartRenderContext, group: BarChartGroup<T>): string {
-  const parts = ctx.series.map((s) => `${ctx.seriesLabel(s)} ${ctx.formatValue(group.values[s.key] ?? 0)}`);
+export function getGroupAriaLabel<T extends BarChartRow>(ctx: ChartRenderContext, group: BarChartGroup<T>): string {
+  const parts = ctx.series.map(
+    (series) => `${ctx.seriesLabel(series)} ${ctx.formatValue(group.values[series.key] ?? 0)}`,
+  );
   const total = ctx.stacked ? formatLabel(ctx.groupTotalLabel, { total: ctx.formatValue(group.total) }) : '';
   return `${ctx.formatTooltipTitle(group.domain)}: ${parts.join(', ')}${total}`;
 }
 
-export function liveText<T extends BarChartRow>(ctx: ChartRenderContext, groups: BarChartGroup<T>[]): string {
+export function getLiveText<T extends BarChartRow>(ctx: ChartRenderContext, groups: BarChartGroup<T>[]): string {
   if (ctx.activeIndex === null) {
     return '';
   }
-  const g = groups[ctx.activeIndex];
-  if (!g) {
+  const group = groups[ctx.activeIndex];
+  if (!group) {
     return '';
   }
-  return `${groupAriaLabel(ctx, g)}.`;
+  return `${getGroupAriaLabel(ctx, group)}.`;
 }
 
 export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, layout: ChartLayout<T>): TemplateResult {
@@ -35,7 +37,7 @@ export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, la
   const group = ctx.activeIndex !== null ? groups[ctx.activeIndex] : undefined;
   const band = ctx.activeIndex !== null ? bands[ctx.activeIndex] : undefined;
   const x = band ? margin.left + band.innerX + band.innerWidth / 2 : 0;
-  const maxHeight = activeGroupHeight(layout, ctx.activeIndex, ctx.stacked);
+  const maxHeight = computeActiveGroupHeight(layout, ctx.activeIndex, ctx.stacked);
   const barTopY = margin.top + (innerHeight - maxHeight);
   return renderPointTooltip({
     open: ctx.activeIndex !== null,
@@ -49,12 +51,12 @@ export function renderTooltip<T extends BarChartRow>(ctx: ChartRenderContext, la
               <div class="tooltip-title">${ctx.formatTooltipTitle(group.domain)}</div>
               <ul class="tooltip-rows">
                 ${ctx.series.map(
-                  (s, si) => html`
+                  (series, seriesIndex) => html`
                     <li class="tooltip-row-label">
-                      <span class="tooltip-swatch" style="background:${ctx.seriesColor(s, si)}"></span>
-                      ${ctx.seriesLabel(s)}
+                      <span class="tooltip-swatch" style="background:${ctx.seriesColor(series, seriesIndex)}"></span>
+                      ${ctx.seriesLabel(series)}
                     </li>
-                    <li class="tooltip-row-value">${ctx.formatValue(group.values[s.key] ?? 0)}</li>
+                    <li class="tooltip-row-value">${ctx.formatValue(group.values[series.key] ?? 0)}</li>
                   `,
                 )}
                 ${
@@ -77,10 +79,10 @@ export function renderLegend(ctx: ChartRenderContext): TemplateResult {
   return html`
     <div class="legend" part="legend">
       ${ctx.series.map(
-        (s, i) => html`
+        (series, i) => html`
           <span class="legend-item">
-            <span class="legend-swatch" style="background:${ctx.seriesColor(s, i)}"></span>
-            ${ctx.seriesLabel(s)}
+            <span class="legend-swatch" style="background:${ctx.seriesColor(series, i)}"></span>
+            ${ctx.seriesLabel(series)}
           </span>
         `,
       )}
@@ -101,19 +103,19 @@ export function renderSrTable<T extends BarChartRow>(
         <thead>
           <tr>
             <th scope="col">${ctx.xAxisLabel ?? ctx.domainKey}</th>
-            ${ctx.series.map((s) => html`<th scope="col">${ctx.seriesLabel(s)}</th>`)}
+            ${ctx.series.map((series) => html`<th scope="col">${ctx.seriesLabel(series)}</th>`)}
             ${ctx.stacked ? html`<th scope="col">${ctx.totalHeader}</th>` : nothing}
           </tr>
         </thead>
         <tbody>
           ${groups.map(
-            (g) => html`
+            (group) => html`
               <tr>
-                <th scope="row">${ctx.formatDomain(g.domain)}</th>
-                ${ctx.series.map((s) => {
-                  return html`<td>${ctx.formatValue(g.values[s.key] ?? 0)}</td>`;
+                <th scope="row">${ctx.formatDomain(group.domain)}</th>
+                ${ctx.series.map((series) => {
+                  return html`<td>${ctx.formatValue(group.values[series.key] ?? 0)}</td>`;
                 })}
-                ${ctx.stacked ? html`<td>${ctx.formatValue(g.total)}</td>` : nothing}
+                ${ctx.stacked ? html`<td>${ctx.formatValue(group.total)}</td>` : nothing}
               </tr>
             `,
           )}

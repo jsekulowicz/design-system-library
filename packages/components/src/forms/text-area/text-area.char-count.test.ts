@@ -13,7 +13,7 @@ beforeEach(() => {
   resetTestDom();
 });
 
-function textarea(el: DsTextArea): HTMLTextAreaElement {
+function getTextarea(el: DsTextArea): HTMLTextAreaElement {
   return el.shadowRoot!.querySelector('textarea') as HTMLTextAreaElement;
 }
 
@@ -27,8 +27,8 @@ describe('<ds-text-area> character counter', () => {
 
     expect(counter(el)?.textContent).toBe('0/30');
 
-    textarea(el).value = 'hello';
-    textarea(el).dispatchEvent(new Event('input', { bubbles: true }));
+    getTextarea(el).value = 'hello';
+    getTextarea(el).dispatchEvent(new Event('input', { bubbles: true }));
     await el.updateComplete;
 
     expect(counter(el)?.textContent).toBe('5/30');

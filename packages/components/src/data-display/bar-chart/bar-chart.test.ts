@@ -51,7 +51,7 @@ function groups(el: DsBarChart<MetricRow>): SVGGElement[] {
   return Array.from(el.shadowRoot!.querySelectorAll<SVGGElement>('.bar-group'));
 }
 
-function bars(el: DsBarChart<MetricRow>): SVGRectElement[] {
+function getBars(el: DsBarChart<MetricRow>): SVGRectElement[] {
   return Array.from(el.shadowRoot!.querySelectorAll<SVGRectElement>('rect.bar'));
 }
 
@@ -59,8 +59,8 @@ describe('<ds-bar-chart>', () => {
   it('exposes bar groups as focusable graphics symbols', async () => {
     const el = await mountBarChart();
     const all = groups(el);
-    expect(all.every((g) => g.getAttribute('role') === 'graphics-symbol')).toBe(true);
-    expect(all.filter((g) => g.getAttribute('tabindex') === '0')).toHaveLength(1);
+    expect(all.every((bar) => bar.getAttribute('role') === 'graphics-symbol')).toBe(true);
+    expect(all.filter((bar) => bar.getAttribute('tabindex') === '0')).toHaveLength(1);
     expect(all[0]!.getAttribute('aria-label')).toBe('1: Website 3, Mobile 2, Partners 4');
 
     const svg = el.shadowRoot!.querySelector('svg')!;
@@ -117,12 +117,12 @@ describe('<ds-bar-chart>', () => {
 
   it('renders seriesCount bars per group in grouped mode', async () => {
     const el = await mountBarChart({ stacked: false });
-    expect(bars(el)).toHaveLength(3 * 3);
+    expect(getBars(el)).toHaveLength(3 * 3);
   });
 
   it('renders seriesCount segments per group in stacked mode', async () => {
     const el = await mountBarChart({ stacked: true });
-    expect(bars(el)).toHaveLength(3 * 3);
+    expect(getBars(el)).toHaveLength(3 * 3);
   });
 
   it('exposes a hidden data table mirroring the rows and series', async () => {
@@ -174,7 +174,7 @@ describe('<ds-bar-chart>', () => {
   it('emits ds-bar-focus on active change with series values', async () => {
     const el = await mountBarChart();
     const events: CustomEvent[] = [];
-    el.addEventListener('ds-bar-focus', (e) => events.push(e as CustomEvent));
+    el.addEventListener('ds-bar-focus', (event) => events.push(event as CustomEvent));
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
     await el.updateComplete;
@@ -245,8 +245,8 @@ describe('<ds-bar-chart>', () => {
 
   it('formats domain and values via formatters in the sr-table', async () => {
     const el = await mountBarChart({
-      formatDomain: (v: unknown) => `Period ${v}`,
-      formatValue: (v: number) => `${v} events`,
+      formatDomain: (value: unknown) => `Period ${value}`,
+      formatValue: (value: number) => `${value} events`,
     });
     const table = el.shadowRoot!.querySelector('.visually-hidden table');
     expect(table?.textContent).toContain('Period 1');
@@ -255,7 +255,7 @@ describe('<ds-bar-chart>', () => {
 
   it('confines horizontal tick labels to their band inside a clamped div', async () => {
     const el = await mountBarChart({
-      formatDomain: (v: unknown) => `Extremely long category label number ${v}`,
+      formatDomain: (value: unknown) => `Extremely long category label number ${value}`,
     });
     const label = el.shadowRoot!.querySelector('.axis-x .tick-label')!;
     expect(label.textContent).toBe('Extremely long category label number 1');
@@ -275,8 +275,8 @@ describe('<ds-bar-chart>', () => {
 
   it('titles the tooltip via formatTooltipTitle while the axis keeps formatDomain', async () => {
     const el = await mountBarChart({
-      formatDomain: (v: unknown) => `T${v}`,
-      formatTooltipTitle: (v: unknown) => `Period ${v} of 3`,
+      formatDomain: (value: unknown) => `T${value}`,
+      formatTooltipTitle: (value: unknown) => `Period ${value} of 3`,
     });
     const frame = el.shadowRoot!.querySelector('.frame') as HTMLElement;
     frame.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home' }));
