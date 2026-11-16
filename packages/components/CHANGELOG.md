@@ -1,5 +1,25 @@
 # @jsekulowicz/ds-components
 
+## 0.91.0
+
+### Minor Changes
+
+- 39e59cc: `ds-heatmap-calendar` keeps the tooltip of a clicked or focused day after the pointer leaves the calendar, until focus moves away, another day takes it or Escape hides it. Escape hides a tooltip shown by hover or focus and leaves focus on the day, and clicking that day shows it again; once no tooltip shows, Escape is left to the page. The arrow keys and Tab follow the focused day, not the hovered one, and the focused day keeps its stroke while the pointer shows another. A clicked day gets that stroke instead of the browser's focus outline, and the stroke of the last week and the last weekday is no longer cut off. The tooltip is left-aligned, with the value at the large body size and the date and details at the medium one, and up to 18rem wide so a detail fits on one line. `--ds-heatmap-cell-radius` sets the corner radius of the day and legend cells.
+- 092753a: Rename the exported helpers so each name starts with what it does. The old names are gone:
+
+  - `@jsekulowicz/ds-core`: `nextId` is now `createId`, `changedWhatValidityReads` is now `hasValidityInputChanged`.
+  - `@jsekulowicz/ds-components/bar-chart`: `niceMax` is now `computeNiceMax`.
+  - `@jsekulowicz/ds-components/pie-chart`: `arcPath` is now `buildArcPath`, `labelPlacement` is now `computeLabelPlacement`, `polarPoint` is now `toCartesianPoint`, `innerRadiusFor` is now `computeInnerRadius` and `sliceTotal` is now `sumSliceValues`.
+  - `@jsekulowicz/ds-components/heatmap-calendar`: `civilFromDays` is now `toCivilFromDays`, `daysFromCivil` is now `toDaysFromCivil` and `levelForValue` is now `getLevelForValue`.
+
+### Patch Changes
+
+- 6c6a1a6: Size the heatmap canvas with CSS instead of measuring the scroller in JavaScript. Keep scroller padding inside its available width and remove redundant loading styles and unused sizing state.
+- 05394d5: Keep the heatmap Tab stop in sync when a hovered day receives focus or the date range shrinks. Clear tooltip state when loading or disconnecting so hidden tooltips do not consume Escape or reopen after reconnecting. Scope Escape handling to the calendar's owning document.
+- fe18bb5: `ds-nav-item` and `ds-nav-group` switch their text color at once instead of fading it, so a nav item that swaps its icon for the current page changes icon and color in the same frame. The background still fades.
+- Updated dependencies [092753a]
+  - @jsekulowicz/ds-core@0.91.0
+
 ## 0.90.0
 
 ### Minor Changes
