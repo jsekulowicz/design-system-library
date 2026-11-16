@@ -8,6 +8,7 @@ export class HeatmapActiveDay implements ReactiveController {
   #tabbableIndex: number | null = null;
   #focusedIndex: number | null = null;
   #tooltipDismissed = false;
+  #escapeTarget: Document | null = null;
   readonly #host: Host;
   readonly #onActivate: (index: number) => void;
 
@@ -30,12 +31,26 @@ export class HeatmapActiveDay implements ReactiveController {
   }
 
   hostUpdated(): void {
-    syncPointTooltip(this.#host.shadowRoot, this.tooltipShown);
-    this.#listenForEscapeWhile(this.tooltipShown);
+    const shown = this.#host.isConnected && this.tooltipShown;
+    syncPointTooltip(this.#host.shadowRoot, shown);
+    this.#listenForEscapeWhile(shown);
   }
 
   hostDisconnected(): void {
+    this.blur();
     this.#listenForEscapeWhile(false);
+  }
+
+  reconcile(count: number): void {
+    if (this.#tabbableIndex !== null && this.#tabbableIndex >= count) {
+      this.#tabbableIndex = null;
+    }
+    if (this.#focusedIndex !== null && this.#focusedIndex >= count) {
+      this.#focusedIndex = null;
+    }
+    if (this.#activeIndex !== null && this.#activeIndex >= count) {
+      this.activate(this.#focusedIndex);
+    }
   }
 
   activate(index: number | null): void {
@@ -53,6 +68,7 @@ export class HeatmapActiveDay implements ReactiveController {
   focus(index: number): void {
     this.#focusedIndex = index;
     this.#tabbableIndex = index;
+    this.#host.requestUpdate();
     this.#undoEscape();
     this.activate(index);
   }
@@ -83,10 +99,12 @@ export class HeatmapActiveDay implements ReactiveController {
   };
 
   #listenForEscapeWhile(listening: boolean): void {
-    if (listening) {
-      document.addEventListener('keydown', this.#dismissOnEscape);
-    } else {
-      document.removeEventListener('keydown', this.#dismissOnEscape);
+    const target = listening ? this.#host.ownerDocument : null;
+    if (this.#escapeTarget === target) {
+      return;
     }
+    this.#escapeTarget?.removeEventListener('keydown', this.#dismissOnEscape);
+    target?.addEventListener('keydown', this.#dismissOnEscape);
+    this.#escapeTarget = target;
   }
 }

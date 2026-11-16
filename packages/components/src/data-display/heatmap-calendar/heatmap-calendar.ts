@@ -1,4 +1,4 @@
-import { html, nothing, type TemplateResult } from 'lit';
+import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
@@ -30,7 +30,7 @@ import type {
  * @tag ds-heatmap-calendar
  * @summary Calendar heatmap with accessible data table, tooltips, and keyboard navigation.
  * @event {CustomEvent<HeatmapFocusDetail>} ds-heatmap-focus - Emitted when the active day changes. Detail: `{ date, value, level, details? }`.
- * @csspart chart - The focusable calendar frame, including the legend.
+ * @csspart chart - The calendar frame, including the focusable day cells and the legend.
  * @csspart scroller - The horizontally scrollable calendar viewport.
  * @csspart tooltip - The floating tooltip container. Rendered in the Popover API top layer and positioned against the active data point with CSS anchor positioning, so ancestor overflow cannot clip it.
  * @cssprop [--ds-point-tooltip-min-width=8rem] - Minimum tooltip width.
@@ -68,6 +68,12 @@ export class DsHeatmapCalendar extends DsElement {
   @query('.scroller') private _scroller!: HTMLElement;
   #resizeObserver?: ResizeObserver;
   readonly #activeDay = new HeatmapActiveDay(this, (index) => this.#emitFocus(index));
+
+  override willUpdate(changed: PropertyValues): void {
+    if (this.loading || ['endDate', 'months', 'weekStart'].some((property) => changed.has(property))) {
+      this.#activeDay.reconcile(this.loading ? 0 : this.#layout().cells.length);
+    }
+  }
 
   override firstUpdated(): void {
     this.#observeResize();

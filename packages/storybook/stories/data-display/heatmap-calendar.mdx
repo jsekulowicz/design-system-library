@@ -48,6 +48,7 @@ The tooltip shows the date, then the formatted value. A day can also carry `deta
       <li><kbd>↑</kbd> / <kbd>↓</kbd> move one day and <kbd>←</kbd> / <kbd>→</kbd> move one week.</li>
       <li><kbd>Home</kbd> / <kbd>End</kbd> jump to the first / last visible date; <kbd>Esc</kbd> hides the tooltip and leaves focus on the date.</li>
       <li>Hovering a day shows its tooltip. A clicked or focused day keeps its tooltip after the pointer leaves the calendar, until focus moves away, another day takes it or <kbd>Esc</kbd> hides it; clicking the day again shows it again. The arrow keys and <kbd>Tab</kbd> follow the focused day, never the hovered one.</li>
+      <li>Loading clears the active day. If a shorter date range removes the focused day, the first day becomes the Tab stop.</li>
       <li>A hidden table sits outside the graphic and exposes every visible date and value independently of color, with real table semantics.</li>
       <li>Use <code>formatValue</code> to include the unit in tooltips and screen-reader output.</li>
       <li>Day <code>details</code> are read after the value and fill one table column per label, so give every day the same labels.</li>
