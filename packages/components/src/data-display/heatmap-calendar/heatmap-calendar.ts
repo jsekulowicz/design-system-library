@@ -1,5 +1,5 @@
 import { html, nothing, type PropertyValues, type TemplateResult } from 'lit';
-import { property, query, state } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
 import { focusDatum, renderChartLiveRegion, renderChartTitle } from '../../shared/chart-a11y.js';
 import { heatmapCalendarStyles } from './heatmap-calendar.styles.js';
@@ -64,9 +64,6 @@ export class DsHeatmapCalendar extends DsElement {
   @property({ attribute: 'value-header' }) valueHeader = 'Value';
   @property({ attribute: 'role-description' }) roleDescription = 'activity calendar';
 
-  @state() private _width = 0;
-  @query('.scroller') private _scroller!: HTMLElement;
-  #resizeObserver?: ResizeObserver;
   readonly #activeDay = new HeatmapActiveDay(this, (index) => this.#emitFocus(index));
 
   override willUpdate(changed: PropertyValues): void {
@@ -75,26 +72,13 @@ export class DsHeatmapCalendar extends DsElement {
     }
   }
 
-  override firstUpdated(): void {
-    this.#observeResize();
-    if (typeof requestAnimationFrame !== 'undefined') {
-      requestAnimationFrame(() => this.#measure());
-    }
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.#resizeObserver?.disconnect();
-    this.#resizeObserver = undefined;
-  }
-
   override render(): TemplateResult {
     const layout = this.#layout();
     const ctx = this.#context();
     if (this.loading) {
       const dimensions = computeHeatmapDimensions(ctx, layout);
       return html`
-        <div class="frame loading-frame" part="chart" aria-busy="true" aria-label=${this.title || this.calendarLabel}>
+        <div class="frame" part="chart" aria-busy="true" aria-label=${this.title || this.calendarLabel}>
           <div class="scroller" part="scroller">
             <ds-skeleton
               variant="rectangle"
@@ -121,9 +105,7 @@ export class DsHeatmapCalendar extends DsElement {
           @pointerleave=${this.#returnToFocusedDay}
           @click=${this.#onClick}
         >
-          <div class="canvas" style="--heatmap-viewport-width:${this._width}px">
-            ${renderHeatmapSvg(ctx, layout)}${renderHeatmapAnchor(ctx, layout)}
-          </div>
+          <div class="canvas">${renderHeatmapSvg(ctx, layout)}${renderHeatmapAnchor(ctx, layout)}</div>
         </div>
         ${renderHeatmapTooltip(ctx, layout)} ${this.showLegend ? renderHeatmapLegend(ctx) : nothing}
       </div>
@@ -146,7 +128,6 @@ export class DsHeatmapCalendar extends DsElement {
       color: this.color,
       cellSize: Math.max(4, this.cellSize),
       cellGap: Math.max(0, this.cellGap),
-      measuredWidth: this._width,
       activeIndex: this.#activeDay.activeIndex,
       tabbableIndex: this.#activeDay.tabbableIndex,
       tooltipShown: this.#activeDay.tooltipShown,
@@ -213,23 +194,6 @@ export class DsHeatmapCalendar extends DsElement {
   #returnToFocusedDay = (): void => {
     this.#activeDay.returnToFocusedDay();
   };
-
-  #measure(): void {
-    const width = this._scroller?.clientWidth ?? 0;
-    if (width > 0) {
-      this._width = width;
-    }
-  }
-
-  #observeResize(): void {
-    if (!this._scroller || typeof ResizeObserver === 'undefined') {
-      return;
-    }
-    this.#resizeObserver = new ResizeObserver((entries) => {
-      this._width = Math.max(0, entries[0]?.contentRect.width ?? 0);
-    });
-    this.#resizeObserver.observe(this._scroller);
-  }
 }
 
 function toFocusDetail({ date, value, level, details }: HeatmapCell): HeatmapFocusDetail {

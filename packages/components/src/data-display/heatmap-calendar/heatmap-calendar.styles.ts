@@ -24,11 +24,8 @@ export const heatmapCalendarStyles = css`
     border-radius: var(--ds-radius-xs);
   }
 
-  .loading-frame {
-    width: fit-content;
-  }
-
   .scroller {
+    box-sizing: border-box;
     width: 100%;
     overflow-x: auto;
     padding-inline-end: calc(var(--heatmap-active-stroke-width) / 2);
@@ -38,7 +35,7 @@ export const heatmapCalendarStyles = css`
   .canvas {
     position: relative;
     width: max-content;
-    min-width: min(100%, var(--heatmap-viewport-width));
+    min-width: 100%;
   }
 
   svg {

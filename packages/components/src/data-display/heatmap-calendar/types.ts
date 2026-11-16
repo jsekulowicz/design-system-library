@@ -38,7 +38,6 @@ export interface HeatmapRenderContext {
   color: string;
   cellSize: number;
   cellGap: number;
-  measuredWidth: number;
   activeIndex: number | null;
   tabbableIndex: number | null;
   tooltipShown: boolean;

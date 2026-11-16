@@ -1,15 +1,7 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 import { DsHeatmapCalendar } from './heatmap-calendar.js';
 import './define.js';
-
-beforeAll(() => {
-  globalThis.ResizeObserver = class {
-    observe(): void {}
-    unobserve(): void {}
-    disconnect(): void {}
-  } as unknown as typeof ResizeObserver;
-});
 
 beforeEach(() => resetTestDom());
 
@@ -48,7 +40,7 @@ describe('<ds-heatmap-calendar>', () => {
 
   it('uses the rendered calendar height for its loading skeleton', async () => {
     const element = await mountCalendar({ loading: true, cellSize: 12, cellGap: 3 });
-    const frame = element.shadowRoot!.querySelector<HTMLElement>('.loading-frame')!;
+    const frame = element.shadowRoot!.querySelector<HTMLElement>('.frame[aria-busy]')!;
     const skeleton = frame.querySelector('ds-skeleton')!;
 
     expect(frame.getAttribute('aria-busy')).toBe('true');

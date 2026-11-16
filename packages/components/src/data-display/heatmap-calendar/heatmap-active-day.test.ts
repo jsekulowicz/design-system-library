@@ -1,15 +1,7 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 import { DsHeatmapCalendar } from './heatmap-calendar.js';
 import './define.js';
-
-beforeAll(() => {
-  globalThis.ResizeObserver = class {
-    observe(): void {}
-    unobserve(): void {}
-    disconnect(): void {}
-  } as unknown as typeof ResizeObserver;
-});
 
 beforeEach(() => resetTestDom());
 
