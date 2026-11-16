@@ -12,9 +12,10 @@ test('ds-button variants story renders all variants', async ({ page }) => {
 
 test('loading never shrinks the button, and loading-label pins its width', async ({ page }) => {
   await page.goto('/iframe.html?id=actions-button--loading-label&viewMode=story');
-  await page.evaluate(() => document.fonts.ready);
   const demos = page.locator('ds-button[data-demo]');
   await expect(demos).toHaveCount(3);
+  await expect(demos.first().locator('button')).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
 
   function measureWidths(): Promise<number[]> {
     return demos.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
