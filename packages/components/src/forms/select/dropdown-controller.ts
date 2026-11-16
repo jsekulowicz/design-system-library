@@ -14,8 +14,7 @@ export interface DropdownConfig {
   canOpen?: () => boolean;
   onOpen?: () => void;
   onClose?: () => void;
-  // Focus on this element keeps the dropdown open; focus elsewhere closes it.
-  getComboboxEl?: () => Element | null | undefined;
+  getElementKeepingDropdownOpen?: () => Element | null | undefined;
 }
 
 type DropdownHost = ReactiveControllerHost & HTMLElement;
@@ -115,7 +114,7 @@ export class DropdownController implements ReactiveController {
           return;
         }
         const active = this.#host.shadowRoot?.activeElement ?? null;
-        if (active && active === this.#config.getComboboxEl?.()) {
+        if (active && active === this.#config.getElementKeepingDropdownOpen?.()) {
           return;
         }
         this.close();
@@ -164,12 +163,11 @@ export class DropdownController implements ReactiveController {
     this.#focusRevealPending = false;
     const el = this.#config.getListboxEl();
     if (el) {
-      this.#notifyScrollEnd(el);
+      this.#notifyScrollEndOncePerApproach(el);
     }
   };
 
-  // Fires once per approach; scrolling away or reopening re-arms it.
-  #notifyScrollEnd = (el: HTMLElement): void => {
+  #notifyScrollEndOncePerApproach = (el: HTMLElement): void => {
     const nearEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - SLACK_BEFORE_SCROLL_END_PX;
     if (!nearEnd) {
       this.#scrollEndArmed = true;

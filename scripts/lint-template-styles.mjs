@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// Only `style`: SVG `d` and friends are long by nature and have nowhere better to live.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';

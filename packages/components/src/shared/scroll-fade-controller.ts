@@ -1,11 +1,10 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
-// Measured, not `animation-timeline: scroll(self)`: some engines fade content that fits.
 const OPAQUE = 'rgb(0 0 0)';
 const CLEAR = 'rgb(0 0 0 / 0)';
 
-// Sub-pixel rounding leaves a few px of overflow on content that visually fits.
-const OVERFLOW_EPSILON = 2;
+const SUBPIXEL_ROUNDING_OVERFLOW_PX = 2;
+const MAX_ATTACH_ATTEMPTS = 10;
 
 export class ScrollFadeController implements ReactiveController {
   #getScroller: () => HTMLElement | null | undefined;
@@ -13,7 +12,7 @@ export class ScrollFadeController implements ReactiveController {
   #resize?: ResizeObserver;
   #mutation?: MutationObserver;
   #frame = 0;
-  #retry = 0;
+  #retryFrame = 0;
 
   constructor(host: ReactiveControllerHost, getScroller: () => HTMLElement | null | undefined) {
     this.#getScroller = getScroller;
@@ -32,13 +31,11 @@ export class ScrollFadeController implements ReactiveController {
     this.#detach();
   }
 
-  // Guarded like ResizeObserver and MutationObserver below: a host can update
-  // in an environment that has no frame loop, and an unguarded call throws.
-  #raf(callback: FrameRequestCallback): number {
+  #requestFrameIfAvailable(callback: FrameRequestCallback): number {
     return typeof requestAnimationFrame === 'function' ? requestAnimationFrame(callback) : 0;
   }
 
-  #cancelRaf(handle: number): void {
+  #cancelFrameIfAvailable(handle: number): void {
     if (handle && typeof cancelAnimationFrame === 'function') {
       cancelAnimationFrame(handle);
     }
@@ -51,15 +48,7 @@ export class ScrollFadeController implements ReactiveController {
       return;
     }
     if (!el) {
-      // The scroller may live in a nested shadow root that hasn't rendered yet.
-      // Tracked so #detach can cancel it: a host that disconnects mid-retry
-      // would otherwise leave the rest of the chain running against nothing.
-      if (attempt < 10 && !this.#retry) {
-        this.#retry = this.#raf(() => {
-          this.#retry = 0;
-          this.#tryAttach(attempt + 1);
-        });
-      }
+      this.#retryUntilScrollerRenders(attempt);
       return;
     }
     this.#detach();
@@ -79,6 +68,15 @@ export class ScrollFadeController implements ReactiveController {
     this.#schedule();
   }
 
+  #retryUntilScrollerRenders(attempt: number): void {
+    if (attempt < MAX_ATTACH_ATTEMPTS && !this.#retryFrame) {
+      this.#retryFrame = this.#requestFrameIfAvailable(() => {
+        this.#retryFrame = 0;
+        this.#tryAttach(attempt + 1);
+      });
+    }
+  }
+
   #detach(): void {
     this.#scroller?.removeEventListener('scroll', this.#onScroll);
     this.#resize?.disconnect();
@@ -86,10 +84,10 @@ export class ScrollFadeController implements ReactiveController {
     this.#resize = undefined;
     this.#mutation = undefined;
     this.#scroller = null;
-    this.#cancelRaf(this.#frame);
+    this.#cancelFrameIfAvailable(this.#frame);
     this.#frame = 0;
-    this.#cancelRaf(this.#retry);
-    this.#retry = 0;
+    this.#cancelFrameIfAvailable(this.#retryFrame);
+    this.#retryFrame = 0;
   }
 
   #onScroll = (): void => this.#schedule();
@@ -98,7 +96,7 @@ export class ScrollFadeController implements ReactiveController {
     if (this.#frame) {
       return;
     }
-    this.#frame = this.#raf(() => {
+    this.#frame = this.#requestFrameIfAvailable(() => {
       this.#frame = 0;
       this.#update();
     });
@@ -110,9 +108,9 @@ export class ScrollFadeController implements ReactiveController {
       return;
     }
     const max = el.scrollHeight - el.clientHeight;
-    const scrollable = max > OVERFLOW_EPSILON;
-    const atTop = el.scrollTop <= OVERFLOW_EPSILON;
-    const atBottom = el.scrollTop >= max - OVERFLOW_EPSILON;
+    const scrollable = max > SUBPIXEL_ROUNDING_OVERFLOW_PX;
+    const atTop = el.scrollTop <= SUBPIXEL_ROUNDING_OVERFLOW_PX;
+    const atBottom = el.scrollTop >= max - SUBPIXEL_ROUNDING_OVERFLOW_PX;
     el.style.setProperty('--ds-scroll-fade-top', scrollable && !atTop ? CLEAR : OPAQUE);
     el.style.setProperty('--ds-scroll-fade-bottom', scrollable && !atBottom ? CLEAR : OPAQUE);
   }

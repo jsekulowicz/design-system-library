@@ -119,7 +119,7 @@ function renderTile(options: TileTemplateOptions): TemplateResult {
   </span>`;
 }
 
-export function activateBeforeTheTriggerSwallowsTheKey(event: KeyboardEvent, activate: () => void): void {
+export function activateBeforeTriggerTakesKey(event: KeyboardEvent, activate: () => void): void {
   if (event.key === 'Enter' || event.key === ' ') {
     event.stopPropagation();
     event.preventDefault();
@@ -145,8 +145,7 @@ export function renderOverflowTile(
       type="button"
       aria-label=${formatLabel(overflowLabel, { count })}
       @pointerdown=${(event: Event) => event.preventDefault()}
-      @keydown=${(event: KeyboardEvent) =>
-        activateBeforeTheTriggerSwallowsTheKey(event, () => holdTheTipOpenThenNotify(event))}
+      @keydown=${(event: KeyboardEvent) => activateBeforeTriggerTakesKey(event, () => holdTheTipOpenThenNotify(event))}
       @click=${(event: Event) => {
         event.stopPropagation();
         holdTheTipOpenThenNotify(event);

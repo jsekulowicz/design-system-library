@@ -1,6 +1,5 @@
 import { css, html, type TemplateResult } from 'lit';
 
-/* Indeterminate progress arc shared by ds-button, ds-nav-item and ds-searchable-select. */
 export function spinnerTemplate(extraClasses = ''): TemplateResult {
   return html`<svg
     class="spinner ds-allow-motion ${extraClasses}"

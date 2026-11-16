@@ -30,11 +30,14 @@ function isLightChildForSlot(node: Node, name: string): boolean {
   return false;
 }
 
-/* Falls back to inspecting light-DOM children before the slot has rendered. */
+function hasLightChildForUnrenderedSlot(host: HTMLElement, name: string): boolean {
+  return Array.from(host.childNodes).some((node) => isLightChildForSlot(node, name));
+}
+
 export function hasNamedSlotContent(host: HTMLElement, name: string, slot?: HTMLSlotElement | null): boolean {
   const target = slot ?? findRenderedSlot(host, name);
   if (target) {
     return hasAssignedContent(target);
   }
-  return Array.from(host.childNodes).some((node) => isLightChildForSlot(node, name));
+  return hasLightChildForUnrenderedSlot(host, name);
 }

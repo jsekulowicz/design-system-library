@@ -17,10 +17,8 @@ export const toggleControlStyles = css`
     display: inline-flex;
     align-items: flex-start;
     gap: var(--ds-space-2);
-    /* Room for descenders: line-height 1 makes the host shorter than its own text. */
     line-height: var(--ds-line-height-snug);
   }
-  /* Baseline from the label text, not the textless control box. */
   [part~='label'] {
     align-self: baseline;
   }

@@ -4,12 +4,11 @@ import './define.js';
 import { renderOverflowTile } from './select.shared.js';
 import { selectCommonStyles } from './select.common-styles.js';
 import { render } from 'lit';
+import { stubAriaReflection } from '../../test-utils/jsdom-gaps.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
-  const proto = DsSelect.prototype as unknown as Record<string, () => void>;
-  proto['setAriaLabel'] = () => {};
-  proto['setAriaDescription'] = () => {};
+  stubAriaReflection(DsSelect.prototype);
 });
 
 const OPTIONS = [

@@ -22,7 +22,6 @@ export const fieldsetStyles = css`
   }
   .items {
     display: flex;
-    /* Explicit: field-group styles default to column. */
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;

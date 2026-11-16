@@ -63,7 +63,6 @@ export const tablePaginationStyles = css`
     color: var(--ds-color-accent-fg);
     border-color: var(--ds-color-accent);
   }
-  /* Outranks button:hover:not(:disabled), which would flash the current page muted. */
   button[aria-current='page']:hover:not(:disabled) {
     background: var(--ds-color-accent-hover);
     border-color: var(--ds-color-accent-hover);
@@ -106,7 +105,6 @@ export const tablePaginationStyles = css`
     height: 1em;
   }
 
-  /* Hidden, not removed, so ::part(prev-next-label) overrides still work when compact. */
   :host([compact]) .label {
     display: none;
   }

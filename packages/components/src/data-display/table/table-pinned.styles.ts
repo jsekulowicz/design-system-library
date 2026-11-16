@@ -1,6 +1,5 @@
 import { css } from 'lit';
 
-// Sticky cells are transparent by default: every row background state is re-declared on purpose.
 export const tablePinnedStyles = css`
   :host {
     --ds-table-pin-max-ratio: 0.75;
@@ -14,7 +13,6 @@ export const tablePinnedStyles = css`
   td.pinned {
     z-index: 1;
   }
-  /* :host outranks :host([scroll-body]) thead th, keeping the corner on top. */
   :host thead th.pinned {
     z-index: calc(var(--ds-z-index-raised) + 1);
     background: var(--ds-color-bg-subtle);
@@ -26,7 +24,6 @@ export const tablePinnedStyles = css`
     background: var(--ds-color-bg-muted);
   }
 
-  /* Box-shadow, not border: collapsed borders don't paint reliably on sticky cells. */
   th.pin-edge,
   td.pin-edge {
     box-shadow:

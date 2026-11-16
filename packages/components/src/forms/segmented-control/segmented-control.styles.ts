@@ -12,11 +12,9 @@ export const segmentedControlStyles = css`
     opacity: 0.6;
   }
   .group {
-    /* 1fr columns on a shrink-to-fit track all resolve to the widest label. */
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
-    /* The track color showing through is the hairline frame and dividers. */
     gap: 1px;
     padding: 1px;
     background: var(--ds-color-border-subtle);
@@ -26,12 +24,10 @@ export const segmentedControlStyles = css`
   .segment {
     min-width: 0;
   }
-  /* Lift above neighbors so the focus ring isn't painted over. */
   .segment:focus-within {
     position: relative;
     z-index: var(--ds-z-index-raised);
   }
-  /* Drop the button min-width floor so the grid drives sizing. */
   .segment::part(button) {
     min-width: 0;
     border-radius: calc(var(--ds-radius-xs) - 1px);
@@ -42,7 +38,6 @@ export const segmentedControlStyles = css`
   .segment[variant='ghost']::part(button):hover {
     background: var(--ds-color-bg-subtle);
   }
-  /* Only the outer corners round, so the row reads as one control. */
   .segment:first-child:not(:last-child)::part(button) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;

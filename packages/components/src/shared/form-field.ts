@@ -33,7 +33,6 @@ export const formFieldStyles: CSSResult = css`
     gap: var(--ds-space-1);
     color: var(--ds-color-fg-muted);
   }
-  /* 1em, not 1rem: a 16px icon would set the row height on its own. */
   .error-icon,
   .warning-icon {
     width: 1em;
@@ -121,28 +120,23 @@ export interface FieldMessages {
   description?: string;
   error?: string;
   invalid?: boolean;
-  /** A caution about the value the field holds; outranks `description`, leaves validity alone. */
   warning?: string;
   messageSpace?: boolean;
-  /** Rows of subtext to hold, so a value-dependent message cannot reflow the page. */
   descriptionLines?: number;
 }
 
-/** `lh` is the element's own line-height, so this reserves exactly N rendered rows. */
-function reservedRowsStyle(lines: number): string {
+function buildMinHeightOfRenderedRows(lines: number): string {
   return lines > 0 ? `min-height:calc(${lines} * 1lh)` : '';
 }
 
-/* Heroicons 2.2.0 - 16/solid: exclamation-circle, exclamation-triangle. */
+const EXCLAMATION_CIRCLE_16_SOLID_PATH =
+  'M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z';
+const EXCLAMATION_TRIANGLE_16_SOLID_PATH =
+  'M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z';
+
 const MESSAGE_ROWS = {
-  error: {
-    role: 'alert',
-    path: 'M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
-  },
-  warning: {
-    role: 'status',
-    path: 'M6.701 2.25c.577-1 2.02-1 2.598 0l5.196 9a1.5 1.5 0 0 1-1.299 2.25H2.804a1.5 1.5 0 0 1-1.3-2.25l5.197-9ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
-  },
+  error: { role: 'alert', path: EXCLAMATION_CIRCLE_16_SOLID_PATH },
+  warning: { role: 'status', path: EXCLAMATION_TRIANGLE_16_SOLID_PATH },
 } as const;
 
 function renderMessageRow(kind: keyof typeof MESSAGE_ROWS, text: string, reserveRows: string): TemplateResult {
@@ -157,8 +151,7 @@ function renderMessageRow(kind: keyof typeof MESSAGE_ROWS, text: string, reserve
   `;
 }
 
-/** The one message row a field shows: error first, then warning, then description. */
-export function renderSubtext(field: FieldMessages): TemplateResult | typeof nothing {
+export function renderHighestPriorityMessageRow(field: FieldMessages): TemplateResult | typeof nothing {
   const {
     description = '',
     error = '',
@@ -167,7 +160,7 @@ export function renderSubtext(field: FieldMessages): TemplateResult | typeof not
     messageSpace = false,
     descriptionLines = 0,
   } = field;
-  const reserveRows = reservedRowsStyle(descriptionLines);
+  const reserveRows = buildMinHeightOfRenderedRows(descriptionLines);
   if (invalid && error) {
     return renderMessageRow('error', error, reserveRows);
   }
@@ -186,11 +179,10 @@ export function renderSubtext(field: FieldMessages): TemplateResult | typeof not
 }
 
 export function renderFieldFooter(field: FieldMessages): TemplateResult | typeof nothing {
-  const subtext = renderSubtext(field);
+  const subtext = renderHighestPriorityMessageRow(field);
   return subtext === nothing ? nothing : html`<div class="field-footer">${subtext}</div>`;
 }
 
-/** The counter must stay outside `<label>`, or it joins the field's a11y name. */
 export function renderFieldHeader(
   label: string,
   required: boolean,
@@ -200,7 +192,7 @@ export function renderFieldHeader(
   maxLength?: number,
   charCount = false,
 ): TemplateResult | typeof nothing {
-  const counter = renderCharCount(currentLength, maxLength, charCount);
+  const counter = renderCharCountOutsideLabel(currentLength, maxLength, charCount);
   if (counter === nothing) {
     return label ? renderFieldLabel(label, required, forId, optional) : nothing;
   }
@@ -208,7 +200,7 @@ export function renderFieldHeader(
   return html` <div class="field-header" part="field-header">${labelEl}${counter}</div> `;
 }
 
-function renderCharCount(
+function renderCharCountOutsideLabel(
   currentLength: number,
   maxLength?: number,
   charCount = false,

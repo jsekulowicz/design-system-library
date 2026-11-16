@@ -1,7 +1,6 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 import { hasAssignedContent, hasNamedSlotContent } from './slots.js';
 
-/** Key for the unnamed default slot. */
 export const DEFAULT_SLOT = '';
 
 export class SlotPresenceController implements ReactiveController {

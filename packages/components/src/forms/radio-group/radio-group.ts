@@ -1,7 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property, queryAssignedElements } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { fieldGroupStyles } from '../../shared/field-group.styles.js';
 import type { ValueChangeDetail } from '../../events.js';
@@ -172,7 +172,7 @@ export class DsRadioGroup extends DsElement {
           <slot @slotchange=${this.#onSlotChange}></slot>
         </div>
       </fieldset>
-      ${renderSubtext(this)}
+      ${renderHighestPriorityMessageRow(this)}
     `;
   }
 }

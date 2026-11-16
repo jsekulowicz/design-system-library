@@ -34,7 +34,6 @@ export const tableStyles = css`
 
   caption {
     caption-side: top;
-    /* Shrink to content so sticky has slack, capped so the stacked layout still wraps. */
     position: sticky;
     left: 0;
     width: max-content;
@@ -54,7 +53,6 @@ export const tableStyles = css`
     font-weight: var(--ds-font-weight-medium);
     padding: var(--ds-space-2) var(--ds-space-3);
     border-bottom: 1px solid var(--ds-color-border);
-    /* No wrapping keeps the header row a constant height. */
     white-space: nowrap;
     line-height: var(--ds-line-height-none);
   }
@@ -69,7 +67,6 @@ export const tableStyles = css`
     display: none;
   }
 
-  /* Flex so non-text cell content centers against text cells. */
   .cell-content {
     display: flex;
     align-items: center;

@@ -20,10 +20,9 @@ export interface TableColumn<T extends TableRow = TableRow> {
   pinnable?: boolean;
 }
 
-// `pinIndex` is the 0-based position within the pinned region, or null when not pinned.
 export interface ResolvedColumn<T extends TableRow = TableRow> {
   column: TableColumn<T>;
-  pinIndex: number | null;
+  indexInPinnedRegion: number | null;
   lastPinned: boolean;
 }
 

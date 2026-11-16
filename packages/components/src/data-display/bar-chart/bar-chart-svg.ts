@@ -74,10 +74,7 @@ function renderYAxis(
 
 const TICK_LABEL_HEIGHT = 29;
 
-/* Horizontal tick labels live in an HTML div (via foreignObject) sized to the
-   band, so plain CSS wraps them at word boundaries and line-clamps the rest
-   with an ellipsis. The tooltip title always carries the full text. */
-function renderTickText(text: string, bandWidth: number): SVGTemplateResult {
+function renderWrappingTickLabel(text: string, bandWidth: number): SVGTemplateResult {
   return svg`
     <foreignObject x=${-bandWidth / 2} y="7" width=${bandWidth} height=${TICK_LABEL_HEIGHT}>
       <div class="tick-label">${text}</div>
@@ -130,7 +127,7 @@ function renderXAxis<T extends BarChartRow>(
             ${
               rotation
                 ? svg`<text y="18" text-anchor="end" transform="rotate(${rotation}) translate(-4, -6)">${text}</text>`
-                : renderTickText(text, band.bandWidth)
+                : renderWrappingTickLabel(text, band.bandWidth)
             }
           </g>
         `;

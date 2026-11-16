@@ -125,30 +125,33 @@ export class DsTable<T extends TableRow = TableRow> extends DsElement {
       childList: true,
       subtree: true,
     });
-    this.addEventListener('ds-page-change', this.#onPageChange);
+    this.addEventListener('ds-page-change', this.#scrollToTopOnPageChange);
   }
 
   override disconnectedCallback(): void {
     this.#slotObserver?.disconnect();
     this.#slotObserver = null;
-    this.removeEventListener('ds-page-change', this.#onPageChange);
+    this.removeEventListener('ds-page-change', this.#scrollToTopOnPageChange);
     super.disconnectedCallback();
   }
 
-  /* A slotted ds-table-pagination is a light-DOM child, so its bubbling
-     `ds-page-change` reaches the host. The new page has to start at the top:
-     in scroll-body mode that means resetting the body scroller, otherwise the
-     page itself is the scroller and the header needs bringing back into view
-     (`nearest` is a no-op while the table is already fully visible). */
-  #onPageChange = (): void => {
+  #scrollToTopOnPageChange = (): void => {
+    this.#scrollBodyScrollerToTop();
+    if (!this.scrollBody) {
+      this.#revealHeaderOfPartlyVisibleTable();
+    }
+  };
+
+  #scrollBodyScrollerToTop(): void {
     const scroller = this.shadowRoot?.querySelector('.scroll') as HTMLElement | null;
     if (scroller) {
       scroller.scrollTop = 0;
     }
-    if (!this.scrollBody) {
-      this.scrollIntoView({ block: 'nearest' });
-    }
-  };
+  }
+
+  #revealHeaderOfPartlyVisibleTable(): void {
+    this.scrollIntoView({ block: 'nearest' });
+  }
 
   #syncSlotPresence = (): void => {
     this._hasCaption = this.querySelector('[slot="caption"]') !== null;

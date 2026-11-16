@@ -42,7 +42,6 @@ When `row-key` is set, every cell is also exposed as a named slot `cell:{columnN
 
 ```html
 <ds-table .rows="${rows}" .columns="${columns}" row-key="id">
-  <!-- projected into the "status" cell of the row whose id === 1 -->
   <my-status-chip slot="cell:status:1" status="active"></my-status-chip>
 </ds-table>
 ```

@@ -1,7 +1,7 @@
 import { DOCS_RENDERED, STORY_CHANGED } from 'storybook/internal/core-events';
 import { addons } from 'storybook/internal/preview-api';
 
-const DOCUMENTATION_LAYOUT_QUIET_MILLISECONDS = 250;
+const DOCS_LAYOUT_QUIET_MS = 250;
 const PENDING_DOCUMENTATION_SELECTOR = '.sbdocs-content pre > div:only-child:empty';
 const settledDocsIds = new Set<string>();
 let docsLoadGeneration = 0;
@@ -94,7 +94,7 @@ function waitForQuietDocsLayout(): Promise<void> {
     };
     const restart = () => {
       window.clearTimeout(timer);
-      timer = window.setTimeout(finish, DOCUMENTATION_LAYOUT_QUIET_MILLISECONDS);
+      timer = window.setTimeout(finish, DOCS_LAYOUT_QUIET_MS);
     };
     const mutationObserver = new MutationObserver(restart);
     const resizeObserver = new ResizeObserver(restart);

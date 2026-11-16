@@ -20,7 +20,6 @@ export interface PointTooltipOptions {
   content: TemplateResult;
 }
 
-/** Anchors one shared bubble to a data point, in the top layer so no ancestor can clip it. */
 export function renderPointAnchor(left: string, top: string): TemplateResult {
   return html`<div class="point-anchor" style="left:${left}; top:${top}"></div>`;
 }

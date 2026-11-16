@@ -258,9 +258,8 @@ const DISCIPLINES = [
   { label: 'Operations', value: 'ops', disabled: true, icon: { name: 'cog-6-tooth', color: '#0891b2' } },
 ];
 
-// ds-searchable-select emits ds-search on every keystroke; the consumer owns filtering.
 let options = DISCIPLINES;
-function onSearch(e) {
+function filterDisciplinesOnEveryKeystroke(e) {
   const q = e.detail.query.toLowerCase();
   options = q ? DISCIPLINES.filter((d) => d.label.toLowerCase().includes(q)) : DISCIPLINES;
 }
@@ -271,7 +270,7 @@ html\`
     placeholder="Pick a discipline"
     search-placeholder="Search disciplines..."
     .options=\${options}
-    @ds-search=\${onSearch}
+    @ds-search=\${filterDisciplinesOnEveryKeystroke}
     @ds-change=\${(e) => (value = e.detail.value)}
   >
     <ds-icon slot="leading" name="squares-2x2"></ds-icon>
@@ -285,7 +284,6 @@ import '@jsekulowicz/ds-components/icon/magnifying-glass';
 const COUNTRIES = [
   { value: 'af', label: '🇦🇫 Afghanistan' },
   { value: 'al', label: '🇦🇱 Albania' },
-  // ...160+ countries
   { value: 'us', label: '🇺🇸 United States' },
 ];
 

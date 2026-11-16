@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/web-components-vite';
 import { addons } from 'storybook/internal/preview-api';
-import { enrichArgumentTypesFromCustomElementsManifest } from './component-arg-types.js';
+import { enrichArgTypesFromManifest } from './component-arg-types.js';
 import { setupDocsReadiness } from './docs-readiness.js';
 import { DocsPage } from './docs-page.js';
 import '@jsekulowicz/ds-tokens/theme-default.css';
@@ -19,6 +19,7 @@ const THEME_STORAGE_KEY = 'ds-storybook-theme';
 const VIEWPORT_STORAGE_KEY = 'ds-storybook-viewport';
 const STORY_IFRAME_SELECTOR = 'iframe[id^="iframe--"]';
 const STORY_LOADING_ATTRIBUTE = 'data-ds-story-loading';
+const CONTENT_SIZED_INLINE_STORIES = { inline: true };
 const storyReadyObservers = new WeakMap<HTMLIFrameElement, MutationObserver>();
 
 function normalizeTheme(value: unknown): ThemeKey {
@@ -37,11 +38,13 @@ function readStorage(key: string): string | null {
   }
 }
 
+function ignoreWithheldStorage(): void {}
+
 function writeStorage(key: string, value: string): void {
   try {
     window.localStorage.setItem(key, value);
   } catch {
-    // Storage can be unavailable in privacy-restricted browsing contexts.
+    ignoreWithheldStorage();
   }
 }
 
@@ -51,14 +54,13 @@ function applyTheme(theme: ThemeKey): void {
   syncStoryIframeThemes(theme);
 }
 
+const MOBILE_PREVIEW_WIDTH = '360px';
+const TABLET_PREVIEW_WIDTH = '768px';
+const DESKTOP_PREVIEW_WIDTH = '100%';
+
 function applyViewport(viewport: ViewportKey, persist = true): void {
-  // mobile/tablet are pinned to representative widths so component
-  // breakpoints fire as expected; desktop fills 100% of the docs panel
-  // so the iframe uses all available horizontal space (and naturally
-  // hits the lg breakpoint on any reasonably-sized monitor) instead of
-  // being capped at an arbitrary 1280px that leaves empty rails on
-  // wider panels or overflows on narrower ones.
-  const width = viewport === 'mobile' ? '360px' : viewport === 'tablet' ? '768px' : '100%';
+  const width =
+    viewport === 'mobile' ? MOBILE_PREVIEW_WIDTH : viewport === 'tablet' ? TABLET_PREVIEW_WIDTH : DESKTOP_PREVIEW_WIDTH;
   document.documentElement.setAttribute('data-ds-viewport', viewport);
   document.documentElement.style.setProperty('--ds-docs-viewport-width', width);
   if (persist) {
@@ -187,20 +189,14 @@ setupStoryIframeThemeSync();
 setupDocsReadiness();
 
 const preview: Preview = {
-  argTypesEnhancers: [enrichArgumentTypesFromCustomElementsManifest],
+  argTypesEnhancers: [enrichArgTypesFromManifest],
   parameters: {
     controls: { expanded: true },
     backgrounds: { disabled: true },
     viewport: { disable: true },
     docs: {
       page: DocsPage,
-      // Render stories inline in docs by default so each example sizes
-      // to its content (no fixed iframe height to babysit, expanding
-      // controls like SearchableSelect and MenuButton extend the page
-      // flow rather than overflowing a small frame). Full-viewport
-      // templates and pages opt back into iframe rendering by setting
-      // `parameters.docs.story.inline = false` on their meta.
-      story: { inline: true },
+      story: CONTENT_SIZED_INLINE_STORIES,
     },
     options: {
       storySort: {

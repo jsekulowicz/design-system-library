@@ -16,9 +16,7 @@ const options = [
   { label: 'Operations', value: 'ops', disabled: true, icon: { name: 'cog-6-tooth', color: '#0891b2' } },
 ];
 
-// Displayed verbatim in the "Show code" panel so examples show how options -
-// including per-option icons - are defined alongside the component markup.
-const OPTIONS_SRC = `import '@jsekulowicz/ds-components/select/define';
+const OPTIONS_CODE_PANEL_SOURCE = `import '@jsekulowicz/ds-components/select/define';
 import '@jsekulowicz/ds-components/icon/define';
 import '@jsekulowicz/ds-components/icon/squares-2x2';
 import '@jsekulowicz/ds-components/icon/paint-brush';
@@ -34,13 +32,11 @@ const options = [
 ];`;
 
 function src(markup: string, alsoImport?: string): string {
-  const imports = alsoImport ? `${alsoImport}\n${OPTIONS_SRC}` : OPTIONS_SRC;
+  const imports = alsoImport ? `${alsoImport}\n${OPTIONS_CODE_PANEL_SOURCE}` : OPTIONS_CODE_PANEL_SOURCE;
   return `${imports}\n\nhtml\`\n${markup}\n\`;`;
 }
 
-// A leading-slot icon that is shown until an option is selected; the selected
-// option's own icon then overrides it.
-const LEADING = `  <ds-icon slot="leading" name="squares-2x2"></ds-icon>`;
+const PLACEHOLDER_LEADING_ICON = `  <ds-icon slot="leading" name="squares-2x2"></ds-icon>`;
 
 const meta: Meta = {
   title: 'Forms/Select',
@@ -89,7 +85,7 @@ export const Playground: Story = {
       source: {
         code: src(
           `  <ds-select label="Discipline" placeholder="Pick a discipline" .options=\${options}>
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -121,7 +117,7 @@ export const Preselected: Story = {
       source: {
         code: src(
           `  <ds-select label="Discipline" .options=\${options} .value=\${'engineering'}>
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -145,7 +141,7 @@ export const WithDescription: Story = {
     description="Choose the team you primarily work with."
     .options=\${options}
   >
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -179,7 +175,7 @@ export const WithHint: Story = {
     hint="Operations is managed by an admin and can't be picked here."
     .options=\${options}
   >
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -206,7 +202,7 @@ export const Sizes: Story = {
           `  \${['sm', 'md', 'lg'].map(
     (size) => html\`
       <ds-select size=\${size} label="" placeholder=\${size} .options=\${options}>
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
       </ds-select>
     \`,
   )}`,
@@ -243,7 +239,7 @@ export const Invalid: Story = {
     required
     .options=\${options}
   >
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -276,7 +272,7 @@ export const Disabled: Story = {
     disabled
     .options=\${options}
   >
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -307,7 +303,7 @@ export const Required: Story = {
     required
     .options=\${options}
   >
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -371,7 +367,7 @@ export const Multiple: Story = {
       source: {
         code: src(
           `  <ds-select label="Disciplines" placeholder="Pick disciplines" multiple .options=\${options}>
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -398,7 +394,7 @@ export const MultipleWithIcons: Story = {
     .options=\${options}
     .values=\${['design', 'engineering', 'product']}
   >
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -432,7 +428,7 @@ export const MultiplePreselected: Story = {
     .options=\${options}
     .values=\${['design', 'engineering', 'product']}
   >
-${LEADING}
+${PLACEHOLDER_LEADING_ICON}
   </ds-select>`,
         ),
       },
@@ -452,8 +448,7 @@ ${LEADING}
   `,
 };
 
-// Long, sentence-like labels demonstrate option wrapping.
-const longOptions = [
+const wrappingOptions = [
   {
     label: 'Billing history, payment methods, and downloadable account invoices',
     value: 'billing',
@@ -488,7 +483,7 @@ export const LongOptionsWrap: Story = {
     },
   },
   render: () => html`
-    <ds-select label="Settings section" placeholder="Choose a section" .options=${longOptions}></ds-select>
+    <ds-select label="Settings section" placeholder="Choose a section" .options=${wrappingOptions}></ds-select>
   `,
 };
 
@@ -514,7 +509,6 @@ const squares = (filled: number) => html`
 const PROJECTED_SRC = `<ds-select label="Priority" .options=\${options}>
   <span slot="option:low"><my-scale value="1"></my-scale> Low</span>
   <span slot="selected:low"><my-scale value="1"></my-scale> Low</span>
-  <!-- one node per option, per surface -->
 </ds-select>`;
 
 export const ProjectedOptionContent: Story = {

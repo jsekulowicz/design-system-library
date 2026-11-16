@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, beforeAll, beforeEach } from 'vitest';
 import { html, render } from 'lit';
+import { shimModalDialogMethods } from '../test-utils/jsdom-gaps.js';
 import { mount, mountWithProps, resetTestDom } from '../test-utils/mount.js';
 import type { DsAlert } from '../feedback/alert/alert.js';
 import type { DsBarChart } from '../data-display/bar-chart/bar-chart.js';
@@ -26,31 +27,21 @@ import '../data-display/bar-chart/define.js';
 import '../data-display/heatmap-calendar/define.js';
 import '../patterns/settings-page/define.js';
 
-// jsdom implements neither, and both dialogs open a modal to render their close button.
 beforeAll(() => {
-  const proto = HTMLDialogElement.prototype as unknown as {
-    showModal?: () => void;
-    close?: () => void;
-  };
-  proto.showModal ??= function showModal(this: HTMLDialogElement) {
-    this.setAttribute('open', '');
-  };
-  proto.close ??= function close(this: HTMLDialogElement) {
-    this.removeAttribute('open');
-    this.dispatchEvent(new Event('close'));
-  };
+  shimModalDialogMethods();
 });
 
 beforeEach(() => {
   resetTestDom();
 });
 
-// Not just beforeEach: these mount modals whose scroll-fade controller retries
-// on a frame loop, and the last test of the file would otherwise leave one
-// attached with the retry chain still running as the environment tears down.
 afterEach(() => {
-  resetTestDom();
+  detachModalsBeforeTeardown();
 });
+
+function detachModalsBeforeTeardown(): void {
+  resetTestDom();
+}
 
 function labelOf(el: HTMLElement, selector: string): string | null {
   return el.shadowRoot!.querySelector(selector)?.getAttribute('label') ?? null;
@@ -150,9 +141,7 @@ describe('every component names its own controls in the consumer language', () =
     expect(ariaOf(el, '[part~="panel"]')).toBe('Selector de color');
   });
 
-  // The select's controls are shared render helpers, and only some of them are
-  // on screen at once; rendering them directly covers every label at once.
-  it('names the select clear, remove and overflow controls', () => {
+  it('names the select clear, remove and overflow controls, rendered straight from the shared helpers since only some are ever on screen at once', () => {
     const host = document.createElement('div');
     document.body.append(host);
     render(

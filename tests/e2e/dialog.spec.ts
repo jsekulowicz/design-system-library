@@ -30,7 +30,9 @@ test.describe('ds-dialog sizing', () => {
     expect(metrics.overflow).toBeGreaterThan(0);
   });
 
-  test('exported card and body parts are stylable from the outside', async ({ page }) => {
+  test('exported card and body parts are stylable from the outside, an app rule in an outer tree beating the cap the DS sets inside', async ({
+    page,
+  }) => {
     await page.goto(cappedStory);
     await openDialog(page, 'Open capped dialog');
     await page.addStyleTag({
@@ -51,8 +53,6 @@ test.describe('ds-dialog sizing', () => {
       }
     });
 
-    // The DS caps the surface from inside ds-dialog's shadow tree; an app's rule
-    // lives in an outer tree and has to win.
     expect(styled.cardHeight).toBeCloseTo(200, 1);
     expect(styled.bodyOpacity).toBe('0.5');
   });

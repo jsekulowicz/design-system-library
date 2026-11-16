@@ -1,5 +1,3 @@
-// Hoisted out of the markup because Prettier cannot wrap an attribute value.
-
 export function joinStyles(...parts: string[]): string {
   return parts.filter(Boolean).join(';');
 }

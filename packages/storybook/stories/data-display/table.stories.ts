@@ -66,9 +66,7 @@ const RICH_COLUMNS: readonly TableColumn<Person>[] = [
 const OFFICES = ['Remote', 'Berlin', 'New York', 'Tokyo'];
 const MANAGERS = ['G. Hopper', 'A. Turing', 'B. Liskov'];
 
-// Enough columns to overflow a full-width desktop container so the pinned
-// region has something to scroll under.
-const WIDE_COLUMNS: readonly TableColumn<Person>[] = [
+const COLUMNS_TO_SCROLL_UNDER_PINS: readonly TableColumn<Person>[] = [
   { name: 'name', field: 'name', label: 'Name', width: '12rem' },
   { name: 'role', field: 'role', label: 'Role', width: '11rem' },
   {
@@ -403,7 +401,12 @@ export const PinnedColumns: Story = {
       }
     </style>
     <div class="pin-demo">
-      <ds-table responsive="scroll" .rows=${PEOPLE} .columns=${WIDE_COLUMNS} .pinnedColumns=${['name', 'status']}>
+      <ds-table
+        responsive="scroll"
+        .rows=${PEOPLE}
+        .columns=${COLUMNS_TO_SCROLL_UNDER_PINS}
+        .pinnedColumns=${['name', 'status']}
+      >
         <span slot="caption">Scroll sideways - Name and Status stay pinned</span>
       </ds-table>
     </div>
@@ -433,7 +436,7 @@ export const PinnedScrollBody: Story = {
         responsive="scroll"
         style="flex: 1; min-height: 0;"
         .rows=${PEOPLE}
-        .columns=${WIDE_COLUMNS}
+        .columns=${COLUMNS_TO_SCROLL_UNDER_PINS}
         .pinnedColumns=${['name']}
       ></ds-table>
     </div>

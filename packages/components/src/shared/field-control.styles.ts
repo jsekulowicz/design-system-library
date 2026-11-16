@@ -1,8 +1,5 @@
 import { css } from 'lit';
 
-/* Box chrome shared by every bordered form control (text field, text area,
-   select triggers). Focus rules stay per-component: text inputs ring on
-   :focus-within, button-like triggers only on :focus-visible. */
 export const fieldControlStyles = css`
   .field-control {
     background: var(--ds-color-bg);

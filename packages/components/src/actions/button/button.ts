@@ -59,7 +59,6 @@ export class DsButton extends DsElement {
   @property({ attribute: 'aria-expanded' }) ariaExpandedAttr?: AriaBoolean;
   @property({ attribute: 'aria-haspopup' }) ariaHasPopupAttr?: AriaHasPopup;
   @property({ attribute: 'aria-invalid' }) ariaInvalidAttr?: AriaInvalid;
-  // Bound onto the inner <button>, never the host: a host tabindex would add a stray tab stop.
   @property({ attribute: 'role' }) roleAttr?: AriaRole;
   @property({ attribute: 'aria-checked' }) ariaCheckedAttr?: AriaChecked;
   @property({ attribute: 'aria-pressed' }) ariaPressedAttr?: AriaChecked;

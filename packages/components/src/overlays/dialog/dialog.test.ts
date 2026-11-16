@@ -3,27 +3,11 @@ import type { DsDialog } from './dialog.js';
 import { dialogStyles } from './dialog.styles.js';
 import './define.js';
 import '../../actions/button/define.js';
+import { shimModalDialogMethods } from '../../test-utils/jsdom-gaps.js';
 import { mount, mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
-  const proto = HTMLDialogElement.prototype as unknown as {
-    showModal?: () => void;
-    close?: (returnValue?: string) => void;
-  };
-  if (typeof proto.showModal !== 'function') {
-    proto.showModal = function showModal(this: HTMLDialogElement) {
-      this.setAttribute('open', '');
-    };
-  }
-  if (typeof proto.close !== 'function') {
-    proto.close = function close(this: HTMLDialogElement, returnValue?: string) {
-      if (returnValue !== undefined) {
-        (this as unknown as { returnValue: string }).returnValue = returnValue;
-      }
-      this.removeAttribute('open');
-      this.dispatchEvent(new Event('close'));
-    };
-  }
+  shimModalDialogMethods();
 });
 
 beforeEach(() => {
@@ -178,11 +162,9 @@ describe('<ds-dialog>', () => {
     expect(dialog.getAttribute('aria-labelledby')).toBeNull();
   });
 
-  it('exports the ds-card surface and body parts so consumers can override them', async () => {
+  it('exports the ds-card surface and body parts, so ds-dialog::part(card) reaches the surface its max-height is set on instead of the host', async () => {
     const el = await mount<DsDialog>(TEMPLATE);
     const card = el.shadowRoot!.querySelector('ds-card')!;
-    // Without exportparts, ds-dialog::part(card) would hit the ds-card host -
-    // where the max-height set on ds-card::part(card) is unreachable.
     expect(card.getAttribute('exportparts')).toBe('card,body');
     expect(card.hasAttribute('part')).toBe(false);
     expect(card.shadowRoot!.querySelector('[part="card"]')).not.toBeNull();
@@ -203,7 +185,7 @@ describe('<ds-dialog>', () => {
     expect(dialog.open).toBe(false);
   });
 
-  it('closes a nested open dialog in its slotted content when it closes', async () => {
+  it('closes a nested open dialog in its slotted content when it closes, since hiding an ancestor leaves it blocking the page from the top layer', async () => {
     const el = await mountWithProps<DsDialog>(TEMPLATE, { open: true });
     const nested = document.createElement('dialog');
     el.append(nested);

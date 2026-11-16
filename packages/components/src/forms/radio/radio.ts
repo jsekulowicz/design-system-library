@@ -21,7 +21,7 @@ export class DsRadio extends FormControlMixin(DsElement) {
 
   @property({ type: Boolean, reflect: true }) checked = false;
   @property({ attribute: 'radio-value' }) radioValue = '';
-  // Defaults to a normal tab stop so a standalone radio still works outside a group.
+  /** On by default so a standalone radio is reachable; `ds-radio-group` keeps it on for one radio only. */
   @property({ type: Boolean, attribute: 'tab-stop' }) tabStop = true;
 
   override focus(options?: FocusOptions): void {

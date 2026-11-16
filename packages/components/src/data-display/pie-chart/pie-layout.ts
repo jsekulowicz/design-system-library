@@ -20,10 +20,7 @@ function toWeighted(data: readonly PieChartDatum[]): Weighted[] {
     .filter((entry) => entry.value > 0);
 }
 
-/* Zero-value entries never join the pie math (no arc, no "Other" grouping),
-   but consumers can opt in to keeping them visible in the legend and the
-   screen-reader table so every possible category stays discoverable. */
-function toZeroSlices(data: readonly PieChartDatum[]): Omit<PieSlice, 'startAngle' | 'endAngle'>[] {
+function toLegendOnlyZeroSlices(data: readonly PieChartDatum[]): Omit<PieSlice, 'startAngle' | 'endAngle'>[] {
   return data
     .map((datum, index) => ({ datum, index, value: normalizeValue(datum.value) }))
     .filter((entry) => entry.value === 0)
@@ -87,10 +84,10 @@ function toOtherSlice(tail: Weighted[], total: number, label: string): Omit<PieS
   };
 }
 
-/* Sweeps used for drawing only: slivers below minPercent are widened to stay
-   visible and the remaining slices shrink proportionally to compensate. The
-   true `percent` is untouched, so labels and tooltips keep the real share. */
-function displayShares(slices: readonly Omit<PieSlice, 'startAngle' | 'endAngle'>[], minPercent: number): number[] {
+function widenSliversInDrawnShares(
+  slices: readonly Omit<PieSlice, 'startAngle' | 'endAngle'>[],
+  minPercent: number,
+): number[] {
   const shares = slices.map((slice) => slice.percent);
   const boosted = shares.filter((percent) => percent > 0 && percent < minPercent);
   const restSum = shares.filter((percent) => percent >= minPercent).reduce((sum, p) => sum + p, 0);
@@ -114,7 +111,7 @@ export function computeSliceAngles(
   slices: readonly Omit<PieSlice, 'startAngle' | 'endAngle'>[],
   minSlicePercent = 0,
 ): PieSlice[] {
-  const shares = displayShares(slices, minSlicePercent);
+  const shares = widenSliversInDrawnShares(slices, minSlicePercent);
   let cursor = -Math.PI / 2;
   return slices.map((slice, index) => {
     const startAngle = cursor;
@@ -136,7 +133,7 @@ export function preparePieSlices(data: readonly PieChartDatum[], options: PieSli
     slices.push(toOtherSlice(tail, total, options.otherLabel));
   }
   if (options.includeZeroSlices) {
-    slices.push(...toZeroSlices(data));
+    slices.push(...toLegendOnlyZeroSlices(data));
   }
   return computeSliceAngles(slices, options.minSlicePercent ?? 0);
 }

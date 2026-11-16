@@ -52,8 +52,7 @@ export class DsBarChart<T extends BarChartRow = BarChartRow> extends DsElement {
   @property({ attribute: false }) formatValue?: (v: number) => string;
   @property({ attribute: false }) formatDomain?: (v: unknown) => string;
   @property({ attribute: false }) formatTooltipTitle?: (v: unknown) => string;
-  /* Per-bar color override keyed by domain value; falls back to the series
-     color. Lets single-series charts color-code their categories. */
+  /** Per-bar color keyed by domain value, falling back to the series color, so a single-series chart can color-code its categories. */
   @property({ attribute: false }) barColor?: (domain: unknown, seriesKey: string) => string | undefined;
 
   @state() private _width = 0;

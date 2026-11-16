@@ -9,8 +9,6 @@ export const footerStyles = css`
     container-type: inline-size;
   }
   footer {
-    /* Full-width chrome: fixed 36px height + border-top span the
-       footer's full width regardless of the inner content cap. */
     height: 36px;
     border-top: 1px solid var(--ds-color-border);
     color: var(--ds-color-fg-muted);
@@ -19,10 +17,6 @@ export const footerStyles = css`
     box-sizing: border-box;
   }
   .inner {
-    /* Inner wrapper holds start / middle / end, optionally capped to
-       align with a constrained content column above. 16px symmetric
-       inline padding lives here so it scales with the (capped) content
-       column, not the full-width chrome. */
     height: 100%;
     width: 100%;
     max-width: var(--ds-footer-content-max-width, none);

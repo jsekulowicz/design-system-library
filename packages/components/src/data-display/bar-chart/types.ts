@@ -19,7 +19,6 @@ export interface BarChartFocusDetail {
   values: Array<{ key: string; label: string; value: number }>;
 }
 
-/* Everything the stateless render helpers need from the component instance. */
 export interface ChartRenderContext {
   uid: string;
   title: string;

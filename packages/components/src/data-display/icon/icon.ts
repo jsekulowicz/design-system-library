@@ -7,14 +7,12 @@ import { iconStyles } from './icon.styles.js';
 
 export type IconSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
 
-// Anchored on globalThis: Vite's dep pre-bundling can evaluate this module twice,
-// and a per-module Map would split registrations from the reads.
-const REGISTRY_KEY = Symbol.for('@jsekulowicz/ds-components:icon-registry');
+const CROSS_BUNDLE_REGISTRY_KEY = Symbol.for('@jsekulowicz/ds-components:icon-registry');
 interface RegistryHost {
-  [REGISTRY_KEY]?: Map<string, string>;
+  [CROSS_BUNDLE_REGISTRY_KEY]?: Map<string, string>;
 }
 const host = globalThis as unknown as RegistryHost;
-const registry: Map<string, string> = (host[REGISTRY_KEY] ??= new Map<string, string>());
+const registry: Map<string, string> = (host[CROSS_BUNDLE_REGISTRY_KEY] ??= new Map<string, string>());
 
 export function registerIcon(name: string, svgMarkup: string): void {
   registry.set(name, svgMarkup);

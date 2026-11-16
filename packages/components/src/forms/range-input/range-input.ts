@@ -3,7 +3,12 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
-import { clickBelongsToTheControl, formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import {
+  clickBelongsToTheControl,
+  formFieldStyles,
+  renderFieldLabel,
+  renderHighestPriorityMessageRow,
+} from '../../shared/form-field.js';
 import { rangeInputStyles } from './range-input.styles.js';
 import type { ValueChangeDetail } from '../../events.js';
 
@@ -87,14 +92,12 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
     this.emit<ValueChangeDetail<number>>('ds-change', { detail: { value: Number(target.value) } });
   };
 
-  // Focusable when disabled so assistive tech can announce it, like ds-button.
-  #blockWhenDisabled = (event: Event): void => {
+  #blockWhileAriaDisabled = (event: Event): void => {
     if (this.disabled) {
       event.preventDefault();
     }
   };
 
-  // A native range is always in range; `invalid`/`error` stay consumer-controlled.
   override syncValidity(): void {
     if (!this._input) {
       return;
@@ -152,14 +155,14 @@ export class DsRangeInput extends FormControlMixin(DsElement) {
           ?required=${this.required}
           aria-disabled=${this.disabled ? 'true' : 'false'}
           aria-invalid=${this.invalid ? 'true' : 'false'}
-          @keydown=${this.#blockWhenDisabled}
-          @pointerdown=${this.#blockWhenDisabled}
+          @keydown=${this.#blockWhileAriaDisabled}
+          @pointerdown=${this.#blockWhileAriaDisabled}
           @input=${this.#onInput}
           @change=${this.#onChange}
         />
         ${this.showValue ? html`<output part="value" for="input">${current}</output>` : nothing}
       </div>
-      ${renderSubtext(this)}
+      ${renderHighestPriorityMessageRow(this)}
     `;
   }
 }

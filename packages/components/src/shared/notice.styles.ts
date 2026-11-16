@@ -1,6 +1,5 @@
 import { css } from 'lit';
 
-/* Tone-tinted message surface shared by ds-alert and ds-toast. */
 export const noticeStyles = css`
   .notice {
     display: flex;

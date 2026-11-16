@@ -36,17 +36,17 @@ const FOUR_CHANNELS: readonly BarChartSeries[] = [
   { key: 'Retail' },
 ];
 
-const ACTIVITY_SOURCE = `// Each row is one week; the extra fields are per-channel totals.
-const activity = [
-  { week: 1,  Website: 3, Mobile: 2, Partners: 4, Retail: 2 },
-  { week: 2,  Website: 2, Mobile: 4, Partners: 3, Retail: 5 },
-  { week: 3,  Website: 5, Mobile: 5, Partners: 4, Retail: 6 },
-  // ... 9 more rows
-  { week: 13, Website: 4, Mobile: 3, Partners: 3, Retail: 3 },
-];`;
+function formatActivitySource(rows: readonly ActivityPoint[]): string {
+  const lines = rows.map(
+    (row) =>
+      `  { week: ${row.week}, Website: ${row.Website}, Mobile: ${row.Mobile}, Partners: ${row.Partners}, Retail: ${row.Retail} },`,
+  );
+  return `const activity = [\n${lines.join('\n')}\n];`;
+}
 
-const THREE_CHANNELS_SOURCE = `// One entry per series; \`key\` matches a field on each data row.
-const series = [
+const ACTIVITY_SOURCE = formatActivitySource(WEEKLY_ACTIVITY);
+
+const THREE_CHANNELS_SOURCE = `const series = [
   { key: 'Website' },
   { key: 'Mobile' },
   { key: 'Partners' },
@@ -434,7 +434,7 @@ export const CompactHeight: Story = {
     docs: {
       source: {
         code: chartSnippet({
-          lead: [`const activity = [/* first 7 activity */];`, THREE_CHANNELS_SOURCE],
+          lead: [formatActivitySource(WEEKLY_ACTIVITY.slice(0, 7)), THREE_CHANNELS_SOURCE],
           tag: `  <div style="max-width: 420px;">
     <ds-bar-chart
       height="180"

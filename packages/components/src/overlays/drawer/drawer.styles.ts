@@ -14,13 +14,11 @@ export const drawerStyles = css`
     height: 100vh;
     height: var(--ds-drawer-height, 100dvh);
     max-height: 100%;
-    /* allow-discrete holds display/overlay open for the slide duration. */
     transition:
       transform var(--ds-duration-slow) var(--ds-easing-standard),
       display var(--ds-duration-slow) allow-discrete,
       overlay var(--ds-duration-slow) allow-discrete;
   }
-  /* Scope to [open] so closed dialogs stay display:none per UA. */
   dialog[open] {
     display: flex;
     flex-direction: column;
@@ -65,13 +63,11 @@ export const drawerStyles = css`
     min-width: 0;
   }
   ds-card::part(card) {
-    /* Explicit: percentage heights don't resolve through ds-card's block host. */
     height: 100vh;
     height: var(--ds-drawer-height, 100dvh);
     max-height: 100vh;
     max-height: var(--ds-drawer-height, 100dvh);
     box-shadow: none;
-    /* 0, not transparent: background-clip is border-box, so a transparent border still fills. */
     border: 0;
     border-radius: 0;
     gap: var(--ds-drawer-card-gap, var(--ds-space-3));
@@ -91,7 +87,6 @@ export const drawerStyles = css`
   .title-text {
     margin: 0;
     flex: 1;
-    /* Flex-center: otherwise the h2's line-height inflates the row. */
     display: flex;
     align-items: center;
     line-height: var(--ds-line-height-none);

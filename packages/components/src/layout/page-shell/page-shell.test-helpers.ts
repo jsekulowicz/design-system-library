@@ -2,6 +2,7 @@ import { afterAll, beforeAll, beforeEach } from 'vitest';
 import type { DsButton } from '../../actions/button/button.js';
 import { DsPageShell } from './page-shell.js';
 import './define.js';
+import { shimModalDialogMethods } from '../../test-utils/jsdom-gaps.js';
 import { mount, resetTestDom } from '../../test-utils/mount.js';
 
 type ResizeObserverCallback = ConstructorParameters<typeof ResizeObserver>[0];
@@ -63,27 +64,7 @@ beforeAll(() => {
   }
   globalThis.ResizeObserver = ResizeObserverMock as never;
 
-  // The mobile drawer renders a <ds-drawer>, which uses a native <dialog>
-  // under the hood. jsdom's HTMLDialogElement lacks showModal/close, so
-  // shim them the same way the dialog/drawer test files do.
-  const proto = HTMLDialogElement.prototype as unknown as {
-    showModal?: () => void;
-    close?: (returnValue?: string) => void;
-  };
-  if (typeof proto.showModal !== 'function') {
-    proto.showModal = function showModal(this: HTMLDialogElement) {
-      this.setAttribute('open', '');
-    };
-  }
-  if (typeof proto.close !== 'function') {
-    proto.close = function close(this: HTMLDialogElement, returnValue?: string) {
-      if (returnValue !== undefined) {
-        (this as unknown as { returnValue: string }).returnValue = returnValue;
-      }
-      this.removeAttribute('open');
-      this.dispatchEvent(new Event('close'));
-    };
-  }
+  shimModalDialogMethods();
 });
 
 afterAll(() => {

@@ -8,8 +8,6 @@ const packageJsonPath = require.resolve('heroicons/package.json');
 const heroiconsRoot = dirname(packageJsonPath);
 const iconDir = fileURLToPath(new URL('../src/data-display/icon/icons/', import.meta.url));
 const defaultSource = { size: '24', style: 'outline' };
-// Solid variants are exposed under a `-solid` suffix (Heroicons 24/solid), e.g.
-// `star-solid`, for filled states like rating stars.
 const solidSource = { size: '24', style: 'solid' };
 const SOLID_SUFFIX = '-solid';
 const variantOverrides = new Map([

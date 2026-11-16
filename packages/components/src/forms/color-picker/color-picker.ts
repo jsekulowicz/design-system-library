@@ -3,7 +3,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { property, query } from 'lit/decorators.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
 import '../../data-display/icon/icons/swatch.js';
-import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldLabel, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { ColorPickerCustomInputs } from './color-picker-custom-inputs.js';
 import { ColorPickerPopover } from './color-picker-popover.js';
 import { colorPickerStyles } from './color-picker.styles.js';
@@ -225,7 +225,7 @@ export class DsColorPicker extends FormControlMixin(DsElement) {
       <div class="control-wrap" @keydown=${this.#popover.onPanelKeydown}>
         ${this.#renderTrigger(current, selected)} ${this.#popover.open ? this.#renderPanel(options, current) : nothing}
       </div>
-      ${this.compact ? nothing : renderSubtext(this)}
+      ${this.compact ? nothing : renderHighestPriorityMessageRow(this)}
     `;
   }
 

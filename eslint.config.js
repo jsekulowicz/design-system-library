@@ -9,6 +9,13 @@ const litFiles = ['packages/components/src/**/*.ts', 'packages/core/src/**/*.ts'
 const litRecommended = litPlugin.configs['flat/recommended'];
 const wcRecommended = wcPlugin.configs['flat/recommended'];
 
+const privatesDecoratorsCanReach = [
+  { selector: 'classProperty', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
+  { selector: 'classMethod', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
+];
+const litElementBaseClasses = ['LitElement', 'DsElement'];
+const explicitKebabAttributes = { convention: 'kebab' };
+
 export default [
   {
     ignores: ['**/dist/**', '**/node_modules/**', '**/storybook-static/**', '**/coverage/**'],
@@ -42,6 +49,7 @@ export default [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       curly: ['error', 'all'],
       eqeqeq: ['error', 'always'],
+      'id-length': ['error', { min: 1, max: 35, properties: 'always', exceptionPatterns: ['^[A-Z][A-Za-z0-9]*$'] }],
       'prefer-const': 'error',
       'no-else-return': ['error', { allowElseIf: false }],
       '@typescript-eslint/no-unused-vars': 'off',
@@ -54,12 +62,7 @@ export default [
   {
     files: litFiles,
     rules: {
-      // `@state`/`@query` cannot decorate a `#private` field, so those use `private _x` instead.
-      '@typescript-eslint/naming-convention': [
-        'error',
-        { selector: 'classProperty', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
-        { selector: 'classMethod', modifiers: ['private'], format: ['camelCase'], leadingUnderscore: 'require' },
-      ],
+      '@typescript-eslint/naming-convention': ['error', ...privatesDecoratorsCanReach],
     },
   },
   {
@@ -68,15 +71,11 @@ export default [
       ...litRecommended.plugins,
       ...wcRecommended.plugins,
     },
-    // Components extend DsElement, not LitElement directly; without this the
-    // lit rules match nothing at all.
-    settings: { lit: { elementBaseClasses: ['LitElement', 'DsElement'] } },
+    settings: { lit: { elementBaseClasses: litElementBaseClasses } },
     rules: {
       ...litRecommended.rules,
       ...wcRecommended.rules,
-      // Lit lowercases a property name for its default attribute, so a camelCase
-      // property silently answers to an all-lowercase one. Demand it be explicit.
-      'lit/attribute-names': ['error', { convention: 'kebab' }],
+      'lit/attribute-names': ['error', explicitKebabAttributes],
     },
   },
   ...storybook.configs['flat/recommended'],

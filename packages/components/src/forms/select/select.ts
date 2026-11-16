@@ -2,7 +2,7 @@ import { html, nothing, LitElement, type PropertyValues, type TemplateResult } f
 import { property, query } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldLabel, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { clearButtonStyles, renderClearButton } from '../../shared/clear-button.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import {
@@ -11,7 +11,7 @@ import {
   renderOptionIcon,
   renderOverflowTile,
   renderSelectedTiles,
-  activateBeforeTheTriggerSwallowsTheKey,
+  activateBeforeTriggerTakesKey,
 } from './select.shared.js';
 import { DropdownController } from './dropdown-controller.js';
 import { dropdownKeydown } from './dropdown-keydown.js';
@@ -99,7 +99,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     getMaxLines: () => this.maxLines,
     getTilesEl: () => this._tilesEl,
     getListboxEl: () => this._listboxEl,
-    getComboboxEl: () => this._triggerEl,
+    getElementKeepingDropdownOpen: () => this._triggerEl,
     applyValues: (next) => {
       this.values = next;
       this.value = next.join(',');
@@ -109,7 +109,6 @@ export class DsSelect extends FormControlMixin(DsElement) {
     },
   });
 
-  /* test-facing forwarders to controller state */
   get _open(): boolean {
     return this.#dropdown.open;
   }
@@ -155,7 +154,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     if ((changed.has('values') || changed.has('maxLines') || changed.has('multiple')) && this.multiple) {
       this.#dropdown.queueOverflowCheck();
     }
-    this.#syncListboxPopover();
+    this.#showListboxInTopLayer();
     this.#dropdown.queueFocusReveal();
   }
 
@@ -164,8 +163,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
     this.#dropdown.close();
   }
 
-  // Top layer escapes overflow ancestors; positioned in select.common-styles.
-  #syncListboxPopover(): void {
+  #showListboxInTopLayer(): void {
     const listbox = this._listboxEl;
     if (!listbox || !this.#dropdown.open) {
       return;
@@ -237,14 +235,14 @@ export class DsSelect extends FormControlMixin(DsElement) {
     }
   };
 
-  #onClearKeydown = (event: KeyboardEvent): void => activateBeforeTheTriggerSwallowsTheKey(event, this.#clear);
+  #onClearKeydown = (event: KeyboardEvent): void => activateBeforeTriggerTakesKey(event, this.#clear);
 
   #onTriggerKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) {
       return;
     }
-    // Buttons nested in the trigger (clear, "+n") handle their own keys.
-    if (event.target !== this._triggerEl) {
+    const keyFromNestedButton = event.target !== this._triggerEl;
+    if (keyFromNestedButton) {
       return;
     }
     if (
@@ -376,7 +374,7 @@ export class DsSelect extends FormControlMixin(DsElement) {
             : nothing
         }
       </div>
-      ${renderSubtext(this)}`;
+      ${renderHighestPriorityMessageRow(this)}`;
   }
 
   override focus(options?: FocusOptions): void {

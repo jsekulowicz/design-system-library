@@ -1,8 +1,5 @@
 import { css } from 'lit';
 
-// The mask must be declared on the scroller, not :host: a custom property resolves its
-// inner var()s against the element it is declared on, and the controller sets the
-// fade colors on the scroller. Hence the two scroller selectors below.
 export const scrollFadeStyles = css`
   ds-card::part(body),
   .scroll,
@@ -26,7 +23,6 @@ export const cardBodyScrollFadeStyles = css`
     overflow-x: clip;
     overflow-y: auto;
     overscroll-behavior: contain;
-    /* Padding + negative margin lets focus rings paint outside the clip box. */
     padding-inline: var(--ds-space-2);
     margin-inline: calc(var(--ds-space-2) * -1);
     scrollbar-width: none;

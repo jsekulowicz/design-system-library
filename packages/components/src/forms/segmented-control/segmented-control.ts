@@ -1,7 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldLabel, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { resolveRovingTarget } from '../../shared/roving-focus.js';
 import { segmentedControlStyles } from './segmented-control.styles.js';
 import type { ValueChangeDetail } from '../../events.js';
@@ -47,7 +47,6 @@ export class DsSegmentedControl extends DsElement {
     }
   }
 
-  // The single tab stop; arrow keys move focus and selection from here.
   get #tabStopIndex(): number {
     const selected = this.options.findIndex((option) => option.value === this.value);
     if (selected >= 0) {
@@ -87,7 +86,6 @@ export class DsSegmentedControl extends DsElement {
       return;
     }
     event.preventDefault();
-    // Selection follows focus, as the radiogroup pattern prescribes.
     this.#select(option);
     void this.updateComplete.then(() => this.#focusSegment(target));
   };
@@ -119,7 +117,7 @@ export class DsSegmentedControl extends DsElement {
       <div class="group" id="group" role="radiogroup" aria-label=${this.label} part="group" @keydown=${this.#onKeydown}>
         ${this.options.map((option, index) => this.#renderSegment(option, index))}
       </div>
-      ${renderSubtext(this)}
+      ${renderHighestPriorityMessageRow(this)}
     `;
   }
 }

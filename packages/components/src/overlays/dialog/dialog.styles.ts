@@ -15,7 +15,6 @@ export const dialogStyles = css`
     box-shadow: var(--ds-shadow-md);
     overflow: visible;
   }
-  /* Scope to [open] so closed dialogs stay display:none per UA. */
   dialog[open] {
     display: flex;
     flex-direction: column;
@@ -38,7 +37,6 @@ export const dialogStyles = css`
     min-width: 0;
   }
   ds-card::part(card) {
-    /* Explicit: percentage heights don't resolve through ds-card's block host. */
     max-height: var(--ds-dialog-max-height, min(90vh, 720px));
     box-shadow: none;
     border-color: transparent;
@@ -59,13 +57,11 @@ export const dialogStyles = css`
     font-weight: var(--ds-font-weight-semibold);
     letter-spacing: var(--ds-letter-spacing-display);
   }
-  /* Normalize slotted h1-h6 so UA defaults don't compound with .title-text. */
   .title-text ::slotted(*) {
     font: inherit;
     margin: 0;
     letter-spacing: inherit;
   }
-  /* Past the card's own padding, into the corner. */
   .close-btn {
     margin-block-start: calc(var(--ds-space-3) * -1);
     margin-inline-end: calc(var(--ds-space-3) * -1);

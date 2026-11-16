@@ -10,7 +10,7 @@ import {
 
 const TEXT_MINIMUM = 4.5;
 const SHAPE_MINIMUM = 3;
-const FILL_EDGE_MINIMUM_BESIDE_A_VALUE_LABEL = 1.9;
+const MIN_FILL_EDGE_BESIDE_VALUE_LABEL = 1.9;
 
 function buildEveryNormalizedFill(): LinearRgb[] {
   const fills: LinearRgb[] = [];
@@ -78,7 +78,7 @@ describe('the dark theme progress bar, whose empty track shows the surface behin
 
   it('keeps a fill of any hue near 2:1 against every surface, below 3:1 because the label states the value', () => {
     for (const surface of surfaces) {
-      expect(findLowestContrast(fills, surface)).toBeGreaterThanOrEqual(FILL_EDGE_MINIMUM_BESIDE_A_VALUE_LABEL);
+      expect(findLowestContrast(fills, surface)).toBeGreaterThanOrEqual(MIN_FILL_EDGE_BESIDE_VALUE_LABEL);
     }
   });
 

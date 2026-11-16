@@ -19,7 +19,6 @@ export const searchableSelectStyles = css`
     font-size: var(--ds-font-size-body-lg);
     min-width: 0;
     cursor: pointer;
-    /* Truncated rather than hard-clipped; still scrolls while focused. */
     text-overflow: ellipsis;
   }
   .search-input::placeholder {

@@ -11,15 +11,13 @@ import '@jsekulowicz/ds-components/icon/home';
 import '@jsekulowicz/ds-components/icon/cog-6-tooth';
 import '@jsekulowicz/ds-components/icon/clock';
 
+import { FULL_VIEWPORT_IFRAME } from '../shared/docs-iframe';
 const meta: Meta = {
   title: 'Layout/PageShell',
   component: 'ds-page-shell',
   parameters: {
     layout: 'fullscreen',
-    // This template fills the viewport with its own header/aside/main/footer
-    // grid, so docs render it in an iframe to give that layout an isolated
-    // box to claim. Per-story `height` settings control that iframe.
-    docs: { story: { inline: false } },
+    docs: { story: FULL_VIEWPORT_IFRAME },
   },
 };
 export default meta;

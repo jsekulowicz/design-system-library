@@ -45,6 +45,8 @@ jobs:
         run: pnpm lint:packaging
       - name: Lint template styles
         run: pnpm lint:template-styles
+      - name: Lint comments
+        run: pnpm lint:comments
       - name: Lint CSS parts
         run: |
           pnpm test:lint-parts

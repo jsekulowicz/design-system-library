@@ -2,13 +2,13 @@ import { html, svg, nothing, type PropertyValues, type TemplateResult, type SVGT
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
+import { breakpoint } from '@jsekulowicz/ds-tokens';
 import { formatLabel } from '../../shared/format-label.js';
 import { tablePaginationStyles } from './table-pagination.styles.js';
 import { buildPaginationRange, type PaginationRangeItem } from './pagination-range.js';
 import type { TablePageChangeDetail, TablePageSizeChangeDetail } from './types.js';
 
-// Matches breakpoint.sm so it lines up with ds-table's own stack breakpoint.
-const COMPACT_WIDTH_PX = 480;
+const COMPACT_WIDTH_PX = Number.parseInt(breakpoint.sm, 10);
 const COMPACT_MAX_VISIBLE = 3;
 
 function readBorderBoxWidth(entry: ResizeObserverEntry | undefined): number | undefined {
@@ -58,8 +58,6 @@ export class DsTablePagination extends DsElement {
   @property({ type: Number, reflect: true, attribute: 'sibling-count' }) siblingCount = 1;
   @property({ type: Boolean, reflect: true, attribute: 'hide-page-numbers' }) hidePageNumbers = false;
 
-  // Every user-facing string is a property so a consumer can translate it; the
-  // defaults are what the component rendered before they existed.
   @property() label = 'Pagination';
   @property({ attribute: 'prev-page-label' }) prevPageLabel = 'Previous page';
   @property({ attribute: 'next-page-label' }) nextPageLabel = 'Next page';
@@ -69,7 +67,7 @@ export class DsTablePagination extends DsElement {
   @property({ attribute: 'summary-label' }) summaryLabel = 'Showing {start}-{end} of {total}';
   @property({ attribute: 'empty-label' }) emptyLabel = 'No results';
 
-  // Reflected so consumer styles can react without re-deriving the breakpoint.
+  /** Set while the pagination is narrower than the small breakpoint; reflected so styles can react to it. */
   @property({ type: Boolean, reflect: true }) compact = false;
 
   #resizeObserver: ResizeObserver | null = null;

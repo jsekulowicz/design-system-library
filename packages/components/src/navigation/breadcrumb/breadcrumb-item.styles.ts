@@ -15,7 +15,6 @@ export const breadcrumbItemStyles = css`
     gap: var(--ds-space-1);
     color: var(--ds-color-fg-muted);
     text-decoration: none;
-    /* Widens the focus ring without changing the link's footprint. */
     padding: var(--ds-space-1) 2px;
     margin-inline: -2px;
     border-radius: var(--ds-radius-xs);

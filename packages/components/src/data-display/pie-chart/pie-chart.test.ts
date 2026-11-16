@@ -70,7 +70,7 @@ describe('<ds-pie-chart>', () => {
     expect(el.shadowRoot!.getElementById(titleId)?.textContent).toContain('Sessions: 3 slices, total 100.');
   });
 
-  it('renders the data table outside the chart frame', async () => {
+  it('renders the data table as a sibling of the chart frame, since aria-describedby would flatten it into one string', async () => {
     const el = await mountPieChart();
     const table = el.shadowRoot!.querySelector('table')!;
     expect(el.shadowRoot!.querySelector('.frame')!.contains(table)).toBe(false);

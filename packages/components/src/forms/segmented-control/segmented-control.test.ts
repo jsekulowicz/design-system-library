@@ -35,18 +35,16 @@ function segmentSizes(el: DsSegmentedControl): (string | null)[] {
   return segments(el).map((s) => s.getAttribute('size'));
 }
 
-// Each segment is a <ds-button>; its focusable element carries the radio role
-// and checked state, and a native click on it is what triggers ds-click.
-function nativeButton(segment: HTMLElement): HTMLButtonElement {
+function getInnerRadioButton(segment: HTMLElement): HTMLButtonElement {
   return segment.shadowRoot!.querySelector<HTMLButtonElement>('button')!;
 }
 
 function checkedStates(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map((s) => nativeButton(s).getAttribute('aria-checked'));
+  return segments(el).map((s) => getInnerRadioButton(s).getAttribute('aria-checked'));
 }
 
 function tabIndexes(el: DsSegmentedControl): (string | null)[] {
-  return segments(el).map((s) => nativeButton(s).getAttribute('tabindex'));
+  return segments(el).map((s) => getInnerRadioButton(s).getAttribute('tabindex'));
 }
 
 function pressKey(el: DsSegmentedControl, key: string): void {
@@ -91,7 +89,7 @@ describe('<ds-segmented-control>', () => {
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
 
-    nativeButton(segments(el)[2]).click();
+    getInnerRadioButton(segments(el)[2]).click();
     await el.updateComplete;
 
     expect(el.value).toBe('natural');
@@ -104,7 +102,7 @@ describe('<ds-segmented-control>', () => {
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
 
-    nativeButton(segments(el)[1]).click();
+    getInnerRadioButton(segments(el)[1]).click();
     await el.updateComplete;
 
     expect(events).toHaveLength(0);
@@ -117,7 +115,7 @@ describe('<ds-segmented-control>', () => {
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));
 
-    nativeButton(segments(el)[2]).click();
+    getInnerRadioButton(segments(el)[2]).click();
     await el.updateComplete;
 
     expect(events).toHaveLength(0);
@@ -154,7 +152,7 @@ describe('<ds-segmented-control>', () => {
     expect(tabIndexes(el)).toEqual(['0', '-1', '-1']);
   });
 
-  it('moves selection and the tab stop with ArrowRight (selection follows focus)', async () => {
+  it('moves selection and the tab stop with ArrowRight, selection following focus as the radiogroup pattern prescribes', async () => {
     const el = await mountControl('light');
     const events: CustomEvent[] = [];
     el.addEventListener('ds-change', (e) => events.push(e as CustomEvent));

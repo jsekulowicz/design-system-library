@@ -1,14 +1,11 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsSelect } from './select.js';
 import './define.js';
+import { stubAriaReflection } from '../../test-utils/jsdom-gaps.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-// jsdom 25 does not implement ElementInternals ARIA reflection (ariaLabel, ariaDescription).
-// Stub them so tests focus on component behavior, not platform internals.
 beforeAll(() => {
-  const proto = DsSelect.prototype as unknown as Record<string, () => void>;
-  proto['setAriaLabel'] = () => {};
-  proto['setAriaDescription'] = () => {};
+  stubAriaReflection(DsSelect.prototype);
 });
 
 const OPTIONS = [
@@ -67,7 +64,7 @@ describe('<ds-select>', () => {
       getOption(el, 'Vue').click();
       await el.updateComplete;
       expect(el.values).toEqual(['react', 'vue']);
-      getOption(el, 'React').click(); // deselect
+      getOption(el, 'React').click();
       await el.updateComplete;
       expect(el.values).toEqual(['vue']);
       expect(events.at(-1)?.detail).toEqual({ values: ['vue'] });

@@ -1,6 +1,5 @@
 import { css } from 'lit';
 
-/* Row internals shared by ds-menu-item and ds-select-option. */
 export const optionRowStyles = css`
   .leading,
   .trailing {

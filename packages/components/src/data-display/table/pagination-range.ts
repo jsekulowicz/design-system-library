@@ -7,6 +7,8 @@ export interface PaginationRangeInput {
   siblingCount: number;
 }
 
+const MIN_PAGES_FIRST_CURRENT_LAST = 3;
+
 export function buildPaginationRange({
   totalPages,
   currentPage,
@@ -16,8 +18,7 @@ export function buildPaginationRange({
   const total = Math.max(1, Math.floor(totalPages));
   const current = clamp(Math.floor(currentPage), 1, total);
   const siblings = Math.max(0, Math.floor(siblingCount));
-  // Floor of 3 keeps "first ... current ... last" available to compact callers.
-  const maxVisible = Math.max(3, Math.floor(maxVisiblePages));
+  const maxVisible = Math.max(MIN_PAGES_FIRST_CURRENT_LAST, Math.floor(maxVisiblePages));
 
   if (total <= maxVisible) {
     return range(1, total);

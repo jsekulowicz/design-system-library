@@ -35,7 +35,7 @@ function enrichArgumentType(argumentType: StrictInputType, property: ComponentPr
   };
 }
 
-export const enrichArgumentTypesFromCustomElementsManifest: ArgTypesEnhancer = function (context) {
+export const enrichArgTypesFromManifest: ArgTypesEnhancer = function (context) {
   if (typeof context.component !== 'string') {
     return context.argTypes;
   }

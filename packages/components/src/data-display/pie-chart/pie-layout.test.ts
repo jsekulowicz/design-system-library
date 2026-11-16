@@ -213,7 +213,7 @@ describe('pie geometry', () => {
     expect(point.y).toBeCloseTo(CENTER - RADIUS);
   });
 
-  it('omits labels for slices below the minimum share', () => {
+  it('omits labels for slices below the minimum share and puts the rest outside the arc, on the page background that keeps 4.5:1 for every palette color', () => {
     const slices = preparePieSlices(
       [
         { label: 'big', value: 99 },

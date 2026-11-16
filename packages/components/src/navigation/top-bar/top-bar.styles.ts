@@ -5,9 +5,6 @@ export const topBarStyles = css`
     display: block;
   }
   nav {
-    /* Full-width chrome: background, border-bottom, and the fixed
-       responsive height live on the nav itself so they always span
-       the parent's full width regardless of the inner content cap. */
     height: calc(48px + 1px);
     background: var(--ds-top-bar-bg, var(--ds-color-bg));
     border-bottom: 1px solid var(--ds-color-border);
@@ -16,10 +13,6 @@ export const topBarStyles = css`
     box-sizing: border-box;
   }
   .inner {
-    /* Inner wrapper holds brand + actions, optionally capped to align
-       with a constrained content column below the bar. 16px symmetric
-       inline padding lives here so it scales with the (capped) content
-       column, not the full-width chrome. */
     height: 100%;
     width: 100%;
     max-width: var(--ds-top-bar-content-max-width, none);

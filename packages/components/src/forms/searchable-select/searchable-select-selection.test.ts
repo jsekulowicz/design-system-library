@@ -2,14 +2,11 @@ import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { DsSearchableSelect } from './searchable-select.js';
 import { searchableSelectStyles } from './searchable-select.styles.js';
 import './define.js';
+import { stubAriaReflection } from '../../test-utils/jsdom-gaps.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
-// jsdom 25 does not implement ElementInternals ARIA reflection (ariaLabel, ariaDescription).
-// Stub them so tests focus on component behavior, not platform internals.
 beforeAll(() => {
-  const proto = DsSearchableSelect.prototype as unknown as Record<string, () => void>;
-  proto['setAriaLabel'] = () => {};
-  proto['setAriaDescription'] = () => {};
+  stubAriaReflection(DsSearchableSelect.prototype);
 });
 
 const OPTIONS = [
@@ -64,7 +61,7 @@ describe('<ds-searchable-select>', () => {
       getOption(el, 'Vue').click();
       await el.updateComplete;
       expect(el.values).toEqual(['react', 'vue']);
-      getOption(el, 'React').click(); // deselect
+      getOption(el, 'React').click();
       await el.updateComplete;
       expect(el.values).toEqual(['vue']);
       expect(events.at(-1)?.detail).toEqual({ values: ['vue'] });
@@ -102,7 +99,6 @@ describe('<ds-searchable-select>', () => {
       await openDropdown(el);
       getOption(el, 'React').click();
       await el.updateComplete;
-      // Consumer filters out React from the options list
       el.options = [
         { value: 'vue', label: 'Vue' },
         { value: 'svelte', label: 'Svelte' },

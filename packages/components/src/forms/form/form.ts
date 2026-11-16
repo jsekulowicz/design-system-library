@@ -34,11 +34,7 @@ export class DsForm extends DsElement {
     const controls = this.#collectControls();
     const invalid = controls.some((control) => !control.checkValidity?.());
     if (!this.noValidate && invalid) {
-      // Controls hold their error styling back until the user touches them,
-      // and the field that blocked the submit is the one nobody visited.
-      for (const control of controls) {
-        control.showValidity?.();
-      }
+      this.#revealErrorsOnUnvisitedFields(controls);
       this.emit('ds-invalid', { detail: null });
       return;
     }
@@ -52,6 +48,12 @@ export class DsForm extends DsElement {
     showValidity?: () => void;
   }> {
     return Array.from(this.querySelectorAll<HTMLElement>('[name]')) as never;
+  }
+
+  #revealErrorsOnUnvisitedFields(controls: ReadonlyArray<{ showValidity?: () => void }>): void {
+    for (const control of controls) {
+      control.showValidity?.();
+    }
   }
 
   #buildFormData(controls: ReadonlyArray<{ name?: string; value?: unknown }>): FormData {

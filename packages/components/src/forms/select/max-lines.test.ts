@@ -63,8 +63,7 @@ function tileList(offsets: number[], height = 0): HTMLElement {
 }
 
 describe('countOverflowTiles', () => {
-  // 32px per row: two tiles to a row here, three rows asked for, five rendered.
-  it('counts the rows past max-lines', () => {
+  it('counts the tiles on rows past max-lines, two tiles sharing each 32px row', () => {
     expect(countOverflowTiles(tileList([0, 0, 32, 32, 64, 64, 96, 96, 128, 128]), 3)).toBe(4);
   });
 

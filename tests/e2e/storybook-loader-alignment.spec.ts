@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { collectDocumentationLoaderSamplesDuringRefresh } from './storybook-loader-sampling';
+import { collectLoaderSamplesOnRefresh } from './storybook-loader-sampling';
 
 test('nested story frames show a themed spinner before their document loads', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('ds-storybook-theme', 'dark'));
@@ -157,7 +157,7 @@ test('manager and preview documentation loaders share visual styling', async ({ 
 });
 
 test('ordinary docs refresh keeps the manager and preview loaders aligned', async ({ page }) => {
-  const samples = await collectDocumentationLoaderSamplesDuringRefresh(page);
+  const samples = await collectLoaderSamplesOnRefresh(page);
   const preview = page.frameLocator('#storybook-preview-iframe');
   const scrollport = await preview.locator('html').evaluate((root) => ({
     overflowY: getComputedStyle(root).overflowY,

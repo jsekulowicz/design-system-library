@@ -19,7 +19,7 @@ interface TableBodyOptions<T extends TableRow> {
 
 function cellClass<T extends TableRow>(resolved: ResolvedColumn<T>): string {
   const classes = [`align-${resolved.column.align ?? 'left'}`];
-  if (resolved.pinIndex !== null) {
+  if (resolved.indexInPinnedRegion !== null) {
     classes.push('pinned');
     if (resolved.lastPinned) {
       classes.push('pin-edge');
@@ -29,7 +29,9 @@ function cellClass<T extends TableRow>(resolved: ResolvedColumn<T>): string {
 }
 
 function pinStyle<T extends TableRow>(resolved: ResolvedColumn<T>): string | undefined {
-  return resolved.pinIndex !== null ? `left: var(--ds-table-pin-left-${resolved.pinIndex})` : undefined;
+  return resolved.indexInPinnedRegion !== null
+    ? `left: var(--ds-table-pin-left-${resolved.indexInPinnedRegion})`
+    : undefined;
 }
 
 function renderCell<T extends TableRow>(column: TableColumn<T>, row: T, index: number): unknown {
@@ -60,8 +62,7 @@ function renderRowAction<T extends TableRow>(options: TableBodyOptions<T>, row: 
   `;
 }
 
-// Per-cell slots need `row-key` set to be unique; falls back to `render`/`field`.
-function renderCellValue<T extends TableRow>(
+function renderCellAsKeyedSlot<T extends TableRow>(
   options: TableBodyOptions<T>,
   column: TableColumn<T>,
   row: T,
@@ -85,7 +86,7 @@ function renderCellContent<T extends TableRow>(
   return html`
     <div class="cell-content">
       ${options.clickableRows && columnIndex === 0 ? renderRowAction(options, row, rowIndex) : nothing}
-      ${renderCellValue(options, column, row, rowIndex)}
+      ${renderCellAsKeyedSlot(options, column, row, rowIndex)}
     </div>
   `;
 }

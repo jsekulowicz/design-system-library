@@ -56,13 +56,11 @@ describe('ScrollFadeController', () => {
     expect(await fadeOf(createScroller(400, 200, 200))).toEqual({ top: CLEAR, bottom: OPAQUE });
   });
 
-  it('paints no fade when the content fits', async () => {
+  it('paints no fade when the content fits, which animation-timeline: scroll(self) gets wrong in some engines', async () => {
     expect(await fadeOf(createScroller(200, 200))).toEqual({ top: OPAQUE, bottom: OPAQUE });
   });
 
-  it('ignores a couple of px of overflow from rounding and inline layout', async () => {
-    // A 2rem fade painted over content that overflows by 2px reads as a cut-off
-    // row - see the ds-checkbox line-box fix in toggle-control.styles.ts.
+  it('ignores a couple of px of overflow that sub-pixel rounding leaves on content that visually fits', async () => {
     expect(await fadeOf(createScroller(202, 200))).toEqual({ top: OPAQUE, bottom: OPAQUE });
   });
 

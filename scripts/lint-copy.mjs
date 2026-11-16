@@ -8,8 +8,6 @@ const EXCLUDED_PATHS = [
   /^packages\/components\/custom-elements\.json$/,
   /^scripts\/lint-copy\.mjs$/,
 ];
-// Stems taking -e/-es/-ed/-ing/-able/-ation/-ations, so every inflection is
-// covered rather than only the three forms someone thought to list.
 const BRITISH_ISE_STEMS = [
   'analys',
   'customis',
@@ -23,9 +21,7 @@ const BRITISH_ISE_STEMS = [
   'serialis',
   'visualis',
 ];
-// Nouns taking an optional plural.
 const BRITISH_NOUNS = ['behaviour', 'centre', 'colour', 'favourite', 'licence', 'neighbour', 'recolour'];
-// Forms that fit neither shape.
 const BRITISH_IRREGULARS = [
   'cancelled',
   'cancelling',
@@ -58,17 +54,17 @@ const FORBIDDEN_COPY = [
   },
 ];
 
+function isInWorkingTree(file) {
+  return existsSync(file);
+}
+
 function trackedSourceFiles() {
-  return (
-    execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' })
-      .split('\0')
-      .filter(Boolean)
-      .filter((file) => SOURCE_EXTENSION.test(file))
-      .filter((file) => !EXCLUDED_PATHS.some((pattern) => pattern.test(file)))
-      // `git ls-files` reads the index, which still lists a tracked file deleted
-      // from the working tree. There is nothing to read until the delete is staged.
-      .filter((file) => existsSync(file))
-  );
+  return execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' })
+    .split('\0')
+    .filter(Boolean)
+    .filter((file) => SOURCE_EXTENSION.test(file))
+    .filter((file) => !EXCLUDED_PATHS.some((pattern) => pattern.test(file)))
+    .filter(isInWorkingTree);
 }
 
 function violationsFor(file) {

@@ -3,27 +3,11 @@ import type { DsDrawer } from './drawer.js';
 import { drawerStyles } from './drawer.styles.js';
 import './define.js';
 import '../../actions/button/define.js';
+import { shimModalDialogMethods } from '../../test-utils/jsdom-gaps.js';
 import { mount, mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
-  const proto = HTMLDialogElement.prototype as unknown as {
-    showModal?: () => void;
-    close?: (returnValue?: string) => void;
-  };
-  if (typeof proto.showModal !== 'function') {
-    proto.showModal = function showModal(this: HTMLDialogElement) {
-      this.setAttribute('open', '');
-    };
-  }
-  if (typeof proto.close !== 'function') {
-    proto.close = function close(this: HTMLDialogElement, returnValue?: string) {
-      if (returnValue !== undefined) {
-        (this as unknown as { returnValue: string }).returnValue = returnValue;
-      }
-      this.removeAttribute('open');
-      this.dispatchEvent(new Event('close'));
-    };
-  }
+  shimModalDialogMethods();
 });
 
 beforeEach(() => {
@@ -191,7 +175,7 @@ describe('<ds-drawer>', () => {
     expect(dialog.open).toBe(false);
   });
 
-  it('closes a nested open dialog in its slotted content when it closes', async () => {
+  it('closes a nested open dialog in its slotted content when it closes, since hiding an ancestor leaves it blocking the page from the top layer', async () => {
     const el = await mountWithProps<DsDrawer>(TEMPLATE, { open: true });
     const nested = document.createElement('dialog');
     el.append(nested);

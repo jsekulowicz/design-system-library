@@ -51,15 +51,12 @@ export class DsToast extends DsElement {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    // Focusable programmatically, never in the tab sequence: passive toasts add no tab stop.
-    if (!this.hasAttribute('tabindex')) {
-      this.setAttribute('tabindex', '-1');
-    }
+    this.#makeProgrammaticallyFocusable();
     this.addEventListener('mouseenter', this.#onMouseEnter);
     this.addEventListener('mouseleave', this.#onMouseLeave);
     this.addEventListener('focusin', this.#onFocusIn);
     this.addEventListener('focusout', this.#onFocusOut);
-    this.addEventListener('keydown', this.#onKeydown);
+    this.addEventListener('keydown', this.#dismissOnEscape);
   }
 
   override disconnectedCallback(): void {
@@ -92,11 +89,20 @@ export class DsToast extends DsElement {
     }
     this.#dismissed = true;
     this.#clearTimer();
-    // Don't pull focus back if the user has already moved it out of the toast.
-    const returnTo = this.restoreFocusTo && this.contains(document.activeElement) ? this.restoreFocusTo : null;
+    const returnTo = this.#findFocusReturnUnlessFocusLeft();
     this.emit<ToastDismissDetail>('ds-dismiss', { detail: { reason } });
     this.remove();
     returnTo?.focus();
+  }
+
+  #makeProgrammaticallyFocusable(): void {
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '-1');
+    }
+  }
+
+  #findFocusReturnUnlessFocusLeft(): HTMLElement | null {
+    return this.restoreFocusTo && this.contains(document.activeElement) ? this.restoreFocusTo : null;
   }
 
   #startTimer = (): void => {
@@ -165,8 +171,7 @@ export class DsToast extends DsElement {
 
   #onDismissClick = (): void => this.dismiss('user');
 
-  // Escape is the keyboard counterpart to the close button, matching ds-dialog.
-  #onKeydown = (event: KeyboardEvent): void => {
+  #dismissOnEscape = (event: KeyboardEvent): void => {
     if (event.key === 'Escape' && this.dismissible) {
       event.stopPropagation();
       this.dismiss('user');

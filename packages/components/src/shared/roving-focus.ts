@@ -2,22 +2,14 @@ export type RovingOrientation = 'horizontal' | 'vertical' | 'both';
 
 export interface RovingTargetOptions {
   key: string;
-  /** Index the navigation starts from; -1 when nothing is focused yet. */
   currentIndex: number;
   count: number;
-  /** Which arrow keys participate. Defaults to `both`. */
   orientation?: RovingOrientation;
-  /** Skip indices that can't receive selection (e.g. disabled options). */
   isDisabled?: (index: number) => boolean;
 }
 
 const wrap = (value: number, count: number): number => ((value % count) + count) % count;
 
-/**
- * Resolve the index a roving-tabindex widget (radiogroup, segmented control,
- * tablist...) should move to for a given key. Wraps, skips disabled entries, and returns
- * `null` when the key isn't a navigation key so callers can leave the event untouched.
- */
 export function resolveRovingTarget({
   key,
   currentIndex,

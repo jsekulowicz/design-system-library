@@ -3,7 +3,7 @@ import { property, query, state } from 'lit/decorators.js';
 import { live } from 'lit/directives/live.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DsElement, changedWhatValidityReads, FormControlMixin } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderFieldLabel, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderFieldLabel, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { clearButtonStyles, renderClearButton } from '../../shared/clear-button.js';
 import { fieldControlStyles } from '../../shared/field-control.styles.js';
 import { spinnerStyles, spinnerTemplate } from '../../shared/spinner.js';
@@ -13,7 +13,7 @@ import {
   renderOptionIcon,
   renderOverflowTile,
   renderSelectedTiles,
-  activateBeforeTheTriggerSwallowsTheKey,
+  activateBeforeTriggerTakesKey,
 } from '../select/select.shared.js';
 import { DropdownController } from '../select/dropdown-controller.js';
 import { dropdownKeydown } from '../select/dropdown-keydown.js';
@@ -100,7 +100,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     getMaxLines: () => this.maxLines,
     getTilesEl: () => this._tilesEl,
     getListboxEl: () => this._listboxEl,
-    getComboboxEl: () => this._inputEl,
+    getElementKeepingDropdownOpen: () => this._inputEl,
     applyValues: (next) => {
       this.values = next;
       this.value = next.join(',');
@@ -118,7 +118,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     },
   });
 
-  /* test-facing forwarders to controller state */
   get _open(): boolean {
     return this.#dropdown.open;
   }
@@ -176,12 +175,11 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       this.#dropdown.queueOverflowCheck();
     }
 
-    this.#syncListboxPopover();
+    this.#showListboxInTopLayer();
     this.#dropdown.queueFocusReveal();
   }
 
-  // Top layer escapes overflow ancestors; positioned in select.common-styles.
-  #syncListboxPopover(): void {
+  #showListboxInTopLayer(): void {
     const listbox = this._listboxEl;
     if (!listbox || !this.#dropdown.open) {
       return;
@@ -288,7 +286,7 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
     }
   };
 
-  #onClearKeydown = (event: KeyboardEvent): void => activateBeforeTheTriggerSwallowsTheKey(event, this.#clear);
+  #onClearKeydown = (event: KeyboardEvent): void => activateBeforeTriggerTakesKey(event, this.#clear);
 
   #onKeydown = (event: KeyboardEvent): void => {
     if (this.disabled) {
@@ -313,13 +311,12 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
       this.#dropdown.openDropdown();
       return;
     }
-    if (this.#isSearchInitiatingKey(event)) {
+    if (this.#isTypingThatReentersSearch(event)) {
       this.#beginSearchFromClosed(event);
     }
   };
 
-  // Typing into a closed dropdown re-enters search mode rather than being swallowed.
-  #isSearchInitiatingKey(event: KeyboardEvent): boolean {
+  #isTypingThatReentersSearch(event: KeyboardEvent): boolean {
     if (event.ctrlKey || event.metaKey || event.altKey) {
       return false;
     }
@@ -327,13 +324,16 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
   }
 
   #beginSearchFromClosed(event: KeyboardEvent): void {
-    // Cleared before opening so the key's default insertion lands in an empty input.
-    if (this._inputEl) {
-      this._inputEl.value = '';
-    }
+    this.#clearInputForTypedKey();
     this.#dropdown.openDropdown();
     if (event.key === ' ') {
       event.preventDefault();
+    }
+  }
+
+  #clearInputForTypedKey(): void {
+    if (this._inputEl) {
+      this._inputEl.value = '';
     }
   }
 
@@ -457,6 +457,6 @@ export class DsSearchableSelect extends FormControlMixin(DsElement) {
             : nothing
         }
       </div>
-      ${renderSubtext(this)}`;
+      ${renderHighestPriorityMessageRow(this)}`;
   }
 }

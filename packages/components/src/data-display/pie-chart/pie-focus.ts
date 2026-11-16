@@ -4,14 +4,16 @@ export function sliceIndexFrom(target: EventTarget | null): number | null {
   return index === null ? null : Number(index);
 }
 
-/* `:focus-visible` tells hover-initiated focus apart from keyboard focus; jsdom
-   rejects the selector, so tests fall back to the keyboard treatment. */
 export function isKeyboardFocus(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) {
     return true;
   }
+  return matchesFocusVisibleOrUnsupported(target);
+}
+
+function matchesFocusVisibleOrUnsupported(element: Element): boolean {
   try {
-    return target.matches(':focus-visible');
+    return element.matches(':focus-visible');
   } catch {
     return true;
   }

@@ -25,15 +25,13 @@ import '@jsekulowicz/ds-components/icon/bell';
 import '@jsekulowicz/ds-components/icon/book-open';
 import '@jsekulowicz/ds-components/icon/puzzle-piece';
 
+import { FULL_VIEWPORT_IFRAME } from '../shared/docs-iframe';
 const meta: Meta = {
   title: 'Patterns/SettingsPage',
   component: 'ds-settings-page',
   parameters: {
     layout: 'fullscreen',
-    // Full-viewport page; docs renders it in an iframe so the page-shell
-    // chrome has an isolated viewport box. Per-story `height` controls
-    // that iframe.
-    docs: { story: { inline: false } },
+    docs: { story: FULL_VIEWPORT_IFRAME },
   },
 };
 

@@ -150,14 +150,16 @@ function toastFn(options: ToastOptions = {}): ToastController {
   }
   stack.push(el);
   if (options.focusOnShow) {
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    // rAF so focus lands after the element upgrades and lays out.
-    requestAnimationFrame(() => {
-      el.restoreFocusTo = previouslyFocused;
-      el.focus();
-    });
+    focusOnceLaidOut(el, document.activeElement as HTMLElement | null);
   }
   return controller;
+}
+
+function focusOnceLaidOut(el: DsToast, previouslyFocused: HTMLElement | null): void {
+  requestAnimationFrame(() => {
+    el.restoreFocusTo = previouslyFocused;
+    el.focus();
+  });
 }
 
 type ToneShortcut = (heading: string, opts?: Omit<ToastOptions, 'tone' | 'heading'>) => ToastController;

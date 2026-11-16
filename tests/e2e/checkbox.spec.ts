@@ -2,14 +2,12 @@ import { test, expect, type Page } from '@playwright/test';
 
 const storyUrl = '/iframe.html?id=forms-checkbox--states&viewMode=story';
 
-// A ds-checkbox is an inline-level box, so it sits on a line box in its parent.
-// If its own box is shorter than the text it renders, that line box ends up
-// taller than the host and the difference reads as content to scroll - which
-// makes a ds-dialog body paint a scroll fade over content that fits.
 test.describe('ds-checkbox line box', () => {
-  test('adds no height beyond its own box to the line it sits on', async ({ page }) => {
+  test('adds no height beyond its own box to the line it sits on, which would read as content to scroll and fade a dialog body that fits', async ({
+    page,
+  }) => {
     await page.goto(storyUrl);
-    await mountProbes(page);
+    await mountLineBoxProbes(page);
 
     const probe = await page.evaluate(() => {
       const row = document.getElementById('tight-row') as HTMLElement;
@@ -28,7 +26,7 @@ test.describe('ds-checkbox line box', () => {
 
   test('takes no more room on a text line than a word does', async ({ page }) => {
     await page.goto(storyUrl);
-    await mountProbes(page);
+    await mountLineBoxProbes(page);
 
     const probe = await page.evaluate(() => ({
       checkboxRow: document.getElementById('text-row')!.getBoundingClientRect().height,
@@ -40,7 +38,7 @@ test.describe('ds-checkbox line box', () => {
 
   test('keeps its box on the first line of a wrapping label', async ({ page }) => {
     await page.goto(storyUrl);
-    await mountProbes(page);
+    await mountLineBoxProbes(page);
 
     const probe = await page.evaluate(() => {
       const row = document.getElementById('wrapping-row') as HTMLElement;
@@ -65,9 +63,7 @@ test.describe('ds-checkbox line box', () => {
   });
 });
 
-// Two block parents: one whose strut is shorter than the checkbox (line-height
-// 1) and one with the default text line box, plus a text-only reference row.
-async function mountProbes(page: Page): Promise<void> {
+async function mountLineBoxProbes(page: Page): Promise<void> {
   await page.locator('ds-checkbox').first().waitFor();
   await page.evaluate(async () => {
     const rows: Record<string, string> = {

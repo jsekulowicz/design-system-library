@@ -6,15 +6,14 @@ import '@jsekulowicz/ds-components/icon/define';
 import '@jsekulowicz/ds-components/icon/bars-3';
 import '@jsekulowicz/ds-components/icon/user-circle';
 
+import { FULL_VIEWPORT_IFRAME } from '../shared/docs-iframe';
 const meta: Meta = {
   title: 'Navigation/TopBar',
   component: 'ds-top-bar',
   parameters: {
     layout: 'fullscreen',
     docs: {
-      // The top bar styles itself against a full-width viewport; keep iframe
-      // rendering so each example has an isolated box of the declared height.
-      story: { inline: false, height: '128px' },
+      story: { ...FULL_VIEWPORT_IFRAME, height: '128px' },
     },
   },
 };

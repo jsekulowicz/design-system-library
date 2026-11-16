@@ -28,9 +28,11 @@ export function pieLiveText(ctx: PieRenderContext, slices: readonly PieSlice[]):
   return `${sliceAriaLabel(ctx, slice)}.`;
 }
 
-/* Anchored on the arc edge and pushed outward, so the tooltip never covers the
-   slice it describes. */
-function tooltipPosition(slice: PieSlice): { left: string; top: string; area: PointTooltipArea } {
+function findTooltipPositionOutsideSlice(slice: PieSlice): {
+  left: string;
+  top: string;
+  area: PointTooltipArea;
+} {
   const point = polarPoint(RADIUS + 2, midAngle(slice));
   const block = point.y < CENTER ? 'top' : 'bottom';
   const inline = point.x < CENTER ? 'left' : 'right';
@@ -43,7 +45,9 @@ function tooltipPosition(slice: PieSlice): { left: string; top: string; area: Po
 
 export function renderPieTooltip(ctx: PieRenderContext, slices: readonly PieSlice[]): TemplateResult {
   const slice = ctx.activeIndex === null ? undefined : slices[ctx.activeIndex];
-  const position = slice ? tooltipPosition(slice) : { left: '50%', top: '50%', area: 'top' as PointTooltipArea };
+  const position = slice
+    ? findTooltipPositionOutsideSlice(slice)
+    : { left: '50%', top: '50%', area: 'top' as PointTooltipArea };
   return renderPointTooltip({
     open: ctx.activeIndex !== null,
     ...position,

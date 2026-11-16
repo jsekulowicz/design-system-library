@@ -13,7 +13,6 @@ export const tableScrollBodyStyles = css`
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
-    /* The rubber-band reads as broken against the pinned header. */
     overscroll-behavior: none;
     scrollbar-width: none;
     --ds-scroll-fade-offset: var(--ds-table-header-height);
@@ -30,7 +29,6 @@ export const tableScrollBodyStyles = css`
     block-size: var(--ds-table-header-height);
   }
 
-  /* Stacked layout has no header to offset past. */
   @container (max-width: ${mobileBreakpoint}) {
     :host([scroll-body]:not([responsive='scroll'])) .scroll {
       --ds-scroll-fade-offset: 0px;

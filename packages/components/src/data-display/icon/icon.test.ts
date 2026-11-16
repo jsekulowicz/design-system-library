@@ -22,9 +22,6 @@ describe('<ds-icon>', () => {
   });
 
   it('anchors the registry on globalThis so duplicate module copies share it', () => {
-    // Bundlers can evaluate icon.js more than once; a per-module Map would let
-    // a registration land in a copy <ds-icon> never reads. Anchoring on
-    // globalThis under a Symbol.for key keeps every copy pointed at one Map.
     const shared = (
       globalThis as unknown as {
         [k: symbol]: Map<string, string> | undefined;
@@ -44,8 +41,7 @@ describe('<ds-icon>', () => {
     expect(getIcon('academic-cap')).toContain('M4.26 10.147');
   });
 
-  // A few thousand modules; runs close to the 5s default.
-  it('registers all generated Heroicons from the all module', async () => {
+  it('registers all generated Heroicons from the all module, given the time a few thousand modules take', async () => {
     await import('./icons/all.js');
     expect(getIcon('arrow-right')).toContain('M13.5 4.5');
   }, 20_000);

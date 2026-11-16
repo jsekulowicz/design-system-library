@@ -15,7 +15,7 @@ export function resolvePinnedColumns<T extends TableRow>(
     const index = pinned.indexOf(column);
     return {
       column,
-      pinIndex: index >= 0 ? index : null,
+      indexInPinnedRegion: index >= 0 ? index : null,
       lastPinned: column.name === lastPinnedName,
     };
   });

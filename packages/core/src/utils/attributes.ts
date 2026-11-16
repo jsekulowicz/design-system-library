@@ -1,5 +1,3 @@
-// lit analyzers type these attributes as literal unions; a bare `string` property fails every binding.
-
 export type AriaRole =
   | 'alert'
   | 'alertdialog'
@@ -83,7 +81,7 @@ export type AriaHasPopup = AriaBoolean | 'menu' | 'listbox' | 'tree' | 'grid' | 
 /** `_self` and friends, without closing the union to author-named browsing contexts. */
 export type LinkTarget = '_self' | '_blank' | '_parent' | '_top' | (string & {});
 
-// Deliberately narrower than lib.dom's `AutoFill`, which lit analyzers reject as too wide.
+/** Narrower than lib.dom's `AutoFill` on purpose: lit analyzers reject that one as too wide, as they reject a bare `string`. */
 export type AutocompleteToken =
   | 'on'
   | 'off'

@@ -2,10 +2,13 @@ import { html, svg, type PropertyValues, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement, FormControlMixin, hasInteractiveSlottedOrigin } from '@jsekulowicz/ds-core';
 import { DEFAULT_SLOT, SlotPresenceController } from '../../shared/slot-presence.js';
-import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { toggleControlStyles } from '../../shared/toggle-control.styles.js';
 import { checkboxStyles } from './checkbox.styles.js';
 import type { CheckedChangeDetail } from '../../events.js';
+
+const MINUS_16_SOLID_PATH = svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`;
+const CHECK_16_SOLID_PATH = svg`<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`;
 
 /**
  * @tag ds-checkbox
@@ -83,10 +86,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
   };
 
   override render(): TemplateResult {
-    // Heroicons 2.2.0 - 16/solid: minus (indeterminate), check (checked)
-    const mark = this.indeterminate
-      ? svg`<path d="M3.75 7.25a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />`
-      : svg`<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`;
+    const mark = this.indeterminate ? MINUS_16_SOLID_PATH : CHECK_16_SOLID_PATH;
     return html`<div class="stack">
       <label
         class=${this.#slots.has(DEFAULT_SLOT) ? 'has-label' : ''}
@@ -109,7 +109,7 @@ export class DsCheckbox extends FormControlMixin(DsElement) {
         </span>
         <span part="label"><slot @slotchange=${this.#slots.handleSlotChange}></slot></span>
       </label>
-      ${renderSubtext(this)}
+      ${renderHighestPriorityMessageRow(this)}
     </div>`;
   }
 }

@@ -86,9 +86,7 @@ describe('<ds-form>', () => {
     expect(submitEvents).toBe(0);
   });
 
-  it('reveals the error styling of untouched controls on a rejected submit', async () => {
-    // The raw input is what fails the check: jsdom leaves ElementInternals
-    // validity unwired, so ds-text-field's own checkValidity always passes.
+  it('reveals the error styling of untouched controls when a native input rejects the submit, the one check jsdom wires up', async () => {
     const el = await mount<DsForm>(`
       <ds-form>
         <input name="email" type="email" value="invalid" />

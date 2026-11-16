@@ -13,7 +13,7 @@ function contentWithSpinnerOverlaidOnTop(loading: boolean): TemplateResult {
   `;
 }
 
-function contentStackedWithInFlowLoadingLabel(loading: boolean, loadingLabel: string): TemplateResult {
+function contentWithInFlowLoadingLabel(loading: boolean, loadingLabel: string): TemplateResult {
   return html`
     <span class="stack labels">
       <span class="stack-item ${loading ? 'is-hidden' : ''}" aria-hidden=${ifDefined(loading ? 'true' : undefined)}>
@@ -30,7 +30,7 @@ function contentStackedWithInFlowLoadingLabel(loading: boolean, loadingLabel: st
 
 export function buttonContent(loading: boolean, loadingLabel?: string): TemplateResult {
   if (loadingLabel) {
-    return contentStackedWithInFlowLoadingLabel(loading, loadingLabel);
+    return contentWithInFlowLoadingLabel(loading, loadingLabel);
   }
   return contentWithSpinnerOverlaidOnTop(loading);
 }

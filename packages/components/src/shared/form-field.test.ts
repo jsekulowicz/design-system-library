@@ -72,9 +72,7 @@ describe('field message space', () => {
     expect(footer(el)!.querySelector('.error')).not.toBeNull();
   });
 
-  // The spacer carries no text, so it can only be floored by a line box it
-  // sizes itself - hence the shared typography rather than a floor alone.
-  it('reserves one line on the message row, spacer included', () => {
+  it('reserves one line on the message row, the textless spacer included, through the shared typography that sizes its line box', () => {
     expect(formFieldStyles.cssText).toMatch(
       /\.description,\s*\.error,\s*\.warning,\s*\.subtext-spacer\s*{[^}]*font-size: var\(--ds-font-size-body-sm\)[^}]*line-height: var\(--ds-line-height-none\)[^}]*min-block-size: 1lh/,
     );
@@ -84,8 +82,7 @@ describe('field message space', () => {
     expect(formFieldStyles.cssText).not.toMatch(/\*\s*var\(--ds-line-height-/);
   });
 
-  // Both must track the same token, or the taller one sets the row height.
-  it('sizes the message text and its icon off the same step', () => {
+  it('sizes the message text and its icon off the same step, in em rather than rem, or the taller one sets the row height', () => {
     expect(formFieldStyles.cssText).toMatch(
       /\.description,\s*\.error,\s*\.warning,\s*\.subtext-spacer\s*{[^}]*line-height: var\(--ds-line-height-none\)/,
     );

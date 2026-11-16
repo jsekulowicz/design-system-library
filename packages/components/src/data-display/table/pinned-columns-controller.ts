@@ -1,8 +1,6 @@
 import type { ReactiveController, ReactiveControllerHost } from 'lit';
 
-// Pinning is disabled by withholding the offsets, so scroll-body's vertical
-// header stick is never disturbed.
-const DEFAULT_MAX_RATIO = 0.75;
+const DEFAULT_MAX_PINNED_WIDTH_RATIO = 0.75;
 
 export class PinnedColumnsController implements ReactiveController {
   #getScroller: () => HTMLElement | null | undefined;
@@ -104,8 +102,7 @@ export class PinnedColumnsController implements ReactiveController {
     const containerWidth = scroller.clientWidth;
     const fits = containerWidth > 0 && total <= containerWidth * this.#maxRatio(table);
     if (!fits) {
-      pinnedHeaders.forEach((_, index) => table.style.removeProperty(`--ds-table-pin-left-${index}`));
-      this.#deactivate(table);
+      this.#unpinKeepingTheStickyHeader(table, pinnedHeaders.length);
       return;
     }
     let offset = 0;
@@ -117,6 +114,13 @@ export class PinnedColumnsController implements ReactiveController {
     table.style.setProperty('--ds-table-pin-shadow', scroller.scrollLeft > 0 ? '1' : '0');
   }
 
+  #unpinKeepingTheStickyHeader(table: HTMLElement, pinnedCount: number): void {
+    for (let index = 0; index < pinnedCount; index++) {
+      table.style.removeProperty(`--ds-table-pin-left-${index}`);
+    }
+    this.#deactivate(table);
+  }
+
   #deactivate(table: HTMLElement): void {
     table.style.setProperty('--ds-table-pin-active', '0');
     table.style.setProperty('--ds-table-pin-shadow', '0');
@@ -125,6 +129,6 @@ export class PinnedColumnsController implements ReactiveController {
   #maxRatio(table: HTMLElement): number {
     const raw = getComputedStyle(table).getPropertyValue('--ds-table-pin-max-ratio');
     const parsed = Number.parseFloat(raw);
-    return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_MAX_RATIO;
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_MAX_PINNED_WIDTH_RATIO;
   }
 }

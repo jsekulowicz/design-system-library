@@ -1,7 +1,6 @@
 import { html, type TemplateResult } from 'lit';
 import type { PageShellAsideState, PageShellAsideEndState } from './page-shell-state.js';
 
-/* Everything the stateless render partials need from the component instance. */
 export interface PageShellRenderContext {
   brand: string;
   menuLabel: string;

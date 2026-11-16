@@ -123,7 +123,9 @@ function contentWithSpinnerOverlaidOnTop(loading: boolean) { ... }
 ```
 
 The name is longer than a typical one, and that is the point: it states the constraint at every
-call site rather than only where the function is declared. Reach for the same move with a named
+call site rather than only where the function is declared. It is still a label, not a sentence:
+`id-length` caps every name at 35 characters, class members included. A reason that does not fit
+goes in a test title, which has no limit. Reach for the same move with a named
 constant, a named watcher callback, or a test whose title _is_ the scenario:
 
 ```ts
@@ -135,7 +137,14 @@ the component's `@tag`/`@attr`/`@cssprop`/`@csspart` JSDoc, which consumers actu
 `custom-elements.json` publishes. Anything about _this release_ rather than _this code_ belongs in
 the changeset.
 
-No comments in CSS, ever.
+No comments in CSS, ever. When a rule needs its _why_ kept, write a styles test that asserts the
+rule and states the why in its title; `getDeclarationsOf` in
+`packages/components/src/shared/css-rules.test-helpers.ts` reads one rule's declarations.
+
+`pnpm lint:comments` enforces all of this. It lets through tool directives (`eslint-disable`,
+`@ts-expect-error`, ...), JSDoc carrying an API tag, and JSDoc on an exported declaration, a class
+member that is not private, or an interface member. That JSDoc still has to say something the name
+does not.
 
 ## Examples and fixtures
 

@@ -52,8 +52,7 @@ export function FormControlMixin<TBase extends LitCtor>(
     @property({ type: Boolean, reflect: true }) disabled = false;
     @property({ type: Boolean, reflect: true }) required = false;
 
-    // TypeScript mixin constraint requires `any[]` here.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- a TypeScript mixin constructor must take any[]
     constructor(...args: any[]) {
       super(...args);
       this.#internals = (this as unknown as HTMLElement).attachInternals();

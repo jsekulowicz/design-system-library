@@ -25,6 +25,11 @@ beforeEach(() => {
   resetTestDom();
 });
 
+function fakeListboxLayout(element: HTMLElement, sizes: { scrollHeight: number; clientHeight: number }): void {
+  Object.defineProperty(element, 'scrollHeight', { configurable: true, value: sizes.scrollHeight });
+  Object.defineProperty(element, 'clientHeight', { configurable: true, value: sizes.clientHeight });
+}
+
 async function mountSelect(props: Partial<DsSelect> = {}): Promise<DsSelect> {
   return mountWithProps<DsSelect>(
     '<ds-select label="Framework"></ds-select>',
@@ -113,9 +118,7 @@ describe('<ds-select> label, size and icons', () => {
     trigger.click();
     await el.updateComplete;
     const listbox = el.shadowRoot!.querySelector('.listbox') as HTMLElement;
-    // jsdom has no layout: simulate a 432px tall list in a 240px viewport.
-    Object.defineProperty(listbox, 'scrollHeight', { configurable: true, value: 432 });
-    Object.defineProperty(listbox, 'clientHeight', { configurable: true, value: 240 });
+    fakeListboxLayout(listbox, { scrollHeight: 432, clientHeight: 240 });
 
     listbox.scrollTop = 40;
     listbox.dispatchEvent(new Event('scroll'));
@@ -125,7 +128,6 @@ describe('<ds-select> label, size and icons', () => {
     listbox.dispatchEvent(new Event('scroll'));
     expect(fired).toBe(1);
 
-    // Still at the bottom: no repeat until the user scrolls away.
     listbox.scrollTop = 180;
     listbox.dispatchEvent(new Event('scroll'));
     expect(fired).toBe(1);

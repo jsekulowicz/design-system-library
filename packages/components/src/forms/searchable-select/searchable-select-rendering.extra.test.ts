@@ -24,6 +24,11 @@ beforeEach(() => {
   resetTestDom();
 });
 
+function typeCharacter(input: HTMLInputElement, character: string): void {
+  input.value += character;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
 async function mountSearchable(props: Partial<DsSearchableSelect> = {}): Promise<DsSearchableSelect> {
   return mountWithProps<DsSearchableSelect>(
     '<ds-searchable-select label="Framework"></ds-searchable-select>',
@@ -95,9 +100,7 @@ describe('<ds-searchable-select> re-enters search mode while focused-but-closed'
     keydown(input, 'a');
     await el.updateComplete;
     expect((el as unknown as { _open: boolean })._open).toBe(true);
-    // Simulate the browser inserting the character into the (cleared) input.
-    input.value = 'a';
-    input.dispatchEvent(new Event('input', { bubbles: true }));
+    typeCharacter(input, 'a');
     await el.updateComplete;
     expect(input.value).toBe('a');
   });

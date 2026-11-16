@@ -75,9 +75,7 @@ describe('SlotPresenceController', () => {
     expect(host.slots.hasAny(DEFAULT_SLOT)).toBe(false);
   });
 
-  // slotchange bubbles, so a slot assigned into a tracked slot arrives with
-  // event.target pointing at the inner slot rather than the tracked one.
-  it('credits the slot that listened, not a nested slot whose change bubbled to it', async () => {
+  it('credits the slot that listened, not a nested slot whose change bubbled to it with itself as the target', async () => {
     const outer = await mount<NestingHost>('<nesting-host></nesting-host>');
     const host = outer.shadowRoot!.querySelector<PresenceHost>('presence-host')!;
     await host.updateComplete;

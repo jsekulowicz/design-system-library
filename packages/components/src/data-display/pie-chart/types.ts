@@ -23,7 +23,6 @@ export interface PieChartSliceDetail {
   isOther: boolean;
 }
 
-/* Everything the stateless render helpers need from the component instance. */
 export interface PieRenderContext {
   uid: string;
   title: string;

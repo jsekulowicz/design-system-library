@@ -75,8 +75,6 @@ export function midAngle(slice: PieSlice): number {
   return (slice.startAngle + slice.endAngle) / 2;
 }
 
-/* Labels always sit outside the arc: text over a slice fill cannot guarantee
-   4.5:1 across the palette, the page background can. */
 export function labelPlacement(slice: PieSlice, outer: number): LabelPlacement {
   const angle = midAngle(slice);
   if (slice.percent < LABEL_MIN_PERCENT) {

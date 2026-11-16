@@ -5,7 +5,7 @@ interface DocumentationLoaderSample {
   kind: 'manager' | 'preview';
 }
 
-async function collectDocumentationLoaderSamplesDuringRefresh(page: Page): Promise<DocumentationLoaderSample[]> {
+async function collectLoaderSamplesOnRefresh(page: Page): Promise<DocumentationLoaderSample[]> {
   const samples: DocumentationLoaderSample[] = [];
   await page.exposeFunction('recordDocumentationLoaderSample', (sample: DocumentationLoaderSample) =>
     samples.push(sample),
@@ -47,4 +47,4 @@ async function collectDocumentationLoaderSamplesDuringRefresh(page: Page): Promi
   return samples;
 }
 
-export { collectDocumentationLoaderSamplesDuringRefresh };
+export { collectLoaderSamplesOnRefresh };

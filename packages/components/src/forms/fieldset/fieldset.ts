@@ -1,7 +1,7 @@
 import { html, nothing, type TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { DsElement } from '@jsekulowicz/ds-core';
-import { formFieldStyles, renderSubtext } from '../../shared/form-field.js';
+import { formFieldStyles, renderHighestPriorityMessageRow } from '../../shared/form-field.js';
 import { fieldGroupStyles } from '../../shared/field-group.styles.js';
 import { fieldsetStyles } from './fieldset.styles.js';
 
@@ -52,7 +52,7 @@ export class DsFieldset extends DsElement {
           <slot></slot>
         </div>
       </fieldset>
-      ${renderSubtext(this)}
+      ${renderHighestPriorityMessageRow(this)}
     `;
   }
 }

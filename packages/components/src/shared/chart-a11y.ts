@@ -1,11 +1,5 @@
 import { html, type TemplateResult } from 'lit';
 
-/**
- * Charts expose their graphic as a `graphics-document` whose data points are
- * real focusable `graphics-symbol` elements driven by a roving tabindex. The tabular
- * fallback is a sibling, never `aria-describedby`, which would flatten it to one string.
- */
-
 export function chartTitleId(uid: string): string {
   return `${uid}-title`;
 }

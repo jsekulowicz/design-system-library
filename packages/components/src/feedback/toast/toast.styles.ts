@@ -26,7 +26,6 @@ export const toastStyles = css`
     justify-content: space-between;
     gap: var(--ds-space-3);
   }
-  /* Past the notice padding, into the corner, with or without a title. */
   .close-btn {
     margin-block-start: calc(var(--ds-space-2) * -1);
     margin-inline-end: calc(var(--ds-space-2) * -1);

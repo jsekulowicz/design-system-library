@@ -5,12 +5,11 @@ import type { DsColorPickerInputColor } from './input-color.js';
 import type { DsColorPickerSwatch } from './color-picker-swatch.js';
 import type { DsColorPickerSwatchGroup } from './color-picker-swatch-group.js';
 import './define.js';
+import { stubAriaReflection } from '../../test-utils/jsdom-gaps.js';
 import { mountWithProps, resetTestDom } from '../../test-utils/mount.js';
 
 beforeAll(() => {
-  const proto = DsColorPicker.prototype as unknown as Record<string, (value: string | null) => void>;
-  proto['setAriaLabel'] = () => {};
-  proto['setAriaDescription'] = () => {};
+  stubAriaReflection(DsColorPicker.prototype);
 });
 
 const COLORS = [

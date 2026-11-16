@@ -24,8 +24,6 @@ export const selectCommonStyles = css`
     width: 100%;
   }
   .trigger {
-    /* The popover listbox positions itself against this via CSS anchor
-       positioning (scoped to this shadow root, so instances don't clash). */
     anchor-name: --ds-select-trigger;
     display: flex;
     align-items: center;
@@ -129,9 +127,6 @@ export const selectCommonStyles = css`
     display: inline-flex;
     align-items: center;
     gap: var(--ds-space-1);
-    /* Grow with the label up to the full row width, then the label
-       ellipsizes - rather than hard-capping every tile to a narrow width
-       and wasting the rest of the row. */
     max-width: 100%;
     height: var(--ds-select-tile-height);
     padding: 0 var(--ds-space-1) 0 var(--ds-space-2);
@@ -203,10 +198,6 @@ export const selectCommonStyles = css`
     transition: transform var(--ds-duration-fast) var(--ds-easing-standard);
   }
   .listbox {
-    /* In-flow fallback for browsers without the Popover API. When the API is
-       available the listbox is shown via showPopover() (top layer, so it
-       escapes any overflow:hidden / scroll ancestor) and positioned with CSS
-       anchor positioning - see .listbox[popover]:popover-open below. */
     position: absolute;
     inset: calc(100% + var(--ds-space-1)) 0 auto;
     z-index: var(--ds-z-index-dropdown);
@@ -216,18 +207,10 @@ export const selectCommonStyles = css`
     border: 1px solid var(--ds-color-border-strong);
     border-radius: var(--ds-radius-xs);
     box-shadow: var(--ds-shadow-md);
-    /* Thin, subtle scrollbar with a transparent track (matching the shell's
-       main content) instead of the wide, bright default that painted over
-       the listbox's rounded corners. No scrollbar-gutter: the dropdown
-       shouldn't reserve a permanent track when it doesn't overflow. */
     scrollbar-color: var(--ds-color-fg-subtle) transparent;
     scrollbar-width: thin;
   }
 
-  /* Shown in the top layer: position it under the trigger with CSS anchor
-     positioning - matching the trigger's width (so long options wrap rather
-     than widening the menu) and flipping above when there's no room below.
-     The browser keeps it glued to the trigger on scroll, so no JS. */
   .listbox[popover]:popover-open {
     position: fixed;
     position-anchor: --ds-select-trigger;
@@ -240,8 +223,6 @@ export const selectCommonStyles = css`
     position-try-fallbacks: flip-block;
   }
 
-  /* Informative note pinned to the top of the open dropdown (e.g. why an option
-     is disabled). Sticky so it stays visible while the options scroll. */
   .listbox-hint {
     position: sticky;
     top: 0;

@@ -30,22 +30,11 @@ export const pageShellStyles = css`
     z-index: var(--ds-z-index-sticky);
   }
 
-  /* The header composes ds-top-bar; let the top-bar own height, padding,
-     border-bottom, and layout. We just (a) make its background transparent
-     so the sticky header's blurred bg shows through, and (b) constrain its
-     inner brand + actions content to the same max-width as the shell-body
-     below so the bar's brand left-aligns with the aside, and its actions
-     right-align with the aside-end (or the right edge of main when no
-     aside-end is slotted). */
   .chrome {
     --ds-top-bar-bg: transparent;
     --ds-top-bar-content-max-width: var(--ds-page-shell-max-width);
   }
 
-  /* Same treatment for a slotted ds-footer: cap its inner content to the
-     shell-body's max-width so footer content aligns with the column above.
-     Consumers who slot a non-ds-footer custom element can override the
-     property themselves. */
   ::slotted(ds-footer) {
     --ds-footer-content-max-width: var(--ds-page-shell-max-width);
   }
@@ -131,10 +120,6 @@ export const pageShellStyles = css`
     display: none;
   }
 
-  /* Collapsing to 0fr animates the grid track from its content width to zero
-     without measuring it in JS; the aside clips via overflow + min-width: 0.
-     The cluster keeps a small min-width so the toggle button that straddles
-     its edge never touches the viewport edge. */
   :host([aside-end-state='hidden']) .aside-end-cluster {
     grid-template-columns: 0fr;
     min-width: calc(var(--ds-size-sm) / 2 + var(--ds-space-2));
