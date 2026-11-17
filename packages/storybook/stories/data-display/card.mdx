@@ -13,6 +13,8 @@ Grouped content container. The interactive variant shows a pointer and strengthe
 
 Slots for `eyebrow`, `title`, default body, `actions` and `footer`. `elevation` and `orientation` control the visual layout; `interactive` gives the whole card a pointer and a hover border.
 
+Three CSS variables size and color the card without reaching into `::part(card)`: `--ds-card-padding`, `--ds-card-gap` and `--ds-card-border-color`. Lower the padding and gap for small tiles in a row, as in the compact tiles example.
+
 <ds-tabs value="api">
     <ds-tab slot="tab" value="api">API</ds-tab>
     <ds-tab slot="tab" value="examples">Examples</ds-tab>

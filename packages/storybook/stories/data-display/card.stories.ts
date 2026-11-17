@@ -3,6 +3,11 @@ import type { Meta, StoryObj } from '@storybook/web-components-vite';
 import '@jsekulowicz/ds-components/card/define';
 import '@jsekulowicz/ds-components/button/define';
 import '@jsekulowicz/ds-components/badge/define';
+import '@jsekulowicz/ds-components/icon/define';
+import '@jsekulowicz/ds-components/icon/paint-brush';
+import '@jsekulowicz/ds-components/icon/wrench';
+import '@jsekulowicz/ds-components/icon/cube';
+import { joinStyles } from '../shared/styles';
 
 const meta: Meta = {
   title: 'Data Display/Card',
@@ -44,6 +49,37 @@ export const Horizontal: Story = {
           <ds-button variant="ghost" size="sm">Changelog</ds-button>
         </div>
       </ds-card>
+    </div>
+  `,
+};
+
+const TILES = [
+  { icon: 'paint-brush', label: 'Design', count: 4, color: 'var(--ds-color-chart-1)' },
+  { icon: 'wrench', label: 'Tools', count: 7, color: 'var(--ds-color-chart-2)' },
+  { icon: 'cube', label: 'Packages', count: 2, color: 'var(--ds-color-chart-3)' },
+];
+
+const TILE_ROW = 'display:flex;gap:var(--ds-space-2)';
+
+function buildTileStyle(color: string): string {
+  return joinStyles(
+    '--ds-card-padding:var(--ds-space-3)',
+    '--ds-card-gap:var(--ds-space-1)',
+    `--ds-card-border-color:${color}`,
+  );
+}
+
+export const CompactTiles: Story = {
+  render: () => html`
+    <div style=${TILE_ROW}>
+      ${TILES.map(
+        (tile) => html`
+          <ds-card style=${buildTileStyle(tile.color)}>
+            <ds-icon name=${tile.icon} size="4xl" label=${tile.label} style="color:${tile.color}"></ds-icon>
+            <strong slot="footer">${tile.count}</strong>
+          </ds-card>
+        `,
+      )}
     </div>
   `,
 };

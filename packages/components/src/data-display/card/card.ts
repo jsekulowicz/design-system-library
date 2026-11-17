@@ -17,6 +17,9 @@ export type CardOrientation = 'vertical' | 'horizontal';
  * @slot footer - Closing content below the actions, such as meta information.
  * @csspart card - The outer container element.
  * @csspart body - The body wrapper that holds the default slot.
+ * @cssprop [--ds-card-padding=var(--ds-space-6)] - Space between the border and the content. Lower it for small cards such as tiles in a row.
+ * @cssprop [--ds-card-gap=var(--ds-space-4)] - Space between the header, body, actions and footer.
+ * @cssprop [--ds-card-border-color=var(--ds-color-border)] - Color of the border at rest. Set this rather than `--ds-color-border`, which would also recolor borders inside the card. The `interactive` hover color still wins.
  */
 export class DsCard extends DsElement {
   static override styles = [...DsElement.styles, cardStyles];
