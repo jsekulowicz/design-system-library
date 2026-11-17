@@ -1,5 +1,12 @@
 # @jsekulowicz/ds-components
 
+## 0.92.0
+
+### Minor Changes
+
+- 8387a78: `ds-card` reads three new CSS variables: `--ds-card-padding` (default `--ds-space-6`), `--ds-card-gap` (default `--ds-space-4`) and `--ds-card-border-color` (default `--ds-color-border`). Small cards, such as tiles in a row, can now set their padding and border color without `::part(card)` overrides. The `interactive` hover border color still applies on top of a custom border color.
+- 1b512bf: `ds-icon size="4xl"` is now `2rem` (32px) instead of `1.875rem` (30px). Outline icons on a 24-unit grid are only sharp on 1x screens at multiples of 8px, and 30px left their edges soft. 32px also fits icons drawn on a 64-unit grid exactly, at half size.
+
 ## 0.91.0
 
 ### Minor Changes
