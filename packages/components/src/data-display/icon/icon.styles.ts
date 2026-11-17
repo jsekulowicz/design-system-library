@@ -34,8 +34,8 @@ export const iconStyles = css`
     height: 1.75rem;
   }
   :host([size='4xl']) {
-    width: 1.875rem;
-    height: 1.875rem;
+    width: 2rem;
+    height: 2rem;
   }
   svg {
     width: 100%;
