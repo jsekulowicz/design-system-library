@@ -138,9 +138,20 @@ Published packages use semver and are managed with Changesets:
 
 ### One-time npm setup
 
+The `Release` workflow publishes through npm trusted publishing, so no npm token is stored in GitHub.
+
 1. Make sure the npm account or organization owns the `@jsekulowicz` scope.
-2. Create an npm access token that can publish packages in that scope.
-3. Add the token to the GitHub repository secrets as `NPM_TOKEN`.
+2. On npmjs.com, open each published package's settings and add a trusted publisher:
+   - Publisher: GitHub Actions
+   - Organization or user: `jsekulowicz`
+   - Repository: `design-system-library`
+   - Workflow filename: `release.yml`
+   - Environment: empty
+   - Allowed actions: `npm publish` only. `changeset publish` sets the `latest` tag as part of the publish, so `npm dist-tag` is not needed.
+3. Under Publishing access, choose "Require two-factor authentication and disallow bypass 2fa tokens". Trusted publishing does not use a token, so the workflow keeps working.
+4. Let the `Release` workflow publish within 2 days of adding a trusted publisher. npm expects the first publish through a new trusted publisher in that time.
+
+Trusted publishers live in a package's settings, so a brand-new package gets its first version published by hand before step 2.
 
 ### Releasing a new version
 
@@ -157,6 +168,6 @@ Published packages use semver and are managed with Changesets:
 
 3. Commit the generated `.changeset/*.md` file with the code change.
 4. Merge the feature branch to `main`.
-5. The `Release` workflow opens or updates a `chore: version packages` PR.
+5. The `Release` workflow opens or updates a version PR titled `release: <next version>`.
 6. Review and merge that version PR.
 7. The next `Release` workflow run publishes the new package versions and creates GitHub Releases.
