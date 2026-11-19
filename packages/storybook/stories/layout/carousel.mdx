@@ -11,7 +11,7 @@ A single row of items that scrolls sideways and snaps item by item.
 
 ## Anatomy
 
-Every slotted element is one item and one snap point. Items share one width, set with `--ds-carousel-item-width`. The previous and next buttons scroll by one view and appear only when there is somewhere to go, so a row that fits shows none. Touch, trackpad and keyboard scrolling stay native: tabbing to an item brings it into view.
+Every slotted element is one item and one snap point. Items share one width, set with `--ds-carousel-item-width`. The previous and next buttons scroll by one view and appear only when there is somewhere to go, so a row that fits shows none. A row that fits also lets a sideways swipe through to the browser back and forward gestures, while a row that overflows keeps the swipe for itself. Touch, trackpad and keyboard scrolling stay native: tabbing to an item brings it into view.
 
 ```html
 <ds-carousel label="Featured guides">

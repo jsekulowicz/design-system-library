@@ -22,6 +22,21 @@ export const carouselStyles = css`
   .track::-webkit-scrollbar {
     display: none;
   }
+  @supports (animation-timeline: scroll()) {
+    .track {
+      overscroll-behavior-x: auto;
+      scroll-timeline: --ds-carousel-track inline;
+      animation: ds-carousel-contain-overscroll linear both;
+      animation-timeline: --ds-carousel-track;
+      animation-range: normal 200%;
+    }
+  }
+  @keyframes ds-carousel-contain-overscroll {
+    from,
+    to {
+      overscroll-behavior-x: contain;
+    }
+  }
   @media (prefers-reduced-motion: no-preference) {
     .track {
       scroll-behavior: smooth;
