@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.92.1
+
+### Patch Changes
+
+- 8c49be7: `ds-carousel` contains sideways overscroll only while its row overflows. When every item fits, a sideways swipe over the carousel reaches the browser back and forward gestures again. Browsers without scroll-linked animations keep the old behavior and always contain it.
+
 ## 0.92.0
 
 ### Minor Changes
