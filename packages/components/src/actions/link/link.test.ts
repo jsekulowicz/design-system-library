@@ -54,4 +54,11 @@ describe('<ds-link>', () => {
     const anchor = el.shadowRoot!.querySelector('a')!;
     expect(anchor.getAttribute('rel')).toBeNull();
   });
+
+  it('adds no space around its label, so a comma right after an inline link sits against it', async () => {
+    const el = await mount<DsLink>('<ds-link href="/">Docs</ds-link>');
+    const anchor = el.shadowRoot!.querySelector('a')!;
+    const textInside = [...anchor.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE);
+    expect(textInside).toEqual([]);
+  });
 });

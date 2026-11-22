@@ -32,9 +32,8 @@ export class DsLink extends DsElement {
   }
 
   override render(): TemplateResult {
-    const rel = this.#resolveRel();
-    return html`<a part="link" href=${this.href} target=${ifDefined(omitWhenBlank(this.target))} rel=${ifDefined(rel)}>
-      <slot></slot>
-    </a>`;
+    const target = ifDefined(omitWhenBlank(this.target));
+    const rel = ifDefined(this.#resolveRel());
+    return html`<a part="link" href=${this.href} target=${target} rel=${rel}><slot></slot></a>`;
   }
 }
