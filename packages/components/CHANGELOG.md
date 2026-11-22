@@ -1,5 +1,11 @@
 # @jsekulowicz/ds-components
 
+## 0.92.2
+
+### Patch Changes
+
+- db4ab92: `ds-link` no longer adds a space before and after its label. The line breaks around the slot inside the anchor rendered as spaces, so a comma or period right after an inline link sat one space away from it.
+
 ## 0.92.1
 
 ### Patch Changes
